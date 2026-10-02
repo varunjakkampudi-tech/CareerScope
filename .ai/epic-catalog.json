@@ -1,0 +1,2326 @@
+{
+  "schemaVersion": 1,
+  "phase": "PHASE_3_25",
+  "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
+  "sourceHashes": {
+    ".ai/backlog.json": "0a6a8923c041f2c0e4f2e399892080557de35aeb315d3e42d828a107179999f8",
+    ".ai/workflow-migration.json": "32cab19178fbc894ea8b0397fbec05cdcea51a1ce8a7b2cc969c05671cb6078b",
+    ".ai/design-ticket-coverage.json": "732a1f577746a7016ce5ca7fbdf08fd13a632df9555a36747a1a18ac4ae49aa7",
+    "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
+    ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
+    "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
+    ".ai/ticket-specification-policy.json": "3a0197ef08f71c2c7376451845fc2b63547b506889e38d911abcf08e377b08a8",
+    ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1"
+  },
+  "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
+  "epics": [
+    {
+      "id": "EPIC-PLATFORM",
+      "title": "Canonical platform and private infrastructure",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE",
+      "childTicketIds": [
+        "CS-1",
+        "CS-3",
+        "CS-5",
+        "CS-7",
+        "CS-29",
+        "CS-34",
+        "CS-47",
+        "CS-52",
+        "CS-63",
+        "CS-65",
+        "CS-78",
+        "CS-82",
+        "CS-84"
+      ],
+      "objective": "Canonical platform and private infrastructure",
+      "scope": [
+        { "ticketId": "CS-1", "title": "CI proves what deployment ships (v2-unit layer)" },
+        {
+          "ticketId": "CS-3",
+          "title": "Proxy restart strands every service behind a healthy-looking 502"
+        },
+        { "ticketId": "CS-5", "title": "Consolidate the application into one canonical workspace" },
+        {
+          "ticketId": "CS-7",
+          "title": "Deploy can ship a revision that continuous integration rejected"
+        },
+        {
+          "ticketId": "CS-29",
+          "title": "The deployed app consumes the shared packages as built files, not dependencies"
+        },
+        { "ticketId": "CS-34", "title": "Web runtime environment least privilege" },
+        {
+          "ticketId": "CS-47",
+          "title": "Nothing watches the six unattended host timers themselves"
+        },
+        {
+          "ticketId": "CS-52",
+          "title": "Security-relevant checks are enforced by no pipeline, and the glob that would have caught it is the script nobody runs"
+        },
+        { "ticketId": "CS-63", "title": "Windows V2 launcher aborted on a stale env allowlist" },
+        {
+          "ticketId": "CS-65",
+          "title": ".gitattributes covered every text extension except .txt, leaving the audit log mixed"
+        },
+        {
+          "ticketId": "CS-78",
+          "title": "V2 minimises the matching profile to the three fields V1 matcher reads, and nothing enforces that correspondence - the failure mode is a silently wrong score"
+        },
+        { "ticketId": "CS-82", "title": "Deployment and Pages publication must be manual-only" },
+        {
+          "ticketId": "CS-84",
+          "title": "Reconcile grouped dependency updates after the baseline CI is green"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-76", "CS-83"],
+      "designScope": [
+        { "ticketId": "CS-1", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-3", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-5", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-7", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-29", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-34", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-47", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-52", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-63", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-65", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-78", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-82", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-84", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null }
+      ],
+      "totals": {
+        "tickets": 13,
+        "completeSpecifications": 0,
+        "blocked": 3,
+        "workflow": { "BACKLOG": 1, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 12, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-CANDIDATE-CORE",
+      "stage": "04-candidate-core",
+      "title": "Approved candidate shell layout parity",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "role": "candidate",
+      "childTicketIds": [
+        "CS-2",
+        "CS-6",
+        "CS-16",
+        "CS-17",
+        "CS-18",
+        "CS-19",
+        "CS-22",
+        "CS-31",
+        "CS-32",
+        "CS-38",
+        "CS-39",
+        "CS-41",
+        "CS-46",
+        "CS-49",
+        "CS-50",
+        "CS-51",
+        "CS-61",
+        "CS-62",
+        "CS-70",
+        "CS-75",
+        "CS-97",
+        "CS-141",
+        "CS-142",
+        "CS-143",
+        "CS-144",
+        "CS-145",
+        "CS-146",
+        "CS-147",
+        "CS-213",
+        "CS-214"
+      ],
+      "objective": "Approved candidate shell layout parity",
+      "scope": [
+        {
+          "ticketId": "CS-2",
+          "title": "Lead table header offset is wrong on Linux WebKit at 768px"
+        },
+        { "ticketId": "CS-6", "title": "Frontend route architecture and auth boundary" },
+        { "ticketId": "CS-16", "title": "Discovery does not present jobs in a way you can act on" },
+        { "ticketId": "CS-17", "title": "There is no job detail view worth opening" },
+        { "ticketId": "CS-18", "title": "The match score is a number with no explanation" },
+        {
+          "ticketId": "CS-19",
+          "title": "Saving a job and working the shortlist is not a coherent flow"
+        },
+        { "ticketId": "CS-22", "title": "The parsed resume never reaches matching" },
+        { "ticketId": "CS-31", "title": "V2 skip-link accessibility regression" },
+        { "ticketId": "CS-32", "title": "Pages 320px visual regression triage" },
+        { "ticketId": "CS-38", "title": "Dashboard actual-state experience" },
+        { "ticketId": "CS-39", "title": "Preparation and Career Links page journeys" },
+        { "ticketId": "CS-41", "title": "Job, company and skill domain expansion discovery" },
+        {
+          "ticketId": "CS-46",
+          "title": "Resume-derived matching facts have no owner approval or per-skill exclusion gate"
+        },
+        {
+          "ticketId": "CS-49",
+          "title": "Dashboard: real route using the extracted shared shell, no invented metrics"
+        },
+        {
+          "ticketId": "CS-50",
+          "title": "Applications tracking: interview-stage data model and UI (list + details)"
+        },
+        {
+          "ticketId": "CS-51",
+          "title": "Identifiers are discarded between call site and destination (five instances)"
+        },
+        {
+          "ticketId": "CS-61",
+          "title": "React Query keys are owner-agnostic, so one owner cache can serve another"
+        },
+        {
+          "ticketId": "CS-62",
+          "title": "EmptyState documents a `reason` distinction its type does not carry"
+        },
+        {
+          "ticketId": "CS-70",
+          "title": "The API exposes no job-to-lead lookup, so the UI cannot know a job is already saved"
+        },
+        {
+          "ticketId": "CS-75",
+          "title": "api() throws on a non-OK response without reading the body, leaving the fetch in-flight"
+        },
+        { "ticketId": "CS-97", "title": "Approved candidate shell layout parity" },
+        { "ticketId": "CS-141", "title": "Dashboard: approved layout and state integration" },
+        { "ticketId": "CS-142", "title": "Jobs: approved layout and state integration" },
+        { "ticketId": "CS-143", "title": "Applications: approved layout and state integration" },
+        {
+          "ticketId": "CS-144",
+          "title": "Application Details: approved layout and state integration"
+        },
+        { "ticketId": "CS-145", "title": "Settings Resume: approved layout and state integration" },
+        { "ticketId": "CS-146", "title": "Saved Jobs: approved layout and state integration" },
+        { "ticketId": "CS-147", "title": "Career Insights: approved layout and state integration" },
+        { "ticketId": "CS-213", "title": "Profile and preference approved form parity" },
+        { "ticketId": "CS-214", "title": "Resume upload and parsing approved-state parity" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-13", "CS-14", "CS-28", "CS-33", "CS-95", "CS-106", "CS-37"],
+      "designScope": [
+        { "ticketId": "CS-2", "status": "DESIGN_GAP", "primaryRef": null },
+        {
+          "ticketId": "CS-6",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-16",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-17",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-18",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-19",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-22",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        { "ticketId": "CS-31", "status": "DESIGN_GAP", "primaryRef": null },
+        { "ticketId": "CS-32", "status": "DESIGN_GAP", "primaryRef": null },
+        {
+          "ticketId": "CS-38",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-39",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-41",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-46",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-49",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-50",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        { "ticketId": "CS-51", "status": "DESIGN_GAP", "primaryRef": null },
+        { "ticketId": "CS-61", "status": "DESIGN_GAP", "primaryRef": null },
+        { "ticketId": "CS-62", "status": "DESIGN_GAP", "primaryRef": null },
+        {
+          "ticketId": "CS-70",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        { "ticketId": "CS-75", "status": "DESIGN_GAP", "primaryRef": null },
+        {
+          "ticketId": "CS-97",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png"
+        },
+        {
+          "ticketId": "CS-141",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/01-dashboard.png"
+        },
+        {
+          "ticketId": "CS-142",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png"
+        },
+        {
+          "ticketId": "CS-143",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png"
+        },
+        {
+          "ticketId": "CS-144",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png"
+        },
+        {
+          "ticketId": "CS-145",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png"
+        },
+        {
+          "ticketId": "CS-146",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png"
+        },
+        {
+          "ticketId": "CS-147",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png"
+        },
+        {
+          "ticketId": "CS-213",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/canonical/app/careerscope-settings-resume-management-reference-board.png"
+        },
+        {
+          "ticketId": "CS-214",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/canonical/app/careerscope-settings-resume-management-reference-board.png"
+        }
+      ],
+      "totals": {
+        "tickets": 30,
+        "completeSpecifications": 0,
+        "blocked": 11,
+        "workflow": { "BACKLOG": 11, "TODO": 0, "IN_PROGRESS": 0, "QA": 2, "UAT": 17, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-DELIVERY-TOOLING",
+      "title": "Engineering delivery and repository state integrity",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE",
+      "childTicketIds": [
+        "CS-4",
+        "CS-8",
+        "CS-10",
+        "CS-12",
+        "CS-20",
+        "CS-21",
+        "CS-45",
+        "CS-67",
+        "CS-68",
+        "CS-69",
+        "CS-72",
+        "CS-73",
+        "CS-74",
+        "CS-76",
+        "CS-79",
+        "CS-80"
+      ],
+      "objective": "Engineering delivery and repository state integrity",
+      "scope": [
+        {
+          "ticketId": "CS-4",
+          "title": "Release publishes a stale version string when a version file is added"
+        },
+        { "ticketId": "CS-8", "title": "Readers of canonical state may treat unreadable as empty" },
+        { "ticketId": "CS-10", "title": "Twenty-four agents exist with no activation policy" },
+        { "ticketId": "CS-12", "title": "Agent invocation was believed impossible; it is not" },
+        {
+          "ticketId": "CS-20",
+          "title": "agile status and review reported a clean board from files they could not read"
+        },
+        { "ticketId": "CS-21", "title": "Sprint carry could never mark anything finished" },
+        {
+          "ticketId": "CS-45",
+          "title": "Remote-viewable engineering control center via Pages, and a separately-gated ticket-write path"
+        },
+        {
+          "ticketId": "CS-67",
+          "title": "Control Center hid BLOCKED work in an unnamed bucket and left open findings uncounted"
+        },
+        {
+          "ticketId": "CS-68",
+          "title": "Root scripts/ test files are unguarded, and two of them are silently red"
+        },
+        {
+          "ticketId": "CS-69",
+          "title": "Test evidence is gitignored, so a large fraction of it is unreproducible by anyone"
+        },
+        {
+          "ticketId": "CS-72",
+          "title": "Automate the promotion question that caught five UAT demotions in two batches"
+        },
+        {
+          "ticketId": "CS-73",
+          "title": "ownerAgent and architectureImpact can contradict where the evidence says the work lives"
+        },
+        {
+          "ticketId": "CS-74",
+          "title": "The Node version floor is declared in four places and enforced by nothing"
+        },
+        {
+          "ticketId": "CS-76",
+          "title": "Every v2 test file is excluded from type checking, so a test can silently assert against never"
+        },
+        {
+          "ticketId": "CS-79",
+          "title": ".gitattributes has no trailing newline, so any scripted append silently corrupts its last rule instead of adding a new one"
+        },
+        {
+          "ticketId": "CS-80",
+          "title": "Untracked files have no baseline, so no before/after claim about most of the deployed web source can be verified by anyone"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": [],
+      "designScope": [
+        { "ticketId": "CS-4", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-8", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-10", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-12", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-20", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-21", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-45", "status": "DESIGN_GAP", "primaryRef": null },
+        { "ticketId": "CS-67", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-68", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-69", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-72", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-73", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-74", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-76", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-79", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-80", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null }
+      ],
+      "totals": {
+        "tickets": 16,
+        "completeSpecifications": 0,
+        "blocked": 3,
+        "workflow": { "BACKLOG": 2, "TODO": 0, "IN_PROGRESS": 0, "QA": 1, "UAT": 13, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-VALIDATION",
+      "title": "Executable regression and recovery evidence",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE",
+      "childTicketIds": ["CS-9", "CS-58", "CS-60", "CS-83", "CS-85", "CS-87"],
+      "objective": "Executable regression and recovery evidence",
+      "scope": [
+        { "ticketId": "CS-9", "title": "V2 tests in CI cover no database, queue or browser path" },
+        {
+          "ticketId": "CS-58",
+          "title": "Two unexplained intermittent test failures with no ticket and no owner"
+        },
+        {
+          "ticketId": "CS-60",
+          "title": "There is no test file under v2/apps/api, so API HTTP tests are undiscoverable"
+        },
+        {
+          "ticketId": "CS-83",
+          "title": "Recovery CI uses a malformed PostgreSQL URL and backup restore still terminates"
+        },
+        {
+          "ticketId": "CS-85",
+          "title": "V2 integration CI uses a dead local-default Redis endpoint"
+        },
+        { "ticketId": "CS-87", "title": "Make CI failures diagnosable and deployment-gating" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-1"],
+      "designScope": [
+        { "ticketId": "CS-9", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-58", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-60", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-83", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-85", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-87", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null }
+      ],
+      "totals": {
+        "tickets": 6,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 0, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 6, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-MARKETING",
+      "stage": "01-marketing-public",
+      "title": "Public marketing template and navigation",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "role": "public",
+      "childTicketIds": [
+        "CS-11",
+        "CS-96",
+        "CS-133",
+        "CS-134",
+        "CS-135",
+        "CS-136",
+        "CS-137",
+        "CS-138",
+        "CS-139",
+        "CS-140"
+      ],
+      "objective": "Public marketing template and navigation",
+      "scope": [
+        { "ticketId": "CS-11", "title": "The public Pages surface has had no design pass" },
+        { "ticketId": "CS-96", "title": "Public marketing template and navigation" },
+        { "ticketId": "CS-133", "title": "Home: approved layout and state integration" },
+        { "ticketId": "CS-134", "title": "Features: approved layout and state integration" },
+        { "ticketId": "CS-135", "title": "How It Works: approved layout and state integration" },
+        { "ticketId": "CS-136", "title": "About: approved layout and state integration" },
+        { "ticketId": "CS-137", "title": "Resources Blog: approved layout and state integration" },
+        {
+          "ticketId": "CS-138",
+          "title": "Contact Feedback: approved layout and state integration"
+        },
+        { "ticketId": "CS-139", "title": "Privacy: approved layout and state integration" },
+        { "ticketId": "CS-140", "title": "Terms: approved layout and state integration" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-95", "CS-106", "CS-109"],
+      "designScope": [
+        {
+          "ticketId": "CS-11",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/marketing/careerscope-public-marketing-pages-reference-board.png"
+        },
+        {
+          "ticketId": "CS-96",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/marketing/careerscope-public-marketing-pages-reference-board.png"
+        },
+        {
+          "ticketId": "CS-133",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png"
+        },
+        {
+          "ticketId": "CS-134",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png"
+        },
+        {
+          "ticketId": "CS-135",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png"
+        },
+        {
+          "ticketId": "CS-136",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png"
+        },
+        {
+          "ticketId": "CS-137",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png"
+        },
+        {
+          "ticketId": "CS-138",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/06-contact-feedback.png"
+        },
+        {
+          "ticketId": "CS-139",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png"
+        },
+        {
+          "ticketId": "CS-140",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png"
+        }
+      ],
+      "totals": {
+        "tickets": 10,
+        "completeSpecifications": 0,
+        "blocked": 1,
+        "workflow": { "BACKLOG": 9, "TODO": 0, "IN_PROGRESS": 0, "QA": 1, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-GLOBAL-UX",
+      "stage": "12-global-ux-system-states",
+      "title": "Shared async and feedback states",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "role": "shared",
+      "childTicketIds": [
+        "CS-13",
+        "CS-14",
+        "CS-15",
+        "CS-43",
+        "CS-115",
+        "CS-116",
+        "CS-117",
+        "CS-118",
+        "CS-119",
+        "CS-120",
+        "CS-121",
+        "CS-122",
+        "CS-123",
+        "CS-124",
+        "CS-125",
+        "CS-126",
+        "CS-127",
+        "CS-128",
+        "CS-129"
+      ],
+      "objective": "Shared async and feedback states",
+      "scope": [
+        {
+          "ticketId": "CS-13",
+          "title": "Signed-in screens have no shared loading, empty or error treatment"
+        },
+        { "ticketId": "CS-14", "title": "The Leads table is unusable on a phone" },
+        { "ticketId": "CS-15", "title": "No accessibility baseline has ever been measured" },
+        { "ticketId": "CS-43", "title": "Alerts domain and notification semantics discovery" },
+        {
+          "ticketId": "CS-115",
+          "title": "Global Search Command Palette: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-116",
+          "title": "Notification Center: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-117",
+          "title": "Help Support Center: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-118",
+          "title": "Account Security Center: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-119",
+          "title": "Consent Privacy Center: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-120",
+          "title": "Job Source Trust Safety: approved layout and state integration"
+        },
+        { "ticketId": "CS-121", "title": "States Feedback: approved layout and state integration" },
+        {
+          "ticketId": "CS-122",
+          "title": "Localization Internationalization: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-123",
+          "title": "System State Pages: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-124",
+          "title": "Route Permission Feature Flag Matrix: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-125",
+          "title": "Confirmation Destructive Actions: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-126",
+          "title": "Data Export Deletion: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-127",
+          "title": "Audit Trail User Admin: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-128",
+          "title": "Error Loading Empty Component States: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-129",
+          "title": "Keyboard Shortcuts: approved layout and state integration"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-2", "CS-42", "CS-27", "CS-106", "CS-36"],
+      "designScope": [
+        {
+          "ticketId": "CS-13",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/foundations/careerscope-final-ux-foundations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-14",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/foundations/careerscope-final-ux-foundations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-15",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/foundations/careerscope-final-ux-foundations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-43",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/foundations/careerscope-final-ux-foundations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-115",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/01-01-global-search-command-palette.png"
+        },
+        {
+          "ticketId": "CS-116",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png"
+        },
+        {
+          "ticketId": "CS-117",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/03-03-help-support-center.png"
+        },
+        {
+          "ticketId": "CS-118",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png"
+        },
+        {
+          "ticketId": "CS-119",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/05-05-consent-privacy-center.png"
+        },
+        {
+          "ticketId": "CS-120",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/06-06-job-source-trust-safety.png"
+        },
+        {
+          "ticketId": "CS-121",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/08-08-states-feedback.png"
+        },
+        {
+          "ticketId": "CS-122",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/11-11-localization-internationalization.png"
+        },
+        {
+          "ticketId": "CS-123",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/12-12-system-state-pages.png"
+        },
+        {
+          "ticketId": "CS-124",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/14-14-route-permission-feature-flag-matrix.png"
+        },
+        {
+          "ticketId": "CS-125",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/15-15-confirmation-destructive-actions.png"
+        },
+        {
+          "ticketId": "CS-126",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/16-16-data-export-deletion.png"
+        },
+        {
+          "ticketId": "CS-127",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/17-17-audit-trail-user-admin.png"
+        },
+        {
+          "ticketId": "CS-128",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/18-18-error-loading-empty-component-states.png"
+        },
+        {
+          "ticketId": "CS-129",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/19-19-keyboard-shortcuts.png"
+        }
+      ],
+      "totals": {
+        "tickets": 19,
+        "completeSpecifications": 0,
+        "blocked": 2,
+        "workflow": { "BACKLOG": 16, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 3, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-DOMAIN",
+      "title": "Deterministic discovery, matching and owner-scoped data",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE",
+      "childTicketIds": [
+        "CS-23",
+        "CS-28",
+        "CS-33",
+        "CS-35",
+        "CS-42",
+        "CS-53",
+        "CS-55",
+        "CS-56",
+        "CS-57",
+        "CS-64",
+        "CS-66",
+        "CS-71",
+        "CS-77",
+        "CS-81"
+      ],
+      "objective": "Deterministic discovery, matching and owner-scoped data",
+      "scope": [
+        {
+          "ticketId": "CS-23",
+          "title": "A job source that silently returns nothing is recorded as a success"
+        },
+        { "ticketId": "CS-28", "title": "Two different openings can be merged into one" },
+        {
+          "ticketId": "CS-33",
+          "title": "Owner-scoped job detail and match evidence read contract"
+        },
+        { "ticketId": "CS-35", "title": "Typed conflict contracts and actionable client errors" },
+        { "ticketId": "CS-42", "title": "Saved search domain and UI discovery" },
+        {
+          "ticketId": "CS-53",
+          "title": "search_jobs and run_events use separate foreign keys where a composite would make a cross-owner row unrepresentable"
+        },
+        {
+          "ticketId": "CS-55",
+          "title": "Eleven authenticated GET routes have no rate limit, including the most expensive read, which the UI polls"
+        },
+        {
+          "ticketId": "CS-56",
+          "title": "Resume-derived titles have no character allowlist and flow verbatim into stored match evidence"
+        },
+        {
+          "ticketId": "CS-57",
+          "title": "POST /api/logout non-null-asserts a session cookie the request hook does not guarantee"
+        },
+        {
+          "ticketId": "CS-64",
+          "title": "Resume title derivation silently recognises English role words only"
+        },
+        {
+          "ticketId": "CS-66",
+          "title": "Owner-typed titles reach MatchDimensionScore.reason with no character constraint"
+        },
+        {
+          "ticketId": "CS-71",
+          "title": "Resume title derivation fails silently; report an undeterminable title set instead of an empty list"
+        },
+        {
+          "ticketId": "CS-77",
+          "title": "createSearch is typed against parsed output but hashes whatever the caller passes, so its idempotency hash depends on whether the caller parsed first"
+        },
+        {
+          "ticketId": "CS-81",
+          "title": "The zero-width refusal range destroys ZWNJ and ZWJ, so legitimate Devanagari, Arabic and Persian text is silently altered"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-76"],
+      "designScope": [
+        { "ticketId": "CS-23", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-28", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-33", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-35", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-42", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-53", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-55", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-56", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-57", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-64", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-66", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-71", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-77", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-81", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null }
+      ],
+      "totals": {
+        "tickets": 14,
+        "completeSpecifications": 0,
+        "blocked": 2,
+        "workflow": { "BACKLOG": 2, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 12, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-ADMIN-PROD-OPS",
+      "stage": "11-admin-production-operations",
+      "title": "Redacted production operations shell",
+      "releaseState": "FUTURE",
+      "releaseTarget": "later",
+      "role": "admin",
+      "childTicketIds": [
+        "CS-24",
+        "CS-25",
+        "CS-26",
+        "CS-27",
+        "CS-30",
+        "CS-86",
+        "CS-103",
+        "CS-201",
+        "CS-202",
+        "CS-203",
+        "CS-204",
+        "CS-205",
+        "CS-206",
+        "CS-207",
+        "CS-208",
+        "CS-209",
+        "CS-210",
+        "CS-211",
+        "CS-212"
+      ],
+      "objective": "Redacted production operations shell",
+      "scope": [
+        { "ticketId": "CS-24", "title": "Nothing watches the running system" },
+        { "ticketId": "CS-25", "title": "No scheduled database dump exists, even on the host" },
+        { "ticketId": "CS-26", "title": "Nothing runs discovery on a schedule" },
+        {
+          "ticketId": "CS-27",
+          "title": "Postings never expire or get re-checked, so dead jobs stay actionable"
+        },
+        { "ticketId": "CS-30", "title": "Managed Hostinger firewall verification" },
+        { "ticketId": "CS-86", "title": "Harden Hostinger firewall and verify public exposure" },
+        { "ticketId": "CS-103", "title": "Redacted production operations shell" },
+        { "ticketId": "CS-201", "title": "Security Center: approved layout and state integration" },
+        {
+          "ticketId": "CS-202",
+          "title": "Privacy Data Requests: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-203",
+          "title": "Job Sources Providers: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-204",
+          "title": "Queue Worker Management: approved layout and state integration"
+        },
+        { "ticketId": "CS-205", "title": "Backups Restore: approved layout and state integration" },
+        {
+          "ticketId": "CS-206",
+          "title": "Email Notification Management: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-207",
+          "title": "Deployment Releases: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-208",
+          "title": "Scheduled Jobs Cron: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-209",
+          "title": "System Status Health: approved layout and state integration"
+        },
+        { "ticketId": "CS-210", "title": "Integrated Logs: approved layout and state integration" },
+        {
+          "ticketId": "CS-211",
+          "title": "Feature Flags Platform Settings: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-212",
+          "title": "Legal Policy Controls: approved layout and state integration"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-23", "CS-95", "CS-106", "CS-40"],
+      "designScope": [
+        {
+          "ticketId": "CS-24",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-25",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-26",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-27",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-30",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-86",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-103",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-201",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/01-01-security-center.png"
+        },
+        {
+          "ticketId": "CS-202",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/02-02-privacy-data-requests.png"
+        },
+        {
+          "ticketId": "CS-203",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/03-03-job-sources-providers.png"
+        },
+        {
+          "ticketId": "CS-204",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/04-04-queue-worker-management.png"
+        },
+        {
+          "ticketId": "CS-205",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/05-05-backups-restore.png"
+        },
+        {
+          "ticketId": "CS-206",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/06-06-email-notification-management.png"
+        },
+        {
+          "ticketId": "CS-207",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/07-07-deployment-releases.png"
+        },
+        {
+          "ticketId": "CS-208",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/08-08-scheduled-jobs-cron.png"
+        },
+        {
+          "ticketId": "CS-209",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/09-09-system-status-health.png"
+        },
+        {
+          "ticketId": "CS-210",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/10-10-integrated-logs.png"
+        },
+        {
+          "ticketId": "CS-211",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/11-11-feature-flags-platform-settings.png"
+        },
+        {
+          "ticketId": "CS-212",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/16-16-legal-policy-controls.png"
+        }
+      ],
+      "totals": {
+        "tickets": 19,
+        "completeSpecifications": 0,
+        "blocked": 5,
+        "workflow": { "BACKLOG": 16, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 3, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-AUTH",
+      "stage": "02-auth",
+      "title": "Authentication capability boundary",
+      "releaseState": "CONDITIONAL",
+      "releaseTarget": "R1",
+      "role": "public",
+      "childTicketIds": ["CS-36", "CS-44", "CS-90", "CS-91", "CS-92", "CS-93", "CS-94", "CS-215"],
+      "objective": "Authentication capability boundary",
+      "scope": [
+        {
+          "ticketId": "CS-36",
+          "title": "Login and account-security journeys with consistent session reset"
+        },
+        { "ticketId": "CS-44", "title": "Account recovery and verification lifecycle discovery" },
+        { "ticketId": "CS-90", "title": "Cognito authentication architecture and migration plan" },
+        { "ticketId": "CS-91", "title": "Cognito signup and login with OTP verification" },
+        {
+          "ticketId": "CS-92",
+          "title": "Cognito email templates and deliverability configuration"
+        },
+        {
+          "ticketId": "CS-93",
+          "title": "Cognito frontend authentication states and accessibility"
+        },
+        {
+          "ticketId": "CS-94",
+          "title": "Cognito end-to-end rollout, monitoring and rollback acceptance"
+        },
+        {
+          "ticketId": "CS-215",
+          "title": "Approved sign-in geometry and capability-gated OTP states"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-6", "CS-61", "CS-59", "CS-106"],
+      "designScope": [
+        {
+          "ticketId": "CS-36",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/canonical/auth/careerscope-auth-sign-in.png"
+        },
+        {
+          "ticketId": "CS-44",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/02-auth/02-recovery-verification.png"
+        },
+        {
+          "ticketId": "CS-90",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/auth/careerscope-auth-sign-in.png"
+        },
+        {
+          "ticketId": "CS-91",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/auth/careerscope-auth-sign-in.png"
+        },
+        {
+          "ticketId": "CS-92",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/auth/careerscope-auth-sign-in.png"
+        },
+        {
+          "ticketId": "CS-93",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/auth/careerscope-auth-sign-in.png"
+        },
+        {
+          "ticketId": "CS-94",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/auth/careerscope-auth-sign-in.png"
+        },
+        {
+          "ticketId": "CS-215",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/auth/careerscope-auth-sign-in.png"
+        }
+      ],
+      "totals": {
+        "tickets": 8,
+        "completeSpecifications": 0,
+        "blocked": 6,
+        "workflow": { "BACKLOG": 7, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 1, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-ONBOARDING",
+      "stage": "03-onboarding",
+      "title": "Onboarding and explicit profile review",
+      "releaseState": "CONDITIONAL",
+      "releaseTarget": "R1",
+      "role": "candidate",
+      "childTicketIds": ["CS-37"],
+      "objective": "Onboarding and explicit profile review",
+      "scope": [
+        { "ticketId": "CS-37", "title": "Onboarding, profile and explicit resume-review journey" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-6", "CS-22", "CS-35"],
+      "designScope": [
+        {
+          "ticketId": "CS-37",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/canonical/onboarding/careerscope-onboarding-flow.png"
+        }
+      ],
+      "totals": {
+        "tickets": 1,
+        "completeSpecifications": 0,
+        "blocked": 1,
+        "workflow": { "BACKLOG": 0, "TODO": 0, "IN_PROGRESS": 0, "QA": 1, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-ADMIN",
+      "stage": "10-admin",
+      "title": "Admin privileged UI design and architecture",
+      "releaseState": "FUTURE",
+      "releaseTarget": "later",
+      "role": "admin",
+      "childTicketIds": [
+        "CS-40",
+        "CS-88",
+        "CS-193",
+        "CS-194",
+        "CS-195",
+        "CS-196",
+        "CS-197",
+        "CS-198",
+        "CS-199",
+        "CS-200"
+      ],
+      "objective": "Admin privileged UI design and architecture",
+      "scope": [
+        {
+          "ticketId": "CS-40",
+          "title": "Admin authorization and read-only investigation surface discovery"
+        },
+        { "ticketId": "CS-88", "title": "Admin pages UX and frontend system design" },
+        { "ticketId": "CS-193", "title": "Admin Dashboard: approved layout and state integration" },
+        { "ticketId": "CS-194", "title": "User Management: approved layout and state integration" },
+        {
+          "ticketId": "CS-195",
+          "title": "User Details Candidate: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-196",
+          "title": "Content Management Cms: approved layout and state integration"
+        },
+        { "ticketId": "CS-197", "title": "Edit Page Cms: approved layout and state integration" },
+        { "ticketId": "CS-198", "title": "Analytics: approved layout and state integration" },
+        {
+          "ticketId": "CS-199",
+          "title": "System Server Monitoring: approved layout and state integration"
+        },
+        { "ticketId": "CS-200", "title": "Logs Audit Trail: approved layout and state integration" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-6", "CS-106"],
+      "designScope": [
+        {
+          "ticketId": "CS-40",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/admin/careerscope-admin-control-plane-reference-board.png"
+        },
+        {
+          "ticketId": "CS-88",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/admin/careerscope-admin-control-plane-reference-board.png"
+        },
+        {
+          "ticketId": "CS-193",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/01-01-admin-dashboard.png"
+        },
+        {
+          "ticketId": "CS-194",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/02-02-user-management.png"
+        },
+        {
+          "ticketId": "CS-195",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/03-03-user-details-candidate.png"
+        },
+        {
+          "ticketId": "CS-196",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/04-04-content-management-cms.png"
+        },
+        {
+          "ticketId": "CS-197",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/05-05-edit-page-cms.png"
+        },
+        {
+          "ticketId": "CS-198",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/06-06-analytics.png"
+        },
+        {
+          "ticketId": "CS-199",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/07-07-system-server-monitoring.png"
+        },
+        {
+          "ticketId": "CS-200",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/09-09-logs-audit-trail.png"
+        }
+      ],
+      "totals": {
+        "tickets": 10,
+        "completeSpecifications": 0,
+        "blocked": 2,
+        "workflow": { "BACKLOG": 10, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-AI",
+      "stage": "08-ai-integration",
+      "title": "Real-capability AI presentation boundary",
+      "releaseState": "CONDITIONAL",
+      "releaseTarget": "R1-boundary",
+      "role": "candidate/admin",
+      "childTicketIds": ["CS-48", "CS-89", "CS-101", "CS-113", "CS-130", "CS-131", "CS-132"],
+      "objective": "Real-capability AI presentation boundary",
+      "scope": [
+        {
+          "ticketId": "CS-48",
+          "title": "Initial optional AI provider: OpenRouter free-model only"
+        },
+        {
+          "ticketId": "CS-89",
+          "title": "OpenRouter production configuration and guarded AI activation"
+        },
+        { "ticketId": "CS-101", "title": "Real-capability AI presentation boundary" },
+        {
+          "ticketId": "CS-113",
+          "title": "AI consent, budgets, failure isolation and kill-switch evidence"
+        },
+        {
+          "ticketId": "CS-130",
+          "title": "Ai Apply Assistant: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-131",
+          "title": "Admin Ai Models Billing: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-132",
+          "title": "Ai System Feature Flags: approved layout and state integration"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-87", "CS-95", "CS-106", "CS-40"],
+      "designScope": [
+        {
+          "ticketId": "CS-48",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/app/careerscope-ai-apply-assistant-reference-board.png"
+        },
+        {
+          "ticketId": "CS-89",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/canonical/app/careerscope-ai-apply-assistant-reference-board.png"
+        },
+        {
+          "ticketId": "CS-101",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/app/careerscope-ai-apply-assistant-reference-board.png"
+        },
+        {
+          "ticketId": "CS-113",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md"
+        },
+        {
+          "ticketId": "CS-130",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/08-ai-integration/01-ai-apply-assistant.png"
+        },
+        {
+          "ticketId": "CS-131",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/08-ai-integration/02-admin-ai-models-billing.png"
+        },
+        {
+          "ticketId": "CS-132",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/08-ai-integration/03-ai-system-feature-flags.png"
+        }
+      ],
+      "totals": {
+        "tickets": 7,
+        "completeSpecifications": 0,
+        "blocked": 1,
+        "workflow": { "BACKLOG": 6, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 1, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-SECURITY",
+      "title": "Authentication, authorization and trust boundaries",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE",
+      "childTicketIds": ["CS-54", "CS-59"],
+      "objective": "Authentication, authorization and trust boundaries",
+      "scope": [
+        { "ticketId": "CS-54", "title": "Web CSP allows script-src 'unsafe-inline'" },
+        {
+          "ticketId": "CS-59",
+          "title": "Two IP-keyed rate limiters collapse to a single global bucket behind the proxy"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": [],
+      "designScope": [
+        { "ticketId": "CS-54", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null },
+        { "ticketId": "CS-59", "status": "DESIGN_NOT_APPLICABLE", "primaryRef": null }
+      ],
+      "totals": {
+        "tickets": 2,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 0, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 2, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-FOUNDATIONS",
+      "stage": "00-foundations-first",
+      "title": "Canonical tokens and shared primitive state system",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "role": "shared",
+      "childTicketIds": ["CS-95", "CS-105", "CS-106"],
+      "objective": "Canonical tokens and shared primitive state system",
+      "scope": [
+        { "ticketId": "CS-95", "title": "Canonical tokens and shared primitive state system" },
+        { "ticketId": "CS-105", "title": "Shared atoms and icon/brand state contracts" },
+        { "ticketId": "CS-106", "title": "Shared form, card, dialog, table and template contracts" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": [],
+      "designScope": [
+        {
+          "ticketId": "CS-95",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/canonical/foundations/careerscope-complete-design-system-production-readiness-board.png"
+        },
+        {
+          "ticketId": "CS-105",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md"
+        },
+        {
+          "ticketId": "CS-106",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md"
+        }
+      ],
+      "totals": {
+        "tickets": 3,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 3, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-INTERVIEW",
+      "stage": "05-interview",
+      "title": "Interview practice gated shell",
+      "releaseState": "HOLD",
+      "releaseTarget": "R2",
+      "role": "candidate",
+      "childTicketIds": [
+        "CS-98",
+        "CS-148",
+        "CS-149",
+        "CS-150",
+        "CS-151",
+        "CS-152",
+        "CS-153",
+        "CS-154",
+        "CS-155",
+        "CS-156",
+        "CS-157"
+      ],
+      "objective": "Interview practice gated shell",
+      "scope": [
+        { "ticketId": "CS-98", "title": "Interview practice gated shell" },
+        { "ticketId": "CS-148", "title": "Interview Hub: approved layout and state integration" },
+        {
+          "ticketId": "CS-149",
+          "title": "Interview Categories Start: approved layout and state integration"
+        },
+        { "ticketId": "CS-150", "title": "Interview Setup: approved layout and state integration" },
+        {
+          "ticketId": "CS-151",
+          "title": "Interview Theory Mcq: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-152",
+          "title": "Interview Coding Question: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-153",
+          "title": "Interview Speaking Question: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-154",
+          "title": "Interview Review Results: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-155",
+          "title": "Interview Detailed Feedback: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-156",
+          "title": "Interview Leaderboard: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-157",
+          "title": "Interview History: approved layout and state integration"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-95", "CS-106"],
+      "designScope": [
+        {
+          "ticketId": "CS-98",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/interview/careerscope-ai-interview-practice-reference-board.png"
+        },
+        {
+          "ticketId": "CS-148",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/01-01-interview-hub.png"
+        },
+        {
+          "ticketId": "CS-149",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/02-02-interview-categories-start.png"
+        },
+        {
+          "ticketId": "CS-150",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/03-03-interview-setup.png"
+        },
+        {
+          "ticketId": "CS-151",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/04-04-interview-theory-mcq.png"
+        },
+        {
+          "ticketId": "CS-152",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/05-05-interview-coding-question.png"
+        },
+        {
+          "ticketId": "CS-153",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/06-06-interview-speaking-question.png"
+        },
+        {
+          "ticketId": "CS-154",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/07-07-interview-review-results.png"
+        },
+        {
+          "ticketId": "CS-155",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/08-08-interview-detailed-feedback.png"
+        },
+        {
+          "ticketId": "CS-156",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/09-09-interview-leaderboard.png"
+        },
+        {
+          "ticketId": "CS-157",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/05-interview/10-10-interview-history.png"
+        }
+      ],
+      "totals": {
+        "tickets": 11,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 11, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-COURSES-CERTIFICATIONS",
+      "stage": "06-courses-certifications",
+      "title": "Learning and credential gated shell",
+      "releaseState": "HOLD",
+      "releaseTarget": "R2",
+      "role": "candidate",
+      "childTicketIds": ["CS-99", "CS-158", "CS-159", "CS-160", "CS-161"],
+      "objective": "Learning and credential gated shell",
+      "scope": [
+        { "ticketId": "CS-99", "title": "Learning and credential gated shell" },
+        { "ticketId": "CS-158", "title": "Courses Home: approved layout and state integration" },
+        { "ticketId": "CS-159", "title": "Course Details: approved layout and state integration" },
+        { "ticketId": "CS-160", "title": "Certifications: approved layout and state integration" },
+        {
+          "ticketId": "CS-161",
+          "title": "Certificate Preview: approved layout and state integration"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-95", "CS-106"],
+      "designScope": [
+        {
+          "ticketId": "CS-99",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/future-releases/release-2-3/careerscope-courses-certifications-future-reference-board.png"
+        },
+        {
+          "ticketId": "CS-158",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/06-courses-certifications/01-courses-home.png"
+        },
+        {
+          "ticketId": "CS-159",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/06-courses-certifications/02-course-details.png"
+        },
+        {
+          "ticketId": "CS-160",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/06-courses-certifications/03-certifications.png"
+        },
+        {
+          "ticketId": "CS-161",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/06-courses-certifications/04-certificate-preview.png"
+        }
+      ],
+      "totals": {
+        "tickets": 5,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 5, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-CONNECTED-ACCOUNTS",
+      "stage": "07-connectors-connected-accounts",
+      "title": "Authorized connection and integration shell",
+      "releaseState": "HOLD",
+      "releaseTarget": "R2/R3",
+      "role": "candidate/admin",
+      "childTicketIds": [
+        "CS-100",
+        "CS-114",
+        "CS-162",
+        "CS-163",
+        "CS-164",
+        "CS-165",
+        "CS-166",
+        "CS-167",
+        "CS-168",
+        "CS-169",
+        "CS-170",
+        "CS-171",
+        "CS-172",
+        "CS-173",
+        "CS-174",
+        "CS-175",
+        "CS-176"
+      ],
+      "objective": "Authorized connection and integration shell",
+      "scope": [
+        { "ticketId": "CS-100", "title": "Authorized connection and integration shell" },
+        {
+          "ticketId": "CS-114",
+          "title": "Provider capability authorization and revocable consent model"
+        },
+        {
+          "ticketId": "CS-162",
+          "title": "Connected Accounts User: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-163",
+          "title": "Connect Account Oauth Flow: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-164",
+          "title": "Connected Account Details: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-165",
+          "title": "Permissions Consent User: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-166",
+          "title": "Email Integration User: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-167",
+          "title": "Data Privacy User: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-168",
+          "title": "Sync History User: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-169",
+          "title": "Mobile Connected Accounts: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-170",
+          "title": "Admin Integrations Overview: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-171",
+          "title": "Provider Configuration Admin: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-172",
+          "title": "Authentication Credentials Admin: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-173",
+          "title": "Sync Settings Admin: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-174",
+          "title": "Monitoring Health Admin: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-175",
+          "title": "User Connections Admin: approved layout and state integration"
+        },
+        { "ticketId": "CS-176", "title": "Audit Logs Admin: approved layout and state integration" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-95", "CS-40", "CS-106"],
+      "designScope": [
+        {
+          "ticketId": "CS-100",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/future-integrations/careerscope-connected-accounts-admin-integrations-reference-board.png"
+        },
+        {
+          "ticketId": "CS-114",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/CONNECTED-ACCOUNTS-INTEGRATIONS-CONTRACT.md"
+        },
+        {
+          "ticketId": "CS-162",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/01-01-connected-accounts-user.png"
+        },
+        {
+          "ticketId": "CS-163",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/02-02-connect-account-oauth-flow.png"
+        },
+        {
+          "ticketId": "CS-164",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/03-03-connected-account-details.png"
+        },
+        {
+          "ticketId": "CS-165",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/04-04-permissions-consent-user.png"
+        },
+        {
+          "ticketId": "CS-166",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/05-05-email-integration-user.png"
+        },
+        {
+          "ticketId": "CS-167",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/06-06-data-privacy-user.png"
+        },
+        {
+          "ticketId": "CS-168",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/07-07-sync-history-user.png"
+        },
+        {
+          "ticketId": "CS-169",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/08-08-mobile-connected-accounts.png"
+        },
+        {
+          "ticketId": "CS-170",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/09-09-admin-integrations-overview.png"
+        },
+        {
+          "ticketId": "CS-171",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/10-10-provider-configuration-admin.png"
+        },
+        {
+          "ticketId": "CS-172",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/11-11-authentication-credentials-admin.png"
+        },
+        {
+          "ticketId": "CS-173",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/12-12-sync-settings-admin.png"
+        },
+        {
+          "ticketId": "CS-174",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/13-13-monitoring-health-admin.png"
+        },
+        {
+          "ticketId": "CS-175",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/14-14-user-connections-admin.png"
+        },
+        {
+          "ticketId": "CS-176",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/15-15-audit-logs-admin.png"
+        }
+      ],
+      "totals": {
+        "tickets": 17,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 17, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-RECRUITER",
+      "stage": "09-recruiter",
+      "title": "Consent-scoped recruiter shell",
+      "releaseState": "FUTURE",
+      "releaseTarget": "later",
+      "role": "recruiter",
+      "childTicketIds": [
+        "CS-102",
+        "CS-177",
+        "CS-178",
+        "CS-179",
+        "CS-180",
+        "CS-181",
+        "CS-182",
+        "CS-183",
+        "CS-184",
+        "CS-185",
+        "CS-186",
+        "CS-187",
+        "CS-188",
+        "CS-189",
+        "CS-190",
+        "CS-191",
+        "CS-192"
+      ],
+      "objective": "Consent-scoped recruiter shell",
+      "scope": [
+        { "ticketId": "CS-102", "title": "Consent-scoped recruiter shell" },
+        {
+          "ticketId": "CS-177",
+          "title": "Recruiter Dashboard: approved layout and state integration"
+        },
+        { "ticketId": "CS-178", "title": "Post A Job: approved layout and state integration" },
+        {
+          "ticketId": "CS-179",
+          "title": "Search Candidates: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-180",
+          "title": "Candidate Profile: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-181",
+          "title": "Matched Candidates For Job: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-182",
+          "title": "Bulk Invite Select Candidates: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-183",
+          "title": "Compose Dynamic Invite: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-184",
+          "title": "Review Send Campaign: approved layout and state integration"
+        },
+        { "ticketId": "CS-185", "title": "Talent Pipeline: approved layout and state integration" },
+        {
+          "ticketId": "CS-186",
+          "title": "Interview Scheduling: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-187",
+          "title": "Message Templates: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-188",
+          "title": "Analytics Reports: approved layout and state integration"
+        },
+        { "ticketId": "CS-189", "title": "Company Profile: approved layout and state integration" },
+        {
+          "ticketId": "CS-190",
+          "title": "Job Postings Management: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-191",
+          "title": "Messages Inquiries: approved layout and state integration"
+        },
+        {
+          "ticketId": "CS-192",
+          "title": "Recruiter Settings: approved layout and state integration"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-95", "CS-106", "CS-40"],
+      "designScope": [
+        {
+          "ticketId": "CS-102",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/canonical/recruiter/careerscope-recruiter-workspace-reference-board.png"
+        },
+        {
+          "ticketId": "CS-177",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/01-01-recruiter-dashboard.png"
+        },
+        {
+          "ticketId": "CS-178",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/02-02-post-a-job.png"
+        },
+        {
+          "ticketId": "CS-179",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/03-03-search-candidates.png"
+        },
+        {
+          "ticketId": "CS-180",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/04-04-candidate-profile.png"
+        },
+        {
+          "ticketId": "CS-181",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/05-05-matched-candidates-for-job.png"
+        },
+        {
+          "ticketId": "CS-182",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/06-06-bulk-invite-select-candidates.png"
+        },
+        {
+          "ticketId": "CS-183",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/07-07-compose-dynamic-invite.png"
+        },
+        {
+          "ticketId": "CS-184",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/08-08-review-send-campaign.png"
+        },
+        {
+          "ticketId": "CS-185",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/09-09-talent-pipeline.png"
+        },
+        {
+          "ticketId": "CS-186",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/10-10-interview-scheduling.png"
+        },
+        {
+          "ticketId": "CS-187",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/11-11-message-templates.png"
+        },
+        {
+          "ticketId": "CS-188",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/12-12-analytics-reports.png"
+        },
+        {
+          "ticketId": "CS-189",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/13-13-company-profile.png"
+        },
+        {
+          "ticketId": "CS-190",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/14-14-job-postings-management.png"
+        },
+        {
+          "ticketId": "CS-191",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/15-15-messages-inquiries.png"
+        },
+        {
+          "ticketId": "CS-192",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/09-recruiter/16-16-recruiter-settings.png"
+        }
+      ],
+      "totals": {
+        "tickets": 17,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 17, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-ENGINEERING-CONTRACTS",
+      "stage": "13-engineering-contracts",
+      "title": "Enforce route permission and transactional UX contracts",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "role": "shared",
+      "childTicketIds": ["CS-104", "CS-216"],
+      "objective": "Enforce route permission and transactional UX contracts",
+      "scope": [
+        {
+          "ticketId": "CS-104",
+          "title": "Enforce route permission and transactional UX contracts"
+        },
+        {
+          "ticketId": "CS-216",
+          "title": "CareerScope Engineering: DESIGN-FIRST, future Phase-4 first ticket"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-95"],
+      "designScope": [
+        {
+          "ticketId": "CS-104",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts"
+        },
+        { "ticketId": "CS-216", "status": "DESIGN_GAP", "primaryRef": "design/README.md" }
+      ],
+      "totals": {
+        "tickets": 2,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 2, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-ACCESSIBILITY-RESPONSIVE",
+      "title": "WCAG 2.2 AA, reflow and locale readiness",
+      "stage": "12-global-ux-system-states",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "childTicketIds": ["CS-107"],
+      "objective": "WCAG 2.2 AA, reflow and locale readiness",
+      "scope": [
+        {
+          "ticketId": "CS-107",
+          "title": "Cross-surface accessibility, responsive and locale evidence"
+        }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-106", "CS-15", "CS-14"],
+      "designScope": [
+        {
+          "ticketId": "CS-107",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md"
+        }
+      ],
+      "totals": {
+        "tickets": 1,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 1, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-VISUAL-REGRESSION",
+      "title": "Reference viewport and browser parity evidence",
+      "stage": "13-engineering-contracts",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "childTicketIds": ["CS-108"],
+      "objective": "Reference viewport and browser parity evidence",
+      "scope": [
+        { "ticketId": "CS-108", "title": "Approved-reference visual regression acceptance matrix" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-106"],
+      "designScope": [
+        {
+          "ticketId": "CS-108",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md"
+        }
+      ],
+      "totals": {
+        "tickets": 1,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 1, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-SEO-METADATA",
+      "title": "Public metadata and private noindex",
+      "stage": "01-marketing-public",
+      "releaseState": "RELEASE",
+      "releaseTarget": "R1",
+      "childTicketIds": ["CS-109"],
+      "objective": "Public metadata and private noindex",
+      "scope": [{ "ticketId": "CS-109", "title": "Public metadata and private indexing boundary" }],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-96"],
+      "designScope": [
+        {
+          "ticketId": "CS-109",
+          "status": "DESIGN_PARTIAL",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/README.md"
+        }
+      ],
+      "totals": {
+        "tickets": 1,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 1, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    },
+    {
+      "id": "EPIC-CANDIDATE-VERIFICATION",
+      "title": "Candidate trust and protected verification",
+      "stage": "04-candidate-core",
+      "releaseState": "CONDITIONAL",
+      "releaseTarget": "CONDITIONAL",
+      "childTicketIds": ["CS-110", "CS-111", "CS-112"],
+      "objective": "Candidate trust and protected verification",
+      "scope": [
+        {
+          "ticketId": "CS-110",
+          "title": "Protected candidate photo and verification state contract"
+        },
+        { "ticketId": "CS-111", "title": "Candidate photo and verification journey" },
+        { "ticketId": "CS-112", "title": "Admin verification queue, review and decision journey" }
+      ],
+      "exclusions": [
+        "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+        "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+        "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+        "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+        "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+        "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+      ],
+      "dependencies": ["CS-40", "CS-106", "CS-88"],
+      "designScope": [
+        {
+          "ticketId": "CS-110",
+          "status": "DESIGN_NOT_APPLICABLE",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md"
+        },
+        {
+          "ticketId": "CS-111",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md"
+        },
+        {
+          "ticketId": "CS-112",
+          "status": "DESIGN_VERIFIED",
+          "primaryRef": "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md"
+        }
+      ],
+      "totals": {
+        "tickets": 3,
+        "completeSpecifications": 0,
+        "blocked": 0,
+        "workflow": { "BACKLOG": 3, "TODO": 0, "IN_PROGRESS": 0, "QA": 0, "UAT": 0, "PROD": 0 }
+      },
+      "completionSemantics": "Specification, implementation, acceptance and production promotion are separate gates."
+    }
+  ]
+}

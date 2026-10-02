@@ -1,0 +1,2990 @@
+{
+  "schemaVersion": 1,
+  "phase": "PHASE_3_25",
+  "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
+  "sourceHashes": {
+    ".ai/backlog.json": "0a6a8923c041f2c0e4f2e399892080557de35aeb315d3e42d828a107179999f8",
+    ".ai/workflow-migration.json": "32cab19178fbc894ea8b0397fbec05cdcea51a1ce8a7b2cc969c05671cb6078b",
+    ".ai/design-ticket-coverage.json": "732a1f577746a7016ce5ca7fbdf08fd13a632df9555a36747a1a18ac4ae49aa7",
+    "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
+    ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
+    "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
+    ".ai/ticket-specification-policy.json": "3a0197ef08f71c2c7376451845fc2b63547b506889e38d911abcf08e377b08a8",
+    ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1"
+  },
+  "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
+  "nodes": [
+    "CS-1",
+    "CS-2",
+    "CS-3",
+    "CS-4",
+    "CS-5",
+    "CS-6",
+    "CS-7",
+    "CS-8",
+    "CS-9",
+    "CS-10",
+    "CS-11",
+    "CS-12",
+    "CS-13",
+    "CS-14",
+    "CS-15",
+    "CS-16",
+    "CS-17",
+    "CS-18",
+    "CS-19",
+    "CS-20",
+    "CS-21",
+    "CS-22",
+    "CS-23",
+    "CS-24",
+    "CS-25",
+    "CS-26",
+    "CS-27",
+    "CS-28",
+    "CS-29",
+    "CS-30",
+    "CS-31",
+    "CS-32",
+    "CS-33",
+    "CS-34",
+    "CS-35",
+    "CS-36",
+    "CS-37",
+    "CS-38",
+    "CS-39",
+    "CS-40",
+    "CS-41",
+    "CS-42",
+    "CS-43",
+    "CS-44",
+    "CS-45",
+    "CS-46",
+    "CS-47",
+    "CS-48",
+    "CS-49",
+    "CS-50",
+    "CS-51",
+    "CS-52",
+    "CS-53",
+    "CS-54",
+    "CS-55",
+    "CS-56",
+    "CS-57",
+    "CS-58",
+    "CS-59",
+    "CS-60",
+    "CS-61",
+    "CS-62",
+    "CS-63",
+    "CS-64",
+    "CS-65",
+    "CS-66",
+    "CS-67",
+    "CS-68",
+    "CS-69",
+    "CS-70",
+    "CS-71",
+    "CS-72",
+    "CS-73",
+    "CS-74",
+    "CS-75",
+    "CS-76",
+    "CS-77",
+    "CS-78",
+    "CS-79",
+    "CS-80",
+    "CS-81",
+    "CS-82",
+    "CS-83",
+    "CS-84",
+    "CS-85",
+    "CS-86",
+    "CS-87",
+    "CS-88",
+    "CS-89",
+    "CS-90",
+    "CS-91",
+    "CS-92",
+    "CS-93",
+    "CS-94",
+    "CS-95",
+    "CS-96",
+    "CS-97",
+    "CS-98",
+    "CS-99",
+    "CS-100",
+    "CS-101",
+    "CS-102",
+    "CS-103",
+    "CS-104",
+    "CS-105",
+    "CS-106",
+    "CS-107",
+    "CS-108",
+    "CS-109",
+    "CS-110",
+    "CS-111",
+    "CS-112",
+    "CS-113",
+    "CS-114",
+    "CS-115",
+    "CS-116",
+    "CS-117",
+    "CS-118",
+    "CS-119",
+    "CS-120",
+    "CS-121",
+    "CS-122",
+    "CS-123",
+    "CS-124",
+    "CS-125",
+    "CS-126",
+    "CS-127",
+    "CS-128",
+    "CS-129",
+    "CS-130",
+    "CS-131",
+    "CS-132",
+    "CS-133",
+    "CS-134",
+    "CS-135",
+    "CS-136",
+    "CS-137",
+    "CS-138",
+    "CS-139",
+    "CS-140",
+    "CS-141",
+    "CS-142",
+    "CS-143",
+    "CS-144",
+    "CS-145",
+    "CS-146",
+    "CS-147",
+    "CS-148",
+    "CS-149",
+    "CS-150",
+    "CS-151",
+    "CS-152",
+    "CS-153",
+    "CS-154",
+    "CS-155",
+    "CS-156",
+    "CS-157",
+    "CS-158",
+    "CS-159",
+    "CS-160",
+    "CS-161",
+    "CS-162",
+    "CS-163",
+    "CS-164",
+    "CS-165",
+    "CS-166",
+    "CS-167",
+    "CS-168",
+    "CS-169",
+    "CS-170",
+    "CS-171",
+    "CS-172",
+    "CS-173",
+    "CS-174",
+    "CS-175",
+    "CS-176",
+    "CS-177",
+    "CS-178",
+    "CS-179",
+    "CS-180",
+    "CS-181",
+    "CS-182",
+    "CS-183",
+    "CS-184",
+    "CS-185",
+    "CS-186",
+    "CS-187",
+    "CS-188",
+    "CS-189",
+    "CS-190",
+    "CS-191",
+    "CS-192",
+    "CS-193",
+    "CS-194",
+    "CS-195",
+    "CS-196",
+    "CS-197",
+    "CS-198",
+    "CS-199",
+    "CS-200",
+    "CS-201",
+    "CS-202",
+    "CS-203",
+    "CS-204",
+    "CS-205",
+    "CS-206",
+    "CS-207",
+    "CS-208",
+    "CS-209",
+    "CS-210",
+    "CS-211",
+    "CS-212",
+    "CS-213",
+    "CS-214",
+    "CS-215",
+    "CS-216"
+  ],
+  "edges": [
+    {
+      "prerequisite": "CS-1",
+      "dependent": "CS-9",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-9.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-2",
+      "dependent": "CS-14",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-14.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-13",
+      "dependent": "CS-16",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-16.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-16",
+      "dependent": "CS-17",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-17.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-17",
+      "dependent": "CS-18",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-18.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-18",
+      "dependent": "CS-19",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-19.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-14",
+      "dependent": "CS-19",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-19.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-70",
+      "dependent": "CS-19",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-19.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-23",
+      "dependent": "CS-26",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-26.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-36",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-36.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-61",
+      "dependent": "CS-36",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-36.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-37",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-37.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-22",
+      "dependent": "CS-37",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-37.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-35",
+      "dependent": "CS-37",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-37.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-38",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-38.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-13",
+      "dependent": "CS-38",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-38.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-39",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-39.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-13",
+      "dependent": "CS-39",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-39.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-28",
+      "dependent": "CS-41",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-41.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-33",
+      "dependent": "CS-41",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-41.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-23",
+      "dependent": "CS-42",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-42.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-42",
+      "dependent": "CS-43",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-43.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-27",
+      "dependent": "CS-43",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-43.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-59",
+      "dependent": "CS-44",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-44.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-49",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-49.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-13",
+      "dependent": "CS-49",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-49.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-19",
+      "dependent": "CS-50",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-50.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-70",
+      "dependent": "CS-51",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-51.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-75",
+      "dependent": "CS-51",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-51.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-76",
+      "dependent": "CS-77",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-77.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-76",
+      "dependent": "CS-78",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-78.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-7",
+      "dependent": "CS-82",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-82.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-83",
+      "dependent": "CS-84",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-84.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-88",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-88.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-88",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-88.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-48",
+      "dependent": "CS-89",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-89.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-87",
+      "dependent": "CS-89",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-89.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-90",
+      "dependent": "CS-91",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-91.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-90",
+      "dependent": "CS-92",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-92.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-90",
+      "dependent": "CS-93",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-93.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-91",
+      "dependent": "CS-93",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-93.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-90",
+      "dependent": "CS-94",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-94.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-91",
+      "dependent": "CS-94",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-94.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-92",
+      "dependent": "CS-94",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-94.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-93",
+      "dependent": "CS-94",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-94.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-96",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-96.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-97",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-97.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-98",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-98.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-99",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-99.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-100",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-100.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-101",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-101.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-102",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-102.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-103",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-103.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-104",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-104.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-95",
+      "dependent": "CS-105",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-105.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-105",
+      "dependent": "CS-106",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-106.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-107",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-107.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-15",
+      "dependent": "CS-107",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-107.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-14",
+      "dependent": "CS-107",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-107.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-108",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-108.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-109",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-109.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-110",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-110.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-110",
+      "dependent": "CS-111",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-111.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-111",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-111.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-110",
+      "dependent": "CS-112",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-112.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-112",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-112.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-48",
+      "dependent": "CS-113",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-113.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-89",
+      "dependent": "CS-113",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-113.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-114",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-114.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-115",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-115.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-116",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-116.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-117",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-117.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-118",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-118.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-36",
+      "dependent": "CS-118",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-118.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-119",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-119.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-120",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-120.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-121",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-121.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-122",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-122.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-123",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-123.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-124",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-124.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-125",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-125.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-126",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-126.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-127",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-127.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-128",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-128.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-129",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-129.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-130",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-130.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-113",
+      "dependent": "CS-130",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-130.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-131",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-131.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-131",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-131.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-113",
+      "dependent": "CS-131",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-131.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-132",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-132.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-132",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-132.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-133",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-133.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-133",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-133.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-133",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-133.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-134",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-134.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-134",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-134.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-134",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-134.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-135",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-135.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-135",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-135.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-135",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-135.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-136",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-136.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-136",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-136.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-136",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-136.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-137",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-137.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-137",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-137.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-137",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-137.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-138",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-138.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-138",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-138.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-138",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-138.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-139",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-139.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-139",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-139.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-139",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-139.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-140",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-140.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-96",
+      "dependent": "CS-140",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-140.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-109",
+      "dependent": "CS-140",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-140.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-141",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-141.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-49",
+      "dependent": "CS-141",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-141.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-142",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-142.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-16",
+      "dependent": "CS-142",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-142.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-143",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-143.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-50",
+      "dependent": "CS-143",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-143.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-144",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-144.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-50",
+      "dependent": "CS-144",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-144.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-145",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-145.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-37",
+      "dependent": "CS-145",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-145.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-146",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-146.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-19",
+      "dependent": "CS-146",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-146.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-147",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-147.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-41",
+      "dependent": "CS-147",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-147.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-148",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-148.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-149",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-149.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-150",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-150.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-151",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-151.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-152",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-152.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-153",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-153.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-154",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-154.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-155",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-155.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-156",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-156.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-157",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-157.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-158",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-158.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-159",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-159.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-160",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-160.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-161",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-161.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-162",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-162.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-162",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-162.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-163",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-163.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-163",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-163.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-164",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-164.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-164",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-164.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-165",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-165.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-165",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-165.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-166",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-166.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-166",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-166.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-167",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-167.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-167",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-167.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-168",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-168.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-168",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-168.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-169",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-169.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-169",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-169.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-170",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-170.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-170",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-170.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-170",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-170.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-171",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-171.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-171",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-171.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-171",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-171.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-172",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-172.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-172",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-172.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-172",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-172.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-173",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-173.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-173",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-173.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-173",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-173.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-174",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-174.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-174",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-174.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-174",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-174.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-175",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-175.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-175",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-175.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-175",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-175.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-176",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-176.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-114",
+      "dependent": "CS-176",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-176.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-176",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-176.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-177",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-177.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-177",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-177.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-178",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-178.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-178",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-178.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-179",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-179.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-179",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-179.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-180",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-180.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-180",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-180.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-181",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-181.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-181",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-181.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-182",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-182.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-182",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-182.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-183",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-183.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-183",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-183.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-184",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-184.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-184",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-184.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-185",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-185.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-185",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-185.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-186",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-186.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-186",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-186.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-187",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-187.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-187",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-187.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-188",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-188.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-188",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-188.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-189",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-189.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-189",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-189.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-190",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-190.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-190",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-190.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-191",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-191.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-191",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-191.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-192",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-192.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-192",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-192.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-193",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-193.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-193",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-193.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-193",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-193.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-194",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-194.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-194",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-194.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-194",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-194.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-195",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-195.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-195",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-195.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-195",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-195.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-196",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-196.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-196",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-196.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-196",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-196.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-197",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-197.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-197",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-197.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-197",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-197.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-198",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-198.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-198",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-198.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-198",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-198.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-199",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-199.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-199",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-199.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-199",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-199.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-200",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-200.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-200",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-200.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-88",
+      "dependent": "CS-200",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-200.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-201",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-201.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-201",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-201.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-202",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-202.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-202",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-202.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-203",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-203.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-203",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-203.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-204",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-204.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-204",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-204.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-205",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-205.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-205",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-205.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-206",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-206.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-206",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-206.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-207",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-207.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-207",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-207.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-208",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-208.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-208",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-208.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-209",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-209.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-209",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-209.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-210",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-210.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-210",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-210.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-211",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-211.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-211",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-211.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-212",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-212.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-40",
+      "dependent": "CS-212",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-212.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-213",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-213.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-37",
+      "dependent": "CS-213",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-213.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-46",
+      "dependent": "CS-213",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-213.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-214",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-214.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-37",
+      "dependent": "CS-214",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-214.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-106",
+      "dependent": "CS-215",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-215.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-36",
+      "dependent": "CS-215",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-215.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-93",
+      "dependent": "CS-215",
+      "type": "HARD",
+      "source": ".ai/backlog.json#CS-215.dependencies",
+      "rationale": "Declared prerequisite; no dependency was invented or weakened."
+    },
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-47",
+      "type": "SEQUENCING",
+      "source": ".ai/backlog.json#CS-47.acceptanceCriteria[3]",
+      "rationale": "Explicit ordering in source acceptance criterion; owner prioritization remains a separate manual gate."
+    },
+    {
+      "prerequisite": "CS-13",
+      "dependent": "CS-47",
+      "type": "SEQUENCING",
+      "source": ".ai/backlog.json#CS-47.acceptanceCriteria[3]",
+      "rationale": "Explicit ordering in source acceptance criterion; owner prioritization remains a separate manual gate."
+    },
+    {
+      "prerequisite": "CS-14",
+      "dependent": "CS-47",
+      "type": "SEQUENCING",
+      "source": ".ai/backlog.json#CS-47.acceptanceCriteria[3]",
+      "rationale": "Explicit ordering in source acceptance criterion; owner prioritization remains a separate manual gate."
+    },
+    {
+      "prerequisite": "CS-16",
+      "dependent": "CS-47",
+      "type": "SEQUENCING",
+      "source": ".ai/backlog.json#CS-47.acceptanceCriteria[3]",
+      "rationale": "Explicit ordering in source acceptance criterion; owner prioritization remains a separate manual gate."
+    },
+    {
+      "prerequisite": "CS-17",
+      "dependent": "CS-47",
+      "type": "SEQUENCING",
+      "source": ".ai/backlog.json#CS-47.acceptanceCriteria[3]",
+      "rationale": "Explicit ordering in source acceptance criterion; owner prioritization remains a separate manual gate."
+    },
+    {
+      "prerequisite": "CS-18",
+      "dependent": "CS-47",
+      "type": "SEQUENCING",
+      "source": ".ai/backlog.json#CS-47.acceptanceCriteria[3]",
+      "rationale": "Explicit ordering in source acceptance criterion; owner prioritization remains a separate manual gate."
+    },
+    {
+      "prerequisite": "CS-19",
+      "dependent": "CS-47",
+      "type": "SEQUENCING",
+      "source": ".ai/backlog.json#CS-47.acceptanceCriteria[3]",
+      "rationale": "Explicit ordering in source acceptance criterion; owner prioritization remains a separate manual gate."
+    }
+  ],
+  "layers": [
+    [
+      "CS-1",
+      "CS-2",
+      "CS-3",
+      "CS-4",
+      "CS-5",
+      "CS-6",
+      "CS-7",
+      "CS-8",
+      "CS-10",
+      "CS-11",
+      "CS-12",
+      "CS-13",
+      "CS-15",
+      "CS-20",
+      "CS-21",
+      "CS-22",
+      "CS-23",
+      "CS-24",
+      "CS-25",
+      "CS-27",
+      "CS-28",
+      "CS-29",
+      "CS-30",
+      "CS-31",
+      "CS-32",
+      "CS-33",
+      "CS-34",
+      "CS-35",
+      "CS-40",
+      "CS-45",
+      "CS-46",
+      "CS-48",
+      "CS-52",
+      "CS-53",
+      "CS-54",
+      "CS-55",
+      "CS-56",
+      "CS-57",
+      "CS-58",
+      "CS-59",
+      "CS-60",
+      "CS-61",
+      "CS-62",
+      "CS-63",
+      "CS-64",
+      "CS-65",
+      "CS-66",
+      "CS-67",
+      "CS-68",
+      "CS-69",
+      "CS-70",
+      "CS-71",
+      "CS-72",
+      "CS-73",
+      "CS-74",
+      "CS-75",
+      "CS-76",
+      "CS-79",
+      "CS-80",
+      "CS-81",
+      "CS-83",
+      "CS-85",
+      "CS-86",
+      "CS-87",
+      "CS-90",
+      "CS-95",
+      "CS-216"
+    ],
+    [
+      "CS-9",
+      "CS-14",
+      "CS-16",
+      "CS-26",
+      "CS-36",
+      "CS-37",
+      "CS-38",
+      "CS-39",
+      "CS-41",
+      "CS-42",
+      "CS-44",
+      "CS-49",
+      "CS-51",
+      "CS-77",
+      "CS-78",
+      "CS-82",
+      "CS-84",
+      "CS-88",
+      "CS-89",
+      "CS-91",
+      "CS-92",
+      "CS-96",
+      "CS-97",
+      "CS-98",
+      "CS-99",
+      "CS-100",
+      "CS-101",
+      "CS-102",
+      "CS-103",
+      "CS-104",
+      "CS-105",
+      "CS-110",
+      "CS-114"
+    ],
+    ["CS-17", "CS-43", "CS-93", "CS-106", "CS-109", "CS-112", "CS-113"],
+    [
+      "CS-18",
+      "CS-94",
+      "CS-107",
+      "CS-108",
+      "CS-111",
+      "CS-115",
+      "CS-116",
+      "CS-117",
+      "CS-118",
+      "CS-119",
+      "CS-120",
+      "CS-121",
+      "CS-122",
+      "CS-123",
+      "CS-124",
+      "CS-125",
+      "CS-126",
+      "CS-127",
+      "CS-128",
+      "CS-129",
+      "CS-130",
+      "CS-131",
+      "CS-132",
+      "CS-133",
+      "CS-134",
+      "CS-135",
+      "CS-136",
+      "CS-137",
+      "CS-138",
+      "CS-139",
+      "CS-140",
+      "CS-141",
+      "CS-142",
+      "CS-145",
+      "CS-147",
+      "CS-148",
+      "CS-149",
+      "CS-150",
+      "CS-151",
+      "CS-152",
+      "CS-153",
+      "CS-154",
+      "CS-155",
+      "CS-156",
+      "CS-157",
+      "CS-158",
+      "CS-159",
+      "CS-160",
+      "CS-161",
+      "CS-162",
+      "CS-163",
+      "CS-164",
+      "CS-165",
+      "CS-166",
+      "CS-167",
+      "CS-168",
+      "CS-169",
+      "CS-170",
+      "CS-171",
+      "CS-172",
+      "CS-173",
+      "CS-174",
+      "CS-175",
+      "CS-176",
+      "CS-177",
+      "CS-178",
+      "CS-179",
+      "CS-180",
+      "CS-181",
+      "CS-182",
+      "CS-183",
+      "CS-184",
+      "CS-185",
+      "CS-186",
+      "CS-187",
+      "CS-188",
+      "CS-189",
+      "CS-190",
+      "CS-191",
+      "CS-192",
+      "CS-193",
+      "CS-194",
+      "CS-195",
+      "CS-196",
+      "CS-197",
+      "CS-198",
+      "CS-199",
+      "CS-200",
+      "CS-201",
+      "CS-202",
+      "CS-203",
+      "CS-204",
+      "CS-205",
+      "CS-206",
+      "CS-207",
+      "CS-208",
+      "CS-209",
+      "CS-210",
+      "CS-211",
+      "CS-212",
+      "CS-213",
+      "CS-214",
+      "CS-215"
+    ],
+    ["CS-19"],
+    ["CS-47", "CS-50", "CS-146"],
+    ["CS-143", "CS-144"]
+  ],
+  "cyclicOrCycleDependent": [],
+  "cycles": [],
+  "longestDeclaredChain": ["CS-13", "CS-16", "CS-17", "CS-18", "CS-19", "CS-50", "CS-143"],
+  "errors": [],
+  "gates": [
+    {
+      "ticketId": "CS-2",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+        "owner": "Release/system reviewer",
+        "evidence": [
+          "Current Node 24 cross-engine run and exact hosted CI locator covering the named viewport/engine assertion."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-3",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Host operator",
+        "evidence": [
+          "Controlled live restart/recovery observation, 502 protection, alert output, and rollback-safe host evidence."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-3",
+            "title": "Proxy restart strands every service behind a healthy-looking 502",
+            "owner": "Host operator",
+            "reason": "The proxy-recovery implementation and local detection evidence exist, but recovery must be observed on the deployed host without restarting the proxy alone.",
+            "instructions": "Follow the repository runbook for CS-3; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Controlled live restart/recovery observation, 502 protection, alert output, and rollback-safe host evidence.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-3"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-7",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+        "owner": "Release/system reviewer",
+        "evidence": [
+          "Exact hosted workflow run showing the intentional failure and fail-closed deployment refusal."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-10",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+        "owner": "Security owner",
+        "evidence": [
+          "Operator/security review of the requested agent-file remediation and a reviewed commit."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-11",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+        "owner": "Accessibility reviewer",
+        "evidence": [
+          "Independent accesslint-audit/accessibility review with findings and disposition recorded."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-11",
+            "title": "The public Pages surface has had no design pass",
+            "owner": "Accessibility reviewer",
+            "reason": "The named accesslint-audit skill is unavailable here; automated browser checks do not replace the required independent accessibility sign-off.",
+            "instructions": "Follow the repository runbook for CS-11; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Independent accesslint-audit/accessibility review with findings and disposition recorded.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-11"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-14",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+        "owner": "Accessibility reviewer",
+        "evidence": [
+          "A human keyboard and NVDA/VoiceOver/JAWS smoke review at 320px with findings recorded."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-14",
+            "title": "The Leads table is unusable on a phone",
+            "owner": "Accessibility reviewer",
+            "reason": "The 320px lead surface is implemented, but the acceptance criterion requires real keyboard and screen-reader verification, not Lighthouse or an accessibility tree proxy.",
+            "instructions": "Follow the repository runbook for CS-14; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "A human keyboard and NVDA/VoiceOver/JAWS smoke review at 320px with findings recorded.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-14"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-16",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+        "owner": "Accessibility reviewer",
+        "evidence": [
+          "A human screen-reader and responsive discovery-flow acceptance record, including the CS-2 prerequisite result."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-16",
+            "title": "Discovery does not present jobs in a way you can act on",
+            "owner": "Accessibility reviewer",
+            "reason": "The ticket explicitly requires human screen-reader validation and the current record also references a prerequisite reproduction.",
+            "instructions": "Follow the repository runbook for CS-16; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "A human screen-reader and responsive discovery-flow acceptance record, including the CS-2 prerequisite result.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-16"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-17",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner-confirmed dismissal semantics and the resulting lifecycle/schema contract."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-19",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Integration operator",
+        "evidence": [
+          "Hosted Postgres/Redis integration proving lookup ownership, duplicate-save idempotency, archived hydration, malformed IDs, and unknown-job behavior."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-19",
+            "title": "Saving a job and working the shortlist is not a coherent flow",
+            "owner": "Integration operator",
+            "reason": "The owner-scoped lookup implementation is present, but service-backed Postgres/Redis verification is required before the saved-job flow can be promoted.",
+            "instructions": "Run the authenticated service-backed integration fixture against disposable or approved hosted Postgres/Redis; capture only redacted pass/fail and ownership assertions.",
+            "evidence": "Hosted Postgres/Redis integration proving lookup ownership, duplicate-save idempotency, archived hydration, malformed IDs, and unknown-job behavior.",
+            "recovery": "No production data mutation is authorized; stop the verification run and restore the prior test environment if the fixture fails.",
+            "source": "hostpending.txt#CS-19"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-24",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Host operator",
+        "evidence": [
+          "Live timer status plus controlled stop-a-container alert and recovery evidence."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-24",
+            "title": "Nothing watches the running system",
+            "owner": "Host operator",
+            "reason": "Monitoring is locally verified, but the running host timer and a stop-a-container alert have not been observed in production-like infrastructure.",
+            "instructions": "Follow the repository runbook for CS-24; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Live timer status plus controlled stop-a-container alert and recovery evidence.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-24"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-26",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Host operator",
+        "evidence": [
+          "A calendar-triggered discovery run, journal output, and rate-limit-safe result on the deployed host."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-26",
+            "title": "Nothing runs discovery on a schedule",
+            "owner": "Host operator",
+            "reason": "The scheduler is installed, but a real scheduled discovery run and its failure/observation evidence have not been recorded on the host.",
+            "instructions": "Follow the repository runbook for CS-26; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "A calendar-triggered discovery run, journal output, and rate-limit-safe result on the deployed host.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-26"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-27",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Host operator",
+        "evidence": [
+          "A scheduled liveness run with recorded outcomes and retention evidence from the deployed host."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-27",
+            "title": "Postings never expire or get re-checked, so dead jobs stay actionable",
+            "owner": "Host operator",
+            "reason": "The liveness and retention timers are installed, but no calendar-triggered liveness result has been recorded on the deployed host.",
+            "instructions": "Follow the repository runbook for CS-27; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "A scheduled liveness run with recorded outcomes and retention evidence from the deployed host.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-27"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-30",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Hostinger operator",
+        "evidence": [
+          "Managed firewall policy attachment plus independent IPv4 and IPv6 probes for intended and denied ports."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-30",
+            "title": "Managed Hostinger firewall verification",
+            "owner": "Hostinger operator",
+            "reason": "Host-native ports are restricted, but Hostinger hPanel reports no managed firewall policy and IPv4/IPv6 managed-rule evidence is absent.",
+            "instructions": "Follow the repository runbook for CS-30; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Managed firewall policy attachment plus independent IPv4 and IPv6 probes for intended and denied ports.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-30"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-37",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+        "owner": "QA/release reviewer",
+        "evidence": [
+          "Independent browser/keyboard/mobile journey review plus service-backed storage and owner-isolation evidence."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-37",
+            "title": "Onboarding, profile and explicit resume-review journey",
+            "owner": "QA/release reviewer",
+            "reason": "Local page/domain checks pass, but the complete owner journey, mobile/keyboard review, service-backed storage paths, and owner-isolation evidence remain acceptance work.",
+            "instructions": "Follow the repository runbook for CS-37; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Independent browser/keyboard/mobile journey review plus service-backed storage and owner-isolation evidence.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-37"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-38",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B2_CODE_OR_ARCHITECTURE",
+        "owner": "Frontend/backend engineer",
+        "evidence": [
+          "A corrected implementation and regression evidence for the unmet dashboard state criterion."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-39",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+        "owner": "Release/system reviewer",
+        "evidence": [
+          "A current Node 24 exact-head CI/reviewer evidence record with the three criteria counted."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-40",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Approved admin design, role matrix, redaction boundary, and mutation/audit scope."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-41",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+        "owner": "Architecture/security reviewer",
+        "evidence": [
+          "Independent architecture/security/legal review of identity, provenance, isolation, retention, and collection boundaries."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-42",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner decision on R1 inclusion and the corresponding saved-search domain contract."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-43",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner decision on alert scope, delivery semantics, and activation prerequisites."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-44",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner-approved sender/domain/secret/security decisions and the CS-59 dependency result."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-45",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+        "owner": "Security reviewer",
+        "evidence": [
+          "Independent security review of encrypted snapshot, allowlist, stale-export, browser lock, and no-write guarantees."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-46",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-47",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner prioritization decision and the resulting scheduler-health acceptance scope."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-50",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-62",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product/design owner",
+        "evidence": [
+          "Owner/design decision on the UI freeze versus the reason-specific visual contract."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-64",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": ["Owner-confirmed language scope for resume title derivation."],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-70",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Integration operator",
+        "evidence": [
+          "Hosted Postgres/Redis integration run proving owner isolation, malformed/unknown IDs, duplicate save, and archive hydration."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-70",
+            "title": "The API exposes no job-to-lead lookup, so the UI cannot know a job is already saved",
+            "owner": "Integration operator",
+            "reason": "The owner-scoped lookup and static checks are complete, but service-backed Postgres/Redis integration remains unavailable/unverified.",
+            "instructions": "Follow the repository runbook for CS-70; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Hosted Postgres/Redis integration run proving owner isolation, malformed/unknown IDs, duplicate save, and archive hydration.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-70"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-80",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Repository owner",
+        "evidence": [
+          "Owner authorization for the named commit scope, followed by a clean-tree review."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-86",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+        "owner": "Hostinger operator",
+        "evidence": [
+          "Hostinger managed firewall policy and a second SSH/client verification with only intended ports exposed."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-86",
+            "title": "Harden Hostinger firewall and verify public exposure",
+            "owner": "Hostinger operator",
+            "reason": "Managed Hostinger firewall configuration and second-session verification require owner-controlled host-console authority.",
+            "instructions": "Follow the repository runbook for CS-86; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Hostinger managed firewall policy and a second SSH/client verification with only intended ports exposed.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-86"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-88",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": ["Approved admin-page design and the linked role/security contract."],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-89",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B5_EXTERNAL_PROVIDER_ACCOUNT_DNS_SECRET",
+        "owner": "Provider/release owner",
+        "evidence": [
+          "Redacted production configuration evidence, exact commit provenance, guarded request smoke test, and rollback to AI_ENABLED=false."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-89",
+            "title": "OpenRouter production configuration and guarded AI activation",
+            "owner": "Provider/release owner",
+            "reason": "OpenRouter activation needs an owner-approved production model/secret and live release authority; AI remains default-off.",
+            "instructions": "Follow the repository runbook for CS-89; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Redacted production configuration evidence, exact commit provenance, guarded request smoke test, and rollback to AI_ENABLED=false.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-89"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-90",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": [
+          "Owner-approved Cognito architecture, migration mapping, trust-boundary threat model, and rollback policy."
+        ],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-91",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": ["Approved provider/session contract and negative-path acceptance plan."],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-92",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B5_EXTERNAL_PROVIDER_ACCOUNT_DNS_SECRET",
+        "owner": "Provider/release owner",
+        "evidence": [
+          "Redacted SES/Cognito configuration, DNS verification, deliverability limits, and a real test message without OTP/PII in evidence."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-92",
+            "title": "Cognito email templates and deliverability configuration",
+            "owner": "Provider/release owner",
+            "reason": "Sender identity, domain verification, DNS, and email-provider access are owner-controlled external prerequisites.",
+            "instructions": "Follow the repository runbook for CS-92; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Redacted SES/Cognito configuration, DNS verification, deliverability limits, and a real test message without OTP/PII in evidence.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-92"
+          }
+        ]
+      }
+    },
+    {
+      "ticketId": "CS-93",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+        "owner": "Product owner",
+        "evidence": ["Approved Cognito session contract and browser-state acceptance criteria."],
+        "actions": []
+      }
+    },
+    {
+      "ticketId": "CS-94",
+      "type": "MANUAL_OR_EXTERNAL",
+      "metadata": {
+        "blockerClass": "B5_EXTERNAL_PROVIDER_ACCOUNT_DNS_SECRET",
+        "owner": "Provider/release owner",
+        "evidence": [
+          "Redacted live callback/OTP smoke evidence, exact deployment provenance, monitoring, and rollback acceptance."
+        ],
+        "actions": [
+          {
+            "ticketId": "CS-94",
+            "title": "Cognito end-to-end rollout, monitoring and rollback acceptance",
+            "owner": "Provider/release owner",
+            "reason": "Live Cognito credentials, disposable email access, and rollout approval are owner-controlled prerequisites for end-to-end acceptance.",
+            "instructions": "Follow the repository runbook for CS-94; use least privilege, capture redacted results, and do not alter unrelated services or data.",
+            "evidence": "Redacted live callback/OTP smoke evidence, exact deployment provenance, monitoring, and rollback acceptance.",
+            "recovery": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.",
+            "source": "hostpending.txt#CS-94"
+          }
+        ]
+      }
+    }
+  ]
+}
