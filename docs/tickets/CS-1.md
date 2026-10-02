@@ -35,9 +35,19 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "A V2 regression reaches production undetected. The 49 tests covering the application that serves careerscope.tech run in no workflow."
+    "A V2 regression reaches production undetected. The 49 tests covering the application that serves careerscope.tech run in no workflow.",
+    {
+      "requirement": "Release operators need CI to execute the shipped application's service-free tests, not infer their execution from a domain package build or older green revision.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-1"]
+  "sources": [
+    ".ai/backlog.json#CS-1",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
+  ]
 }
 ```
 
@@ -162,9 +172,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-1",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
+    },
+    {
+      "requirement": "Consume the canonical root test:unit command and its current seven explicit test files; do not resurrect v2/ paths or freeze an obsolete test-case total. Verify the named unit-only step in verify executes on push to main, pull_request and workflow_dispatch, matching the actual trigger scope; arbitrary feature-branch pushes are not configured triggers.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Keep mocked HTTP/unit coverage distinct from real PostgreSQL, Redis, file-worker/browser and hosted production acceptance. A failed assertion must produce nonzero child, npm and CI-step results; no continue-on-error, condition that suppresses failures, retries or reduced assertions.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-1"]
+  "sources": [
+    ".ai/backlog.json#CS-1",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
+  ]
 }
 ```
 
@@ -187,13 +212,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "CI topology only; no application change",
-    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+    {
+      "requirement": "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Source is root package.json test:unit and the named unit-only verify step, not a new duplicate test runner. Historical job names/counts are provenance; current service-backed lanes are separately required.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-1",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
   ]
 }
 ```
@@ -209,13 +242,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
       "proposedChanges": [],
       "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+    },
+    {
+      "requirement": "NOT_APPLICABLE: verification fixtures must not touch production databases; this ticket changes CI test execution contracts only.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-1",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
   ]
 }
 ```
@@ -232,9 +273,20 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
       "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
       "unknownContracts": []
+    },
+    {
+      "requirement": "NOT_APPLICABLE: no new application endpoint. Process exit status and exact workflow SHA/step conclusion are the verification contracts.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-1", "docs/API-SURFACE.md"]
+  "sources": [
+    ".ai/backlog.json#CS-1",
+    "docs/API-SURFACE.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
+  ]
 }
 ```
 
@@ -304,9 +356,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
     "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    {
+      "requirement": "SECURITY_IMPACT: AUDIT. Mutation evidence uses only isolated source fixtures and synthetic identifiers; no production secrets, live requests or deployment credentials. Hosted negative proof must be separately authorized and non-shipping.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-1", "docs/SECURITY.md", "docs/PRIVACY.md"]
+  "sources": [
+    ".ai/backlog.json#CS-1",
+    "docs/SECURITY.md",
+    "docs/PRIVACY.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
+  ]
 }
 ```
 
@@ -349,7 +413,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
+          "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
+          "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
+          "assertion": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
+          "expectedResult": "Canonical unit coverage is wired to configured CI changes, not an obsolete version directory or all-branches claim.",
+          "testName": "unit-only CI step reaches every registered canonical file on configured events",
+          "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
+          "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
+          "negativeCase": "Removing one required file invocation, bypassing the step on main, or redirecting to a nonexistent v2 script must fail; a valid control succeeds.",
+          "evidenceArtifact": "Future named contract result and path/event inventory; no hosted execution inferred.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "CI_UNIT_EXECUTION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-1",
@@ -367,7 +449,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "The unit-only step and scripts are available from read-only canonical files.",
+          "setup": "Use actual step name and test:unit inventory alongside distinct integration/browser registration.",
+          "procedure": "Assert step label includes unit only, mocked HTTP, no database, queue or browser coverage; inspect unit fixture dependencies without making production calls.",
+          "assertion": "Scope text explicitly excludes database/queue/browser; no statement in the verification record treats this step as full integration or production acceptance. Registered service-backed suites remain assigned separately.",
+          "expectedResult": "Operators can distinguish service-free unit evidence from remaining required lanes.",
+          "testName": "unit-only scope never certifies service-backed coverage",
+          "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
+          "fixtures": "Canonical workflow text and seven source-file dependency traces.",
+          "negativeCase": "A generic all-tests/full-coverage label or record claiming integration from unit success must be rejected; correct exclusions pass.",
+          "evidenceArtifact": "Future contract report with exact exclusions and registered-file inventory.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_CI_SCOPE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-1",
@@ -385,7 +485,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "HOSTED_CI",
+          "preconditions": "A separately authorized non-shipping hosted test context can run a temporary assertion mutation; canonical main and deployment permissions remain untouched.",
+          "setup": "Use clean control and temporary-copy mutation of the registered ai-provider success assertion; record content hashes, exact candidate SHA and unit-step identity.",
+          "procedure": "Run clean and mutated unit commands in isolation, then inspect authorized hosted control and mutation run logs for that exact candidate SHA and named unit-only step.",
+          "assertion": "Clean unit control exits zero; intentional assertion mutation exits nonzero and named CI unit-only step concludes failure, not skipped or success. Canonical source hashes remain unchanged; no mutation is merged or deployed.",
+          "expectedResult": "Both script and actual hosted step demonstrably reject a registered failing assertion.",
+          "testName": "registered unit assertion failure produces red hosted unit step",
+          "testFileOrProcedureId": "CS-1-HOSTED-UNIT-MUTATION",
+          "fixtures": "Synthetic mocked HTTP completion; isolated copied checkout, paired clean control, future authorized run IDs.",
+          "negativeCase": "A runner dropping failing test arguments or swallowing child exit must fail the verification; local nonzero alone cannot satisfy hosted proof.",
+          "evidenceArtifact": "Future authorized exact-SHA run/step IDs, failing case name, exit status and clean/source-preservation evidence; historical runs remain historical.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_UNIT_FAILURE_PROPAGATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     }
   ],
   "sources": [".ai/backlog.json#CS-1", "docs/TESTING.md"]
@@ -447,9 +565,20 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
     "Independent current-content review resolves specification/implementation findings before promotion.",
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+    {
+      "requirement": "Named unit-only CI step executes the canonical registered files, its scope label excludes database/queue/browser coverage, a controlled assertion mutation is observed as failure locally and in authorized non-shipping hosted evidence. Historical run IDs are not current-SHA proof.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/ai/quality-gates.md"]
+  "sources": [
+    "docs/ai/quality-gates.md",
+    ".ai/backlog.json#CS-1",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
+  ]
 }
 ```
 
@@ -486,9 +615,29 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Implement and verify CS-1-AC1: A v2-unit CI job runs the no-services V2 tests on every push",
     "Implement and verify CS-1-AC2: The job states what it does NOT cover, so it cannot imply full V2 coverage",
     "Implement and verify CS-1-AC3: Proven: breaking a v2 unit test turns the job red",
-    "Reconcile CS-1 documentation, redacted evidence and independent review before workflow promotion."
+    "Reconcile CS-1 documentation, redacted evidence and independent review before workflow promotion.",
+    {
+      "requirement": "Trace root test:unit through the named verify workflow step and record seven registered source paths and actual trigger scope.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Define a temporary-copy assertion mutation with a paired clean control; preserve canonical source bytes and inspect child signal/exit.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Inspect authorized hosted exact-SHA unit-step evidence separately from local mutation results; record explicit exclusions and no shipping action.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-1"]
+  "sources": [
+    ".ai/backlog.json#CS-1",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
+  ]
 }
 ```
 
@@ -539,13 +688,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
       ],
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+    },
+    {
+      "requirement": "Never mutate canonical source or push failing main to demonstrate refusal. Delete only validated synthetic fixture roots after preserving diagnostic evidence; no runtime rollback or database migration is needed.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-1",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
   ]
 }
 ```
@@ -580,4 +737,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

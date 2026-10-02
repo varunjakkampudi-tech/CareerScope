@@ -2,76 +2,76 @@
 
 Structural section coverage and generated count are not implementation readiness. Every finding below is retained until source evidence or an approved specification resolves it.
 
-| Measure                                | Count              |
-| -------------------------------------- | ------------------ |
-| ticketCount                            | 216                |
-| specificationCount                     | 216                |
-| completeSpecificationCount             | 0                  |
-| incompleteSpecificationCount           | 216                |
-| epicMappedCount                        | 216                |
-| orphanTicketCount                      | 0                  |
-| duplicateIdCount                       | 0                  |
-| dependencyEdgeCount                    | 276                |
-| invalidDependencyCount                 | 0                  |
-| dependencyCycleCount                   | 0                  |
-| dependencySemanticGapCount             | 0                  |
-| acceptanceCriterionCount               | 906                |
-| suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 17                 |
-| unmappedAcceptanceCriterionCount       | 889                |
-| reviewedExactTestBindingCount          | 18                 |
-| authoredExactTestBindingCount          | 18                 |
-| acceptanceCriteriaWithAuthoredBindings | 17                 |
-| draftSpecificationCount                | 216                |
-| reviseSpecificationCount               | 0                  |
-| reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 0                  |
-| ownerDecisionReconciliationCount       | 11                 |
-| uiTicketCount                          | 146                |
-| blockedTicketCount                     | 37                 |
-| hostpendingActionCount                 | 15                 |
-| holdTicketCount                        | 33                 |
-| currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 0                  |
-| suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 1.8763796909492274 |
-| findingsCount                          | 630                |
-| openFindingCount                       | 617                |
-| resolvedFindingCount                   | 6                  |
-| reclassifiedFindingCount               | 7                  |
+| Measure                                | Count             |
+| -------------------------------------- | ----------------- |
+| ticketCount                            | 216               |
+| specificationCount                     | 216               |
+| completeSpecificationCount             | 0                 |
+| incompleteSpecificationCount           | 216               |
+| epicMappedCount                        | 216               |
+| orphanTicketCount                      | 0                 |
+| duplicateIdCount                       | 0                 |
+| dependencyEdgeCount                    | 276               |
+| invalidDependencyCount                 | 0                 |
+| dependencyCycleCount                   | 0                 |
+| dependencySemanticGapCount             | 0                 |
+| acceptanceCriterionCount               | 906               |
+| suggestedAcceptanceCriterionCount      | 906               |
+| mappedAcceptanceCriterionCount         | 46                |
+| unmappedAcceptanceCriterionCount       | 860               |
+| reviewedExactTestBindingCount          | 49                |
+| authoredExactTestBindingCount          | 49                |
+| acceptanceCriteriaWithAuthoredBindings | 46                |
+| draftSpecificationCount                | 216               |
+| reviseSpecificationCount               | 0                 |
+| reviewedSpecificationCount             | 0                 |
+| approvedSpecificationCount             | 0                 |
+| ownerDecisionReconciliationCount       | 11                |
+| uiTicketCount                          | 146               |
+| blockedTicketCount                     | 37                |
+| hostpendingActionCount                 | 15                |
+| holdTicketCount                        | 33                |
+| currentReleaseTicketCount              | 47                |
+| specificationCoveragePercent           | 0                 |
+| suggestedVerificationMappingPercent    | 100               |
+| exactReviewedTraceabilityPercent       | 5.077262693156733 |
+| findingsCount                          | 630               |
+| openFindingCount                       | 608               |
+| resolvedFindingCount                   | 15                |
+| reclassifiedFindingCount               | 7                 |
 
 | Ticket | Gap                             | Disposition  | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                       |
 | ------ | ------------------------------- | ------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | CS-1   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-1   | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-1   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-2   | MISSING_EXACT_DESIGN            | OPEN         | design                 | No exact approved screen reference is mapped; a README or generic board does not verify this surface.                                                                    | UX / Product owner                    | Exact design asset, route/role/state/viewport mapping and approval.                                                                     |
 | CS-2   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
 | CS-2   | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-3   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-3   | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-3   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-4   | RELEASE_TARGET_UNDECIDED        | OPEN         | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-4   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
 | CS-4   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-5   | RELEASE_TARGET_UNDECIDED        | OPEN         | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-5   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-5   | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-5   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-6   | PARTIAL_DESIGN                  | OPEN         | design                 | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.                                                            | UX                                    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.                                              |
 | CS-6   | RELEASE_TARGET_UNDECIDED        | OPEN         | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
-| CS-6   | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-6   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-7   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-7   | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-7   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-8   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
 | CS-8   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-9   | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-9   | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-9   | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-10  | RELEASE_TARGET_UNDECIDED        | OPEN         | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-10  | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-10  | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-10  | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-11  | PARTIAL_DESIGN                  | OPEN         | design                 | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.                                                            | UX                                    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.                                              |
 | CS-11  | RELEASE_TARGET_UNDECIDED        | OPEN         | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
-| CS-11  | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-11  | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-12  | RELEASE_STATE_UNSPECIFIED       | OPEN         | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-12  | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-12  | EXACT_AC_TEST_BINDING           | RESOLVED     | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-13  | PARTIAL_DESIGN                  | OPEN         | design                 | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.                                                            | UX                                    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.                                              |
 | CS-13  | RELEASE_TARGET_UNDECIDED        | OPEN         | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-13  | EXACT_AC_TEST_BINDING           | OPEN         | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |

@@ -36,8 +36,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 ```json
 {
   "applicability": "APPLICABLE",
-  "requirements": ["The site can be entirely down while every container reports healthy."],
-  "sources": [".ai/backlog.json#CS-3"]
+  "requirements": [
+    "The site can be entirely down while every container reports healthy.",
+    {
+      "requirement": "Caddy must not own the namespace shared by private application services: replacing its namespace previously left healthy dependents unreachable behind 502. Current source delegates namespace ownership to network-anchor; older recovery evidence is not current deployed-topology proof.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
+  ],
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -159,9 +173,36 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-3",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
+    },
+    {
+      "requirement": "Preserve network-anchor as sole shared namespace/edge-port publisher. Proxy, database, Redis, LocalStack, application and workers join that stable namespace; private service ports are not host-published.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "A controlled Caddy crash restarts only proxy under Docker restart policy without replacing network-anchor or dependent service namespaces. Verify origin/API and a benign owned queue/worker operation recover; container health alone is insufficient.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Detection remains defense in depth: consecutive failures confirm outage before recovery, cooldown suppresses thrash, failed restart alerts, recovery alert fires once. Do not call a stub monitor test proof that namespace lifetime or deployed recovery works.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Anchor replacement is a separate deliberate full-stack recreation procedure, never an unattended proxy recovery or permission to remove volumes. Current restart-stack.sh restarts proxy only; older documents describing sequential stack restarts are historical.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-3"]
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -184,13 +225,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "compose topology",
-    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+    {
+      "requirement": "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Existing stable namespace owner removes the root cause; monitoring is not the sole remediation. No Docker-socket watchdog container, new public ports or architectural rewrite.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-3",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
   ]
 }
 ```
@@ -206,13 +257,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
       "proposedChanges": [],
       "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+    },
+    {
+      "requirement": "Production volumes and encryption keys survive proxy crash; controlled evidence must not display database contents or resume files. Test-only benign owner/run/queue identifiers are used; no database migration is required.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-3",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
   ]
 }
 ```
@@ -229,9 +290,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
       "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
       "unknownContracts": []
+    },
+    {
+      "requirement": "EXISTING_CONTRACT: readiness uses real origin and /api/health plus benign owned queue operation, not a new HTTP route. Safe operator report records revision, namespace identity and probe outcomes only.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-3", "docs/API-SURFACE.md"]
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    "docs/API-SURFACE.md",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -301,9 +375,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
     "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    {
+      "requirement": "SECURITY_IMPACT: SECRETS, PRIVACY_PII, AUDIT. Only approved edge ports80/443 published by anchor; private services bind loopback. Least-privilege observer records container/namespace identifiers and safe health status, never env dumps, keys, user records, tokens or raw logs.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-3", "docs/SECURITY.md", "docs/PRIVACY.md"]
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    "docs/SECURITY.md",
+    "docs/PRIVACY.md",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -313,13 +401,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "Correlate safe request/command/execution identifiers; record failure categories and health without sensitive payloads."
+    "Correlate safe request/command/execution identifiers; record failure categories and health without sensitive payloads.",
+    {
+      "requirement": "Observe public health failure/recovery, proxy restart count, anchor namespace identity, dependent namespace identity and bounded operator-approved recovery window. Threshold/cooldown and single-recovery alert are tested with synthetic curl/restart fixtures; no real webhook secret is needed.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-3",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
   ]
 }
 ```
@@ -346,7 +444,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "Only synthetic curl, restart and clock/state fixtures are available; actual recover-proxy.sh executes in a validated temporary state directory.",
+          "setup": "Healthy baseline, first/second failing probes, cooldown window, failed restart and recovered probe sequence; no real network or Docker.",
+          "procedure": "Execute existing check-proxy-recovery fixture logic and capture restart/webhook calls and safe state transitions.",
+          "assertion": "Healthy probe causes zero restart/alerts; first failure below threshold causes zero restart; confirmed outage invokes exactly one recovery; inside cooldown no second restart; elapsed cooldown permits retry; failed restart is alerted; recovery announces once then healthy silence.",
+          "expectedResult": "Detection and bounded recovery are non-vacuous defense in depth, not claimed namespace/crash proof.",
+          "testName": "proxy recovery confirms outage and obeys cooldown with one recovery announcement",
+          "testFileOrProcedureId": "infra/check-proxy-recovery.sh",
+          "fixtures": "Stub curl and restart-stack plus unique synthetic state path; future timing controls exercise exact threshold/cooldown.",
+          "negativeCase": "Removing confirm threshold or cooldown must make named assertion fail; always-no-restart implementation fails confirmed-outage positive case.",
+          "evidenceArtifact": "Future named fixture results and controlled negative proof; no live recovery inferred.",
+          "reviewer": "Infrastructure, Security and QA",
+          "releaseGate": "LOCAL_PROXY_DETECTION_NOT_LIVE_NAMESPACE_PROOF",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-3",
@@ -364,7 +480,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "LIVE_HOST",
+          "preconditions": "Host operator separately approves controlled Caddy crash window for exact deployed revision; healthy origin/API/owned async operation baseline and rollback/recovery plan exist. No action is executed during specification phase.",
+          "setup": "Record safe proxy/anchor/dependent container and namespace identifiers, restart counts and externally observed application/container edge publication. Separately classify approved host-management exposure under existing firewall policy. Use synthetic owned operation with no real candidate data.",
+          "procedure": "Operator terminates only the resolved Caddy container, never anchor; observe automatic Docker proxy restart, namespace identity and origin/API/owned worker operation after recovery within a pre-approved measured window. Record failing observations as failures, not retried-away success.",
+          "assertion": "Anchor namespace identity remains unchanged; every dependent stays in it; proxy restarts and rejoins it; real origin/API and benign owned async operation succeed without manual rejoin/full restart. Application/container host-publication remains only edge80/443, excluding database/Redis/LocalStack/API/worker ports. Separately classify approved host-management SSH exposure under reviewed firewall policy, never require disabling operator access. If recovery fails, capture alert/escalation and retain FAIL rather than claiming root-cause elimination.",
+          "expectedResult": "Current deployed topology proves proxy crash does not strand dependents; a monitor-only success cannot pass this namespace acceptance requirement.",
+          "testName": "controlled Caddy crash preserves stable anchor and private dependent reachability",
+          "testFileOrProcedureId": "CS-3-LIVE-STABLE-ANCHOR-CRASH",
+          "fixtures": "Operator-approved current deployment, synthetic owned async operation, safe container/namespace observation and independent external port probe; no volume or credentials mutation.",
+          "negativeCase": "A proxy-owned namespace or false-positive container health with failing origin/API/async probe must fail; pre-crash healthy controls prevent preexisting outage being called recovery.",
+          "evidenceArtifact": "Future operator-signed exact-revision safe pre/post namespace and port evidence, actual crash/restart times and health/async result; historical host run is not current proof.",
+          "reviewer": "Host operator, System Designer, Security and QA",
+          "releaseGate": "LIVE_PROXY_TOPOLOGY_RECOVERY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     }
   ],
   "sources": [".ai/backlog.json#CS-3", "docs/TESTING.md"]
@@ -418,9 +552,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
     "Independent current-content review resolves specification/implementation findings before promotion.",
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+    {
+      "requirement": "Namespace owner is stable across Caddy crash; only80/443 application/container ports are host-published by edge anchor, with approved host-management exposure separately classified; real origin/API and owned async operation recover without manual namespace rejoin; detection negative cases pass. Hosted current-revision crash observation is required for production acceptance, not planning approval.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/ai/quality-gates.md"]
+  "sources": [
+    "docs/ai/quality-gates.md",
+    ".ai/backlog.json#CS-3",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -458,9 +605,36 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Inspect and change only modules permitted by the technical approach for Proxy restart strands every service behind a healthy-looking 502.",
     "Implement and verify CS-3-AC1: A Caddy crash recovers without operator action, or is detected and alerted",
     "Implement and verify CS-3-AC2: Proven by killing Caddy and observing the result",
-    "Reconcile CS-3 documentation, redacted evidence and independent review before workflow promotion."
+    "Reconcile CS-3 documentation, redacted evidence and independent review before workflow promotion.",
+    {
+      "requirement": "Trace merged Compose namespace/port contract for every production service; distinguish edge publication from private loopback endpoints.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Specify isolated threshold/cooldown/failure/recovery controls and stable-anchor crash test with paired pre/post health.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Prepare operator-approved controlled hosted Caddy crash procedure, rollback plan, safe probes and evidence collection; do not execute it in specification phase.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Reconcile older runbook restart-stack assumptions to current proxy-only script in future implementation documentation without fabricating current host acceptance.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-3"]
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -524,13 +698,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
       ],
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+    },
+    {
+      "requirement": "Crash proof can interrupt availability; require operator-approved window and healthy baseline. If automatic recovery fails, use reviewed deliberate full recreation retaining volumes, never delete database/keys, prune Docker, change firewall globally or repeatedly restart within cooldown. Preserve failure evidence and halt escalation.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-3",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
   ]
 }
 ```
@@ -565,4 +749,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

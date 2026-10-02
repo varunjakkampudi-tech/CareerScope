@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "ff0f9e0bf43492322661f698a31186f2073bcd5139e0643289c3a8aa8cefa437",
+    ".ai/ticket-specification-policy.json": "bb9df05966411519bb3c07f1bc5068438fe1db59be43a9626bbe394af0091403",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "92e4168d429f56de134788d1fbb5e99bfc1b8d5b2f5821149b9469f8cb43d5bf"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "80f00bcf3ceb4fe48f4b343ca98836195906b2c816411601b56d1dc3fbc62b56"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -32,7 +32,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
+          "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
+          "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
+          "assertion": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
+          "expectedResult": "Canonical unit coverage is wired to configured CI changes, not an obsolete version directory or all-branches claim.",
+          "testName": "unit-only CI step reaches every registered canonical file on configured events",
+          "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
+          "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
+          "negativeCase": "Removing one required file invocation, bypassing the step on main, or redirecting to a nonexistent v2 script must fail; a valid control succeeds.",
+          "evidenceArtifact": "Future named contract result and path/event inventory; no hosted execution inferred.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "CI_UNIT_EXECUTION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-1",
@@ -50,7 +68,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "The unit-only step and scripts are available from read-only canonical files.",
+          "setup": "Use actual step name and test:unit inventory alongside distinct integration/browser registration.",
+          "procedure": "Assert step label includes unit only, mocked HTTP, no database, queue or browser coverage; inspect unit fixture dependencies without making production calls.",
+          "assertion": "Scope text explicitly excludes database/queue/browser; no statement in the verification record treats this step as full integration or production acceptance. Registered service-backed suites remain assigned separately.",
+          "expectedResult": "Operators can distinguish service-free unit evidence from remaining required lanes.",
+          "testName": "unit-only scope never certifies service-backed coverage",
+          "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
+          "fixtures": "Canonical workflow text and seven source-file dependency traces.",
+          "negativeCase": "A generic all-tests/full-coverage label or record claiming integration from unit success must be rejected; correct exclusions pass.",
+          "evidenceArtifact": "Future contract report with exact exclusions and registered-file inventory.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_CI_SCOPE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-1",
@@ -68,7 +104,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "HOSTED_CI",
+          "preconditions": "A separately authorized non-shipping hosted test context can run a temporary assertion mutation; canonical main and deployment permissions remain untouched.",
+          "setup": "Use clean control and temporary-copy mutation of the registered ai-provider success assertion; record content hashes, exact candidate SHA and unit-step identity.",
+          "procedure": "Run clean and mutated unit commands in isolation, then inspect authorized hosted control and mutation run logs for that exact candidate SHA and named unit-only step.",
+          "assertion": "Clean unit control exits zero; intentional assertion mutation exits nonzero and named CI unit-only step concludes failure, not skipped or success. Canonical source hashes remain unchanged; no mutation is merged or deployed.",
+          "expectedResult": "Both script and actual hosted step demonstrably reject a registered failing assertion.",
+          "testName": "registered unit assertion failure produces red hosted unit step",
+          "testFileOrProcedureId": "CS-1-HOSTED-UNIT-MUTATION",
+          "fixtures": "Synthetic mocked HTTP completion; isolated copied checkout, paired clean control, future authorized run IDs.",
+          "negativeCase": "A runner dropping failing test arguments or swallowing child exit must fail the verification; local nonzero alone cannot satisfy hosted proof.",
+          "evidenceArtifact": "Future authorized exact-SHA run/step IDs, failing case name, exit status and clean/source-preservation evidence; historical runs remain historical.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_UNIT_FAILURE_PROPAGATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-2",
@@ -148,7 +202,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "Only synthetic curl, restart and clock/state fixtures are available; actual recover-proxy.sh executes in a validated temporary state directory.",
+          "setup": "Healthy baseline, first/second failing probes, cooldown window, failed restart and recovered probe sequence; no real network or Docker.",
+          "procedure": "Execute existing check-proxy-recovery fixture logic and capture restart/webhook calls and safe state transitions.",
+          "assertion": "Healthy probe causes zero restart/alerts; first failure below threshold causes zero restart; confirmed outage invokes exactly one recovery; inside cooldown no second restart; elapsed cooldown permits retry; failed restart is alerted; recovery announces once then healthy silence.",
+          "expectedResult": "Detection and bounded recovery are non-vacuous defense in depth, not claimed namespace/crash proof.",
+          "testName": "proxy recovery confirms outage and obeys cooldown with one recovery announcement",
+          "testFileOrProcedureId": "infra/check-proxy-recovery.sh",
+          "fixtures": "Stub curl and restart-stack plus unique synthetic state path; future timing controls exercise exact threshold/cooldown.",
+          "negativeCase": "Removing confirm threshold or cooldown must make named assertion fail; always-no-restart implementation fails confirmed-outage positive case.",
+          "evidenceArtifact": "Future named fixture results and controlled negative proof; no live recovery inferred.",
+          "reviewer": "Infrastructure, Security and QA",
+          "releaseGate": "LOCAL_PROXY_DETECTION_NOT_LIVE_NAMESPACE_PROOF",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-3",
@@ -166,7 +238,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "LIVE_HOST",
+          "preconditions": "Host operator separately approves controlled Caddy crash window for exact deployed revision; healthy origin/API/owned async operation baseline and rollback/recovery plan exist. No action is executed during specification phase.",
+          "setup": "Record safe proxy/anchor/dependent container and namespace identifiers, restart counts and externally observed application/container edge publication. Separately classify approved host-management exposure under existing firewall policy. Use synthetic owned operation with no real candidate data.",
+          "procedure": "Operator terminates only the resolved Caddy container, never anchor; observe automatic Docker proxy restart, namespace identity and origin/API/owned worker operation after recovery within a pre-approved measured window. Record failing observations as failures, not retried-away success.",
+          "assertion": "Anchor namespace identity remains unchanged; every dependent stays in it; proxy restarts and rejoins it; real origin/API and benign owned async operation succeed without manual rejoin/full restart. Application/container host-publication remains only edge80/443, excluding database/Redis/LocalStack/API/worker ports. Separately classify approved host-management SSH exposure under reviewed firewall policy, never require disabling operator access. If recovery fails, capture alert/escalation and retain FAIL rather than claiming root-cause elimination.",
+          "expectedResult": "Current deployed topology proves proxy crash does not strand dependents; a monitor-only success cannot pass this namespace acceptance requirement.",
+          "testName": "controlled Caddy crash preserves stable anchor and private dependent reachability",
+          "testFileOrProcedureId": "CS-3-LIVE-STABLE-ANCHOR-CRASH",
+          "fixtures": "Operator-approved current deployment, synthetic owned async operation, safe container/namespace observation and independent external port probe; no volume or credentials mutation.",
+          "negativeCase": "A proxy-owned namespace or false-positive container health with failing origin/API/async probe must fail; pre-crash healthy controls prevent preexisting outage being called recovery.",
+          "evidenceArtifact": "Future operator-signed exact-revision safe pre/post namespace and port evidence, actual crash/restart times and health/async result; historical host run is not current proof.",
+          "reviewer": "Host operator, System Designer, Security and QA",
+          "releaseGate": "LIVE_PROXY_TOPOLOGY_RECOVERY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-4",
@@ -256,7 +346,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "System Designer, Security, Infrastructure and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Copied actual export module executes in validated temporary repository tree against disposable PostgreSQL; no default canonical output/config adapters permitted.",
+          "setup": "OwnersA/B have distinct saved_leads including Aactive, Aarchived, Bactive. Rows carry synthetic private-field sentinels and valid/invalid source URLs; configure PUBLIC_EXPORT_OWNER_ID=A using throwaway connection.",
+          "procedure": "Run actual exportMobile in isolated tree, inspect jobs.json and safe query/outcome, then repeat for B and for missing owner; compare canonical file hashes before/after.",
+          "assertion": "A export contains only Aactive public postings, excludes Aarchived/B and all private sentinels. Each job key set equals title/company/location/source/postedAt/url; invalid/private/credential URLs omitted and allowed query keys only retained. B control exports B only. Missing owner refuses before DB query/output change; canonical files unchanged.",
+          "expectedResult": "Optional publication derives authorized owner's sanitized PostgreSQL job data without cross-owner/private leakage.",
+          "testName": "PostgreSQL public export isolates owner archive status and allowed fields",
+          "testFileOrProcedureId": "scripts/export-mobile.integration.test.mjs",
+          "fixtures": "Disposable saved_leads rows, synthetic private markers, copied actual module/output assets in unique temp root; planned integration file.",
+          "negativeCase": "Remove owner/status SQL predicate or expand projection/URL policy: fail; B positive control prevents empty exporter passing.",
+          "evidenceArtifact": "Future named disposable DB export outcomes and canonical-byte preservation; existing pure publicJobs tests are not SQL ownership proof.",
+          "releaseGate": "OPTIONAL_PUBLIC_EXPORT_PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-5",
@@ -274,7 +382,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "System Designer, Security, Infrastructure and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Tracked repository inventory and canonical API contract available read-only.",
+          "setup": "Enumerate workspace scripts/manifests/imports/editor launchers/workflows for SQLite MCP executable/config references; distinguish historical docs.",
+          "procedure": "Resolve every active launcher/config reference and API route inventory; assert no obsolete SQLite MCP launch/runtime path and no new generic MCP endpoint.",
+          "assertion": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
+          "expectedResult": "Removed obsolete launcher cannot be invoked through active configuration.",
+          "testName": "canonical workspace has no active obsolete SQLite MCP launcher",
+          "testFileOrProcedureId": "scripts/check-single-workspace-contract.test.mjs",
+          "fixtures": "Read-only tracked path/reference inventory and planned contract checker; no MCP server installation.",
+          "negativeCase": "Introduce active launcher/import referring to removed SQLite executable: fail; historical changelog citation alone does not fail.",
+          "evidenceArtifact": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
+          "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL"
+        }
+      ]
     },
     {
       "ticketId": "CS-5",
@@ -292,7 +418,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "System Designer, Security, Infrastructure and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "HOSTED_CI",
+          "preconditions": "Authorized clean canonical checkout of exact candidate SHA, Node24, fresh dependencies and synthetic CI services; no shipping.",
+          "setup": "No old node_modules/dist/build/cache copied; inventory canonical apps/packages, root scripts, Docker/CI path references and expected consumed domain packages.",
+          "procedure": "Fresh npm ci then canonical root format/lint/typecheck/unit/domain/build and required integration/browser/recovery lanes; resolve source dependencies against checkout and inspect exact hosted lane results.",
+          "assertion": "All root commands run without cd v2 or obsolete application/SQLite runtime. Consumed domain packages remain present and tested; zero active imports/build/Docker/CI references resolve to deleted source. Each required lane actually executes and succeeds; skipped or unavailable lanes are NOT_RUN, not PASS.",
+          "expectedResult": "Single workspace parity is proven from clean source, not stale built output.",
+          "testName": "clean canonical root checkout builds and verifies without obsolete runtime",
+          "testFileOrProcedureId": "CS-5-HOSTED-CLEAN-CHECKOUT-PARITY",
+          "fixtures": "Future exact-SHA clean hosted checkout with throwaway service data, no environment secrets or stale assets.",
+          "negativeCase": "Restore an active dependency on removed path or rely on missing stale dist: clean build fails; registration-only success cannot prove parity.",
+          "evidenceArtifact": "Future exact-SHA hosted lane IDs/results, clean-install provenance and resolved path inventory; no deployment inferred.",
+          "releaseGate": "CANONICAL_CLEAN_CHECKOUT_PARITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-6",
@@ -310,7 +454,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Actual App Router files, group layout, shell and provider modules inspected without candidate data.",
+          "setup": "Enumerate eight current private page files and their nearest group layout; resolve imports to AuthenticatedShell and shared useSession/provider.",
+          "procedure": "Validate each private route inherits (app)/layout.tsx -> AuthenticatedShell and each navigation href resolves to its canonical page; inspect no per-route alternative session-render gate.",
+          "assertion": "All eight private routes inherit the same shell; canonical navigation hrefs resolve; session query key/provider is shared. No parallel routing map or per-page independent authentication boundary is introduced.",
+          "expectedResult": "One compositional route/session boundary serves real deep links.",
+          "testName": "private routes inherit one shared session rendering boundary",
+          "testFileOrProcedureId": "scripts/check-auth-route-boundary.test.mjs",
+          "fixtures": "Actual route/import inventory; planned contract test file.",
+          "negativeCase": "Move one private page outside group or replace its layout with direct children: fail; valid group control passes.",
+          "evidenceArtifact": "Future path/import contract results; static checks alone do not prove rendered privacy.",
+          "reviewer": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_ROUTE_COMPOSITION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-6",
@@ -336,7 +498,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Synthetic candidate ownersA/B and private sentinel data in disposable services; browser can intercept session outcome and record responses/child mounts/private requests.",
+          "setup": "Cold/untrusted lookup cases each use fresh browser context and empty query cache, with delayed session, session500 or anonymous authenticated:false response. Separately exercise normal authenticated cached navigation, then ownerA logout/ownerB login using disposable real cookies. Server denial uses genuinely anonymous context and cross-owner IDs, not mocked false session.",
+          "procedure": "Inspect initial HTML/RSC and DOM state records while cold session is unresolved/error/anonymous. Instrument mount/unmount sentinel on actual private feature components without replacing their behavior; record owner-private network requests. Retry error and release valid authenticated response as positive control. Independently make anonymous/cross-owner API requests with real isolated session contexts.",
+          "assertion": "Cold pending shows neutral loading; cold error safe retry; cold anonymous mounts zero private children, sends zero private feature requests and exposes no private marker in HTML/RSC/recorded DOM states before redirect. Normal cached authenticated navigation remains usable, not incorrectly expected to become pending. Authenticated positive control mounts intended real feature. OwnerB sees no ownerA marker after teardown. Genuine anonymous API reads fail401; cross-owner object reads return the route's canonical safe missing/denial contract, without private data.",
+          "expectedResult": "No private flash or cross-owner cached data on direct or navigated private entry.",
+          "testName": "private children never mount before authenticated session resolves",
+          "testFileOrProcedureId": "scripts/check-ui.ts",
+          "fixtures": "Disposable two-owner profiles/notes with synthetic markers and session delay/error intercepts; planned new assertions in existing harness.",
+          "negativeCase": "Temporarily rendering children before auth resolution or retaining unscoped ownerA cache must fail; authenticated positive control prevents always-hidden shell passing.",
+          "evidenceArtifact": "Future Chromium/Firefox/WebKit named browser results with safe sentinel outcomes, no screenshots of real personal data.",
+          "reviewer": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_RENDER_AND_CACHE_ISOLATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-6",
@@ -354,7 +534,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Canonical CS-6 source/dependencies and feature-ticket sources are read-only.",
+          "setup": "Read CS-13/14/16/17/19 scopes and actual shared shell/feature composition imports; establish route-boundary change plan separately from feature implementation.",
+          "procedure": "Review planned CS-6 checklist and dependency graph to ensure route boundary does not require completing all feature tickets or copying their UI internals into shell.",
+          "assertion": "CS-6 owns only route composition/session-render boundary and shared navigation wiring; dependent ticket feature contracts remain independently owned. Graph introduces no reverse hard edge requiring all feature implementation before boundary. Existing valid dependencies are preserved.",
+          "expectedResult": "Routing foundation can be reviewed independently of large feature completion.",
+          "testName": "route boundary scope remains separate from feature vertical slices",
+          "testFileOrProcedureId": "CS-6-SCOPE-SEPARATION-REVIEW",
+          "fixtures": "Canonical dependency graph and per-ticket scope inventory; manual technical review procedure, not existing automated test.",
+          "negativeCase": "Bundling saved-table/job-details/match feature implementation into CS-6 or introducing reverse cyclic dependencies fails scope review.",
+          "evidenceArtifact": "Future source-linked architecture review with actual dependency findings; no ticket workflow promotions.",
+          "reviewer": "Frontend, Security and QA",
+          "releaseGate": "INDEPENDENT_ROUTE_FOUNDATION_SCOPE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-7",
@@ -372,7 +570,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Actual decide function imported without CLI execution; deploy.yml inspected without dispatch.",
+          "setup": "Synthetic successful, failed, cancelled, timed-out, missing-status, malformed, inconsistent, queued and absent run-list payloads; older success plus newer failure.",
+          "procedure": "Invoke decide for each fixture and inspect require-ci/dependent jobs and main-SHA wiring; transport harness records requested URL without network.",
+          "assertion": "Only completed-success fixture returns PASS; completed failures/malformed payloads return REFUSE; queued/in-progress/absent return WAIT and deadline harness refuses on expiry. URL filters ci.yml runs by resolved SHA; downstream jobs require successful require-ci.",
+          "expectedResult": "Unproven exact-revision CI success cannot authorize shipping.",
+          "testName": "exact SHA CI gate fails closed for missing malformed and rejected evidence",
+          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs",
+          "fixtures": "Synthetic Actions payloads plus planned isolated transport/deadline harness; no credentials or SSH.",
+          "negativeCase": "Remove head_sha filter, ignore newer failure, permit malformed-as-PASS, or bypass needs: each must fail; successful exact-SHA control passes.",
+          "evidenceArtifact": "Future named gate and transport/deadline results; existing gate execution does not imply planned transport assertions passed.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "EXACT_SHA_FAIL_CLOSED_DEPLOYMENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-7",
@@ -398,7 +614,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Current manual/main-only no-bypass contract supersedes historical override AC; frozen source criterion remains retained.",
+          "setup": "Actual deploy.yml and lifecycle doc; synthetic dispatch input containing override_ci and a reason, with failed CI fixture.",
+          "procedure": "Assert workflow declares no override/ref dispatch inputs and no bypass expression; evaluate gate regardless of synthetic override fields.",
+          "assertion": "No override_ci or arbitrary ref input is exposed; failed CI still REFUSE despite intent/reason fields. No condition allows a shipping job around require-ci. Report explicitly marks historical override requirement superseded, not implemented.",
+          "expectedResult": "No actor can bypass exact-SHA CI through historical override semantics.",
+          "testName": "historical override fields cannot authorize rejected main deployment",
+          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs",
+          "fixtures": "Read-only canonical workflow and synthetic rejected-run/override fields; no actual dispatch.",
+          "negativeCase": "Adding bypass input/condition or treating override reason as approval must fail; valid no-bypass workflow control passes.",
+          "evidenceArtifact": "Future contract result and supersession reference to docs/GITHUB-RELEASE-LIFECYCLE.md; no runtime claim.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "NO_DEPLOYMENT_BYPASS",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-7",
@@ -416,7 +650,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "HOSTED_CI",
+          "preconditions": "A Release Manager separately authorizes non-shipping hosted workflow refusal validation; no deliberately broken main push or production dispatch is allowed.",
+          "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Use exact-SHA failure and success run fixtures.",
+          "procedure": "Validate source-hash parity and preserved dependency/condition graph before observing authorized hosted require-ci refusal for failed exact-SHA CI. Invalidate harness evidence if canonical deploy.yml changes. Compare successful CI control in the same derived graph; no production dispatch.",
+          "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are unchanged. Failed candidate yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. Success control reaches only non-shipping adapter. Requested SHA, resolved revision and recorded filter agree.",
+          "expectedResult": "Hosted dependency wiring refuses rejected evidence without attempting production deployment.",
+          "testName": "hosted rejected CI prevents downstream shipping before secrets are reachable",
+          "testFileOrProcedureId": "CS-7-HOSTED-NONSHIPPING-REFUSAL",
+          "fixtures": "Authorized isolated hosted workflow context, synthetic failure/success run fixtures and shipping-call recorder.",
+          "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails paired success control; arbitrary-ref production dispatch is forbidden.",
+          "evidenceArtifact": "Future authorized hosted run/job IDs, exact SHA, dependency conclusions and zero shipping calls; old arbitrary-ref run is historical evidence only.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_DEPLOYMENT_REFUSAL",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-8",
@@ -567,7 +819,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "HOSTED_CI",
+          "preconditions": "Authorized exact-SHA canonical CI runs against disposable CI services, not the production host.",
+          "setup": "Record pinned PostgreSQL/Redis/LocalStack versions and safe readiness/Redis durability output without printing environment values.",
+          "procedure": "Inspect service initialization and CI-built environment step, then actual integration step service connectivity; verify Redis AOF/noeviction setup precedes tests.",
+          "assertion": "Postgres17.6-alpine, Redis7.4.5-alpine and LocalStack4.7.0 initialize; CI-generated synthetic environment is used. AOF enabled, appendfsync everysec, configured maxmemory and noeviction validated before suite. Missing/unhealthy service yields failure not skip.",
+          "expectedResult": "Real service-backed hosted evidence exists separately from unit success.",
+          "testName": "pinned disposable services and durable Redis precede integration execution",
+          "testFileOrProcedureId": "CS-9-HOSTED-SERVICE-READINESS",
+          "fixtures": "Disposable CI database/queue/storage; synthetic credentials; no local .env reads or real cloud calls.",
+          "negativeCase": "Disable Redis AOF/noeviction or withhold service readiness in isolated fixture; suite/setup must fail and not report coverage.",
+          "evidenceArtifact": "Future exact-SHA hosted job/step IDs, service versions and safe readiness/durability assertions; no configuration dumps.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_SERVICE_BACKED_INTEGRATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-9",
@@ -585,7 +855,42 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Read-only canonical package scripts and ci.yml are available; no service execution is claimed by registration checks.",
+          "setup": "Enumerate all nine test:integration paths, original six plus scheduled discovery/liveness/retention; parse actual script and CI invocation.",
+          "procedure": "Resolve integration command from actual workflow to all nine existing paths and --test-concurrency=1, without invoking environment-dependent suite.",
+          "assertion": "All nine current files are registered in the canonical command invoked by integration lane; concurrency equals1. Registration result is explicitly not execution evidence.",
+          "expectedResult": "All current source paths are registered without shrinking historical coverage.",
+          "testName": "all nine canonical integration files are registered with serial execution",
+          "testFileOrProcedureId": "scripts/check-ci-integration-contract.test.mjs",
+          "fixtures": "Planned registration/report checker plus future disposable Postgres/Redis/LocalStack integration run; unique teardown ownership.",
+          "negativeCase": "Drop any original or added file, point CI at a different script or remove serial setting: registration check fails; correct source passes.",
+          "evidenceArtifact": "Future named contract result with exact command/path inventory, not service-backed TAP.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        },
+        {
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Fresh disposable PostgreSQL17.6, Redis7.4.5 with durable setup and LocalStack4.7.0 are healthy; isolated synthetic environment is supplied.",
+          "setup": "All nine canonical integration files use unique disposable data/queue namespaces; capture safe per-file TAP and child exit/signal.",
+          "procedure": "Execute actual npm run test:integration with --test-concurrency=1 and inspect each registered file's outcomes plus owned cleanup. Do not substitute mocks or registration results.",
+          "assertion": "Every registered file contributes actual executed tests; zero silently skipped suites; nonzero exit/signal or service/teardown failure fails. All nine files remain included. Browser/axe is separately classified, never inferred from TAP.",
+          "expectedResult": "Full current service-backed integration execution is evidenced rather than merely registered.",
+          "testName": "all nine integration files produce executed outcomes against disposable services",
+          "testFileOrProcedureId": "package.json#test:integration",
+          "fixtures": "Planned registration/report checker plus future disposable Postgres/Redis/LocalStack integration run; unique teardown ownership.",
+          "negativeCase": "Unavailable service, premature database drop or skipped-only file fails verification; complete healthy execution is positive control. No retry-away failure allowed.",
+          "evidenceArtifact": "Future current-content service-backed per-file TAP counts plus child exit/signal and safe service versions; no hosted outcome inferred.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-9",
@@ -603,7 +908,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "Integration and downstream browser report classification is tested with synthetic process/workflow outcomes.",
+          "setup": "Fixtures: passing executed TAP, failing TAP, skipped-only TAP, zero-test TAP, killed process, integration failure with skipped browser/axe and positive three-engine execution control.",
+          "procedure": "Feed each fixture into actual report reader/classifier or planned minimal adapter preserving node counts and job/step conclusions.",
+          "assertion": "Skipped-only or empty suite is NOT_RUN/not coverage PASS; nonzero exit/signal is failure even with passing prefix. Browser/axe skipped after integration failure remain NOT_RUN; PASS requires actual expected engine/test execution and zero failures.",
+          "expectedResult": "Missing execution cannot inflate release coverage.",
+          "testName": "skipped integration and blocked browser steps never count as passed coverage",
+          "testFileOrProcedureId": "scripts/check-ci-integration-contract.test.mjs",
+          "fixtures": "Synthetic TAP and workflow-step fixtures only; actual engineering-runner TAP parser is a source, not assumed cross-lane coverage.",
+          "negativeCase": "A reader that equates zero failures with PASS on zero/skipped tests fails; a reader that always refuses fails complete executed positive control.",
+          "evidenceArtifact": "Future named classification test results including positive control, skipped/empty/signal cases and three-engine separation.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_EXECUTION_REPORTING",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-10",
@@ -637,7 +960,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "MANUAL_PRODUCT",
+          "reviewer": "Agent Operations, Product Architect and Independent Reviewer",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "preconditions": "All actual24 agent definitions and matrix available read-only; reviewer differs from retention author.",
+          "setup": "Build per-role source-linked rows listing artifact, permissions, distinct decision and independent evidence, including potentially overlapping research/architect/reviewer roles.",
+          "procedure": "Apply retention rule individually to each role and compare adjacent/overlapping roles; name precisely one or more unique retained contributions or mark merge/remove recommendation.",
+          "assertion": "All24 roles have reviewed disposition; every RETAIN identifies actual unique artifact OR permission boundary OR materially distinct decision OR independent evidence consumer; name-only/generic prose is insufficient. No role is retained solely because count validator expects24.",
+          "expectedResult": "Roster retention is justified by role contribution rather than attendance.",
+          "testName": "every agent has an individually justified retention disposition",
+          "testFileOrProcedureId": "CS-10-ROLE-RETENTION-REVIEW",
+          "fixtures": "Canonical24 definitions and source-linked comparison table; no invocation or permission expansion.",
+          "negativeCase": "Synthetic duplicate role with same artifact/authority/decision and no independent consumer is not RETAIN; genuinely independent review role provides positive control.",
+          "evidenceArtifact": "Future independent per-role retention verdict table and cited grants/artifacts; no actual invocation inferred.",
+          "releaseGate": "SOURCE_BACKED_AGENT_RETENTION"
+        }
+      ]
     },
     {
       "ticketId": "CS-10",
@@ -655,7 +996,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "MANUAL_PRODUCT",
+          "reviewer": "Agent Operations, Product Architect and Independent Reviewer",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "preconditions": "Reviewed activation matrix and canonical definitions are available.",
+          "setup": "Representative docs-only, UI component, API, schema migration, CI and release-execution scope fixtures.",
+          "procedure": "Walk each change class through required roles, builder claims, QA/evidence and independent acceptance; verify no automatic scheduling or routine all24 requirement.",
+          "assertion": "Each fixture has explicit named smallest sufficient roles, sequence and acceptance consumer; self-review forbidden; extra risk specialist justified. Release requires separate human shipping authority, not role presence.",
+          "expectedResult": "Operator can route real risks without ceremony or missing ownership.",
+          "testName": "activation policy selects risk-appropriate roles and independent acceptance",
+          "testFileOrProcedureId": "CS-10-ACTIVATION-MATRIX-REVIEW",
+          "fixtures": "Six representative synthetic change-class records plus actual matrix rows.",
+          "negativeCase": "A policy assigning author sole approval or all24 indiscriminately fails; documented appropriate exclusions are allowed.",
+          "evidenceArtifact": "Future source-linked scope-to-role review and uncovered-class findings.",
+          "releaseGate": "MINIMAL_RISK_ROLE_ROUTING"
+        }
+      ]
     },
     {
       "ticketId": "CS-10",
@@ -673,7 +1032,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "MANUAL_PRODUCT",
+          "reviewer": "Agent Operations, Product Architect and Independent Reviewer",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "preconditions": "Individual retention dispositions exist; any future role removal is separately approved outside specification phase.",
+          "setup": "For each MERGE/REMOVE recommendation inventory orchestrator delegation, prompt links, matrix, allowlist/validator, execution-record consumers; preserve historical attribution.",
+          "procedure": "Review proposed consolidation plan and after future approved implementation inspect canonical tracked definitions and consumer resolution, with appropriate roster-check updates.",
+          "assertion": "Every adjudicated redundant role is actually merged/removed after approved implementation and is absent as active definition or consumer; merely explaining dormancy or recording an unresolved plan cannot pass implementation acceptance. Removed roles have no dangling active consumers; merged unique duties retain named owner/permission/evidence. If every role individually passes retention, explicit reviewed zero-removal outcome is valid; no forced deletion to satisfy count.",
+          "expectedResult": "Redundant active roles are removed safely rather than merely hidden or left dormant.",
+          "testName": "redundant-role dispositions resolve all active routing consumers",
+          "testFileOrProcedureId": "CS-10-ROSTER-DISPOSITION-CLOSURE",
+          "fixtures": "Per-role disposition and future consumer graph; historical citations classified separately.",
+          "negativeCase": "Delete definition while leaving active delegation or broadening retained role permissions fails; all-individually-justified roster passes without artificial reduction.",
+          "evidenceArtifact": "Future disposition/consumer parity review and canonical agents check, no claimed current deletion.",
+          "releaseGate": "SAFE_AGENT_ROSTER_CONSOLIDATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-11",
@@ -691,7 +1068,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "VISUAL_REGRESSION",
+          "preconditions": "Exact approved static-public reference/state/token mapping exists; current mapping is PARTIAL and cannot fulfill this precondition yet.",
+          "setup": "Synthetic public job snapshot rendered in light/dark themes at320/390/768/1440; source tokens and approved reference IDs available.",
+          "procedure": "Compare rendered hierarchy/type/spacing with approved exact reference and trace repeated UI values to canonical shared tokens; obtain visual-review verdict with stated comparison tolerance.",
+          "assertion": "Hierarchy/type/spacing correspond to approved reference and shared tokens; repeated UI elements do not invent independent values. Current green/gray palette or mere variable presence cannot prove approved navy/blue design parity. Missing exact mapping returns DESIGN_PARTIAL, not PASS.",
+          "expectedResult": "Static public design is intentionally approved rather than inferred from generic marketing board.",
+          "testName": "static public hierarchy and spacing match approved design token mapping",
+          "testFileOrProcedureId": "CS-11-STATIC-DESIGN-PARITY-REVIEW",
+          "fixtures": "Synthetic job data, approved future static-reference mapping, stated viewport/theme comparison policy; no invented asset.",
+          "negativeCase": "Missing reference or mismatched hierarchy/repeated ad-hoc spacing fails; approval cannot be generated from existing baseline itself.",
+          "evidenceArtifact": "Future exact-reference visual diffs/viewport identities, token trace and independent approval; no current screenshots claimed.",
+          "releaseGate": "STATIC_PUBLIC_DESIGN_ACCEPTANCE"
+        }
+      ]
     },
     {
       "ticketId": "CS-11",
@@ -709,7 +1104,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Actual static app modules/assets served locally with synthetic jobs.json responses; no live publication or real user data.",
+          "setup": "Delay snapshot fetch, return empty jobs, filtered no-match, network/error/invalid snapshot, saved item missing after refresh, blocked localStorage and long title/company/location strings.",
+          "procedure": "Drive real filter/save/refresh/controller paths and record visible states; resolve failed fetch with valid snapshot and retry; inspect safe text rendering and controls.",
+          "assertion": "Each corresponding state has explicit readable status/action rather than blank layout; failed snapshot never renders invented listings; valid retry restores actual fixture list. Blocked storage visibly reports failure without pretending saved persistence. Long content remains readable and untrusted text never executes.",
+          "expectedResult": "Every supported static async/content state is deliberate and recoverable.",
+          "testName": "static job list exposes loading empty error storage and long-content states",
+          "testFileOrProcedureId": "scripts/check-public-workspace.mjs",
+          "fixtures": "Synthetic network and storage intercepts, no real jobs/resumes; planned new assertions where missing.",
+          "negativeCase": "Always-empty renderer fails valid-list control; hidden error/retry or executed markup fails; failed storage cannot report successful persistence.",
+          "evidenceArtifact": "Future named actual-browser state results and safe synthetic captures, not only source-string assertions.",
+          "releaseGate": "STATIC_PUBLIC_STATE_CORRECTNESS"
+        }
+      ]
     },
     {
       "ticketId": "CS-11",
@@ -727,7 +1140,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Lockfile-pinned Chromium/Firefox/WebKit actually launch against local static fixture server.",
+          "setup": "Both themes and320/390/768/1440 widths including long fixture data and empty/error states.",
+          "procedure": "Run public-workspace browser harness and visual fixture cases for each engine/viewport; record actual viewport and keyboard traversal, page errors and overflow.",
+          "assertion": "Every configured engine executes; actual innerWidth equals requested width; document scrollWidth<=innerWidth; core posting/filter/save/refresh controls are readable and keyboard operable; no page errors. Unlaunched/skipped engine is NOT_RUN, not PASS; baseline tolerance is not widened.",
+          "expectedResult": "Actual tablet/mobile/desktop behavior is verified across engines, not Windows-only inference.",
+          "testName": "static public reflow and keyboard controls work in three engines including768",
+          "testFileOrProcedureId": "scripts/check-public-workspace.mjs",
+          "fixtures": "Synthetic static fixture server, existing engine matrix, future extended state assertions.",
+          "negativeCase": "One engine missing, overflow at768, hidden/unreachable control or skipped state fails; all-engine healthy control succeeds.",
+          "evidenceArtifact": "Future per-engine/per-viewport execution and safe visual diff/keyboard results; no current hosted claim.",
+          "releaseGate": "STATIC_PUBLIC_BROWSER_MATRIX"
+        }
+      ]
     },
     {
       "ticketId": "CS-11",
@@ -745,7 +1176,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_ACCESSIBILITY",
+          "preconditions": "Qualified independent reviewer has permitted actual accesslint capability and synthetic static public target; local skill guidance alone is not an audit engine.",
+          "setup": "Scope index.html/app.js/styles and actual loading/empty/error/long-content states; choose live-DOM flow or explicitly limited HTML fallback under skill.",
+          "procedure": "Execute report-mode accesslint audit using available permitted flow, preserve rule IDs/severities/source selectors and findings; independently assess keyboard/focus, announcement quality, contrast/reflow and contextual judgment.",
+          "assertion": "Report identifies actual target/content identity/flow and deduplicated severity/rule findings with disposition. Blocking findings resolved and reverified in later implementation; manual contextual judgments documented by real reviewer. Unavailable audit tools or generic axe-only result cannot satisfy named sign-off.",
+          "expectedResult": "Accessibility assurance is actual scoped named audit plus honest human judgment, not assertion.",
+          "testName": "independent accesslint public-state audit records findings and human limitations",
+          "testFileOrProcedureId": "CS-11-ACCESSLINT-PUBLIC-AUDIT",
+          "fixtures": "Synthetic public-state data; existing local skill; future permitted audit environment and actual independent reviewer, no installations/workarounds.",
+          "negativeCase": "Missing report, missing named rule/source/disposition, simulated reviewer or unsupported claim of screen-reader execution fails.",
+          "evidenceArtifact": "Future actual accesslint report/diff and independent human findings; this phase only specifies procedure.",
+          "releaseGate": "NAMED_PUBLIC_ACCESSIBILITY_SIGNOFF"
+        }
+      ]
     },
     {
       "ticketId": "CS-11",
@@ -763,7 +1212,42 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Frozen pre-change public projection/pageFiles and static origin/build contract are available; only copied synthetic publication fixtures used.",
+          "setup": "Capture exact pageFiles list and validatePublicSnapshot field sets; enumerate static resource URLs and package/workflow consumers before/after scoped change.",
+          "procedure": "Compare exact pageFiles/field contracts before and after scoped static change; inspect plain HTML/CSS/ES-module staging and package/workflow scripts for no introduced static build prerequisite. No browser execution claimed by this contract binding.",
+          "assertion": "pageFiles list unchanged; envelope keys exactly jobs/updatedAt and job keys exactly title/company/location/source/postedAt/url; no new static build prerequisite or declared external resource origin. Actual runtime automatic resource/network origins require separate browser binding, not source-only proof.",
+          "expectedResult": "Visual work cannot broaden public data exposure or dependency/origin surface.",
+          "testName": "static design change preserves origin build and snapshot allowlists",
+          "testFileOrProcedureId": "scripts/stage-pages.test.mjs",
+          "fixtures": "Existing stage-pages contract plus planned origin/build and list-parity assertions; synthetic snapshots only.",
+          "negativeCase": "Add email/note/token field, additional staged path, remote script/font origin or required build command: fail; original safe static control passes.",
+          "evidenceArtifact": "Future allowlist/projection/origin/build assertions and before/after source identity; existing tests not assumed all new assertions.",
+          "releaseGate": "STATIC_PUBLIC_PRIVACY_AND_NO_BUILD"
+        },
+        {
+          "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Actual static page/modules/assets run in isolated browser contexts with synthetic snapshot/admin fixture; automatic resource and fetch origins can be recorded without real external connections.",
+          "setup": "Record approved baseline same-origin resource inventory; serve synthetic states, block unexpected external requests; distinguish explicit user-opened allowlisted job links from automatic page resources.",
+          "procedure": "Capture script/style/font/image/fetch and other automatic resource requests while loading and exercising actual supported static states; compare origins against approved baseline. Separately assert legitimate explicit posting link attributes/destination without actual external submission.",
+          "assertion": "No newly introduced automatic external resource/fetch origin; unexpected requests are blocked and fail test. Explicit user navigation to approved legitimate external job destination is allowed and never classified as automatic asset leakage or Applied event. Existing same-origin resource positive control executes.",
+          "expectedResult": "Actual runtime network behavior preserves origin restriction without prohibiting legitimate user-controlled job destinations.",
+          "testName": "static public automatic resource origins remain unchanged while job links stay legitimate",
+          "testFileOrProcedureId": "scripts/check-public-workspace.mjs",
+          "fixtures": "Isolated synthetic static server, browser request recorder/interceptor, allowlisted job destination hrefs; no real publication or external form submission.",
+          "negativeCase": "Injected remote font/script/fetch fails even if source allowlist checker misses it; blocking all requests fails same-origin positive control; legitimate user-opened posting link is not rejected.",
+          "evidenceArtifact": "Future actual three-engine automatic request-origin report plus destination-attribute assertions; source-only contract result not substituted.",
+          "releaseGate": "STATIC_PUBLIC_AUTOMATIC_ORIGIN_PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-12",
@@ -781,7 +1265,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_OPERATOR",
+          "preconditions": "Operator uses supported native repository agent picker; no additional tools installed.",
+          "setup": "Current agent definition and docs/ai/README invocation/manual-sequence claims; safe source-only prompt.",
+          "procedure": "Invoke actual allowlisted read-only reviewer through available native mechanism and record tool environment and returned identity/verdict; review wording against result.",
+          "assertion": "Actual invocation returns attributable specialist result; docs distinguish invocation from operator sequencing; scripts do not claim autonomous scheduling. If actual native invocation unavailable, record EXTERNAL gate not success.",
+          "expectedResult": "Capability is described accurately without simulated orchestration.",
+          "testName": "native agent invocation is real and sequencing remains operator driven",
+          "testFileOrProcedureId": "CS-12-NATIVE-INVOCATION-REVIEW",
+          "fixtures": "Safe synthetic/source-only task with no secrets/user data and actual available native picker.",
+          "negativeCase": "No actual invocation or orchestrator impersonation fails; capability absent cannot be satisfied by invented transcript.",
+          "evidenceArtifact": "Future actual invocation identity/content/verdict record and reviewed wording, not historical assurance.",
+          "releaseGate": "TRUTHFUL_AGENT_INVOCATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-12",
@@ -799,7 +1301,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Current update-tickets prompt and activation matrix available read-only.",
+          "setup": "Representative documentation-only, API, CI and ordinary ticket-review change classes; canonical workflow unchanged.",
+          "procedure": "Walk daily routine from establishing board state through role selection, attributed findings and outcome verification; identify named role and skip rationale at each applicable step.",
+          "assertion": "Every applicable step identifies actual role/owner and evidence; selected roles match activation matrix, independent reviewer differs from author. No mandatory all24 attendance or automated scheduler claim appears. Workflow blocker remains metadata.",
+          "expectedResult": "Operator can follow explicit minimal review routine without guessing participants.",
+          "testName": "daily routine routes each applicable step to named responsible role",
+          "testFileOrProcedureId": "CS-12-DAILY-ROUTINE-REVIEW",
+          "fixtures": "Canonical prompt and activation rows with synthetic scope cases, no state mutations.",
+          "negativeCase": "Missing role/evidence step, simulated participant or blocked workflow column fails; valid minimal scope control passes.",
+          "evidenceArtifact": "Future source-linked routine review table, skipped-role rationales and findings.",
+          "releaseGate": "EXPLICIT_AGENT_ROUTING"
+        }
+      ]
     },
     {
       "ticketId": "CS-12",
@@ -817,7 +1337,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Review evidence fixture validator runs only on isolated synthetic records; actual native output example is sanitized.",
+          "setup": "One actual attributed result record plus synthetic missing-agent, wrong-content-hash, orchestrator-as-specialist and autonomous-action records.",
+          "procedure": "Validate required identity/source/content/verdict/evidence fields and compare to actual invoked result provenance; reject records claiming unobserved participation.",
+          "assertion": "Valid attributed result retains original reviewer findings and scope; missing/mismatched actual invocation proof refuses review credit. Orchestrator-authored summary cannot satisfy specialist-invoked requirement; no workflow promotion results from record presence.",
+          "expectedResult": "Finding attribution preserves who actually acted and what was inspected.",
+          "testName": "agent findings require actual invocation and matching reviewed content",
+          "testFileOrProcedureId": "scripts/check-agent-invocation-evidence.test.mjs",
+          "fixtures": "Planned validator/test fixture; sanitized actual review result and synthetic invalid provenance.",
+          "negativeCase": "Fake specialist identity or stale content receipt is rejected; valid actual result control accepted.",
+          "evidenceArtifact": "Future named attribution checks and actual sanitized invocation locator; planned validator not reported existing.",
+          "releaseGate": "ATTRIBUTED_REVIEW_EVIDENCE"
+        }
+      ]
     },
     {
       "ticketId": "CS-12",
@@ -835,7 +1373,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_OPERATOR",
+          "preconditions": "Actual chosen platform exposes granted reviewer tool/capability manifest or auditable enforcement; isolated synthetic workspace only.",
+          "setup": "Load repository read-only agent definition and actual invocation grants; prepare harmless synthetic edit target in permitted disposable test root if safe negative enforcement check is available.",
+          "procedure": "Compare actual grants with read-only allowed tools; observe safe denied write/edit/general-execute request without modifying canonical repository or expanding permissions.",
+          "assertion": "Actual granted capabilities exclude edit/write/general execute and safe attempted unavailable write is refused if platform permits that negative check. Manifest evidence plus refusal establishes enforced boundary. If actual reviewer has such tools, gate stays UNVERIFIED/EXTERNAL; choosing not to edit is not PASS.",
+          "expectedResult": "Real invocation boundary is proven, not merely instructed.",
+          "testName": "native reviewer tool grants enforce read-only boundary",
+          "testFileOrProcedureId": "CS-12-NATIVE-READONLY-CAPABILITY-PROOF",
+          "fixtures": "Actual native tool manifest and disposable synthetic target, no private data or privileged API; no capability workaround.",
+          "negativeCase": "Reviewer can access edit/general execution or no manifest evidence: fail boundary claim; zero observed edits alone cannot pass.",
+          "evidenceArtifact": "Future operator-signed sanitized grant/refusal evidence with selected platform/revision, explicitly unverified if unavailable.",
+          "releaseGate": "ACTUAL_READONLY_CAPABILITY_ENFORCEMENT"
+        }
+      ]
     },
     {
       "ticketId": "CS-13",

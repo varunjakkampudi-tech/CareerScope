@@ -35,9 +35,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "No deep links, no per-page loading or error states, no auth boundary. One 830-line page.tsx fakes navigation with a view variable."
+    "No deep links, no per-page loading or error states, no auth boundary. One 830-line page.tsx fakes navigation with a view variable.",
+    {
+      "requirement": "Candidate deep links and route navigation must share one session-rendering boundary so delayed, failed or unauthenticated session lookup never mounts private feature content or leaks a previous owner's cached data.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-6"]
+  "sources": [
+    ".ai/backlog.json#CS-6",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
+  ]
 }
 ```
 
@@ -166,9 +179,42 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-6",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
+    },
+    {
+      "requirement": "Next App Router route group (app)/layout.tsx wraps all current private routes with one AuthenticatedShell. Actual route files, not a separately invented routing map, are authoritative; dashboard-shell navigation maps to those real routes.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Session pending shows neutral Loading workspace; session lookup failure shows Workspace unavailable plus retry; unauthenticated success renders no private children and clears auth query cache before replacing route with /. These are existing behaviors to verify, not completed fresh test evidence.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Cold/untrusted delayed or failed session lookup must not mount private child components or send their owner-private queries; response HTML/RSC payload contains no fixture private data. Use fresh browser context/empty session cache for those cases. Authenticated cached navigation is a separate positive control, not incorrectly expected to become pending on refetch.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Shared query provider/session query survives private navigation. Logout and session-expired handling remain centralized; cache cleanup isolates successive owners. Do not redesign auth or claim client shell substitutes for API ownership enforcement.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "CS-13/14/16/17/19 own their feature/content work; this routing boundary supplies composition without bundling those tickets' implementation or visual acceptance into CS-6.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-6"]
+  "sources": [
+    ".ai/backlog.json#CS-6",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
+  ]
 }
 ```
 
@@ -191,13 +237,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "frontend structure",
-    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+    {
+      "requirement": "ARCHITECTURE_IMPACT: CROSS_MODULE. Existing app route-group layout composes AuthenticatedShell; useSession shares ['session']; ownerKey scopes private data. No global store, bespoke router, duplicate gate or new server auth system.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-6",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
   ]
 }
 ```
@@ -213,13 +270,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
       "proposedChanges": [],
       "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+    },
+    {
+      "requirement": "NOT_APPLICABLE to new schema: client cache ownership and session-derived authorization are affected; no user/application database write is required by route decomposition.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-6",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
   ]
 }
 ```
@@ -243,9 +311,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
       "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
       "unknownContracts": []
+    },
+    {
+      "requirement": "EXISTING_CONTRACT: GET /api/session returns authenticated boolean and optional opaque owner digest/CSRF/session identity. Private API routes independently enforce server session ownership. Do not expose provider tokens or accept client-supplied owner for route data.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-6", "docs/API-SURFACE.md"]
+  "sources": [
+    ".ai/backlog.json#CS-6",
+    "docs/API-SURFACE.md",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
+  ]
 }
 ```
 
@@ -294,12 +376,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "requirements": [
     "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
     "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-    "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+    "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+    {
+      "requirement": "Neutral loading/error states announce status and expose keyboard-operable retry with accessible name; no private navigation landmarks/identity appear until authenticated. Shared skip link targets the sole main-content landmark after authentication; no focus is sent into hidden private children.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
     "docs/FRONTEND-ARCHITECTURE.md",
-    "docs/TESTING.md"
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-6",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
   ]
 }
 ```
@@ -352,9 +446,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
     "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    {
+      "requirement": "SECURITY_IMPACT: AUTHORIZATION, PRIVACY_PII. Browser caches must not render prior owner's profile/resume/notes on anonymous or new-owner navigation. Rendering gate is not an API access-control replacement; all denial tests use synthetic separate owners.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-6", "docs/SECURITY.md", "docs/PRIVACY.md"]
+  "sources": [
+    ".ai/backlog.json#CS-6",
+    "docs/SECURITY.md",
+    "docs/PRIVACY.md",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
+  ]
 }
 ```
 
@@ -397,7 +506,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Actual App Router files, group layout, shell and provider modules inspected without candidate data.",
+          "setup": "Enumerate eight current private page files and their nearest group layout; resolve imports to AuthenticatedShell and shared useSession/provider.",
+          "procedure": "Validate each private route inherits (app)/layout.tsx -> AuthenticatedShell and each navigation href resolves to its canonical page; inspect no per-route alternative session-render gate.",
+          "assertion": "All eight private routes inherit the same shell; canonical navigation hrefs resolve; session query key/provider is shared. No parallel routing map or per-page independent authentication boundary is introduced.",
+          "expectedResult": "One compositional route/session boundary serves real deep links.",
+          "testName": "private routes inherit one shared session rendering boundary",
+          "testFileOrProcedureId": "scripts/check-auth-route-boundary.test.mjs",
+          "fixtures": "Actual route/import inventory; planned contract test file.",
+          "negativeCase": "Move one private page outside group or replace its layout with direct children: fail; valid group control passes.",
+          "evidenceArtifact": "Future path/import contract results; static checks alone do not prove rendered privacy.",
+          "reviewer": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_ROUTE_COMPOSITION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-6",
@@ -423,7 +550,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Synthetic candidate ownersA/B and private sentinel data in disposable services; browser can intercept session outcome and record responses/child mounts/private requests.",
+          "setup": "Cold/untrusted lookup cases each use fresh browser context and empty query cache, with delayed session, session500 or anonymous authenticated:false response. Separately exercise normal authenticated cached navigation, then ownerA logout/ownerB login using disposable real cookies. Server denial uses genuinely anonymous context and cross-owner IDs, not mocked false session.",
+          "procedure": "Inspect initial HTML/RSC and DOM state records while cold session is unresolved/error/anonymous. Instrument mount/unmount sentinel on actual private feature components without replacing their behavior; record owner-private network requests. Retry error and release valid authenticated response as positive control. Independently make anonymous/cross-owner API requests with real isolated session contexts.",
+          "assertion": "Cold pending shows neutral loading; cold error safe retry; cold anonymous mounts zero private children, sends zero private feature requests and exposes no private marker in HTML/RSC/recorded DOM states before redirect. Normal cached authenticated navigation remains usable, not incorrectly expected to become pending. Authenticated positive control mounts intended real feature. OwnerB sees no ownerA marker after teardown. Genuine anonymous API reads fail401; cross-owner object reads return the route's canonical safe missing/denial contract, without private data.",
+          "expectedResult": "No private flash or cross-owner cached data on direct or navigated private entry.",
+          "testName": "private children never mount before authenticated session resolves",
+          "testFileOrProcedureId": "scripts/check-ui.ts",
+          "fixtures": "Disposable two-owner profiles/notes with synthetic markers and session delay/error intercepts; planned new assertions in existing harness.",
+          "negativeCase": "Temporarily rendering children before auth resolution or retaining unscoped ownerA cache must fail; authenticated positive control prevents always-hidden shell passing.",
+          "evidenceArtifact": "Future Chromium/Firefox/WebKit named browser results with safe sentinel outcomes, no screenshots of real personal data.",
+          "reviewer": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_RENDER_AND_CACHE_ISOLATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-6",
@@ -441,7 +586,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Canonical CS-6 source/dependencies and feature-ticket sources are read-only.",
+          "setup": "Read CS-13/14/16/17/19 scopes and actual shared shell/feature composition imports; establish route-boundary change plan separately from feature implementation.",
+          "procedure": "Review planned CS-6 checklist and dependency graph to ensure route boundary does not require completing all feature tickets or copying their UI internals into shell.",
+          "assertion": "CS-6 owns only route composition/session-render boundary and shared navigation wiring; dependent ticket feature contracts remain independently owned. Graph introduces no reverse hard edge requiring all feature implementation before boundary. Existing valid dependencies are preserved.",
+          "expectedResult": "Routing foundation can be reviewed independently of large feature completion.",
+          "testName": "route boundary scope remains separate from feature vertical slices",
+          "testFileOrProcedureId": "CS-6-SCOPE-SEPARATION-REVIEW",
+          "fixtures": "Canonical dependency graph and per-ticket scope inventory; manual technical review procedure, not existing automated test.",
+          "negativeCase": "Bundling saved-table/job-details/match feature implementation into CS-6 or introducing reverse cyclic dependencies fails scope review.",
+          "evidenceArtifact": "Future source-linked architecture review with actual dependency findings; no ticket workflow promotions.",
+          "reviewer": "Frontend, Security and QA",
+          "releaseGate": "INDEPENDENT_ROUTE_FOUNDATION_SCOPE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     }
   ],
   "sources": [".ai/backlog.json#CS-6", "docs/TESTING.md"]
@@ -516,9 +679,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
     "Independent current-content review resolves specification/implementation findings before promotion.",
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+    {
+      "requirement": "All current private routes share route-group gate; pending/error/anonymous paths never mount private children or expose synthetic private data in HTML/RSC/browser/cache. Authenticated positive and two-owner controls pass in configured browser engines; feature-specific design work stays in dependent tickets.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/ai/quality-gates.md"]
+  "sources": [
+    "docs/ai/quality-gates.md",
+    ".ai/backlog.json#CS-6",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
+  ]
 }
 ```
 
@@ -555,9 +732,37 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Implement and verify CS-6-AC1: One routing definition with the signed-in boundary enforced in a single place",
     "Implement and verify CS-6-AC2: An unauthenticated request to a private route cannot render any private data, even briefly",
     "Implement and verify CS-6-AC3: Split from the shared-shell work so it does not block CS-13, CS-14, CS-16, CS-17 and CS-19 behind one large change",
-    "Reconcile CS-6 documentation, redacted evidence and independent review before workflow promotion."
+    "Reconcile CS-6 documentation, redacted evidence and independent review before workflow promotion.",
+    {
+      "requirement": "Inventory actual private route files and route-group wrapping; verify direct links and navigation use the same boundary.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Add delayed/error/anonymous session rendered tests with private-child mount sentinel and intercepted private-query recorder.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Assert initial HTML/RSC excludes synthetic private markers and successive owner cache is cleared or segregated.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Verify authenticated positive control renders each route and shared query provider remains stable; preserve feature ticket separation.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-6"]
+  "sources": [
+    ".ai/backlog.json#CS-6",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
+  ]
 }
 ```
 
@@ -608,13 +813,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
       ],
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+    },
+    {
+      "requirement": "A DOM-only no-flash test can miss private RSC payload or queries; inspect response and mount/request sentinels. Removing route wrapper or rendering children while lookup is pending must be detected. Route rollback restores reviewed prior composition without changing sessions, user records or database.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-6",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts"
   ]
 }
 ```
@@ -654,4 +870,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | ------------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------- |
 | PARTIAL_DESIGN           | OPEN        | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.            | UX            | Ticket-specific state and viewport mapping or independently approved design N/A rationale.               |
 | RELEASE_TARGET_UNDECIDED | OPEN        | Source registry has no approved release assignment.                                                                      | Product owner | Explicit release assignment or owner-approved future-release disposition.                                |
-| EXACT_AC_TEST_BINDING    | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA            | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING    | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA            | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

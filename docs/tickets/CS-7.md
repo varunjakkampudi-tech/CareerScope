@@ -37,9 +37,20 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "The live site can be running code that the pipeline says is broken, with nothing reporting a conflict."
+    "The live site can be running code that the pipeline says is broken, with nothing reporting a conflict.",
+    {
+      "requirement": "A release operator must not ship a main revision unless CI for that exact revision succeeded. Historically separate partial checks allowed rejected code to ship.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-7"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
+  ]
 }
 ```
 
@@ -170,9 +181,30 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-7",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
+    },
+    {
+      "requirement": "Current authority supersedes historical AC2: no override exists or may be introduced. Manual-only main checkout, HEAD/origin-main agreement and protected production environment remain mandatory; records of old override tests are historical, not current requirements.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Require-ci requests ci.yml runs filtered by the resolved SHA. PASS requires legible completed-success evidence; failed/cancelled/timed-out/malformed/inconsistent payloads refuse, queued/in-progress/absent evidence waits only within the configured deadline then refuses. Older success cannot override a newer failure.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Downstream verify/shipping jobs cannot execute when require-ci refuses. Observe control-plane decisions with synthetic payloads and non-shipping harnesses; do not dispatch deployment or push intentionally broken main during specification work.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-7"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
+  ]
 }
 ```
 
@@ -195,13 +227,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "workflow dependency graph",
-    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+    {
+      "requirement": "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Use existing decide function and workflow dependency chain; do not introduce a second deployment authority or a cross-workflow needs assumption.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-7",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
   ]
 }
 ```
@@ -217,13 +258,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
       "proposedChanges": [],
       "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+    },
+    {
+      "requirement": "NOT_APPLICABLE: no product data writes. Workflow run/SHA and safe refusal diagnostics are evidence, not an application database.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-7",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
   ]
 }
 ```
@@ -240,9 +290,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
       "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
       "unknownContracts": []
+    },
+    {
+      "requirement": "EXISTING_CONTRACT: Actions ci.yml run-list query has head_sha set to resolved main SHA; parsed payload requires numeric finite nonnegative total_count equal to workflow_runs length. Decision returns PASS, REFUSE or WAIT plus reason. No product route is added.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-7", "docs/API-SURFACE.md"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/API-SURFACE.md",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
+  ]
 }
 ```
 
@@ -312,9 +374,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
     "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    {
+      "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. Actions query uses read-only actions permission. Never expose token/header/SSH material; gate refusal occurs before hosted-secret or SSH steps. Repository-root checks cannot grant shipping authorization.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-7", "docs/SECURITY.md", "docs/PRIVACY.md"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/SECURITY.md",
+    "docs/PRIVACY.md",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
+  ]
 }
 ```
 
@@ -357,7 +432,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Actual decide function imported without CLI execution; deploy.yml inspected without dispatch.",
+          "setup": "Synthetic successful, failed, cancelled, timed-out, missing-status, malformed, inconsistent, queued and absent run-list payloads; older success plus newer failure.",
+          "procedure": "Invoke decide for each fixture and inspect require-ci/dependent jobs and main-SHA wiring; transport harness records requested URL without network.",
+          "assertion": "Only completed-success fixture returns PASS; completed failures/malformed payloads return REFUSE; queued/in-progress/absent return WAIT and deadline harness refuses on expiry. URL filters ci.yml runs by resolved SHA; downstream jobs require successful require-ci.",
+          "expectedResult": "Unproven exact-revision CI success cannot authorize shipping.",
+          "testName": "exact SHA CI gate fails closed for missing malformed and rejected evidence",
+          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs",
+          "fixtures": "Synthetic Actions payloads plus planned isolated transport/deadline harness; no credentials or SSH.",
+          "negativeCase": "Remove head_sha filter, ignore newer failure, permit malformed-as-PASS, or bypass needs: each must fail; successful exact-SHA control passes.",
+          "evidenceArtifact": "Future named gate and transport/deadline results; existing gate execution does not imply planned transport assertions passed.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "EXACT_SHA_FAIL_CLOSED_DEPLOYMENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-7",
@@ -383,7 +476,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Current manual/main-only no-bypass contract supersedes historical override AC; frozen source criterion remains retained.",
+          "setup": "Actual deploy.yml and lifecycle doc; synthetic dispatch input containing override_ci and a reason, with failed CI fixture.",
+          "procedure": "Assert workflow declares no override/ref dispatch inputs and no bypass expression; evaluate gate regardless of synthetic override fields.",
+          "assertion": "No override_ci or arbitrary ref input is exposed; failed CI still REFUSE despite intent/reason fields. No condition allows a shipping job around require-ci. Report explicitly marks historical override requirement superseded, not implemented.",
+          "expectedResult": "No actor can bypass exact-SHA CI through historical override semantics.",
+          "testName": "historical override fields cannot authorize rejected main deployment",
+          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs",
+          "fixtures": "Read-only canonical workflow and synthetic rejected-run/override fields; no actual dispatch.",
+          "negativeCase": "Adding bypass input/condition or treating override reason as approval must fail; valid no-bypass workflow control passes.",
+          "evidenceArtifact": "Future contract result and supersession reference to docs/GITHUB-RELEASE-LIFECYCLE.md; no runtime claim.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "NO_DEPLOYMENT_BYPASS",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-7",
@@ -401,7 +512,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "HOSTED_CI",
+          "preconditions": "A Release Manager separately authorizes non-shipping hosted workflow refusal validation; no deliberately broken main push or production dispatch is allowed.",
+          "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Use exact-SHA failure and success run fixtures.",
+          "procedure": "Validate source-hash parity and preserved dependency/condition graph before observing authorized hosted require-ci refusal for failed exact-SHA CI. Invalidate harness evidence if canonical deploy.yml changes. Compare successful CI control in the same derived graph; no production dispatch.",
+          "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are unchanged. Failed candidate yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. Success control reaches only non-shipping adapter. Requested SHA, resolved revision and recorded filter agree.",
+          "expectedResult": "Hosted dependency wiring refuses rejected evidence without attempting production deployment.",
+          "testName": "hosted rejected CI prevents downstream shipping before secrets are reachable",
+          "testFileOrProcedureId": "CS-7-HOSTED-NONSHIPPING-REFUSAL",
+          "fixtures": "Authorized isolated hosted workflow context, synthetic failure/success run fixtures and shipping-call recorder.",
+          "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails paired success control; arbitrary-ref production dispatch is forbidden.",
+          "evidenceArtifact": "Future authorized hosted run/job IDs, exact SHA, dependency conclusions and zero shipping calls; old arbitrary-ref run is historical evidence only.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_DEPLOYMENT_REFUSAL",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     }
   ],
   "sources": [".ai/backlog.json#CS-7", "docs/TESTING.md"]
@@ -463,9 +592,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
     "Independent current-content review resolves specification/implementation findings before promotion.",
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+    {
+      "requirement": "No bypass exists; exact-main SHA success is required; malformed or unavailable proof fails closed; local refusal and workflow wiring checks pass; authorized non-shipping hosted refusal evidence records skipped downstream jobs without reaching secrets. Specification approval is not deployment permission.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/ai/quality-gates.md"]
+  "sources": [
+    "docs/ai/quality-gates.md",
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
+  ]
 }
 ```
 
@@ -504,9 +645,35 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Implement and verify CS-7-AC1: deploy.yml will not deploy unless the CI verify job succeeded for that commit",
     "Implement and verify CS-7-AC2: An override exists, requires explicit intent and is recorded in the run log",
     "Implement and verify CS-7-AC3: Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
-    "Reconcile CS-7 documentation, redacted evidence and independent review before workflow promotion."
+    "Reconcile CS-7 documentation, redacted evidence and independent review before workflow promotion.",
+    {
+      "requirement": "Document supersession of historical override AC by current no-bypass authority without editing frozen backlog evidence.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Assert decision function negative/positive controls and workflow needs/manual/main/protected-environment wiring.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Specify isolated transport/dependency-chain verification for exact-SHA filtering and absence of shipping after refusal.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Require separately authorized hosted refusal evidence before implementation acceptance; no production negative experiment in this phase.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-7"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
+  ]
 }
 ```
 
@@ -559,13 +726,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
       ],
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+    },
+    {
+      "requirement": "Historical deploy dispatch evidence used arbitrary ref inputs no longer supported. Do not reenact that obsolete procedure or loosen main-only protections. Roll back a defective gate by reviewed source change, never by disabling it.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-7",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs"
   ]
 }
 ```
@@ -600,4 +776,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

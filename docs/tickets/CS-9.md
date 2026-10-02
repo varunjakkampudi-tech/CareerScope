@@ -35,9 +35,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "The layer where the application actually fails is the layer CI does not exercise."
+    "The layer where the application actually fails is the layer CI does not exercise.",
+    {
+      "requirement": "Unit-only success cannot prove persistence, durable queue, encrypted file storage or browser behavior; missing services must fail rather than report skipped integration as passing.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-9"]
+  "sources": [
+    ".ai/backlog.json#CS-9",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
+  ]
 }
 ```
 
@@ -163,9 +175,36 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verificationIds": ["AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-9",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
+    },
+    {
+      "requirement": "Use disposable PostgreSQL 17.6-alpine, Redis 7.4.5-alpine and LocalStack 4.7.0 with synthetic CI-built environment; never read a real local/production environment file for mutation verification.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Historical six-file scope has expanded to nine registered integration files. Execute the entire current test:integration list serially (--test-concurrency=1), including scheduled discovery, lead liveness and retention, without removing original coverage.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Prove durable Redis setup before tests: AOF enabled, appendfsync everysec, noeviction and configured memory limit. Missing/unhealthy service or failed configuration is failure; unit-only success cannot substitute.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Report suite execution state separately from assertions passed. Browser/axe steps skipped after integration failure are NOT_RUN, not PASS; full browser acceptance requires all configured engines' actual execution.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-9"]
+  "sources": [
+    ".ai/backlog.json#CS-9",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
+  ]
 }
 ```
 
@@ -188,13 +227,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "CI service topology; no application behavior change beyond making the isolated resume parser actually able to run",
-    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+    {
+      "requirement": "ARCHITECTURE_IMPACT: INFRASTRUCTURE, ASYNC_SYSTEM. Existing integration CI lane owns synthetic services and environment; actual test:integration command owns file registration. Preserve serial disposable-database ownership and explicit test process failure propagation.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-9",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
   ]
 }
 ```
@@ -210,13 +259,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
       "proposedChanges": [],
       "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+    },
+    {
+      "requirement": "Disposable per-suite databases and isolated queue/storage namespaces are fixtures only. Teardown waits for owned workers/queries before pool/drop; tests cannot delete production rows or connect to operator environments.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-9",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
   ]
 }
 ```
@@ -233,9 +292,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
       "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
       "unknownContracts": []
+    },
+    {
+      "requirement": "NOT_APPLICABLE to new product API: CI service readiness, test process outcomes and report classification are the contracts; preserve application APIs under test.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-9", "docs/API-SURFACE.md"]
+  "sources": [
+    ".ai/backlog.json#CS-9",
+    "docs/API-SURFACE.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
+  ]
 }
 ```
 
@@ -305,9 +377,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
     "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    {
+      "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. CI credentials are synthetic throwaway values. Collect safe case names, exit/signal, service versions and counts, never environment contents, database rows, resume payloads or provider tokens.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-9", "docs/SECURITY.md", "docs/PRIVACY.md"]
+  "sources": [
+    ".ai/backlog.json#CS-9",
+    "docs/SECURITY.md",
+    "docs/PRIVACY.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
+  ]
 }
 ```
 
@@ -358,7 +444,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "HOSTED_CI",
+          "preconditions": "Authorized exact-SHA canonical CI runs against disposable CI services, not the production host.",
+          "setup": "Record pinned PostgreSQL/Redis/LocalStack versions and safe readiness/Redis durability output without printing environment values.",
+          "procedure": "Inspect service initialization and CI-built environment step, then actual integration step service connectivity; verify Redis AOF/noeviction setup precedes tests.",
+          "assertion": "Postgres17.6-alpine, Redis7.4.5-alpine and LocalStack4.7.0 initialize; CI-generated synthetic environment is used. AOF enabled, appendfsync everysec, configured maxmemory and noeviction validated before suite. Missing/unhealthy service yields failure not skip.",
+          "expectedResult": "Real service-backed hosted evidence exists separately from unit success.",
+          "testName": "pinned disposable services and durable Redis precede integration execution",
+          "testFileOrProcedureId": "CS-9-HOSTED-SERVICE-READINESS",
+          "fixtures": "Disposable CI database/queue/storage; synthetic credentials; no local .env reads or real cloud calls.",
+          "negativeCase": "Disable Redis AOF/noeviction or withhold service readiness in isolated fixture; suite/setup must fail and not report coverage.",
+          "evidenceArtifact": "Future exact-SHA hosted job/step IDs, service versions and safe readiness/durability assertions; no configuration dumps.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_SERVICE_BACKED_INTEGRATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-9",
@@ -376,7 +480,42 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Read-only canonical package scripts and ci.yml are available; no service execution is claimed by registration checks.",
+          "setup": "Enumerate all nine test:integration paths, original six plus scheduled discovery/liveness/retention; parse actual script and CI invocation.",
+          "procedure": "Resolve integration command from actual workflow to all nine existing paths and --test-concurrency=1, without invoking environment-dependent suite.",
+          "assertion": "All nine current files are registered in the canonical command invoked by integration lane; concurrency equals1. Registration result is explicitly not execution evidence.",
+          "expectedResult": "All current source paths are registered without shrinking historical coverage.",
+          "testName": "all nine canonical integration files are registered with serial execution",
+          "testFileOrProcedureId": "scripts/check-ci-integration-contract.test.mjs",
+          "fixtures": "Planned registration/report checker plus future disposable Postgres/Redis/LocalStack integration run; unique teardown ownership.",
+          "negativeCase": "Drop any original or added file, point CI at a different script or remove serial setting: registration check fails; correct source passes.",
+          "evidenceArtifact": "Future named contract result with exact command/path inventory, not service-backed TAP.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        },
+        {
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Fresh disposable PostgreSQL17.6, Redis7.4.5 with durable setup and LocalStack4.7.0 are healthy; isolated synthetic environment is supplied.",
+          "setup": "All nine canonical integration files use unique disposable data/queue namespaces; capture safe per-file TAP and child exit/signal.",
+          "procedure": "Execute actual npm run test:integration with --test-concurrency=1 and inspect each registered file's outcomes plus owned cleanup. Do not substitute mocks or registration results.",
+          "assertion": "Every registered file contributes actual executed tests; zero silently skipped suites; nonzero exit/signal or service/teardown failure fails. All nine files remain included. Browser/axe is separately classified, never inferred from TAP.",
+          "expectedResult": "Full current service-backed integration execution is evidenced rather than merely registered.",
+          "testName": "all nine integration files produce executed outcomes against disposable services",
+          "testFileOrProcedureId": "package.json#test:integration",
+          "fixtures": "Planned registration/report checker plus future disposable Postgres/Redis/LocalStack integration run; unique teardown ownership.",
+          "negativeCase": "Unavailable service, premature database drop or skipped-only file fails verification; complete healthy execution is positive control. No retry-away failure allowed.",
+          "evidenceArtifact": "Future current-content service-backed per-file TAP counts plus child exit/signal and safe service versions; no hosted outcome inferred.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-9",
@@ -394,7 +533,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "Integration and downstream browser report classification is tested with synthetic process/workflow outcomes.",
+          "setup": "Fixtures: passing executed TAP, failing TAP, skipped-only TAP, zero-test TAP, killed process, integration failure with skipped browser/axe and positive three-engine execution control.",
+          "procedure": "Feed each fixture into actual report reader/classifier or planned minimal adapter preserving node counts and job/step conclusions.",
+          "assertion": "Skipped-only or empty suite is NOT_RUN/not coverage PASS; nonzero exit/signal is failure even with passing prefix. Browser/axe skipped after integration failure remain NOT_RUN; PASS requires actual expected engine/test execution and zero failures.",
+          "expectedResult": "Missing execution cannot inflate release coverage.",
+          "testName": "skipped integration and blocked browser steps never count as passed coverage",
+          "testFileOrProcedureId": "scripts/check-ci-integration-contract.test.mjs",
+          "fixtures": "Synthetic TAP and workflow-step fixtures only; actual engineering-runner TAP parser is a source, not assumed cross-lane coverage.",
+          "negativeCase": "A reader that equates zero failures with PASS on zero/skipped tests fails; a reader that always refuses fails complete executed positive control.",
+          "evidenceArtifact": "Future named classification test results including positive control, skipped/empty/signal cases and three-engine separation.",
+          "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_EXECUTION_REPORTING",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     }
   ],
   "sources": [".ai/backlog.json#CS-9", "docs/TESTING.md"]
@@ -456,9 +613,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
     "Independent current-content review resolves specification/implementation findings before promotion.",
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+    {
+      "requirement": "All nine current files execute with healthy disposable services and zero unacknowledged skipped suites; missing service fails; skip/blocked downstream browser steps remain NOT_RUN. Exact-SHA hosted logs confirm service initialization, integration execution and required browser/axe acceptance before R1 release acceptance.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/ai/quality-gates.md"]
+  "sources": [
+    "docs/ai/quality-gates.md",
+    ".ai/backlog.json#CS-9",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
+  ]
 }
 ```
 
@@ -495,9 +665,36 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Implement and verify CS-9-AC1: Postgres and Redis service containers run in CI with a CI-built environment file",
     "Implement and verify CS-9-AC2: The six integration files execute rather than being skipped",
     "Implement and verify CS-9-AC3: A skipped suite is reported as not run, never as passed",
-    "Reconcile CS-9 documentation, redacted evidence and independent review before workflow promotion."
+    "Reconcile CS-9 documentation, redacted evidence and independent review before workflow promotion.",
+    {
+      "requirement": "Trace all nine root script paths to service-backed CI invocation and distinguish backfill/browser steps.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Specify fresh disposable service readiness and Redis durability assertions with missing-service negative controls.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Capture named integration outcomes and teardown diagnostics with no skip-as-pass conversion.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Verify parser/report classification against failed/skipped/empty TAP and browser step outcomes; keep hosted exact-SHA evidence separate from local service execution.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-9"]
+  "sources": [
+    ".ai/backlog.json#CS-9",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
+  ]
 }
 ```
 
@@ -548,13 +745,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
       ],
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+    },
+    {
+      "requirement": "Shared service lifecycle races can terminate connections; no retries or timeouts may hide failures. Preserve original error and owned cleanup ordering. CI Redis host overcommit warning requires classification, not blind host sysctl changes.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-9",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
   ]
 }
 ```
@@ -589,4 +796,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

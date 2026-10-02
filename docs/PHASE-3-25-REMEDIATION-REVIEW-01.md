@@ -135,3 +135,125 @@ procedures remain PLANNED. Inventory-wide/schema/sandbox verification and safe
 parser diagnostics remain unverified implementation work. No whole-ticket or
 phase approval is granted, and no mutable tests or shipping actions were
 performed by the reviewer.
+
+## Continued CI and stable-namespace planning review
+
+Starting checkpoint: `13b801de478bbbe0f0b077503624c4ee911f70dd`.
+Actual read-only `/root/phase325_review` inspected CS-1, CS-7, CS-9 and
+CS-3 procedures against their cited canonical source. Initial REVISE findings
+were corrected and independently re-reviewed: CS-7's non-shipping hosted
+harness now derives the actual deployment dependency graph and conditions,
+binds its source hash and invalidates on canonical source drift; CS-9 AC2
+separates source registration from actual service-backed execution. CS-3
+distinguishes application/container edge publication from approved management
+SSH exposure. No actual hosted run or live crash occurred in this review.
+
+| AC       | Independently computed binding SHA-256                           | Scoped verdict |
+| -------- | ---------------------------------------------------------------- | -------------- |
+| CS-1-AC1 | 01cd21c7e305c2301b0125bf9c9c3767ae38c2575d7d5a34e1e784a7adfa6ff5 | APPROVED       |
+| CS-1-AC2 | e159ff1508ee98caaebea78f28e5b9d6242468f0bee0e480868dfeed72fb336b | APPROVED       |
+| CS-1-AC3 | 9cde7ce4fd423807ad84de1ca0a551704c7d7e4400612b4b326d804cda5e4cba | APPROVED       |
+| CS-7-AC1 | 1eedd189312c01074140c9d1f2eb550102a87fe27a6395e3976e0e210e04c6f1 | APPROVED       |
+| CS-7-AC2 | bc2aece1a4666a097398e404564fb9f9b3242f959683fcccc47eb4f5668f1955 | APPROVED       |
+| CS-7-AC3 | 63adfe84802124b037a14832663dd91db685e20710c903c18dd52c5ccf6edbd2 | APPROVED       |
+| CS-9-AC1 | 8882a1fe18d18557d87d267763a4a3e7869e9d8ee714069083692cd471fc4cb0 | APPROVED       |
+| CS-9-AC2 | 701cfbb25f04cc5aeae7585c65561dbf246e0158111c426c1f9ed52db6247623 | APPROVED       |
+| CS-9-AC3 | d454d729eff419f08f654fa892959b23c46c8d8a9d273995d14c3aa466aafc9d | APPROVED       |
+| CS-3-AC1 | bb6588743346cc543aeca6951e8c800b8cfe13b04c129504f180b79e411bace8 | APPROVED       |
+| CS-3-AC2 | 40272c6b7ba15b7a85c20b66c34f1a9eb7d2b0677ca2baa81856c94aa1de9d1a | APPROVED       |
+
+All twelve procedures for these eleven criteria remain PLANNED. Approval
+is limited to verification-plan quality; all whole specs remain DRAFT.
+CS-7's historical override requirement is explicitly superseded by the newer
+no-bypass contract; CS-9 preserves historical six-file coverage while requiring
+all nine current files. Actual current service execution is not inferred.
+
+Runtime-only finding from the actual reviewer, NOT FIXED in specification phase:
+deployment jobs independently checkout main and do not propagate require-ci's
+resolved SHA to downstream checkouts; main movement between jobs can invalidate
+exact-SHA provenance. Future implementation must address and verify this before
+shipping. Redis configuration currently proves AOF/noeviction readback, while
+everysec/maxmemory readback remains a future specified assertion.
+
+## Routing, consolidation and invocation planning review
+
+The actual read-only reviewer continued individually through CS-6, CS-5 and
+CS-12. CS-6 AC2 initially required corrections: cold-session fixtures must use
+fresh contexts/empty query cache rather than pretending a background refetch
+makes cached authentication pending; server denial requires genuine anonymous
+or cross-owner sessions, not an intercepted authenticated:false result. Real
+private feature mounts are recorded without replacing the feature. Corrected
+procedure was independently re-read and approved.
+
+CS-5 review traced the actual owner/archive SQL predicate, six-field public
+projection, URL sanitization and copied module-relative fixture isolation.
+Clean-checkout parity is future evidence, not an old green-run citation.
+CS-12 explicitly requires actual capability grants/refusal proof. This native
+reviewer's observed non-editing does not prove it lacks edit capabilities.
+Selected platform evidence remains a future gate; no permissions were changed.
+
+| AC        | Independently computed binding SHA-256                           | Scoped verdict |
+| --------- | ---------------------------------------------------------------- | -------------- |
+| CS-6-AC1  | 0290aa5c2eab66e4177cddafe560f5a2b51fa26340c5e72361c048f573e8b917 | APPROVED       |
+| CS-6-AC2  | 200d9ab227a50e9f0ec8c831c6a68f8d54a0246967b25badfad804984e24575a | APPROVED       |
+| CS-6-AC3  | 8a04939771043569abbfefc48e6abdcf68f27375c49a161be8dee6f79cd1a599 | APPROVED       |
+| CS-5-AC1  | a8996f79ded372f68c44f123a574db9f75f72036c9f39c7b2776c820c74eda80 | APPROVED       |
+| CS-5-AC2  | 5ea24a787af9008bde3ae2352ea6f3337773dd4bf2fc3e84cb4aa2dbdc44c0e9 | APPROVED       |
+| CS-5-AC3  | 99d29c244e563c182e08d842a49bcb9e6d05ffccc7db525b182cadabcb0c7d1a | APPROVED       |
+| CS-12-AC1 | 3f26ea8174e77a8aabdc7965e7c506db583287c8b18c71ce0a2db265cdb0f78b | APPROVED       |
+| CS-12-AC2 | 46a19a638b61664da5a091354ddceb62b241f2ba18ef450912ec95325a70907c | APPROVED       |
+| CS-12-AC3 | 902d2f6ab561cff9e81a7760838f0d47e737cda2234f12e844efbe09f8bbc12d | APPROVED       |
+| CS-12-AC4 | 69f19fb383f9ae53086a253e20e23bbc0423ccd985d8cdddd3cd7292b167dd5d | APPROVED       |
+
+All ten procedures remain PLANNED. These scoped approvals do not approve any
+whole ticket, create current test/provider/hosted evidence or promote workflow.
+
+## Agent-retention planning review
+
+The same actual reviewer inspected CS-10 against the24 canonical definitions
+and activation policy. AC1/AC2 were approved. AC3 and DoD initially received
+REVISE: an explained unresolved disposition cannot substitute for actually
+merging/removing a redundant active role. The correction explicitly keeps
+implementation acceptance incomplete until approved consolidation is executed;
+all24 individually justified roles can still produce a valid zero-removal result.
+The reviewer independently re-read and approved the correction.
+
+| AC        | Independently computed binding SHA-256                           | Scoped verdict |
+| --------- | ---------------------------------------------------------------- | -------------- |
+| CS-10-AC1 | d675de8ba97c03f7ea101bb7104014d3b923bf2ac0e01c4fef257961d05a5111 | APPROVED       |
+| CS-10-AC2 | 577661f5973e438419ff322c7cd732651eae862220cff47330e42cba83a80738 | APPROVED       |
+| CS-10-AC3 | 7a647e919ca4f873bae2c2c616bbb0b17a65165d871f094d04fe469ee136e312 | APPROVED       |
+
+The reviewer also inspected four new specification-content regressions. They
+protect no-bypass/source-bound DAG semantics, registration/execution separation,
+cold-session/genuine server-denial setup, container/management port distinction
+and actual tool grants versus observed non-editing. They are not deployment,
+integration, browser, live-host or platform enforcement execution evidence.
+No whole-ticket approval was granted; all three procedures remain PLANNED.
+
+## Continued static-public planning review: CS-11
+
+The actual independent reviewer read source styles/controller, browser fixtures,
+staging projection and the local accesslint-audit skill. Design stays PARTIAL;
+marketing-home image is not invented static job-list approval. The local skill
+is now present, but the available-tool inventory exposed no audit_live,
+audit_html or audit_diff capability. No audit/sign-off was performed or tool
+installed. Future named audit plus human judgment remain explicit DoD evidence.
+
+AC5 initially received REVISE: source-only contract verification cannot prove
+actual automatic network origins. Correction separates static allowlist/no-build
+contract from browser request capture. User-controlled legitimate external job
+navigation remains allowed and never implies Applied. The actual reviewer
+independently re-read and approved that ordered two-procedure group.
+
+| AC        | Independently computed binding SHA-256                           | Scoped verdict |
+| --------- | ---------------------------------------------------------------- | -------------- |
+| CS-11-AC1 | cc8f7495ae32166d90b983ec4251a9b267c1c37e206f17e61a9d6c727d9733f8 | APPROVED       |
+| CS-11-AC2 | 7f58e5d079c3068c9f11ab92a185abfff1b4f5c08c9c85a018fe61e0b2c862e8 | APPROVED       |
+| CS-11-AC3 | b8e2589279ac91a9e734224c7b3ef2b49bb5000c067b47e6687b5aa36fe945f5 | APPROVED       |
+| CS-11-AC4 | 7b97da8bdac0ed0f2279fae3a0c5c7fa5115e5499a9cc0e9ec2f0a089c8098ce | APPROVED       |
+| CS-11-AC5 | 515a2f07a6965039c90f72ef90350e616b1e6798b31541a8da495eef328b7890 | APPROVED       |
+
+All six procedures remain PLANNED, not executed. Whole-spec/phase approval is
+not granted. Named accessibility guidance influenced failure/limitation and
+human-evidence requirements only; no runtime accessibility fix was implemented.

@@ -78,6 +78,68 @@ test('CS8 separates parser contracts from rendered browser proof and module-root
   assert.ok(bindings.every((binding) => binding.testStatus === 'PLANNED'));
 });
 
+test('CI bindings preserve no bypass and separate registration from service execution', () => {
+  const model = buildCatalog(fresh());
+  const override = model.traceability.find((row) => row.acId === 'CS-7-AC2').exactBindings[0];
+  assert.match(override.assertion, /No override_ci/);
+  assert.match(override.expectedResult, /historical override/);
+  const refusal = model.traceability.find((row) => row.acId === 'CS-7-AC3').exactBindings[0];
+  assert.match(refusal.assertion, /source hash/);
+  assert.match(refusal.assertion, /needs\/conditions/);
+  const integration = model.traceability.find((row) => row.acId === 'CS-9-AC2').exactBindings;
+  assert.deepEqual(
+    integration.map((entry) => entry.type),
+    ['AUTOMATED_CONTRACT', 'AUTOMATED_INTEGRATION'],
+  );
+  assert.match(integration[0].assertion, /not execution evidence/);
+  assert.match(integration[1].assertion, /actual executed tests/);
+  assert.ok(integration.every((entry) => entry.testStatus === 'PLANNED'));
+});
+
+test('private rendering plan distinguishes cold session fixtures and genuine API denial', () => {
+  const binding = buildCatalog(fresh()).traceability.find((row) => row.acId === 'CS-6-AC2')
+    .exactBindings[0];
+  assert.match(binding.setup, /fresh browser context/);
+  assert.match(binding.setup, /not mocked false session/);
+  assert.match(binding.assertion, /cached authenticated navigation remains usable/);
+  assert.match(binding.procedure, /actual private feature components/);
+  assert.equal(binding.testStatus, 'PLANNED');
+});
+
+test('proxy plan limits container publication without prohibiting approved management access', () => {
+  const binding = buildCatalog(fresh()).traceability.find((row) => row.acId === 'CS-3-AC2')
+    .exactBindings[0];
+  assert.equal(binding.type, 'LIVE_HOST');
+  assert.match(binding.assertion, /Anchor namespace identity remains unchanged/);
+  assert.match(binding.assertion, /Application\/container host-publication/);
+  assert.match(binding.assertion, /never require disabling operator access/);
+  assert.equal(binding.testStatus, 'PLANNED');
+});
+
+test('native reviewer no-edit observation is not capability enforcement evidence', () => {
+  const binding = buildCatalog(fresh()).traceability.find((row) => row.acId === 'CS-12-AC4')
+    .exactBindings[0];
+  assert.match(binding.assertion, /not PASS/);
+  assert.match(binding.negativeCase, /zero observed edits alone cannot pass/);
+  assert.equal(binding.testStatus, 'PLANNED');
+});
+
+test('public static planning retains partial design and named future audit boundaries', () => {
+  const model = buildCatalog(fresh());
+  assert.equal(
+    model.designTraceability.find((row) => row.ticketId === 'CS-11').status,
+    'DESIGN_PARTIAL',
+  );
+  const visual = model.traceability.find((row) => row.acId === 'CS-11-AC1').exactBindings[0];
+  assert.match(visual.assertion, /Missing exact mapping returns DESIGN_PARTIAL/);
+  const audit = model.traceability.find((row) => row.acId === 'CS-11-AC4').exactBindings[0];
+  assert.equal(audit.type, 'MANUAL_ACCESSIBILITY');
+  assert.match(audit.assertion, /Unavailable audit tools/);
+  assert.equal(audit.testStatus, 'PLANNED');
+  const privacy = model.traceability.find((row) => row.acId === 'CS-11-AC5').exactBindings[0];
+  assert.match(privacy.assertion, /pageFiles list unchanged/);
+});
+
 test('216 source-linked drafts preserve registry and canonical stages without readiness fabrication', () => {
   const inputs = fresh();
   const before = JSON.stringify(inputs);
@@ -97,11 +159,11 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
   assert.equal(model.counts.completeSpecificationCount, 0);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 18);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 49);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 17);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 889);
-  assert.equal(model.counts.authoredExactTestBindingCount, 18);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 46);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 860);
+  assert.equal(model.counts.authoredExactTestBindingCount, 49);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(

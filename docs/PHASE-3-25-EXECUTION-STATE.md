@@ -7,25 +7,33 @@ content is ticket-specification-policy.json; generated coverage owns counters.
 - Branch: phase-3.25/ticket-specification-catalog.
 - Initial clean checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14.
 - Previous clean checkpoint: 2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111.
-- Completed local checkpoint: c794c2ff95d98ad35e504d526fe1c0e310c4ff47.
+- Completed prior local checkpoints: c794c2ff95d98ad35e504d526fe1c0e310c4ff47
+  and13b801de478bbbe0f0b077503624c4ee911f70dd.
 - Latest checkpoint: resolve `git log -1 --format=%H -- docs/PHASE-3-25-EXECUTION-STATE.md`
   after committing this state; a document cannot honestly embed its own SHA.
 - Last whole-spec approved ticket: NONE. Approved: 0/216. All 216 still require
   whole-content review, not just binding receipts.
-- Reviewed ACs: CS-4 AC1–2; CS-8 AC1–3; CS-46 AC1–3; CS-67 AC1–3;
-  CS-70 AC1–3; CS-71 AC1–3. Seventeen criteria have eighteen reviewed PLANNED
-  procedures (CS-8 AC2 has contract plus browser); 889 criteria remain unmapped.
-- Next content ticket: CS-1, within the continuing CS-1–CS-18 batch. CS-4 and
-  CS-8 binding work is independently reviewed; do not regenerate it as generic
-  drafts or mistake it for whole-spec approval.
+- Reviewed ACs: CS-1 AC1–3; CS-3 AC1–2; CS-4 AC1–2; CS-5 AC1–3;
+  CS-6 AC1–3; CS-7 AC1–3; CS-8 AC1–3; CS-9 AC1–3; CS-10 AC1–3; CS-11 AC1–5;
+  CS-12 AC1–4; CS-46 AC1–3; CS-67 AC1–3; CS-70 AC1–3; CS-71 AC1–3.
+  Forty-six criteria have49 reviewed PLANNED procedures (CS-8 AC2, CS-9
+  AC2 and CS-11 AC5 each have two);860 criteria remain unmapped. Content-bound hashes are
+  in policy and independently observed REVIEW-01, not execution evidence.
+- Next content ticket: CS-2, within continuing CS-1–CS-18 batch, then
+  CS-13–CS-18. CS-11 bindings are now reviewed, but its exact static visual
+  mapping remains PARTIAL and named accessibility audit remains future evidence.
+  The historical LeadTable/check-ui.mjs paths no longer exist
+  after canonical consolidation; reconcile original768px defect with current
+  saved route and existing historical proof, without inventing current parity.
+  Already reviewed bindings must not be regenerated or counted as whole approval.
 - Remaining whole-spec tickets: CS-1 through CS-216. Continue through every
   bounded batch, without runtime implementation or ticket promotion.
 
 ## Exact remaining ledgers
 
-The 617 OPEN finding identifiers are the `(ticketId, code)` pairs in
+The608 OPEN finding identifiers are the `(ticketId, code)` pairs in
 `.ai/ticket-specification-coverage.json` where `disposition === 'OPEN'`.
-All 630 original records remain, with six resolved binding findings and seven
+All630 original records remain, with15 resolved binding findings and seven
 historical owner-choice reclassifications. Do not delete history or infer closure
 from source-file presence.
 
@@ -61,6 +69,29 @@ is a specified DoD, not automatically a spec-approval blocker.
   an override or deliberately pushing broken main.
 - CS-9 historical six-file integration count must be reconciled with the current
   nine registered service-backed files; do not reduce coverage to satisfy old prose.
+- CS-7 actual reviewer found jobs independently checkout moving main rather
+  than propagating require-ci's checked SHA. Record later runtime defect, not
+  fixed in planning. Non-shipping hosted verification harness must derive actual
+  source-hash-bound DAG/conditions and invalidate on source drift.
+- CS-6 cold session tests need fresh context/empty cache; ordinary authenticated
+  background refetch is not pending. Real API denial requires genuine anonymous
+  and cross-owner contexts, not intercepted anonymous session response.
+- CS-3 application/container ports80/443 are distinct from separately approved
+  management SSH. Stable network-anchor identity is required in future live
+  proof; monitor fixture success alone does not prove deployed recovery.
+- CS-5 exporter SQL ownership/archive proof is separate from existing pure public
+  projection tests. Copied actual module roots or supported injection must prevent
+  changing canonical mobile-site outputs or touching real environment files.
+- CS-10 unresolved role consolidation is not an alternative implementation DoD.
+  All24 individually justified roles can remain; no forced roster reduction.
+- CS-12 native no-edit observation is not enforced read-only capability proof.
+  Future selected-platform tool grant/refusal evidence is required; no permission
+  change, installation or unsupported capability workaround is authorized.
+- CS-11 local accesslint-audit guidance now exists, unlike the historical
+  unavailable-skill entry. Tool discovery exposed no audit_live/audit_html/audit_diff
+  engine; no audit was executed. Source allowlist/origin checks are distinct from
+  actual automatic-resource browser recording, and legitimate user-opened posting
+  destinations remain allowed without implying Applied. Keep design PARTIAL.
 
 ## Resume without rediscovery
 
