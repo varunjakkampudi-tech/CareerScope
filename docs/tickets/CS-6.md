@@ -396,7 +396,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed."
+      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "exactBindings": []
     },
     {
       "ticketId": "CS-6",
@@ -421,7 +422,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed."
+      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "exactBindings": []
     },
     {
       "ticketId": "CS-6",
@@ -438,7 +440,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed."
+      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "exactBindings": []
     }
   ],
   "sources": [".ai/backlog.json#CS-6", "docs/TESTING.md"]
@@ -645,10 +648,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 }
 ```
 
-## Open specification gates
+## Specification gate history
 
-| Code                     | Reason                                                                                                                   | Owner         | Evidence                                                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------- |
-| PARTIAL_DESIGN           | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.            | UX            | Ticket-specific state and viewport mapping or independently approved design N/A rationale.               |
-| RELEASE_TARGET_UNDECIDED | Source registry has no approved release assignment.                                                                      | Product owner | Explicit release assignment or owner-approved future-release disposition.                                |
-| EXACT_AC_TEST_BINDING    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA            | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                     | Disposition | Original reason                                                                                                          | Owner         | Evidence                                                                                                 |
+| ------------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------- |
+| PARTIAL_DESIGN           | OPEN        | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.            | UX            | Ticket-specific state and viewport mapping or independently approved design N/A rationale.               |
+| RELEASE_TARGET_UNDECIDED | OPEN        | Source registry has no approved release assignment.                                                                      | Product owner | Explicit release assignment or owner-approved future-release disposition.                                |
+| EXACT_AC_TEST_BINDING    | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA            | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

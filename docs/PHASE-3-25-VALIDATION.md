@@ -7,6 +7,49 @@ subsequent local checkpoint; obtain its exact SHA from Git and the final respons
 
 This is local evidence, not hosted CI or readiness approval.
 
+## Remediation checkpoint validation
+
+Starting SHA: `3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14`. Node 24.19.0.
+Original checkpoint results below remain historical evidence, not new claims.
+
+Observed serial results after remediation:
+
+| Command                         | Result                                                                                                                                                                |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run gates:test`            | PASS; includes workflow, agile, consistency, privacy, agent, Engineering and rendered board checks; release advisories remain advisories, not readiness certification |
+| `npm run blockers:check`        | PASS; 216 tickets, 37 blockers, 15 hostpending actions                                                                                                                |
+| `npm run design:coverage:check` | PASS; frozen mapping preserved                                                                                                                                        |
+| `npm run typecheck`             | PASS; 45 canonical test files also type-check                                                                                                                         |
+| `npm run lint`                  | PASS                                                                                                                                                                  |
+| `npm run format:check`          | PASS                                                                                                                                                                  |
+| `npm run test:domain`           | PASS                                                                                                                                                                  |
+| `npm run checks:registry`       | PASS; 81 checks classified                                                                                                                                            |
+| `npm run tickets:spec:test`     | PASS; 36 tests, no failures/skips/todos, including assertion-review hash invalidation, missing receipt, canonical fixture isolation and sandbox bypass rejection      |
+| `npm run tickets:spec:check`    | PASS; 216 drafts, 3 reviewed bindings, 903 unmapped ACs; not a readiness pass                                                                                         |
+| `git diff --check`              | PASS                                                                                                                                                                  |
+
+Final regeneration wrote zero changed files; the subsequent artifact check also
+reported zero drift. All 630 original findings remain: 622 OPEN, seven
+RECLASSIFIED and one RESOLVED. The independent reviewer compared the complete
+finding records against the starting checkpoint, excluding only the added
+disposition field. Readiness intentionally remains INCOMPLETE.
+
+Failed attempts are retained: one overlapping legacy fixture/spec run read
+temporary synthetic tickets and was invalidated. Serial legacy agile runs then
+reproduced Windows UNKNOWN file-write failures against canonical backlog or
+findings files; the exact OS handle holder was not identified. Fixture snapshots
+were restored only after their Git object hashes matched starting HEAD. The
+checker now runs unchanged scenarios in an isolated temporary workspace and
+cannot write canonical state, even with an inherited sandbox flag. An initial
+lint failure (`no-unsafe-finally`) was corrected without disabling the rule.
+
+The real independent review was scoped to owner-direction reconciliation,
+three planned binding procedures and harness safety. It did not approve any
+whole specification. Execution of the CS-46 feature tests remains PLANNED.
+
+The final commit and clean-tree result must be obtained from Git after this
+local checkpoint. No hosted run, push, merge or deployment was performed.
+
 | Command                            | Observed result                                                                                                                                            |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `npm run gates:test`               | PASS, exit 0; includes privacy, release/deployment fixture gates, workflow, agile, state readers, agents, Engineering, rendered board and promotion checks |

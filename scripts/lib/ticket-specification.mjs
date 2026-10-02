@@ -51,6 +51,8 @@ export const VERIFICATION_TYPES = Object.freeze([
   'PRODUCTION_SMOKE',
 ]);
 export const digest = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+export const bindingDigest = (bindings) =>
+  digest(bindings.map(({ reviewStatus: _reviewStatus, ...binding }) => binding));
 const present = (requirements, sources) => ({ applicability: 'APPLICABLE', requirements, sources });
 const na = (reason) => ({ applicability: 'NOT_APPLICABLE', reason });
 const group = (items, key) =>
@@ -312,6 +314,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     const rows = ticket.acceptanceCriteria.map((criterion, index) =>
       verification(ticket, criterion, index, profile.commands),
     );
+    for (const row of rows) row.exactBindings = policy.exactVerificationBindings?.[row.acId] ?? [];
     traceability.push(...rows);
     const gaps = [];
     const gap = (code, section, reason, owner, requiredEvidence) =>
@@ -410,7 +413,22 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         'Product Architect / UX / domain owner',
         'Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.',
       );
-    for (const item of gaps) findings.push({ ticketId: ticket.id, ...item });
+    for (const item of gaps) {
+      const decision = policy.decisionReconciliations?.[ticket.id];
+      const exactBound = rows.every(
+        (row) =>
+          row.exactBindings?.length &&
+          row.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'),
+      );
+      const disposition =
+        item.code === 'EXACT_AC_TEST_BINDING' && exactBound
+          ? 'RESOLVED'
+          : item.code === 'OWNER_DECISION' && decision
+            ? 'RECLASSIFIED'
+            : 'OPEN';
+      item.disposition = disposition;
+      findings.push({ ticketId: ticket.id, ...item, disposition });
+    }
     const source = `.ai/backlog.json#${ticket.id}`;
     const trace = {
       ticketId: ticket.id,
@@ -674,6 +692,22 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       ),
     };
     const refinement = policy.ticketRefinements?.[ticket.id];
+    const decision = policy.decisionReconciliations?.[ticket.id];
+    if (decision) {
+      const reconciliation = {
+        classification: policy.ownerDecisionSource.classification,
+        source: policy.ownerDecisionSource,
+        section: decision.section,
+        approvedDirection: decision.decision,
+        remainingGate: decision.remainingGate,
+        evidenceSemantics:
+          'Owner direction only; not implementation, review approval or live evidence.',
+      };
+      for (const section of ['technicalApproach', 'manualExternalGates']) {
+        sections[section].requirements.push(reconciliation);
+        sections[section].sources.push(policy.ownerDecisionSource.path);
+      }
+    }
     if (refinement) {
       for (const [section, requirements] of Object.entries(refinement.additionalRequirements)) {
         sections[section] = present(
@@ -682,14 +716,23 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
             ...requirements.map((requirement) => ({
               requirement,
               reviewStatus: refinement.reviewStatus,
-              authority: 'EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR',
+              authority: decision
+                ? 'OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING'
+                : 'EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR',
             })),
           ],
           [...new Set([...(sections[section].sources ?? []), ...refinement.sourceReferences])],
         );
       }
     }
-    return { ticketId: ticket.id, primaryEpicId: epicId, readiness: 'INCOMPLETE', gaps, sections };
+    return {
+      ticketId: ticket.id,
+      primaryEpicId: epicId,
+      readiness: 'INCOMPLETE',
+      reviewState: 'DRAFT',
+      gaps,
+      sections,
+    };
   });
   const epicIds = [...new Set(specs.map((spec) => spec.primaryEpicId))];
   const epics = epicIds.map((id) => {
@@ -747,9 +790,32 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     ).length,
     acceptanceCriterionCount: traceability.length,
     suggestedAcceptanceCriterionCount: traceability.length,
-    mappedAcceptanceCriterionCount: 0,
-    unmappedAcceptanceCriterionCount: traceability.length,
-    reviewedExactTestBindingCount: 0,
+    mappedAcceptanceCriterionCount: traceability.filter(
+      (row) =>
+        row.exactBindings.length &&
+        row.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'),
+    ).length,
+    unmappedAcceptanceCriterionCount: traceability.filter(
+      (row) =>
+        !row.exactBindings.length ||
+        row.exactBindings.some((binding) => binding.reviewStatus !== 'REVIEWED'),
+    ).length,
+    reviewedExactTestBindingCount: traceability.reduce(
+      (sum, row) =>
+        sum + row.exactBindings.filter((binding) => binding.reviewStatus === 'REVIEWED').length,
+      0,
+    ),
+    authoredExactTestBindingCount: traceability.reduce(
+      (sum, row) => sum + row.exactBindings.length,
+      0,
+    ),
+    acceptanceCriteriaWithAuthoredBindings: traceability.filter((row) => row.exactBindings.length)
+      .length,
+    draftSpecificationCount: specs.filter((spec) => spec.reviewState === 'DRAFT').length,
+    reviseSpecificationCount: 0,
+    reviewedSpecificationCount: 0,
+    approvedSpecificationCount: 0,
+    ownerDecisionReconciliationCount: Object.keys(policy.decisionReconciliations ?? {}).length,
     uiTicketCount: designTraceability.filter((entry) => entry.ui).length,
     designCounts: group(designTraceability, (entry) => entry.status),
     blockedTicketCount: tickets.filter((ticket) => ticket.blocked).length,
@@ -770,14 +836,95 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     sourceBacklogHash: digest(backlog),
     specificationCoveragePercent: 0,
     suggestedVerificationMappingPercent: traceability.length ? 100 : 0,
-    exactReviewedTraceabilityPercent: 0,
+    exactReviewedTraceabilityPercent: traceability.length
+      ? (traceability.filter(
+          (row) =>
+            row.exactBindings.length &&
+            row.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'),
+        ).length *
+          100) /
+        traceability.length
+      : 0,
     findingsCount: findings.length,
+    openFindingCount: findings.filter((finding) => finding.disposition === 'OPEN').length,
+    resolvedFindingCount: findings.filter((finding) => finding.disposition === 'RESOLVED').length,
+    reclassifiedFindingCount: findings.filter((finding) => finding.disposition === 'RECLASSIFIED')
+      .length,
   };
   return { specs, epics, graph, traceability, designTraceability, actions, findings, counts };
 }
 
 export function validateCatalog(model, inputs, resolvePath) {
   const errors = [];
+  const canonicalAcs = new Set(
+    inputs.backlog.items.flatMap((ticket) =>
+      ticket.acceptanceCriteria.map((_, index) => `${ticket.id}-AC${index + 1}`),
+    ),
+  );
+  const decisionIds = Object.keys(inputs.policy.decisionReconciliations ?? {});
+  if (decisionIds.length) {
+    const source = inputs.policy.ownerDecisionSource;
+    if (
+      !source ||
+      !/^[a-f0-9]{40}$/.test(source.commit ?? '') ||
+      !resolvePath(source.path ?? '') ||
+      source.classification !== 'DECISION_EXISTS_BUT_NOT_PROPAGATED_TO_SPEC'
+    )
+      errors.push('invalid owner decision provenance');
+    for (const id of decisionIds) {
+      const decision = inputs.policy.decisionReconciliations[id];
+      if (!inputs.backlog.items.some((ticket) => ticket.id === id))
+        errors.push(`orphan decision reconciliation ${id}`);
+      for (const field of ['section', 'decision', 'remainingGate'])
+        if (typeof decision[field] !== 'string' || !decision[field].trim())
+          errors.push(`incomplete decision reconciliation ${id}.${field}`);
+      if (!inputs.ownerDecisionText?.includes(`## ${decision.section}`))
+        errors.push(`unresolved owner decision section ${id}`);
+    }
+  }
+  for (const [acId, bindings] of Object.entries(inputs.policy.exactVerificationBindings ?? {})) {
+    if (!canonicalAcs.has(acId)) errors.push(`orphan exact binding ${acId}`);
+    if (!Array.isArray(bindings) || !bindings.length) {
+      errors.push(`empty exact binding ${acId}`);
+      continue;
+    }
+    const names = new Set();
+    const receipt = inputs.policy.verificationReviewReceipts?.[acId];
+    if (
+      bindings.some((binding) => binding.reviewStatus === 'REVIEWED') &&
+      (receipt?.verdict !== 'APPROVED' ||
+        receipt.reviewer !== '/root/phase325_review' ||
+        receipt.artifact !== 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' ||
+        !resolvePath(receipt.artifact ?? '') ||
+        receipt.contentHash !== bindingDigest(bindings) ||
+        !inputs.verificationReviewText?.includes(receipt.contentHash))
+    )
+      errors.push(`unproven content-bound verification review ${acId}`);
+    for (const binding of bindings) {
+      for (const field of [
+        'preconditions',
+        'setup',
+        'procedure',
+        'assertion',
+        'expectedResult',
+        'testName',
+        'testFileOrProcedureId',
+        'fixtures',
+        'negativeCase',
+        'evidenceArtifact',
+        'reviewer',
+        'releaseGate',
+      ])
+        if (typeof binding[field] !== 'string' || !binding[field].trim())
+          errors.push(`incomplete exact binding ${acId}.${field}`);
+      if (!VERIFICATION_TYPES.includes(binding.type))
+        errors.push(`invalid exact binding type ${acId}`);
+      if (binding.testStatus !== 'PLANNED' || !['DRAFT', 'REVIEWED'].includes(binding.reviewStatus))
+        errors.push(`unproven exact binding approval/execution ${acId}`);
+      if (names.has(binding.testName)) errors.push(`duplicate exact binding ${acId}`);
+      names.add(binding.testName);
+    }
+  }
   for (const [id, refinement] of Object.entries(inputs.policy.ticketRefinements ?? {})) {
     if (!inputs.backlog.items.some((ticket) => ticket.id === id))
       errors.push(`orphan refinement ${id}`);

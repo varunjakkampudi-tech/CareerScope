@@ -1,25 +1,59 @@
 {
   "schemaVersion": 1,
-  "uiTicketIds": ["CS-45"],
+  "uiTicketIds": [
+    "CS-45"
+  ],
   "sequencingEdges": [
-    { "prerequisite": "CS-6", "dependent": "CS-47", "sourceAcIndex": 3 },
-    { "prerequisite": "CS-13", "dependent": "CS-47", "sourceAcIndex": 3 },
-    { "prerequisite": "CS-14", "dependent": "CS-47", "sourceAcIndex": 3 },
-    { "prerequisite": "CS-16", "dependent": "CS-47", "sourceAcIndex": 3 },
-    { "prerequisite": "CS-17", "dependent": "CS-47", "sourceAcIndex": 3 },
-    { "prerequisite": "CS-18", "dependent": "CS-47", "sourceAcIndex": 3 },
-    { "prerequisite": "CS-19", "dependent": "CS-47", "sourceAcIndex": 3 }
+    {
+      "prerequisite": "CS-6",
+      "dependent": "CS-47",
+      "sourceAcIndex": 3
+    },
+    {
+      "prerequisite": "CS-13",
+      "dependent": "CS-47",
+      "sourceAcIndex": 3
+    },
+    {
+      "prerequisite": "CS-14",
+      "dependent": "CS-47",
+      "sourceAcIndex": 3
+    },
+    {
+      "prerequisite": "CS-16",
+      "dependent": "CS-47",
+      "sourceAcIndex": 3
+    },
+    {
+      "prerequisite": "CS-17",
+      "dependent": "CS-47",
+      "sourceAcIndex": 3
+    },
+    {
+      "prerequisite": "CS-18",
+      "dependent": "CS-47",
+      "sourceAcIndex": 3
+    },
+    {
+      "prerequisite": "CS-19",
+      "dependent": "CS-47",
+      "sourceAcIndex": 3
+    }
   ],
   "ticketRefinements": {
     "CS-46": {
       "reviewStatus": "DRAFT",
-      "sourceReferences": [".ai/backlog.json#CS-46", "docs/PHASE-2-BLOCKER-RESOLUTION.md"],
+      "sourceReferences": [
+        ".ai/backlog.json#CS-46",
+        "docs/OWNER-DECISIONS-2026-10-02.md"
+      ],
       "additionalRequirements": {
         "technicalApproach": [
-          "Recommendation ONLY, not accepted semantics: store explicit owner-scoped exclusion tombstones for normalized resume-derived skills/titles, with resume provenance/revision. Apply exclusions before deterministic matching and explanations; persist suppression across searches and reparsing until the owner explicitly restores a fact. Keep positive preferences separate from tombstones. The existing criterion refers to suppression until reparsing, so persistence across reparse requires an explicit owner decision; do not silently implement this proposal."
+          "Explicit durable per-fact exclusion gate. Accepted resume facts plus explicit preferences only. Excluded facts contribute zero; reparse creates reviewable proposals without silently clearing candidate intent. Restoration explicit/reversible; provenance visible; explicit user years wins; no LLM reintroduction.",
+          "Approved scope, not completed code. Freeze candidate/profile and accepted/excluded fact snapshots for deterministic matching. Define normalized fact identity and provenance mapping before implementation; a new parse revision never implies consent."
         ],
         "testStrategy": [
-          "After the owner accepts the exclusion lifespan, plan assertions for declined skill and title, repeated search, same/different resume revision, equivalent normalized fact, explicit restore, cross-owner denial and reproducible frozen-score inputs. Expected outcomes for reparse must reflect the accepted decision, not this proposal."
+          "Plan rejected skill/title, repeated search, changed resume revision, normalization-equivalent facts, explicit restore, foreign-owner denial and deterministic-score provenance assertions. Reparse preserves suppression until explicit candidate restoration."
         ]
       }
     }
@@ -123,7 +157,11 @@
   },
   "domains": {
     "default": {
-      "sources": ["docs/ARCHITECTURE.md", "docs/TESTING.md", "docs/KNOWN-LIMITATIONS.md"],
+      "sources": [
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md",
+        "docs/KNOWN-LIMITATIONS.md"
+      ],
       "approach": [
         "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
       ],
@@ -151,5 +189,147 @@
     "reason": "The real read-only independent reviewer resumed after the initial usage-limit failure, delivered findings and independently verified the mechanical corrections, including source projection validation, cross-cutting UI scope, honest AC metrics, exact-ID sequencing and CS-25 owner deferral. No unresolved mechanical defect remained among the reviewed fixes. Exact AC bindings, ticket-specific requirements/contracts, design gaps and release decisions remain incomplete. Whole-phase disposition is REVISE, not approval.",
     "reviewerTask": "/root/phase325_review",
     "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
+  },
+  "exactVerificationBindings": {
+    "CS-46-AC1": [
+      {
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Local source commit 154974acc372ee0ec2434c95107e7746ee3c59a7 is available; frozen CS-46 source AC remains unchanged.",
+        "setup": "Read docs/OWNER-DECISIONS-2026-10-02.md, CS-46 section, alongside the generated CS-46 specification.",
+        "procedure": "Compare the decision provenance against git show at the recorded commit; inspect matching scope and the reparse clarification in the specification.",
+        "assertion": "Decision is explicit per-fact exclusion, not always-on supplementary union; reparse cannot silently clear prior rejection; years retains explicit-user-value-wins; no LLM reintroduction. Frozen source AC text is preserved.",
+        "expectedResult": "Approved owner choice is propagated with exact commit/path/section, without claiming runtime completion or reopening the same choice.",
+        "testName": "CS46-P01 owner direction and historical AC reconciliation",
+        "testFileOrProcedureId": "MANUAL-CS46-P01",
+        "fixtures": "Public repository decision record and frozen backlog only; no real candidate data.",
+        "negativeCase": "Reject a spec that describes owner choice as undecided or treats reparse as automatic consent.",
+        "evidenceArtifact": "Redacted reviewer receipt containing source commit, section, reviewed spec content hash and verdict; no runtime or provider evidence claimed.",
+        "reviewer": "Product Architect and independent specification reviewer",
+        "releaseGate": "SPECIFICATION_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-46-AC2": [
+      {
+        "type": "AUTOMATED_INTEGRATION",
+        "preconditions": "Future exclusion contract implemented; isolated database migrated; candidate A and candidate B each have synthetic resume and preferences.",
+        "setup": "A has resume-derived skill 'TypeScript' and title 'Engineer'; neither is in explicit preferences. A declines both, then performs two searches and reparses a changed resume with equivalent normalized facts. B retains accepted facts.",
+        "procedure": "Read A's matching context and frozen match evidence after rejection, repeated search and reparse; explicitly restore one fact and search again. Attempt to mutate A's exclusions using B's session.",
+        "assertion": "Rejected normalized facts contribute zero through all three stages; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
+        "expectedResult": "Candidate intent persists across searches and changed parse revisions with ownership isolation; restoration is explicit and independently scoped.",
+        "testName": "persists declined resume facts across searches and reparsing until explicit restoration",
+        "testFileOrProcedureId": "packages/core/src/resume-fact-exclusions.integration.test.ts",
+        "fixtures": "Synthetic owners A/B, two resume parse revisions, normalized-equivalent skills/titles, fixed job snapshot and scoring clock; no production resumes.",
+        "negativeCase": "Stale or foreign-owner mutation leaves exclusions unchanged; a new parse revision cannot implicitly restore facts; profile-entered years retains precedence over parsed years.",
+        "evidenceArtifact": "Future exact-content integration run with named test, Node version, database version, exit code and nonzero pass count; sanitized assertions only.",
+        "reviewer": "Matching domain reviewer, Security reviewer and QA",
+        "releaseGate": "R1_PRODUCT_ACCEPTANCE_RELEASE_ASSIGNMENT_PENDING",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-46-AC3": [
+      {
+        "type": "AUTOMATED_CONTRACT",
+        "preconditions": "Approved exclusion implementation contract is available; canonical architecture and matching context documentation exist.",
+        "setup": "Compare docs/ARCHITECTURE.md and packages/matching/src/context.ts documentation with accepted owner direction; historical v2 path in source AC is treated as preserved evidence, not a required current directory.",
+        "procedure": "Add a documentation-contract assertion against the actual matching context contract after implementation; independently inspect canonical architecture coverage of accepted/excluded fact precedence and reparse behavior.",
+        "assertion": "Current docs must not claim always-on union of declined facts or no exclusion mechanism after implementation. They must describe explicit restore, preserved suppression across reparse and explicit-user years precedence; source historical AC text remains unchanged.",
+        "expectedResult": "Canonical documentation and context contract agree with tested behavior; no obsolete wrapper is recreated to satisfy a historical path.",
+        "testName": "documents canonical accepted and excluded resume fact precedence",
+        "testFileOrProcedureId": "scripts/check-resume-fact-contract.test.mjs",
+        "fixtures": "Canonical architecture text and context module; synthetic matching-context fixtures only.",
+        "negativeCase": "Fixture containing 'no per-skill exclusion' as a current contract fails once exclusion implementation is delivered; historical citations remain permitted when explicitly labeled.",
+        "evidenceArtifact": "Future named contract test result plus content-bound independent documentation review receipt.",
+        "reviewer": "Matching domain reviewer and Technical Documentation reviewer",
+        "releaseGate": "DOCUMENTATION_AND_PRODUCT_CONTRACT_GATE",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ]
+  },
+  "ownerDecisionSource": {
+    "commit": "154974acc372ee0ec2434c95107e7746ee3c59a7",
+    "path": "docs/OWNER-DECISIONS-2026-10-02.md",
+    "branch": "refs/remotes/origin/owner-decisions-2026-10-02",
+    "classification": "DECISION_EXISTS_BUT_NOT_PROPAGATED_TO_SPEC"
+  },
+  "decisionReconciliations": {
+    "CS-40": {
+      "section": "CS-40 / CS-88 — admin authorization and admin UX",
+      "decision": "Dedicated privileged Admin Control Plane with server-enforced RBAC, least privilege, seven approved roles and no arbitrary database editor or secret-bearing UI.",
+      "remainingGate": "Exact permission/projection contracts and independent security/design review. Approval does not prove implementation or authorize unrestricted mutations."
+    },
+    "CS-44": {
+      "section": "CS-44 — account recovery and verification",
+      "decision": "No second bespoke email-token recovery system. Carry non-enumeration, expiry, single-use, replay rejection and abuse controls into Cognito; preserve authenticated password change/operator recovery until release.",
+      "remainingGate": "Sender identity/domain evidence and security review; historical registration-disabled AC is the pre-Cognito safety boundary, not a ban on approved Cognito signup."
+    },
+    "CS-46": {
+      "section": "CS-46 — resume-derived matching facts",
+      "decision": "Explicit durable per-fact exclusion gate. Accepted resume facts plus explicit preferences only. Excluded facts contribute zero; reparse creates reviewable proposals without silently clearing candidate intent. Restoration explicit/reversible; provenance visible; explicit user years wins; no LLM reintroduction.",
+      "remainingGate": "Implementation/data contract and tests remain unproven. Historical AC2 'until re-parsed' is a lower bound, not permission to clear exclusions on reparse; later owner direction governs."
+    },
+    "CS-88": {
+      "section": "CS-40 / CS-88 — admin authorization and admin UX",
+      "decision": "Admin Control Plane scope approved; imported Design System is visual authority; real redacted API data or honest unavailable states only.",
+      "remainingGate": "Exact per-screen responsive mappings, RBAC/API contracts and actual named independent reviews. Functional approval is not proof every screen is designed."
+    },
+    "CS-89": {
+      "section": "CS-89 — OpenRouter / AI",
+      "decision": "Assistive preparation/explanation approved but production default-OFF; never control deterministic ranking, authorization, identity, verification or application state.",
+      "remainingGate": "Runtime secret, current provider-catalog free-model proof, budget/kill switch, exact-SHA live verification and rollback remain required; no activation in this phase."
+    },
+    "CS-90": {
+      "section": "CS-90..CS-94 — Cognito architecture",
+      "decision": "ap-south-1; verified normalized case-insensitive email; phone optional contact with phone OTP later; server provider exchange into opaque CareerScope session; auth.careerscope.tech after DNS/TLS; controlled owner linking without hash export; flagged canary with Argon2 rollback.",
+      "remainingGate": "Specific pool settings, threat/retention review and actual DNS/TLS/provider evidence remain unproven. Region/identifier no longer require a fresh decision."
+    },
+    "CS-91": {
+      "section": "CS-90..CS-94 — Cognito architecture",
+      "decision": "Initial email signup/OTP, not mobile OTP expansion; provider tokens stay server-side, never browser-persisted; preserve opaque application sessions and canary rollback.",
+      "remainingGate": "Exact OTP/session contracts, negative tests and real Cognito acceptance; phone OTP remains later capability."
+    },
+    "CS-92": {
+      "section": "CS-90..CS-94 — Cognito architecture",
+      "decision": "Verified CareerScope domain identity is sender target; actual From/Reply-To and SES access are operational/DNS evidence, not assumptions.",
+      "remainingGate": "Addresses, supported locales and template visual acceptance are not specified here. DNS/bounce/deliverability and real-message verification remain external acceptance."
+    },
+    "CS-93": {
+      "section": "CS-90..CS-94 — Cognito architecture",
+      "decision": "Email-first Cognito exchange into opaque application sessions; no browser provider-token persistence; preserve workspace reachability and rollback.",
+      "remainingGate": "Exact signup/OTP/error/outage/recovery design states and keyboard/browser review plus real session-exchange proof."
+    },
+    "CS-94": {
+      "section": "CS-90..CS-94 — Cognito architecture",
+      "decision": "Flagged canary with Argon2/session rollback until disposable E2E, monitoring and owner continuity are proven.",
+      "remainingGate": "Protected exact-SHA deployment and redacted live evidence; owner acceptance only after actual evidence; no deployment now."
+    },
+    "CS-25": {
+      "section": "Backups and off-host disaster recovery",
+      "decision": "Historical owner deferral is retained as registry provenance, not blanket future release authorization. Current single-owner baseline may use verified local backups; encrypted off-host protection, retention, restored verification, monitoring and RPO/RTO are required before materially multi-user/public/recruiter rollout.",
+      "remainingGate": "Actual scheduled dump, failure alert and restore proof remain unproven by this specification. No local-only backup is disaster recovery; release reviewer must enforce the newer multi-user boundary even though frozen delivery metadata records DEFERRED_BY_OWNER."
+    }
+  },
+  "verificationReviewReceipts": {
+    "CS-46-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a1ba8cb20456ef3f35c91ba6c162292983962624f612ac005d304faf14c16426"
+    },
+    "CS-46-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "12d9e4bacc25b562d01052b4164423f197956955d99078ecb0e7e755ac012d2b"
+    },
+    "CS-46-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8fa935d141981632d77a53d85609a5116eb22d8e456ced80e73734d5b12a5d2b"
+    }
   }
 }

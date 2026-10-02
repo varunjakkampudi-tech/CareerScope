@@ -2,33 +2,43 @@
 
 Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc173098f1b88f8f7a69357d4c9. Branch: phase-3.25/ticket-specification-catalog. Final artifact commit: use git log -- docs/PHASE-3-25-FINAL-REPORT.md; a file cannot embed its own commit hash. Final SHA and clean-tree result are reported after commit.
 
-| Measure                             | Count |
-| ----------------------------------- | ----- |
-| ticketCount                         | 216   |
-| specificationCount                  | 216   |
-| completeSpecificationCount          | 0     |
-| incompleteSpecificationCount        | 216   |
-| epicMappedCount                     | 216   |
-| orphanTicketCount                   | 0     |
-| duplicateIdCount                    | 0     |
-| dependencyEdgeCount                 | 276   |
-| invalidDependencyCount              | 0     |
-| dependencyCycleCount                | 0     |
-| dependencySemanticGapCount          | 0     |
-| acceptanceCriterionCount            | 906   |
-| suggestedAcceptanceCriterionCount   | 906   |
-| mappedAcceptanceCriterionCount      | 0     |
-| unmappedAcceptanceCriterionCount    | 906   |
-| reviewedExactTestBindingCount       | 0     |
-| uiTicketCount                       | 146   |
-| blockedTicketCount                  | 37    |
-| hostpendingActionCount              | 15    |
-| holdTicketCount                     | 33    |
-| currentReleaseTicketCount           | 47    |
-| specificationCoveragePercent        | 0     |
-| suggestedVerificationMappingPercent | 100   |
-| exactReviewedTraceabilityPercent    | 0     |
-| findingsCount                       | 630   |
+| Measure                                | Count               |
+| -------------------------------------- | ------------------- |
+| ticketCount                            | 216                 |
+| specificationCount                     | 216                 |
+| completeSpecificationCount             | 0                   |
+| incompleteSpecificationCount           | 216                 |
+| epicMappedCount                        | 216                 |
+| orphanTicketCount                      | 0                   |
+| duplicateIdCount                       | 0                   |
+| dependencyEdgeCount                    | 276                 |
+| invalidDependencyCount                 | 0                   |
+| dependencyCycleCount                   | 0                   |
+| dependencySemanticGapCount             | 0                   |
+| acceptanceCriterionCount               | 906                 |
+| suggestedAcceptanceCriterionCount      | 906                 |
+| mappedAcceptanceCriterionCount         | 3                   |
+| unmappedAcceptanceCriterionCount       | 903                 |
+| reviewedExactTestBindingCount          | 3                   |
+| authoredExactTestBindingCount          | 3                   |
+| acceptanceCriteriaWithAuthoredBindings | 3                   |
+| draftSpecificationCount                | 216                 |
+| reviseSpecificationCount               | 0                   |
+| reviewedSpecificationCount             | 0                   |
+| approvedSpecificationCount             | 0                   |
+| ownerDecisionReconciliationCount       | 11                  |
+| uiTicketCount                          | 146                 |
+| blockedTicketCount                     | 37                  |
+| hostpendingActionCount                 | 15                  |
+| holdTicketCount                        | 33                  |
+| currentReleaseTicketCount              | 47                  |
+| specificationCoveragePercent           | 0                   |
+| suggestedVerificationMappingPercent    | 100                 |
+| exactReviewedTraceabilityPercent       | 0.33112582781456956 |
+| findingsCount                          | 630                 |
+| openFindingCount                       | 622                 |
+| resolvedFindingCount                   | 1                   |
+| reclassifiedFindingCount               | 7                   |
 
 Workflow before/after: {"BACKLOG":141,"TODO":0,"IN_PROGRESS":0,"QA":5,"UAT":70,"PROD":0}. Status changes: 0. All six frozen Phase 3 inputs, including migration/design/blocker evidence and hostpending, are compared against the source commit.
 
@@ -40,6 +50,6 @@ All open gaps are enumerated in PHASE-3-25-QUALITY-AUDIT.md and ticket-specifica
 
 Independent review: REVISE. The real read-only independent reviewer resumed after the initial usage-limit failure, delivered findings and independently verified the mechanical corrections, including source projection validation, cross-cutting UI scope, honest AC metrics, exact-ID sequencing and CS-25 owner deferral. No unresolved mechanical defect remained among the reviewed fixes. Exact AC bindings, ticket-specific requirements/contracts, design gaps and release decisions remain incomplete. Whole-phase disposition is REVISE, not approval.
 
-No runtime implementation, status promotion, push, merge, deployment, hosted/provider validation or fabricated evidence was performed. CS-46 is an explicitly unaccepted recommendation. CS-25 remains owner-deferred; no activation approval is inferred.
+Remediation starting checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14. Initial reviewed readiness: 0/216. Owner-direction reconciliations: 11, sourced from existing local branch history; CS-46 is approved exclusion scope, not an undecided recommendation. Authored exact verification bindings: 3; independently reviewed bindings: 3; all execution remains PLANNED. Reviewed binding quality does not approve a whole specification. No runtime implementation, status promotion, push, merge, deployment, hosted/provider validation or fabricated evidence was performed. CS-25 historical deferral is retained while the later approved multi-user backup boundary is explicit.
 
 PHASE_3_25_COMPLETION: 0% reviewed implementation-ready specifications (0/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.

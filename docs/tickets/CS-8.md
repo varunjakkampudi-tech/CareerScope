@@ -347,7 +347,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed."
+      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "exactBindings": []
     },
     {
       "ticketId": "CS-8",
@@ -364,7 +365,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed."
+      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "exactBindings": []
     },
     {
       "ticketId": "CS-8",
@@ -381,7 +383,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed."
+      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "exactBindings": []
     }
   ],
   "sources": [".ai/backlog.json#CS-8", "docs/TESTING.md"]
@@ -571,9 +574,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 }
 ```
 
-## Open specification gates
+## Specification gate history
 
-| Code                      | Reason                                                                                                                   | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_STATE_UNSPECIFIED | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
+| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

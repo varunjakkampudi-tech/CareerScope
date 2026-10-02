@@ -27,10 +27,24 @@ them. Identity, historical state, canonical design classification, acceptance
 criteria, dependencies and delivery metadata are protected against editorial
 replacement. A draft recommendation is labelled as unaccepted product behavior.
 
-This initial tooling does **not** provide a completed approval/import mechanism
-for exact reviewed assertion bindings or certify any specification as complete.
-That mechanism and substantive ticket-specific refinements remain local Phase
-3.25 work; reviewers must not mistake this checkpoint for a finished phase.
+`decisionReconciliations` records later approved direction without modifying
+frozen registry evidence. Its source commit/path/section must resolve; the
+restored owner document is compared with the recorded Git object, permitting
+formatting whitespace only. Historical owner-choice gaps remain in the audit
+with an appended disposition rather than being erased.
+
+`exactVerificationBindings` carries individually authored procedures. Every
+binding requires setup, preconditions, action, assertion, expected result,
+verification class, planned test path or manual procedure ID, fixtures, negative
+case, evidence artifact, reviewer and release gate. Execution remains PLANNED.
+A REVIEWED binding requires a real independent review receipt whose content
+hash covers all binding fields except reviewStatus. Changing the procedure
+invalidates the receipt. Reviewed procedure quality is not executed test proof.
+
+Whole-specification approval/import remains unfinished; every specification
+still has explicit reviewState DRAFT and zero implementation-ready approval.
+Substantive ticket-specific refinement, contracts and whole-specification
+reviews remain local Phase 3.25 work. No generated document is auto-approved.
 
 The seven CS-47 `SEQUENCING` edges derive from its source AC4. They are distinct
 from registry `HARD` dependencies and require source-criterion support. Owner
@@ -48,8 +62,8 @@ parallelism only, not simultaneous ownership of shared files or mutable tests.
 | `npm run tickets:spec:ready`    | Fail closed while specifications, findings or independent approval remain incomplete     |
 
 `check` is not `ready`. Every source AC has an unreviewed suggested verification
-method. Exact reviewed mappings are currently zero; the unmapped count includes
-all criteria. Existing implementation evidence is explicitly historical, not a
+method. Exact reviewed mappings are separately counted from authored bindings
+and suggested methods; unreviewed procedures remain unmapped. Existing implementation evidence is explicitly historical, not a
 test run performed by this generator. Section population is not completeness.
 
 Design classifications indicate reference coverage only. `DESIGN_VERIFIED`

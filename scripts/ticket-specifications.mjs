@@ -15,6 +15,8 @@ export const INPUTS = [
   'hostpending.txt',
   '.ai/ticket-specification-policy.json',
   '.prettierrc.json',
+  'docs/OWNER-DECISIONS-2026-10-02.md',
+  'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md',
 ];
 export function loadInputs(root) {
   const json = (name) => JSON.parse(fs.readFileSync(path.join(root, name), 'utf8'));
@@ -26,6 +28,8 @@ export function loadInputs(root) {
     blockers: json(INPUTS[4]),
     manualText: fs.readFileSync(path.join(root, INPUTS[5]), 'utf8'),
     policy: json(INPUTS[6]),
+    ownerDecisionText: fs.readFileSync(path.join(root, INPUTS[8]), 'utf8'),
+    verificationReviewText: fs.readFileSync(path.join(root, INPUTS[9]), 'utf8'),
   };
 }
 const cell = (value) =>
@@ -37,6 +41,16 @@ const table = (headers, rows) =>
 const intro = '# Phase 3.25 — ';
 
 export async function artifacts(inputs, root) {
+  if (inputs.policy.ownerDecisionSource) {
+    const source = inputs.policy.ownerDecisionSource;
+    const original = execFileSync('git', ['show', `${source.commit}:${source.path}`], {
+      cwd: root,
+      encoding: 'utf8',
+    });
+    const normalize = (text) => text.replace(/\s+/g, ' ').trim();
+    if (normalize(original) !== normalize(inputs.ownerDecisionText))
+      throw new Error('Owner decision record differs from the recorded branch-history source');
+  }
   const formatting = JSON.parse(fs.readFileSync(path.join(root, '.prettierrc.json'), 'utf8'));
   const model = buildCatalog(inputs);
   const errors = validateCatalog(model, inputs, (ref) => {
@@ -89,7 +103,7 @@ export async function artifacts(inputs, root) {
   });
   await addJson('.ai/test-traceability.json', {
     rows: model.traceability,
-    mappingStatus: 'SUGGESTED_METHODS_ONLY_NOT_REVIEWED_EXACT_TEST_BINDINGS',
+    mappingStatus: 'PARTIAL_REVIEWED_BINDINGS_WITH_PLANNED_EXECUTION_REMAINING',
   });
   await addJson('.ai/design-traceability.json', { tickets: model.designTraceability });
 
@@ -177,14 +191,23 @@ export async function artifacts(inputs, root) {
   await addDoc(
     'QUALITY-AUDIT',
     `${intro}Specification quality audit\n\nStructural section coverage and generated count are not implementation readiness. Every finding below is retained until source evidence or an approved specification resolves it.\n\n${totals}\n\n${table(
-      ['Ticket', 'Gap', 'Section', 'Reason', 'Owner', 'Required evidence'],
+      ['Ticket', 'Gap', 'Disposition', 'Section', 'Reason', 'Owner', 'Required evidence'],
       model.findings.map((finding) => [
         finding.ticketId,
         finding.code,
+        finding.disposition,
         finding.section,
         finding.reason,
         finding.owner,
         finding.requiredEvidence,
+      ]),
+    )}\n\n## Remediation decision reconciliation\n\nThe original findings above are retained. These dispositions qualify the historical owner-choice finding, not specification approval or release evidence. Source: ${inputs.policy.ownerDecisionSource?.commit ?? 'NONE'}:${inputs.policy.ownerDecisionSource?.path ?? 'NONE'}.\n\n${table(
+      ['Ticket', 'Disposition', 'Approved direction', 'Remaining gate'],
+      Object.entries(inputs.policy.decisionReconciliations ?? {}).map(([id, decision]) => [
+        id,
+        'RECLASSIFIED — DECISION_EXISTS_BUT_NOT_PROPAGATED_TO_SPEC',
+        decision.decision,
+        decision.remainingGate,
       ]),
     )}`,
   );
@@ -203,7 +226,7 @@ export async function artifacts(inputs, root) {
       'Commands and observed results: PHASE-3-25-VALIDATION.md. A structural PASS is not readiness; tickets:spec:ready refuses incomplete specs or independent review that is not approved.',
       `All open gaps are enumerated in PHASE-3-25-QUALITY-AUDIT.md and ticket-specification-coverage.json. Census change required: NO. CS-47 AC4 adds seven validated SEQUENCING edges without changing the frozen registry; owner prioritization still gates execution. Semantic graph gaps: ${model.counts.dependencySemanticGapCount}.`,
       `Independent review: ${inputs.policy.review.status}. ${inputs.policy.review.reason}`,
-      'No runtime implementation, status promotion, push, merge, deployment, hosted/provider validation or fabricated evidence was performed. CS-46 is an explicitly unaccepted recommendation. CS-25 remains owner-deferred; no activation approval is inferred.',
+      `Remediation starting checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14. Initial reviewed readiness: 0/216. Owner-direction reconciliations: ${model.counts.ownerDecisionReconciliationCount}, sourced from existing local branch history; CS-46 is approved exclusion scope, not an undecided recommendation. Authored exact verification bindings: ${model.counts.authoredExactTestBindingCount}; independently reviewed bindings: ${model.counts.reviewedExactTestBindingCount}; all execution remains PLANNED. Reviewed binding quality does not approve a whole specification. No runtime implementation, status promotion, push, merge, deployment, hosted/provider validation or fabricated evidence was performed. CS-25 historical deferral is retained while the later approved multi-user backup boundary is explicit.`,
       'PHASE_3_25_COMPLETION: 0% reviewed implementation-ready specifications (0/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.',
     ].join('\n\n'),
   );
@@ -211,9 +234,15 @@ export async function artifacts(inputs, root) {
     let doc = `# ${spec.ticketId} — ${spec.sections.identity.requirements[0].title}\n\nGenerated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: ${spec.readiness}.\n`;
     for (const [index, section] of SECTIONS.entries())
       doc += `\n## ${index + 1}. ${section}\n\n\`\`\`json\n${JSON.stringify(spec.sections[section], null, 2)}\n\`\`\`\n`;
-    doc += `\n## Open specification gates\n\n${table(
-      ['Code', 'Reason', 'Owner', 'Evidence'],
-      spec.gaps.map((gap) => [gap.code, gap.reason, gap.owner, gap.requiredEvidence]),
+    doc += `\n## Specification gate history\n\n${table(
+      ['Code', 'Disposition', 'Original reason', 'Owner', 'Evidence'],
+      spec.gaps.map((gap) => [
+        gap.code,
+        gap.disposition,
+        gap.reason,
+        gap.owner,
+        gap.requiredEvidence,
+      ]),
     )}`;
     output.set(
       `docs/tickets/${spec.ticketId}.md`,
@@ -267,7 +296,7 @@ export async function run(root, mode) {
       inputs.policy.review.status !== 'APPROVED')
   )
     throw new Error(
-      `Implementation readiness INCOMPLETE: ${model.counts.incompleteSpecificationCount} draft specifications; ${model.findings.length} gaps; independent review ${inputs.policy.review.status}`,
+      `Implementation readiness INCOMPLETE: ${model.counts.incompleteSpecificationCount} draft specifications; ${model.findings.length} historical finding records (${model.counts.openFindingCount} OPEN); independent review ${inputs.policy.review.status}`,
     );
   return { status: 'PASS', mode, changedFiles: changed.length, counts: model.counts };
 }

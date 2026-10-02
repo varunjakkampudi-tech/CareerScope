@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -38,10 +39,19 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
   assert.equal(model.counts.completeSpecificationCount, 0);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 0);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 3);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 0);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 906);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 3);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 903);
+  assert.equal(model.counts.authoredExactTestBindingCount, 3);
+  assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-46' && finding.code === 'EXACT_AC_TEST_BINDING',
+    ).disposition,
+    'RESOLVED',
+  );
+  assert.equal(model.findings.length, 630);
   for (const id of ['CS-45', 'CS-107', 'CS-108'])
     assert.equal(model.designTraceability.find((entry) => entry.ticketId === id).ui, true);
   assert.ok(
@@ -58,6 +68,126 @@ test('216 source-linked drafts preserve registry and canonical stages without re
       .find((spec) => spec.ticketId === 'CS-46')
       .gaps.some((gap) => gap.code === 'OWNER_DECISION'),
   );
+});
+
+test('existing owner directions retain source provenance without fabricated readiness', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-46');
+  const direction = spec.sections.technicalApproach.requirements.find(
+    (entry) => entry?.approvedDirection,
+  );
+  assert.equal(direction.source.commit, '154974acc372ee0ec2434c95107e7746ee3c59a7');
+  assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
+  assert.match(direction.remainingGate, /lower bound/);
+  assert.equal(spec.reviewState, 'DRAFT');
+  assert.equal(model.counts.approvedSpecificationCount, 0);
+  inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
+  assert.ok(
+    validate(buildCatalog(inputs), inputs).some((error) =>
+      error.includes('unresolved owner decision section CS-46'),
+    ),
+  );
+});
+
+test('exact draft bindings cannot masquerade as reviewed or passing tests', () => {
+  const inputs = fresh();
+  const binding = inputs.policy.exactVerificationBindings['CS-46-AC2'][0];
+  assert.match(binding.assertion, /reparse/);
+  assert.match(binding.negativeCase, /foreign-owner/);
+  binding.testStatus = 'PASS';
+  binding.reviewStatus = 'APPROVED';
+  assert.ok(
+    validate(buildCatalog(inputs), inputs).some((error) =>
+      error.includes('unproven exact binding approval/execution'),
+    ),
+  );
+});
+
+test('changing an assertion invalidates independent content-bound binding review', () => {
+  const inputs = fresh();
+  inputs.policy.exactVerificationBindings['CS-46-AC2'][0].assertion += ' silently clear exclusions';
+  assert.ok(
+    validate(buildCatalog(inputs), inputs).some((error) =>
+      error.includes('unproven content-bound verification review CS-46-AC2'),
+    ),
+  );
+});
+
+test('missing review receipt cannot count as independently reviewed traceability', () => {
+  const inputs = fresh();
+  delete inputs.policy.verificationReviewReceipts['CS-46-AC1'];
+  assert.ok(
+    validate(buildCatalog(inputs), inputs).some((error) =>
+      error.includes('unproven content-bound verification review CS-46-AC1'),
+    ),
+  );
+});
+
+test('agile fixture scenarios preserve canonical state byte-for-byte', () => {
+  const files = [
+    '.ai/backlog.json',
+    '.ai/LOOP-STATE.json',
+    '.ai/process-mode.json',
+    '.ai/findings.json',
+    '.ai/release-plan.json',
+    `.ai/tickets/${new Date().toISOString().slice(0, 10)}.json`,
+  ];
+  const snapshot = () =>
+    files.map((file) => {
+      const full = path.join(root, file);
+      return fs.existsSync(full) ? fs.readFileSync(full).toString('base64') : null;
+    });
+  const before = snapshot();
+  const result = spawnSync(process.execPath, ['scripts/check-agile-gates.mjs'], {
+    cwd: root,
+    encoding: 'utf8',
+  });
+  assert.deepEqual(
+    snapshot(),
+    before,
+    'fixture suite must never replace canonical ticket/review state',
+  );
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /ALL AGILE GATES PROVEN/);
+});
+
+test('inherited sandbox flag cannot run destructive fixtures in the canonical checkout', () => {
+  const files = [
+    '.ai/backlog.json',
+    '.ai/LOOP-STATE.json',
+    '.ai/findings.json',
+    '.ai/process-mode.json',
+  ];
+  const snapshot = () =>
+    files.map((file) => fs.readFileSync(path.join(root, file)).toString('base64'));
+  const before = snapshot();
+  const result = spawnSync(process.execPath, ['scripts/check-agile-gates.mjs'], {
+    cwd: root,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      CAREERSCOPE_AGILE_GATE_SANDBOX: '1',
+      CAREERSCOPE_AGILE_GATE_ROOT: root,
+      CAREERSCOPE_AGILE_GATE_SOURCE: root,
+      CAREERSCOPE_AGILE_GATE_PARENT_TMP: path.dirname(root),
+    },
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /REFUSED: agile fixtures require/);
+  assert.deepEqual(snapshot(), before);
+});
+
+test('bindings require complete procedures, canonical AC IDs and valid verification types', () => {
+  const inputs = fresh();
+  const binding = inputs.policy.exactVerificationBindings['CS-46-AC2'][0];
+  delete binding.assertion;
+  binding.type = 'TRUST_ME';
+  inputs.policy.exactVerificationBindings['CS-999-AC1'] = [binding];
+  const errors = validate(buildCatalog(inputs), inputs);
+  assert.ok(errors.some((error) => error.includes('incomplete exact binding CS-46-AC2.assertion')));
+  assert.ok(errors.some((error) => error.includes('invalid exact binding type')));
+  assert.ok(errors.some((error) => error.includes('orphan exact binding')));
 });
 
 test('unknown release assignments do not become implementation authorization', () => {
