@@ -32,12 +32,20 @@ for (const record of records) {
     errors.push(`invalid migration schema for ${record.ticketId}`);
   if (typeof record.migrationBasis !== 'string' || typeof record.promotionOccurred !== 'boolean')
     errors.push(`incomplete migration basis for ${record.ticketId}`);
+  if (record.blocked && record.blockedSincePolicy !== 'HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN')
+    errors.push(`invalid blockedSince policy for ${record.ticketId}`);
+  if (!record.blocked && record.blockedSincePolicy !== 'NOT_BLOCKED')
+    errors.push(`invalid unblocked timestamp policy for ${record.ticketId}`);
   legacyCounts[record.legacyStatus] = (legacyCounts[record.legacyStatus] ?? 0) + 1;
   recordCounts[record.newStatus] = (recordCounts[record.newStatus] ?? 0) + 1;
 }
 for (const item of items) {
   try {
-    assertTicketWorkflow(item);
+    const record = records.find((entry) => entry.ticketId === item.id);
+    assertTicketWorkflow(item, {
+      allowHistoricalBlockedSinceNull:
+        record?.blockedSincePolicy === 'HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN',
+    });
   } catch (error) {
     errors.push(error.message);
   }

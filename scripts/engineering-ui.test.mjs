@@ -30,6 +30,7 @@ import {
   SEVERITY_EMPHASIS,
   PAGE,
 } from './engineering-ui.mjs';
+import { TICKET_STATUSES } from './lib/ticket-workflow.mjs';
 
 function withState(backlog, findings, run) {
   const dir = mkdtempSync(join(tmpdir(), 'cc-board-'));
@@ -60,6 +61,11 @@ test('blocked is orthogonal metadata and never a board column', () => {
   assert.deepEqual(
     BOARD_COLUMNS.map(([name]) => name),
     ['Backlog', 'To Do', 'In Progress', 'QA', 'UAT', 'Production'],
+  );
+  assert.deepEqual(
+    BOARD_COLUMNS.flatMap(([, statuses]) => statuses),
+    TICKET_STATUSES,
+    'board columns must be a complete, ordered projection of the shared workflow statuses',
   );
 });
 

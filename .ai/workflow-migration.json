@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "phase": "PHASE_3_CANONICAL_WORKFLOW_MIGRATION",
   "baselineCommit": "22455e06039390c33a7a478d0fcb89cf4a7df462",
-  "generatedAt": "2026-10-02T10:57:49.550Z",
+  "generatedAt": "2026-10-02T11:08:23.622Z",
   "legacyStatusCounts": {
     "UAT": 64,
     "BLOCKED": 26,
@@ -31,6 +31,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "74ca0da605e0a2dc58fbeb6f0f51db886dd702d9cd3b218bf8f1bd0bb3833099",
       "acceptanceCriteriaHash": "04da07ea61acd002fb0621756814f7e7381ac9012e25714fdf0b9c249be408e4"
     },
@@ -46,6 +47,7 @@
       "notes": "Phase 2 disposition: WAITING_INDEPENDENT_REVIEW",
       "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
       "primaryClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "d362d516a0df16c20fb156e68494fdd239201484a93d35fb26fd357f24bd93a0",
       "acceptanceCriteriaHash": "b73228ceee9e4a1ecfc4b183795ce07abe4a48dd7e94113be9190f063555f463"
     },
@@ -61,6 +63,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "0f9ef72545c6b28e51ab4958ebfc3c1087f18e45754649ebc7a970742a364771",
       "acceptanceCriteriaHash": "fb149e56c0ce1f690789e6bd897ea71560e5a8b38d4a9041e364ff6a14c3266b"
     },
@@ -76,6 +79,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "71e8f690b25a0d0ae12aff6ab607c268fdea2c5aa7dbed9cc2066657d886360b",
       "acceptanceCriteriaHash": "3467b3bd847d996e1d5022ca711cf65bb27919be8ef9b3f9e428bc636387693d"
     },
@@ -91,6 +95,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "00f23956c5034c71d736253d1298fee6c0adcb018a6183ecb2b8254beb5673d0",
       "acceptanceCriteriaHash": "512838c684327fa02c2cf8ca5368c59b69003ba21d3ef1751173aec5bd1e3b93"
     },
@@ -106,6 +111,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "8df02950641d408a6ed21bf30758bdb096fe814f6141c9ca3ee96ec1b11eb050",
       "acceptanceCriteriaHash": "1b5512fb887be6f928fb2ce399af196b90c12783b291a3a6dafc31036903bd70"
     },
@@ -121,6 +127,7 @@
       "notes": "Phase 2 disposition: WAITING_INDEPENDENT_REVIEW",
       "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
       "primaryClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "a4bf5610b424215b2935dba81e052cdaa9b451fccc86715719b3217cfa197243",
       "acceptanceCriteriaHash": "bbcc151fa671434989d006ca2e3432eb426f32f6107487230b91ac56993fdd51"
     },
@@ -136,6 +143,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "f4ccf43c613a89921c8ab86e490954f6a038f82171710668cdcf7c860f276c01",
       "acceptanceCriteriaHash": "f6f756625584d6285128fc32983f40a6d37d82836ae7a0a23173dd58e827c842"
     },
@@ -151,6 +159,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "bc37913bf218b5dc4871d45172fd87e6ecf906e3ab3c5caf9fddc08745e2436b",
       "acceptanceCriteriaHash": "2b9c517e10405774fce5ee4e8edc8fbecde28cebf1a1b9d7e6526f2f98b7f077"
     },
@@ -169,6 +178,7 @@
       "notes": "Phase 2 disposition: WAITING_INDEPENDENT_REVIEW",
       "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
       "primaryClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "991b158748a61f074e9562c35c4b0d3858a3b36f8cf044efe8ecbf39071e779b",
       "acceptanceCriteriaHash": "c1e43636bc063d9fd36631cffa084d8e7549618d9cb7f254c9b0239371354040"
     },
@@ -184,6 +194,7 @@
       "notes": "Phase 2 disposition: WAITING_HUMAN_ACCEPTANCE",
       "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
       "primaryClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "0a3644357a736f154c78ad19ca59503f4b17e8b12e0c51281d8578c290456894",
       "acceptanceCriteriaHash": "c03b22ce5222a8fb83621bbb70bbaba70963021f00d51bdf4ffda0f4289727e6"
     },
@@ -199,6 +210,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "e6f61b1b9c4a3b0a43278261b79d459963375c498482617d61db191abf49b320",
       "acceptanceCriteriaHash": "69dbe6ea925c114370d4cc5c7d5f0a1dbbdbcdad9d525c057ade25a4e1bcbc01"
     },
@@ -214,6 +226,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "8394d554b8d72fb92ecd992c4303a4c608a0c4b0ff830a81d271c990764a563e",
       "acceptanceCriteriaHash": "64f63d2a43b4fc1a8d736cd12405f85b696e34dffad820a3283ca345fb749919"
     },
@@ -239,6 +252,7 @@
       "notes": "Phase 2 disposition: WAITING_HUMAN_ACCEPTANCE",
       "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
       "primaryClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "30b065490afad8931e35fc04ca49ac7ecad7b4f01fdd7fddcd0fd1efb053755d",
       "acceptanceCriteriaHash": "375b10faf9c8d3c5e62c3a361994b512637abbe83da0e0642dbd4ce86243515c"
     },
@@ -254,6 +268,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "78a947a1964063851fb3d33e0320413ae4433845edcf8b5e02912e56706b5b87",
       "acceptanceCriteriaHash": "25d4411411c2196694c1517a98c9e411079d704f6fda1c6d4a8d005176b9672f"
     },
@@ -269,6 +284,7 @@
       "notes": "Phase 2 disposition: WAITING_HUMAN_ACCEPTANCE",
       "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
       "primaryClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "f55aecc868786cd6f5c0a4177db5ee49bdeb5b0ea07106facc7dbace863cde4c",
       "acceptanceCriteriaHash": "ede9ec7e6d73b61409317a069828a7cd2d274323f8ea2ed9ef4b9093717eab6a"
     },
@@ -294,6 +310,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "d5a13b167c82865b29c6aaaa6e2a5351e13f49535b1b83de6b3c033794275add",
       "acceptanceCriteriaHash": "4ae5321e74b777cdedf2bb6d8a9cd5670aa5482f685fbb9eb6edd0fb5c8f3a39"
     },
@@ -309,6 +326,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "3351744da9bfd2da7d9af0d7f1bd7d9f666eba8953e5f59b770b7b6dd4f7770d",
       "acceptanceCriteriaHash": "2b0c4b399dbe8f64fc7ba21bb3fcddd43c0cef475cad32288e8f58df904d398d"
     },
@@ -334,6 +352,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "e4330226f92b59931cfb7e15a74ad5c418404f0ae39b6d9ef64b817967802280",
       "acceptanceCriteriaHash": "6ff0ad96120ddb4de366e3a0ee6236fc51703edbe3df447e33c37a4e941cc2a2"
     },
@@ -349,6 +368,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "d6697f6d26468e5d6eb7d535d79031127ba326816588ffa7c1d46648ca8a20c3",
       "acceptanceCriteriaHash": "6f8af35cf9ec09dbf883423dcff45eaa89488410756f51dadf95a82115dd2f79"
     },
@@ -364,6 +384,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "f97034963fe8d727e151d6749e01fcd0a70e9ae2a6588f8536d776cf8886a448",
       "acceptanceCriteriaHash": "5c72eec8da714e45a35e60aba4ddd29d9a1ab7b5b3563a6b41169f4fcacccae3"
     },
@@ -379,6 +400,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "0f6b30726c8a8fd43d0e0267f72086b0b6ed1727926ce359a33d08d328d35a71",
       "acceptanceCriteriaHash": "2ea0504503f5641c787509ab6cb80fc630b9263989e27e87089f89123ebfce61"
     },
@@ -394,6 +416,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "568ac17c467ddc57495ae925587e981ad95f2e14a5a0b5ff1953230dcd223789",
       "acceptanceCriteriaHash": "8dc0fc22e663e288528cc80ad87ffe48acee25b22d15edc39df28d4b83fcd33a"
     },
@@ -409,6 +432,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "ae7bd9a5d6cb4a8036b62013c0a42a63df7f780a963902256b71b39693c19567",
       "acceptanceCriteriaHash": "3307a19fda5cc77f5853b5e53a835e41fb429bf5638d4e4d3f1da3c1e1aa778e"
     },
@@ -435,6 +459,7 @@
       "notes": "Phase 2 disposition: OWNER_DEFERRED",
       "phase2Disposition": "OWNER_DEFERRED",
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "eee7319c7f650d0c770877001f1fe5f3a7e521341a9352d420e4ed39cd02b848",
       "acceptanceCriteriaHash": "82c1785e4573b4d3ca3789aaa12511a5862ca32beae4e9db0137ab2ae1e74cc6"
     },
@@ -465,6 +490,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "0db73541568fd7eabdf2dcb74ad1f2a5035f35996090c0ecac59555a950bdae7",
       "acceptanceCriteriaHash": "a962cb239811dc9e1e43d8a456d2d3219ba64ccb6cd1370ee7efed1ba808400a"
     },
@@ -492,6 +518,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "465583c5231a7d53cb3f33df231089af9fe8bd522748a5cbd3371ffb5f625b1e",
       "acceptanceCriteriaHash": "bdf32208ca78934a37c66b1c9dd7db05e68a83c75c899f6a1da3e6b952890f1a"
     },
@@ -507,6 +534,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "6f0db5dbeec6ad86ed14de366a298f46f00318030d4a3b0dce8fcecffaa0b072",
       "acceptanceCriteriaHash": "155e58efd20da689ba3686d414d5f2396ccb123d7069103a12da7987d74d357f"
     },
@@ -522,6 +550,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "56d1aed3f453bc72035f8afeb7ca69c7f19fff14a1507ea9e2b037a9529f3249",
       "acceptanceCriteriaHash": "f4be4a9c6cf609c96c4cfa48476407e9826485c6d88431d1ab41f5ddc315334b"
     },
@@ -540,6 +569,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "7492a4f8439dfc012d4b7f89989d7a7c14868808de4fd41085a6619181b08a24",
       "acceptanceCriteriaHash": "1820e2280517016393516c3f6bf1b1924323cf3bb17a6a72f47807deb6e7af22"
     },
@@ -555,6 +585,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "34c9a13d60279d89ecf376bf6758f34c0a86cf4f4d09171bd17beeac89de48d4",
       "acceptanceCriteriaHash": "2db437b15609481c4d958cb9c5b9b2ceb554e24f049f908541d5e17663498515"
     },
@@ -570,6 +601,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4b1d22d2baf04c322974636f01a8006dbe2050da339579655bc9b11984063556",
       "acceptanceCriteriaHash": "a1a1a44078b1b674fb3b18106830063fe703c64d1c94248e0f616036677cf84f"
     },
@@ -585,6 +617,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "5447fc841cf5b7029ccc138ae659cb54b9cabf8fc8e634c33107500288a61b3b",
       "acceptanceCriteriaHash": "7c0b3ba44caafffab6ffd5942a388eccb9d45d6490fe09443dccc2d6a6982620"
     },
@@ -600,6 +633,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "577b07f80a4df10d57b9c414838a9d65f866b7b476e6ac6b3491e7b5d830d6e9",
       "acceptanceCriteriaHash": "94f93dfcd760d7873f3f182bd9821fd5c5d23387b75561c6a1a1c8c8d7b25953"
     },
@@ -615,6 +649,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "892a7eec3be46a78107df47865988cae71810111f534c67182fd1bfd2040d03a",
       "acceptanceCriteriaHash": "24966d7153a48e9f7c274bb246df57f45e5dd317a9d45f53cca619ab66982069"
     },
@@ -630,6 +665,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "b35fee5e95f2f5f65162e88667d6d6de72c92d508f5745cec87ec12f7d705b89",
       "acceptanceCriteriaHash": "1c64fa0fb9451034fc72bd5da8fa43afe67cc4f2898b9b93b8f7bd5e831044d5"
     },
@@ -645,6 +681,7 @@
       "notes": "Phase 2 disposition: WAITING_HUMAN_ACCEPTANCE",
       "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
       "primaryClass": "B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "3d72caa06d87b6283f66b820f01e7deb92d2d7c7c76f0acdf30d52840985eda6",
       "acceptanceCriteriaHash": "063709f6ab3a52be2510831c71061a992350076a5b80f1047b9b1f20a4f938e3"
     },
@@ -660,6 +697,7 @@
       "notes": "Phase 2 disposition: DEFERRED_MAJOR_IMPLEMENTATION",
       "phase2Disposition": "DEFERRED_MAJOR_IMPLEMENTATION",
       "primaryClass": "B2_CODE_OR_ARCHITECTURE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "d73b7ccc101e8d3b3964e00669fc0a33d384d41832139a23d2c2cc031f2d5022",
       "acceptanceCriteriaHash": "c1bc62e8d7e0d351bbd225a992651d8ec8368bd3576ef72f60a107ae39b9f650"
     },
@@ -675,6 +713,7 @@
       "notes": "Phase 2 disposition: WAITING_INDEPENDENT_REVIEW",
       "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
       "primaryClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "ec3ebfb1100ecee2f98f28cc49f81e4741df399d0ba77f23b037007ca68a1692",
       "acceptanceCriteriaHash": "c27e3a07685a0e7507a4ff82abf0c6453f8c82d30b94a1aef6b17c97db324ff2"
     },
@@ -693,6 +732,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "9234f971ccd2b2ce3781ab54237e436b5914c3522a78c095f5c06f35c971ff02"
     },
@@ -708,6 +748,7 @@
       "notes": "Phase 2 disposition: WAITING_INDEPENDENT_REVIEW",
       "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
       "primaryClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "72e8792886d1a48339f7686e637de32789c0d4adb68b997b240e6b79668f475c",
       "acceptanceCriteriaHash": "7640be8317705202629fa5c0b37f760e8ebb0f88b52651982edab25bd7910308"
     },
@@ -726,6 +767,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "5c00ed922d88fbfa91635ea492561df12c5db250993298820d9672833c46fda2",
       "acceptanceCriteriaHash": "afbd199cb3300c5683ddad50c4e0c0ea7882bd77094f638d0f0d0d4ad99e3770"
     },
@@ -744,6 +786,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "23a36a0fb12e2af4a5619e01739b6651c173f82a0a2efeb2723ca0f6124f2872",
       "acceptanceCriteriaHash": "e1dd1dd229ec30dd25717ede39892f4aae8a3065a74791deea573c899ee005ea"
     },
@@ -762,6 +805,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "340f8b9335cb2b8ccc54233e6921eceabf13a732ac87d475036f38727db44c3f",
       "acceptanceCriteriaHash": "ee5fb7e8b0b917e21ced0fc9a1d380e4ea40a529cae557bdc4ea030380acf91a"
     },
@@ -777,6 +821,7 @@
       "notes": "Phase 2 disposition: WAITING_INDEPENDENT_REVIEW",
       "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
       "primaryClass": "B3_SECURITY_OR_SYSTEM_REVIEW",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "2a779be8d7554767d8c32d89d6c08d9bb34851e53765f1d131bcb2ed948f8d12",
       "acceptanceCriteriaHash": "41fa4111480ddca2ca137c01b9d6fd494aca05b9b7958171e514e07fe7dde558"
     },
@@ -795,6 +840,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "590f6b04c3e05532c6f714796ee2b7eeb58a046d435471741c19856fdd241658",
       "acceptanceCriteriaHash": "77821a0998b0014039c46d31fc77dae68075299474ee8bd2746b755c45b1dc2f"
     },
@@ -813,6 +859,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "684b2ffa6f6691a1eced64618b90f4a393fb5152cbd0dace822dca8fd0ba2a1c",
       "acceptanceCriteriaHash": "9bf3326b471bfe0f897dcfd08bf569a036025bd194f779c5aa25c7d01397a50b"
     },
@@ -828,6 +875,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "8e92b57c4001b844be932a27127923240af3de7b2ebcc03dae220e8320da9d85",
       "acceptanceCriteriaHash": "487b52788b24b192852a33ba68ec6f4fc627111d723f67aa9c49e6f1859c3251"
     },
@@ -843,6 +891,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "25bbbb62b2521e4b9e4aa42b392e071d1f5f5bdc6a5984ccc4af545089e48603",
       "acceptanceCriteriaHash": "6713c7b2b34db588d4327c892df655637709c696718e8acd80375c37cc9db341"
     },
@@ -893,6 +942,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "c6012e3d43b7de2cd84398b266245eadf387f26e3a70b3be07854cd4dc77be68",
       "acceptanceCriteriaHash": "e228aa09bc23b3958a55437c59b43e6fa88b58351eab3b5e05127a05bdf8bee2"
     },
@@ -908,6 +958,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "ea441f4fa58a2e6e5496c11aea7813b7c393ab15e736da5a123da2391b5d9738",
       "acceptanceCriteriaHash": "50cd3907792c4cec7587cce0803a2f6ad0d3a753f2d41f3c671a6958b48621eb"
     },
@@ -923,6 +974,7 @@
       "notes": "Phase 2 disposition: RESOLVED_PHASE_2",
       "phase2Disposition": "RESOLVED_PHASE_2",
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "31b545812d7fe760c653e33cb555f092aafa70657f974f48ed1d723a744a5736",
       "acceptanceCriteriaHash": "bc6fcd95fe5b444de9bb24198b2c38944ecb7350fed4f3ef8362220c78670736"
     },
@@ -938,6 +990,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4c82419dde7336a31e3fc52db95a6ac0f6f34cd235712797700c9bdca3c2535a",
       "acceptanceCriteriaHash": "af21095818fdeb1d230f622d1f96a7e42245ecb4f69144e5365ce3161a6dd943"
     },
@@ -953,6 +1006,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "d1aa47f8fbeab977976f610924b2a0bd73b097226857858aa2e2959657cc9c3b",
       "acceptanceCriteriaHash": "1724541205f5561e542c1061ad4f028aabf8241344c311be1165d0c65bd934ad"
     },
@@ -968,6 +1022,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "09d1a276abf14ff6f14f7680ed67cdd18f3a844e9eac6cc1405b4d4e7d9fde44",
       "acceptanceCriteriaHash": "8fe1daa8ff959a65169031f4fc0bc84e68455af3ba65c5677e4455e13b1b9a28"
     },
@@ -983,6 +1038,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "2d22af5d76c0270802bdbc7d201bdae30e0c26ea4757835dbd073e6774cef765",
       "acceptanceCriteriaHash": "d6614763cce45173d547379cafe72f3f2c51e227e3b520f730e91e2050c7a6f5"
     },
@@ -998,6 +1054,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "f029e925124e0db8d326257a09ce16414bc607593c120d4d3b7dc391c3a7c9f4",
       "acceptanceCriteriaHash": "6ca242e5e5b4eed8f662f0628661fa2ceb5fa933d0d34b4662d418d53a8b1e07"
     },
@@ -1013,6 +1070,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4631c89f2579082039ddecf3242d4230b674d02e2d11a5790f8f4c72295171e6",
       "acceptanceCriteriaHash": "c84a536d3bc3b7fe7d27011b1c50225aa36d9d9188294143dff1e491b7e3c8ed"
     },
@@ -1028,6 +1086,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "c4b0ba45ce46690108a890e8e07eb54d95cd4d593ed1f105da96e313a7971c31",
       "acceptanceCriteriaHash": "b0a36ae83fcbac960003929a4539c85679906cac03947189b79268e7fb89b2db"
     },
@@ -1043,6 +1102,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "ab463923de1eba17be2b5208fd7faf69ffc8facdb0753ed83f4f45d8a3a19a5c",
       "acceptanceCriteriaHash": "c061663a863f6b74a1377f7e4d0be71a731780b38fb0c981582d053577eb7ed7"
     },
@@ -1058,6 +1118,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "5377f969f6ee17750464955d2d2589770caf4e371f05e4baca337bd59b84b66c",
       "acceptanceCriteriaHash": "140ef8cb148cfbe3c7711b94c4c5a23939817cb29a24a0e687687235055685e1"
     },
@@ -1073,6 +1134,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "a95867e3eb0221d1ba2db8e2771f70ce17e4cc1dbdd244bf200f167d4c658999",
       "acceptanceCriteriaHash": "76b56b13943bb0f7da8e5422c3a4641796ebb5d5ad7468882b9100899043d383"
     },
@@ -1088,6 +1150,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "eebf349e708f4cef0f0ea4f4a6391c50844fceac3b7f0a9efb731e263938595a",
       "acceptanceCriteriaHash": "79012a70e25defc8a030747912e8e24d71d8ed7c2bf80d2c0f5f412d59fb650a"
     },
@@ -1106,6 +1169,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "c73d9dd110f72cbfe8b22fea15a27b0567905abb8f2e22f224e8c972d748cb4a",
       "acceptanceCriteriaHash": "fcb1bdf40cf1aec453ae689426bc71f71fbd3b118a1f82abe08054268802ba64"
     },
@@ -1121,6 +1185,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "b0359ffe3d7db6704633443218539b408d24774a28ee99fd2266ad5604938687",
       "acceptanceCriteriaHash": "e654525ac28e3149558a357f029ac7e6e8951257e354a1da7c72ad71cf8f9a53"
     },
@@ -1136,6 +1201,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "fca00804ddf11616aef48efd28e0a78ceb592d97a7699762b5ecb6ac84ec5009",
       "acceptanceCriteriaHash": "06c66590ca619c414ecf3689e88926a68de30183e1ba89cbc1f59b16ceff6764"
     },
@@ -1151,6 +1217,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "590bafaf9434e5bfb768a673784aa000e03cfe5a6dfdd4c4955bb5b0d30cb696",
       "acceptanceCriteriaHash": "60be32289a3aab17381e1a9b06625380c85cc405f1f3a4dd5a28a044cc146d54"
     },
@@ -1166,6 +1233,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "8b45103391b940f5770acb40505219223785bee84302bab8234253c192c954ec",
       "acceptanceCriteriaHash": "991904c4f18072b8fd3dafdb9a9a61683ed0b5179e2212c6cf7dce16e8b21984"
     },
@@ -1181,6 +1249,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "42fa578bc5e2166878bbb881657432fc9fc99dd31988ed40c4dab077fd58eb07",
       "acceptanceCriteriaHash": "5aac525a9c8300daa18531ba4bebdd28b3daeeff77ac19e219c80b1a7848e464"
     },
@@ -1199,6 +1268,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "758d7f44222a8aebbb50b2c8d8426e0de4211e59182a42738162314fffb7edec",
       "acceptanceCriteriaHash": "cd511b81dfcf3e3504e8cb4b0e11e8457c1466ac61c4d68eb95b5a0c602e80fb"
     },
@@ -1214,6 +1284,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "5881d4eb246ff0707263ba138934c58b1c4e4d8ebb571c226457c3dc6844e8ff",
       "acceptanceCriteriaHash": "9616e0e262b989504ff5828f1ef0c3c23baa939fce34038a12e3292820205b5d"
     },
@@ -1229,6 +1300,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "418f125da5683604e53bc2d1721fdf30e15063473a3a7af2fb36de3d4277ecbb",
       "acceptanceCriteriaHash": "7545e826e708039bb2246ba4fc7f2e6257ebc38493d4a49bd1e748f487a9c4fa"
     },
@@ -1244,6 +1316,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "bc171f7d986ec3569fe752bf989e5d344439125fb6b4bcf4526b19cc4c9757a8",
       "acceptanceCriteriaHash": "1827e6625d74ed5515546b0c0137aabaafb5d89215d7c6f8d9848d3b4af4cb4f"
     },
@@ -1259,6 +1332,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "54383451b984db539e240416bbf1308a2ba3eef82df5778931081db795c09a7d",
       "acceptanceCriteriaHash": "5a5e9ecc73101e1d37bbe3b7fd605252668082808585119fd075d82173697fd0"
     },
@@ -1274,6 +1348,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "c952b28bcdb2888d0f9d5add0807a49ab321ca314ec0aaff86ab45291e6a4407",
       "acceptanceCriteriaHash": "9d3c5382596a3edbb9d422bca58999120bb5a3131f1e37929b24e4e823800286"
     },
@@ -1289,6 +1364,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "41ae6c18d40ca29f1dfdfd95e5631c45d816c285b74ad93d86b5c472fa8161cb",
       "acceptanceCriteriaHash": "1da27de8b952655a2fb9df648c376ba1ca494f090737aa626bd86f16ac40aeb8"
     },
@@ -1304,6 +1380,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "34b410bebb79964d2c17fd71f6d7335865d7646dffff39591e53b0aecb9950cc",
       "acceptanceCriteriaHash": "3e55741b2fdb995a4bf61f288329e097b1a9edcc2326e398fb49662073aa8b21"
     },
@@ -1319,6 +1396,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "a5c6e42091601ad3e86bc447b434f8bc51d77ba06a07a527cd03003944e12af8",
       "acceptanceCriteriaHash": "a200b72be376243ed33b235d828d388384a5c6eb57921a5915dcc1eeabc6ecc7"
     },
@@ -1334,6 +1412,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "d298577274ad4cb6dac31c554ee7b436e18425a3d59a198b5e909cc55764418a",
       "acceptanceCriteriaHash": "f294286a9b5566c62e761738af9688edbf8110be4ccc7205244e97bccb4d70c1"
     },
@@ -1352,6 +1431,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "dadc6e1eba65e59ca20bfd23e625e9de948f1d1d2e5812437a88709c288bd606",
       "acceptanceCriteriaHash": "2c20cd612efbb6bc030114f3647fef1e97a6aeaeb3a2d861f67023e9e90727df"
     },
@@ -1367,6 +1447,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "e90db63d69f2a057b166342276d25940dad159b9d9a3bec258b8743dcc3966e0",
       "acceptanceCriteriaHash": "1bee45aa7959aec189e97b68cbebb70f793fdf05e8ed22ee12e60c62ed582187"
     },
@@ -1382,6 +1463,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "6f72d344bf6e8302e5d7833c2c8a180bdf6659621e66fd41e0dd845a6b0bee29",
       "acceptanceCriteriaHash": "a45663416d1b7b937f92cd61e78be26b3d0681f353bc53c7039e9263487c0b80"
     },
@@ -1397,6 +1479,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "a95450034e0c6c747b7f52c058cafb03aec39c4ea83bbb5423b8a8833810dd84",
       "acceptanceCriteriaHash": "c421d592ba7a76457e6d67412f784368c7dbceddbafcf53909d89196c78a1377"
     },
@@ -1412,6 +1495,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "a3b4aa6dac650bc2a7e3b3690ca23717f5bde77866ab632091615e59b1634895",
       "acceptanceCriteriaHash": "26daa3afada1eabd84d1538478fac28ec19dafa278c2156f3cc2a942119ef0bd"
     },
@@ -1427,6 +1511,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "a86dd9c53f4f7253ef4f4c2c31e64831992302c79fda943b2aa7f31ba9c0870e",
       "acceptanceCriteriaHash": "033bc868dd99f58c7471ae306a16ade97b608bea2c2210e6e59c5bd2d8f67e48"
     },
@@ -1448,6 +1533,7 @@
       "notes": "Phase 2 disposition: WAITING_LIVE_HOST",
       "phase2Disposition": "WAITING_LIVE_HOST",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "28850f969e5977762c7c9e66c58190776f71afed6240f4e009c69d111d4c5660",
       "acceptanceCriteriaHash": "a6e6add734292e0246bd192d113f7127f98f0a3094c76fec59833b406acc8729"
     },
@@ -1463,6 +1549,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "02a58fb474667dcdccb050e3257b53e86c83d4d113f296e51cfd2bf924cb9dab",
       "acceptanceCriteriaHash": "12ff00f5d6cb549d7318c4085d24eab926ed68980895cf8cb2abc3561d1ccff5"
     },
@@ -1481,6 +1568,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "76539cff24a8c77f73dfa878dadf2803d0483b9a5cf307efa4f37ffecc2633ad",
       "acceptanceCriteriaHash": "d2a9ff07760bc881cf0544383f94209eb18641f84dfb08ec7fd4ebaa68dcfd36"
     },
@@ -1502,6 +1590,7 @@
       "notes": "Phase 2 disposition: WAITING_EXTERNAL_PROVIDER",
       "phase2Disposition": "WAITING_EXTERNAL_PROVIDER",
       "primaryClass": "B5_EXTERNAL_PROVIDER_ACCOUNT_DNS_SECRET",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "ba72754160b28a19d20311f9d4fbcb9c8c765b19a689b922bbb50287ef765cfd",
       "acceptanceCriteriaHash": "24ae1783aa90da5a4a139e6072c725b7bbcdc93c137077899b7a44db025555d9"
     },
@@ -1520,6 +1609,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "e82e46a49d63dba6c3a5ed3eca1a52e6b4632379856efe6f10b06cd2d2403c48",
       "acceptanceCriteriaHash": "6c5f726c731e08adf77b87a1f75fcb9a6f293b1b8c4e5e3f6bef7b594fe75265"
     },
@@ -1538,6 +1628,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "ac4666b2d8c8ecdf9e48b0b884824e14e76e1d446f028c9abb72c38c38ef600e"
     },
@@ -1556,6 +1647,7 @@
       "notes": "Phase 2 disposition: WAITING_EXTERNAL_PROVIDER",
       "phase2Disposition": "WAITING_EXTERNAL_PROVIDER",
       "primaryClass": "B5_EXTERNAL_PROVIDER_ACCOUNT_DNS_SECRET",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "84faafd77ddf0163525f015268be27cd9669b990307f27f8689d84f1e6869f1a"
     },
@@ -1574,6 +1666,7 @@
       "notes": "Phase 2 disposition: WAITING_OWNER_DECISION",
       "phase2Disposition": "WAITING_OWNER_DECISION",
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "853c72d69fd965f1cf6be2b6f2ffebe6809e08640cd5476a85f07017dfaea0c5"
     },
@@ -1592,6 +1685,7 @@
       "notes": "Phase 2 disposition: WAITING_EXTERNAL_PROVIDER",
       "phase2Disposition": "WAITING_EXTERNAL_PROVIDER",
       "primaryClass": "B5_EXTERNAL_PROVIDER_ACCOUNT_DNS_SECRET",
+      "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c1c811bc2f2ddef3c2e96ca2a395bc11070cd66c6a7694b1b48bbc1bec3cf0ce"
     },
@@ -1607,6 +1701,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -1622,6 +1717,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -1637,6 +1733,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "b3ad3f936e2c063d94a343f97cfbb93e8c235536857a91c13347c025319dec77"
     },
@@ -1652,6 +1749,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "1c812e8b0100fcc513da280721806fe163cbed24d22243fe1df326935eeee68b"
     },
@@ -1667,6 +1765,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "1c812e8b0100fcc513da280721806fe163cbed24d22243fe1df326935eeee68b"
     },
@@ -1682,6 +1781,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "1c812e8b0100fcc513da280721806fe163cbed24d22243fe1df326935eeee68b"
     },
@@ -1697,6 +1797,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "bb2b517b588e6c1f8717d44597cb82ca5bafd754b14cb0ef49aecf496f0fa33b"
     },
@@ -1712,6 +1813,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "920bb927f9445d0392fe9ad2cd7a5f2f5ab5706b8b2dbf89334039758802ce4e"
     },
@@ -1727,6 +1829,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "920bb927f9445d0392fe9ad2cd7a5f2f5ab5706b8b2dbf89334039758802ce4e"
     },
@@ -1742,6 +1845,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "20505e2f72b343b6081e830814d14e95239308b6b9ad20f1eac80658aced49db"
     },
@@ -1757,6 +1861,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "ebec469de0b31e0a8fb8c6dfd849d2a1d778e65cba36512e981121d53ce8c35f"
     },
@@ -1772,6 +1877,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "14c7506fbd9bbb100cb840a89295a086fb39ac6ca3df704560c9ce8c8f289831"
     },
@@ -1787,6 +1893,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "6febe06df907aa8221fb3f8ffd2e9afb8fb2f4780fea3dd9a5c3374daefad9d6"
     },
@@ -1802,6 +1909,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "d1d43c27b4b4d521ae9c729eb30aa817f13d78d0d04ae4ac80537b16b35967b4"
     },
@@ -1817,6 +1925,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "abd44b82c164c0d63cd7177eb32d2764e2397047e66cc21ad9c808db9a34a329"
     },
@@ -1832,6 +1941,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "2348ec7d161e88c28b646f6c61cf48deaf10dc67466b6eaf34253ec621d56dc0"
     },
@@ -1847,6 +1957,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e915b21cbf398e007b9194934755d79bcefb9117d7983095a59db93e2b1b22d9"
     },
@@ -1862,6 +1973,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "f896464462cee5c5cbf21700779ccbc99bdbb5117a4c5f4511eabde6ed3a6d6f"
     },
@@ -1877,6 +1989,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "d01c7368a5fad4c87b32e1533f432a49886bacf3daaed2c70d1a94eefd2fcd43"
     },
@@ -1892,6 +2005,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "b3626cc84b856202e3805067097f809e4cf0d9394df3a688670a3f6fe56594b8"
     },
@@ -1907,6 +2021,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "bb2b517b588e6c1f8717d44597cb82ca5bafd754b14cb0ef49aecf496f0fa33b"
     },
@@ -1922,6 +2037,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "bb2b517b588e6c1f8717d44597cb82ca5bafd754b14cb0ef49aecf496f0fa33b"
     },
@@ -1937,6 +2053,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "bb2b517b588e6c1f8717d44597cb82ca5bafd754b14cb0ef49aecf496f0fa33b"
     },
@@ -1952,6 +2069,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -1967,6 +2085,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "bb2b517b588e6c1f8717d44597cb82ca5bafd754b14cb0ef49aecf496f0fa33b"
     },
@@ -1982,6 +2101,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -1997,6 +2117,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2012,6 +2133,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2027,6 +2149,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2042,6 +2165,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2057,6 +2181,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2072,6 +2197,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "bb2b517b588e6c1f8717d44597cb82ca5bafd754b14cb0ef49aecf496f0fa33b"
     },
@@ -2087,6 +2213,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "bb2b517b588e6c1f8717d44597cb82ca5bafd754b14cb0ef49aecf496f0fa33b"
     },
@@ -2102,6 +2229,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2117,6 +2245,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2132,6 +2261,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "667e78752c933dcaa2976afc8d8744114574535453dac6623647ec727a62681e"
     },
@@ -2147,6 +2277,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "920bb927f9445d0392fe9ad2cd7a5f2f5ab5706b8b2dbf89334039758802ce4e"
     },
@@ -2162,6 +2293,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "920bb927f9445d0392fe9ad2cd7a5f2f5ab5706b8b2dbf89334039758802ce4e"
     },
@@ -2177,6 +2309,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2192,6 +2325,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2207,6 +2341,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2222,6 +2357,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2237,6 +2373,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2252,6 +2389,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2267,6 +2405,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2282,6 +2421,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "8e41fa970ec908e39b4094a7144fcad8a6dc8bf236afc1044acaa8fb20b03e58"
     },
@@ -2297,6 +2437,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2312,6 +2453,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e7d31580f3cf9e59bce27de91b02226d6c44b5a05aed517c6b2498ee2d3a2618"
     },
@@ -2327,6 +2469,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "0659f3cf21160bbb4316850a90f8f26532eb1d1bdca394301da942e9a1f31065"
     },
@@ -2342,6 +2485,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "0659f3cf21160bbb4316850a90f8f26532eb1d1bdca394301da942e9a1f31065"
     },
@@ -2357,6 +2501,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "91e288ae5ea33be641a3a447642099c87efa3a443b1181840acdf02999cfdff6"
     },
@@ -2372,6 +2517,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2387,6 +2533,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "3657ce5660a21283d16aa551621edb0633f6d185bc5b7566a508be32067b8200"
     },
@@ -2402,6 +2549,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2417,6 +2565,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2432,6 +2581,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2447,6 +2597,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2462,6 +2613,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2477,6 +2629,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2492,6 +2645,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2507,6 +2661,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2522,6 +2677,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2537,6 +2693,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "449bf1b1f59554c047845ae2208ac4534dfd595febbc5d098ce5b3ed8f75a3db"
     },
@@ -2552,6 +2709,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "612d39552faf1dbc6067f5a539d85d8b738249efd9ff4a326cf7f33f12a90c2c"
     },
@@ -2567,6 +2725,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "612d39552faf1dbc6067f5a539d85d8b738249efd9ff4a326cf7f33f12a90c2c"
     },
@@ -2582,6 +2741,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "612d39552faf1dbc6067f5a539d85d8b738249efd9ff4a326cf7f33f12a90c2c"
     },
@@ -2597,6 +2757,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "612d39552faf1dbc6067f5a539d85d8b738249efd9ff4a326cf7f33f12a90c2c"
     },
@@ -2612,6 +2773,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2627,6 +2789,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2642,6 +2805,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2657,6 +2821,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2672,6 +2837,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2687,6 +2853,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2702,6 +2869,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2717,6 +2885,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2732,6 +2901,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2747,6 +2917,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2762,6 +2933,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2777,6 +2949,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2792,6 +2965,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2807,6 +2981,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2822,6 +2997,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "eadf51b3420ad653a05a19802ef173fe27745c081955ceafc499b2aacec38ae0"
     },
@@ -2837,6 +3013,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2852,6 +3029,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2867,6 +3045,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2882,6 +3061,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2897,6 +3077,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2912,6 +3093,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2927,6 +3109,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2942,6 +3125,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2957,6 +3141,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2972,6 +3157,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -2987,6 +3173,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -3002,6 +3189,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -3017,6 +3205,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -3032,6 +3221,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -3047,6 +3237,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -3062,6 +3253,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "c25f1b3b29de6545c3a335a2fbf71bdffa3a717b1c4b674df65d11c2e09cf167"
     },
@@ -3077,6 +3269,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3092,6 +3285,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3107,6 +3301,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3122,6 +3317,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3137,6 +3333,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3152,6 +3349,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3167,6 +3365,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3182,6 +3381,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "dab9faba035f6a51e2c4c060a4055f65cff637c2b8dc1142d433db17d99ec30f"
     },
@@ -3197,6 +3397,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3212,6 +3413,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3227,6 +3429,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3242,6 +3445,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3257,6 +3461,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3272,6 +3477,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3287,6 +3493,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3302,6 +3509,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3317,6 +3525,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3332,6 +3541,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3347,6 +3557,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3362,6 +3573,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e1235a9a0b228ea8f52394b0e4e2ca47e78b1ac026b671cfa350eda70538d692"
     },
@@ -3377,6 +3589,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "e36be0f842fbaf906c21999a7a0567f182cf409114ad3fbb82218a0a894747ba"
     },
@@ -3392,6 +3605,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "170b8a2c0829930d2d8f163832d14d5a51649596319f0be14c73cc07e3277ab4"
     },
@@ -3407,6 +3621,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "fe1a5effe44efa8f69dec4b745e3a3fec971bfac38bc4fa8116ab50c030bbdef"
     },
@@ -3422,6 +3637,7 @@
       "notes": "No Phase 2 disposition recorded",
       "phase2Disposition": null,
       "primaryClass": null,
+      "blockedSincePolicy": "NOT_BLOCKED",
       "evidenceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "acceptanceCriteriaHash": "90802092b4d31be508b3284b5e46669c319ed6b18f8d5c4252b04fb26d497d8c"
     }

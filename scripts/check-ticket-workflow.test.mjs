@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import {
   isTicketStatus,
   isForwardTransitionAllowed,
@@ -52,4 +53,19 @@ test('blockedSince accepts only UTC ISO timestamps', () => {
   assert.equal(assertTicketWorkflow({ ...base, blockedSince: '2026-10-02T10:20:30.000Z' }), true);
   assert.throws(() => assertTicketWorkflow({ ...base, blockedSince: '2026-10-02' }));
   assert.throws(() => assertTicketWorkflow({ ...base, blockedSince: '2026-10-02T10:20:30+05:30' }));
+  assert.throws(() => assertTicketWorkflow({ ...base, blockedSince: null }));
+  assert.equal(
+    assertTicketWorkflow(
+      { ...base, blockedSince: null },
+      { allowHistoricalBlockedSinceNull: true },
+    ),
+    true,
+  );
+});
+
+test('canonical migration rerun is a no-op', () => {
+  const output = execFileSync(process.execPath, ['scripts/migrate-ticket-workflow.mjs'], {
+    encoding: 'utf8',
+  });
+  assert.match(output, /"status":"NO-OP"/);
 });

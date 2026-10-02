@@ -37,7 +37,10 @@ export function isBlockedTicket(ticket) {
   return ticket?.blocked === true;
 }
 
-export function assertTicketWorkflow(ticket, { fromStatus } = {}) {
+export function assertTicketWorkflow(
+  ticket,
+  { fromStatus, allowHistoricalBlockedSinceNull = false } = {},
+) {
   if (!ticket || typeof ticket !== 'object') throw new Error('ticket must be an object');
   if (!isTicketStatus(ticket.status))
     throw new Error(`${ticket.id ?? 'ticket'} has non-canonical status ${ticket.status}`);
@@ -55,6 +58,8 @@ export function assertTicketWorkflow(ticket, { fromStatus } = {}) {
       Number.isNaN(Date.parse(ticket.blockedSince)))
   )
     throw new Error(`${ticket.id ?? 'ticket'} blockedSince must be an ISO timestamp or null`);
+  if (blocked && ticket.blockedSince === null && !allowHistoricalBlockedSinceNull)
+    throw new Error(`${ticket.id ?? 'ticket'} newly blocked tickets require blockedSince`);
   if (!Array.isArray(ticket.unblockEvidenceRequired))
     throw new Error(`${ticket.id ?? 'ticket'} unblockEvidenceRequired must be an array`);
   if (

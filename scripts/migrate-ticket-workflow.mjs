@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { TICKET_STATUSES } from './lib/ticket-workflow.mjs';
 
 const backlogPath = '.ai/backlog.json';
 const blockerPath = '.ai/blocker-classification.json';
@@ -20,6 +21,21 @@ const previousMigration = fs.existsSync('.ai/workflow-migration.json')
 const previousById = new Map(
   (previousMigration?.records ?? []).map((record) => [record.ticketId, record]),
 );
+const sourceHash = crypto
+  .createHash('sha256')
+  .update(JSON.stringify({ ...backlog, updatedAt: undefined }))
+  .digest('hex');
+if (
+  previousMigration?.sourceHash === sourceHash &&
+  previousMigration.records?.length === backlog.items.length &&
+  previousMigration.totalTickets === backlog.items.length &&
+  previousMigration.records.every((record) => typeof record.blockedSincePolicy === 'string')
+) {
+  process.stdout.write(
+    `${JSON.stringify({ status: 'NO-OP', reason: 'canonical state already migrated', total: backlog.items.length })}\n`,
+  );
+  process.exit(0);
+}
 const blockerById = new Map(blockerModel.tickets.map((entry) => [entry.ticketId, entry]));
 const legacyCounts = {};
 const newCounts = {};
@@ -89,6 +105,7 @@ for (const ticket of backlog.items) {
       : 'No Phase 2 disposition recorded',
     phase2Disposition: blocker.phase2Disposition ?? null,
     primaryClass: blocker.primaryClass ?? null,
+    blockedSincePolicy: blocked ? 'HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN' : 'NOT_BLOCKED',
     evidenceHash: crypto
       .createHash('sha256')
       .update(JSON.stringify(sourceTicket.evidence ?? []))
@@ -100,13 +117,12 @@ for (const ticket of backlog.items) {
   });
 }
 
-for (const status of ['BACKLOG', 'TODO', 'IN_PROGRESS', 'QA', 'UAT', 'PROD']) {
+for (const status of TICKET_STATUSES) {
   newCounts[status] ??= 0;
 }
 
 backlog.updatedAt = new Date().toISOString();
 fs.writeFileSync(backlogPath, `${JSON.stringify(backlog, null, 2)}\n`);
-const payload = JSON.stringify({ ...backlog, updatedAt: undefined });
 const migration = {
   schemaVersion: 1,
   phase: 'PHASE_3_CANONICAL_WORKFLOW_MIGRATION',
@@ -116,7 +132,10 @@ const migration = {
   newStatusCounts: newCounts,
   totalTickets: records.length,
   records,
-  sourceHash: crypto.createHash('sha256').update(payload).digest('hex'),
+  sourceHash: crypto
+    .createHash('sha256')
+    .update(JSON.stringify({ ...backlog, updatedAt: undefined }))
+    .digest('hex'),
 };
 fs.writeFileSync('.ai/workflow-migration.json', `${JSON.stringify(migration, null, 2)}\n`);
 process.stdout.write(

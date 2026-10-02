@@ -15,6 +15,19 @@ Forward movement is one stage at a time. Rework is explicit: TODO→BACKLOG,
 IN_PROGRESS→TODO, QA→IN_PROGRESS, UAT→QA or IN_PROGRESS. PROD is terminal.
 Blocked tickets remain visible in their stage and cannot be promoted.
 
+`blockedSince` has an explicit provenance policy. A newly blocked ticket must
+carry a strict UTC ISO timestamp (`YYYY-MM-DDTHH:mm:ss(.sss)Z`). A blocker
+inherited from Phase 2 may keep `null` only when its historical start cannot be
+proven; the migration ledger records this as
+`HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN`. Clearing a blocker sets all blocker
+metadata to `null`/`[]`; re-blocking requires a new timestamp. `PROD` cannot be
+blocked, and a blocked `UAT` ticket cannot transition to `PROD`.
+
+The migration is no-op safe: once the canonical backlog hash and complete
+provenance ledger match, rerunning the migration exits without rewriting files
+or timestamps. `BLOCKED IS NOT A WORKFLOW STATUS`. Phase 3 completion does not
+mean Release 1 production readiness.
+
 ## Baseline and census
 
 The migration started from Phase 2 commit
