@@ -1,0 +1,108 @@
+CareerScope Design System — Manifest
+Updated: 2026-10-02
+
+STATUS
+- Canonical approved visual references: INCLUDED
+- Auth references: INCLUDED
+- Onboarding reference: INCLUDED
+- Dashboard/Jobs/Applications canonical references: INCLUDED
+- Application Details / AI Apply / Settings / Resume references: INCLUDED
+- Saved Jobs / Career Insights references: INCLUDED
+- Public marketing pages: INCLUDED as full board + individual page crops
+- Loading system: INCLUDED
+- Brand identity board/source raster: INCLUDED
+- Design tokens and content guardrails: INCLUDED
+- Codex pixel-parity handoff instructions: INCLUDED
+- Production icon semantic map: INCLUDED
+- Asset inventory with dimensions + hashes: INCLUDED
+- ZIP integrity: verified during build
+
+IMPORTANT LIMITATION
+The approved screenshots contain the intended icons, logo treatments and mountain/path imagery, but not every element exists as an isolated reusable vector/source asset. In particular, exact standalone SVG logo variants, favicon exports, mountain/path source artwork and every icon SVG are not present as genuine source exports. This package documents deterministic implementation rules rather than fabricating those files.
+
+SOURCE-OF-TRUTH
+1. canonical/
+2. page-references/
+3. approved-images/
+4. references/
+5. foundations/, assets/, implementation/
+
+Do not use rejected/superseded iterations as canonical implementation references.
+
+
+RECRUITER WORKSPACE
+- Recruiter 16-screen approved board: INCLUDED
+- 16 individual recruiter page crops: INCLUDED
+- Recruiter product/interaction specification: INCLUDED
+- Dynamic bulk-invite requirements: INCLUDED
+- Recruiter-specific icon mapping: INCLUDED
+- Pixel-parity screenshot/diff instructions: INCLUDED
+
+
+FUTURE RELEASES — R2/R3 DESIGN READY
+- AI Interview Practice approved reference: INCLUDED
+- Courses Home approved reference: INCLUDED
+- Course Details approved reference: INCLUDED
+- Certifications approved reference: INCLUDED
+- Certificate Preview concept: INCLUDED
+- Individual future-page references: INCLUDED
+- R2/R3 design/implementation boundary contract: INCLUDED
+- These assets do NOT expand R1 implementation scope.
+
+INTERVIEW WORKSPACE — APPROVED
+- Full approved Interview reference board: INCLUDED in canonical, approved-images and references
+- 10 individual Interview page-reference crops: INCLUDED
+- Interview UX/scoring contract: covered by future-release design contract and canonical board
+
+
+ADMIN CONTROL PLANE — APPROVED
+- Full approved Admin control-plane board: INCLUDED
+- 10 individual Admin page-reference crops: INCLUDED
+- Admin architecture/security/CMS/observability/AI FinOps contract: INCLUDED
+- Generated metrics/content are illustrative only; production must use real data.
+
+PRODUCTION & OPERATIONS — APPROVED
+- Full 16-panel production/operations board: INCLUDED
+- 16 individual page/state references: INCLUDED
+- Security/privacy/provider/queue/backup/deployment/accessibility contract: INCLUDED
+- Compliance labels in concepts are not certifications or legal conclusions.
+
+FINAL UX FOUNDATIONS — APPROVED
+- Global Search & Command Palette
+- Notification Center
+- Help & Support
+- Account & Security
+- Candidate Privacy & Consent
+- Job Trust & Safety
+- Complete Component Library & states
+- Responsive desktop/tablet/mobile contract
+- Accessibility interaction contract
+- Localization readiness
+- System/error states
+- Transactional confirmations
+- Design tokens
+- Route/permission/feature-flag matrix
+- Data export/deletion and audit UX
+
+CONNECTED ACCOUNTS & INTEGRATIONS — APPROVED FUTURE DESIGN
+- Full Candidate + Admin integration board: INCLUDED
+- 15 individual screen references: INCLUDED
+- Capability-based provider contract: INCLUDED
+- Credential, consent, privacy, audit and provider-compliance guardrails: INCLUDED
+- R2/R3 only; disabled until each capability is implemented and legitimately authorized.
+
+CODEX/COPILOT ORDERED HANDOFF — VERIFIED
+- Single numeric implementation tree: INCLUDED
+- Marketing -> Auth -> Onboarding -> Candidate -> Interview(HOLD) -> Courses/Certifications(HOLD)
+  -> Connectors(HOLD) -> AI -> Recruiter -> Admin -> Ops -> Global UX: INCLUDED
+- Atomic Design hierarchy (tokens/atoms/molecules/organisms/templates/pages): INCLUDED
+- Logo/brand + global loader wired into foundations: INCLUDED
+- Image clarity audit: INCLUDED
+- Asset completeness/limitations checklist: INCLUDED
+
+CANDIDATE TRUST & VERIFICATION — APPROVED
+- Full 12-panel board: INCLUDED
+- 12 individual references: INCLUDED
+- Candidate ordered implementation references: INCLUDED
+- Admin verification ordered implementation references: INCLUDED
+- Backend state/RBAC/privacy/audit contract: INCLUDED

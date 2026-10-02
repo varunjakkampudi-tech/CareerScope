@@ -1,63 +1,72 @@
-# CareerScope Design Source of Truth
+# IMPORTANT — CODEX/COPILOT START HERE
 
-`design/` contains tracked visual references and design tooling for CareerScope.
-It is an engineering reference area; production routes do not load screenshots
-or HTML from this directory at runtime.
+Use `00-CODEX-START-HERE/MASTER-IMPLEMENTATION-ORDER.md` and then `01-IMPLEMENTATION-ORDER/`.
+Do not choose screenshots ad hoc from the archive.
 
-## Canonical ownership
+# CareerScope Design System
 
-- `design/brand/` is reserved for approved brand identity assets.
-- `design/foundations/` is reserved for locked visual tokens and usage guidance.
-- `design/pages/` is reserved for approved page references, grouped by surface.
-- `design/archive/` holds superseded references that remain useful for history.
-- `design/concepts/` contains unapproved exploration and is not a product
-  specification.
-- `design/home-variants/` contains a reviewable static design prototype and its
-  builder; it is not a production route or runtime dependency.
+`design/` is the permanent, tracked source of truth for the approved CareerScope
+visual handoff. It is reference material only: production routes do not load
+screenshots, HTML, or design documentation at runtime.
 
-Only directories containing real, reviewed assets are created. Empty future
-page directories are intentionally omitted.
+Phase 0 imported the reviewed handoff from the repository-local
+`CareerScope-Design-System/` drop into this directory. The import evidence is
+in [SOURCE-PROVENANCE.md](SOURCE-PROVENANCE.md), and the machine-readable
+surface map is [DESIGN-INDEX.json](DESIGN-INDEX.json).
 
-## Approval and naming
+## Start here
 
-An asset is not canonical merely because it is committed. A design becomes
-`LOCKED` or `APPROVED` only after the owner/design review records that decision
-in the relevant engineering evidence. Until then, inventory it as `IN REVIEW`
-or `NOT DESIGNED`.
+- `MANIFEST.txt`
+- `ASSET-INVENTORY.txt`
+- `00-CODEX-START-HERE/MASTER-IMPLEMENTATION-ORDER.md`
+- `01-IMPLEMENTATION-ORDER/00-foundations-first/`
+- `01-IMPLEMENTATION-ORDER/13-engineering-contracts/`
+- `tooling/design-audit/PHASE-0-IMPORT-REPORT.md`
 
-Use descriptive, surface-based names such as:
+## Visual source of truth
 
-```text
-pages/dashboard/careerscope-dashboard-desktop.png
-pages/dashboard/careerscope-dashboard-mobile.png
-```
+- `canonical/brand/`
+- `canonical/auth/`
+- `canonical/onboarding/`
+- `canonical/app/`
+- `canonical/marketing/`
 
-Use `desktop` and `mobile` suffixes for viewport references. Do not use
-`final.png`, `latest.png`, or numbered final iterations. Superseded approved
-assets belong under `archive/`; rejected or reproducible experiments should not
-be committed.
+The handoff precedence is `01-IMPLEMENTATION-ORDER/`, then `canonical/`, then
+the written contracts, then `page-references/`, composite references, and
+supporting foundations/assets. Illustrative screenshot data never overrides
+real product data or the current runtime contract.
 
-## Design inventory
+## Supporting references
 
-| Surface                  | Desktop                           | Mobile       | Status       | Implementation                       |
-| ------------------------ | --------------------------------- | ------------ | ------------ | ------------------------------------ |
-| Marketing/home prototype | `home-variants/refined-dark.html` | Not provided | IN REVIEW    | `apps/web` public route              |
-| Dashboard                | Not provided                      | Not provided | NOT DESIGNED | `apps/web` dashboard route           |
-| Jobs                     | Not provided                      | Not provided | NOT DESIGNED | `apps/web` jobs route                |
-| Applications             | Not provided                      | Not provided | NOT DESIGNED | `apps/web` applications route        |
-| Profile/resume           | Not provided                      | Not provided | NOT DESIGNED | `apps/web` profile and resume routes |
-| Settings                 | Not provided                      | Not provided | NOT DESIGNED | `apps/web` settings route            |
+- `page-references/` contains individual page crops extracted from approved multi-page boards.
+- `approved-images/` retains approved full screenshots/boards.
+- `references/` retains handoff copies.
 
-The exploratory images under `concepts/` are retained as explicitly
-unapproved references. They must not be represented as approved product design
-or used as a runtime asset dependency.
+The `future-releases/` material is design-approved but intentionally held for
+later releases. HOLD means the visual reference may inform architecture, but a
+route or capability must not be presented as implemented until its real
+backend, authorization, data and tests exist.
 
-## Review workflow
+## Assets
 
-1. Add a descriptive reference under the relevant page or foundation folder.
-2. Record viewport, provenance, and review status in the design inventory.
-3. Implement the approved direction with React, Next.js, CSS and runtime assets
-   under the application that owns the route.
-4. Validate responsive, keyboard, accessibility and visual behavior.
-5. Move superseded but useful references to `archive/`; remove rejected or
-   reproducible generated experiments.
+- `assets/icons/PRODUCTION-ICON-MAP.md`
+- `assets/icons/ICON-SYSTEM.md`
+- `assets/auth/ASSET-REQUIREMENTS.md`
+- `foundations/design-tokens.md`
+
+Generated screenshots are visual references. Production behavior and real data
+must remain truthful. The package explicitly does not contain every isolated
+logo/vector/icon source asset; do not fabricate missing source exports.
+
+## Archived material
+
+`archive/legacy-pre-approved-handoff/` contains the pre-Phase-0 exploratory
+prototype, concepts and builder. It is retained for history and is not a
+canonical design source or runtime dependency.
+
+## Phase boundary
+
+Phase 0 establishes the source-of-truth package and evidence only. It does not
+implement routes, redesign the application, change APIs, or approve production
+release. Follow the ordered handoff and contracts during the separately
+authorized implementation phase.

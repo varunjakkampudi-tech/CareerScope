@@ -54,6 +54,7 @@ Caddyfile.* text eol=lf
 *.sql text eol=lf
 *.svg text eol=lf
 *.xml text eol=lf
+*.csv text eol=lf
 *.webmanifest text eol=lf
 *.conf text eol=lf
 *.inc text eol=lf

@@ -1,0 +1,413 @@
+CareerScope Design System — Audited Asset Inventory
+Updated: 2026-10-02
+
+00-CODEX-START-HERE/ASSET-COMPLETENESS.md | sha256:b42340bf2600dc19
+00-CODEX-START-HERE/DESIGN-COVERAGE-MATRIX.md | sha256:036aa2d8c1ae0e8e
+00-CODEX-START-HERE/IMAGE-CLARITY-AUDIT.csv | sha256:dba4ae7131a16ea9
+00-CODEX-START-HERE/MASTER-IMPLEMENTATION-ORDER.md | sha256:071088fdcb7168a6
+01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md | sha256:06a3b5a7ae221913
+01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md | sha256:8b98d91a644390a7
+01-IMPLEMENTATION-ORDER/00-foundations-first/CODEX-PIXEL-PARITY-HANDOFF.md | sha256:1345fed11d7ffdd3
+01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md | sha256:c715b939d613f729
+01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md | sha256:c2338eeb0693c2d0
+01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md | sha256:afbd6c486d095916
+01-IMPLEMENTATION-ORDER/00-foundations-first/TRANSACTIONAL-UX-CONTRACT.md | sha256:253ac422d38aeace
+01-IMPLEMENTATION-ORDER/00-foundations-first/careerscope-brand-identity-guidelines.png | 1600x800 | sha256:a9c61d236dd6883f
+01-IMPLEMENTATION-ORDER/00-foundations-first/careerscope-complete-design-system-production-readiness-board.png | 1536x1024 | sha256:648763d2903c6c88
+01-IMPLEMENTATION-ORDER/00-foundations-first/careerscope-final-ux-foundations-reference-board.png | 1536x1024 | sha256:beda488a222f69ea
+01-IMPLEMENTATION-ORDER/00-foundations-first/careerscope-global-loading-system.jpeg | 1536x768 | sha256:309ed908d292d668
+01-IMPLEMENTATION-ORDER/00-foundations-first/content-guardrails.md | sha256:4d20a87b49f6c24e
+01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md | sha256:0316198ec5a14c8e
+01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png | 384x512 | sha256:9c6a90f77fea9ddc
+01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png | 384x512 | sha256:1e3ddefcfc817246
+01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png | 384x512 | sha256:4132728942137f1c
+01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png | 384x512 | sha256:f5692a985b288e83
+01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png | 384x512 | sha256:c4edf5b3dad37c3a
+01-IMPLEMENTATION-ORDER/01-marketing-public/06-contact-feedback.png | 384x512 | sha256:fc6dc248b833d124
+01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png | 384x512 | sha256:b4d6be174a29fef0
+01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png | 384x512 | sha256:75193cbfcc95a903
+01-IMPLEMENTATION-ORDER/01-marketing-public/README.md | sha256:daf93c4e76205194
+01-IMPLEMENTATION-ORDER/02-auth/01-sign-in.png | 1536x1024 | sha256:df0c6dd5288c02f0
+01-IMPLEMENTATION-ORDER/02-auth/02-recovery-verification.png | 1536x1024 | sha256:91f7a167bf907326
+01-IMPLEMENTATION-ORDER/02-auth/README.md | sha256:94955c462a7732ec
+01-IMPLEMENTATION-ORDER/03-onboarding/01-onboarding-flow.png | 1536x1024 | sha256:e32ce618e6f97162
+01-IMPLEMENTATION-ORDER/03-onboarding/README.md | sha256:9aa1c2711411ae36
+01-IMPLEMENTATION-ORDER/04-candidate-core/01-dashboard.png | 1536x1024 | sha256:dc6b110da1ea8e25
+01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png | 1536x1024 | sha256:a6c4f7c69edc989e
+01-IMPLEMENTATION-ORDER/04-candidate-core/03-jobs-expanded-sidebar.png | 1536x1024 | sha256:d5d30ef7b61e9844
+01-IMPLEMENTATION-ORDER/04-candidate-core/04-jobs-collapsed-sidebar.png | 1536x1024 | sha256:628f067b5d9de2c8
+01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png | 1536x1024 | sha256:ad362036ad5c9c99
+01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png | 1536x1024 | sha256:45f2634568668ed2
+01-IMPLEMENTATION-ORDER/04-candidate-core/07-ai-apply-assistant.png | 1536x1024 | sha256:45f2634568668ed2
+01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png | 1536x1024 | sha256:45f2634568668ed2
+01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png | 512x342 | sha256:7796f3f036c4d085
+01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png | 512x341 | sha256:11ed7f06ebb09924
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/00-full-reference-board.png | 1536x1024 | sha256:72432b62f0cd3836
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/01-candidate-profile-add-photo.png | 476x348 | sha256:3d06b5f39b5de9f8
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/02-verification-in-progress.png | 415x348 | sha256:11388ab23bb39d3a
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/03-verification-call-candidate.png | 261x348 | sha256:0f87a1572472b2dd
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/04-candidate-verified-profile.png | 384x348 | sha256:d2d447b57ae5e80e
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/09-candidate-verification-rejected.png | 277x307 | sha256:cf9f0cdc88991443
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/10-email-verification-approved.png | 322x307 | sha256:007bf7908763bba8
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/11-email-verification-rejected.png | 354x307 | sha256:46899d9eb875e947
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/12-mobile-verification-status.png | 276x307 | sha256:28828fcf543483c7
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md | sha256:6f49f6c3226c4dd7
+01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/README.md | sha256:f33543c5314f4f79
+01-IMPLEMENTATION-ORDER/04-candidate-core/README.md | sha256:6003ce0efdf8ea4d
+01-IMPLEMENTATION-ORDER/05-interview/00-full-reference-board.png | 1536x1024 | sha256:5e048d1c5ef32188
+01-IMPLEMENTATION-ORDER/05-interview/01-01-interview-hub.png | 829x481 | sha256:52323a7945cf38f2
+01-IMPLEMENTATION-ORDER/05-interview/02-02-interview-categories-start.png | 707x481 | sha256:b4422d37f59dafd7
+01-IMPLEMENTATION-ORDER/05-interview/03-03-interview-setup.png | 522x359 | sha256:2c06ab27aa5379da
+01-IMPLEMENTATION-ORDER/05-interview/04-04-interview-theory-mcq.png | 476x359 | sha256:9c9f505eeb36151f
+01-IMPLEMENTATION-ORDER/05-interview/05-05-interview-coding-question.png | 538x359 | sha256:41e68f1139606b0b
+01-IMPLEMENTATION-ORDER/05-interview/06-06-interview-speaking-question.png | 522x184 | sha256:dd9cac690fb02f57
+01-IMPLEMENTATION-ORDER/05-interview/07-07-interview-review-results.png | 323x184 | sha256:54659fa930d1f43a
+01-IMPLEMENTATION-ORDER/05-interview/08-08-interview-detailed-feedback.png | 261x184 | sha256:48548000a73117af
+01-IMPLEMENTATION-ORDER/05-interview/09-09-interview-leaderboard.png | 230x184 | sha256:138327f7e8ef774a
+01-IMPLEMENTATION-ORDER/05-interview/10-10-interview-history.png | 200x184 | sha256:437f5f5599de9dfa
+01-IMPLEMENTATION-ORDER/05-interview/README.md | sha256:4284ae317c42e7b0
+01-IMPLEMENTATION-ORDER/06-courses-certifications/00-full-reference-board.png | 1536x1024 | sha256:8823bda6d5965ba0
+01-IMPLEMENTATION-ORDER/06-courses-certifications/01-courses-home.png | 438x256 | sha256:5055ebbafbeacdd4
+01-IMPLEMENTATION-ORDER/06-courses-certifications/02-course-details.png | 438x256 | sha256:f8ae1396feac63ed
+01-IMPLEMENTATION-ORDER/06-courses-certifications/03-certifications.png | 384x256 | sha256:0826393db3c74253
+01-IMPLEMENTATION-ORDER/06-courses-certifications/04-certificate-preview.png | 276x256 | sha256:2d08701bd46d71fe
+01-IMPLEMENTATION-ORDER/06-courses-certifications/README.md | sha256:8a581e7a3b6b3e49
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/00-full-reference-board.png | 1536x1024 | sha256:0e380dac78720187
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/01-01-connected-accounts-user.png | 476x358 | sha256:9c8fa522308b8f20
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/02-02-connect-account-oauth-flow.png | 307x358 | sha256:ceb6f414627aa824
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/03-03-connected-account-details.png | 430x358 | sha256:d8fa7def15894ec1
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/04-04-permissions-consent-user.png | 323x358 | sha256:9e2ee4a325d27794
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/05-05-email-integration-user.png | 492x277 | sha256:d94d030bc5ef83c0
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/06-06-data-privacy-user.png | 291x277 | sha256:231845b18e8b5f0a
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/07-07-sync-history-user.png | 538x277 | sha256:efd7867bfd9577d9
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/08-08-mobile-connected-accounts.png | 215x277 | sha256:025992ea4d49d12d
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/09-09-admin-integrations-overview.png | 584x225 | sha256:d2175fddb59464f4
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/10-10-provider-configuration-admin.png | 430x225 | sha256:b07ebb1041c2eec5
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/11-11-authentication-credentials-admin.png | 522x225 | sha256:34f1a53b490939f4
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/12-12-sync-settings-admin.png | 461x164 | sha256:a7b925ab4c34effd
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/13-13-monitoring-health-admin.png | 415x164 | sha256:f9f0978b82e250dc
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/14-14-user-connections-admin.png | 337x164 | sha256:70c72f8dab2c9f23
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/15-15-audit-logs-admin.png | 323x164 | sha256:e5d71ee39fea911f
+01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/README.md | sha256:c2454e464cc53459
+01-IMPLEMENTATION-ORDER/08-ai-integration/01-ai-apply-assistant.png | 1536x1024 | sha256:45f2634568668ed2
+01-IMPLEMENTATION-ORDER/08-ai-integration/02-admin-ai-models-billing.png | 415x271 | sha256:e091005dc026e5f4
+01-IMPLEMENTATION-ORDER/08-ai-integration/03-ai-system-feature-flags.png | 269x271 | sha256:fc59b6eecc839d67
+01-IMPLEMENTATION-ORDER/08-ai-integration/README.md | sha256:c9e711cb7b6a8b72
+01-IMPLEMENTATION-ORDER/09-recruiter/00-full-reference-board.png | 1536x1024 | sha256:87bb652606368fda
+01-IMPLEMENTATION-ORDER/09-recruiter/01-01-recruiter-dashboard.png | 384x256 | sha256:d5dcf0c26c21b084
+01-IMPLEMENTATION-ORDER/09-recruiter/02-02-post-a-job.png | 384x256 | sha256:50111991e1eb1ab8
+01-IMPLEMENTATION-ORDER/09-recruiter/03-03-search-candidates.png | 384x256 | sha256:0650402b66467791
+01-IMPLEMENTATION-ORDER/09-recruiter/04-04-candidate-profile.png | 384x256 | sha256:e3c89d2a0c18430d
+01-IMPLEMENTATION-ORDER/09-recruiter/05-05-matched-candidates-for-job.png | 384x256 | sha256:737d031d33ca7182
+01-IMPLEMENTATION-ORDER/09-recruiter/06-06-bulk-invite-select-candidates.png | 384x256 | sha256:aa3f381f04f1d7fc
+01-IMPLEMENTATION-ORDER/09-recruiter/07-07-compose-dynamic-invite.png | 384x256 | sha256:23a6266cf2276964
+01-IMPLEMENTATION-ORDER/09-recruiter/08-08-review-send-campaign.png | 384x256 | sha256:645cf3324bf88aae
+01-IMPLEMENTATION-ORDER/09-recruiter/09-09-talent-pipeline.png | 384x256 | sha256:1b52915a62deeae8
+01-IMPLEMENTATION-ORDER/09-recruiter/10-10-interview-scheduling.png | 384x256 | sha256:0465ebc07a7d4b8e
+01-IMPLEMENTATION-ORDER/09-recruiter/11-11-message-templates.png | 384x256 | sha256:3ee4eaf0f28a8a4e
+01-IMPLEMENTATION-ORDER/09-recruiter/12-12-analytics-reports.png | 384x256 | sha256:ca4fa2c5b2d1e810
+01-IMPLEMENTATION-ORDER/09-recruiter/13-13-company-profile.png | 384x256 | sha256:d00ac9a20586eb7a
+01-IMPLEMENTATION-ORDER/09-recruiter/14-14-job-postings-management.png | 384x256 | sha256:540ef2634e49ca71
+01-IMPLEMENTATION-ORDER/09-recruiter/15-15-messages-inquiries.png | 384x256 | sha256:72701d900325a70a
+01-IMPLEMENTATION-ORDER/09-recruiter/16-16-recruiter-settings.png | 384x256 | sha256:f76362bbf92a03f2
+01-IMPLEMENTATION-ORDER/09-recruiter/README.md | sha256:13ffa373eec8546f
+01-IMPLEMENTATION-ORDER/10-admin/00-full-reference-board.png | 1536x1024 | sha256:a616cdb0648e8a94
+01-IMPLEMENTATION-ORDER/10-admin/01-01-admin-dashboard.png | 576x435 | sha256:0b732f104e796627
+01-IMPLEMENTATION-ORDER/10-admin/02-02-user-management.png | 614x435 | sha256:b07ad1c392f083e3
+01-IMPLEMENTATION-ORDER/10-admin/03-03-user-details-candidate.png | 346x435 | sha256:f3b8a30cf4421058
+01-IMPLEMENTATION-ORDER/10-admin/04-04-content-management-cms.png | 422x318 | sha256:c9d89d6b4a997f88
+01-IMPLEMENTATION-ORDER/10-admin/05-05-edit-page-cms.png | 346x318 | sha256:e3d0a391e18e12e7
+01-IMPLEMENTATION-ORDER/10-admin/06-06-analytics.png | 768x318 | sha256:43da42987c9c0a34
+01-IMPLEMENTATION-ORDER/10-admin/07-07-system-server-monitoring.png | 545x271 | sha256:c8283aebe23db395
+01-IMPLEMENTATION-ORDER/10-admin/08-08-ai-models-billing.png | 415x271 | sha256:e091005dc026e5f4
+01-IMPLEMENTATION-ORDER/10-admin/09-09-logs-audit-trail.png | 307x271 | sha256:8bc9d9a1ecbe146d
+01-IMPLEMENTATION-ORDER/10-admin/10-10-settings-feature-flags.png | 269x271 | sha256:fc59b6eecc839d67
+01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/00-full-reference-board.png | 1536x1024 | sha256:72432b62f0cd3836
+01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png | 691x369 | sha256:c86601348ef5d6f2
+01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png | 461x369 | sha256:940d5e55fe13fbf0
+01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/07-admin-verified-candidate-view.png | 384x369 | sha256:8d89b5e635d44795
+01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png | 307x307 | sha256:9ee11fc25ac1273d
+01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md | sha256:6f49f6c3226c4dd7
+01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/README.md | sha256:c1cc15dc0889f595
+01-IMPLEMENTATION-ORDER/10-admin/README.md | sha256:1c1c82711eecc2c0
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/00-full-reference-board.png | 1536x1024 | sha256:7d820a7064288c75
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/01-01-security-center.png | 499x297 | sha256:249be976ee5ec688
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/02-02-privacy-data-requests.png | 400x297 | sha256:e4e84f6eabc82241
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/03-03-job-sources-providers.png | 330x297 | sha256:7e40a2788776d533
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/04-04-queue-worker-management.png | 307x297 | sha256:7a47f9d7cd81dd3c
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/05-05-backups-restore.png | 399x276 | sha256:ac556e4b69be53fd
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/06-06-email-notification-management.png | 369x276 | sha256:4323f37b33880b86
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/07-07-deployment-releases.png | 384x276 | sha256:c1d62c682ae1f429
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/08-08-scheduled-jobs-cron.png | 384x276 | sha256:ace2df1ffe2f39ed
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/09-09-system-status-health.png | 507x267 | sha256:313bff3497f1266c
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/10-10-integrated-logs.png | 338x267 | sha256:a675b964afeac363
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/11-11-feature-flags-platform-settings.png | 307x267 | sha256:b7a6d77ccf4e9367
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/12-12-component-states-design-system.png | 384x267 | sha256:33ebbb11e2981af3
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/13-13-system-state-pages.png | 783x184 | sha256:0d3e7d0cfccaefb1
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/14-14-responsive-mobile-examples.png | 430x184 | sha256:30b866fbf367721d
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/15-15-accessibility-compliance.png | 185x184 | sha256:bfbe4e45f167a90b
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/16-16-legal-policy-controls.png | 138x184 | sha256:d4db33c37bce6315
+01-IMPLEMENTATION-ORDER/11-admin-production-operations/README.md | sha256:ba608c5206629615
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/00-full-reference-board.png | 1536x1024 | sha256:648763d2903c6c88
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/01-01-global-search-command-palette.png | 384x312 | sha256:14111231040e2bce
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png | 261x312 | sha256:d053f5c9d69895bc
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/03-03-help-support-center.png | 261x312 | sha256:370be72942afc5ef
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png | 215x312 | sha256:0319a29c15079ead
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/05-05-consent-privacy-center.png | 215x312 | sha256:7a8dedbec0c3113a
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/06-06-job-source-trust-safety.png | 261x369 | sha256:0b9be1cd34193f21
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/07-07-component-library.png | 584x369 | sha256:ea851398abc04a14
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/08-08-states-feedback.png | 215x369 | sha256:99c4e5356e785abb
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png | 476x369 | sha256:5bcf95f6e7efee25
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png | 261x225 | sha256:84718fd95a51c9b3
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/11-11-localization-internationalization.png | 292x225 | sha256:98e133cc3fbb3798
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/12-12-system-state-pages.png | 292x225 | sha256:0ec3aac0f4e5149d
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/13-13-design-tokens-brand-system.png | 353x225 | sha256:ed1ec6c679172e65
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/14-14-route-permission-feature-flag-matrix.png | 338x225 | sha256:7dd37616b9cfcc4e
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/15-15-confirmation-destructive-actions.png | 399x118 | sha256:2594c8f30a0d9394
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/16-16-data-export-deletion.png | 246x118 | sha256:2ddd97322033ae57
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/17-17-audit-trail-user-admin.png | 246x118 | sha256:4ae709fc1cc65ac0
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/18-18-error-loading-empty-component-states.png | 307x118 | sha256:71f97499387d7cf2
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/19-19-keyboard-shortcuts.png | 184x118 | sha256:a4a24f72543f560a
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/20-20-final-notes.png | 154x118 | sha256:30a47cd58a9831da
+01-IMPLEMENTATION-ORDER/12-global-ux-system-states/README.md | sha256:a4c525b35dd2ecef
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md | sha256:06a3b5a7ae221913
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/ADMIN-CONTROL-PLANE-SPEC.md | sha256:701c99e9cfb54a74
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/CODEX-PIXEL-PARITY-HANDOFF.md | sha256:1345fed11d7ffdd3
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/CONNECTED-ACCOUNTS-INTEGRATIONS-CONTRACT.md | sha256:41f4dbc395f29276
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/FUTURE-RELEASES-R2-R3-DESIGN-CONTRACT.md | sha256:c510bd810924ce60
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md | sha256:291d4ea3ffb033bc
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRODUCTION-OPERATIONS-DESIGN-CONTRACT.md | sha256:019e13458815fdb3
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/RECRUITER-WORKSPACE-SPEC.md | sha256:beb2e62a83033f74
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/ROUTE-PERMISSION-FEATURE-FLAG-CONTRACT.md | sha256:c6bdd89c25eb5d5a
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/TRANSACTIONAL-UX-CONTRACT.md | sha256:253ac422d38aeace
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/content-guardrails.md | sha256:4d20a87b49f6c24e
+01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md | sha256:0316198ec5a14c8e
+ASSET-INVENTORY.txt | sha256:128f84f045e6e603
+FINAL-DESIGN-ASSET-AUDIT.md | sha256:d6dc6d661c48b34b
+MANIFEST.txt | sha256:d1325db7350d5b7f
+README.md | sha256:6cb57e52a0f364cd
+approved-images/README.txt | sha256:c73a7f7c8c4dcbab
+approved-images/careerscope-admin-control-plane-reference-board.png | 1536x1024 | sha256:a616cdb0648e8a94
+approved-images/careerscope-ai-apply-assistant-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+approved-images/careerscope-ai-interview-practice-reference-board.png | 1536x1024 | sha256:5e048d1c5ef32188
+approved-images/careerscope-application-details-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+approved-images/careerscope-applications-desktop.png | 1536x1024 | sha256:ad362036ad5c9c99
+approved-images/careerscope-auth-account-recovery-verification-system.png | 1536x1024 | sha256:91f7a167bf907326
+approved-images/careerscope-auth-sign-in.png | 1536x1024 | sha256:df0c6dd5288c02f0
+approved-images/careerscope-brand-identity-guidelines.png | 1600x800 | sha256:a9c61d236dd6883f
+approved-images/careerscope-candidate-verification-reference-board.png | 1536x1024 | sha256:72432b62f0cd3836
+approved-images/careerscope-complete-design-system-production-readiness-board.png | 1536x1024 | sha256:648763d2903c6c88
+approved-images/careerscope-connected-accounts-admin-integrations-reference-board.png | 1536x1024 | sha256:0e380dac78720187
+approved-images/careerscope-dashboard-desktop-expanded.png | 1536x1024 | sha256:dc6b110da1ea8e25
+approved-images/careerscope-final-ux-foundations-reference-board.png | 1536x1024 | sha256:beda488a222f69ea
+approved-images/careerscope-global-loading-system.jpeg | 1536x768 | sha256:309ed908d292d668
+approved-images/careerscope-jobs-desktop-collapsed-sidebar.png | 1536x1024 | sha256:628f067b5d9de2c8
+approved-images/careerscope-jobs-desktop-expanded-sidebar.png | 1536x1024 | sha256:d5d30ef7b61e9844
+approved-images/careerscope-jobs-desktop-final.png | 1536x1024 | sha256:a6c4f7c69edc989e
+approved-images/careerscope-next-pages-review-board.png | 1536x1024 | sha256:45f2634568668ed2
+approved-images/careerscope-onboarding-flow.png | 1536x1024 | sha256:e32ce618e6f97162
+approved-images/careerscope-product-pages-reference-board.png | 1536x1024 | sha256:69af99b6adb43aec
+approved-images/careerscope-production-operations-reference-board.png | 1536x1024 | sha256:7d820a7064288c75
+approved-images/careerscope-public-marketing-pages-reference-board.png | 1536x1024 | sha256:50a60c3441fa8f50
+approved-images/careerscope-recruiter-workspace-reference-board.png | 1536x1024 | sha256:87bb652606368fda
+approved-images/careerscope-settings-resume-management-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+assets/auth/ASSET-REQUIREMENTS.md | sha256:838f6b5fc92278a6
+assets/icons/ICON-SYSTEM.md | sha256:c2338eeb0693c2d0
+assets/icons/PRODUCTION-ICON-MAP.md | sha256:afbd6c486d095916
+brand/careerscope-brand-identity-guidelines.png | 1600x800 | sha256:a9c61d236dd6883f
+brand/careerscope-brand-identity-source.png | 1600x800 | sha256:a9c61d236dd6883f
+canonical/admin/careerscope-admin-control-plane-reference-board.png | 1536x1024 | sha256:a616cdb0648e8a94
+canonical/admin/production-operations/careerscope-production-operations-reference-board.png | 1536x1024 | sha256:7d820a7064288c75
+canonical/app/careerscope-ai-apply-assistant-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+canonical/app/careerscope-application-details-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+canonical/app/careerscope-applications-desktop.png | 1536x1024 | sha256:ad362036ad5c9c99
+canonical/app/careerscope-dashboard-desktop-expanded.png | 1536x1024 | sha256:dc6b110da1ea8e25
+canonical/app/careerscope-jobs-desktop-collapsed-sidebar.png | 1536x1024 | sha256:628f067b5d9de2c8
+canonical/app/careerscope-jobs-desktop-expanded-sidebar.png | 1536x1024 | sha256:d5d30ef7b61e9844
+canonical/app/careerscope-jobs-desktop-final.png | 1536x1024 | sha256:a6c4f7c69edc989e
+canonical/app/careerscope-settings-resume-management-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+canonical/auth/careerscope-auth-account-recovery-verification-system.png | 1536x1024 | sha256:91f7a167bf907326
+canonical/auth/careerscope-auth-sign-in.png | 1536x1024 | sha256:df0c6dd5288c02f0
+canonical/brand/careerscope-brand-identity-guidelines.png | 1600x800 | sha256:a9c61d236dd6883f
+canonical/brand/careerscope-global-loading-system.jpeg | 1536x768 | sha256:309ed908d292d668
+canonical/candidate-verification/careerscope-candidate-verification-reference-board.png | 1536x1024 | sha256:72432b62f0cd3836
+canonical/foundations/careerscope-complete-design-system-production-readiness-board.png | 1536x1024 | sha256:648763d2903c6c88
+canonical/foundations/careerscope-final-ux-foundations-reference-board.png | 1536x1024 | sha256:beda488a222f69ea
+canonical/future-integrations/careerscope-connected-accounts-admin-integrations-reference-board.png | 1536x1024 | sha256:0e380dac78720187
+canonical/interview/careerscope-ai-interview-practice-reference-board.png | 1536x1024 | sha256:5e048d1c5ef32188
+canonical/marketing/careerscope-public-about.png | 384x512 | sha256:f5692a985b288e83
+canonical/marketing/careerscope-public-contact-feedback.png | 384x512 | sha256:fc6dc248b833d124
+canonical/marketing/careerscope-public-features.png | 384x512 | sha256:1e3ddefcfc817246
+canonical/marketing/careerscope-public-home.png | 384x512 | sha256:9c6a90f77fea9ddc
+canonical/marketing/careerscope-public-how-it-works.png | 384x512 | sha256:4132728942137f1c
+canonical/marketing/careerscope-public-marketing-pages-reference-board.png | 1536x1024 | sha256:50a60c3441fa8f50
+canonical/marketing/careerscope-public-privacy.png | 384x512 | sha256:b4d6be174a29fef0
+canonical/marketing/careerscope-public-resources.png | 384x512 | sha256:c4edf5b3dad37c3a
+canonical/marketing/careerscope-public-terms.png | 384x512 | sha256:75193cbfcc95a903
+canonical/onboarding/careerscope-onboarding-flow.png | 1536x1024 | sha256:e32ce618e6f97162
+canonical/recruiter/careerscope-recruiter-workspace-reference-board.png | 1536x1024 | sha256:87bb652606368fda
+foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md | sha256:8b98d91a644390a7
+foundations/DESIGN-TOKENS.md | sha256:c715b939d613f729
+foundations/design-tokens.md | sha256:6910473b69fd8daf
+future-releases/release-2-3/careerscope-courses-certifications-future-reference-board.png | 1536x1024 | sha256:8823bda6d5965ba0
+future-releases/release-2-3/connected-accounts/careerscope-connected-accounts-admin-integrations-reference-board.png | 1536x1024 | sha256:0e380dac78720187
+future-releases/release-2-3/page-references/14-courses-home.png | 438x256 | sha256:5055ebbafbeacdd4
+future-releases/release-2-3/page-references/15-course-details.png | 438x256 | sha256:f8ae1396feac63ed
+future-releases/release-2-3/page-references/16-certifications.png | 384x256 | sha256:0826393db3c74253
+future-releases/release-2-3/page-references/17-certificate-preview.png | 276x256 | sha256:2d08701bd46d71fe
+implementation/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md | sha256:06a3b5a7ae221913
+implementation/ADMIN-CONTROL-PLANE-SPEC.md | sha256:701c99e9cfb54a74
+implementation/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md | sha256:6f49f6c3226c4dd7
+implementation/CODEX-PIXEL-PARITY-HANDOFF.md | sha256:1345fed11d7ffdd3
+implementation/CONNECTED-ACCOUNTS-INTEGRATIONS-CONTRACT.md | sha256:41f4dbc395f29276
+implementation/FUTURE-RELEASES-R2-R3-DESIGN-CONTRACT.md | sha256:c510bd810924ce60
+implementation/PRIVACY-CONSENT-TRUST-CONTRACT.md | sha256:291d4ea3ffb033bc
+implementation/PRODUCTION-OPERATIONS-DESIGN-CONTRACT.md | sha256:019e13458815fdb3
+implementation/RECRUITER-WORKSPACE-SPEC.md | sha256:beb2e62a83033f74
+implementation/ROUTE-PERMISSION-FEATURE-FLAG-CONTRACT.md | sha256:c6bdd89c25eb5d5a
+implementation/TRANSACTIONAL-UX-CONTRACT.md | sha256:253ac422d38aeace
+implementation/content-guardrails.md | sha256:4d20a87b49f6c24e
+implementation/visual-parity-acceptance.md | sha256:0316198ec5a14c8e
+page-references/admin/01-admin-dashboard.png | 576x435 | sha256:0b732f104e796627
+page-references/admin/02-user-management.png | 614x435 | sha256:b07ad1c392f083e3
+page-references/admin/03-user-details-candidate.png | 346x435 | sha256:f3b8a30cf4421058
+page-references/admin/04-content-management-cms.png | 422x318 | sha256:c9d89d6b4a997f88
+page-references/admin/05-edit-page-cms.png | 346x318 | sha256:e3d0a391e18e12e7
+page-references/admin/06-analytics.png | 768x318 | sha256:43da42987c9c0a34
+page-references/admin/07-system-server-monitoring.png | 545x271 | sha256:c8283aebe23db395
+page-references/admin/08-ai-models-billing.png | 415x271 | sha256:e091005dc026e5f4
+page-references/admin/09-logs-audit-trail.png | 307x271 | sha256:8bc9d9a1ecbe146d
+page-references/admin/10-settings-feature-flags.png | 269x271 | sha256:fc59b6eecc839d67
+page-references/admin/production-operations/01-security-center.png | 499x297 | sha256:249be976ee5ec688
+page-references/admin/production-operations/02-privacy-data-requests.png | 400x297 | sha256:e4e84f6eabc82241
+page-references/admin/production-operations/03-job-sources-providers.png | 330x297 | sha256:7e40a2788776d533
+page-references/admin/production-operations/04-queue-worker-management.png | 307x297 | sha256:7a47f9d7cd81dd3c
+page-references/admin/production-operations/05-backups-restore.png | 399x276 | sha256:ac556e4b69be53fd
+page-references/admin/production-operations/06-email-notification-management.png | 369x276 | sha256:4323f37b33880b86
+page-references/admin/production-operations/07-deployment-releases.png | 384x276 | sha256:c1d62c682ae1f429
+page-references/admin/production-operations/08-scheduled-jobs-cron.png | 384x276 | sha256:ace2df1ffe2f39ed
+page-references/admin/production-operations/09-system-status-health.png | 507x267 | sha256:313bff3497f1266c
+page-references/admin/production-operations/10-integrated-logs.png | 338x267 | sha256:a675b964afeac363
+page-references/admin/production-operations/11-feature-flags-platform-settings.png | 307x267 | sha256:b7a6d77ccf4e9367
+page-references/admin/production-operations/12-component-states-design-system.png | 384x267 | sha256:33ebbb11e2981af3
+page-references/admin/production-operations/13-system-state-pages.png | 783x184 | sha256:0d3e7d0cfccaefb1
+page-references/admin/production-operations/14-responsive-mobile-examples.png | 430x184 | sha256:30b866fbf367721d
+page-references/admin/production-operations/15-accessibility-compliance.png | 185x184 | sha256:bfbe4e45f167a90b
+page-references/admin/production-operations/16-legal-policy-controls.png | 138x184 | sha256:d4db33c37bce6315
+page-references/candidate-verification/01-candidate-profile-add-photo.png | 476x348 | sha256:3d06b5f39b5de9f8
+page-references/candidate-verification/02-verification-in-progress.png | 415x348 | sha256:11388ab23bb39d3a
+page-references/candidate-verification/03-verification-call-candidate.png | 261x348 | sha256:0f87a1572472b2dd
+page-references/candidate-verification/04-candidate-verified-profile.png | 384x348 | sha256:d2d447b57ae5e80e
+page-references/candidate-verification/05-admin-verification-queue.png | 691x369 | sha256:c86601348ef5d6f2
+page-references/candidate-verification/06-admin-verification-details-call-notes.png | 461x369 | sha256:940d5e55fe13fbf0
+page-references/candidate-verification/07-admin-verified-candidate-view.png | 384x369 | sha256:8d89b5e635d44795
+page-references/candidate-verification/08-admin-rejection-flow.png | 307x307 | sha256:9ee11fc25ac1273d
+page-references/candidate-verification/09-candidate-verification-rejected.png | 277x307 | sha256:cf9f0cdc88991443
+page-references/candidate-verification/10-email-verification-approved.png | 322x307 | sha256:007bf7908763bba8
+page-references/candidate-verification/11-email-verification-rejected.png | 354x307 | sha256:46899d9eb875e947
+page-references/candidate-verification/12-mobile-verification-status.png | 276x307 | sha256:28828fcf543483c7
+page-references/foundations/01-global-search-command-palette.png | 384x312 | sha256:14111231040e2bce
+page-references/foundations/02-notification-center.png | 261x312 | sha256:d053f5c9d69895bc
+page-references/foundations/03-help-support-center.png | 261x312 | sha256:370be72942afc5ef
+page-references/foundations/04-account-security-center.png | 215x312 | sha256:0319a29c15079ead
+page-references/foundations/05-consent-privacy-center.png | 215x312 | sha256:7a8dedbec0c3113a
+page-references/foundations/06-job-source-trust-safety.png | 261x369 | sha256:0b9be1cd34193f21
+page-references/foundations/07-component-library.png | 584x369 | sha256:ea851398abc04a14
+page-references/foundations/08-states-feedback.png | 215x369 | sha256:99c4e5356e785abb
+page-references/foundations/09-responsive-design.png | 476x369 | sha256:5bcf95f6e7efee25
+page-references/foundations/10-accessibility.png | 261x225 | sha256:84718fd95a51c9b3
+page-references/foundations/11-localization-internationalization.png | 292x225 | sha256:98e133cc3fbb3798
+page-references/foundations/12-system-state-pages.png | 292x225 | sha256:0ec3aac0f4e5149d
+page-references/foundations/13-design-tokens-brand-system.png | 353x225 | sha256:ed1ec6c679172e65
+page-references/foundations/14-route-permission-feature-flag-matrix.png | 338x225 | sha256:7dd37616b9cfcc4e
+page-references/foundations/15-confirmation-destructive-actions.png | 399x118 | sha256:2594c8f30a0d9394
+page-references/foundations/16-data-export-deletion.png | 246x118 | sha256:2ddd97322033ae57
+page-references/foundations/17-audit-trail-user-admin.png | 246x118 | sha256:4ae709fc1cc65ac0
+page-references/foundations/18-error-loading-empty-component-states.png | 307x118 | sha256:71f97499387d7cf2
+page-references/foundations/19-keyboard-shortcuts.png | 184x118 | sha256:a4a24f72543f560a
+page-references/foundations/20-final-notes.png | 154x118 | sha256:30a47cd58a9831da
+page-references/future-integrations/01-connected-accounts-user.png | 476x358 | sha256:9c8fa522308b8f20
+page-references/future-integrations/02-connect-account-oauth-flow.png | 307x358 | sha256:ceb6f414627aa824
+page-references/future-integrations/03-connected-account-details.png | 430x358 | sha256:d8fa7def15894ec1
+page-references/future-integrations/04-permissions-consent-user.png | 323x358 | sha256:9e2ee4a325d27794
+page-references/future-integrations/05-email-integration-user.png | 492x277 | sha256:d94d030bc5ef83c0
+page-references/future-integrations/06-data-privacy-user.png | 291x277 | sha256:231845b18e8b5f0a
+page-references/future-integrations/07-sync-history-user.png | 538x277 | sha256:efd7867bfd9577d9
+page-references/future-integrations/08-mobile-connected-accounts.png | 215x277 | sha256:025992ea4d49d12d
+page-references/future-integrations/09-admin-integrations-overview.png | 584x225 | sha256:d2175fddb59464f4
+page-references/future-integrations/10-provider-configuration-admin.png | 430x225 | sha256:b07ebb1041c2eec5
+page-references/future-integrations/11-authentication-credentials-admin.png | 522x225 | sha256:34f1a53b490939f4
+page-references/future-integrations/12-sync-settings-admin.png | 461x164 | sha256:a7b925ab4c34effd
+page-references/future-integrations/13-monitoring-health-admin.png | 415x164 | sha256:f9f0978b82e250dc
+page-references/future-integrations/14-user-connections-admin.png | 337x164 | sha256:70c72f8dab2c9f23
+page-references/future-integrations/15-audit-logs-admin.png | 323x164 | sha256:e5d71ee39fea911f
+page-references/interview/01-interview-hub.png | 829x481 | sha256:52323a7945cf38f2
+page-references/interview/02-interview-categories-start.png | 707x481 | sha256:b4422d37f59dafd7
+page-references/interview/03-interview-setup.png | 522x359 | sha256:2c06ab27aa5379da
+page-references/interview/04-interview-theory-mcq.png | 476x359 | sha256:9c9f505eeb36151f
+page-references/interview/05-interview-coding-question.png | 538x359 | sha256:41e68f1139606b0b
+page-references/interview/06-interview-speaking-question.png | 522x184 | sha256:dd9cac690fb02f57
+page-references/interview/07-interview-review-results.png | 323x184 | sha256:54659fa930d1f43a
+page-references/interview/08-interview-detailed-feedback.png | 261x184 | sha256:48548000a73117af
+page-references/interview/09-interview-leaderboard.png | 230x184 | sha256:138327f7e8ef774a
+page-references/interview/10-interview-history.png | 200x184 | sha256:437f5f5599de9dfa
+page-references/marketing/careerscope-public-about.png | 384x512 | sha256:f5692a985b288e83
+page-references/marketing/careerscope-public-contact-feedback.png | 384x512 | sha256:fc6dc248b833d124
+page-references/marketing/careerscope-public-features.png | 384x512 | sha256:1e3ddefcfc817246
+page-references/marketing/careerscope-public-home.png | 384x512 | sha256:9c6a90f77fea9ddc
+page-references/marketing/careerscope-public-how-it-works.png | 384x512 | sha256:4132728942137f1c
+page-references/marketing/careerscope-public-privacy.png | 384x512 | sha256:b4d6be174a29fef0
+page-references/marketing/careerscope-public-resources.png | 384x512 | sha256:c4edf5b3dad37c3a
+page-references/marketing/careerscope-public-terms.png | 384x512 | sha256:75193cbfcc95a903
+page-references/product/careerscope-ai-apply-assistant.png | 512x342 | sha256:64044e385dd1b2ac
+page-references/product/careerscope-application-details.png | 512x342 | sha256:b40d7c3aa5523361
+page-references/product/careerscope-applications-board-reference.png | 512x341 | sha256:babeba454dc07e20
+page-references/product/careerscope-career-insights.png | 512x341 | sha256:11ed7f06ebb09924
+page-references/product/careerscope-dashboard-board-reference.png | 512x341 | sha256:01fada8c09722e1e
+page-references/product/careerscope-jobs-board-reference.png | 512x341 | sha256:e18c9d641873b5cd
+page-references/product/careerscope-resume-management.png | 512x341 | sha256:00d773d77450f2cc
+page-references/product/careerscope-saved-jobs.png | 512x342 | sha256:7796f3f036c4d085
+page-references/product/careerscope-settings-profile-preferences.png | 512x341 | sha256:42734ace7a63eb23
+page-references/product-alt/careerscope-ai-apply-assistant-alt-reference.png | 768x512 | sha256:73f5a676e658d704
+page-references/product-alt/careerscope-application-details-alt-reference.png | 768x512 | sha256:845a995826aa4764
+page-references/product-alt/careerscope-applications-alt-reference.png | 768x512 | sha256:206773e8f8c27d13
+page-references/product-alt/careerscope-settings-resume-alt-reference.png | 768x512 | sha256:ce158d7ddf71d6a8
+page-references/recruiter/01-recruiter-dashboard.png | 384x256 | sha256:d5dcf0c26c21b084
+page-references/recruiter/02-post-a-job.png | 384x256 | sha256:50111991e1eb1ab8
+page-references/recruiter/03-search-candidates.png | 384x256 | sha256:0650402b66467791
+page-references/recruiter/04-candidate-profile.png | 384x256 | sha256:e3c89d2a0c18430d
+page-references/recruiter/05-matched-candidates-for-job.png | 384x256 | sha256:737d031d33ca7182
+page-references/recruiter/06-bulk-invite-select-candidates.png | 384x256 | sha256:aa3f381f04f1d7fc
+page-references/recruiter/07-compose-dynamic-invite.png | 384x256 | sha256:23a6266cf2276964
+page-references/recruiter/08-review-send-campaign.png | 384x256 | sha256:645cf3324bf88aae
+page-references/recruiter/09-talent-pipeline.png | 384x256 | sha256:1b52915a62deeae8
+page-references/recruiter/10-interview-scheduling.png | 384x256 | sha256:0465ebc07a7d4b8e
+page-references/recruiter/11-message-templates.png | 384x256 | sha256:3ee4eaf0f28a8a4e
+page-references/recruiter/12-analytics-reports.png | 384x256 | sha256:ca4fa2c5b2d1e810
+page-references/recruiter/13-company-profile.png | 384x256 | sha256:d00ac9a20586eb7a
+page-references/recruiter/14-job-postings-management.png | 384x256 | sha256:540ef2634e49ca71
+page-references/recruiter/15-messages-inquiries.png | 384x256 | sha256:72701d900325a70a
+page-references/recruiter/16-recruiter-settings.png | 384x256 | sha256:f76362bbf92a03f2
+references/careerscope-admin-control-plane-reference-board.png | 1536x1024 | sha256:a616cdb0648e8a94
+references/careerscope-ai-apply-assistant-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+references/careerscope-ai-interview-practice-reference-board.png | 1536x1024 | sha256:5e048d1c5ef32188
+references/careerscope-application-details-reference-board.png | 1536x1024 | sha256:45f2634568668ed2
+references/careerscope-applications-desktop.png | 1536x1024 | sha256:ad362036ad5c9c99
+references/careerscope-auth-account-recovery-verification-system.png | 1536x1024 | sha256:91f7a167bf907326
+references/careerscope-auth-sign-in.png | 1536x1024 | sha256:df0c6dd5288c02f0
+references/careerscope-candidate-verification-reference-board.png | 1536x1024 | sha256:72432b62f0cd3836
+references/careerscope-complete-design-system-production-readiness-board.png | 1536x1024 | sha256:648763d2903c6c88
+references/careerscope-connected-accounts-admin-integrations-reference-board.png | 1536x1024 | sha256:0e380dac78720187
+references/careerscope-dashboard-desktop-expanded.png | 1536x1024 | sha256:dc6b110da1ea8e25
+references/careerscope-final-ux-foundations-reference-board.png | 1536x1024 | sha256:beda488a222f69ea
+references/careerscope-global-loading-system.jpeg | 1536x768 | sha256:309ed908d292d668
+references/careerscope-jobs-desktop-collapsed-sidebar.png | 1536x1024 | sha256:628f067b5d9de2c8
+references/careerscope-jobs-desktop-expanded-sidebar.png | 1536x1024 | sha256:d5d30ef7b61e9844
+references/careerscope-jobs-desktop-final.png | 1536x1024 | sha256:a6c4f7c69edc989e
+references/careerscope-next-pages-review-board.png | 1536x1024 | sha256:45f2634568668ed2
+references/careerscope-onboarding-flow.png | 1536x1024 | sha256:e32ce618e6f97162
+references/careerscope-product-pages-reference-board.png | 1536x1024 | sha256:69af99b6adb43aec
+references/careerscope-production-operations-reference-board.png | 1536x1024 | sha256:7d820a7064288c75
+references/careerscope-public-marketing-pages-reference-board.png | 1536x1024 | sha256:50a60c3441fa8f50
+references/careerscope-recruiter-workspace-reference-board.png | 1536x1024 | sha256:87bb652606368fda
+references/careerscope-settings-resume-management-reference-board.png | 1536x1024 | sha256:45f2634568668ed2

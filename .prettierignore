@@ -41,3 +41,16 @@ test-results/
 
 infra/nginx/*.inc
 migrations/meta/*.json
+
+# Approved design handoff documents are byte-preserved reference evidence; the
+# package inventory records their source hashes. Phase-0-owned README/index and
+# evidence files remain formatted by the normal repository check.
+design/00-CODEX-START-HERE/
+design/01-IMPLEMENTATION-ORDER/
+design/assets/
+design/foundations/
+design/implementation/
+design/ASSET-INVENTORY.txt
+design/MANIFEST.txt
+design/FINAL-DESIGN-ASSET-AUDIT.md
+design/archive/

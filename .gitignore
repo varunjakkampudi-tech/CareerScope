@@ -58,3 +58,6 @@ deploy.tgz
 page-designs/
 careerscope-pixel-perfect/
 2a333ef7-7f3c-459e-9f7b-e7a21b4e1741/
+# External design handoff archives are imported into design/ and must not be
+# committed as a second source tree or binary archive.
+CareerScope-Design-System*.zip

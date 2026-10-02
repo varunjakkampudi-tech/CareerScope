@@ -227,10 +227,10 @@ const unexpectedDeclaration = [];
 // accidental NUL in its first 8000 bytes — a truncated write, an embedded
 // fixture, a UTF-16 save — is classified binary and leaves the completeness
 // universe silently. Printing the split makes that movement visible: today
-// this repository has exactly four binaries, all PNGs under design/concepts,
-// so any change in the number is meaningful rather than noise. In a repository
-// with four hundred images this line would be useless; here it is cheap and
-// informative, which is why it is worth having.
+// this repository has a reviewed design handoff with hundreds of raster
+// references under design/, so the count is intentionally reported rather than
+// used as a fixed magic number. A change is investigated through the package
+// provenance/inventory, not treated as an automatic failure.
 //
 // Counted through `classify()` — the same path the completeness check uses.
 // A second implementation of "what is binary" would be this file's own defect,

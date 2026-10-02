@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "sourceOfTruth": "design/",
+  "phase": "phase-0",
+  "entries": [
+    {
+      "id": "foundations",
+      "surface": "foundations",
+      "status": "approved",
+      "release": "R1",
+      "referencePaths": [
+        "design/canonical/foundations/careerscope-complete-design-system-production-readiness-board.png",
+        "design/01-IMPLEMENTATION-ORDER/00-foundations-first"
+      ]
+    },
+    {
+      "id": "marketing-public",
+      "surface": "marketing-public",
+      "status": "approved",
+      "release": "R1",
+      "referencePaths": [
+        "design/canonical/marketing/careerscope-public-marketing-pages-reference-board.png",
+        "design/canonical/marketing/careerscope-public-home.png"
+      ]
+    },
+    {
+      "id": "auth",
+      "surface": "auth",
+      "status": "approved",
+      "release": "R1",
+      "referencePaths": [
+        "design/canonical/auth/careerscope-auth-sign-in.png",
+        "design/canonical/auth/careerscope-auth-account-recovery-verification-system.png"
+      ]
+    },
+    {
+      "id": "onboarding",
+      "surface": "onboarding",
+      "status": "approved",
+      "release": "R1",
+      "referencePaths": ["design/canonical/onboarding/careerscope-onboarding-flow.png"]
+    },
+    {
+      "id": "candidate-core",
+      "surface": "candidate-core",
+      "status": "approved",
+      "release": "R1",
+      "referencePaths": [
+        "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
+        "design/canonical/app/careerscope-jobs-desktop-final.png",
+        "design/canonical/app/careerscope-applications-desktop.png",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core"
+      ]
+    },
+    {
+      "id": "interview",
+      "surface": "interview",
+      "status": "hold",
+      "release": "R2",
+      "referencePaths": [
+        "design/canonical/interview/careerscope-ai-interview-practice-reference-board.png"
+      ]
+    },
+    {
+      "id": "courses-certifications",
+      "surface": "courses-certifications",
+      "status": "hold",
+      "release": "R2",
+      "referencePaths": [
+        "design/future-releases/release-2-3/careerscope-courses-certifications-future-reference-board.png"
+      ]
+    },
+    {
+      "id": "connected-accounts",
+      "surface": "connected-accounts",
+      "status": "hold",
+      "release": "R2",
+      "referencePaths": [
+        "design/canonical/future-integrations/careerscope-connected-accounts-admin-integrations-reference-board.png"
+      ]
+    },
+    {
+      "id": "ai-integration",
+      "surface": "ai-integration",
+      "status": "feature-flagged",
+      "release": "R1-boundary",
+      "referencePaths": ["design/canonical/app/careerscope-ai-apply-assistant-reference-board.png"]
+    },
+    {
+      "id": "recruiter",
+      "surface": "recruiter",
+      "status": "feature-flagged",
+      "release": "later",
+      "referencePaths": [
+        "design/canonical/recruiter/careerscope-recruiter-workspace-reference-board.png"
+      ]
+    },
+    {
+      "id": "admin",
+      "surface": "admin",
+      "status": "approved-design-only",
+      "release": "later",
+      "referencePaths": [
+        "design/canonical/admin/careerscope-admin-control-plane-reference-board.png"
+      ]
+    },
+    {
+      "id": "admin-production-operations",
+      "surface": "admin-production-operations",
+      "status": "approved-design-only",
+      "release": "later",
+      "referencePaths": [
+        "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png"
+      ]
+    },
+    {
+      "id": "global-ux-system-states",
+      "surface": "global-ux-system-states",
+      "status": "approved",
+      "release": "R1",
+      "referencePaths": [
+        "design/canonical/foundations/careerscope-final-ux-foundations-reference-board.png",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states"
+      ]
+    },
+    {
+      "id": "engineering-contracts",
+      "surface": "engineering-contracts",
+      "status": "required",
+      "release": "R1",
+      "referencePaths": ["design/01-IMPLEMENTATION-ORDER/13-engineering-contracts"]
+    }
+  ]
+}

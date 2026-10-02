@@ -129,8 +129,9 @@ preserve all supported stages and never imply an application was submitted.
 
 ## Planning snapshot: 2026-09-23 — design image audit and route architecture
 
-The owner added five PNG design images under `page-designs/`. This section
-records a visual audit of every image, a reconciled route architecture, and
+The owner added five PNG design images under the now-historical `page-designs/`
+drop. The approved handoff is now indexed under [`design/`](../design/README.md).
+This section records a visual audit of every image, a reconciled route architecture, and
 the resulting ticket changes. No frontend code was written for this snapshot
 beyond what is separately recorded against CS-49 (Dashboard). Nothing here
 implies deployment, promotion, or that a page "matches" its design merely
@@ -138,7 +139,7 @@ because a ticket references it.
 
 ### What was actually inspected
 
-Five files exist under `page-designs/`:
+Five files existed under the historical `page-designs/` drop:
 
 1. `CareerScope Saved Jobs Dashboard.png`
 2. `CareerScope Desktop and Mobile Job Search.png`
