@@ -22,6 +22,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import process from 'node:process';
+import { TICKET_STATUSES, isBlockedTicket } from './lib/ticket-workflow.mjs';
 
 const AI = '.ai';
 const MAX_ACTIVE_FEATURES = 2;
@@ -48,25 +49,12 @@ const git = (args, fallback = null) => {
   }
 };
 
-const ACTIVE = ['IN_PROGRESS', 'CODE_REVIEW', 'QA', 'SECURITY'];
-const STATUSES = [
-  'IDEA',
-  'DISCOVERY',
-  'READY',
-  'PLANNED',
-  'IN_PROGRESS',
-  'CODE_REVIEW',
-  'SECURITY',
-  'QA',
-  'UAT',
-  'BLOCKED',
-  'RELEASED',
-  'DROPPED',
-];
+const ACTIVE = ['IN_PROGRESS', 'QA'];
+const STATUSES = TICKET_STATUSES;
 const STALE_DAYS = 7;
 // One definition of finished. `review` and `carry` disagreeing on this meant a
 // released item was reviewed as done and carried forward as unfinished.
-const COMPLETE = 'RELEASED';
+const COMPLETE = 'PROD';
 const sprintPath = () => join(AI, 'sprints', `${isoWeek()}.json`);
 
 /** One sprint shape. Two literals drift the moment a field is added to either. */
@@ -178,16 +166,7 @@ function status() {
   console.log(`  Goal          ${sprint?.goal ?? '—'}`);
   console.log(`  Target        ${sprint?.targetReleaseDate ?? '—'}`);
   console.log(`\n  BACKLOG`);
-  for (const s of [
-    'READY',
-    'PLANNED',
-    'IN_PROGRESS',
-    'CODE_REVIEW',
-    'QA',
-    'SECURITY',
-    'BLOCKED',
-    'RELEASED',
-  ]) {
+  for (const s of STATUSES) {
     const n = counts(s);
     if (n) console.log(`    ${s.padEnd(14)} ${n}`);
   }
@@ -484,7 +463,7 @@ function tickets() {
       days(i.updatedAt) >= STALE_DAYS,
   );
   const active = backlog.items.filter((i) => ACTIVE.includes(i.status));
-  const blocked = backlog.items.filter((i) => i.status === 'BLOCKED');
+  const blocked = backlog.items.filter(isBlockedTicket);
   const open = (findings.findings ?? []).filter(
     (f) => f.status !== 'FIXED' && f.status !== 'CLOSED',
   );
@@ -591,6 +570,8 @@ function promote() {
   const queue = backlog.items.filter((i) => i.status === 'QA');
   const refusals = blockers.map((f) => `open ${f.severity} finding ${f.id}`);
   for (const item of queue) {
+    if (isBlockedTicket(item))
+      refusals.push(`${item.id} is blocked; resolve blocker evidence before promotion`);
     if (!Array.isArray(item.acceptanceCriteria) || item.acceptanceCriteria.length === 0)
       refusals.push(`${item.id} has no acceptance criteria`);
     if (!Array.isArray(item.evidence) || item.evidence.length === 0)
@@ -626,7 +607,7 @@ function promote() {
 }
 
 /**
- * UAT → RELEASED, proven against the running site.
+ * UAT → PROD, proven against the running site.
  *
  * "Released" has meant "merged" here before. The live version is asked for
  * directly, so a ticket cannot be closed by a deployment that did not happen.
@@ -691,7 +672,7 @@ async function released() {
     return;
   }
   for (const item of shipped) {
-    item.status = 'RELEASED';
+    item.status = 'PROD';
     item.currentStep = null;
     item.releasedIn = version;
     item.releasedCommit = commit;
@@ -699,7 +680,7 @@ async function released() {
   }
   backlog.updatedAt = new Date().toISOString();
   write(join(AI, 'backlog.json'), backlog);
-  console.log(`\n  RELEASED  ${version} at ${commit}   ${shipped.length} ticket(s)\n`);
+  console.log(`\n  PROD  ${version} at ${commit}   ${shipped.length} ticket(s)\n`);
   for (const item of shipped) console.log(`    ${item.id.padEnd(7)} ${item.title}`);
   console.log('');
   record('released', 'closed', []);

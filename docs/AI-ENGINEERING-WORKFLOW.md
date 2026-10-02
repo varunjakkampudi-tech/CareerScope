@@ -77,6 +77,13 @@ gate to obtain green output.
 
 ## Release And Other Workflows
 
+### Canonical ticket workflow
+
+The live ticket workflow is `BACKLOG → TODO → IN_PROGRESS → QA → UAT → PROD`.
+Blockers are orthogonal metadata on a ticket and remain visible in their
+stage; they are not a seventh status or board column. Use
+`npm run workflow:check` and `npm run workflow:test` for the contract.
+
 The new [release prompt](../.github/prompts/careerscope-release.prompt.md) is
 preparation only. The [initial audit](ai/initial-repository-audit.md) records
 release/deployment enforcement gaps that this setup does not fix. No prompt or

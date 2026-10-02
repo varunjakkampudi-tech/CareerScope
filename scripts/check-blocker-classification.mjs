@@ -31,6 +31,21 @@ export function validateBlockerClassification({ model, backlog, hostpendingText,
   if (!Array.isArray(model?.tickets)) errors.push('model.tickets must be an array');
   if (!Array.isArray(model?.hostpending)) errors.push('model.hostpending must be an array');
   const backlogItems = backlog?.items ?? [];
+  const migrationPath = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    '..',
+    '.ai',
+    'workflow-migration.json',
+  );
+  let migration = null;
+  try {
+    migration = JSON.parse(fs.readFileSync(migrationPath, 'utf8'));
+  } catch {
+    /* Phase 2 callers may not have migration state. */
+  }
+  const migrationById = new Map(
+    (migration?.records ?? []).map((record) => [record.ticketId, record]),
+  );
   const backlogIds = new Set(backlogItems.map((item) => item.id));
   const seen = new Set();
   for (const item of model?.tickets ?? []) {
@@ -39,7 +54,13 @@ export function validateBlockerClassification({ model, backlog, hostpendingText,
     seen.add(item.ticketId);
     const sourceTicket = backlogItems.find((ticket) => ticket.id === item.ticketId);
     if (!sourceTicket) errors.push(`classification references unknown ticket ${item.ticketId}`);
-    else if (item.status !== sourceTicket.status)
+    else if (
+      item.status !== sourceTicket.status &&
+      !(
+        migrationById.get(item.ticketId)?.newStatus === sourceTicket.status &&
+        migrationById.get(item.ticketId)?.legacyStatus === item.status
+      )
+    )
       errors.push(
         `${item.ticketId}: blocker model changed ticket status from ${sourceTicket.status} to ${item.status}`,
       );

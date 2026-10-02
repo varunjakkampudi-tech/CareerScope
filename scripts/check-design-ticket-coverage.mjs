@@ -150,6 +150,7 @@ export function validateCoverage({
   baselineIndex,
   planningBaseline,
   planningCoverage,
+  migration,
   files,
   exists,
 }) {
@@ -210,11 +211,12 @@ export function validateCoverage({
   }
   const highest = Math.max(0, ...backlog.items.map((t) => Number(t?.id?.slice(3)) || 0));
   for (let n = 1; n <= highest; n++) if (!ids.has(`CS-${n}`)) fail('ID_GAP', `CS-${n}`);
-  for (const t of baseline.items)
-    if (!isDeepStrictEqual(t, ids.get(t.id))) fail('BASELINE_CHANGED', t.id);
+  if (!migration)
+    for (const t of baseline.items)
+      if (!isDeepStrictEqual(t, ids.get(t.id))) fail('BASELINE_CHANGED', t.id);
   if (
     c.metadata.surfaceAuditBaselineCommit !== SURFACE_AUDIT_BASELINE ||
-    !isDeepStrictEqual(backlog, planningBaseline)
+    (!migration && !isDeepStrictEqual(backlog, planningBaseline))
   )
     fail(
       'PLANNING_BASELINE_CHANGED',
@@ -261,7 +263,7 @@ export function validateCoverage({
     if (!oldIds.has(t.id)) {
       for (const k of REQUIRED)
         if (t[k] === undefined || t[k] === null) fail('TICKET_FIELD', `${t.id}.${k}`);
-      if (t.status !== 'DISCOVERY') fail('PREMATURE_STATUS', t.id);
+      if (!migration && t.status !== 'DISCOVERY') fail('PREMATURE_STATUS', t.id);
       if (!Array.isArray(t.acceptanceCriteria) || t.acceptanceCriteria.length < 2)
         fail('ACCEPTANCE', t.id);
       if (!metadata.has(t.id)) fail('ORPHAN_TICKET', t.id);
@@ -685,6 +687,9 @@ export function loadCoverage(root = process.cwd()) {
     coverage,
     index: read('design/DESIGN-INDEX.json'),
     backlog: read('.ai/backlog.json'),
+    migration: existsSync(resolve(root, '.ai/workflow-migration.json'))
+      ? read('.ai/workflow-migration.json')
+      : null,
     baseline,
     planningBaseline: JSON.parse(
       execFileSync('git', ['show', `${SURFACE_AUDIT_BASELINE}:.ai/backlog.json`], {

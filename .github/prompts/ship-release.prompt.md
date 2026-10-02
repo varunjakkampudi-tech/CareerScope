@@ -106,7 +106,7 @@ npx prettier --write .ai/backlog.json
 ```
 
 `release:close` reads the live `/api/health` and refuses to mark anything
-`RELEASED` unless the running site reports that exact version. Unreachable is
+`PROD` unless the running site reports that exact version. Unreachable is
 not released; mismatched is not released. Reformat the backlog afterwards, or
 `format:check` will fail on the next run.
 
@@ -126,4 +126,5 @@ push the tag.
 Say what shipped, the deployed commit and version, which gates ran and what
 they returned, what was cleaned up, which docs changed, what became a new
 ticket, and what remains unverified. If any step failed, the release is
-`BLOCKED` — never `COMPLETE`.
+The release gate remains `BLOCKED` when evidence is missing — never `COMPLETE`;
+ticket blockers are metadata, not a workflow stage.

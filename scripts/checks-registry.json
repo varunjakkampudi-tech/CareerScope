@@ -252,6 +252,11 @@
       "path": "scripts/check-blocker-classification.mjs",
       "classification": "manual",
       "reason": "Validates the Phase 2 one-to-one blocker model, hostpending mappings, negative controls and preservation of the Phase 1 design coverage snapshot. It is intentionally run explicitly in the Phase 2 gate and is not live-host or human acceptance evidence."
+    },
+    {
+      "path": "scripts/check-ticket-workflow.mjs",
+      "classification": "ci",
+      "reason": "Validates the canonical six-stage workflow, orthogonal blocker metadata and exact Phase 3 migration coverage on every verification run."
     }
   ]
 }

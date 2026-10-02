@@ -51,17 +51,16 @@ const clean = {
   findings: { items: [{ id: 'F-1', severity: 'P2', status: 'OPEN' }] },
 };
 
-test('BLOCKED has its own column and is not an unmapped bucket', () => {
-  assert.ok(
-    KNOWN_STATUSES.has('BLOCKED'),
-    'BLOCKED must be a status the board knows, or blocked work lands in "Not mapped"',
+test('blocked is orthogonal metadata and never a board column', () => {
+  assert.equal(KNOWN_STATUSES.has('BLOCKED'), false);
+  assert.equal(
+    BOARD_COLUMNS.some(([, statuses]) => statuses.includes('BLOCKED')),
+    false,
   );
-  const blockedColumn = BOARD_COLUMNS.find(([, statuses]) => statuses.includes('BLOCKED'));
-  assert.ok(blockedColumn, 'BLOCKED must belong to a column');
-  assert.equal(blockedColumn[0], 'Blocked');
-  // It must be its OWN column, not folded into another one, or the count that
-  // tells the owner to act is hidden inside an unrelated total.
-  assert.deepEqual(blockedColumn[1], ['BLOCKED']);
+  assert.deepEqual(
+    BOARD_COLUMNS.map(([name]) => name),
+    ['Backlog', 'To Do', 'In Progress', 'QA', 'UAT', 'Production'],
+  );
 });
 
 test('a clean state produces no board state errors (positive control)', () => {

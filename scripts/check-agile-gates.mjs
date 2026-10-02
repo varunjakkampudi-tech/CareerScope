@@ -84,7 +84,7 @@ setBacklog([]);
 expect('WIP 0 of 2 allowed', run('scripts/agile.mjs', ['feature']), 0);
 setBacklog([item('F1', 'IN_PROGRESS'), item('F2', 'QA')]);
 expect('WIP 2 of 2 allowed', run('scripts/agile.mjs', ['feature']), 0);
-setBacklog([item('F1', 'IN_PROGRESS'), item('F2', 'QA'), item('F3', 'SECURITY')]);
+setBacklog([item('F1', 'IN_PROGRESS'), item('F2', 'QA'), item('F3', 'QA')]);
 expect('WIP 3 of 2 refused', run('scripts/agile.mjs', ['feature']), 1);
 
 // Agent state validation: an agent busy with no active agent is a lie.
@@ -108,7 +108,7 @@ writeFileSync('.ai/release-plan.json', `${JSON.stringify(plan, null, 2)}\n`);
 expect('scheduler disabled accepted', run('scripts/check-agents.mjs'), 0);
 
 // Pausing must actually stop the ceremony, and must never stop a safety control.
-setBacklog([item('F1', 'IN_PROGRESS'), item('F2', 'QA'), item('F3', 'SECURITY')]);
+setBacklog([item('F1', 'IN_PROGRESS'), item('F2', 'QA'), item('F3', 'QA')]);
 setMode({ mode: 'PAUSED', paused: ['agile:feature'] });
 expect('paused: feature does not start work', run('scripts/agile.mjs', ['feature']), 0);
 expect('paused: status still reports', run('scripts/agile.mjs', ['status']), 0);
@@ -128,7 +128,7 @@ if (hadReview) copyFileSync(reviewPath, rBak);
 const ticket = (patch = {}) => ({
   id: 'T1',
   title: 'synthetic ticket',
-  status: 'READY',
+  status: 'TODO',
   priority: 'P2',
   updatedAt: new Date().toISOString().slice(0, 10),
   ownerAgent: 'Backend',
@@ -170,7 +170,7 @@ expect(
   run('scripts/agile.mjs', ['tickets', '--verify']),
   1,
 );
-review([{ id: 'T1', outcome: 'kept in READY; no evidence changed' }]);
+review([{ id: 'T1', outcome: 'kept in TODO; no evidence changed' }]);
 expect(
   'tickets: fully recorded review accepted',
   run('scripts/agile.mjs', ['tickets', '--verify']),
@@ -264,9 +264,9 @@ expect(
   0,
 );
 expect(
-  'released: ticket recorded as RELEASED',
+  'released: ticket recorded as PROD',
   JSON.parse(readFileSync(BACKLOG, 'utf8')).items[0].status,
-  'RELEASED',
+  'PROD',
 );
 health.kill();
 rmSync(readyFile, { force: true });

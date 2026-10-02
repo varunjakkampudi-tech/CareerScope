@@ -18,6 +18,7 @@ import { existsSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import process from 'node:process';
+import { TICKET_STATUSES } from './lib/ticket-workflow.mjs';
 
 const AI = '.ai';
 const PORT = Number(process.env.PORT ?? 7777);
@@ -36,37 +37,26 @@ let stateErrors = [];
  * Defined SERVER-SIDE and injected into the page below, rather than written out
  * again in the client script, because the server validates against this list
  * and the client renders from it. Two copies would let a status be renderable
- * but unvalidated, or validated but unrenderable — which is how BLOCKED ended
- * up in an unnamed bucket in the first place.
- *
- * BLOCKED has its own column deliberately. It previously matched no column and
- * fell into "Not mapped", so the seven tickets whose visibility is the whole
- * point — the ones waiting on an owner decision or an operator session — were
- * rendered in a bucket the board could not name, while the header cheerfully
- * reported "In Progress: 0 — Nothing in flight".
+ * but unvalidated, or validated but unrenderable — which is how status drift
+ * previously ended up in an unnamed bucket. Blockers now remain in their
+ * canonical stage and are marked with an orthogonal badge/filter, so work is
+ * visible without inventing a seventh workflow column.
  */
 const BOARD_COLUMNS = [
   [
     'Backlog',
-    ['BACKLOG', 'IDEA', 'DISCOVERY'],
+    ['BACKLOG'],
     'var(--dim)',
-    'No ideas captured',
-    'New ideas will appear here.',
+    'Nothing in backlog',
+    'Prioritised work will appear here.',
   ],
-  ['To Do', ['READY', 'PLANNED'], 'var(--info)', 'Nothing queued', 'Ready work will appear here.'],
+  ['To Do', ['TODO'], 'var(--info)', 'Nothing queued', 'Ready work will appear here.'],
   [
     'In Progress',
-    ['IN_PROGRESS', 'CODE_REVIEW', 'SECURITY'],
+    ['IN_PROGRESS'],
     'var(--warn)',
     'Nothing in flight',
     'Work being built will appear here.',
-  ],
-  [
-    'Blocked',
-    ['BLOCKED'],
-    'var(--bad)',
-    'Nothing blocked',
-    'Work that cannot proceed without an owner decision, an approval or host access.',
   ],
   [
     'QA',
@@ -80,17 +70,11 @@ const BOARD_COLUMNS = [
     ['UAT'],
     'var(--ok)',
     'No items in UAT',
-    'Completed work awaiting owner acceptance before release.',
+    'Completed work awaiting acceptance before release.',
   ],
-  [
-    'Production',
-    ['RELEASED'],
-    'var(--ok)',
-    'Nothing released yet',
-    'Shipped work will appear here.',
-  ],
+  ['Production', ['PROD'], 'var(--ok)', 'Nothing released yet', 'Shipped work will appear here.'],
 ];
-const KNOWN_STATUSES = new Set(BOARD_COLUMNS.flatMap((column) => column[1]));
+const KNOWN_STATUSES = new Set(TICKET_STATUSES);
 
 /** Finding severities this UI counts. Anything else is reported, not dropped. */
 const KNOWN_SEVERITIES = ['P0', 'P1', 'P2', 'P3'];
@@ -466,6 +450,7 @@ main:focus{outline:none}
 <script>
 const TABS=[['Overview','M4 5h7v7H4zM13 5h7v4h-7zM13 11h7v8h-7zM4 14h7v5H4z'],['Agents','M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 20a8 8 0 0 1 16 0'],['Backlog','M5 4h14v16H5zM8 9h8M8 13h8M8 17h5']];
 let tab='Overview',d={};
+let blockedOnly=false;
 const esc=s=>String(s??'—').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const num=n=>Number(n).toLocaleString('en-US');
 
@@ -540,12 +525,12 @@ const SEVS=${JSON.stringify(KNOWN_SEVERITIES)};
 const SEVCLS=${JSON.stringify(SEVERITY_EMPHASIS)};
 const severityCells=${severityCells.toString()};
 function boardCard(limit){
-  const items=d.backlog.items||[];
+  const items=(d.backlog.items||[]).filter(i=>!blockedOnly||i.blocked===true);
   const mapped=new Set(COLS.flatMap(c=>c[1]));
   const loose=items.filter(i=>!mapped.has(i.status));
   const cols=loose.length?[...COLS,['Not mapped — UNRECOGNISED STATUS',[],'var(--bad)','—','These statuses match no column. This is a defect in the data or in this board, not a category of work.']]:COLS;
-  const tile=i=>'<div class="bcard'+(i.status==='BLOCKED'?' blocked':'')+'"><div class="bid">'+esc(i.id)+'</div><div class="btitle">'+esc(i.title)+'</div><div class="tags"><span class="tag '+esc(i.priority)+'">'+esc(i.priority)+'</span><span class="tag '+esc(i.dimension||'')+'">'+esc(i.dimension||'?')+'</span>'+(i.carriedCount?'<span class="tag P2">carried '+i.carriedCount+'×</span>':'')+'</div></div>';
-  return '<div class="card"><div class="boardhead"><div><h2>Work Backlog</h2><p>From idea to production</p></div><span class="grow"></span><span class="muted" style="font-size:12px">'+num(items.length)+' items</span>'
+  const tile=i=>'<div class="bcard'+(i.blocked?' blocked':'')+'"><div class="bid">'+esc(i.id)+'</div><div class="btitle">'+esc(i.title)+'</div><div class="tags"><span class="tag '+esc(i.priority)+'">'+esc(i.priority)+'</span><span class="tag '+esc(i.dimension||'')+'">'+esc(i.dimension||'?')+'</span>'+(i.blocked?'<span class="tag P1">blocked</span>':'')+(i.carriedCount?'<span class="tag P2">carried '+i.carriedCount+'×</span>':'')+'</div></div>';
+  return '<div class="card"><div class="boardhead"><div><h2>Work Backlog</h2><p>From idea to production</p></div><span class="grow"></span><button class="more" type="button" data-toggle-blocked aria-pressed="'+blockedOnly+'">'+(blockedOnly?'Show all tickets':'Show blocked only')+'</button><span class="muted" style="font-size:12px">'+num(items.length)+' items</span>'
     +(limit?'<button class="more" data-goto="Backlog">View all →</button>':'')+'</div>'
     +'<div class="board">'+cols.map(([name,st,c,t,sub])=>{
       const list=name.startsWith('Not mapped')?loose:items.filter(i=>st.includes(i.status));
@@ -561,9 +546,10 @@ function strip(){
   const open=f.filter(x=>x.status!=='FIXED'&&x.status!=='CLOSED');
   const n=s=>open.filter(x=>x.severity===s).length;
   const items=d.backlog.items||[];
-  const active=items.filter(i=>['IN_PROGRESS','CODE_REVIEW','QA','SECURITY'].includes(i.status)).length;
+  const active=items.filter(i=>['IN_PROGRESS','QA'].includes(i.status)).length;
+  const blocked=items.filter(i=>i.blocked===true).length;
   const cell=(v,k,cls)=>'<div class="stat"><div><div class="sv '+(cls||'')+'">'+esc(v)+'</div><div class="sk">'+esc(k)+'</div></div></div>';
-  return '<div class="strip">'+cell(num(items.length),'Total items')
+  return '<div class="strip">'+cell(num(items.length),'Total items')+cell(num(blocked),'Blocked metadata','bad')
     // These count OPEN ENTRIES IN .ai/findings.json - review findings - NOT
     // ticket priorities. The board tiles above carry P0/P1/P2 tags from the
     // BACKLOG, so "P1 findings" next to a P1 ticket read as a contradiction
@@ -633,6 +619,8 @@ document.body.addEventListener('click',e=>{
   if(nav){go(nav.dataset.view);return;}
   const jump=e.target.closest('[data-goto]');
   if(jump)go(jump.dataset.goto);
+  const blocked=e.target.closest('[data-toggle-blocked]');
+  if(blocked){blockedOnly=!blockedOnly;paint();say(blockedOnly?'Showing blocked tickets':'Showing all tickets');}
 });
 document.getElementById('theme').addEventListener('click',()=>{
   const light=document.documentElement.getAttribute('data-theme')==='light';

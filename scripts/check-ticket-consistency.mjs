@@ -8,6 +8,8 @@ import { readFileSync } from 'node:fs';
 import process from 'node:process';
 
 const backlog = JSON.parse(readFileSync('.ai/backlog.json', 'utf8'));
+const migration = JSON.parse(readFileSync('.ai/workflow-migration.json', 'utf8'));
+const migrationById = new Map(migration.records.map((record) => [record.ticketId, record]));
 assert.ok(Array.isArray(backlog.items) && backlog.items.length > 20, 'backlog is not readable');
 
 function validateItem(ticket) {
@@ -18,7 +20,8 @@ function validateItem(ticket) {
   // contract this validator may enforce; ordinary prose is left to the board
   // review rather than guessed at with substring heuristics.
   const declaredStatus = /^STATUS:\s*(\w+)/i.exec(current)?.[1]?.toUpperCase();
-  if (declaredStatus && ticket.status !== declaredStatus) {
+  const legacyCompatible = migrationById.get(ticket.id)?.legacyStatus === declaredStatus;
+  if (declaredStatus && ticket.status !== declaredStatus && !legacyCompatible) {
     problems.push(
       `${ticket.id}: status ${ticket.status} contradicts declared currentStep status ${declaredStatus}`,
     );

@@ -41,10 +41,11 @@ Each agent contributes only from its own responsibility.
 
 - A status change needs evidence: a command and its output, a diff, or a
   deployment check. An opinion is not a status.
-- `RELEASED` requires proof the change is deployed — `infra/check-provenance.sh`,
+- `PROD` requires proof the change is deployed — `infra/check-provenance.sh`,
   not a merged branch.
-- `BLOCKED` names the blocker and who or what unblocks it. Blocked is never a
-  parking space for work nobody wants.
+- Blockers are orthogonal metadata (`blocked`, `blockedReason`, `blockedOwner`,
+  `blockedSince`, `unblockEvidenceRequired`) and do not create a board column.
+  Use `npm run workflow:check` before recording a transition.
 - Respect the WIP limit of 2. Do not start a ticket to make the board look busy.
 - A carried ticket on its third week is sliced or dropped, not carried again.
 - New tickets state the user problem, the evidence it exists, and acceptance

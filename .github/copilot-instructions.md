@@ -210,7 +210,7 @@ no recorded outcome, so a review cannot be reported as done when it was not.
 The release procedure is the `/ship-release` prompt. `npm run release:promote`
 refuses to move a QA ticket that has no acceptance criteria, no evidence or an
 unfinished QA step, and `npm run release:close` refuses to mark anything
-`RELEASED` unless the live `/api/health` reports that exact version.
+`PROD` unless the live `/api/health` reports that exact version.
 
 Existing release gates must be satisfied, not argued with. The initial AI audit
 records that absent findings still default to an empty list and release closure
