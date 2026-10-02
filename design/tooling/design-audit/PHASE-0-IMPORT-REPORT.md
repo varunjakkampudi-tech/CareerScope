@@ -70,28 +70,30 @@ records.
 ### Inventory mismatches with explicit justification
 
 The validator parsed all 410 records, accounted for all 410, and found no
-missing file. Three records differ from their inventory hashes; two are explained:
+missing file. Three repository records differ from their inventory hashes;
+all three are now explained:
 
 1. `README.md`: transformed into the canonical source-of-truth README.
 2. `00-CODEX-START-HERE/IMAGE-CLARITY-AUDIT.csv`: normalized to LF under the
    explicit `*.csv text eol=lf` policy; the semantic CSV content is unchanged.
 3. `ASSET-INVENTORY.txt`: expected prefix `128f84f045e6e603`, actual
    `6ee2c9737d2af302`. This file has not been changed by this correction.
-   CRLF reconstruction does not reproduce the expected hash. Its self-record
-   may describe an earlier snapshot, but that cause is unproven. Comparison
-   against the original ZIP is required; this is an unresolved hash exception.
+   The owner independently verified that the original approved ZIP contains
+   the same actual bytes/hash. This is
+   `SOURCE_PACKAGE_KNOWN_SELF_HASH_EXCEPTION`, accepted without rewriting the
+   inventory. It is not extraction corruption or an import defect.
 
 All other records match their recorded SHA-256 prefix. The source-to-final
 mapping classifications are: unchanged at the same relative path for the
 remaining records, renamed for the case-colliding lowercase token record,
 restored for the uppercase token record, and intentionally reconciled for the
 README and CSV line-ending normalization. The inventory remains at its same
-relative path with an unresolved hash exception; it is not silently exempted.
+relative path with an explicitly accepted original-source self-hash exception.
 
 The complete machine-readable comparison is
 `SOURCE-INVENTORY-RECONCILIATION.json` in this directory. It contains all 410
 source paths, final paths, expected hash prefixes, actual full SHA-256 hashes,
-dimensions, mapping classifications, and the unresolved exception flag.
+dimensions, mapping classifications, and the accepted source-exception flag.
 
 The restored duplicate group has SHA-256
 `c715b939d613f72983c1e05cc2e772c98150f1b6632e90a40f0c66de00ad25a3`.
@@ -99,9 +101,47 @@ Its source and final members are the implementation-order token contract and
 the uppercase foundations token contract. Restoring the latter returns the
 duplicate census from 151 to 152.
 
-**Source-integrity acceptance: FAIL pending original ZIP comparison of
-ASSET-INVENTORY.txt.** All files are accounted for, but an unexplained hash
-exception cannot be represented as passing integrity evidence.
+**Historical correction result:** commit `daeec38` reported FAIL pending
+original ZIP comparison of `ASSET-INVENTORY.txt`. That uncertainty is resolved
+by the owner's subsequent independent verification below; the earlier result
+is retained as audit history.
+
+### Final source-exception resolution
+
+Approved ZIP SHA-256:
+`56c14c37dba1f48f6d8754ced4fdbb110246837f6744d501efedf237e488f4ec`.
+The owner independently inspected the original ZIP: all 410 inventory paths
+were found, and all 409 non-self inventory hashes verified with zero invalid
+non-self records. Local repository checks separately verify unchanged hashes,
+the collision-safe rename, the intentional README transformation, and the
+proven CSV CRLF-to-LF normalization.
+
+- `KNOWN_SOURCE_EXCEPTION`: `ASSET-INVENTORY.txt` self-referential hash record.
+- `STATUS`: ACCEPTED SOURCE-PACKAGE EXCEPTION.
+- Recorded self-prefix: `128f84f045e6e603`.
+- Actual approved-source and local prefix: `6ee2c9737d2af302`.
+- `UNEXPLAINED_HASH_MISMATCHES`: 0.
+- `SOURCE_PORTABILITY_EXCEPTION`: case-insensitive Windows pathname collision.
+- `DATA_LOSS`: NONE; both distinct source token contents are preserved.
+- `PHASE_0_FINAL_STATUS`: PASS.
+
+The approved inventory remains byte-identical. No recursive self-checksum
+rewrite was attempted. The accepted exception applies to its exact self-record
+only; all other source hashes remain validated. The collision-safe rename is
+retained on every platform, including case-sensitive Linux/macOS checkouts.
+
+Final local verification on Node 24.19.0: `npm run node:check`,
+`npm run format:check`, `npm run eol:check`, `npm run ticket:consistency`,
+`npm run agents:check`, `npm run privacy:check`, and `git diff --check` each
+returned exit code 0. The inline Node/sharp integrity validator also returned
+0: 410 paths found; 407 direct repository hash matches, one documented README
+transformation, one proven CSV normalization, and one accepted source
+self-record exception; no unexplained mismatches. All 345 rasters were decoded
+to pixel buffers and their dimensions matched the inventory (341 PNG, four
+JPEG-family). The final tree contains 423 regular files: 410 accounted source
+files, nine historical archive files, and four Phase 0 integration/audit files.
+SHA-256 duplicate groups: 152. Zero-byte files, unsafe paths, competing roots,
+missing index references, and Phase 1 ticket assignments: all zero.
 
 ### Correction verification
 
@@ -122,7 +162,8 @@ record under a collision-safe name, the source-equivalent final design set
 also has `152` groups. `DUPLICATE_GROUP_DELTA: 0` and
 `DUPLICATE_GROUP_DELTA_EXPLAINED: YES`. The README transformation, LF
 normalization are intentional, documented content changes. The inventory hash
-exception remains unverified; no raster or approved board was discarded.
+exception is accepted based on the original ZIP verification; no raster or
+approved board was discarded.
 
 ### Required correction statement
 

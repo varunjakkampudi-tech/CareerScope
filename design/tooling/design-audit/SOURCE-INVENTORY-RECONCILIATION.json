@@ -3,7 +3,19 @@
   "sourceRecords": 410,
   "accounted": 410,
   "missing": 0,
-  "unresolvedHashExceptions": 1,
+  "unresolvedHashExceptions": 0,
+  "approvedZipSha256": "56c14c37dba1f48f6d8754ced4fdbb110246837f6744d501efedf237e488f4ec",
+  "independentSourceVerification": {
+    "evidenceSource": "Owner-provided independent original-ZIP byte-level verification, 2026-10-02",
+    "entries": 464,
+    "regularFiles": 410,
+    "directories": 54,
+    "inventoryPathsFound": 410,
+    "nonSelfHashRecords": 409,
+    "nonSelfHashesValid": 409,
+    "invalidNonSelfRecords": 0,
+    "selfHashExceptions": 1
+  },
   "records": [
     {
       "sourceRelativePath": "00-CODEX-START-HERE/ASSET-COMPLETENESS.md",
@@ -1823,7 +1835,10 @@
       "expectedDimensions": null,
       "classification": "UNCHANGED_AT_SAME_RELATIVE_PATH",
       "hashMatches": false,
-      "unresolved": true
+      "sourceException": "SOURCE_PACKAGE_KNOWN_SELF_HASH_EXCEPTION",
+      "approvedSourceHashPrefix": "6ee2c9737d2af302",
+      "matchesApprovedSource": true,
+      "unresolved": false
     },
     {
       "sourceRelativePath": "FINAL-DESIGN-ASSET-AUDIT.md",
