@@ -22,11 +22,4 @@ Typography reference:
 
 Brand tagline: `DISCOVER · MATCH · TRACK · GROW`
 
-## Brand lock
-
-Use the approved CareerScope CS upward-growth-arrow identity. The mountain/path
-imagery is supporting artwork, not the logo. There is no Engineering-specific
-logo. Do not invent a replacement mark, redraw the identity, or label a new
-asset as an approved source export.
-
 Spacing, radii, shadows and breakpoints should be measured and normalized during implementation from the approved reference boards; they have not yet been supplied as original design-tool tokens, so do not fabricate “exact” source values.

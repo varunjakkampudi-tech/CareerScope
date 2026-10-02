@@ -16,11 +16,12 @@ archived under `design/archive/legacy-pre-approved-handoff/`. The empty source
 directory was removed after its contents were moved. No root ZIP existed and
 none was committed.
 
-Observed source validation: 464 entries, 409 files, 345 raster files, 345
-decoded, zero zero-byte files, no unsafe traversal paths, 151 exact duplicate
-content groups, and 14 implementation stages. Duplicate content was retained
-because the handoff intentionally includes canonical boards, crops and
-references.
+Initial local validation was superseded by the authoritative ZIP census below.
+The source package contains 464 entries, 410 regular files, 54 directories,
+345 raster files (341 PNG and four JPEG-family files), 345 decoded, zero
+zero-byte files, no unsafe traversal paths, 152 exact duplicate-content
+groups, and 14 implementation stages. Duplicate content was retained because
+the handoff intentionally includes canonical boards, crops and references.
 
 ## Scope guard
 
@@ -36,45 +37,96 @@ filesystem counts and SHA-256 grouping, the existing `sharp` package for raster
 decode, and repository checks listed in the final Phase 0 response. A clean
 working tree and exact branch diff must be reviewed before any future merge.
 
-## Final forensic reconciliation
+## Final forensic reconciliation (corrected)
 
 ### Source entries
 
-The earlier baseline label of **410 files + 54 directories = 464 entries** was
-an off-by-one classification. The captured extraction contained **409 regular
-files and 54 child directories**; the 464th entry is the extracted handoff root
-directory itself. Therefore the requested accounting is:
+Previous Phase 0 verification incorrectly counted the handoff root directory as a regular file and incorrectly rejected the original 152-group duplicate audit. Independent ZIP verification confirmed 410 regular files, 54 directories and 152 source duplicate groups.
 
-- `SOURCE_FILES_EXPECTED: 410` (the baseline's entry label)
-- `SOURCE_FILES_ACCOUNTED_FOR: 410` = 409 regular files moved into `design/` +
-  1 extracted root-directory entry, which is intentionally not tracked
-- `SOURCE_FILES_MISSING: 0`
+The corrected accounting is:
 
-The 409 regular files are accounted for by unchanged moves except the source
-root `README.md`. That README was reconciled into the permanent
+- `AUTHORITATIVE_SOURCE_ENTRIES: 464`
+- `AUTHORITATIVE_SOURCE_FILES: 410`
+- `AUTHORITATIVE_SOURCE_DIRECTORIES: 54`
+- `INVENTORY_RECORDS: 410`
+- `INVENTORY_FILES_ACCOUNTED_FOR: 410`
+- `INVENTORY_FILES_MISSING: 0`
+
+The exact missing logical record was the case-colliding
+`foundations/DESIGN-TOKENS.md`. It was restored byte-for-byte from
+`01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md`, whose hash
+starts `c715b939d613f729`. The lowercase source record is preserved as
+`foundations/design-tokens-foundations.md` because Windows cannot represent
+both case variants in one directory. This is a proven Windows
+case-insensitive extraction collision, not invented content.
+
+The source root `README.md` was intentionally reconciled into the permanent
 `design/README.md` rather than copied as a second competing README. Its source
-SHA-256 is `6cb57e52a0f364cd6b3eb4f042047b435cafb52afe126bc8def71313e6136b7d`
-(the prefix recorded in `ASSET-INVENTORY.txt`); the final reconciled README is
-`c85341bb507c45cb0765dc30c1433d920751aECB43259fbDEDE9a147568C75D6`.
-The source README's guidance was preserved and expanded with the permanent
-source-of-truth, hold, brand, and phase-boundary rules. No approved asset or
-contract information was lost.
+SHA-256 is `6cb57e52a0f364cd6b3eb4f042047b435cafb52afe126bc8def71313e6136b7d`;
+the final README is transformed (`2a50f947637f5250278e8bb14cade81296c8971e5adde4c0f207cba8c69903f5`)
+and the transformation is documented in the canonical README/provenance
+records.
+
+### Inventory mismatches with explicit justification
+
+The validator parsed all 410 records, accounted for all 410, and found no
+missing file. Three records differ from their inventory hashes; two are explained:
+
+1. `README.md`: transformed into the canonical source-of-truth README.
+2. `00-CODEX-START-HERE/IMAGE-CLARITY-AUDIT.csv`: normalized to LF under the
+   explicit `*.csv text eol=lf` policy; the semantic CSV content is unchanged.
+3. `ASSET-INVENTORY.txt`: expected prefix `128f84f045e6e603`, actual
+   `6ee2c9737d2af302`. This file has not been changed by this correction.
+   CRLF reconstruction does not reproduce the expected hash. Its self-record
+   may describe an earlier snapshot, but that cause is unproven. Comparison
+   against the original ZIP is required; this is an unresolved hash exception.
+
+All other records match their recorded SHA-256 prefix. The source-to-final
+mapping classifications are: unchanged at the same relative path for the
+remaining records, renamed for the case-colliding lowercase token record,
+restored for the uppercase token record, and intentionally reconciled for the
+README and CSV line-ending normalization. The inventory remains at its same
+relative path with an unresolved hash exception; it is not silently exempted.
+
+The complete machine-readable comparison is
+`SOURCE-INVENTORY-RECONCILIATION.json` in this directory. It contains all 410
+source paths, final paths, expected hash prefixes, actual full SHA-256 hashes,
+dimensions, mapping classifications, and the unresolved exception flag.
+
+The restored duplicate group has SHA-256
+`c715b939d613f72983c1e05cc2e772c98150f1b6632e90a40f0c66de00ad25a3`.
+Its source and final members are the implementation-order token contract and
+the uppercase foundations token contract. Restoring the latter returns the
+duplicate census from 151 to 152.
+
+**Source-integrity acceptance: FAIL pending original ZIP comparison of
+ASSET-INVENTORY.txt.** All files are accounted for, but an unexplained hash
+exception cannot be represented as passing integrity evidence.
+
+### Correction verification
+
+- Inventory: 410 records / 410 accounted / 0 missing.
+- Raster: 341 PNG + 4 JPEG-family = 345; 345/345 decoded; 345 dimensions
+  matched the inventory.
+- Duplicate groups: source 152 / final 152 / delta 0.
+- Zero-byte regular files: 0.
+- Unsafe paths: 0.
+- Competing design roots: 0.
+- Design index: 14 records, 0 missing references, 0 ticket assignments.
 
 ### Duplicate groups
 
-The captured pre-import extraction analysis and the final permanent design tree
-both produce **151 exact SHA-256 duplicate-content groups** when directories
-are excluded. The earlier `152` value was a stale audit headline, not a
-reproducible content result. Therefore:
+The authoritative source has `152` exact SHA-256 duplicate-content groups.
+After restoring the case-colliding token file and preserving the second token
+record under a collision-safe name, the source-equivalent final design set
+also has `152` groups. `DUPLICATE_GROUP_DELTA: 0` and
+`DUPLICATE_GROUP_DELTA_EXPLAINED: YES`. The README transformation, LF
+normalization are intentional, documented content changes. The inventory hash
+exception remains unverified; no raster or approved board was discarded.
 
-- `SOURCE_DUPLICATE_GROUPS: 151`
-- `FINAL_DESIGN_DUPLICATE_GROUPS: 151`
-- `DUPLICATE_GROUP_DELTA: 0`
-- `DUPLICATE_GROUP_DELTA_EXPLAINED: YES`
+### Required correction statement
 
-No approved duplicate path was removed. The README transformation changed one
-unique source hash; it did not change a duplicate group. Canonical boards,
-supporting crops, and reference copies remain intact.
+Previous Phase 0 verification incorrectly counted the handoff root directory as a regular file and incorrectly rejected the original 152-group duplicate audit. Independent ZIP verification confirmed 410 regular files, 54 directories and 152 source duplicate groups.
 
 ### `.gitattributes`
 

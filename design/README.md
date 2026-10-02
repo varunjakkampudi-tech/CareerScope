@@ -52,7 +52,8 @@ backend, authorization, data and tests exist.
 - `assets/icons/PRODUCTION-ICON-MAP.md`
 - `assets/icons/ICON-SYSTEM.md`
 - `assets/auth/ASSET-REQUIREMENTS.md`
-- `foundations/design-tokens.md`
+- `foundations/DESIGN-TOKENS.md` (implementation contract)
+- `foundations/design-tokens-foundations.md` (foundations reference)
 
 Generated screenshots are visual references. Production behavior and real data
 must remain truthful. The package explicitly does not contain every isolated
