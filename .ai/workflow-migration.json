@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "phase": "PHASE_3_CANONICAL_WORKFLOW_MIGRATION",
   "baselineCommit": "22455e06039390c33a7a478d0fcb89cf4a7df462",
-  "generatedAt": "2026-10-02T10:47:09.790Z",
+  "generatedAt": "2026-10-02T10:52:08.261Z",
   "legacyStatusCounts": {
     "UAT": 64,
     "BLOCKED": 26,

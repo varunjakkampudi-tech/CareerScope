@@ -13,6 +13,24 @@ if (items.length !== 216) errors.push(`expected 216 tickets, found ${items.lengt
 if (records.length !== items.length)
   errors.push(`migration records ${records.length} do not cover ${items.length} tickets`);
 const ids = new Set();
+const legacyCounts = {};
+const recordCounts = {};
+const recordIds = new Set();
+for (const record of records) {
+  if (!record.ticketId || recordIds.has(record.ticketId))
+    errors.push(`duplicate migration record ${record.ticketId}`);
+  recordIds.add(record.ticketId);
+  if (
+    typeof record.legacyStatus !== 'string' ||
+    typeof record.newStatus !== 'string' ||
+    typeof record.blocked !== 'boolean'
+  )
+    errors.push(`invalid migration schema for ${record.ticketId}`);
+  if (typeof record.migrationBasis !== 'string' || typeof record.promotionOccurred !== 'boolean')
+    errors.push(`incomplete migration basis for ${record.ticketId}`);
+  legacyCounts[record.legacyStatus] = (legacyCounts[record.legacyStatus] ?? 0) + 1;
+  recordCounts[record.newStatus] = (recordCounts[record.newStatus] ?? 0) + 1;
+}
 for (const item of items) {
   try {
     assertTicketWorkflow(item);
@@ -29,6 +47,10 @@ for (const item of items) {
     errors.push(`${item.id} retained resolved Phase 2 blocker`);
   const record = records.find((entry) => entry.ticketId === item.id);
   if (record) {
+    if (record.newStatus !== item.status)
+      errors.push(`${item.id} migration status does not match backlog`);
+    if (record.blocked !== item.blocked)
+      errors.push(`${item.id} migration blocker flag does not match backlog`);
     const evidenceHash = crypto
       .createHash('sha256')
       .update(JSON.stringify(item.evidence ?? []))
@@ -43,10 +65,15 @@ for (const item of items) {
       errors.push(`${item.id} acceptance criteria changed after migration`);
   }
 }
-const recordIds = new Set(records.map((x) => x.ticketId));
 for (const id of ids) if (!recordIds.has(id)) errors.push(`missing migration record ${id}`);
 for (const id of recordIds) if (!ids.has(id)) errors.push(`orphan migration record ${id}`);
 if (migration.totalTickets !== items.length) errors.push('migration totalTickets mismatch');
+for (const [status, count] of Object.entries(recordCounts))
+  if ((migration.newStatusCounts[status] ?? 0) !== count)
+    errors.push(`migration new status count mismatch for ${status}`);
+for (const [status, count] of Object.entries(legacyCounts))
+  if ((migration.legacyStatusCounts[status] ?? 0) !== count)
+    errors.push(`migration legacy status count mismatch for ${status}`);
 if (
   items.some((x) => x.status === 'BLOCKED' || x.status === 'DISCOVERY' || x.status === 'RELEASED')
 )

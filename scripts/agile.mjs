@@ -666,6 +666,20 @@ async function released() {
   }
 
   const shipped = backlog.items.filter((i) => i.status === 'UAT');
+  const blocked = shipped.filter(isBlockedTicket);
+  if (blocked.length) {
+    const ids = blocked.map((item) => item.id).join(', ');
+    console.error(
+      `\n  Cannot close blocked UAT ticket(s): ${ids}. Resolve blocker evidence first.\n`,
+    );
+    record(
+      'released',
+      'blocked-tickets',
+      blocked.map((item) => item.id),
+    );
+    process.exitCode = 1;
+    return;
+  }
   if (shipped.length === 0) {
     console.log(`\n  Live site confirms ${version}, but no ticket was UAT.\n`);
     record('released', 'nothing-ready');

@@ -44,6 +44,17 @@ export function assertTicketWorkflow(ticket, { fromStatus } = {}) {
   const blocked = ticket.blocked === true;
   if (typeof ticket.blocked !== 'boolean')
     throw new Error(`${ticket.id ?? 'ticket'} blocked must be boolean`);
+  if (ticket.blockedReason !== null && typeof ticket.blockedReason !== 'string')
+    throw new Error(`${ticket.id ?? 'ticket'} blockedReason must be string or null`);
+  if (ticket.blockedOwner !== null && typeof ticket.blockedOwner !== 'string')
+    throw new Error(`${ticket.id ?? 'ticket'} blockedOwner must be string or null`);
+  if (
+    ticket.blockedSince !== null &&
+    (typeof ticket.blockedSince !== 'string' || Number.isNaN(Date.parse(ticket.blockedSince)))
+  )
+    throw new Error(`${ticket.id ?? 'ticket'} blockedSince must be an ISO timestamp or null`);
+  if (!Array.isArray(ticket.unblockEvidenceRequired))
+    throw new Error(`${ticket.id ?? 'ticket'} unblockEvidenceRequired must be an array`);
   if (
     blocked &&
     (!ticket.blockedReason ||

@@ -258,6 +258,27 @@ expect(
   JSON.parse(readFileSync(BACKLOG, 'utf8')).items[0].status,
   'UAT',
 );
+setBacklog([
+  ticket({
+    status: 'UAT',
+    blocked: true,
+    blockedReason: 'synthetic external evidence',
+    blockedOwner: 'Operator',
+    blockedSince: null,
+    unblockEvidenceRequired: ['host evidence'],
+  }),
+]);
+expect(
+  'released: blocked UAT ticket refused',
+  close(['--version', '9.9.9', '--commit', 'abcdef1', '--health-url', healthUrl]),
+  1,
+);
+expect(
+  'released: blocked ticket remains UAT',
+  JSON.parse(readFileSync(BACKLOG, 'utf8')).items[0].status,
+  'UAT',
+);
+setBacklog([ticket({ status: 'UAT' })]);
 expect(
   'released: matching live version closes the ticket',
   close(['--version', '9.9.9', '--commit', 'abcdef1', '--health-url', healthUrl]),

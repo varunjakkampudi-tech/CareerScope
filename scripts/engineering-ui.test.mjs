@@ -63,6 +63,13 @@ test('blocked is orthogonal metadata and never a board column', () => {
   );
 });
 
+test('blocked tickets stay in their stage and expose badge, filter and summary controls', () => {
+  assert.match(PAGE, /data-toggle-blocked/);
+  assert.match(PAGE, /Blocked metadata/);
+  assert.match(PAGE, /i\.blocked===true/);
+  assert.match(PAGE, /i\.blocked\?' blocked':''/);
+});
+
 test('a clean state produces no board state errors (positive control)', () => {
   const state = withState(clean.backlog, clean.findings, () => snapshot());
   const noise = state.stateErrors.filter((e) => /no column for|does not count/.test(e));

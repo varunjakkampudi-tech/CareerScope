@@ -1,10 +1,18 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 
 const backlogPath = '.ai/backlog.json';
 const blockerPath = '.ai/blocker-classification.json';
 const baselineCommit = '22455e06039390c33a7a478d0fcb89cf4a7df462';
 const backlog = JSON.parse(fs.readFileSync(backlogPath, 'utf8'));
+const baselineBacklog = JSON.parse(
+  execFileSync('git', ['show', `${baselineCommit}:.ai/backlog.json`], {
+    encoding: 'utf8',
+    maxBuffer: 20 * 1024 * 1024,
+  }),
+);
+const baselineById = new Map(baselineBacklog.items.map((ticket) => [ticket.id, ticket]));
 const blockerModel = JSON.parse(fs.readFileSync(blockerPath, 'utf8'));
 const previousMigration = fs.existsSync('.ai/workflow-migration.json')
   ? JSON.parse(fs.readFileSync('.ai/workflow-migration.json', 'utf8'))
@@ -48,6 +56,7 @@ for (const ticket of backlog.items) {
   const blocker = blockerById.get(ticket.id);
   if (!blocker) throw new Error(`Missing Phase 2 blocker record for ${ticket.id}`);
   const status = stageFor(ticket, blocker, legacyStatus);
+  const sourceTicket = baselineById.get(ticket.id) ?? ticket;
   const blocked = blocker.blocked === true;
   ticket.status = status;
   ticket.blocked = blocked;
@@ -82,11 +91,11 @@ for (const ticket of backlog.items) {
     primaryClass: blocker.primaryClass ?? null,
     evidenceHash: crypto
       .createHash('sha256')
-      .update(JSON.stringify(ticket.evidence ?? []))
+      .update(JSON.stringify(sourceTicket.evidence ?? []))
       .digest('hex'),
     acceptanceCriteriaHash: crypto
       .createHash('sha256')
-      .update(JSON.stringify(ticket.acceptanceCriteria ?? []))
+      .update(JSON.stringify(sourceTicket.acceptanceCriteria ?? []))
       .digest('hex'),
   });
 }

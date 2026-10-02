@@ -1,6 +1,6 @@
 # Approved design implementation map
 
-Phase 1 planning only. Baseline: `60937da5a2ba2c56cd00e44cd4f4363e60ba72cb`. Canonical execution state is `.ai/backlog.json`; epic and supplemental design contracts live in `.ai/design-ticket-coverage.json`. No application functionality or acceptance status is changed by this map. RELEASE is intended scope, not approval to ship.
+Phase 1 planning only. Baseline: `60937da5a2ba2c56cd00e44cd4f4363e60ba72cb`. Canonical execution state is `.ai/backlog.json`; epic and supplemental design contracts live in `.ai/design-ticket-coverage.json`. No application functionality or acceptance status is changed by this map. `RELEASE`, `PLANNED` and `HOLD` below are design-scope/activation labels, not ticket workflow statuses; the live ticket workflow is documented in [Phase 3 workflow migration](PHASE-3-WORKFLOW-MIGRATION.md). `RELEASE` is intended scope, not approval to ship.
 
 ## Stage ownership
 
