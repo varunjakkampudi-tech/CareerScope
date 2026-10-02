@@ -50,7 +50,9 @@ export function assertTicketWorkflow(ticket, { fromStatus } = {}) {
     throw new Error(`${ticket.id ?? 'ticket'} blockedOwner must be string or null`);
   if (
     ticket.blockedSince !== null &&
-    (typeof ticket.blockedSince !== 'string' || Number.isNaN(Date.parse(ticket.blockedSince)))
+    (typeof ticket.blockedSince !== 'string' ||
+      !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(ticket.blockedSince) ||
+      Number.isNaN(Date.parse(ticket.blockedSince)))
   )
     throw new Error(`${ticket.id ?? 'ticket'} blockedSince must be an ISO timestamp or null`);
   if (!Array.isArray(ticket.unblockEvidenceRequired))

@@ -39,3 +39,17 @@ test('blocked metadata is orthogonal and required', () => {
     true,
   );
 });
+
+test('blockedSince accepts only UTC ISO timestamps', () => {
+  const base = {
+    id: 'X',
+    status: 'QA',
+    blocked: true,
+    blockedReason: 'External validation',
+    blockedOwner: 'operator',
+    unblockEvidenceRequired: ['Hosted evidence'],
+  };
+  assert.equal(assertTicketWorkflow({ ...base, blockedSince: '2026-10-02T10:20:30.000Z' }), true);
+  assert.throws(() => assertTicketWorkflow({ ...base, blockedSince: '2026-10-02' }));
+  assert.throws(() => assertTicketWorkflow({ ...base, blockedSince: '2026-10-02T10:20:30+05:30' }));
+});

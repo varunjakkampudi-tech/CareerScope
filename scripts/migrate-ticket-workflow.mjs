@@ -100,6 +100,10 @@ for (const ticket of backlog.items) {
   });
 }
 
+for (const status of ['BACKLOG', 'TODO', 'IN_PROGRESS', 'QA', 'UAT', 'PROD']) {
+  newCounts[status] ??= 0;
+}
+
 backlog.updatedAt = new Date().toISOString();
 fs.writeFileSync(backlogPath, `${JSON.stringify(backlog, null, 2)}\n`);
 const payload = JSON.stringify({ ...backlog, updatedAt: undefined });

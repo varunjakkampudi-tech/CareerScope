@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "phase": "PHASE_3_CANONICAL_WORKFLOW_MIGRATION",
   "baselineCommit": "22455e06039390c33a7a478d0fcb89cf4a7df462",
-  "generatedAt": "2026-10-02T10:52:08.261Z",
+  "generatedAt": "2026-10-02T10:57:49.550Z",
   "legacyStatusCounts": {
     "UAT": 64,
     "BLOCKED": 26,
@@ -12,7 +12,10 @@
   "newStatusCounts": {
     "UAT": 70,
     "BACKLOG": 141,
-    "QA": 5
+    "QA": 5,
+    "TODO": 0,
+    "IN_PROGRESS": 0,
+    "PROD": 0
   },
   "totalTickets": 216,
   "records": [
