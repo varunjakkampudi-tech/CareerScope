@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "uiTicketIds": ["CS-45"],
+  "sequencingEdges": [
+    { "prerequisite": "CS-6", "dependent": "CS-47", "sourceAcIndex": 3 },
+    { "prerequisite": "CS-13", "dependent": "CS-47", "sourceAcIndex": 3 },
+    { "prerequisite": "CS-14", "dependent": "CS-47", "sourceAcIndex": 3 },
+    { "prerequisite": "CS-16", "dependent": "CS-47", "sourceAcIndex": 3 },
+    { "prerequisite": "CS-17", "dependent": "CS-47", "sourceAcIndex": 3 },
+    { "prerequisite": "CS-18", "dependent": "CS-47", "sourceAcIndex": 3 },
+    { "prerequisite": "CS-19", "dependent": "CS-47", "sourceAcIndex": 3 }
+  ],
+  "ticketRefinements": {
+    "CS-46": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [".ai/backlog.json#CS-46", "docs/PHASE-2-BLOCKER-RESOLUTION.md"],
+      "additionalRequirements": {
+        "technicalApproach": [
+          "Recommendation ONLY, not accepted semantics: store explicit owner-scoped exclusion tombstones for normalized resume-derived skills/titles, with resume provenance/revision. Apply exclusions before deterministic matching and explanations; persist suppression across searches and reparsing until the owner explicitly restores a fact. Keep positive preferences separate from tombstones. The existing criterion refers to suppression until reparsing, so persistence across reparse requires an explicit owner decision; do not silently implement this proposal."
+        ],
+        "testStrategy": [
+          "After the owner accepts the exclusion lifespan, plan assertions for declined skill and title, repeated search, same/different resume revision, equivalent normalized fact, explicit restore, cross-owner denial and reproducible frozen-score inputs. Expected outcomes for reparse must reflect the accepted decision, not this proposal."
+        ]
+      }
+    }
+  },
+  "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
+  "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
+  "areaEpicMap": {
+    "infrastructure": "EPIC-PLATFORM",
+    "tooling": "EPIC-DELIVERY-TOOLING",
+    "process": "EPIC-DELIVERY-TOOLING",
+    "architecture": "EPIC-PLATFORM",
+    "testing": "EPIC-VALIDATION",
+    "dependencies": "EPIC-PLATFORM",
+    "security": "EPIC-SECURITY",
+    "backend": "EPIC-DOMAIN",
+    "data": "EPIC-DOMAIN",
+    "discovery": "EPIC-DOMAIN",
+    "matching": "EPIC-DOMAIN",
+    "frontend": "EPIC-CANDIDATE-CORE"
+  },
+  "epicAssignments": {
+    "CS-4": "EPIC-DELIVERY-TOOLING",
+    "CS-45": "EPIC-DELIVERY-TOOLING",
+    "CS-67": "EPIC-DELIVERY-TOOLING"
+  },
+  "engineeringEpics": [
+    {
+      "id": "EPIC-PLATFORM",
+      "title": "Canonical platform and private infrastructure",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE"
+    },
+    {
+      "id": "EPIC-DELIVERY-TOOLING",
+      "title": "Engineering delivery and repository state integrity",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE"
+    },
+    {
+      "id": "EPIC-VALIDATION",
+      "title": "Executable regression and recovery evidence",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE"
+    },
+    {
+      "id": "EPIC-SECURITY",
+      "title": "Authentication, authorization and trust boundaries",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE"
+    },
+    {
+      "id": "EPIC-DOMAIN",
+      "title": "Deterministic discovery, matching and owner-scoped data",
+      "releaseTarget": "SOURCE_TICKET_TARGET",
+      "releaseState": "SOURCE_TICKET_STATE"
+    }
+  ],
+  "productInvariants": [
+    "Candidate owns profile, resume, saved jobs and application decisions. Opening an external application destination never marks Applied.",
+    "Do not fabricate ATS/interview/offer/rejection events, unknown data, analytics or verification claims.",
+    "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
+    "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
+    "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
+    "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+  ],
+  "security": [
+    "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
+    "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
+    "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
+    "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
+    "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+  ],
+  "definitionOfDone": [
+    "Each acceptance criterion has named executable assertions or a dated manual procedure and expected result.",
+    "Required unit/integration/contract/browser/accessibility/privacy checks pass for current content under Node >=24; no skips/retries conceal failure.",
+    "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
+    "Independent current-content review resolves specification/implementation findings before promotion.",
+    "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+  ],
+  "ui": {
+    "sources": [
+      "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+      "docs/FRONTEND-ARCHITECTURE.md",
+      "docs/TESTING.md"
+    ],
+    "accessibility": [
+      "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
+      "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
+      "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+    ],
+    "responsive": [
+      "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
+      "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+    ],
+    "publicSeo": [
+      "For public/indexable pages: truthful semantic title/description, canonical URL, robots, Open Graph, sitemap and valid structured data where supported.",
+      "No private data, fake user counts, fabricated customer claims or future features advertised as active."
+    ]
+  },
+  "domains": {
+    "default": {
+      "sources": ["docs/ARCHITECTURE.md", "docs/TESTING.md", "docs/KNOWN-LIMITATIONS.md"],
+      "approach": [
+        "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+      ],
+      "nonFunctional": [
+        "Preserve bounded input, deterministic behavior, cancellation/retry semantics and current performance regression thresholds where applicable; do not claim a production SLO."
+      ],
+      "persistence": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
+      "api": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
+      "observability": [
+        "Correlate safe request/command/execution identifiers; record failure categories and health without sensitive payloads."
+      ],
+      "failureModes": [
+        "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
+      ],
+      "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step.",
+      "commands": {
+        "contract": "npm run gates:test",
+        "integration": "npm run test:integration",
+        "browser": "npm run test:ui"
+      }
+    }
+  },
+  "review": {
+    "status": "REVISE",
+    "reason": "The real read-only independent reviewer resumed after the initial usage-limit failure, delivered findings and independently verified the mechanical corrections, including source projection validation, cross-cutting UI scope, honest AC metrics, exact-ID sequencing and CS-25 owner deferral. No unresolved mechanical defect remained among the reviewed fixes. Exact AC bindings, ticket-specific requirements/contracts, design gaps and release decisions remain incomplete. Whole-phase disposition is REVISE, not approval.",
+    "reviewerTask": "/root/phase325_review",
+    "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
+  }
+}
