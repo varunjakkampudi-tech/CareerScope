@@ -1,0 +1,178 @@
+# CareerScope Phase 2 host-pending actions
+
+Only the following actions require authority outside the repository. No secrets, tokens, personal data, database contents, or private configuration belong in this file.
+
+## LIVE HOST / OPERATOR EVIDENCE
+
+### CS-3 — Proxy restart strands every service behind a healthy-looking 502
+
+**Owner:** Host operator
+
+**Why manual:** The proxy-recovery implementation and local detection evidence exist, but recovery must be observed on the deployed host without restarting the proxy alone.
+
+**Safe steps:** Follow the repository runbook for CS-3; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Controlled live restart/recovery observation, 502 protection, alert output, and rollback-safe host evidence.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-24 — Nothing watches the running system
+
+**Owner:** Host operator
+
+**Why manual:** Monitoring is locally verified, but the running host timer and a stop-a-container alert have not been observed in production-like infrastructure.
+
+**Safe steps:** Follow the repository runbook for CS-24; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Live timer status plus controlled stop-a-container alert and recovery evidence.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-26 — Nothing runs discovery on a schedule
+
+**Owner:** Host operator
+
+**Why manual:** The scheduler is installed, but a real scheduled discovery run and its failure/observation evidence have not been recorded on the host.
+
+**Safe steps:** Follow the repository runbook for CS-26; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** A calendar-triggered discovery run, journal output, and rate-limit-safe result on the deployed host.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-27 — Postings never expire or get re-checked, so dead jobs stay actionable
+
+**Owner:** Host operator
+
+**Why manual:** The liveness and retention timers are installed, but no calendar-triggered liveness result has been recorded on the deployed host.
+
+**Safe steps:** Follow the repository runbook for CS-27; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** A scheduled liveness run with recorded outcomes and retention evidence from the deployed host.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-30 — Managed Hostinger firewall verification
+
+**Owner:** Hostinger operator
+
+**Why manual:** Host-native ports are restricted, but Hostinger hPanel reports no managed firewall policy and IPv4/IPv6 managed-rule evidence is absent.
+
+**Safe steps:** Follow the repository runbook for CS-30; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Managed firewall policy attachment plus independent IPv4 and IPv6 probes for intended and denied ports.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-70 — The API exposes no job-to-lead lookup, so the UI cannot know a job is already saved
+
+**Owner:** Integration operator
+
+**Why manual:** The owner-scoped lookup and static checks are complete, but service-backed Postgres/Redis integration remains unavailable/unverified.
+
+**Safe steps:** Follow the repository runbook for CS-70; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Hosted Postgres/Redis integration run proving owner isolation, malformed/unknown IDs, duplicate save, and archive hydration.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-86 — Harden Hostinger firewall and verify public exposure
+
+**Owner:** Hostinger operator
+
+**Why manual:** Managed Hostinger firewall configuration and second-session verification require owner-controlled host-console authority.
+
+**Safe steps:** Follow the repository runbook for CS-86; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Hostinger managed firewall policy and a second SSH/client verification with only intended ports exposed.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+## EXTERNAL PROVIDER / ACCOUNT / DNS / SECRET
+
+### CS-89 — OpenRouter production configuration and guarded AI activation
+
+**Owner:** Provider/release owner
+
+**Why manual:** OpenRouter activation needs an owner-approved production model/secret and live release authority; AI remains default-off.
+
+**Safe steps:** Follow the repository runbook for CS-89; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Redacted production configuration evidence, exact commit provenance, guarded request smoke test, and rollback to AI_ENABLED=false.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-92 — Cognito email templates and deliverability configuration
+
+**Owner:** Provider/release owner
+
+**Why manual:** Sender identity, domain verification, DNS, and email-provider access are owner-controlled external prerequisites.
+
+**Safe steps:** Follow the repository runbook for CS-92; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Redacted SES/Cognito configuration, DNS verification, deliverability limits, and a real test message without OTP/PII in evidence.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-94 — Cognito end-to-end rollout, monitoring and rollback acceptance
+
+**Owner:** Provider/release owner
+
+**Why manual:** Live Cognito credentials, disposable email access, and rollout approval are owner-controlled prerequisites for end-to-end acceptance.
+
+**Safe steps:** Follow the repository runbook for CS-94; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Redacted live callback/OTP smoke evidence, exact deployment provenance, monitoring, and rollback acceptance.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+## HUMAN ACCEPTANCE / ACCESSIBILITY / LEGAL
+
+### CS-11 — The public Pages surface has had no design pass
+
+**Owner:** Accessibility reviewer
+
+**Why manual:** The named accesslint-audit skill is unavailable here; automated browser checks do not replace the required independent accessibility sign-off.
+
+**Safe steps:** Follow the repository runbook for CS-11; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Independent accesslint-audit/accessibility review with findings and disposition recorded.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-14 — The Leads table is unusable on a phone
+
+**Owner:** Accessibility reviewer
+
+**Why manual:** The 320px lead surface is implemented, but the acceptance criterion requires real keyboard and screen-reader verification, not Lighthouse or an accessibility tree proxy.
+
+**Safe steps:** Follow the repository runbook for CS-14; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** A human keyboard and NVDA/VoiceOver/JAWS smoke review at 320px with findings recorded.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-16 — Discovery does not present jobs in a way you can act on
+
+**Owner:** Accessibility reviewer
+
+**Why manual:** The ticket explicitly requires human screen-reader validation and the current record also references a prerequisite reproduction.
+
+**Safe steps:** Follow the repository runbook for CS-16; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** A human screen-reader and responsive discovery-flow acceptance record, including the CS-2 prerequisite result.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+
+### CS-37 — Onboarding, profile and explicit resume-review journey
+
+**Owner:** QA/release reviewer
+
+**Why manual:** Local page/domain checks pass, but the complete owner journey, mobile/keyboard review, service-backed storage paths, and owner-isolation evidence remain acceptance work.
+
+**Safe steps:** Follow the repository runbook for CS-37; use least privilege, capture redacted results, and do not alter unrelated services or data.
+
+**Pass evidence:** Independent browser/keyboard/mobile journey review plus service-backed storage and owner-isolation evidence.
+
+**Rollback:** Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate.
+

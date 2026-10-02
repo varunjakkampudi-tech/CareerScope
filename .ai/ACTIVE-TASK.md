@@ -2,6 +2,14 @@
 
 **Status: IN PROGRESS — QA completion and blocker reconciliation.**
 
+Phase 2 blocker classification completed 2026-10-02 on branch
+`phase-2/blocker-classification-resolution` from Phase 1 SHA
+`5f17aa0894b2d9d47e5ce5bc2f688b3be322cc25`. The machine-validated model in
+`.ai/blocker-classification.json` covers all 216 tickets: 38 active blockers,
+one owner-deferred CS-25 item, and 14 explicitly host-pending actions. Ticket
+statuses are unchanged; this is classification/evidence work only. See
+`docs/PHASE-2-BLOCKER-RESOLUTION.md` and `hostpending.txt`.
+
 Reconciled 2026-10-01 on synchronized canonical `main` SHA
 `bd0309f0ba126e681ee92ba618c573133ad7b1ee`. No production deployment or
 publication has been run.
@@ -12,9 +20,10 @@ layout, but active commands and release paths must not depend on it.
 
 ## Current execution plan
 
-The 34 tickets outside UAT are organized into ten dependency-aware batches in
-`.ai/BATCH-PLAN.md`. Batch membership is planning only; owner, live-host, and
-admin-design blockers remain BLOCKED until their required evidence exists.
+The current census is 64 UAT, 4 QA, 26 BLOCKED, and 122 DISCOVERY (30 tickets
+outside UAT). The legacy ten-batch plan in `.ai/BATCH-PLAN.md` remains planning
+only; owner, live-host, and admin-design blockers remain blocked until their
+required evidence exists.
 
 ## Delivered in this batch
 

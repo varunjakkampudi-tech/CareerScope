@@ -247,6 +247,11 @@
       "path": "scripts/check-privacy.mjs",
       "classification": "ci",
       "reason": "Scans the Git-tracked tree for high-confidence secrets, private artifact paths and obvious non-synthetic contact data; the privacy boundary runs on every push and pull request before release gates."
+    },
+    {
+      "path": "scripts/check-blocker-classification.mjs",
+      "classification": "manual",
+      "reason": "Validates the Phase 2 one-to-one blocker model, hostpending mappings, negative controls and preservation of the Phase 1 design coverage snapshot. It is intentionally run explicitly in the Phase 2 gate and is not live-host or human acceptance evidence."
     }
   ]
 }
