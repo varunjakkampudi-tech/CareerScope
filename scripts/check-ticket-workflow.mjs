@@ -9,6 +9,10 @@ const errors = [];
 const items = backlog.items;
 const records = migration.records;
 const blockerById = new Map(blockers.tickets.map((x) => [x.ticketId, x]));
+if (migration.baselineCommit !== '22455e06039390c33a7a478d0fcb89cf4a7df462')
+  errors.push('migration baselineCommit mismatch');
+if (migration.phase !== 'PHASE_3_CANONICAL_WORKFLOW_MIGRATION')
+  errors.push('migration phase mismatch');
 if (items.length !== 216) errors.push(`expected 216 tickets, found ${items.length}`);
 if (records.length !== items.length)
   errors.push(`migration records ${records.length} do not cover ${items.length} tickets`);
@@ -22,7 +26,7 @@ for (const record of records) {
   recordIds.add(record.ticketId);
   if (
     typeof record.legacyStatus !== 'string' ||
-    typeof record.newStatus !== 'string' ||
+    !TICKET_STATUSES.includes(record.newStatus) ||
     typeof record.blocked !== 'boolean'
   )
     errors.push(`invalid migration schema for ${record.ticketId}`);
