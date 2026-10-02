@@ -1,152 +1,165 @@
-# Phase 1 design-to-ticket coverage report
+# Phase 1 final surface-level traceability audit
 
-## Scope and baseline
+## Audit scope
 
-This is a planning/traceability audit, not implementation or production acceptance.
-Baseline branch: `phase-0/design-system-integration`.
-Baseline commit: `60937da5a2ba2c56cd00e44cd4f4363e60ba72cb`.
-Working branch: `phase-1/design-to-engineering-backlog`.
-The final commit is the commit enclosing this report; resolve it with `git log -1`
-on the Phase 1 branch. No merge, push, deployment or Phase 2 work is authorized here.
+Starting branch: `phase-1/design-to-engineering-backlog`.
+Starting commit: `f18c7951c84b9712794b3b4983c7023cc7dc88ef`.
+Phase 0 source baseline: `60937da5a2ba2c56cd00e44cd4f4363e60ba72cb`.
+The final commit is the commit enclosing this report, resolved by `git log -1`
+on this branch. No merge, push, deployment, runtime implementation or Phase 2 work.
 
-## Census
+The earlier “14 primary design records” metric described stage summaries, not
+individual product surfaces. This report replaces that denominator. The old 140
+mixed ordered image records comprised exactly 127 screens, four foundations and
+nine full boards. The requested screen census was independently reproduced from
+the current filesystem with no differing paths.
 
-| Metric                                           |             Result |
-| ------------------------------------------------ | -----------------: |
-| Preexisting tickets / highest ID                 |         94 / CS-94 |
-| Preexisting objects preserved                    |                 94 |
-| Removed tickets / lost evidence                  |              0 / 0 |
-| New tickets                                      | 122 (CS-95–CS-216) |
-| Reused existing tickets                          |                 36 |
-| Final tickets / highest ID                       |       216 / CS-216 |
-| ID gaps / duplicate IDs                          |              0 / 0 |
-| Planning epics created / reused                  |             18 / 0 |
-| Design stages represented                        |            14 / 14 |
-| Primary index records mapped                     |            14 / 14 |
-| Missing / multiple primary owners                |              0 / 0 |
-| Approved rasters classified                      |          345 / 345 |
-| Unclassified approved rasters                    |                  0 |
-| Canonical references mapped                      |            30 / 30 |
-| Ordered page-reference records                   |                140 |
-| HOLD primary records correctly marked            |              3 / 3 |
-| Archived legacy rasters excluded                 |                  4 |
-| Orphan references / new design tickets           |              0 / 0 |
-| Missing dependencies / dependency cycles         |              0 / 0 |
-| RELEASE tickets reaching HOLD/FUTURE work        |                  0 |
-| RELEASE tickets reaching external acceptance     |                  6 |
-| RELEASE tickets reaching human/manual acceptance |                  7 |
-| RELEASE tickets reaching owner decisions         |                  5 |
-| New XL implementation tickets                    |                  0 |
+## Canonical data model
 
-Baseline statuses remain UAT 64, BLOCKED 26, QA 4. The only new status is
-DISCOVERY 122. No existing ticket is promoted, demoted or rewritten semantically.
-Existing evidence is retained exactly as object data; supplemental approved-design
-criteria live outside existing objects. Epics are not executable fake backlog tickets.
+- `design/DESIGN-INDEX.json.stages`: 14 preserved stage summaries.
+- `design/DESIGN-INDEX.json.entries`: 127 individual screen/state/variant records.
+- `.ai/design-ticket-coverage.json.stageRecords`: stage-level ownership contracts.
+- `coverage.screenRecords`: exact validator-enforced mirror of index entries.
+- Both files separately represent foundation imagery, full boards and Stage 13
+  written contracts; validators reject drift between the two.
+- `referenceMappings`: exact paths, roles, stage/area, owners and screen/context
+  links for every approved image and source handoff file.
 
-## Ownership and duplicate-intent analysis
+Each screen record includes design identity, area, surface group, exact reference,
+role, variant type, owner/children/cross-cutting IDs, release/hold conditions,
+route classification and evidence, dependencies, acceptance evidence requirements
+and notes. A reference is not necessarily a distinct route or ticket. Jobs sidebar
+variants and verification states retain their shared implementation owners.
+Phone verification is a STATE, not inferred to be a responsive-layout variant.
+Sign-in uses the existing `/` source route. Application Details is a selected-panel
+STATE within `/applications`, not a dynamic route. Jobs sidebar variants and mobile
+connected accounts have explicit base-screen links and shared surface groups while
+retaining their separate owners where applicable.
 
-`design/DESIGN-INDEX.json` retains all Phase 0 reference paths and links one primary
-owner per broad record plus child and cross-cutting IDs. The machine coverage map
-accounts for the original source census, canonical boards, ordered references,
-supporting views and archived legacy evidence. Duplicate images and composite crops
-share contextual provenance; matching bytes are not a reason to overwrite the
-ordered surface's owner or release boundary.
+## Reproduced ordered-screen census
 
-Existing authentication, profile, resume, jobs, matching, saved state, applications,
-security, accessibility and operational tickets remain domain owners. New UI slices
-own approved-reference parity, not a second implementation of those domains.
-Parent tickets own shared shell/template integration; children own page/state
-integration. Shared primitives, transactional UX, browser/visual acceptance and
-accessibility are separate cross-cutting work. Candidate verification backend and
-candidate/admin journeys are separated (CS-110–CS-112). Candidate-owned AI boundary
-and privileged AI configuration are separated (CS-130 / CS-131). CS-145 owns
-settings/combined-board assembly; CS-213/CS-214 own profile and resume parity.
-No one-ticket-per-image strategy or competing primary surface owners are used.
+| Stage                       |   Files | Explicitly mapped |
+| --------------------------- | ------: | ----------------: |
+| Marketing                   |       8 |                 8 |
+| Auth                        |       2 |                 2 |
+| Onboarding                  |       1 |                 1 |
+| Candidate core              |      18 |                18 |
+| Interview                   |      10 |                10 |
+| Courses/certifications      |       4 |                 4 |
+| Connected accounts          |      15 |                15 |
+| AI                          |       3 |                 3 |
+| Recruiter                   |      16 |                16 |
+| Admin                       |      14 |                14 |
+| Admin production operations |      16 |                16 |
+| Global UX                   |      20 |                20 |
+| **Total**                   | **127** |           **127** |
 
-Every visual slice inherits the canonical brand/atomic foundation and the shared
-browser, responsive, accessibility and visual-regression criteria. Proposed routes
-and flags are explicitly planning data; unavailable backend operations require
-contract refinement before implementation and must remain visibly unavailable.
+Exclusions: four Stage 00 foundation rasters, nine files named
+`00-full-reference-board.png`, Markdown/contracts and README files.
+No expected stage count was silently changed.
 
-## Dependency readiness audit
+## Context and source accounting
 
-The complete transitive ledger is in `releaseDependencyAudit` and the human-readable
-map. It distinguishes actual blocked acceptance from release-scope intent.
-There are 20 dependency edges requiring outstanding acceptance:
-CS-14 manual screen-reader/readability judgment; CS-17 dismiss semantics;
-CS-19/CS-70 service-backed saved-state verification; CS-50 application timeline
-semantics; CS-37 independent onboarding and service-backed acceptance; CS-41
-architecture/security approval; CS-46 rejected resume-fact semantics.
-No RELEASE ticket reaches an intentionally held or future implementation.
-No external acceptance is fabricated or converted into automatic approval.
+| Metric                                                   |    Result |
+| -------------------------------------------------------- | --------: |
+| Design stage records                                     |        14 |
+| Ordered screen reference records / mapped                | 127 / 127 |
+| Missing screen primary owner / missing referenced ticket |     0 / 0 |
+| Full reference boards / unmapped                         |    43 / 0 |
+| Ordered full boards (subset of 43)                       |         9 |
+| Supporting/canonical full board copies (subset of 43)    |        34 |
+| Stage 00 foundation references / unmapped                |     4 / 0 |
+| Stage 13 engineering contracts / unmapped                |    12 / 0 |
+| Approved image paths / classified                        | 345 / 345 |
+| Unclassified approved images                             |         0 |
+| Invalid stage-only image mappings                        |         0 |
+| Canonical references accounted for                       |   30 / 30 |
+| Archived legacy rasters excluded from approved census    |         4 |
+| Missing release states / invalid HOLD states             |     0 / 0 |
+| Duplicate ticket IDs / ID gaps                           |     0 / 0 |
+| Missing dependencies / cycles                            |     0 / 0 |
+| Orphan references / new design tickets                   |     0 / 0 |
 
-## HOLD, security and future Engineering
+Full boards are context records linked to their Epic and component screen IDs,
+not extra implementation tickets. Supporting foundation copies link to the four
+ordered foundation references. All source image paths remain exact; no approved
+asset bytes changed. The 12 written contracts have explicit primary and domain/
+cross-cutting ticket links; their presence does not certify enforced behavior.
+Combined candidate-verification boards link all 12 candidate/admin panels, including
+both ordered copies. Application/AI/settings boards link their four represented
+surfaces; the product overview links its eight ordered surfaces plus the combined
+settings/resume child slices. Board membership is derived from audited content rules,
+not trusted from a board's own declared component array or recursive stage directory.
 
-Interview, courses/certifications and connected accounts stay HOLD with proposed
-flags default false. Recruiter, privileged admin and production operations stay
-FUTURE. Conditional auth/provider/verification/AI activation remains explicit.
-Candidate access derives from authenticated ownership; privileged operations require
-distinct server-side RBAC, denial coverage and redacted audit. Nothing authorizes
-credential/cookie scraping, autonomous applications, forged certification or
-fabricated telemetry. Private surfaces remain noindex.
+## Preserved ticket strategy
 
-CS-216 is the future first Phase 4 DESIGN-FIRST CareerScope Engineering contract:
-ticket, evidence and progress workflow only. It is not a candidate workspace,
-database browser, API control plane or DevOps console. Its design and implementation
-were not started. The brand/source lock is preserved; no approved asset was edited.
+94 preexisting tickets, 122 Phase 1 tickets and 36 existing tickets reused:
+216 total, highest CS-216. No tickets were added, removed, renumbered or changed
+during this correction. The validator compares the entire backlog with the
+starting f18c795 snapshot, in addition to preserving the original 94 objects
+against the Phase 0 baseline.
 
-## Validation evidence
+Statuses remain UAT 64, BLOCKED 26, QA 4, DISCOVERY 122.
+Epics remain 18. This is traceability correction, not status promotion.
 
-Executed with bundled Node 24.19.0:
+## Release and access boundaries
 
-- `npm run node:check`: PASS.
-- `npm run design:coverage:check`: PASS.
-- `npm run design:coverage:test`: 18 PASS, 0 failures/skips.
-- `npm run ticket:consistency`: PASS, 216 tickets.
-- `npm run agents:check`: PASS.
-- `npm run privacy:check`: PASS.
-- `npm run eol:check`: PASS.
-- `npm run agile:gate:test`: PASS; synthetic canonical-state fixtures restored.
-- `npm run checks:registry`: PASS; the planning validator is explicitly classified
-  manual, not advertised as a hosted release gate.
-- `npm run lint`: PASS; new validator diagnostics use stdout without debug logging.
-- `npm run format:check`: PASS.
-- `git diff --check`: PASS.
+Interview, courses/certifications and connected accounts remain HOLD.
+Recruiter/admin/production-operations composition remains FUTURE and privileged.
+AI references are conditional candidate capability or privileged future configuration,
+not autonomous application submission. Proposed routes are not inferred to exist.
 
-Negative coverage cases reject missing ticket, duplicate primary owner, missing
-path, invalid dependency, cycles, unclassified raster, missing HOLD, archived
-canonical reference, baseline evidence loss, duplicate ID, ID gap, false summary,
-malformed input, page-owner disagreement, coordinated HOLD ticket promotion,
-reference-state disagreement and Phase 0 reference-path mutation.
-No new dependencies were installed; package scripts only changed, so no lockfile
-dependency update is required. Runtime, API, schema, authentication and deployment
-files are unchanged. Hosted CI and browser/runtime acceptance are not claimed by
-this planning-only validation.
+Four production-operations references reuse shared RELEASE primitive/state/accessibility
+owners. Their _composition_ is now explicitly FUTURE, while ownerReleaseState remains
+RELEASE. Notes explain the distinction; the validator rejects promotion of the
+privileged composition through a shared component ticket. No candidate ticket is
+reclassified or restricted from its owner-scoped workflow.
 
-## Independent review
+Existing transitive dependency audit is preserved: no RELEASE ticket reaches
+HOLD/FUTURE implementation; six reach external acceptance, seven reach human/manual
+acceptance and five reach owner decisions. These are readiness conditions, not
+permission to activate features. CS-216 remains the future first Phase 4 DESIGN-FIRST
+Engineering planning ticket only.
 
-The real read-only independent reviewer identified IR-01 conflicting ordered
-owners, IR-02 candidate/admin authorization conflation and IR-03 insufficient HOLD
-owner binding. All were corrected with deterministic in-memory regression tests.
-Final read-only re-review by `phase1_independent_review`: APPROVED, with no remaining
-actionable Phase 1 findings. The reviewer independently reran coverage, all 18 tests,
-baseline object comparison and diff whitespace checks. Other checks above were
-executed by the primary agent, not attributed to the reviewer.
+## Validation
 
-PHASE_1_STATUS: PASS. DESIGN_ZIP_TICKET_COVERAGE: 100% traceability only.
-READY_FOR_PHASE_2: YES, subject to owner approval before starting that phase.
+Use bundled Node 24.19.0. Required checks are rerun for this correction:
+node:check, format:check, eol:check, ticket:consistency, agents:check,
+privacy:check, design:coverage:check, design:coverage:test, agile:gate:test
+in an isolated temporary copy, checks:registry, lint and git diff --check.
 
-## Warnings and handoff
+The validator proves per-stage filesystem counts and exact one-owner screen mappings,
+screen/index/reference consistency, route/contract drift, foundation/board/contract
+completeness, image-level traceability, preserved ticket data and dependency integrity.
+Synthetic negative cases operate in memory; canonical planning files are not corrupted.
+The agile mutation suite runs only in an isolated copy, per repository policy.
 
-- Public root currently hosts authentication: later public template integration
-  must separate sign-in safely, not expose workspace data.
-- `docs/PRODUCT-SURFACE.md` has a stale one-route claim; planning uses actual
-  route/API source. Reconciliation remains later-phase work.
-- Missing vector/logo exports are provenance gaps; no assets were fabricated.
-- Historical ticket statuses do not certify newly approved reference parity.
-- Proposed held/provider/admin contracts do not imply deployed capability.
+All required checks above passed on Node 24.19.0. Coverage tests: 45 passed,
+0 failed, 0 skipped. The isolated agile gate suite passed all assertions; Git
+metadata was unavailable in that copied fixture, so its benign Git diagnostics
+are not evidence about branch/release provenance. No host was contacted by it.
 
-100% means only design-to-ticket traceability of the Phase 1 scope. It does not
-mean product completion, successful production configuration, legal compliance,
-provider authorization, visual acceptance or Release 1 certification.
-Stop here. Phase 2 requires the owner's explicit approval.
+Read-only independent review by `phase1_independent_review`: APPROVED. Findings
+IR-S01 (combined-board membership), IR-S02 (screen route/state semantics) and
+IR-S03 (mobile/desktop grouping) were fixed and independently reverified. The
+reviewer reran coverage, all 45 tests, whitespace checks and exact backlog blob
+comparison; other quality checks were executed by the primary agent.
+
+PHASE_1_FINAL_AUDIT: PASS. CHECKS_FAILING: 0.
+DESIGN_ZIP_TICKET_COVERAGE: 100% traceability only.
+READY_FOR_PHASE_2: YES, pending explicit owner approval to start.
+
+No hosted CI, runtime browser acceptance, production readiness or rendered
+visual parity is claimed. Only the coverage JSON, design index, implementation
+map, audit report and coverage validator/tests changed. Runtime/API/database/
+authentication/deployment code and all workflow statuses are unchanged.
+
+## Warnings and stop
+
+Public/auth routing separation, stale PRODUCT-SURFACE prose, unavailable vector
+exports and external/human/owner acceptance remain later-phase requirements.
+No asset or functionality was fabricated to close them.
+
+100% means this defined design-to-ticket traceability scope only, not product,
+deployment, provider, legal or release certification. Owner approval remains withheld
+until this report is accepted. Do not start Phase 2.
