@@ -105,3 +105,33 @@ The reviewer found actual SaveJob accessibility/error-state gaps recorded in
 PHASE-3-25-REMEDIATION-LEDGER.md. They are later runtime work, not fixed or
 passing here. All bindings remain PLANNED and no whole spec was approved.
 Review was read-only with no mutable tests, hosted action or deployment.
+
+## Continued CS-1–CS-18 batch: CS-4 and CS-8
+
+The actual reviewer independently inspected the two CS-4 and three CS-8
+binding groups against their cited modules and tests. CS-4 correctly requires
+future assertions for both staging and commit-only paths; existing tests check
+commit-only paths. Fixtures must inject both read and run adapters and never
+invoke publication CLI/default adapters or expose inherited environment data.
+
+CS-8 initially received REVISE for a Node-only procedure promising rendered
+warnings, omitted terminal consumer and insufficient module-relative fixture
+isolation. Corrections added control-center.mjs, distinguished orchestration and
+agile consumers, required copied actual modules/assets or supported root
+injection, prohibited running the old mutation script against canonical state,
+and added an explicit browser binding with valid-restoration control. The
+reviewer re-read and approved these planned procedures.
+
+| AC       | Independently computed binding SHA-256                           | Scoped verdict |
+| -------- | ---------------------------------------------------------------- | -------------- |
+| CS-4-AC1 | 1711b3ccda843f77d67ba8b9f5725762b31dfc1ff945b61208fb26b8fbbf7bc2 | APPROVED       |
+| CS-4-AC2 | c51bade53a96f671d38876848ef9f0fd064aceb4fabc0803ff9077effaab6d32 | APPROVED       |
+| CS-8-AC1 | b9469e88330967750399908b0bb88a3264c1a978a6a215ce778f103e2de1019b | APPROVED       |
+| CS-8-AC2 | ddd2c7dca9f11d5a6f025c42cb0605ba1400c502f4994ab291c925df77bfc451 | APPROVED       |
+| CS-8-AC3 | 601d170d360c11efb68d7faad99cd8e98c759941a147bd6b16a25f17843de8c4 | APPROVED       |
+
+CS-8-AC2 hashes the ordered contract and browser bindings together. All six
+procedures remain PLANNED. Inventory-wide/schema/sandbox verification and safe
+parser diagnostics remain unverified implementation work. No whole-ticket or
+phase approval is granted, and no mutable tests or shipping actions were
+performed by the reviewer.

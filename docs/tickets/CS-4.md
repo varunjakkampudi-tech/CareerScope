@@ -34,8 +34,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 ```json
 {
   "applicability": "APPLICABLE",
-  "requirements": ["Published Pages can claim a version that was never released."],
-  "sources": [".ai/backlog.json#CS-4"]
+  "requirements": [
+    "Published Pages can claim a version that was never released.",
+    {
+      "requirement": "The optional static publication helper can write a new version-bearing file via syncVersion but omit it from its Git file list if publication keeps a second hardcoded list. The actor is a later authorized static-publication operator, not the application runtime.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
+  ],
+  "sources": [
+    ".ai/backlog.json#CS-4",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
+  ]
 }
 ```
 
@@ -150,9 +163,30 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-4",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
+    },
+    {
+      "requirement": "Derive dynamic version-bearing paths from Object.keys(getVersionFiles(actualPostBumpVersion)); use the same computed list in git add and git commit --only. package.json/package-lock.json and the encrypted snapshot remain separately owned files, not invented entries in versionFiles.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Inject a synthetic third version-bearing key into the fixture to prove list derivation rather than merely today's two-key equality. Call the injectable map with the actual version read after the mocked bump, not a placeholder or pre-bump version.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Specification tests use injected read/run adapters only. Never call publication CLI, read a real environment file, stage operator files, create a release/tag or push during Phase 3.25.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-4"]
+  "sources": [
+    ".ai/backlog.json#CS-4",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
+  ]
 }
 ```
 
@@ -175,13 +209,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "none",
-    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+    {
+      "requirement": "ARCHITECTURE_IMPACT: LOCAL_MODULE. Preserve sync-version.mjs as version-file authority and publishPages.getVersionFiles injection. Existing test fixture records commands rather than running real Git/npm publication.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-4",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
   ]
 }
 ```
@@ -197,13 +240,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
       "proposedChanges": [],
       "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+    },
+    {
+      "requirement": "NOT_APPLICABLE to PostgreSQL: only controlled repository version files and encrypted static publication artifact are involved. No schema, data retention or candidate storage change.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-4",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
   ]
 }
 ```
@@ -220,9 +272,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
       "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
       "unknownContracts": []
+    },
+    {
+      "requirement": "NOT_APPLICABLE to HTTP: existing module contract versionFiles(semver) returns path-to-content map and publishPages accepts getVersionFiles dependency. No application endpoint or protocol-version change.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-4", "docs/API-SURFACE.md"]
+  "sources": [
+    ".ai/backlog.json#CS-4",
+    "docs/API-SURFACE.md",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
+  ]
 }
 ```
 
@@ -292,9 +356,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
     "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    {
+      "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. Operator publication is a shipping action requiring separate authority. Passphrase remains in runtime input only; fixtures use synthetic configured-passphrase text and stub all processes. Reports must not include real secrets or encrypted snapshot plaintext.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-4", "docs/SECURITY.md", "docs/PRIVACY.md"]
+  "sources": [
+    ".ai/backlog.json#CS-4",
+    "docs/SECURITY.md",
+    "docs/PRIVACY.md",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
+  ]
 }
 ```
 
@@ -337,7 +414,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "publishPages runs only through injected read/run/getVersionFiles fixtures; no real processes or environment files are reachable.",
+          "setup": "Fixture returns a valid synthetic configuration, clean main state and package version 1.0.1 after mocked bump; inject a three-key versionFiles map including mobile-site/newly-added-file.js.",
+          "procedure": "Invoke publishPages with the adapters; record getVersionFiles version argument and all git add / git commit --only command arguments.",
+          "assertion": "getVersionFiles receives exactly 1.0.1; every injected key occurs in both git add and commit --only path lists, alongside separately owned package.json, package-lock.json and encrypted snapshot path; no real Git/npm process runs.",
+          "expectedResult": "Publication follows the canonical version-file map even when a new file is introduced, without a second mutable list.",
+          "testName": "a version-bearing file added to versionFiles() is staged, proven with a synthetic third key",
+          "testFileOrProcedureId": "scripts/publish-pages.test.mjs",
+          "fixtures": "Existing injected process recorder plus synthetic three-key map; file contents are unused fixture text, not production assets.",
+          "negativeCase": "Replacing derivation with today's hardcoded two paths or calling the map with the pre-bump version must fail; fixture must never permit real git push.",
+          "evidenceArtifact": "Future exact-content named Node test result with recorded path assertions and zero real process invocations; existing test name/path do not imply fresh execution.",
+          "reviewer": "Release tooling reviewer and QA",
+          "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-4",
@@ -355,7 +450,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "Actual versionFiles module and isolated publication fixture are loaded under Node 24.",
+          "setup": "Obtain real keys from versionFiles('1.0.1') and a separate synthetic extra-key map; record stubbed publication command calls in both runs.",
+          "procedure": "Assert every map key is present in staging and commit-only path arguments, then run the injected third-key control in the same suite.",
+          "assertion": "For every real key, git add and git commit --only include that key. The synthetic third key is also included, proving future extensibility; a path written by syncVersion cannot be omitted from the selected commit list.",
+          "expectedResult": "The regression test proves all canonical version-bearing paths are staged, not merely a successful mock return or current two-file coincidence.",
+          "testName": "every versionFiles() key is staged in the release commit",
+          "testFileOrProcedureId": "scripts/publish-pages.test.mjs",
+          "fixtures": "Current real version map, synthetic extra-key control and injected command recorder; no filesystem publication.",
+          "negativeCase": "Removing any canonical key from either recorded path list fails; tests cannot approve an unchanged hardcoded list by checking only return version.",
+          "evidenceArtifact": "Future named test output plus explicit staging/commit path assertions; no release, push, tag or hosted CI evidence claimed.",
+          "reviewer": "Release tooling reviewer and QA",
+          "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     }
   ],
   "sources": [".ai/backlog.json#CS-4", "docs/TESTING.md"]
@@ -409,9 +522,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
     "Independent current-content review resolves specification/implementation findings before promotion.",
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+    {
+      "requirement": "Implementation DoD: dynamic path tests and synthetic extra-key control pass with no real side effects; any new versionFiles key is included in both staging and release-only commit paths. Delivery DoD: separately authorized operator follows the current lifecycle; specification approval is not release permission.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/ai/quality-gates.md"]
+  "sources": [
+    "docs/ai/quality-gates.md",
+    ".ai/backlog.json#CS-4",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
+  ]
 }
 ```
 
@@ -447,9 +572,35 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Inspect and change only modules permitted by the technical approach for Release publishes a stale version string when a version file is added.",
     "Implement and verify CS-4-AC1: The publish list is derived from versionFiles(), not duplicated",
     "Implement and verify CS-4-AC2: A test asserts every versionFiles key is staged",
-    "Reconcile CS-4 documentation, redacted evidence and independent review before workflow promotion."
+    "Reconcile CS-4 documentation, redacted evidence and independent review before workflow promotion.",
+    {
+      "requirement": "Inspect versionFiles and post-bump publish list construction.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Compare recorded git add and commit --only paths with actual and synthetic maps; assert exact post-bump version argument.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Run publication fixture tests without network, real Git mutation or environment reads.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Document static publication versus production release semantics without changing package version during this ticket.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-4"]
+  "sources": [
+    ".ai/backlog.json#CS-4",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
+  ]
 }
 ```
 
@@ -481,9 +632,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "owner": null,
       "evidence": [],
       "actions": []
+    },
+    {
+      "requirement": "Spec approval does not authorize executing publishPages. Current canonical release workflow, deployed-SHA acceptance and manual-only fail-closed policy remain authoritative; optional static publication is not v1.0.0 production certification.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-4", ".ai/blocker-classification.json", "hostpending.txt"]
+  "sources": [
+    ".ai/backlog.json#CS-4",
+    ".ai/blocker-classification.json",
+    "hostpending.txt",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
+  ]
 }
 ```
 
@@ -500,13 +664,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
       ],
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+    },
+    {
+      "requirement": "A hardcoded list matching today's two files can falsely pass a real-key test; the third-key control must fail that mutant. A failed later real publication may leave local files/commit; report recovery state without automatic reset or force-push. No recovery action is executed in specification review.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-4",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "scripts/sync-version.mjs",
+    "scripts/publish-pages.mjs",
+    "scripts/publish-pages.test.mjs",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md"
   ]
 }
 ```
@@ -542,4 +715,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_TARGET_UNDECIDED  | OPEN        | Source registry has no approved release assignment.                                                                      | Product owner                    | Explicit release assignment or owner-approved future-release disposition.                                |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

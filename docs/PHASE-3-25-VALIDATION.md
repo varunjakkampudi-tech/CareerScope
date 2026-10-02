@@ -157,3 +157,22 @@ review remains REVISE; this is not an APPROVED Phase 3.25 report.
 
 There is no hosted CI, production acceptance, provider verification or runtime
 fix evidence in this continuation. Tests named in AC bindings remain PLANNED.
+
+### Continued content segment: CS-4 and CS-8
+
+Continued after the clean local checkpoint `c794c2ff95d98ad35e504d526fe1c0e310c4ff47`.
+Actual independent review approved the scoped authored-content delta and all
+new binding hashes, not whole-ticket readiness. Current reviewed mapping is
+17/906 criteria (18 procedures; CS-8 AC2 has two); 889 are unmapped. Original
+audit records remain 630: 617 OPEN, six RESOLVED, seven RECLASSIFIED.
+
+- `npm run tickets:spec:test`: PASS, 40 tests, zero failed/cancelled/skipped/todo;
+  includes deterministic double generation and two additional content regressions.
+- `npm run lint`, `npm run format:check`, `npm run privacy:check`,
+  `npm run eol:check`, `git diff --check`, `git diff --cached --check`: PASS.
+- All six frozen input files remain unchanged; workflow promotions: zero.
+- The full required suite above passed in the preceding content segment;
+  it is not represented as a new hosted run or production acceptance.
+
+Execution continuation details and exact remaining ledger locations are in
+PHASE-3-25-EXECUTION-STATE.md. Whole-spec approved count remains 0/216.

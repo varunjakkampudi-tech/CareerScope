@@ -52,6 +52,32 @@ test('CS71 scope separates explicit determination from language expansion and ex
   assert.equal(model.specs.find((spec) => spec.ticketId === 'CS-71').reviewState, 'DRAFT');
 });
 
+test('CS4 uses injected publication fixtures and requires both stage and commit path assertions', () => {
+  const model = buildCatalog(fresh());
+  for (const acId of ['CS-4-AC1', 'CS-4-AC2']) {
+    const binding = model.traceability.find((row) => row.acId === acId).exactBindings[0];
+    assert.equal(binding.testStatus, 'PLANNED');
+    assert.match(binding.assertion, /git add/);
+    assert.match(binding.assertion, /commit --only/);
+    assert.match(binding.negativeCase, /hardcoded|Removing any canonical key/);
+  }
+});
+
+test('CS8 separates parser contracts from rendered browser proof and module-root isolation', () => {
+  const model = buildCatalog(fresh());
+  const bindings = model.traceability.find((row) => row.acId === 'CS-8-AC2').exactBindings;
+  assert.equal(bindings.length, 2);
+  assert.deepEqual(
+    bindings.map((binding) => binding.type),
+    ['AUTOMATED_CONTRACT', 'AUTOMATED_BROWSER'],
+  );
+  assert.match(bindings[0].procedure, /separately required/);
+  assert.match(bindings[1].preconditions, /modules\/assets are copied/);
+  assert.match(bindings[1].negativeCase, /cwd/);
+  assert.match(bindings[1].assertion, /valid restoration/);
+  assert.ok(bindings.every((binding) => binding.testStatus === 'PLANNED'));
+});
+
 test('216 source-linked drafts preserve registry and canonical stages without readiness fabrication', () => {
   const inputs = fresh();
   const before = JSON.stringify(inputs);
@@ -71,11 +97,11 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
   assert.equal(model.counts.completeSpecificationCount, 0);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 12);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 18);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 12);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 894);
-  assert.equal(model.counts.authoredExactTestBindingCount, 12);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 17);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 889);
+  assert.equal(model.counts.authoredExactTestBindingCount, 18);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
