@@ -4,6 +4,18 @@ Only the following actions require authority outside the repository. No secrets,
 
 ## LIVE HOST / OPERATOR EVIDENCE
 
+### CS-19 — Saving a job and working the shortlist is not a coherent flow
+
+**Owner:** Integration operator
+
+**Why manual:** The owner-scoped lookup implementation is present, but service-backed Postgres/Redis verification is required before the saved-job flow can be promoted.
+
+**Safe steps:** Run the authenticated service-backed integration fixture against disposable or approved hosted Postgres/Redis; capture only redacted pass/fail and ownership assertions.
+
+**Pass evidence:** Hosted Postgres/Redis integration proving lookup ownership, duplicate-save idempotency, archived hydration, malformed IDs, and unknown-job behavior.
+
+**Rollback:** No production data mutation is authorized; stop the verification run and restore the prior test environment if the fixture fails.
+
 ### CS-3 — Proxy restart strands every service behind a healthy-looking 502
 
 **Owner:** Host operator

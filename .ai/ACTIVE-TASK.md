@@ -5,8 +5,8 @@
 Phase 2 blocker classification completed 2026-10-02 on branch
 `phase-2/blocker-classification-resolution` from Phase 1 SHA
 `5f17aa0894b2d9d47e5ce5bc2f688b3be322cc25`. The machine-validated model in
-`.ai/blocker-classification.json` covers all 216 tickets: 38 active blockers,
-one owner-deferred CS-25 item, and 14 explicitly host-pending actions. Ticket
+`.ai/blocker-classification.json` covers all 216 tickets: 37 active blockers,
+one owner-deferred CS-25 item, and 15 explicitly host-pending actions. Ticket
 statuses are unchanged; this is classification/evidence work only. See
 `docs/PHASE-2-BLOCKER-RESOLUTION.md` and `hostpending.txt`.
 

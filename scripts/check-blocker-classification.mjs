@@ -12,6 +12,17 @@ export const BLOCKER_CLASSES = Object.freeze([
 ]);
 const MANUAL_CLASSES = new Set(BLOCKER_CLASSES.slice(3));
 const HOLD_OR_FUTURE = /\b(?:HOLD|FUTURE|CONDITIONAL)\b/i;
+const DISPOSITIONS = new Set([
+  'RESOLVED_PHASE_2',
+  'DEFERRED_MAJOR_IMPLEMENTATION',
+  'WAITING_OWNER_DECISION',
+  'WAITING_INDEPENDENT_REVIEW',
+  'WAITING_LIVE_HOST',
+  'WAITING_EXTERNAL_PROVIDER',
+  'WAITING_HUMAN_ACCEPTANCE',
+  'OWNER_DEFERRED',
+]);
+const HIDDEN_BLOCKERS = new Set(['CS-2', 'CS-3', 'CS-7', 'CS-24', 'CS-38', 'CS-52']);
 
 export function validateBlockerClassification({ model, backlog, hostpendingText, designCoverage }) {
   const errors = [];
@@ -47,14 +58,60 @@ export function validateBlockerClassification({ model, backlog, hostpendingText,
       const manual = MANUAL_CLASSES.has(item.primaryClass);
       if (manual !== Boolean(item.hostpending))
         errors.push(`${item.ticketId}: hostpending must match manual class ${item.primaryClass}`);
+      if (manual && item.hostpendingEntry !== item.ticketId)
+        errors.push(`${item.ticketId}: manual blocker must name its hostpendingEntry`);
+      if (!DISPOSITIONS.has(item.phase2Disposition))
+        errors.push(`${item.ticketId}: blocker is missing a valid phase2Disposition`);
+      if (item.phase2Resolvable !== false)
+        errors.push(`${item.ticketId}: unresolved blocker must declare phase2Resolvable=false`);
+      if (item.primaryClass === 'B1_PRODUCT_OR_OWNER_DECISION') {
+        if (item.phase2Disposition !== 'WAITING_OWNER_DECISION')
+          errors.push(`${item.ticketId}: active B1 must wait for an owner decision`);
+        if (item.decisionSource)
+          errors.push(
+            `${item.ticketId}: active B1 has an existing decision source and must be resolved or reclassified`,
+          );
+      }
       if (
-        item.primaryClass === 'B1_PRODUCT_OR_OWNER_DECISION' &&
-        item.resolutionType === 'OWNER_DECISION_RECORDED' &&
-        !item.decisionSource
+        item.primaryClass === 'B2_CODE_OR_ARCHITECTURE' &&
+        item.phase2Disposition !== 'DEFERRED_MAJOR_IMPLEMENTATION'
       )
-        errors.push(`${item.ticketId}: resolved B1 requires decisionSource`);
-    } else if (item.hostpending)
-      errors.push(`${item.ticketId}: resolved/non-blocked item cannot be hostpending`);
+        errors.push(`${item.ticketId}: unresolved B2 must be DEFERRED_MAJOR_IMPLEMENTATION`);
+      if (item.primaryClass === 'B3_SECURITY_OR_SYSTEM_REVIEW') {
+        if (item.phase2Disposition !== 'WAITING_INDEPENDENT_REVIEW')
+          errors.push(`${item.ticketId}: unresolved B3 must wait for independent review`);
+        if (!item.reviewReason || !item.reviewEvidence)
+          errors.push(
+            `${item.ticketId}: B3 requires an explicit unavailable-review reason and evidence boundary`,
+          );
+      }
+      const expectedManualDisposition = {
+        B4_LIVE_HOST_OR_OPERATOR_EVIDENCE: 'WAITING_LIVE_HOST',
+        B5_EXTERNAL_PROVIDER_ACCOUNT_DNS_SECRET: 'WAITING_EXTERNAL_PROVIDER',
+        B6_REAL_WORLD_HUMAN_ACCEPTANCE_OR_LEGAL: 'WAITING_HUMAN_ACCEPTANCE',
+      }[item.primaryClass];
+      if (expectedManualDisposition && item.phase2Disposition !== expectedManualDisposition)
+        errors.push(`${item.ticketId}: manual blocker has inconsistent phase2Disposition`);
+      if (HIDDEN_BLOCKERS.has(item.ticketId) && !item.promotionGuard)
+        errors.push(`${item.ticketId}: hidden blocker has no promotionGuard`);
+    } else {
+      if (item.hostpending)
+        errors.push(`${item.ticketId}: resolved/non-blocked item cannot be hostpending`);
+      if (item.phase2Disposition && !DISPOSITIONS.has(item.phase2Disposition))
+        errors.push(`${item.ticketId}: invalid phase2Disposition`);
+      if (
+        item.phase2Disposition === 'RESOLVED_PHASE_2' &&
+        (!item.phase2Resolvable || !item.resolutionEvidence)
+      )
+        errors.push(
+          `${item.ticketId}: RESOLVED_PHASE_2 needs phase2Resolvable=true and resolutionEvidence`,
+        );
+    }
+    if (item.ticketId === 'CS-25') {
+      if (item.phase2Disposition !== 'OWNER_DEFERRED' || item.decisionSource == null)
+        errors.push('CS-25: owner deferral is ambiguous or lacks a decision source');
+      if (item.hostpending) errors.push('CS-25: owner-deferred item cannot appear in hostpending');
+    }
     if (item.releaseDisposition === 'DEFERRED_BY_OWNER' && item.blocked)
       errors.push(`${item.ticketId}: owner-deferred item must not remain an active blocker`);
   }

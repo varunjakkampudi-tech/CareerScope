@@ -33,7 +33,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-2; promotion evidence check 2026-10-02",
       "resolutionType": "SYSTEM_REVIEW",
       "requiredEvidence": "Current Node 24 cross-engine run and exact hosted CI locator covering the named viewport/engine assertion.",
-      "owner": "Release/system reviewer"
+      "owner": "Release/system reviewer",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
+      "reviewReason": "This gate requires a genuinely independent security/system review; self-review in this audit would not satisfy the evidence contract.",
+      "reviewEvidence": "No independent re-review was performed in Phase 2; the current evidence and required review boundary are recorded without self-approval.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Current Node 24 cross-engine run and exact hosted CI locator covering the named viewport/engine assertion."
+      }
     },
     {
       "ticketId": "CS-3",
@@ -48,7 +56,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-3; source: real incident during this project",
       "requiredEvidence": "Controlled live restart/recovery observation, 502 protection, alert output, and rollback-safe host evidence.",
       "owner": "Host operator",
-      "resolutionType": "LIVE_HOST_EVIDENCE"
+      "resolutionType": "LIVE_HOST_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Controlled live restart/recovery observation, 502 protection, alert output, and rollback-safe host evidence."
+      },
+      "hostpendingEntry": "CS-3"
     },
     {
       "ticketId": "CS-4",
@@ -102,7 +117,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-7; promotion evidence check 2026-10-02",
       "resolutionType": "SYSTEM_REVIEW",
       "requiredEvidence": "Exact hosted workflow run showing the intentional failure and fail-closed deployment refusal.",
-      "owner": "Release/system reviewer"
+      "owner": "Release/system reviewer",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
+      "reviewReason": "This gate requires a genuinely independent security/system review; self-review in this audit would not satisfy the evidence contract.",
+      "reviewEvidence": "No independent re-review was performed in Phase 2; the current evidence and required review boundary are recorded without self-approval.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Exact hosted workflow run showing the intentional failure and fail-closed deployment refusal."
+      }
     },
     {
       "ticketId": "CS-8",
@@ -143,7 +166,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-10; source: external review (ChatGPT)",
       "requiredEvidence": "Operator/security review of the requested agent-file remediation and a reviewed commit.",
       "owner": "Security owner",
-      "resolutionType": "SECURITY_REVIEW"
+      "resolutionType": "SECURITY_REVIEW",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
+      "reviewReason": "This gate requires a genuinely independent security/system review; self-review in this audit would not satisfy the evidence contract.",
+      "reviewEvidence": "No independent re-review was performed in Phase 2; the current evidence and required review boundary are recorded without self-approval.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Operator/security review of the requested agent-file remediation and a reviewed commit."
+      }
     },
     {
       "ticketId": "CS-11",
@@ -158,7 +189,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-11; source: operator request",
       "requiredEvidence": "Independent accesslint-audit/accessibility review with findings and disposition recorded.",
       "owner": "Accessibility reviewer",
-      "resolutionType": "HUMAN_VALIDATION"
+      "resolutionType": "HUMAN_VALIDATION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Independent accesslint-audit/accessibility review with findings and disposition recorded."
+      },
+      "hostpendingEntry": "CS-11"
     },
     {
       "ticketId": "CS-12",
@@ -199,7 +237,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-14; source: operator request — frontend workstream",
       "requiredEvidence": "A human keyboard and NVDA/VoiceOver/JAWS smoke review at 320px with findings recorded.",
       "owner": "Accessibility reviewer",
-      "resolutionType": "HUMAN_VALIDATION"
+      "resolutionType": "HUMAN_VALIDATION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "A human keyboard and NVDA/VoiceOver/JAWS smoke review at 320px with findings recorded."
+      },
+      "hostpendingEntry": "CS-14"
     },
     {
       "ticketId": "CS-15",
@@ -227,7 +272,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-16; source: external review — first step of the core product slice",
       "requiredEvidence": "A human screen-reader and responsive discovery-flow acceptance record, including the CS-2 prerequisite result.",
       "owner": "Accessibility reviewer",
-      "resolutionType": "HUMAN_VALIDATION"
+      "resolutionType": "HUMAN_VALIDATION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "A human screen-reader and responsive discovery-flow acceptance record, including the CS-2 prerequisite result."
+      },
+      "hostpendingEntry": "CS-16"
     },
     {
       "ticketId": "CS-17",
@@ -242,7 +294,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-17; source: external review — second step of the core product slice",
       "requiredEvidence": "Owner-confirmed dismissal semantics and the resulting lifecycle/schema contract.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner-confirmed dismissal semantics and the resulting lifecycle/schema contract."
+      }
     },
     {
       "ticketId": "CS-18",
@@ -262,15 +322,22 @@
       "status": "BLOCKED",
       "title": "Saving a job and working the shortlist is not a coherent flow",
       "blocked": true,
-      "primaryClass": "B2_CODE_OR_ARCHITECTURE",
+      "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
       "secondaryClasses": [],
-      "hostpending": false,
+      "hostpending": true,
       "releaseDisposition": "ACTIVE_R1",
-      "reason": "The saved-job UI cannot truthfully hydrate duplicate state until the owner-scoped job-to-lead lookup contract is verified by service-backed integration.",
+      "reason": "The owner-scoped lookup implementation is present, but service-backed Postgres/Redis verification is required before the saved-job flow can be promoted.",
       "evidenceSource": "Current .ai/backlog.json record for CS-19; source: external review — final step of the core product slice",
-      "requiredEvidence": "Service-backed verification of the lookup and duplicate-save behavior before re-review.",
-      "owner": "Backend/release engineer",
-      "resolutionType": "IMPLEMENTATION_REVIEW"
+      "requiredEvidence": "Hosted Postgres/Redis integration proving lookup ownership, duplicate-save idempotency, archived hydration, malformed IDs, and unknown-job behavior.",
+      "owner": "Integration operator",
+      "resolutionType": "LIVE_SERVICE_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Hosted service-backed lookup and duplicate-save evidence."
+      },
+      "hostpendingEntry": "CS-19"
     },
     {
       "ticketId": "CS-20",
@@ -337,7 +404,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-24; source: Product Architect agent, 2026-09-19",
       "requiredEvidence": "Live timer status plus controlled stop-a-container alert and recovery evidence.",
       "owner": "Host operator",
-      "resolutionType": "LIVE_HOST_EVIDENCE"
+      "resolutionType": "LIVE_HOST_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Live timer status plus controlled stop-a-container alert and recovery evidence."
+      },
+      "hostpendingEntry": "CS-24"
     },
     {
       "ticketId": "CS-25",
@@ -350,7 +424,16 @@
       "releaseDisposition": "DEFERRED_BY_OWNER",
       "reason": "Owner decision explicitly defers off-host backup/scheduled acceptance to a future release; it is not an unresolved Phase 2 action.",
       "evidenceSource": ".ai/BATCH-PLAN.md and .ai/backlog.json evidence dated 2026-09-29",
-      "resolutionType": "OWNER_DECISION_RECORDED"
+      "resolutionType": "OWNER_DECISION_RECORDED",
+      "phase2Disposition": "OWNER_DEFERRED",
+      "phase2Resolvable": false,
+      "decisionSource": ".ai/BATCH-PLAN.md and .ai/backlog.json evidence dated 2026-09-29",
+      "decisionReason": "Off-host backup and scheduled acceptance were explicitly deferred to a future release by the owner.",
+      "hostpendingEntry": null,
+      "promotionGuard": {
+        "mode": "DEFERRED_BY_OWNER",
+        "required": "Do not promote as Release 1 disaster recovery."
+      }
     },
     {
       "ticketId": "CS-26",
@@ -365,7 +448,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-26; source: Product Architect agent, 2026-09-19",
       "requiredEvidence": "A calendar-triggered discovery run, journal output, and rate-limit-safe result on the deployed host.",
       "owner": "Host operator",
-      "resolutionType": "LIVE_HOST_EVIDENCE"
+      "resolutionType": "LIVE_HOST_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "A calendar-triggered discovery run, journal output, and rate-limit-safe result on the deployed host."
+      },
+      "hostpendingEntry": "CS-26"
     },
     {
       "ticketId": "CS-27",
@@ -380,7 +470,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-27; source: Product Architect agent, 2026-09-19",
       "requiredEvidence": "A scheduled liveness run with recorded outcomes and retention evidence from the deployed host.",
       "owner": "Host operator",
-      "resolutionType": "LIVE_HOST_EVIDENCE"
+      "resolutionType": "LIVE_HOST_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "A scheduled liveness run with recorded outcomes and retention evidence from the deployed host."
+      },
+      "hostpendingEntry": "CS-27"
     },
     {
       "ticketId": "CS-28",
@@ -421,7 +518,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-30; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved backlog addition; source validation pending",
       "requiredEvidence": "Managed firewall policy attachment plus independent IPv4 and IPv6 probes for intended and denied ports.",
       "owner": "Hostinger operator",
-      "resolutionType": "LIVE_HOST_EVIDENCE"
+      "resolutionType": "LIVE_HOST_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Managed firewall policy attachment plus independent IPv4 and IPv6 probes for intended and denied ports."
+      },
+      "hostpendingEntry": "CS-30"
     },
     {
       "ticketId": "CS-31",
@@ -514,7 +618,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-37; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved backlog addition; source validation pending",
       "requiredEvidence": "Independent browser/keyboard/mobile journey review plus service-backed storage and owner-isolation evidence.",
       "owner": "QA/release reviewer",
-      "resolutionType": "HUMAN_VALIDATION"
+      "resolutionType": "HUMAN_VALIDATION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_HUMAN_ACCEPTANCE",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Independent browser/keyboard/mobile journey review plus service-backed storage and owner-isolation evidence."
+      },
+      "hostpendingEntry": "CS-37"
     },
     {
       "ticketId": "CS-38",
@@ -529,7 +640,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-38; promotion evidence check 2026-10-02",
       "resolutionType": "IMPLEMENTATION_REVIEW",
       "requiredEvidence": "A corrected implementation and regression evidence for the unmet dashboard state criterion.",
-      "owner": "Frontend/backend engineer"
+      "owner": "Frontend/backend engineer",
+      "phase2Resolvable": false,
+      "phase2Disposition": "DEFERRED_MAJOR_IMPLEMENTATION",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Complete dashboard state matrix and independent review."
+      },
+      "deferredPhase": "PHASE_4_IMPLEMENTATION",
+      "phase4Reason": "The remaining populated/stale/paginated/failing dashboard matrix requires a substantive cross-engine browser-fixture expansion and follow-up review; Phase 2 is not authorized to pull that product QA surface forward."
     },
     {
       "ticketId": "CS-39",
@@ -544,7 +663,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-39; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved backlog addition; source validation pending",
       "requiredEvidence": "A current Node 24 exact-head CI/reviewer evidence record with the three criteria counted.",
       "owner": "Release/system reviewer",
-      "resolutionType": "SYSTEM_REVIEW"
+      "resolutionType": "SYSTEM_REVIEW",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
+      "reviewReason": "This gate requires a genuinely independent security/system review; self-review in this audit would not satisfy the evidence contract.",
+      "reviewEvidence": "No independent re-review was performed in Phase 2; the current evidence and required review boundary are recorded without self-approval.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "A current Node 24 exact-head CI/reviewer evidence record with the three criteria counted."
+      }
     },
     {
       "ticketId": "CS-40",
@@ -559,7 +686,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-40; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved discovery recording only; source validation pending",
       "requiredEvidence": "Approved admin design, role matrix, redaction boundary, and mutation/audit scope.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Approved admin design, role matrix, redaction boundary, and mutation/audit scope."
+      }
     },
     {
       "ticketId": "CS-41",
@@ -574,7 +709,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-41; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved discovery recording only; source validation pending",
       "requiredEvidence": "Independent architecture/security/legal review of identity, provenance, isolation, retention, and collection boundaries.",
       "owner": "Architecture/security reviewer",
-      "resolutionType": "SYSTEM_REVIEW"
+      "resolutionType": "SYSTEM_REVIEW",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
+      "reviewReason": "This gate requires a genuinely independent security/system review; self-review in this audit would not satisfy the evidence contract.",
+      "reviewEvidence": "No independent re-review was performed in Phase 2; the current evidence and required review boundary are recorded without self-approval.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Independent architecture/security/legal review of identity, provenance, isolation, retention, and collection boundaries."
+      }
     },
     {
       "ticketId": "CS-42",
@@ -589,7 +732,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-42; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved discovery recording only; source validation pending",
       "requiredEvidence": "Owner decision on R1 inclusion and the corresponding saved-search domain contract.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner decision on R1 inclusion and the corresponding saved-search domain contract."
+      }
     },
     {
       "ticketId": "CS-43",
@@ -604,7 +755,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-43; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved discovery recording only; source validation pending",
       "requiredEvidence": "Owner decision on alert scope, delivery semantics, and activation prerequisites.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner decision on alert scope, delivery semantics, and activation prerequisites."
+      }
     },
     {
       "ticketId": "CS-44",
@@ -619,7 +778,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-44; source: ChatGPT TICKET-PLAN-20260920 proposal; owner approved discovery recording only; source validation pending",
       "requiredEvidence": "Owner-approved sender/domain/secret/security decisions and the CS-59 dependency result.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner-approved sender/domain/secret/security decisions and the CS-59 dependency result."
+      }
     },
     {
       "ticketId": "CS-45",
@@ -634,7 +801,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-45; source: owner request, 2026-09-21",
       "requiredEvidence": "Independent security review of encrypted snapshot, allowlist, stale-export, browser lock, and no-write guarantees.",
       "owner": "Security reviewer",
-      "resolutionType": "SYSTEM_REVIEW"
+      "resolutionType": "SYSTEM_REVIEW",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_INDEPENDENT_REVIEW",
+      "reviewReason": "This gate requires a genuinely independent security/system review; self-review in this audit would not satisfy the evidence contract.",
+      "reviewEvidence": "No independent re-review was performed in Phase 2; the current evidence and required review boundary are recorded without self-approval.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Independent security review of encrypted snapshot, allowlist, stale-export, browser lock, and no-write guarantees."
+      }
     },
     {
       "ticketId": "CS-46",
@@ -649,7 +824,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-46; source: Product Architect, during CS-22 review, 2026-09-22",
       "requiredEvidence": "Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision."
+      }
     },
     {
       "ticketId": "CS-47",
@@ -664,7 +847,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-47; source: Owner + ChatGPT second opinion, 2026-09-23, following CS-24/25/26/27/3 all reaching UAT in the same session",
       "requiredEvidence": "Owner prioritization decision and the resulting scheduler-health acceptance scope.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner prioritization decision and the resulting scheduler-health acceptance scope."
+      }
     },
     {
       "ticketId": "CS-48",
@@ -705,7 +896,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-50; source: Owner design-image audit, 2026-09-23 (docs/FRONTEND-ADMIN-ROADMAP.md, \"Planning snapshot: 2026-09-23\")",
       "requiredEvidence": "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels."
+      }
     },
     {
       "ticketId": "CS-51",
@@ -724,16 +923,23 @@
       "ticketId": "CS-52",
       "status": "UAT",
       "title": "Security-relevant checks are enforced by no pipeline, and the glob that would have caught it is the script nobody runs",
-      "blocked": true,
-      "primaryClass": "B2_CODE_OR_ARCHITECTURE",
+      "blocked": false,
+      "primaryClass": null,
       "secondaryClasses": [],
       "hostpending": false,
       "releaseDisposition": "ACTIVE_R1",
       "reason": "The current UAT record explicitly says the deploy gate does not directly execute the V2 tests required by its acceptance criteria.",
       "evidenceSource": "Current .ai/backlog.json record for CS-52; promotion evidence check 2026-10-02",
-      "resolutionType": "IMPLEMENTATION_REVIEW",
+      "resolutionType": "RESOLVED_PHASE_2",
       "requiredEvidence": "A behavior-preserving CI/deploy-gate implementation plus mutation proof that the direct V2 test lane fails closed.",
-      "owner": "Infrastructure engineer"
+      "owner": "Infrastructure engineer",
+      "phase2Resolvable": true,
+      "phase2Disposition": "RESOLVED_PHASE_2",
+      "promotionGuard": {
+        "mode": "CONSERVATIVE_HISTORICAL_FINDINGS",
+        "required": "Do not treat historical evidence text as a release claim without the exact hosted run recorded above."
+      },
+      "resolutionEvidence": "Current ticket evidence records the direct v2 unit-test deploy step and hosted run 36453423255 for commit 36ec498da87da04a952c452864c61a181bae52c8 passing verify/build, integration/browser/accessibility, and recovery lanes. Historical unmet wording remains in the append-only record but is superseded by that exact hosted evidence."
     },
     {
       "ticketId": "CS-53",
@@ -865,7 +1071,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-62; source: Orchestrator self-surfaced during CS-13 re-review cycle 2026-09-25; owner queued the four explicitly",
       "requiredEvidence": "Owner/design decision on the UI freeze versus the reason-specific visual contract.",
       "owner": "Product/design owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner/design decision on the UI freeze versus the reason-specific visual contract."
+      }
     },
     {
       "ticketId": "CS-63",
@@ -893,7 +1107,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-64; source: Orchestrator self-surfaced during CS-13 re-review cycle 2026-09-25; owner queued the four explicitly",
       "requiredEvidence": "Owner-confirmed language scope for resume title derivation.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner-confirmed language scope for resume title derivation."
+      }
     },
     {
       "ticketId": "CS-65",
@@ -973,7 +1195,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-70; source: Filed 2026-09-25 from the UAT audit. CS-19 and CS-51 both requested this backend ticket in their evidence and neither could create it; the request sat in prose and never became work.",
       "requiredEvidence": "Hosted Postgres/Redis integration run proving owner isolation, malformed/unknown IDs, duplicate save, and archive hydration.",
       "owner": "Integration operator",
-      "resolutionType": "LIVE_SERVICE_EVIDENCE"
+      "resolutionType": "LIVE_SERVICE_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Hosted Postgres/Redis integration run proving owner isolation, malformed/unknown IDs, duplicate save, and archive hydration."
+      },
+      "hostpendingEntry": "CS-70"
     },
     {
       "ticketId": "CS-71",
@@ -1105,7 +1334,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-80; source: CS-51 independent audit, 2026-09-25 - a reviewer asked for git diff HEAD to certify the UI freeze and found it unrunnable",
       "requiredEvidence": "Owner authorization for the named commit scope, followed by a clean-tree review.",
       "owner": "Repository owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner authorization for the named commit scope, followed by a clean-tree review."
+      }
     },
     {
       "ticketId": "CS-81",
@@ -1185,7 +1422,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-86; source: Owner request, Hostinger security review, 2026-09-28",
       "requiredEvidence": "Hostinger managed firewall policy and a second SSH/client verification with only intended ports exposed.",
       "owner": "Hostinger operator",
-      "resolutionType": "LIVE_HOST_EVIDENCE"
+      "resolutionType": "LIVE_HOST_EVIDENCE",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_LIVE_HOST",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Hostinger managed firewall policy and a second SSH/client verification with only intended ports exposed."
+      },
+      "hostpendingEntry": "CS-86"
     },
     {
       "ticketId": "CS-87",
@@ -1213,7 +1457,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-88; source: Owner request, 2026-09-28",
       "requiredEvidence": "Approved admin-page design and the linked role/security contract.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Approved admin-page design and the linked role/security contract."
+      }
     },
     {
       "ticketId": "CS-89",
@@ -1228,7 +1480,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-89; source: Owner request, 2026-09-28; CS-48 follow-up",
       "requiredEvidence": "Redacted production configuration evidence, exact commit provenance, guarded request smoke test, and rollback to AI_ENABLED=false.",
       "owner": "Provider/release owner",
-      "resolutionType": "PROVIDER_CONFIGURATION"
+      "resolutionType": "PROVIDER_CONFIGURATION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_EXTERNAL_PROVIDER",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Redacted production configuration evidence, exact commit provenance, guarded request smoke test, and rollback to AI_ENABLED=false."
+      },
+      "hostpendingEntry": "CS-89"
     },
     {
       "ticketId": "CS-90",
@@ -1243,7 +1502,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-90; source: Owner request, 2026-09-29",
       "requiredEvidence": "Owner-approved Cognito architecture, migration mapping, trust-boundary threat model, and rollback policy.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Owner-approved Cognito architecture, migration mapping, trust-boundary threat model, and rollback policy."
+      }
     },
     {
       "ticketId": "CS-91",
@@ -1258,7 +1525,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-91; source: Owner request, 2026-09-29",
       "requiredEvidence": "Approved provider/session contract and negative-path acceptance plan.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Approved provider/session contract and negative-path acceptance plan."
+      }
     },
     {
       "ticketId": "CS-92",
@@ -1273,7 +1548,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-92; source: Owner request, 2026-09-29",
       "requiredEvidence": "Redacted SES/Cognito configuration, DNS verification, deliverability limits, and a real test message without OTP/PII in evidence.",
       "owner": "Provider/release owner",
-      "resolutionType": "PROVIDER_CONFIGURATION"
+      "resolutionType": "PROVIDER_CONFIGURATION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_EXTERNAL_PROVIDER",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Redacted SES/Cognito configuration, DNS verification, deliverability limits, and a real test message without OTP/PII in evidence."
+      },
+      "hostpendingEntry": "CS-92"
     },
     {
       "ticketId": "CS-93",
@@ -1288,7 +1570,15 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-93; source: Owner request, 2026-09-29",
       "requiredEvidence": "Approved Cognito session contract and browser-state acceptance criteria.",
       "owner": "Product owner",
-      "resolutionType": "OWNER_DECISION"
+      "resolutionType": "OWNER_DECISION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_OWNER_DECISION",
+      "decisionSource": null,
+      "decisionReason": "No repository owner decision source records the requested product policy; Codex cannot choose it on the owner's behalf.",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Approved Cognito session contract and browser-state acceptance criteria."
+      }
     },
     {
       "ticketId": "CS-94",
@@ -1303,7 +1593,14 @@
       "evidenceSource": "Current .ai/backlog.json record for CS-94; source: Owner request, 2026-09-29",
       "requiredEvidence": "Redacted live callback/OTP smoke evidence, exact deployment provenance, monitoring, and rollback acceptance.",
       "owner": "Provider/release owner",
-      "resolutionType": "PROVIDER_CONFIGURATION"
+      "resolutionType": "PROVIDER_CONFIGURATION",
+      "phase2Resolvable": false,
+      "phase2Disposition": "WAITING_EXTERNAL_PROVIDER",
+      "promotionGuard": {
+        "mode": "BLOCKED_UNTIL_DISPOSITION_EVIDENCE",
+        "required": "Redacted live callback/OTP smoke evidence, exact deployment provenance, monitoring, and rollback acceptance."
+      },
+      "hostpendingEntry": "CS-94"
     },
     {
       "ticketId": "CS-95",
@@ -2934,6 +3231,16 @@
       "rollback": "Stop and restore the prior configuration using the documented runbook; do not delete data, rotate credentials, or bypass a failing gate."
     },
     {
+      "ticketId": "CS-19",
+      "title": "Saving a job and working the shortlist is not a coherent flow",
+      "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
+      "owner": "Integration operator",
+      "whyManual": "The owner-scoped lookup implementation is present, but service-backed Postgres/Redis verification is required before the saved-job flow can be promoted.",
+      "safeSteps": "Run the authenticated service-backed integration fixture against disposable or approved hosted Postgres/Redis; capture only redacted pass/fail and ownership assertions.",
+      "evidence": "Hosted Postgres/Redis integration proving lookup ownership, duplicate-save idempotency, archived hydration, malformed IDs, and unknown-job behavior.",
+      "rollback": "No production data mutation is authorized; stop the verification run and restore the prior test environment if the fixture fails."
+    },
+    {
       "ticketId": "CS-24",
       "title": "Nothing watches the running system",
       "primaryClass": "B4_LIVE_HOST_OR_OPERATOR_EVIDENCE",
@@ -3050,15 +3357,20 @@
       "QA": 4,
       "DISCOVERY": 122
     },
-    "activeBlockers": 38,
+    "activeBlockers": 37,
     "deferredByOwner": 1,
     "B1": 15,
-    "B2": 3,
+    "B2": 1,
     "B3": 6,
-    "B4": 7,
+    "B4": 8,
     "B5": 3,
     "B6": 4,
-    "hostpending": 14,
-    "unclassified": 0
+    "hostpending": 15,
+    "unclassified": 0,
+    "phase2ActionableInternalBlockers": 0,
+    "deferredMajorImplementation": 1,
+    "waitingOwnerDecision": 15,
+    "waitingIndependentReview": 6,
+    "manualExternal": 15
   }
 }

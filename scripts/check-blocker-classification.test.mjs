@@ -78,10 +78,62 @@ test('rejects B1 resolution without its decision source', () => {
     (item) => item.primaryClass === 'B1_PRODUCT_OR_OWNER_DECISION',
   );
   ticket.resolutionType = 'OWNER_DECISION_RECORDED';
-  ticket.decisionSource = '';
+  ticket.decisionSource = 'stale decision';
   assert.match(
     validateBlockerClassification(value).join('\n'),
-    /resolved B1 requires decisionSource/,
+    /active B1 has an existing decision source/,
+  );
+});
+
+test('rejects an unresolved blocker without phase2Disposition', () => {
+  const value = base();
+  delete value.model.tickets.find((item) => item.blocked).phase2Disposition;
+  assert.match(
+    validateBlockerClassification(value).join('\n'),
+    /missing a valid phase2Disposition/,
+  );
+});
+
+test('rejects B2 without a major-implementation disposition', () => {
+  const value = base();
+  const ticket = value.model.tickets.find(
+    (item) => item.primaryClass === 'B2_CODE_OR_ARCHITECTURE',
+  );
+  ticket.phase2Disposition = 'WAITING_OWNER_DECISION';
+  assert.match(
+    validateBlockerClassification(value).join('\n'),
+    /unresolved B2 must be DEFERRED_MAJOR_IMPLEMENTATION/,
+  );
+});
+
+test('rejects B3 without an explicit independent-review boundary', () => {
+  const value = base();
+  const ticket = value.model.tickets.find(
+    (item) => item.primaryClass === 'B3_SECURITY_OR_SYSTEM_REVIEW',
+  );
+  delete ticket.reviewReason;
+  assert.match(
+    validateBlockerClassification(value).join('\n'),
+    /B3 requires an explicit unavailable-review reason/,
+  );
+});
+
+test('rejects a hidden blocker without a promotion guard', () => {
+  const value = base();
+  delete value.model.tickets.find((item) => item.ticketId === 'CS-2').promotionGuard;
+  assert.match(
+    validateBlockerClassification(value).join('\n'),
+    /CS-2: hidden blocker has no promotionGuard/,
+  );
+});
+
+test('rejects an ambiguous CS-25 owner deferral', () => {
+  const value = base();
+  const ticket = value.model.tickets.find((item) => item.ticketId === 'CS-25');
+  ticket.decisionSource = null;
+  assert.match(
+    validateBlockerClassification(value).join('\n'),
+    /CS-25: owner deferral is ambiguous/,
   );
 });
 
