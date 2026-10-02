@@ -7,7 +7,7 @@ import styles from './ui-states.module.css';
 // so the product no longer looks different page to page and a screen that
 // silently shows nothing is never confused with one still loading. Icon
 // choices follow the owner-supplied brand asset sheet's own empty-state
-// language (page-designs/) rather than inventing a separate visual system.
+// language (design/) rather than inventing a separate visual system.
 
 // CS-13 rollout, 2026-09-25: the remaining signed-in routes state their
 // loading/empty/error conditions *inside* an existing card or list column,

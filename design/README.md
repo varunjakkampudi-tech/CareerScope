@@ -58,6 +58,16 @@ Generated screenshots are visual references. Production behavior and real data
 must remain truthful. The package explicitly does not contain every isolated
 logo/vector/icon source asset; do not fabricate missing source exports.
 
+The brand lock is the approved CareerScope CS upward-growth-arrow identity.
+Mountain/path imagery is supporting artwork, not the logo; there is no
+Engineering-specific logo and no invented replacement is permitted.
+
+Phase 0 does not create the future Engineering UI. That separate surface will
+eventually cover Backlog, Todo, In Progress, QA, UAT, Prod, Epics,
+tickets/subtickets, blockers, dependencies, design coverage, progress, release
+progress, evidence, and manual/host actions. It must not be conflated with the
+candidate-facing Dashboard.
+
 ## Archived material
 
 `archive/legacy-pre-approved-handoff/` contains the pre-Phase-0 exploratory

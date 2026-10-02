@@ -21,8 +21,8 @@ import {
 import BrandLogo from './brand-logo';
 import styles from './dashboard-shell.module.css';
 
-// Every entry here was seen consistently across the owner-supplied design
-// images (page-designs/), in this order, plus "Preparation" (real existing
+// Every entry here was seen consistently across the approved design handoff
+// under design/, in this order, plus "Preparation" (real existing
 // functionality with no design mockup and no exact match to any design nav
 // label — added as its own honestly-labelled item rather than folded into
 // "Skills", which is a distinct, still-unbuilt concept). `href: null` marks a

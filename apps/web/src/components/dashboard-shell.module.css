@@ -1,6 +1,6 @@
 /*
  * Visual language extracted from the four owner-supplied design images
- * (page-designs/) — dark sidebar, light topbar, stat-card row, tabbed
+ * (design/) — dark sidebar, light topbar, stat-card row, tabbed
  * lists. Scoped entirely to this module so it cannot affect any other
  * page's styling or existing visual-regression baselines (CS-13's shared
  * treatment is a separate, not-yet-built concern).
