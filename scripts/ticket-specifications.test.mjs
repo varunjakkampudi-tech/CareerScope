@@ -20,6 +20,38 @@ const validate = (model, inputs) =>
     return full.startsWith(root + path.sep) && fs.existsSync(full);
   });
 
+test('CS67 historical column criterion is preserved while its plan consumes the frozen Phase3 model', () => {
+  const inputs = fresh();
+  const before = JSON.stringify(inputs.backlog);
+  const model = buildCatalog(inputs);
+  const criterion = inputs.backlog.items.find((ticket) => ticket.id === 'CS-67')
+    .acceptanceCriteria[0];
+  assert.equal(criterion, 'BLOCKED renders in its own named column and is counted there');
+  const row = model.traceability.find((entry) => entry.acId === 'CS-67-AC1');
+  assert.match(row.exactBindings[0].assertion, /no Blocked column/);
+  assert.match(row.exactBindings[0].expectedResult, /historical AC1/);
+  assert.equal(row.exactBindings[0].testStatus, 'PLANNED');
+  assert.equal(JSON.stringify(inputs.backlog), before);
+});
+
+test('CS71 scope separates explicit determination from language expansion and execution evidence', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  for (const suffix of ['AC1', 'AC2', 'AC3']) {
+    const binding = model.traceability.find((row) => row.acId === `CS-71-${suffix}`)
+      .exactBindings[0];
+    assert.equal(binding.testStatus, 'PLANNED');
+    assert.ok(binding.negativeCase.length > 30);
+  }
+  const paired = model.traceability.find((row) => row.acId === 'CS-71-AC2').exactBindings[0];
+  assert.match(paired.assertion, /same test/);
+  assert.match(paired.assertion, /Senior Software Engineer/);
+  const scope = model.traceability.find((row) => row.acId === 'CS-71-AC3').exactBindings[0];
+  assert.match(scope.assertion, /ROLE_WORDS entries are unchanged/);
+  assert.match(scope.fixtures, /does not yet exist/);
+  assert.equal(model.specs.find((spec) => spec.ticketId === 'CS-71').reviewState, 'DRAFT');
+});
+
 test('216 source-linked drafts preserve registry and canonical stages without readiness fabrication', () => {
   const inputs = fresh();
   const before = JSON.stringify(inputs);
@@ -39,11 +71,11 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
   assert.equal(model.counts.completeSpecificationCount, 0);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 3);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 12);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 3);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 903);
-  assert.equal(model.counts.authoredExactTestBindingCount, 3);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 12);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 894);
+  assert.equal(model.counts.authoredExactTestBindingCount, 12);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(

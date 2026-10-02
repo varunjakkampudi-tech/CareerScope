@@ -55,3 +55,53 @@ parent's serial run. The parent subsequently executed all 36 specification tests
 including canonical-state preservation and inherited-flag rejection, with no
 failures or skips. This does not broaden the three binding review receipts or
 approve any whole ticket specification.
+
+## Bounded remediation review: CS-67 and CS-71
+
+Starting checkpoint: `2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111`.
+The actual read-only `/root/phase325_review` inspected the authored refinements,
+the six bindings and their cited runtime/test/Phase 3 sources. It approved five
+bindings initially and returned REVISE on CS-67-AC2: a Node snapshot harness
+cannot prove rendered browser warnings or non-execution of injected scripts.
+The binding was corrected to a planned browser procedure with warning
+`textContent`, canonical counts and an absent `window.__fixtureExecuted`
+sentinel. The reviewer independently re-read and approved that correction.
+
+| AC        | Independently computed binding SHA-256                           | Scoped verdict |
+| --------- | ---------------------------------------------------------------- | -------------- |
+| CS-67-AC1 | 230e7966ab4748fa675fa4d8b02af068916e6b8a9ef9a53a0cd3402afe8cba4b | APPROVED       |
+| CS-67-AC2 | 520f3f8742d39a995ff1f549fb0307fe39e4a6156b0dc4b9cf5af45bdef5ffcb | APPROVED       |
+| CS-67-AC3 | 28b51721a1107287778605fcd27b189306c31f164158224e1f6aaaa0052b1aa6 | APPROVED       |
+| CS-71-AC1 | 28b46bd3b02fe8976371865a4e900db7703b2cfca44b50432781c368a94dbdea | APPROVED       |
+| CS-71-AC2 | 94493a026837945c5cc8327fb966681826e334b7edb98267afcda67bb93e57af | APPROVED       |
+| CS-71-AC3 | cb28d2b45644a8ce78f62d39fa65295ce677f0e91e86854f97ecb8146c0d9c0f | APPROVED       |
+
+Digests exclude only `reviewStatus`, as in the original three receipts. This
+approves planned verification quality, not executed tests or whole specs.
+CS-67 preserves its original seven-column AC as historical evidence but consumes
+the later immutable six-column Phase 3 contract. CS-71 preserves the actual
+typed discriminator and does not expand language support. Release assignment
+and whole-spec review remain unresolved. No edits or mutable test execution
+were performed by the reviewer; no shipping action occurred.
+
+## CS-70 planned-binding review
+
+The same actual reviewer traced all three bindings against the Fastify route,
+LeadRepository, SaveJob and database tests. AC2 and AC3 passed initially. AC1
+received REVISE: a B session without a B-owned matching lead cannot detect the
+promised reachable owner-join regression. Both owners now have independently
+owned runs/jobs/leads sharing a fingerprint, with positive and cross-owner
+checks in both directions. The corrected binding limits mutation claims to
+reachable constraints rather than unobservable redundant FK-protected joins.
+The reviewer re-read and approved the correction.
+
+| AC        | Independently computed binding SHA-256                           | Scoped verdict |
+| --------- | ---------------------------------------------------------------- | -------------- |
+| CS-70-AC1 | 97a0e943cecacbea6467969ed6c2febfdfb56742cb7c9aefb0facb61155b3f30 | APPROVED       |
+| CS-70-AC2 | 66b0ad71f05d8a740376344643686764e5a47fcbb21cac99cce99ff60433d1aa | APPROVED       |
+| CS-70-AC3 | 5713696943bddf94556b4f444ccc104c8c260634f46944522ef02d7c95cca45f | APPROVED       |
+
+The reviewer found actual SaveJob accessibility/error-state gaps recorded in
+PHASE-3-25-REMEDIATION-LEDGER.md. They are later runtime work, not fixed or
+passing here. All bindings remain PLANNED and no whole spec was approved.
+Review was read-only with no mutable tests, hosted action or deployment.

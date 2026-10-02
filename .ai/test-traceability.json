@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "bc8ed9c946fa056ab7219f01cdbd448ed94cefb405a33c0a82140f163610bfcc",
+    ".ai/ticket-specification-policy.json": "c5b3426c3f82b08ebf4e541c022ad08c19cbbaf780dab85b117f8b1f2cbd2c47",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "4ac797bc4283ad7ca81f22701450776ca63c631147f0aa9cd1cbc2b4d9f90acf"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "fde59423a21ea7e68c5dd071e0e8b9a4faa0c2d66f5eb17cc3edb2d411191bf2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -4822,7 +4822,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Isolated Engineering fixture snapshot uses canonical Phase 3 states; no production or canonical mutable state is used.",
+          "setup": "Create blocked UAT and blocked BACKLOG fixtures, unblocked QA, and empty TODO/IN_PROGRESS/PROD stages. Preserve fixture bytes before interaction.",
+          "procedure": "Render board; enumerate column headings and initial stage totals; focus blocked-only button and activate with Enter; inspect aria-pressed and filtered cards; restore all tickets.",
+          "assertion": "Exactly six canonical column headings exist, no Blocked column exists; each blocked card stays in its stage; blocker summary equals two; filtered cards equal two; aria-pressed toggles false/true/false; source fixture bytes remain unchanged.",
+          "expectedResult": "Later frozen Phase 3 semantics govern historical AC1 without changing its stored text or promoting any ticket.",
+          "testName": "CS67 canonical columns retain blocked metadata through keyboard filtering",
+          "testFileOrProcedureId": "scripts/engineering-ui.browser.test.mjs",
+          "fixtures": "Synthetic isolated ticket/finding JSON, two blocked cards and three empty stages; no candidate records.",
+          "negativeCase": "Legacy BLOCKED or DISCOVERY as a ticket status must produce an integrity warning, not a seventh stage or a silent Backlog card.",
+          "evidenceArtifact": "Future named rendered browser run, exact content revision, exit code, assertions and fixture-preservation result; no hosted evidence inferred.",
+          "reviewer": "Engineering workflow reviewer and QA",
+          "releaseGate": "PHASE_3_CONTRACT_REGRESSION_NOT_PRODUCTION_ACCEPTANCE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-67",
@@ -4840,7 +4858,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Engineering renderer reads only a temporary fixture directory.",
+          "setup": "Inject ticket CS-TEST-INVALID with status NOT_A_REAL_STATUS and OPEN finding F-TEST with severity NOT_A_SEVERITY; add CLOSED finding with the same invalid severity as a control.",
+          "procedure": "Serve the isolated fixture snapshot through the Engineering browser harness and render the warning region; read warning textContent and canonical column counts. Inject a markup-bearing invalid value containing a window.__fixtureExecuted sentinel and inspect the browser global after rendering.",
+          "assertion": "Visible warnings identify the invalid open records and values; invalid ticket is not silently counted in a canonical stage; invalid open severity is explicitly excluded from severity totals; CLOSED control does not count as open.",
+          "expectedResult": "Corrupt data produces an observable integrity error rather than a false all-clear.",
+          "testName": "CS67 invalid status and open severity produce visible integrity warnings",
+          "testFileOrProcedureId": "scripts/engineering-ui.browser.test.mjs",
+          "fixtures": "Temporary backlog/findings JSON with invalid enumerations and a closed-finding control.",
+          "negativeCase": "Use a markup-bearing invalid value and assert window.__fixtureExecuted remains absent; warning textContent includes the literal invalid value, not executable markup. Missing/corrupt JSON cannot appear as a healthy empty board.",
+          "evidenceArtifact": "Future named browser assertions with sanitized warning text, exact canonical counts and absent execution sentinel; source-string presence alone is insufficient.",
+          "reviewer": "Engineering workflow reviewer and Security reviewer",
+          "releaseGate": "DELIVERY_STATE_INTEGRITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-67",
@@ -4858,7 +4894,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Rendered Engineering summary consumes isolated findings and backlog fixtures.",
+          "setup": "Provide one OPEN finding for each supported severity, plus CLOSED/FIXED controls and backlog priorities deliberately different from finding counts; repeat with zero open findings.",
+          "procedure": "Read every summary counter's visible label and number in both fixtures; compare against OPEN findings grouped by KNOWN_SEVERITIES.",
+          "assertion": "Each supported severity has exactly one '<severity> open findings' counter with the exact OPEN count, including zero. Closed/fixed controls and backlog priorities do not influence finding totals; no supported open severity is omitted.",
+          "expectedResult": "Operators can distinguish review findings from ticket priorities without invisible open work.",
+          "testName": "CS67 rendered finding counters cover all severities independently of ticket priorities",
+          "testFileOrProcedureId": "scripts/engineering-ui.browser.test.mjs",
+          "fixtures": "Synthetic severity census with nonmatching backlog priority distribution and an all-zero control.",
+          "negativeCase": "Removing one severity counter or renaming it as a ticket-priority count must fail the assertion; unknown severities use AC2's visible error path.",
+          "evidenceArtifact": "Future named browser assertions of labels and numeric counts; no live or human acceptance claimed.",
+          "reviewer": "Engineering workflow reviewer and QA",
+          "releaseGate": "DELIVERY_STATE_INTEGRITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-68",
@@ -4992,7 +5046,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Isolated migrated PostgreSQL/Redis harness has authenticated synthetic owners A/B; each owns a completed run/job and saved lead with the same posting fingerprint.",
+          "setup": "Use A's job under A/B sessions and B's job under B/A sessions, an unknown valid UUID, malformed not-a-uuid and no-session control; preserve database rows before GETs.",
+          "procedure": "Inject GET /api/leads/by-job/:jobId for each case using the existing database/API integration harness; inspect envelopes and compare rows before/after.",
+          "assertion": "Each owner gets HTTP 200 with its own exact lead ID for its owned job; both cross-owner directions and unknown UUID get HTTP 200 {lead:null}; malformed UUID gets HTTP 400; unauthenticated request gets HTTP 401. GETs leave lead status/revision/notes and row count unchanged; no foreign record fields appear.",
+          "expectedResult": "Owner-scoped positive lookup works and negative lookups reveal no cross-owner existence or data.",
+          "testName": "CS70 owner by-job lookup has positive, foreign, unknown and malformed controls",
+          "testFileOrProcedureId": "packages/core/src/database.test.ts",
+          "fixtures": "Disposable database with two synthetic owners, separately owned completed runs/jobs and saved leads sharing a fingerprint; no production sessions or resumes.",
+          "negativeCase": "A caller-supplied owner query/body must not override authenticated owner. Mutating reachable lead/job owner constraints must fail bidirectional isolation assertions; no claim is made that removing a redundant join protected by separate FK invariants is observable.",
+          "evidenceArtifact": "Future exact-content service-backed run with PostgreSQL/Redis versions and named assertions; existing source coverage does not count as hosted execution.",
+          "reviewer": "Backend, Security and QA reviewers",
+          "releaseGate": "SERVICE_BACKED_OWNERSHIP_ACCEPTANCE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-70",
@@ -5010,7 +5082,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Browser harness mounts real SaveJob variants through canonical owner/session provider with controlled same-origin responses; no production data.",
+          "setup": "Provide delayed lookup for owned saved lead; then archived lead, null and failed lookup cases. Count POST /api/leads requests and use separate owner-keyed caches for A/B.",
+          "procedure": "Mount icon-only and labeled SaveJob, resolve GET without clicking, inspect accessible state, then change owner fixture and test no stale cache leakage.",
+          "assertion": "Saved result gives aria-pressed=true before any click; archived/null is not falsely pressed. Pending/failed reads do not assert confirmed unsaved state or enable misleading save actions; error is exposed. Zero POSTs occur solely from mounting; A's saved state is not reused for B.",
+          "expectedResult": "Persisted saved state, not first-click optimism or stale owner cache, drives the control.",
+          "testName": "CS70 hydrates both SaveJob variants before interaction without owner-cache leakage",
+          "testFileOrProcedureId": "scripts/check-ui.ts",
+          "fixtures": "Synthetic LeadRecord with saved/archived revisions and delayed/error/null lookup responses, isolated owners and request counters.",
+          "negativeCase": "A component that sets pressed only after POST, silently treats lookup failure as unsaved, or reuses another owner's cache must fail.",
+          "evidenceArtifact": "Future named Chromium/Firefox/WebKit browser assertions and sanitized request counts; any missing current failure behavior remains a later implementation gap.",
+          "reviewer": "Frontend, Accessibility and Security reviewers",
+          "releaseGate": "SAVED_STATE_BROWSER_ACCEPTANCE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-70",
@@ -5028,7 +5118,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Migrated isolated database has owner A, two run-local jobs with the same canonical fingerprint and a third genuinely different posting; authenticated same-origin CSRF requests are available.",
+          "setup": "Save first posting, record its lead ID and owner row count; prepare repeated and six concurrent saves of equivalent posting plus one new-posting save.",
+          "procedure": "POST /api/leads with both equivalent job IDs, query owner lead count after repeated/concurrent requests, then save the genuinely new posting.",
+          "assertion": "Equivalent successful saves all return the first lead ID; distinct lead ID count remains one and owner row count unchanged. New posting returns a different ID and increments count by exactly one; neither operation marks Applied or changes foreign-owner rows.",
+          "expectedResult": "Deduplication has exactly-once effects under repeated/concurrent saves, not merely error-free no-ops.",
+          "testName": "CS70 duplicate fingerprints preserve count while a new posting adds one lead",
+          "testFileOrProcedureId": "packages/core/src/database.test.ts",
+          "fixtures": "Two equivalent job snapshots in separate completed runs plus one distinct fingerprint, synthetic owner/CSRF fixtures only.",
+          "negativeCase": "No-op saving fails the new-posting control; duplicate insertion fails ID/count assertions; foreign-owner save cannot claim A's job.",
+          "evidenceArtifact": "Future service-backed named concurrency test with before/after aggregate counts and sanitized IDs; no database contents or tokens published.",
+          "reviewer": "Data integrity, Backend and QA reviewers",
+          "releaseGate": "SERVICE_BACKED_DEDUPLICATION_ACCEPTANCE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-71",
@@ -5046,7 +5154,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "Canonical resume module is loaded with fixed clock and synthetic content only.",
+          "setup": "Use non-English letter-bearing content, whitespace-only text, and the existing supported English resume fixture.",
+          "procedure": "Call deriveTitles for each input, then deriveFields for unsupported and English content.",
+          "assertion": "Unsupported readable content yields status undeterminable and titles []; whitespace yields no-content and titles []; English yields derived with nonempty titles. deriveFields exposes corresponding titlesStatus without dropping the discriminator.",
+          "expectedResult": "Callers distinguish failed determination from absent content even when both arrays are empty.",
+          "testName": "carries the status out through deriveFields, where every consumer reads it",
+          "testFileOrProcedureId": "packages/resume/src/derive.test.ts",
+          "fixtures": "Existing synthetic RESUME fixture and fixed NOW; no private upload or external inference.",
+          "negativeCase": "A mutation dropping titlesStatus or replacing undeterminable with no-content must fail; unsupported content is not represented as verified absence of experience.",
+          "evidenceArtifact": "Future exact-content named Vitest result with assertion count, Node version and exit status; source test existence is not a fresh pass.",
+          "reviewer": "Resume domain reviewer and QA",
+          "releaseGate": "RESUME_DERIVATION_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-71",
@@ -5064,7 +5190,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_UNIT",
+          "preconditions": "Existing deriveTitles unit harness runs the positive and regression controls together.",
+          "setup": "Use 'Ingeniero de software sénior en Acme' plus the existing synthetic second line; English control 'Senior Software Engineer | Acme Corp, Pune'; whitespace control.",
+          "procedure": "Execute the single named test and inspect its three result assertions; do not split unsupported and English cases into unrelated filtered runs.",
+          "assertion": "In the same test, unsupported content is undeterminable with []; English is derived with exactly ['Senior Software Engineer']; whitespace is no-content and distinct from undeterminable.",
+          "expectedResult": "Breaking extraction for every language cannot satisfy this criterion.",
+          "testName": "distinguishes cannot-read from nothing-to-read, and still reads English",
+          "testFileOrProcedureId": "packages/resume/src/derive.test.ts",
+          "fixtures": "The existing synthetic strings in the named test; no real candidate data.",
+          "negativeCase": "Replacing all deriveTitles results with an empty array must fail the paired English assertion; replacing both empty states with one label must fail the whitespace distinction.",
+          "evidenceArtifact": "Future single-test result showing all three assertions executed; no fabricated language-support claim.",
+          "reviewer": "Resume domain reviewer and QA",
+          "releaseGate": "RESUME_DERIVATION_REGRESSION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-71",
@@ -5098,7 +5242,25 @@
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
       "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Reviewed baseline derive.ts source at local checkpoint 2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111 is available.",
+          "setup": "Extract the ROLE_WORDS declaration and title-recognition imports from baseline and proposed implementation; inspect CS-64's language-policy gate.",
+          "procedure": "Compare normalized ROLE_WORDS entries and inspect changed derivation code for new translation, language detection or vocabulary branches; combine this with AC2 regression results.",
+          "assertion": "ROLE_WORDS entries are unchanged; no new language recognizer/provider is introduced under CS-71; only explicit determination status and its propagation are within scope; CS-64 remains the language-policy gate.",
+          "expectedResult": "Reporting unsupported extraction does not silently authorize language expansion.",
+          "testName": "CS71 determination status preserves the reviewed title vocabulary boundary",
+          "testFileOrProcedureId": "scripts/check-resume-title-scope.test.mjs",
+          "fixtures": "Recorded baseline module and proposed source, plus synthetic AC2 strings; the planned contract test does not yet exist.",
+          "negativeCase": "Adding a new-language role entry or translation dependency must fail scope review even if unit tests pass.",
+          "evidenceArtifact": "Future named contract check plus content-bound source review identifying baseline and proposed revisions; no runtime/provider activation evidence.",
+          "reviewer": "Resume domain reviewer and independent scope reviewer",
+          "releaseGate": "SPECIFICATION_SCOPE_BOUNDARY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-72",

@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "bc8ed9c946fa056ab7219f01cdbd448ed94cefb405a33c0a82140f163610bfcc",
+    ".ai/ticket-specification-policy.json": "c5b3426c3f82b08ebf4e541c022ad08c19cbbaf780dab85b117f8b1f2cbd2c47",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "4ac797bc4283ad7ca81f22701450776ca63c631147f0aa9cd1cbc2b4d9f90acf"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "fde59423a21ea7e68c5dd071e0e8b9a4faa0c2d66f5eb17cc3edb2d411191bf2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "counts": {
@@ -29,11 +29,11 @@
     "dependencySemanticGapCount": 0,
     "acceptanceCriterionCount": 906,
     "suggestedAcceptanceCriterionCount": 906,
-    "mappedAcceptanceCriterionCount": 3,
-    "unmappedAcceptanceCriterionCount": 903,
-    "reviewedExactTestBindingCount": 3,
-    "authoredExactTestBindingCount": 3,
-    "acceptanceCriteriaWithAuthoredBindings": 3,
+    "mappedAcceptanceCriterionCount": 12,
+    "unmappedAcceptanceCriterionCount": 894,
+    "reviewedExactTestBindingCount": 12,
+    "authoredExactTestBindingCount": 12,
+    "acceptanceCriteriaWithAuthoredBindings": 12,
     "draftSpecificationCount": 216,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
@@ -64,10 +64,10 @@
     "sourceBacklogHash": "5102b42c99208411fa6885d5d753346307c84efe32ae9b62c62cd12f8c2194bb",
     "specificationCoveragePercent": 0,
     "suggestedVerificationMappingPercent": 100,
-    "exactReviewedTraceabilityPercent": 0.33112582781456956,
+    "exactReviewedTraceabilityPercent": 1.3245033112582782,
     "findingsCount": 630,
-    "openFindingCount": 622,
-    "resolvedFindingCount": 1,
+    "openFindingCount": 619,
+    "resolvedFindingCount": 4,
     "reclassifiedFindingCount": 7
   },
   "findings": [
@@ -1949,7 +1949,7 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED"
     },
     {
       "ticketId": "CS-68",
@@ -2072,7 +2072,7 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED"
     },
     {
       "ticketId": "CS-71",
@@ -2117,7 +2117,7 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED"
     },
     {
       "ticketId": "CS-72",
