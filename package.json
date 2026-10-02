@@ -56,6 +56,8 @@
     "eol:check": "node scripts/check-line-endings.mjs",
     "progress:check": "node scripts/check-progress.mjs",
     "ticket:consistency": "node scripts/check-ticket-consistency.mjs",
+    "design:coverage:check": "node scripts/check-design-ticket-coverage.mjs",
+    "design:coverage:test": "node --test scripts/check-design-ticket-coverage.test.mjs",
     "agents:check": "node scripts/check-agents.mjs",
     "privacy:check": "node scripts/check-privacy.mjs",
     "privacy:test": "node --test scripts/check-privacy.test.mjs",

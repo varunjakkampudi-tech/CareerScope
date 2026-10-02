@@ -19,6 +19,11 @@
   },
   "checks": [
     {
+      "path": "scripts/check-design-ticket-coverage.mjs",
+      "classification": "manual",
+      "reason": "Phase 1 planning audit requiring the pinned Phase 0 Git baseline and approved local source census. Run design:coverage:check and design:coverage:test explicitly; this is traceability evidence, not hosted release evidence."
+    },
+    {
       "path": "infra/check-backup.sh",
       "classification": "ci",
       "reason": "Starts and tears down its own disposable Postgres container, so pg_dump/pg_restore is genuinely exercised on a GitHub runner."
