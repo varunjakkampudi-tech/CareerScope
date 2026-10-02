@@ -1,17 +1,92 @@
-import { execFileSync, spawn } from 'node:child_process';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  mkdtempSync,
   readFileSync,
   rmSync,
   writeFileSync,
   unlinkSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import process from 'node:process';
 
+// Scenarios deliberately corrupt and replace state. Never run them in the
+// developer's canonical workspace: readers/watchers can race writes, and an
+// exception during restoration used to leave synthetic tickets behind.
+if (process.env.CAREERSCOPE_AGILE_GATE_SANDBOX !== '1') {
+  const sourceRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
+  const scratchRoot = mkdtempSync(join(tmpdir(), 'careerscope-agile-gate-'));
+  if (!scratchRoot.startsWith(resolve(tmpdir()) + sep)) throw new Error('Unsafe gate cleanup path');
+  try {
+    const files = execFileSync(
+      'git',
+      ['ls-files', '-z', '--', '.ai', 'scripts', '.github/agents'],
+      {
+        cwd: sourceRoot,
+        encoding: 'utf8',
+      },
+    )
+      .split('\0')
+      .filter(Boolean);
+    for (const file of files) {
+      const target = resolve(scratchRoot, file);
+      if (!target.startsWith(scratchRoot + sep)) throw new Error('Unsafe gate fixture path');
+      mkdirSync(resolve(target, '..'), { recursive: true });
+      copyFileSync(resolve(sourceRoot, file), target);
+    }
+    const scratchTemp = join(scratchRoot, 'tmp');
+    mkdirSync(scratchTemp);
+    const sourceGitDir = execFileSync('git', ['rev-parse', '--absolute-git-dir'], {
+      cwd: sourceRoot,
+      encoding: 'utf8',
+    }).trim();
+    const result = spawnSync(process.execPath, ['scripts/check-agile-gates.mjs'], {
+      cwd: scratchRoot,
+      stdio: 'inherit',
+      env: {
+        ...process.env,
+        CAREERSCOPE_AGILE_GATE_SANDBOX: '1',
+        CAREERSCOPE_AGILE_GATE_ROOT: scratchRoot,
+        CAREERSCOPE_AGILE_GATE_SOURCE: sourceRoot,
+        CAREERSCOPE_AGILE_GATE_PARENT_TMP: resolve(tmpdir()),
+        TEMP: scratchTemp,
+        TMP: scratchTemp,
+        TMPDIR: scratchTemp,
+        // Scenarios use only rev-parse/branch reads for provenance. Their
+        // state writes still resolve exclusively inside the scratch cwd.
+        GIT_DIR: sourceGitDir,
+        GIT_WORK_TREE: scratchRoot,
+      },
+    });
+    if (result.error) throw result.error;
+    process.exitCode = result.status ?? 1;
+  } finally {
+    // Only this explicit mkdtemp child is removed; no workspace/root deletion.
+    rmSync(scratchRoot, { recursive: true, force: true });
+  }
+  process.exit(process.exitCode ?? 1);
+}
+// A stray inherited flag must never turn the canonical checkout into fixtures.
+const sandboxRoot = process.env.CAREERSCOPE_AGILE_GATE_ROOT;
+const sandboxSource = process.env.CAREERSCOPE_AGILE_GATE_SOURCE;
+const sandboxParent = process.env.CAREERSCOPE_AGILE_GATE_PARENT_TMP;
+const scriptRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
+if (
+  !sandboxRoot ||
+  !sandboxSource ||
+  !sandboxParent ||
+  resolve(process.cwd()) !== resolve(sandboxRoot) ||
+  scriptRoot !== resolve(sandboxRoot) ||
+  resolve(sandboxRoot) === resolve(sandboxSource) ||
+  !resolve(sandboxRoot).startsWith(resolve(sandboxParent) + sep + 'careerscope-agile-gate-')
+) {
+  console.error('REFUSED: agile fixtures require the parent-created temporary sandbox');
+  process.exit(1);
+}
 const BACKLOG = '.ai/backlog.json';
 const LOOP = '.ai/LOOP-STATE.json';
 const MODE = '.ai/process-mode.json';
@@ -55,7 +130,13 @@ const run = (script, args = []) => {
 
 const backlog = JSON.parse(readFileSync(BACKLOG, 'utf8'));
 const today = new Date().toISOString().slice(0, 10);
-const item = (id, status) => ({ id, title: `synthetic ${id}`, status, size: 'S', priority: 'P2' });
+const item = (id, status) => ({
+  id,
+  title: `synthetic ${id}`,
+  status,
+  size: 'S',
+  priority: 'P2',
+});
 const writeFixture = (path, contents) => {
   let lastError;
   for (let attempt = 0; attempt < 5; attempt += 1) {
