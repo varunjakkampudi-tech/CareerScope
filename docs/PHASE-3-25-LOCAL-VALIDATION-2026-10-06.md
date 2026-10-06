@@ -86,8 +86,15 @@ they do not loosen execution-evidence checks.
   that correction. The final Node 24.19.0 full suite passed 49/49 tests;
   `npm run tickets:spec:generate` followed by `npm run tickets:spec:check`
   reported zero generated-file drift. Current generated counts are 216 tickets,
-  1 whole-spec approval, 215 incomplete, 906 ACs, 44 mapped, 862 unmapped,
-  47 reviewed exact planned procedures and 651 findings (630 OPEN, 14
-  RESOLVED, 7 RECLASSIFIED). These planned procedures are not test execution or
-  hosted evidence. CS-7 still has no whole-spec approval; no runtime behavior,
-  ticket workflow state, deployment, or hosted configuration was changed.
+  1 whole-spec approval, 215 incomplete, 906 ACs, 46 mapped, 860 unmapped,
+  49 reviewed exact planned procedures and 651 findings (629 OPEN, 15
+  RESOLVED, 7 RECLASSIFIED). The CS-8 finding was resolved by propagating two
+  already-approved content-bound receipts to their policy entries; no new
+  review was claimed. `node scripts/ticket-specifications.test.mjs` then
+  passed 49/49 tests, including the regression assertion that the CS-8 exact-
+  binding finding resolves only when all binding review states satisfy the
+  existing receipt rule. The suite also verified generation twice produces
+  identical bytes. These planned procedures are not product test execution or
+  hosted evidence. CS-7 and CS-8 still have no whole-spec approval; no runtime
+  behavior, ticket workflow state, deployment, or hosted configuration was
+  changed.

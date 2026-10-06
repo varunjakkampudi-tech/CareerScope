@@ -383,3 +383,20 @@ The current full specification suite subsequently passed 49/49 on Node
 24.19.0, including deterministic generation; the specification checker
 reported zero generated-file drift. The findings-count test expectation was
 updated from stale 629 to the actual 651; no finding was removed or weakened.
+
+### CS-8 approval-receipt propagation
+
+The existing independent review table above approves CS-8-AC1, CS-8-AC2 and
+CS-8-AC3 with content hashes that match the current ordered binding arrays.
+On resuming, AC1 and the contract binding for AC2 still had
+`reviewStatus: DRAFT` despite those valid receipts. Their statuses are now
+`REVIEWED`; no binding content or receipt was changed. The generated exact-
+binding finding for CS-8 therefore resolves by the existing deterministic
+rule. CS-8 remains incomplete because `RELEASE_STATE_UNSPECIFIED` is still
+OPEN; this receipt propagation is not whole-ticket approval.
+
+The exact current generator totals are 49 reviewed planned procedures, 46/906
+mapped acceptance criteria, 860 unmapped criteria, and 651 findings (629 OPEN,
+15 RESOLVED, 7 RECLASSIFIED). The existing suite had 49 tests before the added
+regression assertion for CS-8 disposition; the post-change result is recorded
+in the local validation report, not inferred here.

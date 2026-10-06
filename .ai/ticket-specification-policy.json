@@ -1042,7 +1042,7 @@
         "reviewer": "Delivery tooling reviewer, QA and Security reviewer",
         "releaseGate": "CANONICAL_EVIDENCE_INTEGRITY",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT"
+        "reviewStatus": "REVIEWED"
       }
     ],
     "CS-8-AC2": [
@@ -1061,7 +1061,7 @@
         "reviewer": "Delivery tooling reviewer and Security reviewer",
         "releaseGate": "FAIL_CLOSED_RELEASE_EVIDENCE",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT"
+        "reviewStatus": "REVIEWED"
       },
       {
         "type": "AUTOMATED_BROWSER",

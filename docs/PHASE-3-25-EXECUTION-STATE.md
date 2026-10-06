@@ -28,9 +28,9 @@ content is ticket-specification-policy.json; generated coverage owns counters.
   CS-6 AC1–3; CS-7 AC1–3; CS-8 AC1–3; CS-9 AC1–3; CS-10 AC1–3; CS-11 AC1–5;
   CS-12 AC1–4; CS-46 AC1–3; CS-67 AC1–3; CS-70 AC1–3; CS-71 AC1–3.
   Current generated evidence: 216 tickets/specifications; 1 whole-spec
-  approved (CS-3), 215 incomplete; 906 ACs, 44 mapped with 47 reviewed exact
-  PLANNED procedures, and 862 unmapped. The coverage artifact reports 651
-  findings: 630 OPEN, 14 RESOLVED and 7 RECLASSIFIED. These are planning and
+  approved (CS-3), 215 incomplete; 906 ACs, 46 mapped with 49 reviewed exact
+  PLANNED procedures, and 860 unmapped. The coverage artifact reports 651
+  findings: 629 OPEN, 15 RESOLVED and 7 RECLASSIFIED. These are planning and
   review counts, not execution evidence. Content-bound hashes are in policy and
   independently observed in REMEDIATION-REVIEW-01.
 - Next content ticket: CS-8, continuing the CS-1–CS-18 vertical batch in
@@ -47,9 +47,9 @@ content is ticket-specification-policy.json; generated coverage owns counters.
 
 ## Exact remaining ledgers
 
-The 630 OPEN finding identifiers are the `(ticketId, code)` pairs in
+The 629 OPEN finding identifiers are the `(ticketId, code)` pairs in
 `.ai/ticket-specification-coverage.json` where `disposition === 'OPEN'`.
-All 651 original records remain, with 14 resolved findings and seven
+All 651 original records remain, with 15 resolved findings and seven
 historical owner-choice reclassifications. Do not delete history or infer
 closure from source-file presence.
 

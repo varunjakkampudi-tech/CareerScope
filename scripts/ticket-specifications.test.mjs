@@ -326,15 +326,21 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.completeSpecificationCount, 1);
   assert.equal(model.counts.incompleteSpecificationCount, 215);
   assert.equal(model.counts.approvedSpecificationCount, 1);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 47);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 49);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 44);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 862);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 46);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 860);
   assert.equal(model.counts.authoredExactTestBindingCount, 52);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
       (finding) => finding.ticketId === 'CS-46' && finding.code === 'EXACT_AC_TEST_BINDING',
+    ).disposition,
+    'RESOLVED',
+  );
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-8' && finding.code === 'EXACT_AC_TEST_BINDING',
     ).disposition,
     'RESOLVED',
   );

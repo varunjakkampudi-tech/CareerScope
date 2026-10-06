@@ -468,7 +468,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "reviewer": "Delivery tooling reviewer, QA and Security reviewer",
           "releaseGate": "CANONICAL_EVIDENCE_INTEGRITY",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT"
+          "reviewStatus": "REVIEWED"
         }
       ]
     },
@@ -514,7 +514,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "reviewer": "Delivery tooling reviewer and Security reviewer",
           "releaseGate": "FAIL_CLOSED_RELEASE_EVIDENCE",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT"
+          "reviewStatus": "REVIEWED"
         },
         {
           "type": "AUTOMATED_BROWSER",
@@ -823,4 +823,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
