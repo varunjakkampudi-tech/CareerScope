@@ -1,6 +1,6 @@
 # CS-2 — Lead table header offset is wrong on Linux WebKit at 768px
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -37,9 +37,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "The sticky header is 48px out on Safari at tablet width, so rows sit underneath it."
+    "The sticky header is 48px out on Safari at tablet width, so rows sit underneath it.",
+    {
+      "requirement": "The backlog userProblem sentence is the original report, not verified current behavior: the recorded Linux Chromium/Firefox measurements did not reproduce its 768px header offset, and WebKit failed earlier on a different 390px row-overlap assertion. That separate overlap was traced to stale virtualizer measurement across a compact/card layout change and historically fixed with deferred remeasurement. Neither the historical 390px fix nor those runs prove the 768px acceptance criterion; do not present the original report as a currently reproduced defect.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-2"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -49,9 +64,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "On one browser engine, the table header on the Leads page sits in the wrong place at tablet width, so it overlaps the rows you are trying to read. Two attempted fixes did not hold because both treated it as a timing fluke; it is not."
+    "On one browser engine, the table header on the Leads page sits in the wrong place at tablet width, so it overlaps the rows you are trying to read. Two attempted fixes did not hold because both treated it as a timing fluke; it is not.",
+    {
+      "requirement": "Prevent a false-positive closure of a browser-specific layout defect: maintain a reproducible, viewport-specific assertion against the current candidate saved-workspace surface, and require an explicit owner disposition if the named legacy surface/defect no longer exists.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-2"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -138,9 +168,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
     "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
     "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
-    "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+    "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot.",
+    {
+      "requirement": "Do not silently retitle/re-scope CS-2, change source acceptance criteria, create a successor ticket, restore the removed LeadTable implementation, or claim the 390px fix satisfies the 768px issue. Any such ticket-record decision is deferred to the explicit owner disposition and a later authorized registry change.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/PROJECT-STATE.md", "docs/ARCHITECTURE.md", ".ai/backlog.json#CS-2"]
+  "sources": [
+    "docs/PROJECT-STATE.md",
+    "docs/ARCHITECTURE.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md"
+  ]
 }
 ```
 
@@ -154,7 +200,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-2-AC1",
       "sourceText": "Reproduced in the Playwright Linux container, not guessed from Windows",
       "expectedResult": "Reproduced in the Playwright Linux container, not guessed from Windows",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-2",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -162,7 +208,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-2-AC2",
       "sourceText": "Root cause named; the assertion is not widened",
       "expectedResult": "Root cause named; the assertion is not widened",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-2",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -170,12 +216,42 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-2-AC3",
       "sourceText": "check-ui.mjs green on all three engines in CI",
       "expectedResult": "check-ui.mjs green on all three engines in CI",
-      "verificationIds": ["AUTOMATED_BROWSER", "HOSTED_CI"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-2",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
+    },
+    {
+      "requirement": "Before changing behavior, resolve whether CS-2 remains the 768px header-offset defect or should be dispositioned separately from the historical 390px virtualizer-overlap fix. Preserve the three source acceptance-criterion strings and their order in this phase; no renaming, deletion, replacement or ticket creation is authorized by specification work.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "For the original 768px claim, run the currently registered browser harness in the pinned Linux Playwright environment with WebKit at an actual 768 CSS-pixel viewport; identify the exact rendered saved-workspace element and compare its measured geometry to an approved, named expected value. If no such header/table element or approved geometry exists in the current /saved UI, record NOT_REPRODUCED/NOT_APPLICABLE with DOM and design evidence and do not turn the 390px result into a pass.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "For the separately recorded 390px issue, use a separate named regression assertion and report it as historical related work, not as satisfaction of CS-2 AC1. Never broaden a selector, tolerance, or assertion to make either viewport pass.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "The current browser entry point is scripts/check-ui.ts, invoked by npm run test:ui, and the current route is /saved. The legacy check-ui.mjs/LeadTable source mentioned by historical evidence is not the current executable contract after repository consolidation. The eventual hosted result must identify the actual current CI step and exact SHA, not claim the removed legacy filename ran.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-2"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -198,13 +274,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "none",
-    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+    "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+    {
+      "requirement": "ARCHITECTURE_IMPACT: LOCAL_MODULE. The canonical implementation boundary is the authenticated Next.js /saved route and SavedLeads feature in apps/web; the observed browser harness is scripts/check-ui.ts. No API, database, matching, worker, provider or deployment change is implied. Inspect the actual current DOM/CSS before defining a geometry assertion; do not assume the deleted legacy table or CSS variable still exists.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
   ]
 }
 ```
@@ -220,13 +308,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
       "proposedChanges": [],
       "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+    },
+    {
+      "requirement": "NOT_APPLICABLE: the acceptance criteria require browser layout verification only; no database schema, saved-lead state, migration, retention or persistence change is authorized. Browser fixtures must use isolated synthetic test records.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
   ]
 }
 ```
@@ -243,9 +343,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
       "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
       "unknownContracts": []
+    },
+    {
+      "requirement": "NOT_APPLICABLE: this layout regression has no API request/response or persistence contract. The /saved route continues to use its existing owner-scoped API behavior; do not alter it to address a visual geometry issue.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-2", "docs/API-SURFACE.md"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    "docs/API-SURFACE.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -275,9 +391,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "Reuse tokens, atoms and composites through CS-95, CS-105 and CS-106; routes compose feature components and the canonical API client."
+    "Reuse tokens, atoms and composites through CS-95, CS-105 and CS-106; routes compose feature components and the canonical API client.",
+    {
+      "requirement": "Use the existing SavedLeads feature and shared responsive/layout tokens in the current /saved page. Do not introduce a one-off table implementation or new component solely to preserve a removed legacy surface; any future component change requires an approved design mapping.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["design/foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md"]
+  "sources": [
+    "design/foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -289,12 +421,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "requirements": [
     "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
     "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-    "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+    "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+    {
+      "requirement": "The geometry regression must remain keyboard-neutral and preserve semantic names/focus order of existing saved-workspace controls. Verify at least the Save/Details controls remain reachable and named in the browser run; manual screen-reader acceptance remains a separate human gate and is not inferred from this visual ticket.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
     "docs/FRONTEND-ARCHITECTURE.md",
-    "docs/TESTING.md"
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
   ]
 }
 ```
@@ -306,12 +451,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
-    "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+    "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
+    {
+      "requirement": "The source defect viewport is exactly 768 CSS px; run additional 390px only for the separately classified historical row-overlap control. Record window.innerWidth and documentElement.scrollWidth; do not substitute a nearby viewport or device scale factor for CSS width. Other responsive design acceptance is governed by the canonical saved-jobs ticket and is not broadened here.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
     "docs/FRONTEND-ARCHITECTURE.md",
-    "docs/TESTING.md"
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
   ]
 }
 ```
@@ -321,8 +479,27 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 ```json
 {
   "applicability": "APPLICABLE",
-  "requirements": ["Chromium", "Firefox", "WebKit"],
-  "sources": ["docs/TESTING.md"]
+  "requirements": [
+    "Chromium",
+    "Firefox",
+    "WebKit",
+    {
+      "requirement": "Execute Chromium, Firefox and WebKit in the repository-pinned Linux browser image, recording each engine/version and actual viewport. WebKit at 768px is the source target; the other engines are controls. An engine that does not launch is NOT_RUN, not PASS.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
+  ],
+  "sources": [
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -330,8 +507,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ```json
 {
-  "applicability": "NOT_APPLICABLE",
-  "reason": "Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata."
+  "applicability": "APPLICABLE",
+  "requirements": [
+    {
+      "requirement": "NOT_APPLICABLE: /saved is an authenticated candidate workspace and must remain non-indexable; this ticket must not add public metadata or expose saved-job data to crawlers.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
+  ],
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -347,9 +541,26 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
     "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    {
+      "requirement": "SECURITY_IMPACT: PRIVACY_PII, INPUT_VALIDATION. Actor is an authenticated candidate; only that candidate's saved records may appear in /saved. Browser regression fixtures use synthetic titles/companies and isolated owners. Do not capture real candidate/job notes, tokens, cookies or resume content in screenshots, traces, or logs. No authz changes are implied.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-2", "docs/SECURITY.md", "docs/PRIVACY.md"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    "docs/SECURITY.md",
+    "docs/PRIVACY.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -359,13 +570,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "Correlate safe request/command/execution identifiers; record failure categories and health without sensitive payloads."
+    "Correlate safe request/command/execution identifiers; record failure categories and health without sensitive payloads.",
+    {
+      "requirement": "No production telemetry change is required for a CSS/layout defect. Test output records browser engine, viewport, selector identity, measured geometry and expected geometry only; avoid recording rendered user data.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
   ]
 }
 ```
@@ -382,17 +605,36 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Reproduced in the Playwright Linux container, not guessed from Windows",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-2-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "For Linux WebKit only, the target exists exactly once; window.innerWidth is 768; actual and approved expected geometry are both finite; the measured offset equals the approved expected offset within only the pre-approved tolerance. Before-fix evidence must demonstrate the ticket's specific 768px mismatch to call the defect reproduced. If the current surface has no target or no approved expected geometry, the test fails closed as unresolved and cannot report CS-2 accepted. The 390px overlap result cannot satisfy this assertion.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted Playwright trace/result with exact commit, WebKit version, 768x900 CSS viewport, target identity, measured/expected geometry, approved tolerance and distinct 390px control result; no such current run is claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, UX and QA; Release reviewer for hosted evidence",
+          "releaseGate": "CS2_CURRENT_SURFACE_768PX_REPRODUCTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend, UX and QA; Release reviewer for hosted evidence",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "The owner has confirmed that the current authenticated /saved surface is the intended target and UX has approved the exact element/state and 768px expected geometry. A Linux Playwright container matching the repository lockfile can launch WebKit.",
+          "setup": "Create isolated synthetic owner data with one saved lead; launch the current Next.js app and scripts/check-ui.ts browser harness; set viewport to exactly 768 by 900 CSS pixels; capture browser name/version, window.innerWidth, target selector identity, element bounding box and computed expected geometry. Do not use real account data or historical removed source files as runtime fixtures.",
+          "procedure": "Run within the canonical integration CI environment: PostgreSQL with migrations, Redis, LocalStack SQS, built files worker/domain packages, production Next.js build/server and the isolated temporary test database created by scripts/check-ui.ts. In Linux WebKit, navigate to /saved and wait for the saved-workspace heading and the single UX-approved target element. Measure its actual geometry and the reference-derived expected position using the approved design contract. Chromium and Firefox remain suite-level controls at their existing configured viewports; the 768px defect assertion is WebKit-specific. Preserve the separate 390px row-stacking check as a distinct assertion and result.",
+          "assertion": "For Linux WebKit only, the target exists exactly once; window.innerWidth is 768; actual and approved expected geometry are both finite; the measured offset equals the approved expected offset within only the pre-approved tolerance. Before-fix evidence must demonstrate the ticket's specific 768px mismatch to call the defect reproduced. If the current surface has no target or no approved expected geometry, the test fails closed as unresolved and cannot report CS-2 accepted. The 390px overlap result cannot satisfy this assertion.",
+          "expectedResult": "A real current-surface 768px Linux-WebKit defect is either demonstrated with exact geometry for root-cause correction or explicitly reported as not reproduced; no inference from Windows or another viewport is accepted.",
+          "testName": "CS-2 Linux WebKit reproduces the approved saved-workspace 768px header geometry",
+          "testFileOrProcedureId": "scripts/check-ui.ts",
+          "fixtures": "Existing isolated check-ui owner fixture and one synthetic saved lead; approved UX target/geometry; no real credentials, resume data, external posting navigation or production services.",
+          "negativeCase": "Wrong viewport, missing/duplicate target, missing expected geometry, non-finite measurement, unapproved tolerance, wrong engine, no before-fix reproduction, or substituting the historical 390px overlap must fail as NOT_ACCEPTED; a healthy geometry positive control passes only at the approved expected offset.",
+          "evidenceArtifact": "Future redacted Playwright trace/result with exact commit, WebKit version, 768x900 CSS viewport, target identity, measured/expected geometry, approved tolerance and distinct 390px control result; no such current run is claimed.",
+          "releaseGate": "CS2_CURRENT_SURFACE_768PX_REPRODUCTION"
+        }
+      ]
     },
     {
       "ticketId": "CS-2",
@@ -400,17 +642,36 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Root cause named; the assertion is not widened",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-2-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "The review artifact names a concrete source-level cause supported by the before-fix trace and shows the unchanged assertion failing before and passing after the fix. A change that only changes expected value, selector, viewport, timeout, retry count or tolerance does not pass. A cause for the historical 390px WebKit race is not a root cause for the 768px ticket unless separate evidence demonstrates the same mechanism at the approved 768px target.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future independent code/test review containing before/after assertion identity or hash, root-cause source references and both viewport outcomes.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, QA and independent reviewer",
+          "releaseGate": "CS2_ROOT_CAUSE_WITH_UNCHANGED_ASSERTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend, QA and independent reviewer",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "The target defect and approved target geometry for AC1 are established; the exact assertion is checked into scripts/check-ui.ts before any implementation change.",
+          "setup": "Capture the failing pre-fix assertion from Linux WebKit at 768px and the separate 390px row-overlap control. Preserve the same fixture, selector, browser image, viewport, expected value and tolerance for before/after runs.",
+          "procedure": "Trace the failing 768px geometry to the responsible current layout rule/component; record a causal explanation referencing the measured values and source path. Make the smallest correction and run the identical browser procedure against the fixed revision without editing its assertion, selector, viewport or tolerance.",
+          "assertion": "The review artifact names a concrete source-level cause supported by the before-fix trace and shows the unchanged assertion failing before and passing after the fix. A change that only changes expected value, selector, viewport, timeout, retry count or tolerance does not pass. A cause for the historical 390px WebKit race is not a root cause for the 768px ticket unless separate evidence demonstrates the same mechanism at the approved 768px target.",
+          "expectedResult": "The 768px cause and correction are causally supported, and the exact assertion is unchanged across failing and passing revisions.",
+          "testName": "CS-2 root-cause fix passes the unchanged 768px browser assertion",
+          "testFileOrProcedureId": "scripts/check-ui.ts",
+          "fixtures": "Same synthetic owner/lead fixture and pinned browser environment as CS-2-AC1; source diff and redacted before/after traces.",
+          "negativeCase": "If no 768px failure can be demonstrated, no root cause can be claimed and the ticket remains unaccepted; assertion widening, 390px-only proof or unrelated CSS change fails review.",
+          "evidenceArtifact": "Future independent code/test review containing before/after assertion identity or hash, root-cause source references and both viewport outcomes.",
+          "releaseGate": "CS2_ROOT_CAUSE_WITH_UNCHANGED_ASSERTION"
+        }
+      ]
     },
     {
       "ticketId": "CS-2",
@@ -418,28 +679,54 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "check-ui.mjs green on all three engines in CI",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-2-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
           "type": "HOSTED_CI",
-          "expectedCheck": "CS-2-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "The exact reviewed SHA has a completed green integration job; the current named browser acceptance step executed npm run test:ui successfully with Chromium, Firefox and WebKit and no skipped suite engine; the job checkout SHA equals the submitted SHA. The CS-2-specific 768px defect assertion is required only in its target WebKit run, not duplicated across other engines unless separately approved. Missing step result, any skipped suite engine or a different SHA fails the criterion.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Release/system reviewer"
+          "evidenceRequired": "Future GitHub Actions exact-SHA run URL and job/step IDs, checked-out SHA, named browser-case output, engine versions, conclusions and artifact locator.",
+          "automationStatus": "PLANNED",
+          "owner": "QA and Release Manager",
+          "releaseGate": "CS2_EXACT_SHA_HOSTED_BROWSER_CI"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA and Release Manager",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "type": "HOSTED_CI",
+          "preconditions": "A reviewed implementation commit contains the CS-2 test and fix; its source is on the authorized branch and the normal required CI workflow runs without skip/continue-on-error/retry suppression.",
+          "setup": "Record the exact commit SHA, workflow run URL, integration job named 'Test CareerScope (integration — database, queue, storage, browsers)', Playwright version and per-engine execution evidence for the CS-2 scenario.",
+          "procedure": "Inspect the exact-SHA CI run and logs/artifact to confirm the full current browser suite ran in Linux Chromium, Firefox and WebKit, and that the CS-2-specific 768px geometry assertion ran in Linux WebKit only. Confirm scripts/check-ui.ts was invoked by npm run test:ui in the named browser-acceptance step and all required job steps completed. Compare the checked-out SHA in the job to the reviewed commit; do not infer from a green run on a parent or different SHA.",
+          "assertion": "The exact reviewed SHA has a completed green integration job; the current named browser acceptance step executed npm run test:ui successfully with Chromium, Firefox and WebKit and no skipped suite engine; the job checkout SHA equals the submitted SHA. The CS-2-specific 768px defect assertion is required only in its target WebKit run, not duplicated across other engines unless separately approved. Missing step result, any skipped suite engine or a different SHA fails the criterion.",
+          "expectedResult": "The current three-engine browser suite is green in hosted CI for the exact reviewed source revision, and the CS-2-specific 768px assertion is green in its WebKit target run.",
+          "testName": "hosted integration job runs CS-2 768px browser assertion on the exact commit",
+          "testFileOrProcedureId": ".github/workflows/ci.yml#integration/Test CareerScope (browser acceptance and axe accessibility — Chromium, Firefox, WebKit)",
+          "fixtures": "CI's existing synthetic owner/database fixtures and pinned Playwright service image; only redacted job metadata/artifacts are retained.",
+          "negativeCase": "Green CI on another SHA, only local browser success, skipped/missing WebKit, a swallowed child process exit or a historical run fails; genuine test failure must remain nonzero.",
+          "evidenceArtifact": "Future GitHub Actions exact-SHA run URL and job/step IDs, checked-out SHA, named browser-case output, engine versions, conclusions and artifact locator.",
+          "releaseGate": "CS2_EXACT_SHA_HOSTED_BROWSER_CI"
+        }
+      ]
+    },
+    {
+      "requirement": "TEST_STATUS: PLANNED. Extend the existing scripts/check-ui.ts browser scenario (do not create a parallel browser framework) with a specifically named CS-2 Linux WebKit 768px procedure after the owner/design target is resolved. This harness requires the integration environment: PostgreSQL and migrations, Redis, LocalStack SQS, the built files worker/domain packages, the production Next.js build and server, with its isolated temporary database and synthetic owner fixture. The CI lane provides these services and invokes npm run test:ui after build/startup. Bind setup to isolated synthetic owner data, assert that the intended element exists exactly once, assert measured top/height/overlap against approved expected geometry with an explicit approved tolerance, and capture Chromium/Firefox suite controls. A missing target or expected measurement must fail closed as unresolved rather than skip or pass.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-2", "docs/TESTING.md"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    "docs/TESTING.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -454,9 +741,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "masks": "Only unavoidable dynamic regions; no blanket widget masks.",
       "tolerance": "Owner-approved deterministic threshold is required; not invented in planning.",
       "evidence": "Future reference/render capture, dimensions, state, browser and independent approval."
+    },
+    {
+      "requirement": "Use design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png only as page context. It is not an exact 768px sticky-header baseline. No pixel baseline, selector, CSS custom property or numeric expected offset may be invented; obtain a named approved viewport/state/geometry reference before visual pass.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": ["design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md"]
+  "sources": [
+    "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -470,7 +773,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-2-AC1",
       "sourceText": "Reproduced in the Playwright Linux container, not guessed from Windows",
       "expectedResult": "Reproduced in the Playwright Linux container, not guessed from Windows",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-2",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -478,7 +781,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-2-AC2",
       "sourceText": "Root cause named; the assertion is not widened",
       "expectedResult": "Root cause named; the assertion is not widened",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-2",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -486,7 +789,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-2-AC3",
       "sourceText": "check-ui.mjs green on all three engines in CI",
       "expectedResult": "check-ui.mjs green on all three engines in CI",
-      "verificationIds": ["AUTOMATED_BROWSER", "HOSTED_CI"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-2",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     }
@@ -506,9 +809,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
     "Independent current-content review resolves specification/implementation findings before promotion.",
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+    "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+    {
+      "requirement": "Implementation DoD: owner disposition resolves the named-defect-versus-related-390px-fix ambiguity; an exact approved current /saved 768px target geometry exists; the Linux WebKit browser assertion reproduces the original failure before fix and passes after a root-cause fix without widened thresholds; Chromium/Firefox controls and isolated synthetic data pass; current harness changes are included in exact-SHA hosted CI; no user data is present in evidence. If the original defect is not reproducible, CS-2 remains unaccepted until the owner selects the record disposition through an authorized future ticket update.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/ai/quality-gates.md"]
+  "sources": [
+    "docs/ai/quality-gates.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -529,9 +848,24 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Current Node 24 cross-engine run and exact hosted CI locator covering the named viewport/engine assertion."
       ],
       "rule": "Future exact-content command results, independent review, docs and relevant service/manual acceptance; specification completion is not ticket promotion."
+    },
+    {
+      "requirement": "Required future evidence: source-bound before/after Linux Playwright run with WebKit at 768 CSS px, all three engine versions/results, exact element/geometry assertion, root-cause diff, test command and nonzero pass totals, exact hosted CI SHA/job/check URL, design/UX expected-geometry approval, and redacted synthetic-only artifacts. Existing 2026-09-21 runs are historical context only.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": ["docs/TESTING.md", ".ai/backlog.json#CS-2"]
+  "sources": [
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -541,15 +875,49 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "Review CS-2 problem and each criterion with Frontend.",
-    "Resolve only the recorded CS-2 specification/activation gaps before claiming readiness.",
-    "Inspect and change only modules permitted by the technical approach for Lead table header offset is wrong on Linux WebKit at 768px.",
-    "Implement and verify CS-2-AC1: Reproduced in the Playwright Linux container, not guessed from Windows",
-    "Implement and verify CS-2-AC2: Root cause named; the assertion is not widened",
-    "Implement and verify CS-2-AC3: check-ui.mjs green on all three engines in CI",
-    "Reconcile CS-2 documentation, redacted evidence and independent review before workflow promotion."
+    {
+      "requirement": "Keep the frozen source acceptance-criterion wording unchanged; treat its check-ui.mjs filename as historical after consolidation. The current executable equivalent is the named CI browser-acceptance step running npm run test:ui through scripts/check-ui.ts.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Obtain the explicit owner scope/disposition decision and UX approval of the current /saved target element/state and expected 768 CSS-pixel geometry; the saved-jobs design image is page context only.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Inspect SavedLeads markup/styles and establish the Linux WebKit 768px baseline using the approved target and geometry; preserve the separate 390px row-overlap check as a distinct historical control.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Only if the named 768px defect reproduces, identify its supported root cause and make the smallest permitted layout correction without changing selector, viewport, expected value, tolerance, or retry behavior.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Add or update the named scenario in scripts/check-ui.ts with isolated synthetic owner data; run the full browser suite on Chromium, Firefox, and WebKit, while asserting the CS-2-specific 768px geometry only in WebKit.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Review keyboard/responsive behavior and sanitized evidence; obtain the independent QA/UX and exact-SHA hosted CI results required by the ticket before any later workflow acceptance. Preserve releaseTarget 3.0.1 without inferring activation from releaseState UNSPECIFIED.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-2"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    ".ai/backlog.json#CS-2",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -583,9 +951,36 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Current Node 24 cross-engine run and exact hosted CI locator covering the named viewport/engine assertion."
       ],
       "actions": []
+    },
+    {
+      "requirement": "OWNER_DECISION_REQUIRED: choose whether CS-2 continues to target the unreproduced 768px offset or should be formally dispositioned separately from the historical 390px fix; no registry edit is made in Phase 3.25.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "HUMAN_VALIDATION: UX must approve the exact current saved-workspace 768px element/state/expected geometry because the approved saved-jobs image does not specify sticky-header measurements.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "HOSTED_REQUIRED: after any future authorized implementation, the exact commit must run the current browser CI lane on Linux with Chromium, Firefox and WebKit; historical CI run IDs do not satisfy this gate.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-2", ".ai/blocker-classification.json", "hostpending.txt"]
+  "sources": [
+    ".ai/backlog.json#CS-2",
+    ".ai/blocker-classification.json",
+    "hostpending.txt",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/TESTING.md",
+    "docs/PROJECT-STATE.md"
+  ]
 }
 ```
 
@@ -602,13 +997,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
       ],
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+    },
+    {
+      "requirement": "Risk: a 390px related fix or screenshot-only visual resemblance is misreported as satisfaction of a 768px source criterion. Recovery: preserve original AC and evidence, revert only an independently reviewed local layout change if regression is found, and keep the ticket unaccepted until the owner-approved scope and original exact assertion are satisfied. No data migration or production rollback is implicated.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
-    "docs/KNOWN-LIMITATIONS.md"
+    "docs/KNOWN-LIMITATIONS.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+    "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+    "apps/web/src/app/(app)/saved/page.tsx",
+    "apps/web/src/components/saved-leads.tsx",
+    "scripts/check-ui.ts",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PROJECT-STATE.md"
   ]
 }
 ```

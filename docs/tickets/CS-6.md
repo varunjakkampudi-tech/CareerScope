@@ -1,6 +1,6 @@
 # CS-6 — Frontend route architecture and auth boundary
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -49,7 +49,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -168,7 +171,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-6-AC2",
       "sourceText": "An unauthenticated request to a private route cannot render any private data, even briefly",
       "expectedResult": "An unauthenticated request to a private route cannot render any private data, even briefly",
-      "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+      "verificationIds": ["AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-6",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -176,7 +179,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-6-AC3",
       "sourceText": "Split from the shared-shell work so it does not block CS-13, CS-14, CS-16, CS-17 and CS-19 behind one large change",
       "expectedResult": "Split from the shared-shell work so it does not block CS-13, CS-14, CS-16, CS-17 and CS-19 behind one large change",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["MANUAL_PRODUCT"],
       "authority": ".ai/backlog.json#CS-6",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -213,7 +216,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -242,6 +248,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "requirement": "ARCHITECTURE_IMPACT: CROSS_MODULE. Existing app route-group layout composes AuthenticatedShell; useSession shares ['session']; ownerKey scopes private data. No global store, bespoke router, duplicate gate or new server auth system.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "AC1 has no new API contract. Reuse the existing GET /api/session contract through useSession; the route group is a client composition boundary, not a new server authorization mechanism. Private APIs continue to enforce server-derived ownership.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
@@ -254,7 +265,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -287,7 +301,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -313,7 +330,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "unknownContracts": []
     },
     {
-      "requirement": "EXISTING_CONTRACT: GET /api/session returns authenticated boolean and optional opaque owner digest/CSRF/session identity. Private API routes independently enforce server session ownership. Do not expose provider tokens or accept client-supplied owner for route data.",
+      "requirement": "EXISTING_CONTRACT: GET /api/session returns authenticated boolean and optional opaque owner digest/CSRF/session identity. This is the existing endpoint consumed by the shell, not a new endpoint; the source design map's empty existingEndpoints list means no endpoint is introduced by CS-6, not that /api/session is absent. Private API routes independently enforce server session ownership. Do not expose provider tokens or accept client-supplied owner for route data.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -326,7 +343,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -393,7 +413,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -462,7 +485,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -497,15 +523,16 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-6-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "All eight private routes inherit the same shell; canonical navigation hrefs resolve; session query key/provider is shared. No parallel routing map or per-page independent authentication boundary is introduced.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future path/import contract results; static checks alone do not prove rendered privacy.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_ROUTE_COMPOSITION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -533,23 +560,16 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-6-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-6-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Cold pending shows neutral loading; cold error safe retry; cold anonymous mounts zero private children, sends zero private feature requests and exposes no private marker in HTML/RSC/recorded DOM states before redirect. Normal cached authenticated navigation remains usable, not incorrectly expected to become pending. Authenticated positive control mounts intended real feature. OwnerB sees no ownerA marker after teardown. Genuine anonymous API reads fail401; cross-owner object reads return the route's canonical safe missing/denial contract, without private data.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future Chromium/Firefox/WebKit named browser results with safe sentinel outcomes, no screenshots of real personal data.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_RENDER_AND_CACHE_ISOLATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_BROWSER",
@@ -576,16 +596,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Split from the shared-shell work so it does not block CS-13, CS-14, CS-16, CS-17 and CS-19 behind one large change",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-6-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "CS-6 owns only route composition/session-render boundary and shared navigation wiring; dependent ticket feature contracts remain independently owned. Graph introduces no reverse hard edge requiring all feature implementation before boundary. Existing valid dependencies are preserved.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future source-linked architecture review with actual dependency findings; no ticket workflow promotions.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, Security and QA",
+          "releaseGate": "INDEPENDENT_ROUTE_FOUNDATION_SCOPE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "MANUAL_PRODUCT",
@@ -627,9 +648,26 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "masks": "Only unavoidable dynamic regions; no blanket widget masks.",
       "tolerance": "Owner-approved deterministic threshold is required; not invented in planning.",
       "evidence": "Future reference/render capture, dimensions, state, browser and independent approval."
+    },
+    {
+      "requirement": "CS-6 visual scope is limited to existing authenticated-shell boundary states and shared navigation: neutral pending state, service-error/retry state, anonymous redirect/no private shell, and authenticated shell/navigation. Do not require full Dashboard, Jobs or Applications screenshot parity; those feature surfaces belong to their own tickets and AC3 explicitly separates feature work. Compare only against an approved auth-boundary reference if one exists; otherwise record visual baseline as pending design approval and use functional state assertions without inventing pixel tolerances.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": ["design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md"]
+  "sources": [
+    "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
+    ".ai/backlog.json#CS-6",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
+  ]
 }
 ```
 
@@ -651,7 +689,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-6-AC2",
       "sourceText": "An unauthenticated request to a private route cannot render any private data, even briefly",
       "expectedResult": "An unauthenticated request to a private route cannot render any private data, even briefly",
-      "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+      "verificationIds": ["AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-6",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -659,7 +697,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-6-AC3",
       "sourceText": "Split from the shared-shell work so it does not block CS-13, CS-14, CS-16, CS-17 and CS-19 behind one large change",
       "expectedResult": "Split from the shared-shell work so it does not block CS-13, CS-14, CS-16, CS-17 and CS-19 behind one large change",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["MANUAL_PRODUCT"],
       "authority": ".ai/backlog.json#CS-6",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     }
@@ -694,7 +732,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -714,9 +755,31 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "sourceEvidence": "Historical evidence is retained above, not treated as fresh pass.",
       "required": [],
       "rule": "Future exact-content command results, independent review, docs and relevant service/manual acceptance; specification completion is not ticket promotion."
+    },
+    {
+      "requirement": "AC1 future local verification: `npm run test:unit` after registering `scripts/check-auth-route-boundary.test.mjs` in the explicit root test:unit file list; verify the CI quality lane invokes that root command. The test must fail on a private route outside the shared route group, a route-specific duplicate gate, a broken canonical navigation href, or a second session query/provider. This file/assertion is PLANNED until present and passing.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "AC2 future browser verification: extend `scripts/check-ui.ts` and execute `npm run test:ui` with the configured Chromium/Firefox/WebKit matrix; verify cold pending/error/anonymous no-mount/no-private-request/no-HTML-RSC marker, authenticated positive control, and isolated owner A to owner B cache behavior. Existing historical interactive evidence is not this run.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": ["docs/TESTING.md", ".ai/backlog.json#CS-6"]
+  "sources": [
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-6",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
+  ]
 }
 ```
 
@@ -735,6 +798,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Reconcile CS-6 documentation, redacted evidence and independent review before workflow promotion.",
     {
       "requirement": "Inventory actual private route files and route-group wrapping; verify direct links and navigation use the same boundary.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Add the service-free route/import contract test as scripts/check-auth-route-boundary.test.mjs, add that exact file to the explicit root test:unit command in package.json, and confirm the CI quality job invokes npm run test:unit; do not claim the future assertion exists until it is implemented and run.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
@@ -761,7 +829,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -794,9 +865,27 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "owner": null,
       "evidence": [],
       "actions": []
+    },
+    {
+      "requirement": "OWNER RELEASE GATE: backlog releaseTarget is null and releaseState is unspecified. The design coverage value RELEASE denotes design-scope ordering only and is not version assignment or activation approval. Preserve these source values until the product/release owner assigns a target and activation disposition. This gate does not prevent completing the technical specification, but prevents release classification/promotion.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-6", ".ai/blocker-classification.json", "hostpending.txt"]
+  "sources": [
+    ".ai/backlog.json#CS-6",
+    ".ai/blocker-classification.json",
+    "hostpending.txt",
+    "apps/web/src/app/(app)/layout.tsx",
+    "apps/web/src/components/authenticated-shell.tsx",
+    "apps/web/src/lib/session.ts",
+    "apps/web/src/components/dashboard-shell.tsx",
+    "apps/web/src/lib/query-cache.ts",
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
+  ]
 }
 ```
 
@@ -830,7 +919,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "apps/web/src/lib/session.ts",
     "apps/web/src/components/dashboard-shell.tsx",
     "apps/web/src/lib/query-cache.ts",
-    "scripts/check-ui.ts"
+    "scripts/check-ui.ts",
+    "docs/DESIGN-IMPLEMENTATION-MAP.md",
+    "package.json",
+    ".github/workflows/ci.yml"
   ]
 }
 ```
@@ -845,10 +937,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "size": "M",
       "complexity": 4,
       "releaseTarget": null,
-      "releaseState": "RELEASE",
+      "releaseState": "UNSPECIFIED",
       "sourceDisposition": "ACTIVE_R1",
       "deferredDecision": null,
-      "deliveryMode": "IMPLEMENT_NOW",
+      "deliveryMode": "UNDECIDED",
       "featureFlag": null,
       "holdReason": null,
       "implementationOrder": null,
@@ -866,8 +958,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ## Specification gate history
 
-| Code                     | Disposition | Original reason                                                                                                          | Owner         | Evidence                                                                                                 |
-| ------------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------- |
-| PARTIAL_DESIGN           | OPEN        | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.            | UX            | Ticket-specific state and viewport mapping or independently approved design N/A rationale.               |
-| RELEASE_TARGET_UNDECIDED | OPEN        | Source registry has no approved release assignment.                                                                      | Product owner | Explicit release assignment or owner-approved future-release disposition.                                |
-| EXACT_AC_TEST_BINDING    | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA            | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| PARTIAL_DESIGN            | OPEN        | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.            | UX                               | Ticket-specific state and viewport mapping or independently approved design N/A rationale.               |
+| RELEASE_TARGET_UNDECIDED  | OPEN        | Source registry has no approved release assignment.                                                                      | Product owner                    | Explicit release assignment or owner-approved future-release disposition.                                |
+| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

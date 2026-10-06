@@ -1,6 +1,6 @@
 # CS-5 — Consolidate the application into one canonical workspace
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -48,7 +48,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -143,7 +145,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-5-AC1",
       "sourceText": "The optional Pages export reads owner-scoped PostgreSQL data",
       "expectedResult": "The optional Pages export reads owner-scoped PostgreSQL data",
-      "verificationIds": ["AUTOMATED_SECURITY"],
+      "verificationIds": ["AUTOMATED_INTEGRATION"],
       "authority": ".ai/backlog.json#CS-5",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -190,7 +192,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -230,7 +234,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -262,7 +268,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -293,7 +301,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -379,7 +389,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -413,16 +425,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "The optional Pages export reads owner-scoped PostgreSQL data",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-5-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "A export contains only Aactive public postings, excludes Aarchived/B and all private sentinels. Each job key set equals title/company/location/source/postedAt/url; invalid/private/credential URLs omitted and allowed query keys only retained. B control exports B only. Missing owner refuses before DB query/output change; canonical files unchanged.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named disposable DB export outcomes and canonical-byte preservation; existing pure publicJobs tests are not SQL ownership proof.",
+          "automationStatus": "PLANNED",
+          "owner": "System Designer, Security, Infrastructure and QA",
+          "releaseGate": "OPTIONAL_PUBLIC_EXPORT_PRIVACY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
@@ -450,15 +463,16 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-5-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
+          "automationStatus": "PLANNED",
+          "owner": "System Designer, Security, Infrastructure and QA",
+          "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
@@ -486,15 +500,16 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "HOSTED_CI",
-          "expectedCheck": "CS-5-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "All root commands run without cd v2 or obsolete application/SQLite runtime. Consumed domain packages remain present and tested; zero active imports/build/Docker/CI references resolve to deleted source. Each required lane actually executes and succeeds; skipped or unavailable lanes are NOT_RUN, not PASS.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA hosted lane IDs/results, clean-install provenance and resolved path inventory; no deployment inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "System Designer, Security, Infrastructure and QA",
+          "releaseGate": "CANONICAL_CLEAN_CHECKOUT_PARITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
@@ -514,9 +529,39 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "releaseGate": "CANONICAL_CLEAN_CHECKOUT_PARITY"
         }
       ]
+    },
+    {
+      "requirement": "Local Node 24 evidence recorded 2/2 pure export tests and Chromium/Firefox/WebKit public-workspace checks on 2026-10-06. These checks do not prove PostgreSQL owner/status filtering, archived-row exclusion, isolated output-path behavior, obsolete-launcher absence under a future negative fixture, or exact-SHA hosted clean-install/build parity; the matching database/contract/hosted bindings remain PLANNED.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Planned CS-5-AC1 command: after adding scripts/export-mobile.integration.test.mjs to the root test:integration registration, run npm run test:integration under the disposable Postgres service. The named test must import a copied actual exporter rooted in a unique temporary tree and use throwaway owner IDs/data; it must preserve/hash canonical mobile-site outputs and contain no production credentials.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Planned CS-5-AC2 command: after adding scripts/check-single-workspace-contract.test.mjs to the explicit root test:unit registration, run npm run test:unit and confirm CI executes that unit-only step. The test must resolve tracked active executable/config references and include a negative fixture; historical docs are classified separately.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Planned CS-5-AC3 evidence: fresh npm ci plus canonical root quality/service/browser/recovery lanes on the exact hosted candidate SHA. The local pages:workspace:test run is a narrower static UI check and cannot substitute for this gate.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-5", "docs/TESTING.md"]
+  "sources": [
+    ".ai/backlog.json#CS-5",
+    "docs/TESTING.md",
+    "package.json",
+    "scripts/export-mobile.mjs",
+    "scripts/export-mobile.test.mjs",
+    "scripts/stage-pages.mjs",
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -539,7 +584,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-5-AC1",
       "sourceText": "The optional Pages export reads owner-scoped PostgreSQL data",
       "expectedResult": "The optional Pages export reads owner-scoped PostgreSQL data",
-      "verificationIds": ["AUTOMATED_SECURITY"],
+      "verificationIds": ["AUTOMATED_INTEGRATION"],
       "authority": ".ai/backlog.json#CS-5",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -589,7 +634,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -629,22 +676,27 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Implement and verify CS-5-AC3: The obsolete application wrapper and duplicate runtime are removed with root CI validation",
     "Reconcile CS-5 documentation, redacted evidence and independent review before workflow promotion.",
     {
-      "requirement": "Inventory workspace manifests/imports/scripts/deployment consumers before proving duplicate runtime obsolete.",
+      "requirement": "First verify the current root workspace, package manifests, imports, CI and deployment paths; the application is already consolidated, so do not repeat a migration or delete current static publication without a newly proven defect.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Specify cross-owner/archive/public-projection export regression in isolated module-relative fixture output tree.",
+      "requirement": "Confirm the remaining consumer inventory with a scoped tracked-file search; distinguish historical documentation/ticket evidence from active executable/config references. Preserve the supported static Pages publication path.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Port any still-required consumed domain behavior/tests and fix canonical references; remove only obsolete runtime consumers.",
+      "requirement": "For any remaining AC1 gap, add the planned disposable-PostgreSQL integration test using an isolated copied module/root and synthetic owner rows; assert owner, archive, exact-field and unchanged canonical-output invariants.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Validate clean install/build/typecheck/lint/unit/domain/required service and browser commands from root, with no stale generated output or real environment reliance.",
+      "requirement": "For any remaining AC2 gap, add the planned read-only repository-contract fixture and register it in the explicit root test:unit file list so test-registration and CI checks execute it.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Run root checks from a fresh checkout without stale dist/node_modules reliance; obtain exact-SHA hosted service, browser and recovery lane evidence for AC3 rather than treating registration or local checks as hosted proof.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -655,7 +707,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -688,9 +742,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "owner": null,
       "evidence": [],
       "actions": []
+    },
+    {
+      "requirement": "Source backlog releaseTarget is null and releaseState is unspecified; blocker classification ACTIVE_R1 is not a release version or activation decision. Product/release ownership must assign a target and activation for CS-5 or explicitly place it on HOLD/later release. Preserve the null/unspecified source values until that decision; do not infer from package version, historic tags, UAT status or implementation evidence. The combined CS-4/CS-5 decision is recorded in docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-5", ".ai/blocker-classification.json", "hostpending.txt"]
+  "sources": [
+    ".ai/backlog.json#CS-5",
+    ".ai/blocker-classification.json",
+    "hostpending.txt",
+    "package.json",
+    "scripts/export-mobile.mjs",
+    "scripts/export-mobile.test.mjs",
+    "scripts/stage-pages.mjs",
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -709,7 +779,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
     },
     {
-      "requirement": "Large deletion can lose consumed domain coverage; inventory/parity proof precedes removal. Preserve history rather than live duplicate code. Export regression runs against copied module-relative paths and synthetic PostgreSQL, never writes canonical mobile-site/jobs.json or publishes data. Repository rollback is reviewed commit revert, not data deletion.",
+      "requirement": "The root architecture is already consolidated; a repeated migration or deletion pass could remove required domain packages or a still-supported static artifact. Make no structural changes unless a current consumer demonstrates a defect. Export regression must use copied module-relative paths and synthetic PostgreSQL, never write canonical mobile-site/jobs.json or publish data. Recovery from any future source edit is a reviewed revert, not data deletion or destructive host action.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -723,7 +793,9 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
-    "docs/architecture/README.md"
+    "docs/architecture/README.md",
+    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```

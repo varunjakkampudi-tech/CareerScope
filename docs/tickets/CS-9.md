@@ -1,6 +1,6 @@
 # CS-9 — V2 tests in CI cover no database, queue or browser path
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -156,7 +156,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-9-AC1",
       "sourceText": "Postgres and Redis service containers run in CI with a CI-built environment file",
       "expectedResult": "Postgres and Redis service containers run in CI with a CI-built environment file",
-      "verificationIds": ["AUTOMATED_BROWSER", "HOSTED_CI"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-9",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -164,7 +164,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-9-AC2",
       "sourceText": "The six integration files execute rather than being skipped",
       "expectedResult": "The six integration files execute rather than being skipped",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_CONTRACT", "AUTOMATED_INTEGRATION"],
       "authority": ".ai/backlog.json#CS-9",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -172,7 +172,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-9-AC3",
       "sourceText": "A skipped suite is reported as not run, never as passed",
       "expectedResult": "A skipped suite is reported as not run, never as passed",
-      "verificationIds": ["AUTOMATED_BROWSER"],
+      "verificationIds": ["AUTOMATED_UNIT"],
       "authority": ".ai/backlog.json#CS-9",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -426,24 +426,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Postgres and Redis service containers run in CI with a CI-built environment file",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-9-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
           "type": "HOSTED_CI",
-          "expectedCheck": "CS-9-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "Postgres17.6-alpine, Redis7.4.5-alpine and LocalStack4.7.0 initialize; CI-generated synthetic environment is used. AOF enabled, appendfsync everysec, configured maxmemory and noeviction validated before suite. Missing/unhealthy service yields failure not skip.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA hosted job/step IDs, service versions and safe readiness/durability assertions; no configuration dumps.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_SERVICE_BACKED_INTEGRATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "HOSTED_CI",
@@ -471,15 +464,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-9-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "All nine current files are registered in the canonical command invoked by integration lane; concurrency equals1. Registration result is explicitly not execution evidence.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named contract result with exact command/path inventory, not service-backed TAP.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION"
+        },
+        {
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Every registered file contributes actual executed tests; zero silently skipped suites; nonzero exit/signal or service/teardown failure fails. All nine files remain included. Browser/axe is separately classified, never inferred from TAP.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future current-content service-backed per-file TAP counts plus child exit/signal and safe service versions; no hosted outcome inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -523,16 +526,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "A skipped suite is reported as not run, never as passed",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-9-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "Skipped-only or empty suite is NOT_RUN/not coverage PASS; nonzero exit/signal is failure even with passing prefix. Browser/axe skipped after integration failure remain NOT_RUN; PASS requires actual expected engine/test execution and zero failures.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named classification test results including positive control, skipped/empty/signal cases and three-engine separation.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_EXECUTION_REPORTING"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -577,7 +581,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-9-AC1",
       "sourceText": "Postgres and Redis service containers run in CI with a CI-built environment file",
       "expectedResult": "Postgres and Redis service containers run in CI with a CI-built environment file",
-      "verificationIds": ["AUTOMATED_BROWSER", "HOSTED_CI"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-9",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -585,7 +589,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-9-AC2",
       "sourceText": "The six integration files execute rather than being skipped",
       "expectedResult": "The six integration files execute rather than being skipped",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_CONTRACT", "AUTOMATED_INTEGRATION"],
       "authority": ".ai/backlog.json#CS-9",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -593,7 +597,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-9-AC3",
       "sourceText": "A skipped suite is reported as not run, never as passed",
       "expectedResult": "A skipped suite is reported as not run, never as passed",
-      "verificationIds": ["AUTOMATED_BROWSER"],
+      "verificationIds": ["AUTOMATED_UNIT"],
       "authority": ".ai/backlog.json#CS-9",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     }

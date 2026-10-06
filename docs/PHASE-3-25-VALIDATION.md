@@ -219,8 +219,50 @@ live browser/provider acceptance was implied by the added content regression.
 Final artifact commit resolves through git log for FINAL-REPORT/EXECUTION-STATE;
 after-commit generation/clean-tree evidence is reported only after observing it.
 
+## CS-2 vertical specification pass (2026-10-06)
+
+Node `v24.19.0`; starting checkpoint
+`c713a9def9f7f440761f542f9f5b73b8901326d8`.
+
+| Command                         | Result                                                                                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run tickets:spec:generate` | PASS; 0 changed files on final generation                                                                                                                     |
+| `npm run tickets:spec:check`    | PASS; 216 tickets, 906 source ACs, 52 authored binding procedures, 49 ACs with previously reviewed procedures, 860 ACs still unmapped, 0 whole specs complete |
+| `npm run tickets:spec:test`     | PASS; 46 passed, 0 failed, skipped, cancelled or todo                                                                                                         |
+
+The new CS-2 regression protects separation of the unreproduced 768px defect
+from the historically fixed 390px overlap. The exact procedures are PLANNED;
+they were not run as product/browser tests. A first overlapping test invocation
+read an intermediate policy snapshot and failed on protected refinement fields;
+after correcting the fixture-count expectation and running serially, the final
+Node 24 suite passed. A duplicate Node 22 invocation was interrupted and is not
+evidence. No hosted CI, runtime, UI, design-approval or production evidence was
+created. All owner/design/release blockers remain explicit and CS-2 whole-spec
+approval remains pending.
+
 All six frozen Phase3 input files and apps/packages/infra/workflows have zero
 diff. No product runtime change, provider/live-host operation, ticket promotion,
 push, merge, deployment or Phase3.5 initiation was performed. Historical CI
 links are not current hosted evidence. Future named assertions were not executed
 merely because their specification-content regressions passed.
+
+### CS-2 review correction and final validation
+
+The CS-2 regression protects separation of the unreproduced 768px defect from
+the historically fixed 390px overlap. Its exact procedures remain PLANNED;
+they were not executed as product/browser tests. Independent review first
+returned REVISE for a three-engine/WebKit-only assertion mismatch and stale
+checklist directions. Both were corrected in the ticket-specific checklist and
+AC3 procedure; the independent reviewer then approved authored content only.
+CS-2 itself remains DRAFT because the scope disposition and UX approval of
+expected 768px geometry are unresolved.
+
+Final serial Node 24 validation after correction: `npm run
+tickets:spec:generate` PASS; subsequent `npm run tickets:spec:check` PASS with
+zero drift, 216 tickets / 906 ACs / 52 authored procedures / 49 previously
+reviewed ACs / 860 ACs unmapped; `npm run tickets:spec:test` PASS (46 passed,
+0 failed/skipped/cancelled/todo); `npm run format:check` PASS; `git diff
+--check` PASS. This specification suite does not execute the planned browser
+behavior. No hosted CI, runtime, UI, UX approval or production evidence was
+created. An earlier transient targeted-test failure was a test-shape mismatch;
+it was corrected and the targeted test and final complete suite passed.

@@ -153,9 +153,9 @@ SSH exposure. No actual hosted run or live crash occurred in this review.
 | CS-1-AC1 | 01cd21c7e305c2301b0125bf9c9c3767ae38c2575d7d5a34e1e784a7adfa6ff5 | APPROVED       |
 | CS-1-AC2 | e159ff1508ee98caaebea78f28e5b9d6242468f0bee0e480868dfeed72fb336b | APPROVED       |
 | CS-1-AC3 | 9cde7ce4fd423807ad84de1ca0a551704c7d7e4400612b4b326d804cda5e4cba | APPROVED       |
-| CS-7-AC1 | 1eedd189312c01074140c9d1f2eb550102a87fe27a6395e3976e0e210e04c6f1 | APPROVED       |
+| CS-7-AC1 | 859c349d2999ed5c73e51ffb6edd1fcd63a76520926f80e8a8a55e321a3c04fe | APPROVED       |
 | CS-7-AC2 | bc2aece1a4666a097398e404564fb9f9b3242f959683fcccc47eb4f5668f1955 | APPROVED       |
-| CS-7-AC3 | 63adfe84802124b037a14832663dd91db685e20710c903c18dd52c5ccf6edbd2 | APPROVED       |
+| CS-7-AC3 | 121c1885a2c3a86599ac523cb9401cd3e8e8d521c06dc1101bdf0ec82ea0bcad | APPROVED       |
 | CS-9-AC1 | 8882a1fe18d18557d87d267763a4a3e7869e9d8ee714069083692cd471fc4cb0 | APPROVED       |
 | CS-9-AC2 | 701cfbb25f04cc5aeae7585c65561dbf246e0158111c426c1f9ed52db6247623 | APPROVED       |
 | CS-9-AC3 | d454d729eff419f08f654fa892959b23c46c8d8a9d273995d14c3aa466aafc9d | APPROVED       |
@@ -257,3 +257,129 @@ independently re-read and approved that ordered two-procedure group.
 All six procedures remain PLANNED, not executed. Whole-spec/phase approval is
 not granted. Named accessibility guidance influenced failure/limitation and
 human-evidence requirements only; no runtime accessibility fix was implemented.
+
+## CS-3 whole-specification content review
+
+The reviewer first returned REVISE for the old runbook's proxy-only prohibition,
+incorrect AC verification projection, and ambiguity around the stronger async
+canary. The current generated specification and operator note were corrected:
+AC2 now projects `LIVE_HOST` with the `LIVE_PROXY_TOPOLOGY_RECOVERY` gate;
+release disposition resolves to `ACTIVE_R1` / `MANUAL_GATE`; the historical
+warning is conditional on Caddy owning the namespace; and the canonical local
+fixture path is `infra/check-proxy-recovery.sh`. If no owner-approved safe
+canary exists, the frozen host observation may be recorded as PARTIAL, but the
+strengthened AC2 remains NOT_VERIFIED and the ticket cannot be accepted.
+
+The final independent read-only review returned APPROVED for the complete CS-3
+specification content. Both procedures remain PLANNED; the live host proof,
+canary, implementation, and release acceptance have not been executed. This
+content approval is not UAT/PROD acceptance or Phase 3.25 approval.
+
+| Item | Current content SHA-256 | Verdict | Reviewer |
+| ---- | ----------------------- | ------- | -------- |
+| CS-3-AC2 exact binding | e0c9557503fe19772c066f1a671c9e5d3615f44360771bc26a123b5d67e722e3 | APPROVED | /root/phase325_review |
+| CS-3 complete specification content | 5ab580a78008bee4bfd1a12fc4b80119aa8c74b832a995dbbe553ea3ac81df93 | APPROVED | /root/phase325_review |
+
+## CS-4 whole-specification and exact-binding review
+
+The independent reviewer first returned REVISE because the original planned
+assertions overstated the existing test suite: it inspected `git commit --only`
+but did not inspect the distinct `git add` call. The specification was revised
+to keep both complete AC assertions PLANNED, document the limited local 7/7
+result with runtime/source hashes, exclude the generic HTTP error model, and
+record the missing release target/activation as an owner decision. No runtime
+test implementation or publication action was performed.
+
+The final independent read-only review returned APPROVED for CS-4 content and
+its two exact test-binding plans. The release target remains null and
+activation unspecified in the source registry, so this does not make CS-4
+implementation-ready or release-ready. The separate future `git add`
+assertions remain PLANNED; the current 7/7 result does not cover them.
+
+| Item | Current content SHA-256 | Verdict | Reviewer |
+| ---- | ----------------------- | ------- | -------- |
+| CS-4-AC1 exact binding | 8bf172841d6973843d8794b117fb56ac21df2facd228e66299d2d6fea50bec03 | APPROVED | /root/phase325_review |
+| CS-4-AC2 exact binding | 572a00ed3f722d91de92d2f1ca0199c8a6b25f959e78d1aa8ff137e0a32621f8 | APPROVED | /root/phase325_review |
+| CS-4 complete specification content | Reviewer-approved; no ready receipt because release metadata gaps remain OPEN | APPROVED_CONTENT_ONLY | /root/phase325_review |
+
+The next CS-5 whole-specification pass initially returned REVISE because the
+release gate, future test commands/registration and current-state-first
+checklist were not fully projected. Those sections were corrected without
+changing runtime code or deleting static publication. The final independent
+read-only review returned APPROVED for CS-5 content; the three existing exact
+binding receipts remain unchanged. SQL ownership/integration, future contract
+checker execution and exact-SHA hosted clean-checkout evidence remain PLANNED.
+CS-5 `releaseTarget` remains null and activation remains unspecified, so no
+whole-spec readiness receipt is issued.
+
+| Item | Current content SHA-256 | Verdict | Reviewer |
+| ---- | ----------------------- | ------- | -------- |
+| CS-5-AC1 exact binding | a8996f79ded372f68c44f123a574db9f75f72036c9f39c7b2776c820c74eda80 | APPROVED | /root/phase325_review |
+| CS-5-AC2 exact binding | 5ea24a787af9008bde3ae2352ea6f3337773dd4bf2fc3e84cb4aa2dbdc44c0e9 | APPROVED | /root/phase325_review |
+| CS-5-AC3 exact binding | 99d29c244e563c182e08d842a49bcb9e6d05ffccc7db525b182cadabcb0c7d1a | APPROVED | /root/phase325_review |
+| CS-5 complete specification content | Reviewer-approved; no ready receipt because release metadata gaps remain OPEN | APPROVED_CONTENT_ONLY | /root/phase325_review |
+
+## CS-6 whole-specification content review
+
+The first independent review returned REVISE for four concrete projection
+issues: the design-scope `RELEASE` label could be confused with activation,
+visual regression scope exceeded the route/auth-boundary ticket, AC1 lacked an
+exact future test command and root CI registration, and an empty `existingEndpoints`
+list could be misread as absence of the existing `GET /api/session` contract.
+The refinement now separates the unresolved owner release assignment, narrows
+visual checks to shared-shell/auth states, specifies the planned
+`scripts/check-auth-route-boundary.test.mjs` registration in `test:unit`, and
+states that `GET /api/session` is reused with no new endpoint. All three
+previously reviewed AC binding plans remain PLANNED; no tests or runtime code
+were added.
+
+The revised complete specification was submitted for another independent
+read-only review. Its approval remains pending; no whole-spec readiness or
+release decision is claimed.
+
+## CS-7 whole-specification content review
+
+The first independent review returned REVISE. It found that historical AC2
+override/push language still leaked into the effective outcome/checklist; the
+current deployment workflow resolves `main` independently in downstream jobs,
+so a moving-main race can invalidate exact-SHA CI; and existing
+`deploy:gate:test` assertions did not cover transport, deadline expiry or
+cross-job revision identity. The content refinement now preserves frozen AC
+wording as historical input while defining no-bypass behavior, explicitly
+documents the moving-main source defect and required same-SHA invariant,
+distinguishes existing 34 local checks from planned transport/movement and
+hosted evidence, and records the safe substitute for AC3 as an owner/Release
+Manager decision. AC1 and AC3 binding reviews were returned to DRAFT because
+their substantive assertions changed. No workflow source, branch, CI dispatch,
+secret or deployment was changed or exercised.
+
+The updated catalog passes its specification checker. The full specification
+test suite had one stale aggregate-count assertion (actual generator totals
+were 47 reviewed exact bindings and 44 mapped acceptance criteria); expected
+values were corrected and a full clean rerun is pending. CS-7 second review
+also remains pending.
+
+### CS-7 final binding/content review correction
+
+The independent reviewer identified that an A-to-B main-ref move performed
+only after failed CI could not exercise downstream checkout behavior: the
+failed gate skips those jobs. The AC3 procedure now has three independent
+controls: failed CI for A (refusal/no effects), successful CI for A followed
+by main advancing to B before downstream jobs (same-SHA continuation or
+fail-closed before effects), and successful unchanged A (positive non-shipping
+control). Its negative case explicitly rejects a test that moves main only
+after failure. The reviewer independently approved the corrected CS-7 content
+and all three binding plans. This is scoped specification precision approval;
+all three tests remain PLANNED, the safe hosted substitute still needs owner /
+Release Manager acceptance, and no runtime or hosted execution is claimed.
+
+| Item | Current SHA-256 | Verdict |
+| --- | --- | --- |
+| CS-7-AC1 exact binding | `859c349d2999ed5c73e51ffb6edd1fcd63a76520926f80e8a8a55e321a3c04fe` | APPROVED |
+| CS-7-AC2 exact binding | `bc2aece1a4666a097398e404564fb9f9b3242f959683fcccc47eb4f5668f1955` | APPROVED |
+| CS-7-AC3 exact binding | `121c1885a2c3a86599ac523cb9401cd3e8e8d521c06dc1101bdf0ec82ea0bcad` | APPROVED |
+
+The current full specification suite subsequently passed 49/49 on Node
+24.19.0, including deterministic generation; the specification checker
+reported zero generated-file drift. The findings-count test expectation was
+updated from stale 629 to the actual 651; no finding was removed or weakened.

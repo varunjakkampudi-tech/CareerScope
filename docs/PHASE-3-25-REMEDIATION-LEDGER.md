@@ -69,3 +69,46 @@ and content-bound hashes.
 Updated totals:46/906 reviewed ACs,49 planned procedures,860 unmapped;
 608 OPEN,15 RESOLVED,7 RECLASSIFIED original findings. Whole-spec approval
 remains0/216. No other design gap/partial or release finding is silently closed.
+
+### CS-2 vertical specification pass
+
+Starting checkpoint: `c713a9def9f7f440761f542f9f5b73b8901326d8`.
+The source record confirms three separate facts: the 768px Linux WebKit
+header-offset criterion was not reproduced by the recorded Chromium/Firefox
+measurements and WebKit failed earlier at 390px; a distinct 390px virtualizer
+row-overlap issue was root-caused and historically fixed; the current canonical
+surface is `/saved` via `SavedLeads`, not the removed legacy `LeadTable`.
+
+Authored a ticket-specific CS-2 refinement covering current route/module
+boundaries, no API/data mutation, private test fixtures, narrow-screen and
+keyboard constraints, CI provenance and a fail-closed procedure for all three
+frozen ACs. The current saved-jobs screenshot was inspected; it is approved page
+context but contains no 768px sticky-header geometry. Design remains
+`DESIGN_GAP`, and source `releaseTarget: 3.0.1` is preserved while the
+projection's `releaseState: UNSPECIFIED` is not misrepresented as activation.
+`docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md` records the single genuine scope
+decision and its evidence dependencies. Backlog status/ACs,
+workflow-migration evidence and runtime files were not edited.
+
+The first scoped independent pass returned REVISE; it required aligning the
+AC3 procedure with a WebKit-only 768px assertion, while retaining the full
+three-engine suite, and explicitly mapping historical `check-ui.mjs` AC text to
+the current `scripts/check-ui.ts` / `npm run test:ui` path in the checklist.
+Those corrections are applied. The independent reviewer approved the authored
+CS-2 content after re-review; this is not a whole-ticket approval. CS-2 remains
+DRAFT and is excluded from all approval counts due to the genuine scope and UX
+gates. The exact AC procedures remain `PLANNED`; no browser/hosted run was
+executed. Source release target `3.0.1` is preserved; unspecified activation is
+not counted as another owner decision.
+
+Validation on Node `v24.19.0`: `npm run tickets:spec:generate` PASS with zero
+changed files on the final run; `npm run tickets:spec:check` PASS at 216
+tickets / 906 ACs / 52 authored procedures / 49 criteria with previously
+reviewed procedures / 860 unmapped ACs; `npm run tickets:spec:test` PASS, 46
+tests, zero failures/skips/cancellations/todos. An earlier concurrent test run
+overlapped a policy correction and failed on an intermediate invalid-section
+snapshot; a subsequent serial run exposed the stale authored-binding count,
+which was corrected, and the final serial Node 24 run passed. The first
+interrupted Node 22 duplicate run is not validation evidence. Whole-spec
+approval remains `0/216`; no ticket promotion, push, merge, deployment or
+runtime implementation occurred.

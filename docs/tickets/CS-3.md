@@ -1,6 +1,6 @@
 # CS-3 — Proxy restart strands every service behind a healthy-looking 502
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
 
 ## 1. identity
 
@@ -61,9 +61,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "If the web server in front of everything crashes, the whole site goes down while every internal health check still reports fine. Nobody is told. Fixing this means it either recovers by itself or you find out immediately."
+    "If the web server in front of everything crashes, the whole site goes down while every internal health check still reports fine. Nobody is told. Fixing this means it either recovers by itself or you find out immediately.",
+    {
+      "requirement": "Protect candidate access and operational availability by keeping the shared network namespace independent from Caddy process/container replacement, and by exposing an actionable alert if the origin remains unavailable after bounded recovery. Container-local health alone is not user-visible availability.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-3"]
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -162,7 +174,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-3-AC1",
       "sourceText": "A Caddy crash recovers without operator action, or is detected and alerted",
       "expectedResult": "A Caddy crash recovers without operator action, or is detected and alerted",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_UNIT"],
       "authority": ".ai/backlog.json#CS-3",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -170,7 +182,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-3-AC2",
       "sourceText": "Proven by killing Caddy and observing the result",
       "expectedResult": "Proven by killing Caddy and observing the result",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["LIVE_HOST"],
       "authority": ".ai/backlog.json#CS-3",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -180,17 +192,22 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "A controlled Caddy crash restarts only proxy under Docker restart policy without replacing network-anchor or dependent service namespaces. Verify origin/API and a benign owned queue/worker operation recover; container health alone is insufficient.",
+      "requirement": "On an approved controlled Caddy termination, Docker restarts only the proxy; network-anchor and dependent container namespace identities remain stable. Verify public origin, web route and GET /api/health (which must reach PostgreSQL via SELECT 1) recover; a green container health indicator alone is insufficient.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Detection remains defense in depth: consecutive failures confirm outage before recovery, cooldown suppresses thrash, failed restart alerts, recovery alert fires once. Do not call a stub monitor test proof that namespace lifetime or deployed recovery works.",
+      "requirement": "The scheduled detector must treat a successful public GET /api/health response with JSON status=ok as healthy; a failed request or non-ok response increments consecutive failures. One failure below PROXY_CONFIRM_THRESHOLD causes no restart/alert; reaching threshold invokes the configured restart procedure no more than once inside PROXY_COOLDOWN_SECONDS; recovery and failed recovery emit the documented alerts.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Anchor replacement is a separate deliberate full-stack recreation procedure, never an unattended proxy recovery or permission to remove volumes. Current restart-stack.sh restarts proxy only; older documents describing sequential stack restarts are historical.",
+      "requirement": "The frozen AC2 only requires killing Caddy and observing the result. This specification strengthens the planned proof with a disposable Compose continuity check and, for live-host acceptance, a pre-existing owner-approved non-mutating synthetic async canary; this added async check is not frozen source wording. Do not enqueue candidate-bearing or externally dispatched work in production. If no safe canary is approved, record any completed frozen host observation separately as PARTIAL, mark strengthened AC2 verification NOT_VERIFIED, and do not accept the ticket or claim async continuity. The frozen host observation still requires its origin/API/recovery result and all required topology evidence.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Anchor replacement is a separate deliberate full-stack recreation procedure, never an unattended proxy recovery or permission to remove volumes. Current infra/restart-stack.sh restarts proxy only; full-stack recreation is an operator recovery path after bounded recovery failure, not a passing proxy-only test.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -292,7 +309,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "unknownContracts": []
     },
     {
-      "requirement": "EXISTING_CONTRACT: readiness uses real origin and /api/health plus benign owned queue operation, not a new HTTP route. Safe operator report records revision, namespace identity and probe outcomes only.",
+      "requirement": "EXISTING_CONTRACT: unauthenticated GET /api/health is served by apps/api/src/app.ts, runs SELECT 1 against PostgreSQL, then returns {status:'ok', version}; the API listens on 127.0.0.1:5390. The external Caddy origin and the internal 127.0.0.1:5280 web route are probes, not new API contracts. No new route, request body, database mutation or public port is introduced.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -377,7 +394,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
     "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
     {
-      "requirement": "SECURITY_IMPACT: SECRETS, PRIVACY_PII, AUDIT. Only approved edge ports80/443 published by anchor; private services bind loopback. Least-privilege observer records container/namespace identifiers and safe health status, never env dumps, keys, user records, tokens or raw logs.",
+      "requirement": "SECURITY_IMPACT: AVAILABILITY, SECRETS, PRIVACY_PII, ADMIN_PRIVILEGE. Trust boundary is the host operator/systemd service and the public origin; no container gains Docker-socket or host-root control. Candidate owns application data; recovery probes are unauthenticated health only and must not read or mutate candidate data. Host operator authorization is required for a live crash window and docker control. Publish only anchor edge ports 80/443; keep PostgreSQL/Redis/LocalStack/API/workers private. Do not collect environment dumps, keys, tokens, raw candidate payloads, resume files or unrelated logs. Record only redacted revision, service/namespace identifiers, timestamps and probe outcomes; preserve alerts/incident evidence under host retention policy.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -434,16 +451,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "A Caddy crash recovers without operator action, or is detected and alerted",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-3-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "Healthy probe causes zero restart/alerts; first failure below threshold causes zero restart; confirmed outage invokes exactly one recovery; inside cooldown no second restart; elapsed cooldown permits retry; failed restart is alerted; recovery announces once then healthy silence.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named fixture results and controlled negative proof; no live recovery inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure, Security and QA",
+          "releaseGate": "LOCAL_PROXY_DETECTION_NOT_LIVE_NAMESPACE_PROOF"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -470,38 +488,57 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Proven by killing Caddy and observing the result",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-3-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "LIVE_HOST",
+          "expectedCheck": "Preflight evidence matches the approved exact-SHA topology; anchor and dependent namespace identities are unchanged after proxy-only termination; proxy restart count increases and Caddy rejoins the anchor; public origin returns its expected success response, GET /api/health returns HTTP 200 with status=ok, and the pre-existing approved synthetic async canary reaches its specified success state inside the owner-approved window. Host publication remains only the intended edge ports 80/443; PostgreSQL/Redis/LocalStack/API/workers are not published. Any preflight mismatch, private-port publication, namespace change, unsuccessful probe/canary, recovery outside approved bounds or missing alert on failed recovery is FAIL; SSH/operator access is not disabled as a test workaround.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future operator-signed exact-revision approval/window record; redacted pre/post namespace IDs, port-binding evidence, timer state, restart count, origin/API/canary observations and timestamps; preserve first failure and rollback result. Historical host run is not current proof.",
+          "automationStatus": "PLANNED",
+          "owner": "Host operator, System Designer, Security and QA",
+          "releaseGate": "LIVE_PROXY_TOPOLOGY_RECOVERY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "LIVE_HOST",
-          "preconditions": "Host operator separately approves controlled Caddy crash window for exact deployed revision; healthy origin/API/owned async operation baseline and rollback/recovery plan exist. No action is executed during specification phase.",
-          "setup": "Record safe proxy/anchor/dependent container and namespace identifiers, restart counts and externally observed application/container edge publication. Separately classify approved host-management exposure under existing firewall policy. Use synthetic owned operation with no real candidate data.",
-          "procedure": "Operator terminates only the resolved Caddy container, never anchor; observe automatic Docker proxy restart, namespace identity and origin/API/owned worker operation after recovery within a pre-approved measured window. Record failing observations as failures, not retried-away success.",
-          "assertion": "Anchor namespace identity remains unchanged; every dependent stays in it; proxy restarts and rejoins it; real origin/API and benign owned async operation succeed without manual rejoin/full restart. Application/container host-publication remains only edge80/443, excluding database/Redis/LocalStack/API/worker ports. Separately classify approved host-management SSH exposure under reviewed firewall policy, never require disabling operator access. If recovery fails, capture alert/escalation and retain FAIL rather than claiming root-cause elimination.",
+          "preconditions": "Host operator records explicit approval for a bounded maintenance window against the exact deployed revision and identifies the rollback operator. Before disruption, public origin and GET /api/health are healthy; the recovery timer is active; Compose confirms network-anchor owns the namespace and edge publication; docker inspect confirms proxy and dependents share the anchor network mode, only intended edge ports are published, and no DB/Redis/LocalStack/API/worker host ports are published. A non-mutating synthetic async canary must already be approved and available; otherwise this AC cannot pass. No action is executed during specification phase.",
+          "setup": "Record the approved window identifier and its owner-defined start/end bounds (do not invent a duration), exact deployed SHA, redacted container IDs, network-anchor namespace ID, proxy/dependent namespace IDs, proxy restart count, Compose port bindings, timer state, external origin status, API readiness and the approved synthetic canary's pre-crash state. Exclude credentials, environment values, candidate records and payloads.",
+          "procedure": "At the approved window, capture the healthy baseline; resolve the Caddy container from the exact deployment Compose project and terminate only that container using the reviewed operator procedure (never network-anchor). Observe Docker restart count and proxy rejoin, compare anchor/dependent namespace IDs with baseline, poll the public origin and GET /api/health and observe the already-running approved synthetic async canary through the owner-approved window bounds. Record first failure and final state; do not retry a failed proof into a pass. If preflight differs from the approved record, abort before termination. If recovery fails, follow the separately documented operator rollback/recovery path and retain the failed result.",
+          "assertion": "Preflight evidence matches the approved exact-SHA topology; anchor and dependent namespace identities are unchanged after proxy-only termination; proxy restart count increases and Caddy rejoins the anchor; public origin returns its expected success response, GET /api/health returns HTTP 200 with status=ok, and the pre-existing approved synthetic async canary reaches its specified success state inside the owner-approved window. Host publication remains only the intended edge ports 80/443; PostgreSQL/Redis/LocalStack/API/workers are not published. Any preflight mismatch, private-port publication, namespace change, unsuccessful probe/canary, recovery outside approved bounds or missing alert on failed recovery is FAIL; SSH/operator access is not disabled as a test workaround.",
           "expectedResult": "Current deployed topology proves proxy crash does not strand dependents; a monitor-only success cannot pass this namespace acceptance requirement.",
           "testName": "controlled Caddy crash preserves stable anchor and private dependent reachability",
           "testFileOrProcedureId": "CS-3-LIVE-STABLE-ANCHOR-CRASH",
-          "fixtures": "Operator-approved current deployment, synthetic owned async operation, safe container/namespace observation and independent external port probe; no volume or credentials mutation.",
+          "fixtures": "Operator-approved exact-SHA deployment and window record, already-approved non-mutating synthetic async canary, redacted Docker inspect/Compose topology evidence, external origin probe and readiness response; no volume or credentials mutation.",
           "negativeCase": "A proxy-owned namespace or false-positive container health with failing origin/API/async probe must fail; pre-crash healthy controls prevent preexisting outage being called recovery.",
-          "evidenceArtifact": "Future operator-signed exact-revision safe pre/post namespace and port evidence, actual crash/restart times and health/async result; historical host run is not current proof.",
+          "evidenceArtifact": "Future operator-signed exact-revision approval/window record; redacted pre/post namespace IDs, port-binding evidence, timer state, restart count, origin/API/canary observations and timestamps; preserve first failure and rollback result. Historical host run is not current proof.",
           "reviewer": "Host operator, System Designer, Security and QA",
           "releaseGate": "LIVE_PROXY_TOPOLOGY_RECOVERY",
           "testStatus": "PLANNED",
           "reviewStatus": "REVIEWED"
         }
       ]
+    },
+    {
+      "requirement": "AC1's local positive path is the existing check-proxy-recovery fixture: healthy probe yields zero restarts; first bad probe below threshold yields zero restart/alert; confirmed outage invokes one restart, cooldown blocks a repeat, failed restart alerts, and healthy recovery announces once. Keep this test as detection/recovery-logic evidence only.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "AC2's planned host procedure requires a preapproved window and healthy baseline, terminates only Caddy, checks anchor and dependent namespace identity, confirms the restarted proxy and public origin, web route and API readiness return within the measured policy window, and retains failure output. The test fails if only container health passes while origin/API remains unavailable. No deployed result exists in this Phase 3.25 branch.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-3", "docs/TESTING.md"]
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    "docs/TESTING.md",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -524,7 +561,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-3-AC1",
       "sourceText": "A Caddy crash recovers without operator action, or is detected and alerted",
       "expectedResult": "A Caddy crash recovers without operator action, or is detected and alerted",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_UNIT"],
       "authority": ".ai/backlog.json#CS-3",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -532,7 +569,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-3-AC2",
       "sourceText": "Proven by killing Caddy and observing the result",
       "expectedResult": "Proven by killing Caddy and observing the result",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["LIVE_HOST"],
       "authority": ".ai/backlog.json#CS-3",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     }
@@ -554,7 +591,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
     "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
     {
-      "requirement": "Namespace owner is stable across Caddy crash; only80/443 application/container ports are host-published by edge anchor, with approved host-management exposure separately classified; real origin/API and owned async operation recover without manual namespace rejoin; detection negative cases pass. Hosted current-revision crash observation is required for production acceptance, not planning approval.",
+      "requirement": "Implementation DoD: Compose network-anchor is sole namespace owner and sole publisher of application edge ports 80/443; private services have no host-published ports; Caddy-only restart does not replace anchor/dependent namespace identity; detector threshold, cooldown and success/failure alerts satisfy their named assertions; no database migration or application data mutation is introduced. Exact-SHA hosted Caddy crash observation and operator evidence remain production acceptance gates, not required evidence that a future specification test has already passed.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -588,9 +625,32 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Controlled live restart/recovery observation, 502 protection, alert output, and rollback-safe host evidence."
       ],
       "rule": "Future exact-content command results, independent review, docs and relevant service/manual acceptance; specification completion is not ticket promotion."
+    },
+    {
+      "requirement": "Current source has network-anchor owning the shared namespace and publishing edge ports 80/443; proxy, PostgreSQL, Redis, LocalStack, API, web and workers join that namespace, with private service listeners bound to loopback. recover-proxy.sh and its systemd service/timer implement thresholded public-origin detection, bounded proxy recovery, cooldown and alerts; check-proxy-recovery.sh stubs prove only detector state transitions, not Docker namespace continuity.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "The frozen evidence contains conflicting host timelines: an earlier 2026-09-28 entry says no recovery unit was installed, while a later 2026-09-29 entry records a successful deployed proof. Preserve both as historical, neither establishes the exact current deployed revision. The blockedReason requires deployed-host observation; currentStep mentions backup work unrelated to CS-3 and is not an acceptance criterion. Do not convert either historical result into current evidence or edit the source registry in Phase 3.25.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Retain current-source Compose validation, named local fixture output and (if implemented) disposable Compose crash test separately from a redacted operator-signed exact-deployed-SHA record. The live record must include pre/post anchor and dependent namespace IDs, proxy restart count, origin/web/API status and timestamps; no secret values, candidate data or raw database output.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": ["docs/TESTING.md", ".ai/backlog.json#CS-3"]
+  "sources": [
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-3",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -600,34 +660,39 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "Review CS-3 problem and each criterion with Infrastructure.",
-    "Resolve only the recorded CS-3 specification/activation gaps before claiming readiness.",
-    "Inspect and change only modules permitted by the technical approach for Proxy restart strands every service behind a healthy-looking 502.",
-    "Implement and verify CS-3-AC1: A Caddy crash recovers without operator action, or is detected and alerted",
-    "Implement and verify CS-3-AC2: Proven by killing Caddy and observing the result",
-    "Reconcile CS-3 documentation, redacted evidence and independent review before workflow promotion.",
     {
-      "requirement": "Trace merged Compose namespace/port contract for every production service; distinguish edge publication from private loopback endpoints.",
+      "requirement": "Reconcile the frozen source history against current Compose, scripts and runbook; explicitly retain the 2026-09-28/09-29 host entries as historical, and do not copy the unrelated backup currentStep into CS-3 acceptance.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Specify isolated threshold/cooldown/failure/recovery controls and stable-anchor crash test with paired pre/post health.",
+      "requirement": "Review infra/compose.production.yml and verify network-anchor owns the shared namespace and only publishes edge ports 80/443; all private services remain loopback/private and no database/network data changes are implied.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Prepare operator-approved controlled hosted Caddy crash procedure, rollback plan, safe probes and evidence collection; do not execute it in specification phase.",
+      "requirement": "Run the existing infra/check-proxy-recovery.sh fixture and map each threshold, cooldown, alert and failure assertion to AC1 without claiming real namespace or host recovery.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Reconcile older runbook restart-stack assumptions to current proxy-only script in future implementation documentation without fabricating current host acceptance.",
+      "requirement": "Keep current GET /api/health response and 127.0.0.1:5280 web-origin probes as the service contract; do not add a route or use candidate-bearing work as a live canary.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Specify a separate disposable Compose crash test for anchor/dependent identity and a human-approved live-host Caddy-only crash procedure with pre/post health, rollback and redaction; never terminate network-anchor or touch volumes.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Require exact deployed-revision evidence and independent Infrastructure/Security/QA review before any later workflow acceptance; preserve releaseTarget 3.0.1 and the source-classified ACTIVE_R1 disposition while keeping production deployment separately gated by exact production evidence.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
+    ".ai/backlog.json#CS-3",
     ".ai/backlog.json#CS-3",
     "infra/compose.production.yml",
     "infra/restart-stack.sh",
@@ -679,9 +744,28 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "source": "hostpending.txt#CS-3"
         }
       ]
+    },
+    {
+      "requirement": "HUMAN/EXTERNAL GATE: Host operator approves a maintenance window, confirms exact deployed revision and healthy baseline, and follows the CS-3 host runbook to terminate only the Caddy container. The historical warning against a proxy-only restart applies if Caddy owns the shared namespace; current-source Caddy-only disruption is permitted only after proving network-anchor owns the namespace and every dependent shares it. Abort if deployed topology differs. Capture namespace identities, restarts, public origin, web and API probes, timer/service alerts and any failure output; never restart/replace the anchor alone or mutate persistent volumes.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "PRODUCTION ACCEPTANCE: exact deployed-SHA proof remains required even if local stubs and disposable Compose tests pass. Historical 2026-09-29 host evidence is not current deployment evidence.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-3", ".ai/blocker-classification.json", "hostpending.txt"]
+  "sources": [
+    ".ai/backlog.json#CS-3",
+    ".ai/blocker-classification.json",
+    "hostpending.txt",
+    "infra/compose.production.yml",
+    "infra/restart-stack.sh",
+    "infra/recover-proxy.sh",
+    "infra/check-proxy-recovery.sh",
+    "docs/OPERATIONS/PROXY-RECOVERY.md"
+  ]
 }
 ```
 
@@ -700,7 +784,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
     },
     {
-      "requirement": "Crash proof can interrupt availability; require operator-approved window and healthy baseline. If automatic recovery fails, use reviewed deliberate full recreation retaining volumes, never delete database/keys, prune Docker, change firewall globally or repeatedly restart within cooldown. Preserve failure evidence and halt escalation.",
+      "requirement": "Crash proof can interrupt availability; require operator-approved window and healthy baseline. If automatic proxy recovery fails, preserve failure evidence and alert; use only the separately reviewed deliberate recreation procedure retaining all volumes and keys. Never delete database/keys, prune Docker, change firewall globally, restart the anchor alone or loop retries inside cooldown.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -729,10 +813,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "size": "L",
       "complexity": 4,
       "releaseTarget": "3.0.1",
-      "releaseState": "UNSPECIFIED",
+      "releaseState": "ACTIVE_R1",
       "sourceDisposition": "ACTIVE_R1",
       "deferredDecision": null,
-      "deliveryMode": "UNDECIDED",
+      "deliveryMode": "MANUAL_GATE",
       "featureFlag": null,
       "holdReason": null,
       "implementationOrder": null,
@@ -746,7 +830,6 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ## Specification gate history
 
-| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                  | Disposition | Original reason                                                                                                          | Owner | Evidence                                                                                                 |
+| --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
+| EXACT_AC_TEST_BINDING | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

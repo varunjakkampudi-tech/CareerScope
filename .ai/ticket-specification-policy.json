@@ -39,6 +39,95 @@
     }
   ],
   "ticketRefinements": {
+    "CS-2": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-2",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+        "apps/web/src/app/(app)/saved/page.tsx",
+        "apps/web/src/components/saved-leads.tsx",
+        "scripts/check-ui.ts",
+        "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+        "docs/TESTING.md",
+        "docs/PROJECT-STATE.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The backlog userProblem sentence is the original report, not verified current behavior: the recorded Linux Chromium/Firefox measurements did not reproduce its 768px header offset, and WebKit failed earlier on a different 390px row-overlap assertion. That separate overlap was traced to stale virtualizer measurement across a compact/card layout change and historically fixed with deferred remeasurement. Neither the historical 390px fix nor those runs prove the 768px acceptance criterion; do not present the original report as a currently reproduced defect."
+        ],
+        "value": [
+          "Prevent a false-positive closure of a browser-specific layout defect: maintain a reproducible, viewport-specific assertion against the current candidate saved-workspace surface, and require an explicit owner disposition if the named legacy surface/defect no longer exists."
+        ],
+        "functionalRequirements": [
+          "Before changing behavior, resolve whether CS-2 remains the 768px header-offset defect or should be dispositioned separately from the historical 390px virtualizer-overlap fix. Preserve the three source acceptance-criterion strings and their order in this phase; no renaming, deletion, replacement or ticket creation is authorized by specification work.",
+          "For the original 768px claim, run the currently registered browser harness in the pinned Linux Playwright environment with WebKit at an actual 768 CSS-pixel viewport; identify the exact rendered saved-workspace element and compare its measured geometry to an approved, named expected value. If no such header/table element or approved geometry exists in the current /saved UI, record NOT_REPRODUCED/NOT_APPLICABLE with DOM and design evidence and do not turn the 390px result into a pass.",
+          "For the separately recorded 390px issue, use a separate named regression assertion and report it as historical related work, not as satisfaction of CS-2 AC1. Never broaden a selector, tolerance, or assertion to make either viewport pass.",
+          "The current browser entry point is scripts/check-ui.ts, invoked by npm run test:ui, and the current route is /saved. The legacy check-ui.mjs/LeadTable source mentioned by historical evidence is not the current executable contract after repository consolidation. The eventual hosted result must identify the actual current CI step and exact SHA, not claim the removed legacy filename ran."
+        ],
+        "outOfScope": [
+          "Do not silently retitle/re-scope CS-2, change source acceptance criteria, create a successor ticket, restore the removed LeadTable implementation, or claim the 390px fix satisfies the 768px issue. Any such ticket-record decision is deferred to the explicit owner disposition and a later authorized registry change."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE. The canonical implementation boundary is the authenticated Next.js /saved route and SavedLeads feature in apps/web; the observed browser harness is scripts/check-ui.ts. No API, database, matching, worker, provider or deployment change is implied. Inspect the actual current DOM/CSS before defining a geometry assertion; do not assume the deleted legacy table or CSS variable still exists."
+        ],
+        "apiContract": [
+          "NOT_APPLICABLE: this layout regression has no API request/response or persistence contract. The /saved route continues to use its existing owner-scoped API behavior; do not alter it to address a visual geometry issue."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: the acceptance criteria require browser layout verification only; no database schema, saved-lead state, migration, retention or persistence change is authorized. Browser fixtures must use isolated synthetic test records."
+        ],
+        "sharedComponents": [
+          "Use the existing SavedLeads feature and shared responsive/layout tokens in the current /saved page. Do not introduce a one-off table implementation or new component solely to preserve a removed legacy surface; any future component change requires an approved design mapping."
+        ],
+        "accessibility": [
+          "The geometry regression must remain keyboard-neutral and preserve semantic names/focus order of existing saved-workspace controls. Verify at least the Save/Details controls remain reachable and named in the browser run; manual screen-reader acceptance remains a separate human gate and is not inferred from this visual ticket."
+        ],
+        "responsive": [
+          "The source defect viewport is exactly 768 CSS px; run additional 390px only for the separately classified historical row-overlap control. Record window.innerWidth and documentElement.scrollWidth; do not substitute a nearby viewport or device scale factor for CSS width. Other responsive design acceptance is governed by the canonical saved-jobs ticket and is not broadened here."
+        ],
+        "browsers": [
+          "Execute Chromium, Firefox and WebKit in the repository-pinned Linux browser image, recording each engine/version and actual viewport. WebKit at 768px is the source target; the other engines are controls. An engine that does not launch is NOT_RUN, not PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE: /saved is an authenticated candidate workspace and must remain non-indexable; this ticket must not add public metadata or expose saved-job data to crawlers."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: PRIVACY_PII, INPUT_VALIDATION. Actor is an authenticated candidate; only that candidate's saved records may appear in /saved. Browser regression fixtures use synthetic titles/companies and isolated owners. Do not capture real candidate/job notes, tokens, cookies or resume content in screenshots, traces, or logs. No authz changes are implied."
+        ],
+        "observability": [
+          "No production telemetry change is required for a CSS/layout defect. Test output records browser engine, viewport, selector identity, measured geometry and expected geometry only; avoid recording rendered user data."
+        ],
+        "testStrategy": [
+          "TEST_STATUS: PLANNED. Extend the existing scripts/check-ui.ts browser scenario (do not create a parallel browser framework) with a specifically named CS-2 Linux WebKit 768px procedure after the owner/design target is resolved. This harness requires the integration environment: PostgreSQL and migrations, Redis, LocalStack SQS, the built files worker/domain packages, the production Next.js build and server, with its isolated temporary database and synthetic owner fixture. The CI lane provides these services and invokes npm run test:ui after build/startup. Bind setup to isolated synthetic owner data, assert that the intended element exists exactly once, assert measured top/height/overlap against approved expected geometry with an explicit approved tolerance, and capture Chromium/Firefox suite controls. A missing target or expected measurement must fail closed as unresolved rather than skip or pass."
+        ],
+        "visualRegression": [
+          "Use design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png only as page context. It is not an exact 768px sticky-header baseline. No pixel baseline, selector, CSS custom property or numeric expected offset may be invented; obtain a named approved viewport/state/geometry reference before visual pass."
+        ],
+        "definitionOfDone": [
+          "Implementation DoD: owner disposition resolves the named-defect-versus-related-390px-fix ambiguity; an exact approved current /saved 768px target geometry exists; the Linux WebKit browser assertion reproduces the original failure before fix and passes after a root-cause fix without widened thresholds; Chromium/Firefox controls and isolated synthetic data pass; current harness changes are included in exact-SHA hosted CI; no user data is present in evidence. If the original defect is not reproducible, CS-2 remains unaccepted until the owner selects the record disposition through an authorized future ticket update."
+        ],
+        "completionEvidence": [
+          "Required future evidence: source-bound before/after Linux Playwright run with WebKit at 768 CSS px, all three engine versions/results, exact element/geometry assertion, root-cause diff, test command and nonzero pass totals, exact hosted CI SHA/job/check URL, design/UX expected-geometry approval, and redacted synthetic-only artifacts. Existing 2026-09-21 runs are historical context only."
+        ],
+        "manualExternalGates": [
+          "OWNER_DECISION_REQUIRED: choose whether CS-2 continues to target the unreproduced 768px offset or should be formally dispositioned separately from the historical 390px fix; no registry edit is made in Phase 3.25.",
+          "HUMAN_VALIDATION: UX must approve the exact current saved-workspace 768px element/state/expected geometry because the approved saved-jobs image does not specify sticky-header measurements.",
+          "HOSTED_REQUIRED: after any future authorized implementation, the exact commit must run the current browser CI lane on Linux with Chromium, Firefox and WebKit; historical CI run IDs do not satisfy this gate."
+        ],
+        "risksRecovery": [
+          "Risk: a 390px related fix or screenshot-only visual resemblance is misreported as satisfaction of a 768px source criterion. Recovery: preserve original AC and evidence, revert only an independently reviewed local layout change if regression is found, and keep the ticket unaccepted until the owner-approved scope and original exact assertion are satisfied. No data migration or production rollback is implicated."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Keep the frozen source acceptance-criterion wording unchanged; treat its check-ui.mjs filename as historical after consolidation. The current executable equivalent is the named CI browser-acceptance step running npm run test:ui through scripts/check-ui.ts.",
+        "Obtain the explicit owner scope/disposition decision and UX approval of the current /saved target element/state and expected 768 CSS-pixel geometry; the saved-jobs design image is page context only.",
+        "Inspect SavedLeads markup/styles and establish the Linux WebKit 768px baseline using the approved target and geometry; preserve the separate 390px row-overlap check as a distinct historical control.",
+        "Only if the named 768px defect reproduces, identify its supported root cause and make the smallest permitted layout correction without changing selector, viewport, expected value, tolerance, or retry behavior.",
+        "Add or update the named scenario in scripts/check-ui.ts with isolated synthetic owner data; run the full browser suite on Chromium, Firefox, and WebKit, while asserting the CS-2-specific 768px geometry only in WebKit.",
+        "Review keyboard/responsive behavior and sanitized evidence; obtain the independent QA/UX and exact-SHA hosted CI results required by the ticket before any later workflow acceptance. Preserve releaseTarget 3.0.1 without inferring activation from releaseState UNSPECIFIED."
+      ]
+    },
     "CS-8": {
       "reviewStatus": "DRAFT",
       "sourceReferences": [
@@ -232,31 +321,48 @@
         "scripts/sync-version.mjs",
         "scripts/publish-pages.mjs",
         "scripts/publish-pages.test.mjs",
-        "docs/GITHUB-RELEASE-LIFECYCLE.md"
+        "docs/GITHUB-RELEASE-LIFECYCLE.md",
+        "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
       ],
       "additionalRequirements": {
         "problem": [
-          "The optional static publication helper can write a new version-bearing file via syncVersion but omit it from its Git file list if publication keeps a second hardcoded list. The actor is a later authorized static-publication operator, not the application runtime."
+          "The optional static publication helper can write a new version-bearing file via syncVersion but omit it from its Git file list if publication keeps a second hardcoded list. The actor is a later authorized static-publication operator, not the application runtime.",
+          "At the current source revision, scripts/sync-version.mjs exports versionFiles(version), and scripts/publish-pages.mjs calls the injected/default function after npm version and sync-version have completed, using the package version read after the bump. One computed list is passed to git add and git commit --only. Existing tests inspect commit-only arguments but do not assert the separate git add arguments."
         ],
         "functionalRequirements": [
-          "Derive dynamic version-bearing paths from Object.keys(getVersionFiles(actualPostBumpVersion)); use the same computed list in git add and git commit --only. package.json/package-lock.json and the encrypted snapshot remain separately owned files, not invented entries in versionFiles.",
+          "Derive dynamic version-bearing paths from Object.keys(getVersionFiles(actualPostBumpVersion)); a named regression test must assert each derived key appears in both the recorded git add arguments and git commit --only arguments. package.json/package-lock.json and the encrypted snapshot remain separately owned files, not invented entries in versionFiles.",
           "Inject a synthetic third version-bearing key into the fixture to prove list derivation rather than merely today's two-key equality. Call the injectable map with the actual version read after the mocked bump, not a placeholder or pre-bump version.",
           "Specification tests use injected read/run adapters only. Never call publication CLI, read a real environment file, stage operator files, create a release/tag or push during Phase 3.25."
         ],
+        "risksRecovery": [
+          "Reject unsupported bump values before file mutation. Missing/invalid local publication passphrase, non-main branch, staged or dirty worktree, encryption failure, version bump failure, or version synchronization failure must not proceed to commit/push; fixture tests must assert the relevant command boundary and zero real process execution.",
+          "A failure after the actual operator's local file or commit mutation can leave local repository state. The helper's user-facing catch reports a generic failure without printing the passphrase; recovery requires inspection and explicit operator action, never automatic reset, force-push, tag deletion or retry that could duplicate a release."
+        ],
         "technicalApproach": [
-          "ARCHITECTURE_IMPACT: LOCAL_MODULE. Preserve sync-version.mjs as version-file authority and publishPages.getVersionFiles injection. Existing test fixture records commands rather than running real Git/npm publication."
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE. Preserve sync-version.mjs as version-file authority and publishPages.getVersionFiles injection. Existing test fixture records commands rather than running real Git/npm publication. The backlog's securityImpact:none is retained as source classification only; the scoped operator-secret/audit boundaries below are effective requirements, not an assertion that publication has no security impact."
         ],
         "persistence": [
           "NOT_APPLICABLE to PostgreSQL: only controlled repository version files and encrypted static publication artifact are involved. No schema, data retention or candidate storage change."
         ],
         "apiContract": [
-          "NOT_APPLICABLE to HTTP: existing module contract versionFiles(semver) returns path-to-content map and publishPages accepts getVersionFiles dependency. No application endpoint or protocol-version change."
+          "NOT_APPLICABLE to HTTP: existing module contract versionFiles(semver) returns path-to-content map and publishPages accepts getVersionFiles dependency. No application endpoint or protocol-version change. The generated general Fastify error catalogue is a workspace-wide template and does not apply to this non-HTTP ticket; do not invent or modify an API error contract here."
         ],
         "securityPrivacy": [
-          "SECURITY_IMPACT: SECRETS, AUDIT. Operator publication is a shipping action requiring separate authority. Passphrase remains in runtime input only; fixtures use synthetic configured-passphrase text and stub all processes. Reports must not include real secrets or encrypted snapshot plaintext."
+          "SECURITY_IMPACT: SECRETS, AUDIT. Trust boundary is the authorized local release operator and the repository publication helper. ADMIN_SNAPSHOT_PASSPHRASE is read from the operator's local environment file and passed only to the export subprocess environment; never expose it in command arguments, logs, fixture reports or generated artifacts. Fixtures use synthetic configured-passphrase text and stub all processes. Do not inspect, decrypt, or report the encrypted snapshot plaintext.",
+          "No candidate-owned profile, resume, job or application data is read by the version-list logic. The encrypted admin snapshot remains a separately owned publication input; authorization to run the publication helper and release approval are outside this ticket and are not granted by specification approval."
+        ],
+        "observability": [
+          "Tests assert which injected commands were reached and that prohibited real process execution did not occur. The real CLI catches failures and prints a generic message; never add secret-bearing command output or snapshot content to logs. A successful local helper return is not hosted Pages or production provenance."
+        ],
+        "testStrategy": [
+          "A local Node 24 run on 2026-10-06 executed node --test scripts/publish-pages.test.mjs and reported 7/7 pass. Its command, runtime, source SHA-256 values and scope limitation are recorded in docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md. This is local evidence only; current assertions do not cover git add and do not discharge the complete AC assertion set."
+        ],
+        "completionEvidence": [
+          "Ticket-specific local test command is node --test scripts/publish-pages.test.mjs under Node 24. The future/updated named assertion must record both git add and git commit --only paths and the post-bump version input. The current 7/7 output is limited to existing assertions; no host publication, GitHub Pages deployment, production release, tag or push is proven."
         ],
         "manualExternalGates": [
-          "Spec approval does not authorize executing publishPages. Current canonical release workflow, deployed-SHA acceptance and manual-only fail-closed policy remain authoritative; optional static publication is not v1.0.0 production certification."
+          "Spec approval does not authorize executing publishPages. Current canonical release workflow, deployed-SHA acceptance and manual-only fail-closed policy remain authoritative; optional static publication is not v1.0.0 production certification.",
+          "The frozen ticket's releaseTarget is null. The repository classifies its disposition ACTIVE_R1 but contains no approved version target or release/HOLD activation. Preserve that source state; do not infer a target from current package.json, a historical version, UAT status, or this specification. Product/release ownership must assign the target and activation before release promotion; this is a genuine metadata owner gate and is not resolved by the completed local behavior or tests."
         ],
         "implementationChecklist": [
           "Inspect versionFiles and post-bump publish list construction.",
@@ -265,10 +371,13 @@
           "Document static publication versus production release semantics without changing package version during this ticket."
         ],
         "definitionOfDone": [
-          "Implementation DoD: dynamic path tests and synthetic extra-key control pass with no real side effects; any new versionFiles key is included in both staging and release-only commit paths. Delivery DoD: separately authorized operator follows the current lifecycle; specification approval is not release permission."
+          "Implementation DoD: a synthetic extra-key control uses the post-bump version and asserts every derived path in both git add and release-only commit arguments, with injected adapters and no real side effects. Delivery DoD: separately authorized operator follows the current lifecycle; specification approval is not release permission."
         ],
         "risksRecovery": [
-          "A hardcoded list matching today's two files can falsely pass a real-key test; the third-key control must fail that mutant. A failed later real publication may leave local files/commit; report recovery state without automatic reset or force-push. No recovery action is executed in specification review."
+          "Reject unsupported bump values before file mutation. Missing/invalid local publication passphrase, non-main branch, staged or dirty worktree, encryption failure, version bump failure, or version synchronization failure must not proceed to commit/push; fixture tests must assert the relevant command boundary and zero real process execution.",
+          "A failure after the actual operator's local file or commit mutation can leave local repository state. The helper's user-facing catch reports a generic failure without printing the passphrase; recovery requires inspection and explicit operator action, never automatic reset, force-push, tag deletion or retry that could duplicate a release.",
+          "The current tests assert derived paths in git commit --only only. A future/updated assertion must also inspect the distinct git add call; until then, that part of the acceptance criterion remains PLANNED and unverified. The synthetic third-key test must fail if code reverts to a hardcoded two-path list or getVersionFiles receives the pre-bump/placeholder version.",
+          "The fixture must not call the real publication CLI, git, npm, push, tag creation, environment file read, or encrypted snapshot exporter; test adapters record calls and return controlled fixture values only. No recovery or publication action is executed in specification review."
         ]
       }
     },
@@ -319,20 +428,43 @@
         ".ai/backlog.json#CS-7",
         "docs/GITHUB-RELEASE-LIFECYCLE.md",
         ".github/workflows/deploy.yml",
-        "scripts/require-ci-success.mjs",
-        "scripts/check-deploy-gate.mjs"
+      "scripts/require-ci-success.mjs",
+      "scripts/check-deploy-gate.mjs",
+      "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+      "docs/PHASE-3-25-EXECUTION-STATE.md",
+      "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+      ],
+      "implementationChecklistOverride": [
+        "Preserve all three frozen source AC strings and historical evidence, but mark AC2's override request superseded by the current manual/main-only no-bypass contract; do not add an override.",
+        "Run `npm run deploy:gate:test` and record its current pure-decision/static-wiring scope; do not treat it as transport, moving-main or hosted orchestration evidence.",
+        "Plan network-injected request and deadline assertions for exact `ci.yml` `head_sha`, malformed/API errors, bounded WAIT and refusal before downstream effects; register future tests in the root unit/CI quality lane.",
+        "Plan the cross-job invariant: resolve one SHA in require-ci and pass it to gate/deploy checkout and provenance. Add a source-derived A-to-B moving-main negative fixture; use A or fail before build/secrets/shipping.",
+        "Keep AC3 unaccepted until the owner/Release Manager accepts a source-hash-bound hosted non-shipping harness as a safe substitute for deliberately pushing broken main. If not accepted, preserve the original AC as unresolved; never bypass branch protection or dispatch production to test refusal."
       ],
       "additionalRequirements": {
-        "problem": [
-          "A release operator must not ship a main revision unless CI for that exact revision succeeded. Historically separate partial checks allowed rejected code to ship."
-        ],
-        "functionalRequirements": [
-          "Current authority supersedes historical AC2: no override exists or may be introduced. Manual-only main checkout, HEAD/origin-main agreement and protected production environment remain mandatory; records of old override tests are historical, not current requirements.",
-          "Require-ci requests ci.yml runs filtered by the resolved SHA. PASS requires legible completed-success evidence; failed/cancelled/timed-out/malformed/inconsistent payloads refuse, queued/in-progress/absent evidence waits only within the configured deadline then refuses. Older success cannot override a newer failure.",
-          "Downstream verify/shipping jobs cannot execute when require-ci refuses. Observe control-plane decisions with synthetic payloads and non-shipping harnesses; do not dispatch deployment or push intentionally broken main during specification work."
-        ],
-        "technicalApproach": [
-          "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Use existing decide function and workflow dependency chain; do not introduce a second deployment authority or a cross-workflow needs assumption."
+      "problem": [
+        "A release operator must not ship a revision unless CI for that exact revision succeeded. Historically separate partial checks allowed rejected code to ship.",
+        "The current workflow checks the exact main SHA in require-ci, but downstream jobs independently fetch and compare the then-current main. If main advances between jobs, the revision that is verified/built/deployed may differ from the SHA whose CI passed; independent equality-to-current-main checks do not prove one immutable revision across the whole DAG. This is a documented runtime gap, not fixed by this specification."
+      ],
+      "desiredOutcome": [
+        "Effective contract: no override/bypass; the exact single revision whose CI passed is the revision checked out, verified, built, archived and deployed. The historical source AC2 asking for an override is retained as source text but superseded by the current no-bypass authority. The historical AC3 deliberate-failure demonstration must use a Release-Manager-approved non-shipping verification path; no broken main push or production deployment is authorized here."
+      ],
+      "inScope": [
+        "Exact-SHA gate decision and workflow wiring, including carrying one resolved SHA across require-ci, gate and deploy jobs and failing closed if any job observes a different revision.",
+        "Reconcile frozen AC2 override wording with the current manual, main-only, no-bypass deployment contract without changing the backlog record in this phase."
+      ],
+      "outOfScope": [
+        "Do not implement an override or bypass, push a deliberately failing commit to main, dispatch production deployment to prove refusal, or treat a synthetic local decision-function result as hosted workflow evidence."
+      ],
+      "functionalRequirements": [
+        "Current authority supersedes historical AC2: no override exists or may be introduced. Manual-only main checkout, HEAD/origin-main agreement and protected production environment remain mandatory; records of old override tests are historical, not current requirements. The frozen AC text remains unchanged and is not interpreted as permission to add an override.",
+        "Require-ci requests ci.yml runs filtered by the resolved SHA. PASS requires legible completed-success evidence; failed/cancelled/timed-out/malformed/inconsistent payloads refuse, queued/in-progress/absent evidence waits only within the configured deadline then refuses. Older success cannot override a newer failure.",
+        "Downstream verify/shipping jobs cannot execute when require-ci refuses. The resolved SHA must be an explicit job output consumed by gate and deploy checkout/provenance; no downstream job may independently select a later main HEAD. If main advances before a later job starts, it must either continue the already-authorized SHA or fail closed before build/secret/shipping effects.",
+        "AC3's future refusal demonstration must observe the real require-ci -> gate -> deploy conditions in an isolated non-shipping hosted harness, with a paired successful control and zero secret/SSH/shipping calls. This harness is not equivalent to a broken-main production dispatch; Release Manager/product owner must explicitly accept that safe replacement for the frozen literal procedure before closure."
+      ],
+      "technicalApproach": [
+        "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Use existing decide function and workflow dependency chain; do not introduce a second deployment authority or a cross-workflow needs assumption.",
+        "Resolve SHA once in require-ci and pass that exact value through job outputs to checkout, gate evidence and deployment provenance. Avoid repeated `ref: main` resolution in downstream jobs; assert checked-out SHA equals the gate output at every boundary. This requirement is planned; current source still independently checks out moving main."
         ],
         "persistence": [
           "NOT_APPLICABLE: no product data writes. Workflow run/SHA and safe refusal diagnostics are evidence, not an application database."
@@ -343,18 +475,35 @@
         "securityPrivacy": [
           "SECURITY_IMPACT: SECRETS, AUDIT. Actions query uses read-only actions permission. Never expose token/header/SSH material; gate refusal occurs before hosted-secret or SSH steps. Repository-root checks cannot grant shipping authorization."
         ],
-        "implementationChecklist": [
-          "Document supersession of historical override AC by current no-bypass authority without editing frozen backlog evidence.",
-          "Assert decision function negative/positive controls and workflow needs/manual/main/protected-environment wiring.",
-          "Specify isolated transport/dependency-chain verification for exact-SHA filtering and absence of shipping after refusal.",
-          "Require separately authorized hosted refusal evidence before implementation acceptance; no production negative experiment in this phase."
-        ],
-        "definitionOfDone": [
-          "No bypass exists; exact-main SHA success is required; malformed or unavailable proof fails closed; local refusal and workflow wiring checks pass; authorized non-shipping hosted refusal evidence records skipped downstream jobs without reaching secrets. Specification approval is not deployment permission."
-        ],
-        "risksRecovery": [
-          "Historical deploy dispatch evidence used arbitrary ref inputs no longer supported. Do not reenact that obsolete procedure or loosen main-only protections. Roll back a defective gate by reviewed source change, never by disabling it."
-        ]
+      "implementationChecklist": [
+        "Preserve the three source AC strings and historical evidence; document that current manual/main-only no-bypass authority supersedes the old override ask without altering the backlog JSON.",
+        "Run `npm run deploy:gate:test`; distinguish its existing pure `decide` payload cases and workflow text assertions from missing HTTP transport, deadline/expiry, and moving-main-between-jobs behavior.",
+        "Add service-free transport/deadline tests that inspect the actual requested `ci.yml` `head_sha`, bound waits, refusal on API/JSON errors, and ensure no secret/shipping adapter can run on refusal.",
+        "Change the planned workflow contract to resolve SHA once and pass it through require-ci -> gate -> deploy; add a negative fixture where main advances between jobs and assert the later job uses the original SHA or fails before build/secrets.",
+        "Register new service-free assertions in the existing root test suite and CI quality lane; do not claim a test exists before it is present and run.",
+        "Before satisfying frozen AC3, obtain the Release Manager/product owner's documented acceptance of the isolated non-shipping hosted procedure as the safe substitute for a deliberate broken-main push; otherwise retain AC3 as an unresolved gate.",
+        "Capture authorized hosted non-shipping refusal evidence only after approval; no production dispatch, broken-main push, secret access or deployment in this specification phase."
+      ],
+      "definitionOfDone": [
+        "No bypass exists; malformed/unavailable CI proof fails closed; one immutable resolved SHA is consumed by gate/build/archive/deploy provenance; a moving-main negative control proves mismatch cannot ship; local pure decision, transport/deadline and workflow checks pass. AC3 remains unaccepted unless an authorized non-shipping hosted procedure is approved and shows failed require-ci, skipped dependent jobs, zero secret/SSH/shipping calls, and a paired success control. Specification approval is not deployment permission."
+      ],
+      "testStrategy": [
+        "Existing local evidence: `npm run deploy:gate:test` passed on Node 24.19.0 during this pass; it exercises the pure decision function and static manual/main/needs/no-bypass workflow checks. It does not perform a GitHub HTTP request, deadline wait, cross-job moving-main simulation or hosted downstream-job observation.",
+        "Planned service-free verification: add a network-injected request harness for `scripts/require-ci-success.mjs` and a source-derived job-DAG test. Assert requested workflow and exact `head_sha`; classify completed success/failure, malformed/inconsistent payloads, empty/queued/in-progress, HTTP/network error and deadline expiry; assert every non-PASS path prevents downstream adapter invocation.",
+        "Planned moving-main regression: in an isolated source-derived workflow fixture, resolve SHA A for successful CI, then advance origin/main to SHA B before gate/deploy. Assert each downstream checkout/build/archive/deploy provenance remains A or the job fails before build/secrets; a different SHA must never deploy. No live main movement or production dispatch is needed for the local negative control.",
+        "AC3 hosted evidence remains separate: owner-authorized non-shipping hosted run derived from the actual workflow DAG, preserved source hash, failed candidate refusal and paired successful adapter-only control. No such current result is claimed."
+      ],
+      "completionEvidence": [
+        "Current local validation for this pass: `npm run deploy:gate:test` on Node 24.19.0 completed with exit 0 and every emitted named assertion PASS. The existing command proves decide() fixture handling and static workflow wiring only; it does not prove transport, deadline, cross-job SHA immutability or hosted execution.",
+        "Current-source defect evidence: the independent review recorded that each downstream job resolves main independently instead of consuming the SHA output from require-ci. This is an unresolved runtime defect discovered during spec review; no workflow implementation was changed."
+      ],
+      "manualExternalGates": [
+        "OWNER/RELEASE MANAGER DECISION: the frozen AC3 literally requires pushing a deliberately failing commit and observing deploy refusal, while the approved deployment contract is manual, main-only, protected and fail-closed. Do not bypass branch protection or push broken main. Owner must either approve an isolated non-shipping hosted harness derived from the real workflow DAG as the replacement evidence, or later authorize a safe AC wording/registry change. Until then AC3 remains unresolved.",
+        "HOSTED GATE: after the cross-job resolved-SHA defect is fixed in a later implementation phase, require an authorized exact-SHA hosted refusal result with dependent jobs skipped and zero secrets/SSH/shipping calls. No such evidence is present in this spec pass."
+      ],
+      "risksRecovery": [
+        "Historical deploy dispatch evidence used arbitrary ref inputs no longer supported. Do not reenact that obsolete procedure or loosen main-only protections. A new cross-job SHA check must keep branch protection and current-main policy fail-closed; if the pinned revision is no longer eligible, stop before secrets. Roll back a defective gate only by reviewed source change, never by disabling it."
+      ]
       }
     },
     "CS-9": {
@@ -417,11 +566,15 @@
         "problem": [
           "Caddy must not own the namespace shared by private application services: replacing its namespace previously left healthy dependents unreachable behind 502. Current source delegates namespace ownership to network-anchor; older recovery evidence is not current deployed-topology proof."
         ],
+        "value": [
+          "Protect candidate access and operational availability by keeping the shared network namespace independent from Caddy process/container replacement, and by exposing an actionable alert if the origin remains unavailable after bounded recovery. Container-local health alone is not user-visible availability."
+        ],
         "functionalRequirements": [
           "Preserve network-anchor as sole shared namespace/edge-port publisher. Proxy, database, Redis, LocalStack, application and workers join that stable namespace; private service ports are not host-published.",
-          "A controlled Caddy crash restarts only proxy under Docker restart policy without replacing network-anchor or dependent service namespaces. Verify origin/API and a benign owned queue/worker operation recover; container health alone is insufficient.",
-          "Detection remains defense in depth: consecutive failures confirm outage before recovery, cooldown suppresses thrash, failed restart alerts, recovery alert fires once. Do not call a stub monitor test proof that namespace lifetime or deployed recovery works.",
-          "Anchor replacement is a separate deliberate full-stack recreation procedure, never an unattended proxy recovery or permission to remove volumes. Current restart-stack.sh restarts proxy only; older documents describing sequential stack restarts are historical."
+          "On an approved controlled Caddy termination, Docker restarts only the proxy; network-anchor and dependent container namespace identities remain stable. Verify public origin, web route and GET /api/health (which must reach PostgreSQL via SELECT 1) recover; a green container health indicator alone is insufficient.",
+          "The scheduled detector must treat a successful public GET /api/health response with JSON status=ok as healthy; a failed request or non-ok response increments consecutive failures. One failure below PROXY_CONFIRM_THRESHOLD causes no restart/alert; reaching threshold invokes the configured restart procedure no more than once inside PROXY_COOLDOWN_SECONDS; recovery and failed recovery emit the documented alerts.",
+          "The frozen AC2 only requires killing Caddy and observing the result. This specification strengthens the planned proof with a disposable Compose continuity check and, for live-host acceptance, a pre-existing owner-approved non-mutating synthetic async canary; this added async check is not frozen source wording. Do not enqueue candidate-bearing or externally dispatched work in production. If no safe canary is approved, record any completed frozen host observation separately as PARTIAL, mark strengthened AC2 verification NOT_VERIFIED, and do not accept the ticket or claim async continuity. The frozen host observation still requires its origin/API/recovery result and all required topology evidence.",
+          "Anchor replacement is a separate deliberate full-stack recreation procedure, never an unattended proxy recovery or permission to remove volumes. Current infra/restart-stack.sh restarts proxy only; full-stack recreation is an operator recovery path after bounded recovery failure, not a passing proxy-only test."
         ],
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Existing stable namespace owner removes the root cause; monitoring is not the sole remediation. No Docker-socket watchdog container, new public ports or architectural rewrite."
@@ -430,10 +583,10 @@
           "Production volumes and encryption keys survive proxy crash; controlled evidence must not display database contents or resume files. Test-only benign owner/run/queue identifiers are used; no database migration is required."
         ],
         "apiContract": [
-          "EXISTING_CONTRACT: readiness uses real origin and /api/health plus benign owned queue operation, not a new HTTP route. Safe operator report records revision, namespace identity and probe outcomes only."
+          "EXISTING_CONTRACT: unauthenticated GET /api/health is served by apps/api/src/app.ts, runs SELECT 1 against PostgreSQL, then returns {status:'ok', version}; the API listens on 127.0.0.1:5390. The external Caddy origin and the internal 127.0.0.1:5280 web route are probes, not new API contracts. No new route, request body, database mutation or public port is introduced."
         ],
         "securityPrivacy": [
-          "SECURITY_IMPACT: SECRETS, PRIVACY_PII, AUDIT. Only approved edge ports80/443 published by anchor; private services bind loopback. Least-privilege observer records container/namespace identifiers and safe health status, never env dumps, keys, user records, tokens or raw logs."
+          "SECURITY_IMPACT: AVAILABILITY, SECRETS, PRIVACY_PII, ADMIN_PRIVILEGE. Trust boundary is the host operator/systemd service and the public origin; no container gains Docker-socket or host-root control. Candidate owns application data; recovery probes are unauthenticated health only and must not read or mutate candidate data. Host operator authorization is required for a live crash window and docker control. Publish only anchor edge ports 80/443; keep PostgreSQL/Redis/LocalStack/API/workers private. Do not collect environment dumps, keys, tokens, raw candidate payloads, resume files or unrelated logs. Record only redacted revision, service/namespace identifiers, timestamps and probe outcomes; preserve alerts/incident evidence under host retention policy."
         ],
         "observability": [
           "Observe public health failure/recovery, proxy restart count, anchor namespace identity, dependent namespace identity and bounded operator-approved recovery window. Threshold/cooldown and single-recovery alert are tested with synthetic curl/restart fixtures; no real webhook secret is needed."
@@ -444,13 +597,34 @@
           "Prepare operator-approved controlled hosted Caddy crash procedure, rollback plan, safe probes and evidence collection; do not execute it in specification phase.",
           "Reconcile older runbook restart-stack assumptions to current proxy-only script in future implementation documentation without fabricating current host acceptance."
         ],
+        "testStrategy": [
+          "AC1's local positive path is the existing check-proxy-recovery fixture: healthy probe yields zero restarts; first bad probe below threshold yields zero restart/alert; confirmed outage invokes one restart, cooldown blocks a repeat, failed restart alerts, and healthy recovery announces once. Keep this test as detection/recovery-logic evidence only.",
+          "AC2's planned host procedure requires a preapproved window and healthy baseline, terminates only Caddy, checks anchor and dependent namespace identity, confirms the restarted proxy and public origin, web route and API readiness return within the measured policy window, and retains failure output. The test fails if only container health passes while origin/API remains unavailable. No deployed result exists in this Phase 3.25 branch."
+        ],
+        "manualExternalGates": [
+          "HUMAN/EXTERNAL GATE: Host operator approves a maintenance window, confirms exact deployed revision and healthy baseline, and follows the CS-3 host runbook to terminate only the Caddy container. The historical warning against a proxy-only restart applies if Caddy owns the shared namespace; current-source Caddy-only disruption is permitted only after proving network-anchor owns the namespace and every dependent shares it. Abort if deployed topology differs. Capture namespace identities, restarts, public origin, web and API probes, timer/service alerts and any failure output; never restart/replace the anchor alone or mutate persistent volumes.",
+          "PRODUCTION ACCEPTANCE: exact deployed-SHA proof remains required even if local stubs and disposable Compose tests pass. Historical 2026-09-29 host evidence is not current deployment evidence."
+        ],
+        "completionEvidence": [
+          "Current source has network-anchor owning the shared namespace and publishing edge ports 80/443; proxy, PostgreSQL, Redis, LocalStack, API, web and workers join that namespace, with private service listeners bound to loopback. recover-proxy.sh and its systemd service/timer implement thresholded public-origin detection, bounded proxy recovery, cooldown and alerts; check-proxy-recovery.sh stubs prove only detector state transitions, not Docker namespace continuity.",
+          "The frozen evidence contains conflicting host timelines: an earlier 2026-09-28 entry says no recovery unit was installed, while a later 2026-09-29 entry records a successful deployed proof. Preserve both as historical, neither establishes the exact current deployed revision. The blockedReason requires deployed-host observation; currentStep mentions backup work unrelated to CS-3 and is not an acceptance criterion. Do not convert either historical result into current evidence or edit the source registry in Phase 3.25.",
+          "Retain current-source Compose validation, named local fixture output and (if implemented) disposable Compose crash test separately from a redacted operator-signed exact-deployed-SHA record. The live record must include pre/post anchor and dependent namespace IDs, proxy restart count, origin/web/API status and timestamps; no secret values, candidate data or raw database output."
+        ],
         "definitionOfDone": [
-          "Namespace owner is stable across Caddy crash; only80/443 application/container ports are host-published by edge anchor, with approved host-management exposure separately classified; real origin/API and owned async operation recover without manual namespace rejoin; detection negative cases pass. Hosted current-revision crash observation is required for production acceptance, not planning approval."
+          "Implementation DoD: Compose network-anchor is sole namespace owner and sole publisher of application edge ports 80/443; private services have no host-published ports; Caddy-only restart does not replace anchor/dependent namespace identity; detector threshold, cooldown and success/failure alerts satisfy their named assertions; no database migration or application data mutation is introduced. Exact-SHA hosted Caddy crash observation and operator evidence remain production acceptance gates, not required evidence that a future specification test has already passed."
         ],
         "risksRecovery": [
-          "Crash proof can interrupt availability; require operator-approved window and healthy baseline. If automatic recovery fails, use reviewed deliberate full recreation retaining volumes, never delete database/keys, prune Docker, change firewall globally or repeatedly restart within cooldown. Preserve failure evidence and halt escalation."
+          "Crash proof can interrupt availability; require operator-approved window and healthy baseline. If automatic proxy recovery fails, preserve failure evidence and alert; use only the separately reviewed deliberate recreation procedure retaining all volumes and keys. Never delete database/keys, prune Docker, change firewall globally, restart the anchor alone or loop retries inside cooldown."
         ]
-      }
+      },
+      "implementationChecklistOverride": [
+        "Reconcile the frozen source history against current Compose, scripts and runbook; explicitly retain the 2026-09-28/09-29 host entries as historical, and do not copy the unrelated backup currentStep into CS-3 acceptance.",
+        "Review infra/compose.production.yml and verify network-anchor owns the shared namespace and only publishes edge ports 80/443; all private services remain loopback/private and no database/network data changes are implied.",
+        "Run the existing infra/check-proxy-recovery.sh fixture and map each threshold, cooldown, alert and failure assertion to AC1 without claiming real namespace or host recovery.",
+        "Keep current GET /api/health response and 127.0.0.1:5280 web-origin probes as the service contract; do not add a route or use candidate-bearing work as a live canary.",
+        "Specify a separate disposable Compose crash test for anchor/dependent identity and a human-approved live-host Caddy-only crash procedure with pre/post health, rollback and redaction; never terminate network-anchor or touch volumes.",
+        "Require exact deployed-revision evidence and independent Infrastructure/Security/QA review before any later workflow acceptance; preserve releaseTarget 3.0.1 and the source-classified ACTIVE_R1 disposition while keeping production deployment separately gated by exact production evidence."
+      ]
     },
     "CS-6": {
       "reviewStatus": "DRAFT",
@@ -461,7 +635,10 @@
         "apps/web/src/lib/session.ts",
         "apps/web/src/components/dashboard-shell.tsx",
         "apps/web/src/lib/query-cache.ts",
-        "scripts/check-ui.ts"
+        "scripts/check-ui.ts",
+        "docs/DESIGN-IMPLEMENTATION-MAP.md",
+        "package.json",
+        ".github/workflows/ci.yml"
       ],
       "additionalRequirements": {
         "problem": [
@@ -475,13 +652,14 @@
           "CS-13/14/16/17/19 own their feature/content work; this routing boundary supplies composition without bundling those tickets' implementation or visual acceptance into CS-6."
         ],
         "technicalApproach": [
-          "ARCHITECTURE_IMPACT: CROSS_MODULE. Existing app route-group layout composes AuthenticatedShell; useSession shares ['session']; ownerKey scopes private data. No global store, bespoke router, duplicate gate or new server auth system."
+          "ARCHITECTURE_IMPACT: CROSS_MODULE. Existing app route-group layout composes AuthenticatedShell; useSession shares ['session']; ownerKey scopes private data. No global store, bespoke router, duplicate gate or new server auth system.",
+          "AC1 has no new API contract. Reuse the existing GET /api/session contract through useSession; the route group is a client composition boundary, not a new server authorization mechanism. Private APIs continue to enforce server-derived ownership."
         ],
         "persistence": [
           "NOT_APPLICABLE to new schema: client cache ownership and session-derived authorization are affected; no user/application database write is required by route decomposition."
         ],
         "apiContract": [
-          "EXISTING_CONTRACT: GET /api/session returns authenticated boolean and optional opaque owner digest/CSRF/session identity. Private API routes independently enforce server session ownership. Do not expose provider tokens or accept client-supplied owner for route data."
+          "EXISTING_CONTRACT: GET /api/session returns authenticated boolean and optional opaque owner digest/CSRF/session identity. This is the existing endpoint consumed by the shell, not a new endpoint; the source design map's empty existingEndpoints list means no endpoint is introduced by CS-6, not that /api/session is absent. Private API routes independently enforce server session ownership. Do not expose provider tokens or accept client-supplied owner for route data."
         ],
         "securityPrivacy": [
           "SECURITY_IMPACT: AUTHORIZATION, PRIVACY_PII. Browser caches must not render prior owner's profile/resume/notes on anonymous or new-owner navigation. Rendering gate is not an API access-control replacement; all denial tests use synthetic separate owners."
@@ -489,14 +667,25 @@
         "accessibility": [
           "Neutral loading/error states announce status and expose keyboard-operable retry with accessible name; no private navigation landmarks/identity appear until authenticated. Shared skip link targets the sole main-content landmark after authentication; no focus is sent into hidden private children."
         ],
+        "visualRegression": [
+          "CS-6 visual scope is limited to existing authenticated-shell boundary states and shared navigation: neutral pending state, service-error/retry state, anonymous redirect/no private shell, and authenticated shell/navigation. Do not require full Dashboard, Jobs or Applications screenshot parity; those feature surfaces belong to their own tickets and AC3 explicitly separates feature work. Compare only against an approved auth-boundary reference if one exists; otherwise record visual baseline as pending design approval and use functional state assertions without inventing pixel tolerances."
+        ],
         "implementationChecklist": [
           "Inventory actual private route files and route-group wrapping; verify direct links and navigation use the same boundary.",
+          "Add the service-free route/import contract test as scripts/check-auth-route-boundary.test.mjs, add that exact file to the explicit root test:unit command in package.json, and confirm the CI quality job invokes npm run test:unit; do not claim the future assertion exists until it is implemented and run.",
           "Add delayed/error/anonymous session rendered tests with private-child mount sentinel and intercepted private-query recorder.",
           "Assert initial HTML/RSC excludes synthetic private markers and successive owner cache is cleared or segregated.",
           "Verify authenticated positive control renders each route and shared query provider remains stable; preserve feature ticket separation."
         ],
         "definitionOfDone": [
           "All current private routes share route-group gate; pending/error/anonymous paths never mount private children or expose synthetic private data in HTML/RSC/browser/cache. Authenticated positive and two-owner controls pass in configured browser engines; feature-specific design work stays in dependent tickets."
+        ],
+        "completionEvidence": [
+          "AC1 future local verification: `npm run test:unit` after registering `scripts/check-auth-route-boundary.test.mjs` in the explicit root test:unit file list; verify the CI quality lane invokes that root command. The test must fail on a private route outside the shared route group, a route-specific duplicate gate, a broken canonical navigation href, or a second session query/provider. This file/assertion is PLANNED until present and passing.",
+          "AC2 future browser verification: extend `scripts/check-ui.ts` and execute `npm run test:ui` with the configured Chromium/Firefox/WebKit matrix; verify cold pending/error/anonymous no-mount/no-private-request/no-HTML-RSC marker, authenticated positive control, and isolated owner A to owner B cache behavior. Existing historical interactive evidence is not this run."
+        ],
+        "manualExternalGates": [
+          "OWNER RELEASE GATE: backlog releaseTarget is null and releaseState is unspecified. The design coverage value RELEASE denotes design-scope ordering only and is not version assignment or activation approval. Preserve these source values until the product/release owner assigns a target and activation disposition. This gate does not prevent completing the technical specification, but prevents release classification/promotion."
         ],
         "risksRecovery": [
           "A DOM-only no-flash test can miss private RSC payload or queries; inspect response and mount/request sentinels. Removing route wrapper or rendering children while lookup is pending must be detected. Route rollback restores reviewed prior composition without changing sessions, user records or database."
@@ -511,7 +700,9 @@
         "scripts/export-mobile.mjs",
         "scripts/export-mobile.test.mjs",
         "scripts/stage-pages.mjs",
-        "docs/architecture/README.md"
+        "docs/architecture/README.md",
+        "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
+        "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
       ],
       "additionalRequirements": {
         "problem": [
@@ -536,16 +727,26 @@
           "SECURITY_IMPACT: AUTHORIZATION, PRIVACY_PII. Public export requires explicit authorized owner selection, parameterized query and field/URL allowlist. Synthetic fixtures only; DB credentials never printed or committed. Missing owner refuses before query."
         ],
         "implementationChecklist": [
-          "Inventory workspace manifests/imports/scripts/deployment consumers before proving duplicate runtime obsolete.",
-          "Specify cross-owner/archive/public-projection export regression in isolated module-relative fixture output tree.",
-          "Port any still-required consumed domain behavior/tests and fix canonical references; remove only obsolete runtime consumers.",
-          "Validate clean install/build/typecheck/lint/unit/domain/required service and browser commands from root, with no stale generated output or real environment reliance."
+          "First verify the current root workspace, package manifests, imports, CI and deployment paths; the application is already consolidated, so do not repeat a migration or delete current static publication without a newly proven defect.",
+          "Confirm the remaining consumer inventory with a scoped tracked-file search; distinguish historical documentation/ticket evidence from active executable/config references. Preserve the supported static Pages publication path.",
+          "For any remaining AC1 gap, add the planned disposable-PostgreSQL integration test using an isolated copied module/root and synthetic owner rows; assert owner, archive, exact-field and unchanged canonical-output invariants.",
+          "For any remaining AC2 gap, add the planned read-only repository-contract fixture and register it in the explicit root test:unit file list so test-registration and CI checks execute it.",
+          "Run root checks from a fresh checkout without stale dist/node_modules reliance; obtain exact-SHA hosted service, browser and recovery lane evidence for AC3 rather than treating registration or local checks as hosted proof."
         ],
         "definitionOfDone": [
           "One canonical runtime root remains; consumed domain packages pass regression; optional export proves ownership/archive/public-field restriction; SQLite MCP launch/runtime consumers absent; clean-checkout canonical checks prove no removed-source dependency. Static publication is explicitly separate, not a second application."
         ],
+        "testStrategy": [
+          "Local Node 24 evidence recorded 2/2 pure export tests and Chromium/Firefox/WebKit public-workspace checks on 2026-10-06. These checks do not prove PostgreSQL owner/status filtering, archived-row exclusion, isolated output-path behavior, obsolete-launcher absence under a future negative fixture, or exact-SHA hosted clean-install/build parity; the matching database/contract/hosted bindings remain PLANNED.",
+          "Planned CS-5-AC1 command: after adding scripts/export-mobile.integration.test.mjs to the root test:integration registration, run npm run test:integration under the disposable Postgres service. The named test must import a copied actual exporter rooted in a unique temporary tree and use throwaway owner IDs/data; it must preserve/hash canonical mobile-site outputs and contain no production credentials.",
+          "Planned CS-5-AC2 command: after adding scripts/check-single-workspace-contract.test.mjs to the explicit root test:unit registration, run npm run test:unit and confirm CI executes that unit-only step. The test must resolve tracked active executable/config references and include a negative fixture; historical docs are classified separately.",
+          "Planned CS-5-AC3 evidence: fresh npm ci plus canonical root quality/service/browser/recovery lanes on the exact hosted candidate SHA. The local pages:workspace:test run is a narrower static UI check and cannot substitute for this gate."
+        ],
+        "manualExternalGates": [
+          "Source backlog releaseTarget is null and releaseState is unspecified; blocker classification ACTIVE_R1 is not a release version or activation decision. Product/release ownership must assign a target and activation for CS-5 or explicitly place it on HOLD/later release. Preserve the null/unspecified source values until that decision; do not infer from package version, historic tags, UAT status or implementation evidence. The combined CS-4/CS-5 decision is recorded in docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md."
+        ],
         "risksRecovery": [
-          "Large deletion can lose consumed domain coverage; inventory/parity proof precedes removal. Preserve history rather than live duplicate code. Export regression runs against copied module-relative paths and synthetic PostgreSQL, never writes canonical mobile-site/jobs.json or publishes data. Repository rollback is reviewed commit revert, not data deletion."
+          "The root architecture is already consolidated; a repeated migration or deletion pass could remove required domain packages or a still-supported static artifact. Make no structural changes unless a current consumer demonstrates a defect. Export regression must use copied module-relative paths and synthetic PostgreSQL, never write canonical mobile-site/jobs.json or publish data. Recovery from any future source edit is a reviewed revert, not data deletion or destructive host action."
         ]
       }
     },
@@ -841,7 +1042,7 @@
         "reviewer": "Delivery tooling reviewer, QA and Security reviewer",
         "releaseGate": "CANONICAL_EVIDENCE_INTEGRITY",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+        "reviewStatus": "DRAFT"
       }
     ],
     "CS-8-AC2": [
@@ -860,7 +1061,7 @@
         "reviewer": "Delivery tooling reviewer and Security reviewer",
         "releaseGate": "FAIL_CLOSED_RELEASE_EVIDENCE",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+        "reviewStatus": "DRAFT"
       },
       {
         "type": "AUTOMATED_BROWSER",
@@ -1132,14 +1333,14 @@
         "type": "AUTOMATED_UNIT",
         "preconditions": "publishPages runs only through injected read/run/getVersionFiles fixtures; no real processes or environment files are reachable.",
         "setup": "Fixture returns a valid synthetic configuration, clean main state and package version 1.0.1 after mocked bump; inject a three-key versionFiles map including mobile-site/newly-added-file.js.",
-        "procedure": "Invoke publishPages with the adapters; record getVersionFiles version argument and all git add / git commit --only command arguments.",
-        "assertion": "getVersionFiles receives exactly 1.0.1; every injected key occurs in both git add and commit --only path lists, alongside separately owned package.json, package-lock.json and encrypted snapshot path; no real Git/npm process runs.",
+        "procedure": "PLANNED update to scripts/publish-pages.test.mjs: invoke publishPages with injected adapters; separately locate the recorded git add and git commit --only calls; inspect arguments of each call and record getVersionFiles version argument.",
+        "assertion": "PLANNED assertion: getVersionFiles receives exactly 1.0.1 and each injected key occurs in the git add argument list and the git commit --only path list; no real Git/npm process runs. The current test suite checks commit-only paths but does not yet assert git add.",
         "expectedResult": "Publication follows the canonical version-file map even when a new file is introduced, without a second mutable list.",
-        "testName": "a version-bearing file added to versionFiles() is staged, proven with a synthetic third key",
+        "testName": "a version-bearing file added to versionFiles() is added and included in the release-only commit",
         "testFileOrProcedureId": "scripts/publish-pages.test.mjs",
         "fixtures": "Existing injected process recorder plus synthetic three-key map; file contents are unused fixture text, not production assets.",
         "negativeCase": "Replacing derivation with today's hardcoded two paths or calling the map with the pre-bump version must fail; fixture must never permit real git push.",
-        "evidenceArtifact": "Future exact-content named Node test result with recorded path assertions and zero real process invocations; existing test name/path do not imply fresh execution.",
+        "evidenceArtifact": "Future Node 24 named test result showing separate git add and commit-only path assertions and zero real process invocations; current local run does not prove the absent git add assertion.",
         "reviewer": "Release tooling reviewer and QA",
         "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE",
         "testStatus": "PLANNED",
@@ -1151,14 +1352,14 @@
         "type": "AUTOMATED_UNIT",
         "preconditions": "Actual versionFiles module and isolated publication fixture are loaded under Node 24.",
         "setup": "Obtain real keys from versionFiles('1.0.1') and a separate synthetic extra-key map; record stubbed publication command calls in both runs.",
-        "procedure": "Assert every map key is present in staging and commit-only path arguments, then run the injected third-key control in the same suite.",
-        "assertion": "For every real key, git add and git commit --only include that key. The synthetic third key is also included, proving future extensibility; a path written by syncVersion cannot be omitted from the selected commit list.",
-        "expectedResult": "The regression test proves all canonical version-bearing paths are staged, not merely a successful mock return or current two-file coincidence.",
-        "testName": "every versionFiles() key is staged in the release commit",
+        "procedure": "PLANNED update to scripts/publish-pages.test.mjs: use the recorded real and synthetic version maps, identify the distinct git add and git commit --only calls, and assert each expected key appears in both call argument lists.",
+        "assertion": "PLANNED assertion: every real versionFiles key and the synthetic third key appear in both git add and git commit --only path arguments; current assertions inspect commit-only arguments and do not prove git add.",
+        "expectedResult": "The updated regression test proves all canonical and newly added version-bearing paths are added and included in the selected release commit, not merely that a mock returned successfully.",
+        "testName": "every versionFiles() key is added and included in the release-only commit",
         "testFileOrProcedureId": "scripts/publish-pages.test.mjs",
         "fixtures": "Current real version map, synthetic extra-key control and injected command recorder; no filesystem publication.",
-        "negativeCase": "Removing any canonical key from either recorded path list fails; tests cannot approve an unchanged hardcoded list by checking only return version.",
-        "evidenceArtifact": "Future named test output plus explicit staging/commit path assertions; no release, push, tag or hosted CI evidence claimed.",
+        "negativeCase": "Removing any canonical or synthetic key from either recorded path list fails; tests cannot approve an unchanged hardcoded list by checking only commit-only paths or return version.",
+        "evidenceArtifact": "Future named test output plus separate git-add/commit-only path assertions; no release, push, tag or hosted CI evidence claimed.",
         "reviewer": "Release tooling reviewer and QA",
         "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE",
         "testStatus": "PLANNED",
@@ -1222,23 +1423,23 @@
         "reviewStatus": "REVIEWED"
       }
     ],
-    "CS-7-AC1": [
-      {
-        "type": "AUTOMATED_CONTRACT",
-        "preconditions": "Actual decide function imported without CLI execution; deploy.yml inspected without dispatch.",
-        "setup": "Synthetic successful, failed, cancelled, timed-out, missing-status, malformed, inconsistent, queued and absent run-list payloads; older success plus newer failure.",
-        "procedure": "Invoke decide for each fixture and inspect require-ci/dependent jobs and main-SHA wiring; transport harness records requested URL without network.",
-        "assertion": "Only completed-success fixture returns PASS; completed failures/malformed payloads return REFUSE; queued/in-progress/absent return WAIT and deadline harness refuses on expiry. URL filters ci.yml runs by resolved SHA; downstream jobs require successful require-ci.",
-        "expectedResult": "Unproven exact-revision CI success cannot authorize shipping.",
-        "testName": "exact SHA CI gate fails closed for missing malformed and rejected evidence",
-        "testFileOrProcedureId": "scripts/check-deploy-gate.mjs",
-        "fixtures": "Synthetic Actions payloads plus planned isolated transport/deadline harness; no credentials or SSH.",
-        "negativeCase": "Remove head_sha filter, ignore newer failure, permit malformed-as-PASS, or bypass needs: each must fail; successful exact-SHA control passes.",
-        "evidenceArtifact": "Future named gate and transport/deadline results; existing gate execution does not imply planned transport assertions passed.",
+  "CS-7-AC1": [
+    {
+      "type": "AUTOMATED_CONTRACT",
+      "preconditions": "Actual decide function imported without CLI execution; deploy.yml and all three job checkouts/provenance paths inspected without dispatch.",
+      "setup": "Use synthetic completed-success SHA A, failure/malformed/inconsistent/queued/absent Actions payloads and a newer-failure control. For workflow contract, resolve main SHA A in require-ci and advance fixture origin/main to SHA B before gate and deploy start.",
+      "procedure": "Run existing `npm run deploy:gate:test` decision/wiring assertions; add a service-free network transport/deadline harness for requested ci.yml head_sha and refusal semantics; run a source-derived workflow fixture through require-ci, gate and deploy with controlled main movement.",
+      "assertion": "Only completed-success CI for the resolved SHA may PASS. Failed/cancelled/timed-out/malformed/inconsistent payloads REFUSE; queued/in-progress/absent WAIT only to deadline then refuse. The Actions request includes workflow ci.yml and exact head_sha A. Gate/build/archive/deploy each consume A or fail before secret/shipping calls if the checkout differs; none may independently deploy B based on a later main lookup.",
+      "expectedResult": "Unproven CI or revision identity cannot authorize shipping; the passed, checked, built, archived and deployed revision is identical.",
+      "testName": "exact SHA gate and downstream job revision fail closed when main advances",
+      "testFileOrProcedureId": "scripts/check-deploy-gate.mjs plus planned scripts/require-ci-workflow.test.mjs",
+      "fixtures": "Current pure decision/wiring checks plus planned synthetic Actions responses, injected fetch/clock and isolated A-to-B workflow-DAG fixture; no credentials or SSH.",
+      "negativeCase": "Remove head_sha, ignore newer failure, permit malformed-as-PASS, bypass needs, or let a downstream job checkout B after A passed: each negative mutation must refuse/fail; same-SHA A positive control passes.",
+      "evidenceArtifact": "Existing command output plus future named transport/deadline and source-derived moving-main assertion results; current existing gate execution alone does not prove these planned assertions.",
         "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
         "releaseGate": "EXACT_SHA_FAIL_CLOSED_DEPLOYMENT",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+      "reviewStatus": "REVIEWED"
       }
     ],
     "CS-7-AC2": [
@@ -1264,19 +1465,19 @@
       {
         "type": "HOSTED_CI",
         "preconditions": "A Release Manager separately authorizes non-shipping hosted workflow refusal validation; no deliberately broken main push or production dispatch is allowed.",
-        "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Use exact-SHA failure and success run fixtures.",
-        "procedure": "Validate source-hash parity and preserved dependency/condition graph before observing authorized hosted require-ci refusal for failed exact-SHA CI. Invalidate harness evidence if canonical deploy.yml changes. Compare successful CI control in the same derived graph; no production dispatch.",
-        "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are unchanged. Failed candidate yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. Success control reaches only non-shipping adapter. Requested SHA, resolved revision and recorded filter agree.",
+      "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Prepare three independent runs: failed exact-SHA CI for A; successful exact-SHA CI for A followed by fixture main advancing to B before gate/deploy; and successful exact-SHA CI for A with main unchanged.",
+      "procedure": "After explicit owner/Release Manager acceptance of this safe evidence substitute, validate canonical source-hash parity and actual dependency/condition graph. Run the failed-A case and observe refusal/zero effects. Separately run success-A then advance fixture main to B before downstream jobs; observe whether those jobs consume A or refuse before build/secrets/shipping. Run the success-A/no-movement control to prove the harness permits the valid same-SHA path to its non-shipping adapter. Invalidate evidence if workflow source changes; no production dispatch.",
+      "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are represented. Failed-A CI yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. In the distinct success-A/move-main-to-B run, later jobs use A or fail closed before build/secrets; B is never checked out, archived or deployed under A's CI result. The success-A/no-movement control reaches only the non-shipping adapter. Requested, resolved, checked-out and recorded SHA values agree in both successful controls.",
         "expectedResult": "Hosted dependency wiring refuses rejected evidence without attempting production deployment.",
         "testName": "hosted rejected CI prevents downstream shipping before secrets are reachable",
         "testFileOrProcedureId": "CS-7-HOSTED-NONSHIPPING-REFUSAL",
         "fixtures": "Authorized isolated hosted workflow context, synthetic failure/success run fixtures and shipping-call recorder.",
-        "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails paired success control; arbitrary-ref production dispatch is forbidden.",
+      "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails the success-A/no-movement control; a test that advances main only during a failed-A run is insufficient because refusal masks moving-main behavior. Any B checkout/build/archive/deploy after A-only CI success fails. Arbitrary-ref production dispatch and a deliberately failing main push are forbidden. Without owner acceptance of the safe replacement for frozen AC3, the original criterion remains unresolved.",
         "evidenceArtifact": "Future authorized hosted run/job IDs, exact SHA, dependency conclusions and zero shipping calls; old arbitrary-ref run is historical evidence only.",
         "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
         "releaseGate": "HOSTED_DEPLOYMENT_REFUSAL",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+      "reviewStatus": "REVIEWED"
       }
     ],
     "CS-9-AC1": [
@@ -1375,16 +1576,16 @@
     "CS-3-AC2": [
       {
         "type": "LIVE_HOST",
-        "preconditions": "Host operator separately approves controlled Caddy crash window for exact deployed revision; healthy origin/API/owned async operation baseline and rollback/recovery plan exist. No action is executed during specification phase.",
-        "setup": "Record safe proxy/anchor/dependent container and namespace identifiers, restart counts and externally observed application/container edge publication. Separately classify approved host-management exposure under existing firewall policy. Use synthetic owned operation with no real candidate data.",
-        "procedure": "Operator terminates only the resolved Caddy container, never anchor; observe automatic Docker proxy restart, namespace identity and origin/API/owned worker operation after recovery within a pre-approved measured window. Record failing observations as failures, not retried-away success.",
-        "assertion": "Anchor namespace identity remains unchanged; every dependent stays in it; proxy restarts and rejoins it; real origin/API and benign owned async operation succeed without manual rejoin/full restart. Application/container host-publication remains only edge80/443, excluding database/Redis/LocalStack/API/worker ports. Separately classify approved host-management SSH exposure under reviewed firewall policy, never require disabling operator access. If recovery fails, capture alert/escalation and retain FAIL rather than claiming root-cause elimination.",
+        "preconditions": "Host operator records explicit approval for a bounded maintenance window against the exact deployed revision and identifies the rollback operator. Before disruption, public origin and GET /api/health are healthy; the recovery timer is active; Compose confirms network-anchor owns the namespace and edge publication; docker inspect confirms proxy and dependents share the anchor network mode, only intended edge ports are published, and no DB/Redis/LocalStack/API/worker host ports are published. A non-mutating synthetic async canary must already be approved and available; otherwise this AC cannot pass. No action is executed during specification phase.",
+        "setup": "Record the approved window identifier and its owner-defined start/end bounds (do not invent a duration), exact deployed SHA, redacted container IDs, network-anchor namespace ID, proxy/dependent namespace IDs, proxy restart count, Compose port bindings, timer state, external origin status, API readiness and the approved synthetic canary's pre-crash state. Exclude credentials, environment values, candidate records and payloads.",
+        "procedure": "At the approved window, capture the healthy baseline; resolve the Caddy container from the exact deployment Compose project and terminate only that container using the reviewed operator procedure (never network-anchor). Observe Docker restart count and proxy rejoin, compare anchor/dependent namespace IDs with baseline, poll the public origin and GET /api/health and observe the already-running approved synthetic async canary through the owner-approved window bounds. Record first failure and final state; do not retry a failed proof into a pass. If preflight differs from the approved record, abort before termination. If recovery fails, follow the separately documented operator rollback/recovery path and retain the failed result.",
+        "assertion": "Preflight evidence matches the approved exact-SHA topology; anchor and dependent namespace identities are unchanged after proxy-only termination; proxy restart count increases and Caddy rejoins the anchor; public origin returns its expected success response, GET /api/health returns HTTP 200 with status=ok, and the pre-existing approved synthetic async canary reaches its specified success state inside the owner-approved window. Host publication remains only the intended edge ports 80/443; PostgreSQL/Redis/LocalStack/API/workers are not published. Any preflight mismatch, private-port publication, namespace change, unsuccessful probe/canary, recovery outside approved bounds or missing alert on failed recovery is FAIL; SSH/operator access is not disabled as a test workaround.",
         "expectedResult": "Current deployed topology proves proxy crash does not strand dependents; a monitor-only success cannot pass this namespace acceptance requirement.",
         "testName": "controlled Caddy crash preserves stable anchor and private dependent reachability",
         "testFileOrProcedureId": "CS-3-LIVE-STABLE-ANCHOR-CRASH",
-        "fixtures": "Operator-approved current deployment, synthetic owned async operation, safe container/namespace observation and independent external port probe; no volume or credentials mutation.",
+        "fixtures": "Operator-approved exact-SHA deployment and window record, already-approved non-mutating synthetic async canary, redacted Docker inspect/Compose topology evidence, external origin probe and readiness response; no volume or credentials mutation.",
         "negativeCase": "A proxy-owned namespace or false-positive container health with failing origin/API/async probe must fail; pre-crash healthy controls prevent preexisting outage being called recovery.",
-        "evidenceArtifact": "Future operator-signed exact-revision safe pre/post namespace and port evidence, actual crash/restart times and health/async result; historical host run is not current proof.",
+        "evidenceArtifact": "Future operator-signed exact-revision approval/window record; redacted pre/post namespace IDs, port-binding evidence, timer state, restart count, origin/API/canary observations and timestamps; preserve first failure and rollback result. Historical host run is not current proof.",
         "reviewer": "Host operator, System Designer, Security and QA",
         "releaseGate": "LIVE_PROXY_TOPOLOGY_RECOVERY",
         "testStatus": "PLANNED",
@@ -1749,6 +1950,63 @@
         "evidenceArtifact": "Future actual three-engine automatic request-origin report plus destination-attribute assertions; source-only contract result not substituted.",
         "releaseGate": "STATIC_PUBLIC_AUTOMATIC_ORIGIN_PRIVACY"
       }
+    ],
+    "CS-2-AC1": [
+      {
+        "reviewer": "Frontend, UX and QA; Release reviewer for hosted evidence",
+        "testStatus": "PLANNED",
+        "reviewStatus": "DRAFT",
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "The owner has confirmed that the current authenticated /saved surface is the intended target and UX has approved the exact element/state and 768px expected geometry. A Linux Playwright container matching the repository lockfile can launch WebKit.",
+        "setup": "Create isolated synthetic owner data with one saved lead; launch the current Next.js app and scripts/check-ui.ts browser harness; set viewport to exactly 768 by 900 CSS pixels; capture browser name/version, window.innerWidth, target selector identity, element bounding box and computed expected geometry. Do not use real account data or historical removed source files as runtime fixtures.",
+        "procedure": "Run within the canonical integration CI environment: PostgreSQL with migrations, Redis, LocalStack SQS, built files worker/domain packages, production Next.js build/server and the isolated temporary test database created by scripts/check-ui.ts. In Linux WebKit, navigate to /saved and wait for the saved-workspace heading and the single UX-approved target element. Measure its actual geometry and the reference-derived expected position using the approved design contract. Chromium and Firefox remain suite-level controls at their existing configured viewports; the 768px defect assertion is WebKit-specific. Preserve the separate 390px row-stacking check as a distinct assertion and result.",
+        "assertion": "For Linux WebKit only, the target exists exactly once; window.innerWidth is 768; actual and approved expected geometry are both finite; the measured offset equals the approved expected offset within only the pre-approved tolerance. Before-fix evidence must demonstrate the ticket's specific 768px mismatch to call the defect reproduced. If the current surface has no target or no approved expected geometry, the test fails closed as unresolved and cannot report CS-2 accepted. The 390px overlap result cannot satisfy this assertion.",
+        "expectedResult": "A real current-surface 768px Linux-WebKit defect is either demonstrated with exact geometry for root-cause correction or explicitly reported as not reproduced; no inference from Windows or another viewport is accepted.",
+        "testName": "CS-2 Linux WebKit reproduces the approved saved-workspace 768px header geometry",
+        "testFileOrProcedureId": "scripts/check-ui.ts",
+        "fixtures": "Existing isolated check-ui owner fixture and one synthetic saved lead; approved UX target/geometry; no real credentials, resume data, external posting navigation or production services.",
+        "negativeCase": "Wrong viewport, missing/duplicate target, missing expected geometry, non-finite measurement, unapproved tolerance, wrong engine, no before-fix reproduction, or substituting the historical 390px overlap must fail as NOT_ACCEPTED; a healthy geometry positive control passes only at the approved expected offset.",
+        "evidenceArtifact": "Future redacted Playwright trace/result with exact commit, WebKit version, 768x900 CSS viewport, target identity, measured/expected geometry, approved tolerance and distinct 390px control result; no such current run is claimed.",
+        "releaseGate": "CS2_CURRENT_SURFACE_768PX_REPRODUCTION"
+      }
+    ],
+    "CS-2-AC2": [
+      {
+        "reviewer": "Frontend, QA and independent reviewer",
+        "testStatus": "PLANNED",
+        "reviewStatus": "DRAFT",
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "The target defect and approved target geometry for AC1 are established; the exact assertion is checked into scripts/check-ui.ts before any implementation change.",
+        "setup": "Capture the failing pre-fix assertion from Linux WebKit at 768px and the separate 390px row-overlap control. Preserve the same fixture, selector, browser image, viewport, expected value and tolerance for before/after runs.",
+        "procedure": "Trace the failing 768px geometry to the responsible current layout rule/component; record a causal explanation referencing the measured values and source path. Make the smallest correction and run the identical browser procedure against the fixed revision without editing its assertion, selector, viewport or tolerance.",
+        "assertion": "The review artifact names a concrete source-level cause supported by the before-fix trace and shows the unchanged assertion failing before and passing after the fix. A change that only changes expected value, selector, viewport, timeout, retry count or tolerance does not pass. A cause for the historical 390px WebKit race is not a root cause for the 768px ticket unless separate evidence demonstrates the same mechanism at the approved 768px target.",
+        "expectedResult": "The 768px cause and correction are causally supported, and the exact assertion is unchanged across failing and passing revisions.",
+        "testName": "CS-2 root-cause fix passes the unchanged 768px browser assertion",
+        "testFileOrProcedureId": "scripts/check-ui.ts",
+        "fixtures": "Same synthetic owner/lead fixture and pinned browser environment as CS-2-AC1; source diff and redacted before/after traces.",
+        "negativeCase": "If no 768px failure can be demonstrated, no root cause can be claimed and the ticket remains unaccepted; assertion widening, 390px-only proof or unrelated CSS change fails review.",
+        "evidenceArtifact": "Future independent code/test review containing before/after assertion identity or hash, root-cause source references and both viewport outcomes.",
+        "releaseGate": "CS2_ROOT_CAUSE_WITH_UNCHANGED_ASSERTION"
+      }
+    ],
+    "CS-2-AC3": [
+      {
+        "reviewer": "QA and Release Manager",
+        "testStatus": "PLANNED",
+        "reviewStatus": "DRAFT",
+        "type": "HOSTED_CI",
+        "preconditions": "A reviewed implementation commit contains the CS-2 test and fix; its source is on the authorized branch and the normal required CI workflow runs without skip/continue-on-error/retry suppression.",
+        "setup": "Record the exact commit SHA, workflow run URL, integration job named 'Test CareerScope (integration — database, queue, storage, browsers)', Playwright version and per-engine execution evidence for the CS-2 scenario.",
+        "procedure": "Inspect the exact-SHA CI run and logs/artifact to confirm the full current browser suite ran in Linux Chromium, Firefox and WebKit, and that the CS-2-specific 768px geometry assertion ran in Linux WebKit only. Confirm scripts/check-ui.ts was invoked by npm run test:ui in the named browser-acceptance step and all required job steps completed. Compare the checked-out SHA in the job to the reviewed commit; do not infer from a green run on a parent or different SHA.",
+        "assertion": "The exact reviewed SHA has a completed green integration job; the current named browser acceptance step executed npm run test:ui successfully with Chromium, Firefox and WebKit and no skipped suite engine; the job checkout SHA equals the submitted SHA. The CS-2-specific 768px defect assertion is required only in its target WebKit run, not duplicated across other engines unless separately approved. Missing step result, any skipped suite engine or a different SHA fails the criterion.",
+        "expectedResult": "The current three-engine browser suite is green in hosted CI for the exact reviewed source revision, and the CS-2-specific 768px assertion is green in its WebKit target run.",
+        "testName": "hosted integration job runs CS-2 768px browser assertion on the exact commit",
+        "testFileOrProcedureId": ".github/workflows/ci.yml#integration/Test CareerScope (browser acceptance and axe accessibility — Chromium, Firefox, WebKit)",
+        "fixtures": "CI's existing synthetic owner/database fixtures and pinned Playwright service image; only redacted job metadata/artifacts are retained.",
+        "negativeCase": "Green CI on another SHA, only local browser success, skipped/missing WebKit, a swallowed child process exit or a historical run fails; genuine test failure must remain nonzero.",
+        "evidenceArtifact": "Future GitHub Actions exact-SHA run URL and job/step IDs, checked-out SHA, named browser-case output, engine versions, conclusions and artifact locator.",
+        "releaseGate": "CS2_EXACT_SHA_HOSTED_BROWSER_CI"
+      }
     ]
   },
   "ownerDecisionSource": {
@@ -1815,6 +2073,18 @@
     }
   },
   "verificationReviewReceipts": {
+    "CS-4-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8bf172841d6973843d8794b117fb56ac21df2facd228e66299d2d6fea50bec03"
+    },
+    "CS-4-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "572a00ed3f722d91de92d2f1ca0199c8a6b25f959e78d1aa8ff137e0a32621f8"
+    },
     "CS-46-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -1887,18 +2157,6 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "5713696943bddf94556b4f444ccc104c8c260634f46944522ef02d7c95cca45f"
     },
-    "CS-4-AC1": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "1711b3ccda843f77d67ba8b9f5725762b31dfc1ff945b61208fb26b8fbbf7bc2"
-    },
-    "CS-4-AC2": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "c51bade53a96f671d38876848ef9f0fd064aceb4fabc0803ff9077effaab6d32"
-    },
     "CS-8-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -1939,7 +2197,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "1eedd189312c01074140c9d1f2eb550102a87fe27a6395e3976e0e210e04c6f1"
+      "contentHash": "859c349d2999ed5c73e51ffb6edd1fcd63a76520926f80e8a8a55e321a3c04fe"
     },
     "CS-7-AC2": {
       "verdict": "APPROVED",
@@ -1951,7 +2209,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "63adfe84802124b037a14832663dd91db685e20710c903c18dd52c5ccf6edbd2"
+      "contentHash": "121c1885a2c3a86599ac523cb9401cd3e8e8d521c06dc1101bdf0ec82ea0bcad"
     },
     "CS-9-AC1": {
       "verdict": "APPROVED",
@@ -1981,7 +2239,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "40272c6b7ba15b7a85c20b66c34f1a9eb7d2b0677ca2baa81856c94aa1de9d1a"
+      "contentHash": "e0c9557503fe19772c066f1a671c9e5d3615f44360771bc26a123b5d67e722e3"
     },
     "CS-6-AC1": {
       "verdict": "APPROVED",
@@ -2090,6 +2348,14 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "515a2f07a6965039c90f72ef90350e616b1e6798b31541a8da495eef328b7890"
+    }
+  },
+  "specificationReviewReceipts": {
+    "CS-3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5ab580a78008bee4bfd1a12fc4b80119aa8c74b832a995dbbe553ea3ac81df93"
     }
   }
 }

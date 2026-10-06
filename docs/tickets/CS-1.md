@@ -1,6 +1,6 @@
 # CS-1 — CI proves what deployment ships (v2-unit layer)
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -153,7 +153,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-1-AC1",
       "sourceText": "A v2-unit CI job runs the no-services V2 tests on every push",
       "expectedResult": "A v2-unit CI job runs the no-services V2 tests on every push",
-      "verificationIds": ["HOSTED_CI"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-1",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -169,7 +169,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-1-AC3",
       "sourceText": "Proven: breaking a v2 unit test turns the job red",
       "expectedResult": "Proven: breaking a v2 unit test turns the job red",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-1",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -403,16 +403,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "A v2-unit CI job runs the no-services V2 tests on every push",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-1-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future named contract result and path/event inventory; no hosted execution inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "CI_UNIT_EXECUTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -440,15 +441,16 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-1-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Scope text explicitly excludes database/queue/browser; no statement in the verification record treats this step as full integration or production acceptance. Registered service-backed suites remain assigned separately.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future contract report with exact exclusions and registered-file inventory.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_CI_SCOPE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -475,16 +477,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Proven: breaking a v2 unit test turns the job red",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-1-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "HOSTED_CI",
+          "expectedCheck": "Clean unit control exits zero; intentional assertion mutation exits nonzero and named CI unit-only step concludes failure, not skipped or success. Canonical source hashes remain unchanged; no mutation is merged or deployed.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future authorized exact-SHA run/step IDs, failing case name, exit status and clean/source-preservation evidence; historical runs remain historical.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_UNIT_FAILURE_PROPAGATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "HOSTED_CI",
@@ -529,7 +532,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-1-AC1",
       "sourceText": "A v2-unit CI job runs the no-services V2 tests on every push",
       "expectedResult": "A v2-unit CI job runs the no-services V2 tests on every push",
-      "verificationIds": ["HOSTED_CI"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-1",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -545,7 +548,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-1-AC3",
       "sourceText": "Proven: breaking a v2 unit test turns the job red",
       "expectedResult": "Proven: breaking a v2 unit test turns the job red",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-1",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     }

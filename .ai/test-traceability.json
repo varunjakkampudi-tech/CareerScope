@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "bb9df05966411519bb3c07f1bc5068438fe1db59be43a9626bbe394af0091403",
+    ".ai/ticket-specification-policy.json": "6fc2955fc017f9186f0c85720dbce4c0f3a9c87b51e8316bf542d0e9d15c0033",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "80f00bcf3ceb4fe48f4b343ca98836195906b2c816411601b56d1dc3fbc62b56"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "587d03e6e8fb5346ad0a1eee0bd806c5d2befd7808eba82cf3e6c1532e0857fa"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -22,16 +22,17 @@
       "criterion": "A v2-unit CI job runs the no-services V2 tests on every push",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-1-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future named contract result and path/event inventory; no hosted execution inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "CI_UNIT_EXECUTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -59,15 +60,16 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-1-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Scope text explicitly excludes database/queue/browser; no statement in the verification record treats this step as full integration or production acceptance. Registered service-backed suites remain assigned separately.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future contract report with exact exclusions and registered-file inventory.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_CI_SCOPE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -94,16 +96,17 @@
       "criterion": "Proven: breaking a v2 unit test turns the job red",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-1-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "HOSTED_CI",
+          "expectedCheck": "Clean unit control exits zero; intentional assertion mutation exits nonzero and named CI unit-only step concludes failure, not skipped or success. Canonical source hashes remain unchanged; no mutation is merged or deployed.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future authorized exact-SHA run/step IDs, failing case name, exit status and clean/source-preservation evidence; historical runs remain historical.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_UNIT_FAILURE_PROPAGATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "HOSTED_CI",
@@ -130,17 +133,36 @@
       "criterion": "Reproduced in the Playwright Linux container, not guessed from Windows",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-2-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "For Linux WebKit only, the target exists exactly once; window.innerWidth is 768; actual and approved expected geometry are both finite; the measured offset equals the approved expected offset within only the pre-approved tolerance. Before-fix evidence must demonstrate the ticket's specific 768px mismatch to call the defect reproduced. If the current surface has no target or no approved expected geometry, the test fails closed as unresolved and cannot report CS-2 accepted. The 390px overlap result cannot satisfy this assertion.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted Playwright trace/result with exact commit, WebKit version, 768x900 CSS viewport, target identity, measured/expected geometry, approved tolerance and distinct 390px control result; no such current run is claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, UX and QA; Release reviewer for hosted evidence",
+          "releaseGate": "CS2_CURRENT_SURFACE_768PX_REPRODUCTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend, UX and QA; Release reviewer for hosted evidence",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "The owner has confirmed that the current authenticated /saved surface is the intended target and UX has approved the exact element/state and 768px expected geometry. A Linux Playwright container matching the repository lockfile can launch WebKit.",
+          "setup": "Create isolated synthetic owner data with one saved lead; launch the current Next.js app and scripts/check-ui.ts browser harness; set viewport to exactly 768 by 900 CSS pixels; capture browser name/version, window.innerWidth, target selector identity, element bounding box and computed expected geometry. Do not use real account data or historical removed source files as runtime fixtures.",
+          "procedure": "Run within the canonical integration CI environment: PostgreSQL with migrations, Redis, LocalStack SQS, built files worker/domain packages, production Next.js build/server and the isolated temporary test database created by scripts/check-ui.ts. In Linux WebKit, navigate to /saved and wait for the saved-workspace heading and the single UX-approved target element. Measure its actual geometry and the reference-derived expected position using the approved design contract. Chromium and Firefox remain suite-level controls at their existing configured viewports; the 768px defect assertion is WebKit-specific. Preserve the separate 390px row-stacking check as a distinct assertion and result.",
+          "assertion": "For Linux WebKit only, the target exists exactly once; window.innerWidth is 768; actual and approved expected geometry are both finite; the measured offset equals the approved expected offset within only the pre-approved tolerance. Before-fix evidence must demonstrate the ticket's specific 768px mismatch to call the defect reproduced. If the current surface has no target or no approved expected geometry, the test fails closed as unresolved and cannot report CS-2 accepted. The 390px overlap result cannot satisfy this assertion.",
+          "expectedResult": "A real current-surface 768px Linux-WebKit defect is either demonstrated with exact geometry for root-cause correction or explicitly reported as not reproduced; no inference from Windows or another viewport is accepted.",
+          "testName": "CS-2 Linux WebKit reproduces the approved saved-workspace 768px header geometry",
+          "testFileOrProcedureId": "scripts/check-ui.ts",
+          "fixtures": "Existing isolated check-ui owner fixture and one synthetic saved lead; approved UX target/geometry; no real credentials, resume data, external posting navigation or production services.",
+          "negativeCase": "Wrong viewport, missing/duplicate target, missing expected geometry, non-finite measurement, unapproved tolerance, wrong engine, no before-fix reproduction, or substituting the historical 390px overlap must fail as NOT_ACCEPTED; a healthy geometry positive control passes only at the approved expected offset.",
+          "evidenceArtifact": "Future redacted Playwright trace/result with exact commit, WebKit version, 768x900 CSS viewport, target identity, measured/expected geometry, approved tolerance and distinct 390px control result; no such current run is claimed.",
+          "releaseGate": "CS2_CURRENT_SURFACE_768PX_REPRODUCTION"
+        }
+      ]
     },
     {
       "ticketId": "CS-2",
@@ -148,17 +170,36 @@
       "criterion": "Root cause named; the assertion is not widened",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-2-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "The review artifact names a concrete source-level cause supported by the before-fix trace and shows the unchanged assertion failing before and passing after the fix. A change that only changes expected value, selector, viewport, timeout, retry count or tolerance does not pass. A cause for the historical 390px WebKit race is not a root cause for the 768px ticket unless separate evidence demonstrates the same mechanism at the approved 768px target.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future independent code/test review containing before/after assertion identity or hash, root-cause source references and both viewport outcomes.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, QA and independent reviewer",
+          "releaseGate": "CS2_ROOT_CAUSE_WITH_UNCHANGED_ASSERTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend, QA and independent reviewer",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "The target defect and approved target geometry for AC1 are established; the exact assertion is checked into scripts/check-ui.ts before any implementation change.",
+          "setup": "Capture the failing pre-fix assertion from Linux WebKit at 768px and the separate 390px row-overlap control. Preserve the same fixture, selector, browser image, viewport, expected value and tolerance for before/after runs.",
+          "procedure": "Trace the failing 768px geometry to the responsible current layout rule/component; record a causal explanation referencing the measured values and source path. Make the smallest correction and run the identical browser procedure against the fixed revision without editing its assertion, selector, viewport or tolerance.",
+          "assertion": "The review artifact names a concrete source-level cause supported by the before-fix trace and shows the unchanged assertion failing before and passing after the fix. A change that only changes expected value, selector, viewport, timeout, retry count or tolerance does not pass. A cause for the historical 390px WebKit race is not a root cause for the 768px ticket unless separate evidence demonstrates the same mechanism at the approved 768px target.",
+          "expectedResult": "The 768px cause and correction are causally supported, and the exact assertion is unchanged across failing and passing revisions.",
+          "testName": "CS-2 root-cause fix passes the unchanged 768px browser assertion",
+          "testFileOrProcedureId": "scripts/check-ui.ts",
+          "fixtures": "Same synthetic owner/lead fixture and pinned browser environment as CS-2-AC1; source diff and redacted before/after traces.",
+          "negativeCase": "If no 768px failure can be demonstrated, no root cause can be claimed and the ticket remains unaccepted; assertion widening, 390px-only proof or unrelated CSS change fails review.",
+          "evidenceArtifact": "Future independent code/test review containing before/after assertion identity or hash, root-cause source references and both viewport outcomes.",
+          "releaseGate": "CS2_ROOT_CAUSE_WITH_UNCHANGED_ASSERTION"
+        }
+      ]
     },
     {
       "ticketId": "CS-2",
@@ -166,25 +207,36 @@
       "criterion": "check-ui.mjs green on all three engines in CI",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-2-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
           "type": "HOSTED_CI",
-          "expectedCheck": "CS-2-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "The exact reviewed SHA has a completed green integration job; the current named browser acceptance step executed npm run test:ui successfully with Chromium, Firefox and WebKit and no skipped suite engine; the job checkout SHA equals the submitted SHA. The CS-2-specific 768px defect assertion is required only in its target WebKit run, not duplicated across other engines unless separately approved. Missing step result, any skipped suite engine or a different SHA fails the criterion.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Release/system reviewer"
+          "evidenceRequired": "Future GitHub Actions exact-SHA run URL and job/step IDs, checked-out SHA, named browser-case output, engine versions, conclusions and artifact locator.",
+          "automationStatus": "PLANNED",
+          "owner": "QA and Release Manager",
+          "releaseGate": "CS2_EXACT_SHA_HOSTED_BROWSER_CI"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA and Release Manager",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "type": "HOSTED_CI",
+          "preconditions": "A reviewed implementation commit contains the CS-2 test and fix; its source is on the authorized branch and the normal required CI workflow runs without skip/continue-on-error/retry suppression.",
+          "setup": "Record the exact commit SHA, workflow run URL, integration job named 'Test CareerScope (integration — database, queue, storage, browsers)', Playwright version and per-engine execution evidence for the CS-2 scenario.",
+          "procedure": "Inspect the exact-SHA CI run and logs/artifact to confirm the full current browser suite ran in Linux Chromium, Firefox and WebKit, and that the CS-2-specific 768px geometry assertion ran in Linux WebKit only. Confirm scripts/check-ui.ts was invoked by npm run test:ui in the named browser-acceptance step and all required job steps completed. Compare the checked-out SHA in the job to the reviewed commit; do not infer from a green run on a parent or different SHA.",
+          "assertion": "The exact reviewed SHA has a completed green integration job; the current named browser acceptance step executed npm run test:ui successfully with Chromium, Firefox and WebKit and no skipped suite engine; the job checkout SHA equals the submitted SHA. The CS-2-specific 768px defect assertion is required only in its target WebKit run, not duplicated across other engines unless separately approved. Missing step result, any skipped suite engine or a different SHA fails the criterion.",
+          "expectedResult": "The current three-engine browser suite is green in hosted CI for the exact reviewed source revision, and the CS-2-specific 768px assertion is green in its WebKit target run.",
+          "testName": "hosted integration job runs CS-2 768px browser assertion on the exact commit",
+          "testFileOrProcedureId": ".github/workflows/ci.yml#integration/Test CareerScope (browser acceptance and axe accessibility — Chromium, Firefox, WebKit)",
+          "fixtures": "CI's existing synthetic owner/database fixtures and pinned Playwright service image; only redacted job metadata/artifacts are retained.",
+          "negativeCase": "Green CI on another SHA, only local browser success, skipped/missing WebKit, a swallowed child process exit or a historical run fails; genuine test failure must remain nonzero.",
+          "evidenceArtifact": "Future GitHub Actions exact-SHA run URL and job/step IDs, checked-out SHA, named browser-case output, engine versions, conclusions and artifact locator.",
+          "releaseGate": "CS2_EXACT_SHA_HOSTED_BROWSER_CI"
+        }
+      ]
     },
     {
       "ticketId": "CS-3",
@@ -192,16 +244,17 @@
       "criterion": "A Caddy crash recovers without operator action, or is detected and alerted",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-3-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "Healthy probe causes zero restart/alerts; first failure below threshold causes zero restart; confirmed outage invokes exactly one recovery; inside cooldown no second restart; elapsed cooldown permits retry; failed restart is alerted; recovery announces once then healthy silence.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named fixture results and controlled negative proof; no live recovery inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure, Security and QA",
+          "releaseGate": "LOCAL_PROXY_DETECTION_NOT_LIVE_NAMESPACE_PROOF"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -228,29 +281,30 @@
       "criterion": "Proven by killing Caddy and observing the result",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-3-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "LIVE_HOST",
+          "expectedCheck": "Preflight evidence matches the approved exact-SHA topology; anchor and dependent namespace identities are unchanged after proxy-only termination; proxy restart count increases and Caddy rejoins the anchor; public origin returns its expected success response, GET /api/health returns HTTP 200 with status=ok, and the pre-existing approved synthetic async canary reaches its specified success state inside the owner-approved window. Host publication remains only the intended edge ports 80/443; PostgreSQL/Redis/LocalStack/API/workers are not published. Any preflight mismatch, private-port publication, namespace change, unsuccessful probe/canary, recovery outside approved bounds or missing alert on failed recovery is FAIL; SSH/operator access is not disabled as a test workaround.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future operator-signed exact-revision approval/window record; redacted pre/post namespace IDs, port-binding evidence, timer state, restart count, origin/API/canary observations and timestamps; preserve first failure and rollback result. Historical host run is not current proof.",
+          "automationStatus": "PLANNED",
+          "owner": "Host operator, System Designer, Security and QA",
+          "releaseGate": "LIVE_PROXY_TOPOLOGY_RECOVERY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "LIVE_HOST",
-          "preconditions": "Host operator separately approves controlled Caddy crash window for exact deployed revision; healthy origin/API/owned async operation baseline and rollback/recovery plan exist. No action is executed during specification phase.",
-          "setup": "Record safe proxy/anchor/dependent container and namespace identifiers, restart counts and externally observed application/container edge publication. Separately classify approved host-management exposure under existing firewall policy. Use synthetic owned operation with no real candidate data.",
-          "procedure": "Operator terminates only the resolved Caddy container, never anchor; observe automatic Docker proxy restart, namespace identity and origin/API/owned worker operation after recovery within a pre-approved measured window. Record failing observations as failures, not retried-away success.",
-          "assertion": "Anchor namespace identity remains unchanged; every dependent stays in it; proxy restarts and rejoins it; real origin/API and benign owned async operation succeed without manual rejoin/full restart. Application/container host-publication remains only edge80/443, excluding database/Redis/LocalStack/API/worker ports. Separately classify approved host-management SSH exposure under reviewed firewall policy, never require disabling operator access. If recovery fails, capture alert/escalation and retain FAIL rather than claiming root-cause elimination.",
+          "preconditions": "Host operator records explicit approval for a bounded maintenance window against the exact deployed revision and identifies the rollback operator. Before disruption, public origin and GET /api/health are healthy; the recovery timer is active; Compose confirms network-anchor owns the namespace and edge publication; docker inspect confirms proxy and dependents share the anchor network mode, only intended edge ports are published, and no DB/Redis/LocalStack/API/worker host ports are published. A non-mutating synthetic async canary must already be approved and available; otherwise this AC cannot pass. No action is executed during specification phase.",
+          "setup": "Record the approved window identifier and its owner-defined start/end bounds (do not invent a duration), exact deployed SHA, redacted container IDs, network-anchor namespace ID, proxy/dependent namespace IDs, proxy restart count, Compose port bindings, timer state, external origin status, API readiness and the approved synthetic canary's pre-crash state. Exclude credentials, environment values, candidate records and payloads.",
+          "procedure": "At the approved window, capture the healthy baseline; resolve the Caddy container from the exact deployment Compose project and terminate only that container using the reviewed operator procedure (never network-anchor). Observe Docker restart count and proxy rejoin, compare anchor/dependent namespace IDs with baseline, poll the public origin and GET /api/health and observe the already-running approved synthetic async canary through the owner-approved window bounds. Record first failure and final state; do not retry a failed proof into a pass. If preflight differs from the approved record, abort before termination. If recovery fails, follow the separately documented operator rollback/recovery path and retain the failed result.",
+          "assertion": "Preflight evidence matches the approved exact-SHA topology; anchor and dependent namespace identities are unchanged after proxy-only termination; proxy restart count increases and Caddy rejoins the anchor; public origin returns its expected success response, GET /api/health returns HTTP 200 with status=ok, and the pre-existing approved synthetic async canary reaches its specified success state inside the owner-approved window. Host publication remains only the intended edge ports 80/443; PostgreSQL/Redis/LocalStack/API/workers are not published. Any preflight mismatch, private-port publication, namespace change, unsuccessful probe/canary, recovery outside approved bounds or missing alert on failed recovery is FAIL; SSH/operator access is not disabled as a test workaround.",
           "expectedResult": "Current deployed topology proves proxy crash does not strand dependents; a monitor-only success cannot pass this namespace acceptance requirement.",
           "testName": "controlled Caddy crash preserves stable anchor and private dependent reachability",
           "testFileOrProcedureId": "CS-3-LIVE-STABLE-ANCHOR-CRASH",
-          "fixtures": "Operator-approved current deployment, synthetic owned async operation, safe container/namespace observation and independent external port probe; no volume or credentials mutation.",
+          "fixtures": "Operator-approved exact-SHA deployment and window record, already-approved non-mutating synthetic async canary, redacted Docker inspect/Compose topology evidence, external origin probe and readiness response; no volume or credentials mutation.",
           "negativeCase": "A proxy-owned namespace or false-positive container health with failing origin/API/async probe must fail; pre-crash healthy controls prevent preexisting outage being called recovery.",
-          "evidenceArtifact": "Future operator-signed exact-revision safe pre/post namespace and port evidence, actual crash/restart times and health/async result; historical host run is not current proof.",
+          "evidenceArtifact": "Future operator-signed exact-revision approval/window record; redacted pre/post namespace IDs, port-binding evidence, timer state, restart count, origin/API/canary observations and timestamps; preserve first failure and rollback result. Historical host run is not current proof.",
           "reviewer": "Host operator, System Designer, Security and QA",
           "releaseGate": "LIVE_PROXY_TOPOLOGY_RECOVERY",
           "testStatus": "PLANNED",
@@ -264,29 +318,30 @@
       "criterion": "The publish list is derived from versionFiles(), not duplicated",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-4-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "PLANNED assertion: getVersionFiles receives exactly 1.0.1 and each injected key occurs in the git add argument list and the git commit --only path list; no real Git/npm process runs. The current test suite checks commit-only paths but does not yet assert git add.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future Node 24 named test result showing separate git add and commit-only path assertions and zero real process invocations; current local run does not prove the absent git add assertion.",
+          "automationStatus": "PLANNED",
+          "owner": "Release tooling reviewer and QA",
+          "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
           "preconditions": "publishPages runs only through injected read/run/getVersionFiles fixtures; no real processes or environment files are reachable.",
           "setup": "Fixture returns a valid synthetic configuration, clean main state and package version 1.0.1 after mocked bump; inject a three-key versionFiles map including mobile-site/newly-added-file.js.",
-          "procedure": "Invoke publishPages with the adapters; record getVersionFiles version argument and all git add / git commit --only command arguments.",
-          "assertion": "getVersionFiles receives exactly 1.0.1; every injected key occurs in both git add and commit --only path lists, alongside separately owned package.json, package-lock.json and encrypted snapshot path; no real Git/npm process runs.",
+          "procedure": "PLANNED update to scripts/publish-pages.test.mjs: invoke publishPages with injected adapters; separately locate the recorded git add and git commit --only calls; inspect arguments of each call and record getVersionFiles version argument.",
+          "assertion": "PLANNED assertion: getVersionFiles receives exactly 1.0.1 and each injected key occurs in the git add argument list and the git commit --only path list; no real Git/npm process runs. The current test suite checks commit-only paths but does not yet assert git add.",
           "expectedResult": "Publication follows the canonical version-file map even when a new file is introduced, without a second mutable list.",
-          "testName": "a version-bearing file added to versionFiles() is staged, proven with a synthetic third key",
+          "testName": "a version-bearing file added to versionFiles() is added and included in the release-only commit",
           "testFileOrProcedureId": "scripts/publish-pages.test.mjs",
           "fixtures": "Existing injected process recorder plus synthetic three-key map; file contents are unused fixture text, not production assets.",
           "negativeCase": "Replacing derivation with today's hardcoded two paths or calling the map with the pre-bump version must fail; fixture must never permit real git push.",
-          "evidenceArtifact": "Future exact-content named Node test result with recorded path assertions and zero real process invocations; existing test name/path do not imply fresh execution.",
+          "evidenceArtifact": "Future Node 24 named test result showing separate git add and commit-only path assertions and zero real process invocations; current local run does not prove the absent git add assertion.",
           "reviewer": "Release tooling reviewer and QA",
           "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE",
           "testStatus": "PLANNED",
@@ -300,29 +355,30 @@
       "criterion": "A test asserts every versionFiles key is staged",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-4-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "PLANNED assertion: every real versionFiles key and the synthetic third key appear in both git add and git commit --only path arguments; current assertions inspect commit-only arguments and do not prove git add.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named test output plus separate git-add/commit-only path assertions; no release, push, tag or hosted CI evidence claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Release tooling reviewer and QA",
+          "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
           "preconditions": "Actual versionFiles module and isolated publication fixture are loaded under Node 24.",
           "setup": "Obtain real keys from versionFiles('1.0.1') and a separate synthetic extra-key map; record stubbed publication command calls in both runs.",
-          "procedure": "Assert every map key is present in staging and commit-only path arguments, then run the injected third-key control in the same suite.",
-          "assertion": "For every real key, git add and git commit --only include that key. The synthetic third key is also included, proving future extensibility; a path written by syncVersion cannot be omitted from the selected commit list.",
-          "expectedResult": "The regression test proves all canonical version-bearing paths are staged, not merely a successful mock return or current two-file coincidence.",
-          "testName": "every versionFiles() key is staged in the release commit",
+          "procedure": "PLANNED update to scripts/publish-pages.test.mjs: use the recorded real and synthetic version maps, identify the distinct git add and git commit --only calls, and assert each expected key appears in both call argument lists.",
+          "assertion": "PLANNED assertion: every real versionFiles key and the synthetic third key appear in both git add and git commit --only path arguments; current assertions inspect commit-only arguments and do not prove git add.",
+          "expectedResult": "The updated regression test proves all canonical and newly added version-bearing paths are added and included in the selected release commit, not merely that a mock returned successfully.",
+          "testName": "every versionFiles() key is added and included in the release-only commit",
           "testFileOrProcedureId": "scripts/publish-pages.test.mjs",
           "fixtures": "Current real version map, synthetic extra-key control and injected command recorder; no filesystem publication.",
-          "negativeCase": "Removing any canonical key from either recorded path list fails; tests cannot approve an unchanged hardcoded list by checking only return version.",
-          "evidenceArtifact": "Future named test output plus explicit staging/commit path assertions; no release, push, tag or hosted CI evidence claimed.",
+          "negativeCase": "Removing any canonical or synthetic key from either recorded path list fails; tests cannot approve an unchanged hardcoded list by checking only commit-only paths or return version.",
+          "evidenceArtifact": "Future named test output plus separate git-add/commit-only path assertions; no release, push, tag or hosted CI evidence claimed.",
           "reviewer": "Release tooling reviewer and QA",
           "releaseGate": "STATIC_PUBLICATION_VERSION_CONSISTENCY_NOT_PRODUCTION_RELEASE",
           "testStatus": "PLANNED",
@@ -336,16 +392,17 @@
       "criterion": "The optional Pages export reads owner-scoped PostgreSQL data",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-5-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "A export contains only Aactive public postings, excludes Aarchived/B and all private sentinels. Each job key set equals title/company/location/source/postedAt/url; invalid/private/credential URLs omitted and allowed query keys only retained. B control exports B only. Missing owner refuses before DB query/output change; canonical files unchanged.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named disposable DB export outcomes and canonical-byte preservation; existing pure publicJobs tests are not SQL ownership proof.",
+          "automationStatus": "PLANNED",
+          "owner": "System Designer, Security, Infrastructure and QA",
+          "releaseGate": "OPTIONAL_PUBLIC_EXPORT_PRIVACY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
@@ -373,15 +430,16 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-5-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
+          "automationStatus": "PLANNED",
+          "owner": "System Designer, Security, Infrastructure and QA",
+          "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
@@ -409,15 +467,16 @@
       "verification": [
         {
           "type": "HOSTED_CI",
-          "expectedCheck": "CS-5-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "All root commands run without cd v2 or obsolete application/SQLite runtime. Consumed domain packages remain present and tested; zero active imports/build/Docker/CI references resolve to deleted source. Each required lane actually executes and succeeds; skipped or unavailable lanes are NOT_RUN, not PASS.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA hosted lane IDs/results, clean-install provenance and resolved path inventory; no deployment inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "System Designer, Security, Infrastructure and QA",
+          "releaseGate": "CANONICAL_CLEAN_CHECKOUT_PARITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
@@ -445,15 +504,16 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-6-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "All eight private routes inherit the same shell; canonical navigation hrefs resolve; session query key/provider is shared. No parallel routing map or per-page independent authentication boundary is introduced.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future path/import contract results; static checks alone do not prove rendered privacy.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_ROUTE_COMPOSITION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -481,23 +541,16 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-6-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-6-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Cold pending shows neutral loading; cold error safe retry; cold anonymous mounts zero private children, sends zero private feature requests and exposes no private marker in HTML/RSC/recorded DOM states before redirect. Normal cached authenticated navigation remains usable, not incorrectly expected to become pending. Authenticated positive control mounts intended real feature. OwnerB sees no ownerA marker after teardown. Genuine anonymous API reads fail401; cross-owner object reads return the route's canonical safe missing/denial contract, without private data.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future Chromium/Firefox/WebKit named browser results with safe sentinel outcomes, no screenshots of real personal data.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, Security and QA",
+          "releaseGate": "PRIVATE_RENDER_AND_CACHE_ISOLATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_BROWSER",
@@ -524,16 +577,17 @@
       "criterion": "Split from the shared-shell work so it does not block CS-13, CS-14, CS-16, CS-17 and CS-19 behind one large change",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-6-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "CS-6 owns only route composition/session-render boundary and shared navigation wiring; dependent ticket feature contracts remain independently owned. Graph introduces no reverse hard edge requiring all feature implementation before boundary. Existing valid dependencies are preserved.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future source-linked architecture review with actual dependency findings; no ticket workflow promotions.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, Security and QA",
+          "releaseGate": "INDEPENDENT_ROUTE_FOUNDATION_SCOPE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "MANUAL_PRODUCT",
@@ -560,29 +614,30 @@
       "criterion": "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-7-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Only completed-success CI for the resolved SHA may PASS. Failed/cancelled/timed-out/malformed/inconsistent payloads REFUSE; queued/in-progress/absent WAIT only to deadline then refuse. The Actions request includes workflow ci.yml and exact head_sha A. Gate/build/archive/deploy each consume A or fail before secret/shipping calls if the checkout differs; none may independently deploy B based on a later main lookup.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Release/system reviewer"
+          "evidenceRequired": "Existing command output plus future named transport/deadline and source-derived moving-main assertion results; current existing gate execution alone does not prove these planned assertions.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "EXACT_SHA_FAIL_CLOSED_DEPLOYMENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "preconditions": "Actual decide function imported without CLI execution; deploy.yml inspected without dispatch.",
-          "setup": "Synthetic successful, failed, cancelled, timed-out, missing-status, malformed, inconsistent, queued and absent run-list payloads; older success plus newer failure.",
-          "procedure": "Invoke decide for each fixture and inspect require-ci/dependent jobs and main-SHA wiring; transport harness records requested URL without network.",
-          "assertion": "Only completed-success fixture returns PASS; completed failures/malformed payloads return REFUSE; queued/in-progress/absent return WAIT and deadline harness refuses on expiry. URL filters ci.yml runs by resolved SHA; downstream jobs require successful require-ci.",
-          "expectedResult": "Unproven exact-revision CI success cannot authorize shipping.",
-          "testName": "exact SHA CI gate fails closed for missing malformed and rejected evidence",
-          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs",
-          "fixtures": "Synthetic Actions payloads plus planned isolated transport/deadline harness; no credentials or SSH.",
-          "negativeCase": "Remove head_sha filter, ignore newer failure, permit malformed-as-PASS, or bypass needs: each must fail; successful exact-SHA control passes.",
-          "evidenceArtifact": "Future named gate and transport/deadline results; existing gate execution does not imply planned transport assertions passed.",
+          "preconditions": "Actual decide function imported without CLI execution; deploy.yml and all three job checkouts/provenance paths inspected without dispatch.",
+          "setup": "Use synthetic completed-success SHA A, failure/malformed/inconsistent/queued/absent Actions payloads and a newer-failure control. For workflow contract, resolve main SHA A in require-ci and advance fixture origin/main to SHA B before gate and deploy start.",
+          "procedure": "Run existing `npm run deploy:gate:test` decision/wiring assertions; add a service-free network transport/deadline harness for requested ci.yml head_sha and refusal semantics; run a source-derived workflow fixture through require-ci, gate and deploy with controlled main movement.",
+          "assertion": "Only completed-success CI for the resolved SHA may PASS. Failed/cancelled/timed-out/malformed/inconsistent payloads REFUSE; queued/in-progress/absent WAIT only to deadline then refuse. The Actions request includes workflow ci.yml and exact head_sha A. Gate/build/archive/deploy each consume A or fail before secret/shipping calls if the checkout differs; none may independently deploy B based on a later main lookup.",
+          "expectedResult": "Unproven CI or revision identity cannot authorize shipping; the passed, checked, built, archived and deployed revision is identical.",
+          "testName": "exact SHA gate and downstream job revision fail closed when main advances",
+          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs plus planned scripts/require-ci-workflow.test.mjs",
+          "fixtures": "Current pure decision/wiring checks plus planned synthetic Actions responses, injected fetch/clock and isolated A-to-B workflow-DAG fixture; no credentials or SSH.",
+          "negativeCase": "Remove head_sha, ignore newer failure, permit malformed-as-PASS, bypass needs, or let a downstream job checkout B after A passed: each negative mutation must refuse/fail; same-SHA A positive control passes.",
+          "evidenceArtifact": "Existing command output plus future named transport/deadline and source-derived moving-main assertion results; current existing gate execution alone does not prove these planned assertions.",
           "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
           "releaseGate": "EXACT_SHA_FAIL_CLOSED_DEPLOYMENT",
           "testStatus": "PLANNED",
@@ -596,24 +651,17 @@
       "criterion": "An override exists, requires explicit intent and is recorded in the run log",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-7-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-7-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "No override_ci or arbitrary ref input is exposed; failed CI still REFUSE despite intent/reason fields. No condition allows a shipping job around require-ci. Report explicitly marks historical override requirement superseded, not implemented.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Release/system reviewer"
+          "evidenceRequired": "Future contract result and supersession reference to docs/GITHUB-RELEASE-LIFECYCLE.md; no runtime claim.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "NO_DEPLOYMENT_BYPASS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -640,28 +688,29 @@
       "criterion": "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-7-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "HOSTED_CI",
+          "expectedCheck": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are represented. Failed-A CI yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. In the distinct success-A/move-main-to-B run, later jobs use A or fail closed before build/secrets; B is never checked out, archived or deployed under A's CI result. The success-A/no-movement control reaches only the non-shipping adapter. Requested, resolved, checked-out and recorded SHA values agree in both successful controls.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future authorized hosted run/job IDs, exact SHA, dependency conclusions and zero shipping calls; old arbitrary-ref run is historical evidence only.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_DEPLOYMENT_REFUSAL"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "HOSTED_CI",
           "preconditions": "A Release Manager separately authorizes non-shipping hosted workflow refusal validation; no deliberately broken main push or production dispatch is allowed.",
-          "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Use exact-SHA failure and success run fixtures.",
-          "procedure": "Validate source-hash parity and preserved dependency/condition graph before observing authorized hosted require-ci refusal for failed exact-SHA CI. Invalidate harness evidence if canonical deploy.yml changes. Compare successful CI control in the same derived graph; no production dispatch.",
-          "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are unchanged. Failed candidate yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. Success control reaches only non-shipping adapter. Requested SHA, resolved revision and recorded filter agree.",
+          "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Prepare three independent runs: failed exact-SHA CI for A; successful exact-SHA CI for A followed by fixture main advancing to B before gate/deploy; and successful exact-SHA CI for A with main unchanged.",
+          "procedure": "After explicit owner/Release Manager acceptance of this safe evidence substitute, validate canonical source-hash parity and actual dependency/condition graph. Run the failed-A case and observe refusal/zero effects. Separately run success-A then advance fixture main to B before downstream jobs; observe whether those jobs consume A or refuse before build/secrets/shipping. Run the success-A/no-movement control to prove the harness permits the valid same-SHA path to its non-shipping adapter. Invalidate evidence if workflow source changes; no production dispatch.",
+          "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are represented. Failed-A CI yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. In the distinct success-A/move-main-to-B run, later jobs use A or fail closed before build/secrets; B is never checked out, archived or deployed under A's CI result. The success-A/no-movement control reaches only the non-shipping adapter. Requested, resolved, checked-out and recorded SHA values agree in both successful controls.",
           "expectedResult": "Hosted dependency wiring refuses rejected evidence without attempting production deployment.",
           "testName": "hosted rejected CI prevents downstream shipping before secrets are reachable",
           "testFileOrProcedureId": "CS-7-HOSTED-NONSHIPPING-REFUSAL",
           "fixtures": "Authorized isolated hosted workflow context, synthetic failure/success run fixtures and shipping-call recorder.",
-          "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails paired success control; arbitrary-ref production dispatch is forbidden.",
+          "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails the success-A/no-movement control; a test that advances main only during a failed-A run is insufficient because refusal masks moving-main behavior. Any B checkout/build/archive/deploy after A-only CI success fails. Arbitrary-ref production dispatch and a deliberately failing main push are forbidden. Without owner acceptance of the safe replacement for frozen AC3, the original criterion remains unresolved.",
           "evidenceArtifact": "Future authorized hosted run/job IDs, exact SHA, dependency conclusions and zero shipping calls; old arbitrary-ref run is historical evidence only.",
           "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
           "releaseGate": "HOSTED_DEPLOYMENT_REFUSAL",
@@ -676,16 +725,17 @@
       "criterion": "Every reader of .ai/*.json distinguishes absent, valid and unparseable",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-8-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Every reader distinguishes valid parsed state from absence and parse failure. Required missing files refuse; optional absence uses documented fallback without readiness claim. Malformed present files expose integrity errors and cannot be classified as a healthy empty state.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named matrix result showing consumer inventory, cases executed, exit codes and byte preservation; the planned harness is not represented as existing coverage.",
+          "automationStatus": "PLANNED",
+          "owner": "Delivery tooling reviewer, QA and Security reviewer",
+          "releaseGate": "CANONICAL_EVIDENCE_INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -702,7 +752,7 @@
           "reviewer": "Delivery tooling reviewer, QA and Security reviewer",
           "releaseGate": "CANONICAL_EVIDENCE_INTEGRITY",
           "testStatus": "PLANNED",
-          "reviewStatus": "REVIEWED"
+          "reviewStatus": "DRAFT"
         }
       ]
     },
@@ -713,15 +763,25 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-8-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Corruption yields artifact/category stateErrors or nonzero CLI refusal as appropriate. No release permission, completed-review claim or healthy 'no findings' assertion may result merely because fallback arrays are empty. Diagnostics contain file/category, not rejected payload.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named consumer refusal assertions and sanitized diagnostic categories, plus the separately required named CS8 corrupted-state browser result; Node snapshot checks do not prove visible rendering.",
+          "automationStatus": "PLANNED",
+          "owner": "Delivery tooling reviewer and Security reviewer",
+          "releaseGate": "FAIL_CLOSED_RELEASE_EVIDENCE"
+        },
+        {
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Corrupted present file visibly displays the integrity warning rather than a healthy no-findings claim; valid restoration clears corruption warning and shows exact synthetic finding totals. Canonical files remain byte-identical.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named browser result with visible warning/restoration assertions, exact revision and canonical byte preservation; no hosted evidence inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Engineering UI, Accessibility and QA reviewers",
+          "releaseGate": "CANONICAL_EVIDENCE_VISIBLE_INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -738,7 +798,7 @@
           "reviewer": "Delivery tooling reviewer and Security reviewer",
           "releaseGate": "FAIL_CLOSED_RELEASE_EVIDENCE",
           "testStatus": "PLANNED",
-          "reviewStatus": "REVIEWED"
+          "reviewStatus": "DRAFT"
         },
         {
           "type": "AUTOMATED_BROWSER",
@@ -765,16 +825,17 @@
       "criterion": "Each is mutation-tested with all three cases, malformed included",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-8-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "All inventory entries have executed valid/absent/malformed assertions; a catch-and-empty mutation is rejected. Original fixture bytes are restored on failure; canonical repository hashes and ticket states are unchanged; no orphan absent-test file remains.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named mutation and preservation test results, case totals, zero skipped and sanitized path classification.",
+          "automationStatus": "PLANNED",
+          "owner": "QA and Delivery tooling reviewer",
+          "releaseGate": "STATE_READER_REGRESSION_AND_FIXTURE_SAFETY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -801,24 +862,17 @@
       "criterion": "Postgres and Redis service containers run in CI with a CI-built environment file",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-9-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
           "type": "HOSTED_CI",
-          "expectedCheck": "CS-9-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "Postgres17.6-alpine, Redis7.4.5-alpine and LocalStack4.7.0 initialize; CI-generated synthetic environment is used. AOF enabled, appendfsync everysec, configured maxmemory and noeviction validated before suite. Missing/unhealthy service yields failure not skip.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA hosted job/step IDs, service versions and safe readiness/durability assertions; no configuration dumps.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_SERVICE_BACKED_INTEGRATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "HOSTED_CI",
@@ -846,15 +900,25 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-9-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "All nine current files are registered in the canonical command invoked by integration lane; concurrency equals1. Registration result is explicitly not execution evidence.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named contract result with exact command/path inventory, not service-backed TAP.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION"
+        },
+        {
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Every registered file contributes actual executed tests; zero silently skipped suites; nonzero exit/signal or service/teardown failure fails. All nine files remain included. Browser/axe is separately classified, never inferred from TAP.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future current-content service-backed per-file TAP counts plus child exit/signal and safe service versions; no hosted outcome inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "COMPLETE_INTEGRATION_EXECUTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -898,16 +962,17 @@
       "criterion": "A skipped suite is reported as not run, never as passed",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-9-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "Skipped-only or empty suite is NOT_RUN/not coverage PASS; nonzero exit/signal is failure even with passing prefix. Browser/axe skipped after integration failure remain NOT_RUN; PASS requires actual expected engine/test execution and zero failures.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named classification test results including positive control, skipped/empty/signal cases and three-engine separation.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HONEST_EXECUTION_REPORTING"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -935,31 +1000,16 @@
       "verification": [
         {
           "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-10-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "All24 roles have reviewed disposition; every RETAIN identifies actual unique artifact OR permission boundary OR materially distinct decision OR independent evidence consumer; name-only/generic prose is insufficient. No role is retained solely because count validator expects24.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Security owner"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-10-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Security owner"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-10-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future independent per-role retention verdict table and cited grants/artifacts; no actual invocation inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Agent Operations, Product Architect and Independent Reviewer",
+          "releaseGate": "SOURCE_BACKED_AGENT_RETENTION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "MANUAL_PRODUCT",
@@ -986,16 +1036,17 @@
       "criterion": "A written activation policy states which agents a given change class requires",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-10-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "Each fixture has explicit named smallest sufficient roles, sequence and acceptance consumer; self-review forbidden; extra risk specialist justified. Release requires separate human shipping authority, not role presence.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future source-linked scope-to-role review and uncovered-class findings.",
+          "automationStatus": "PLANNED",
+          "owner": "Agent Operations, Product Architect and Independent Reviewer",
+          "releaseGate": "MINIMAL_RISK_ROLE_ROUTING"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "MANUAL_PRODUCT",
@@ -1022,16 +1073,17 @@
       "criterion": "Agents failing the retention test are merged or removed, not left dormant",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-10-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "Every adjudicated redundant role is actually merged/removed after approved implementation and is absent as active definition or consumer; merely explaining dormancy or recording an unresolved plan cannot pass implementation acceptance. Removed roles have no dangling active consumers; merged unique duties retain named owner/permission/evidence. If every role individually passes retention, explicit reviewed zero-removal outcome is valid; no forced deletion to satisfy count.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future disposition/consumer parity review and canonical agents check, no claimed current deletion.",
+          "automationStatus": "PLANNED",
+          "owner": "Agent Operations, Product Architect and Independent Reviewer",
+          "releaseGate": "SAFE_AGENT_ROSTER_CONSOLIDATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "MANUAL_PRODUCT",
@@ -1058,16 +1110,17 @@
       "criterion": "Hierarchy, type scale and spacing come from the design system, not ad-hoc values",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-11-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "VISUAL_REGRESSION",
+          "expectedCheck": "Hierarchy/type/spacing correspond to approved reference and shared tokens; repeated UI elements do not invent independent values. Current green/gray palette or mere variable presence cannot prove approved navy/blue design parity. Missing exact mapping returns DESIGN_PARTIAL, not PASS.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Accessibility reviewer"
+          "evidenceRequired": "Future exact-reference visual diffs/viewport identities, token trace and independent approval; no current screenshots claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "releaseGate": "STATIC_PUBLIC_DESIGN_ACCEPTANCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
@@ -1094,16 +1147,17 @@
       "criterion": "Empty, loading, error and long-content states are designed, not incidental",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-11-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Each corresponding state has explicit readable status/action rather than blank layout; failed snapshot never renders invented listings; valid retry restores actual fixture list. Blocked storage visibly reports failure without pretending saved persistence. Long content remains readable and untrusted text never executes.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Accessibility reviewer"
+          "evidenceRequired": "Future named actual-browser state results and safe synthetic captures, not only source-string assertions.",
+          "automationStatus": "PLANNED",
+          "owner": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "releaseGate": "STATIC_PUBLIC_STATE_CORRECTNESS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
@@ -1131,15 +1185,16 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-11-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Every configured engine executes; actual innerWidth equals requested width; document scrollWidth<=innerWidth; core posting/filter/save/refresh controls are readable and keyboard operable; no page errors. Unlaunched/skipped engine is NOT_RUN, not PASS; baseline tolerance is not widened.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future per-engine/per-viewport execution and safe visual diff/keyboard results; no current hosted claim.",
+          "automationStatus": "PLANNED",
+          "owner": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "releaseGate": "STATIC_PUBLIC_BROWSER_MATRIX"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
@@ -1166,16 +1221,17 @@
       "criterion": "Accessibility verified with the accesslint-audit skill, not asserted",
       "verification": [
         {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-11-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_ACCESSIBILITY",
+          "expectedCheck": "Report identifies actual target/content identity/flow and deduplicated severity/rule findings with disposition. Blocking findings resolved and reverified in later implementation; manual contextual judgments documented by real reviewer. Unavailable audit tools or generic axe-only result cannot satisfy named sign-off.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future actual accesslint report/diff and independent human findings; this phase only specifies procedure.",
+          "automationStatus": "PLANNED",
+          "owner": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "releaseGate": "NAMED_PUBLIC_ACCESSIBILITY_SIGNOFF"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
@@ -1202,16 +1258,26 @@
       "criterion": "No new external origin, no build step, and the snapshot allowlist is unchanged",
       "verification": [
         {
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "pageFiles list unchanged; envelope keys exactly jobs/updatedAt and job keys exactly title/company/location/source/postedAt/url; no new static build prerequisite or declared external resource origin. Actual runtime automatic resource/network origins require separate browser binding, not source-only proof.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future allowlist/projection/origin/build assertions and before/after source identity; existing tests not assumed all new assertions.",
+          "automationStatus": "PLANNED",
+          "owner": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "releaseGate": "STATIC_PUBLIC_PRIVACY_AND_NO_BUILD"
+        },
+        {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-11-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "No newly introduced automatic external resource/fetch origin; unexpected requests are blocked and fail test. Explicit user navigation to approved legitimate external job destination is allowed and never classified as automatic asset leakage or Applied event. Existing same-origin resource positive control executes.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future actual three-engine automatic request-origin report plus destination-attribute assertions; source-only contract result not substituted.",
+          "automationStatus": "PLANNED",
+          "owner": "UX, Visual Designer, Accessibility reviewer, Security and QA",
+          "releaseGate": "STATIC_PUBLIC_AUTOMATIC_ORIGIN_PRIVACY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "UX, Visual Designer, Accessibility reviewer, Security and QA",
@@ -1255,16 +1321,17 @@
       "criterion": "Documentation states that agents can be invoked and that sequencing is what remains manual",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-12-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "MANUAL_OPERATOR",
+          "expectedCheck": "Actual invocation returns attributable specialist result; docs distinguish invocation from operator sequencing; scripts do not claim autonomous scheduling. If actual native invocation unavailable, record EXTERNAL gate not success.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future actual invocation identity/content/verdict record and reviewed wording, not historical assurance.",
+          "automationStatus": "PLANNED",
+          "owner": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "releaseGate": "TRUTHFUL_AGENT_INVOCATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
@@ -1291,16 +1358,17 @@
       "criterion": "A daily routine exists that names which agent is invoked at which step",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-12-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "Every applicable step identifies actual role/owner and evidence; selected roles match activation matrix, independent reviewer differs from author. No mandatory all24 attendance or automated scheduler claim appears. Workflow blocker remains metadata.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future source-linked routine review table, skipped-role rationales and findings.",
+          "automationStatus": "PLANNED",
+          "owner": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "releaseGate": "EXPLICIT_AGENT_ROUTING"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
@@ -1328,15 +1396,16 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-12-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Valid attributed result retains original reviewer findings and scope; missing/mismatched actual invocation proof refuses review credit. Orchestrator-authored summary cannot satisfy specialist-invoked requirement; no workflow promotion results from record presence.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named attribution checks and actual sanitized invocation locator; planned validator not reported existing.",
+          "automationStatus": "PLANNED",
+          "owner": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "releaseGate": "ATTRIBUTED_REVIEW_EVIDENCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
@@ -1363,16 +1432,17 @@
       "criterion": "The read-only permission boundary is confirmed to hold under real invocation",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-12-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_OPERATOR",
+          "expectedCheck": "Actual granted capabilities exclude edit/write/general execute and safe attempted unavailable write is refused if platform permits that negative check. Manifest evidence plus refusal establishes enforced boundary. If actual reviewer has such tools, gate stays UNVERIFIED/EXTERNAL; choosing not to edit is not PASS.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future operator-signed sanitized grant/refusal evidence with selected platform/revision, explicitly unverified if unavailable.",
+          "automationStatus": "PLANNED",
+          "owner": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
+          "releaseGate": "ACTUAL_READONLY_CAPABILITY_ENFORCEMENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "reviewer": "Agent Operations and Independent Reviewer; operator for actual capability evidence",
@@ -3696,31 +3766,16 @@
       "verification": [
         {
           "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-46-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "Decision is explicit per-fact exclusion, not always-on supplementary union; reparse cannot silently clear prior rejection; years retains explicit-user-value-wins; no LLM reintroduction. Frozen source AC text is preserved.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-46-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-46-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Redacted reviewer receipt containing source commit, section, reviewed spec content hash and verdict; no runtime or provider evidence claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product Architect and independent specification reviewer",
+          "releaseGate": "SPECIFICATION_ONLY_NOT_PRODUCTION_ACCEPTANCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "MANUAL_PRODUCT",
@@ -3747,24 +3802,17 @@
       "criterion": "If exclusion is required: a per-skill/title exclude mechanism that survives across searches until the resume is re-parsed, distinct from the existing profile-editor proposal-review flow (which edits preferences.techStack directly and already works), and that composes without conflict with the always-on union in packages/matching/src/context.ts",
       "verification": [
         {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-46-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-46-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Rejected normalized facts contribute zero through all three stages; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-content integration run with named test, Node version, database version, exit code and nonzero pass count; sanitized assertions only.",
+          "automationStatus": "PLANNED",
+          "owner": "Matching domain reviewer, Security reviewer and QA",
+          "releaseGate": "R1_PRODUCT_ACCEPTANCE_RELEASE_ASSIGNMENT_PENDING"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_INTEGRATION",
@@ -3791,16 +3839,17 @@
       "criterion": "v2/ARCHITECTURE.md's resume-integration row and packages/matching/src/context.ts's docstring stay accurate to whatever is decided - this ticket exists specifically so that reconciliation is deliberate, not accidental",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-46-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Current docs must not claim always-on union of declined facts or no exclusion mechanism after implementation. They must describe explicit restore, preserved suppression across reparse and explicit-user years precedence; source historical AC text remains unchanged.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
+          "evidenceRequired": "Future named contract test result plus content-bound independent documentation review receipt.",
+          "automationStatus": "PLANNED",
+          "owner": "Matching domain reviewer and Technical Documentation reviewer",
+          "releaseGate": "DOCUMENTATION_AND_PRODUCT_CONTRACT_GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -5476,15 +5525,16 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-67-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Exactly six canonical column headings exist, no Blocked column exists; each blocked card stays in its stage; blocker summary equals two; filtered cards equal two; aria-pressed toggles false/true/false; source fixture bytes remain unchanged.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named rendered browser run, exact content revision, exit code, assertions and fixture-preservation result; no hosted evidence inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Engineering workflow reviewer and QA",
+          "releaseGate": "PHASE_3_CONTRACT_REGRESSION_NOT_PRODUCTION_ACCEPTANCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_BROWSER",
@@ -5512,15 +5562,16 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-67-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Visible warnings identify the invalid open records and values; invalid ticket is not silently counted in a canonical stage; invalid open severity is explicitly excluded from severity totals; CLOSED control does not count as open.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named browser assertions with sanitized warning text, exact canonical counts and absent execution sentinel; source-string presence alone is insufficient.",
+          "automationStatus": "PLANNED",
+          "owner": "Engineering workflow reviewer and Security reviewer",
+          "releaseGate": "DELIVERY_STATE_INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_BROWSER",
@@ -5547,16 +5598,17 @@
       "criterion": "Findings counters are labelled so they cannot be read as ticket priorities, and no open finding is invisible",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-67-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Each supported severity has exactly one '<severity> open findings' counter with the exact OPEN count, including zero. Closed/fixed controls and backlog priorities do not influence finding totals; no supported open severity is omitted.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named browser assertions of labels and numeric counts; no live or human acceptance claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Engineering workflow reviewer and QA",
+          "releaseGate": "DELIVERY_STATE_INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_BROWSER",
@@ -5699,16 +5751,17 @@
       "criterion": "The API lets an owner-scoped caller determine whether a given job is already saved as a lead, without leaking any other owner data",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-70-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Each owner gets HTTP 200 with its own exact lead ID for its owned job; both cross-owner directions and unknown UUID get HTTP 200 {lead:null}; malformed UUID gets HTTP 400; unauthenticated request gets HTTP 401. GETs leave lead status/revision/notes and row count unchanged; no foreign record fields appear.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-content service-backed run with PostgreSQL/Redis versions and named assertions; existing source coverage does not count as hosted execution.",
+          "automationStatus": "PLANNED",
+          "owner": "Backend, Security and QA reviewers",
+          "releaseGate": "SERVICE_BACKED_OWNERSHIP_ACCEPTANCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_INTEGRATION",
@@ -5735,16 +5788,17 @@
       "criterion": "SaveJob hydrates already-saved state on mount so the control reports the state it is confirming, with aria-pressed reflecting reality before any click",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-70-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Saved result gives aria-pressed=true before any click; archived/null is not falsely pressed. Pending/failed reads do not assert confirmed unsaved state or enable misleading save actions; error is exposed. Zero POSTs occur solely from mounting; A's saved state is not reused for B.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named Chromium/Firefox/WebKit browser assertions and sanitized request counts; any missing current failure behavior remains a later implementation gap.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend, Accessibility and Security reviewers",
+          "releaseGate": "SAVED_STATE_BROWSER_ACCEPTANCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_BROWSER",
@@ -5771,16 +5825,17 @@
       "criterion": "Saving a posting that deduplicates to an existing saved lead is recognised rather than creating a second lead, and the test proves it by attempting the duplicate and asserting the lead count is unchanged - not merely that no error was thrown",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-70-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Equivalent successful saves all return the first lead ID; distinct lead ID count remains one and owner row count unchanged. New posting returns a different ID and increments count by exactly one; neither operation marks Applied or changes foreign-owner rows.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future service-backed named concurrency test with before/after aggregate counts and sanitized IDs; no database contents or tokens published.",
+          "automationStatus": "PLANNED",
+          "owner": "Data integrity, Backend and QA reviewers",
+          "releaseGate": "SERVICE_BACKED_DEDUPLICATION_ACCEPTANCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_INTEGRATION",
@@ -5807,16 +5862,17 @@
       "criterion": "An undeterminable title set is reported as such rather than returned as an empty list, so a caller can distinguish \"could not determine\" from \"genuinely none\"",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-71-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "Unsupported readable content yields status undeterminable and titles []; whitespace yields no-content and titles []; English yields derived with nonempty titles. deriveFields exposes corresponding titlesStatus without dropping the discriminator.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-content named Vitest result with assertion count, Node version and exit status; source test existence is not a fresh pass.",
+          "automationStatus": "PLANNED",
+          "owner": "Resume domain reviewer and QA",
+          "releaseGate": "RESUME_DERIVATION_CONTRACT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -5843,16 +5899,17 @@
       "criterion": "Proven with a non-English positive case AND an English regression case in the same test, so the change cannot pass by breaking English extraction",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-71-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "In the same test, unsupported content is undeterminable with []; English is derived with exactly ['Senior Software Engineer']; whitespace is no-content and distinct from undeterminable.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future single-test result showing all three assertions executed; no fabricated language-support claim.",
+          "automationStatus": "PLANNED",
+          "owner": "Resume domain reviewer and QA",
+          "releaseGate": "RESUME_DERIVATION_REGRESSION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -5879,32 +5936,17 @@
       "criterion": "No new language support is added and ROLE_WORDS is not extended - that is CS-64 AC1 and needs an owner decision",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-71-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "ROLE_WORDS entries are unchanged; no new language recognizer/provider is introduced under CS-71; only explicit determination status and its propagation are within scope; CS-64 remains the language-policy gate.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-71-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-71-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future named contract check plus content-bound source review identifying baseline and proposed revisions; no runtime/provider activation evidence.",
+          "automationStatus": "PLANNED",
+          "owner": "Resume domain reviewer and independent scope reviewer",
+          "releaseGate": "SPECIFICATION_SCOPE_BOUNDARY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",

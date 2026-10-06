@@ -1,6 +1,6 @@
 # CS-7 — Deploy can ship a revision that continuous integration rejected
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -39,7 +39,12 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "requirements": [
     "The live site can be running code that the pipeline says is broken, with nothing reporting a conflict.",
     {
-      "requirement": "A release operator must not ship a main revision unless CI for that exact revision succeeded. Historically separate partial checks allowed rejected code to ship.",
+      "requirement": "A release operator must not ship a revision unless CI for that exact revision succeeded. Historically separate partial checks allowed rejected code to ship.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "The current workflow checks the exact main SHA in require-ci, but downstream jobs independently fetch and compare the then-current main. If main advances between jobs, the revision that is verified/built/deployed may differ from the SHA whose CI passed; independent equality-to-current-main checks do not prove one immutable revision across the whole DAG. This is a documented runtime gap, not fixed by this specification.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -49,7 +54,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -115,9 +123,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "requirements": [
     "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
     "An override exists, requires explicit intent and is recorded in the run log",
-    "Proven by pushing a commit with a deliberately failing check and observing deploy refuse"
+    "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
+    {
+      "requirement": "Effective contract: no override/bypass; the exact single revision whose CI passed is the revision checked out, verified, built, archived and deployed. The historical source AC2 asking for an override is retained as source text but superseded by the current no-bypass authority. The historical AC3 deliberate-failure demonstration must use a Release-Manager-approved non-shipping verification path; no broken main push or production deployment is authorized here.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-7"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -129,9 +151,28 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "requirements": [
     "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
     "An override exists, requires explicit intent and is recorded in the run log",
-    "Proven by pushing a commit with a deliberately failing check and observing deploy refuse"
+    "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
+    {
+      "requirement": "Exact-SHA gate decision and workflow wiring, including carrying one resolved SHA across require-ci, gate and deploy jobs and failing closed if any job observes a different revision.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Reconcile frozen AC2 override wording with the current manual, main-only, no-bypass deployment contract without changing the backlog record in this phase.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": [".ai/backlog.json#CS-7"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -146,9 +187,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
     "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
     "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
-    "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+    "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot.",
+    {
+      "requirement": "Do not implement an override or bypass, push a deliberately failing commit to main, dispatch production deployment to prove refusal, or treat a synthetic local decision-function result as hosted workflow evidence.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/PROJECT-STATE.md", "docs/ARCHITECTURE.md", ".ai/backlog.json#CS-7"]
+  "sources": [
+    "docs/PROJECT-STATE.md",
+    "docs/ARCHITECTURE.md",
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -162,7 +219,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-7-AC1",
       "sourceText": "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
       "expectedResult": "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
-      "verificationIds": ["HOSTED_CI"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-7",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -170,7 +227,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-7-AC2",
       "sourceText": "An override exists, requires explicit intent and is recorded in the run log",
       "expectedResult": "An override exists, requires explicit intent and is recorded in the run log",
-      "verificationIds": ["AUTOMATED_BROWSER", "HOSTED_CI"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-7",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -178,12 +235,12 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-7-AC3",
       "sourceText": "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
       "expectedResult": "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-7",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
     {
-      "requirement": "Current authority supersedes historical AC2: no override exists or may be introduced. Manual-only main checkout, HEAD/origin-main agreement and protected production environment remain mandatory; records of old override tests are historical, not current requirements.",
+      "requirement": "Current authority supersedes historical AC2: no override exists or may be introduced. Manual-only main checkout, HEAD/origin-main agreement and protected production environment remain mandatory; records of old override tests are historical, not current requirements. The frozen AC text remains unchanged and is not interpreted as permission to add an override.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
@@ -193,7 +250,12 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Downstream verify/shipping jobs cannot execute when require-ci refuses. Observe control-plane decisions with synthetic payloads and non-shipping harnesses; do not dispatch deployment or push intentionally broken main during specification work.",
+      "requirement": "Downstream verify/shipping jobs cannot execute when require-ci refuses. The resolved SHA must be an explicit job output consumed by gate and deploy checkout/provenance; no downstream job may independently select a later main HEAD. If main advances before a later job starts, it must either continue the already-authorized SHA or fail closed before build/secret/shipping effects.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "AC3's future refusal demonstration must observe the real require-ci -> gate -> deploy conditions in an isolated non-shipping hosted harness, with a paired successful control and zero secret/SSH/shipping calls. This harness is not equivalent to a broken-main production dispatch; Release Manager/product owner must explicitly accept that safe replacement for the frozen literal procedure before closure.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -203,7 +265,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -232,6 +297,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "requirement": "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Use existing decide function and workflow dependency chain; do not introduce a second deployment authority or a cross-workflow needs assumption.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Resolve SHA once in require-ci and pass that exact value through job outputs to checkout, gate evidence and deployment provenance. Avoid repeated `ref: main` resolution in downstream jobs; assert checked-out SHA equals the gate output at every boundary. This requirement is planned; current source still independently checks out moving main.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
@@ -242,7 +312,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -273,7 +346,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -303,7 +379,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -388,7 +467,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -422,29 +504,30 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-7-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Only completed-success CI for the resolved SHA may PASS. Failed/cancelled/timed-out/malformed/inconsistent payloads REFUSE; queued/in-progress/absent WAIT only to deadline then refuse. The Actions request includes workflow ci.yml and exact head_sha A. Gate/build/archive/deploy each consume A or fail before secret/shipping calls if the checkout differs; none may independently deploy B based on a later main lookup.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Release/system reviewer"
+          "evidenceRequired": "Existing command output plus future named transport/deadline and source-derived moving-main assertion results; current existing gate execution alone does not prove these planned assertions.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "EXACT_SHA_FAIL_CLOSED_DEPLOYMENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "preconditions": "Actual decide function imported without CLI execution; deploy.yml inspected without dispatch.",
-          "setup": "Synthetic successful, failed, cancelled, timed-out, missing-status, malformed, inconsistent, queued and absent run-list payloads; older success plus newer failure.",
-          "procedure": "Invoke decide for each fixture and inspect require-ci/dependent jobs and main-SHA wiring; transport harness records requested URL without network.",
-          "assertion": "Only completed-success fixture returns PASS; completed failures/malformed payloads return REFUSE; queued/in-progress/absent return WAIT and deadline harness refuses on expiry. URL filters ci.yml runs by resolved SHA; downstream jobs require successful require-ci.",
-          "expectedResult": "Unproven exact-revision CI success cannot authorize shipping.",
-          "testName": "exact SHA CI gate fails closed for missing malformed and rejected evidence",
-          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs",
-          "fixtures": "Synthetic Actions payloads plus planned isolated transport/deadline harness; no credentials or SSH.",
-          "negativeCase": "Remove head_sha filter, ignore newer failure, permit malformed-as-PASS, or bypass needs: each must fail; successful exact-SHA control passes.",
-          "evidenceArtifact": "Future named gate and transport/deadline results; existing gate execution does not imply planned transport assertions passed.",
+          "preconditions": "Actual decide function imported without CLI execution; deploy.yml and all three job checkouts/provenance paths inspected without dispatch.",
+          "setup": "Use synthetic completed-success SHA A, failure/malformed/inconsistent/queued/absent Actions payloads and a newer-failure control. For workflow contract, resolve main SHA A in require-ci and advance fixture origin/main to SHA B before gate and deploy start.",
+          "procedure": "Run existing `npm run deploy:gate:test` decision/wiring assertions; add a service-free network transport/deadline harness for requested ci.yml head_sha and refusal semantics; run a source-derived workflow fixture through require-ci, gate and deploy with controlled main movement.",
+          "assertion": "Only completed-success CI for the resolved SHA may PASS. Failed/cancelled/timed-out/malformed/inconsistent payloads REFUSE; queued/in-progress/absent WAIT only to deadline then refuse. The Actions request includes workflow ci.yml and exact head_sha A. Gate/build/archive/deploy each consume A or fail before secret/shipping calls if the checkout differs; none may independently deploy B based on a later main lookup.",
+          "expectedResult": "Unproven CI or revision identity cannot authorize shipping; the passed, checked, built, archived and deployed revision is identical.",
+          "testName": "exact SHA gate and downstream job revision fail closed when main advances",
+          "testFileOrProcedureId": "scripts/check-deploy-gate.mjs plus planned scripts/require-ci-workflow.test.mjs",
+          "fixtures": "Current pure decision/wiring checks plus planned synthetic Actions responses, injected fetch/clock and isolated A-to-B workflow-DAG fixture; no credentials or SSH.",
+          "negativeCase": "Remove head_sha, ignore newer failure, permit malformed-as-PASS, bypass needs, or let a downstream job checkout B after A passed: each negative mutation must refuse/fail; same-SHA A positive control passes.",
+          "evidenceArtifact": "Existing command output plus future named transport/deadline and source-derived moving-main assertion results; current existing gate execution alone does not prove these planned assertions.",
           "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
           "releaseGate": "EXACT_SHA_FAIL_CLOSED_DEPLOYMENT",
           "testStatus": "PLANNED",
@@ -458,24 +541,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "An override exists, requires explicit intent and is recorded in the run log",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-7-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-7-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "No override_ci or arbitrary ref input is exposed; failed CI still REFUSE despite intent/reason fields. No condition allows a shipping job around require-ci. Report explicitly marks historical override requirement superseded, not implemented.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Release/system reviewer"
+          "evidenceRequired": "Future contract result and supersession reference to docs/GITHUB-RELEASE-LIFECYCLE.md; no runtime claim.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "NO_DEPLOYMENT_BYPASS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -502,28 +578,29 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-7-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "HOSTED_CI",
+          "expectedCheck": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are represented. Failed-A CI yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. In the distinct success-A/move-main-to-B run, later jobs use A or fail closed before build/secrets; B is never checked out, archived or deployed under A's CI result. The success-A/no-movement control reaches only the non-shipping adapter. Requested, resolved, checked-out and recorded SHA values agree in both successful controls.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future authorized hosted run/job IDs, exact SHA, dependency conclusions and zero shipping calls; old arbitrary-ref run is historical evidence only.",
+          "automationStatus": "PLANNED",
+          "owner": "Infrastructure and QA; Release Manager for hosted workflow evidence",
+          "releaseGate": "HOSTED_DEPLOYMENT_REFUSAL"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "HOSTED_CI",
           "preconditions": "A Release Manager separately authorizes non-shipping hosted workflow refusal validation; no deliberately broken main push or production dispatch is allowed.",
-          "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Use exact-SHA failure and success run fixtures.",
-          "procedure": "Validate source-hash parity and preserved dependency/condition graph before observing authorized hosted require-ci refusal for failed exact-SHA CI. Invalidate harness evidence if canonical deploy.yml changes. Compare successful CI control in the same derived graph; no production dispatch.",
-          "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are unchanged. Failed candidate yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. Success control reaches only non-shipping adapter. Requested SHA, resolved revision and recorded filter agree.",
+          "setup": "Derive isolated hosted non-shipping harness from exact deploy.yml require-ci -> gate -> deploy jobs and original needs/conditions, with canonical source SHA256 recorded. Substitute only secret/SSH/shipping adapters with no-op call recorders. Prepare three independent runs: failed exact-SHA CI for A; successful exact-SHA CI for A followed by fixture main advancing to B before gate/deploy; and successful exact-SHA CI for A with main unchanged.",
+          "procedure": "After explicit owner/Release Manager acceptance of this safe evidence substitute, validate canonical source-hash parity and actual dependency/condition graph. Run the failed-A case and observe refusal/zero effects. Separately run success-A then advance fixture main to B before downstream jobs; observe whether those jobs consume A or refuse before build/secrets/shipping. Run the success-A/no-movement control to prove the harness permits the valid same-SHA path to its non-shipping adapter. Invalidate evidence if workflow source changes; no production dispatch.",
+          "assertion": "Canonical source hash equals reviewed harness source hash; actual require-ci -> gate -> deploy needs/conditions are represented. Failed-A CI yields failed require-ci and dependent verify/shipping jobs skipped with zero secret/SSH calls. In the distinct success-A/move-main-to-B run, later jobs use A or fail closed before build/secrets; B is never checked out, archived or deployed under A's CI result. The success-A/no-movement control reaches only the non-shipping adapter. Requested, resolved, checked-out and recorded SHA values agree in both successful controls.",
           "expectedResult": "Hosted dependency wiring refuses rejected evidence without attempting production deployment.",
           "testName": "hosted rejected CI prevents downstream shipping before secrets are reachable",
           "testFileOrProcedureId": "CS-7-HOSTED-NONSHIPPING-REFUSAL",
           "fixtures": "Authorized isolated hosted workflow context, synthetic failure/success run fixtures and shipping-call recorder.",
-          "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails paired success control; arbitrary-ref production dispatch is forbidden.",
+          "negativeCase": "Local decide refusal alone cannot pass this hosted gate; always-skipped harness fails the success-A/no-movement control; a test that advances main only during a failed-A run is insufficient because refusal masks moving-main behavior. Any B checkout/build/archive/deploy after A-only CI success fails. Arbitrary-ref production dispatch and a deliberately failing main push are forbidden. Without owner acceptance of the safe replacement for frozen AC3, the original criterion remains unresolved.",
           "evidenceArtifact": "Future authorized hosted run/job IDs, exact SHA, dependency conclusions and zero shipping calls; old arbitrary-ref run is historical evidence only.",
           "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
           "releaseGate": "HOSTED_DEPLOYMENT_REFUSAL",
@@ -531,9 +608,39 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "reviewStatus": "REVIEWED"
         }
       ]
+    },
+    {
+      "requirement": "Existing local evidence: `npm run deploy:gate:test` passed on Node 24.19.0 during this pass; it exercises the pure decision function and static manual/main/needs/no-bypass workflow checks. It does not perform a GitHub HTTP request, deadline wait, cross-job moving-main simulation or hosted downstream-job observation.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Planned service-free verification: add a network-injected request harness for `scripts/require-ci-success.mjs` and a source-derived job-DAG test. Assert requested workflow and exact `head_sha`; classify completed success/failure, malformed/inconsistent payloads, empty/queued/in-progress, HTTP/network error and deadline expiry; assert every non-PASS path prevents downstream adapter invocation.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Planned moving-main regression: in an isolated source-derived workflow fixture, resolve SHA A for successful CI, then advance origin/main to SHA B before gate/deploy. Assert each downstream checkout/build/archive/deploy provenance remains A or the job fails before build/secrets; a different SHA must never deploy. No live main movement or production dispatch is needed for the local negative control.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "AC3 hosted evidence remains separate: owner-authorized non-shipping hosted run derived from the actual workflow DAG, preserved source hash, failed candidate refusal and paired successful adapter-only control. No such current result is claimed.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-7", "docs/TESTING.md"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    "docs/TESTING.md",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -556,7 +663,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-7-AC1",
       "sourceText": "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
       "expectedResult": "deploy.yml will not deploy unless the CI verify job succeeded for that commit",
-      "verificationIds": ["HOSTED_CI"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-7",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -564,7 +671,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-7-AC2",
       "sourceText": "An override exists, requires explicit intent and is recorded in the run log",
       "expectedResult": "An override exists, requires explicit intent and is recorded in the run log",
-      "verificationIds": ["AUTOMATED_BROWSER", "HOSTED_CI"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-7",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -572,7 +679,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-7-AC3",
       "sourceText": "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
       "expectedResult": "Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["HOSTED_CI"],
       "authority": ".ai/backlog.json#CS-7",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     }
@@ -594,7 +701,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
     "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
     {
-      "requirement": "No bypass exists; exact-main SHA success is required; malformed or unavailable proof fails closed; local refusal and workflow wiring checks pass; authorized non-shipping hosted refusal evidence records skipped downstream jobs without reaching secrets. Specification approval is not deployment permission.",
+      "requirement": "No bypass exists; malformed/unavailable CI proof fails closed; one immutable resolved SHA is consumed by gate/build/archive/deploy provenance; a moving-main negative control proves mismatch cannot ship; local pure decision, transport/deadline and workflow checks pass. AC3 remains unaccepted unless an authorized non-shipping hosted procedure is approved and shows failed require-ci, skipped dependent jobs, zero secret/SSH/shipping calls, and a paired success control. Specification approval is not deployment permission.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -605,7 +712,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -627,9 +737,29 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Exact hosted workflow run showing the intentional failure and fail-closed deployment refusal."
       ],
       "rule": "Future exact-content command results, independent review, docs and relevant service/manual acceptance; specification completion is not ticket promotion."
+    },
+    {
+      "requirement": "Current local validation for this pass: `npm run deploy:gate:test` on Node 24.19.0 completed with exit 0 and every emitted named assertion PASS. The existing command proves decide() fixture handling and static workflow wiring only; it does not prove transport, deadline, cross-job SHA immutability or hosted execution.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Current-source defect evidence: the independent review recorded that each downstream job resolves main independently instead of consuming the SHA output from require-ci. This is an unresolved runtime defect discovered during spec review; no workflow implementation was changed.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": ["docs/TESTING.md", ".ai/backlog.json#CS-7"]
+  "sources": [
+    "docs/TESTING.md",
+    ".ai/backlog.json#CS-7",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -639,40 +769,42 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "Review CS-7 problem and each criterion with Infrastructure.",
-    "Resolve only the recorded CS-7 specification/activation gaps before claiming readiness.",
-    "Inspect and change only modules permitted by the technical approach for Deploy can ship a revision that continuous integration rejected.",
-    "Implement and verify CS-7-AC1: deploy.yml will not deploy unless the CI verify job succeeded for that commit",
-    "Implement and verify CS-7-AC2: An override exists, requires explicit intent and is recorded in the run log",
-    "Implement and verify CS-7-AC3: Proven by pushing a commit with a deliberately failing check and observing deploy refuse",
-    "Reconcile CS-7 documentation, redacted evidence and independent review before workflow promotion.",
     {
-      "requirement": "Document supersession of historical override AC by current no-bypass authority without editing frozen backlog evidence.",
+      "requirement": "Preserve all three frozen source AC strings and historical evidence, but mark AC2's override request superseded by the current manual/main-only no-bypass contract; do not add an override.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Assert decision function negative/positive controls and workflow needs/manual/main/protected-environment wiring.",
+      "requirement": "Run `npm run deploy:gate:test` and record its current pure-decision/static-wiring scope; do not treat it as transport, moving-main or hosted orchestration evidence.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Specify isolated transport/dependency-chain verification for exact-SHA filtering and absence of shipping after refusal.",
+      "requirement": "Plan network-injected request and deadline assertions for exact `ci.yml` `head_sha`, malformed/API errors, bounded WAIT and refusal before downstream effects; register future tests in the root unit/CI quality lane.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Require separately authorized hosted refusal evidence before implementation acceptance; no production negative experiment in this phase.",
+      "requirement": "Plan the cross-job invariant: resolve one SHA in require-ci and pass it to gate/deploy checkout and provenance. Add a source-derived A-to-B moving-main negative fixture; use A or fail before build/secrets/shipping.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "Keep AC3 unaccepted until the owner/Release Manager accepts a source-hash-bound hosted non-shipping harness as a safe substitute for deliberately pushing broken main. If not accepted, preserve the original AC as unresolved; never bypass branch protection or dispatch production to test refusal.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
   "sources": [
     ".ai/backlog.json#CS-7",
+    ".ai/backlog.json#CS-7",
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```
@@ -707,9 +839,30 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         "Exact hosted workflow run showing the intentional failure and fail-closed deployment refusal."
       ],
       "actions": []
+    },
+    {
+      "requirement": "OWNER/RELEASE MANAGER DECISION: the frozen AC3 literally requires pushing a deliberately failing commit and observing deploy refusal, while the approved deployment contract is manual, main-only, protected and fail-closed. Do not bypass branch protection or push broken main. Owner must either approve an isolated non-shipping hosted harness derived from the real workflow DAG as the replacement evidence, or later authorize a safe AC wording/registry change. Until then AC3 remains unresolved.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "HOSTED GATE: after the cross-job resolved-SHA defect is fixed in a later implementation phase, require an authorized exact-SHA hosted refusal result with dependent jobs skipped and zero secrets/SSH/shipping calls. No such evidence is present in this spec pass.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-7", ".ai/blocker-classification.json", "hostpending.txt"]
+  "sources": [
+    ".ai/backlog.json#CS-7",
+    ".ai/blocker-classification.json",
+    "hostpending.txt",
+    "docs/GITHUB-RELEASE-LIFECYCLE.md",
+    ".github/workflows/deploy.yml",
+    "scripts/require-ci-success.mjs",
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
+  ]
 }
 ```
 
@@ -728,7 +881,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
     },
     {
-      "requirement": "Historical deploy dispatch evidence used arbitrary ref inputs no longer supported. Do not reenact that obsolete procedure or loosen main-only protections. Roll back a defective gate by reviewed source change, never by disabling it.",
+      "requirement": "Historical deploy dispatch evidence used arbitrary ref inputs no longer supported. Do not reenact that obsolete procedure or loosen main-only protections. A new cross-job SHA check must keep branch protection and current-main policy fail-closed; if the pinned revision is no longer eligible, stop before secrets. Roll back a defective gate only by reviewed source change, never by disabling it.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -741,7 +894,10 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/GITHUB-RELEASE-LIFECYCLE.md",
     ".github/workflows/deploy.yml",
     "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs"
+    "scripts/check-deploy-gate.mjs",
+    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
+    "docs/PHASE-3-25-EXECUTION-STATE.md",
+    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
   ]
 }
 ```

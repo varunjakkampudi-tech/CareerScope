@@ -232,7 +232,7 @@ export async function artifacts(inputs, root) {
     ].join('\n\n'),
   );
   for (const spec of model.specs) {
-    let doc = `# ${spec.ticketId} — ${spec.sections.identity.requirements[0].title}\n\nGenerated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: ${spec.readiness}.\n`;
+    let doc = `# ${spec.ticketId} — ${spec.sections.identity.requirements[0].title}\n\n${spec.reviewState === 'APPROVED' ? 'Content-reviewed specification; this does not assert implementation or execution evidence.' : 'Generated draft.'} Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: ${spec.reviewState}; readiness: ${spec.readiness}.\n`;
     for (const [index, section] of SECTIONS.entries())
       doc += `\n## ${index + 1}. ${section}\n\n\`\`\`json\n${JSON.stringify(spec.sections[section], null, 2)}\n\`\`\`\n`;
     doc += `\n## Specification gate history\n\n${table(

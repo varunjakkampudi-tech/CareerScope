@@ -52,6 +52,63 @@ test('CS71 scope separates explicit determination from language expansion and ex
   assert.equal(model.specs.find((spec) => spec.ticketId === 'CS-71').reviewState, 'DRAFT');
 });
 
+test('CS2 keeps the unreproduced 768px source defect separate from the historical 390px fix', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const ticket = inputs.backlog.items.find((item) => item.id === 'CS-2');
+  assert.equal(ticket.title, 'Lead table header offset is wrong on Linux WebKit at 768px');
+  assert.deepEqual(ticket.acceptanceCriteria, [
+    'Reproduced in the Playwright Linux container, not guessed from Windows',
+    'Root cause named; the assertion is not widened',
+    'check-ui.mjs green on all three engines in CI',
+  ]);
+  const bindings = ticket.acceptanceCriteria.map((_, index) => {
+    const acId = `CS-2-AC${index + 1}`;
+    return model.traceability.find((row) => row.acId === acId).exactBindings[0];
+  });
+  assert.ok(bindings.every((binding) => binding.testStatus === 'PLANNED'));
+  assert.ok(bindings.every((binding) => binding.reviewStatus === 'DRAFT'));
+  assert.match(bindings[0].assertion, /390px overlap result cannot satisfy/);
+  assert.match(bindings[0].procedure, /PostgreSQL with migrations, Redis, LocalStack SQS/);
+  assert.match(bindings[1].negativeCase, /no 768px failure can be demonstrated/);
+  assert.match(
+    bindings[2].testFileOrProcedureId,
+    /ci\.yml#integration\/Test CareerScope \(browser acceptance and axe accessibility/,
+  );
+  assert.match(
+    bindings[2].assertion,
+    /768px defect assertion is required only in its target WebKit run/,
+  );
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-2');
+  const requirements = spec.sections.functionalRequirements.requirements;
+  assert.ok(requirements.some((entry) => /390px/.test(entry.requirement)));
+  assert.ok(requirements.some((entry) => /scripts\/check-ui\.ts/.test(entry.requirement)));
+  assert.match(
+    bindings[2].procedure,
+    /full current browser suite ran in Linux Chromium, Firefox and WebKit.*CS-2-specific 768px geometry assertion ran in Linux WebKit only/s,
+  );
+  const checklist = spec.sections.implementationChecklist.requirements.map((item) =>
+    typeof item === 'string' ? item : item.requirement,
+  );
+  assert.ok(
+    checklist.some((item) =>
+      /frozen source acceptance-criterion wording unchanged.*current executable equivalent.*scripts\/check-ui\.ts/s.test(
+        item,
+      ),
+    ),
+  );
+  assert.ok(
+    checklist.some((item) =>
+      /full browser suite on Chromium, Firefox, and WebKit.*768px geometry only in WebKit/s.test(
+        item,
+      ),
+    ),
+  );
+  assert.ok(!checklist.some((item) => /check-ui\.mjs green on all three engines/.test(item)));
+  assert.equal(ticket.acceptanceCriteria[2], 'check-ui.mjs green on all three engines in CI');
+  assert.equal(spec.reviewState, 'DRAFT');
+});
+
 test('CS4 uses injected publication fixtures and requires both stage and commit path assertions', () => {
   const model = buildCatalog(fresh());
   for (const acId of ['CS-4-AC1', 'CS-4-AC2']) {
@@ -80,12 +137,33 @@ test('CS8 separates parser contracts from rendered browser proof and module-root
 
 test('CI bindings preserve no bypass and separate registration from service execution', () => {
   const model = buildCatalog(fresh());
+  const cs7 = model.specs.find((entry) => entry.ticketId === 'CS-7');
+  const cs7Criteria = cs7.sections.acceptanceCriteria.requirements;
+  const cs7Ac2 = cs7Criteria.find((entry) => entry.id === 'CS-7-AC2');
+  assert.equal(cs7Ac2.sourceText, 'An override exists, requires explicit intent and is recorded in the run log');
+  assert.equal(cs7Ac2.expectedResult, cs7Ac2.sourceText);
+  const cs7Ac3 = cs7Criteria.find((entry) => entry.id === 'CS-7-AC3');
+  assert.equal(cs7Ac3.expectedResult, cs7Ac3.sourceText);
+  assert.match(cs7.sections.functionalRequirements.requirements.map((entry) => entry.requirement).join(' '), /supersedes historical AC2: no override/i);
+  assert.match(cs7.sections.manualExternalGates.requirements.map((entry) => entry.requirement).join(' '), /owner.*approve/i);
+  assert.ok(cs7.sections.implementationChecklist.requirements.every((entry) =>
+    !/implement .*override|push(?:ing)? .*deliberately failing/i.test(entry.requirement),
+  ));
+  const exactSha = model.traceability.find((row) => row.acId === 'CS-7-AC1').exactBindings[0];
+  assert.match(exactSha.setup, /advance fixture origin\/main to SHA B/);
+  assert.match(exactSha.testFileOrProcedureId, /require-ci-workflow\.test\.mjs/);
+  assert.equal(exactSha.reviewStatus, 'REVIEWED');
   const override = model.traceability.find((row) => row.acId === 'CS-7-AC2').exactBindings[0];
   assert.match(override.assertion, /No override_ci/);
-  assert.match(override.expectedResult, /historical override/);
+  assert.match(override.expectedResult, /No actor can bypass exact-SHA CI/);
   const refusal = model.traceability.find((row) => row.acId === 'CS-7-AC3').exactBindings[0];
   assert.match(refusal.assertion, /source hash/);
   assert.match(refusal.assertion, /needs\/conditions/);
+  assert.match(refusal.setup, /three independent runs/);
+  assert.match(refusal.procedure, /success-A then advance fixture main to B/);
+  assert.match(refusal.assertion, /distinct success-A\/move-main-to-B run/);
+  assert.match(refusal.negativeCase, /advances main only during a failed-A run is insufficient/);
+  assert.equal(refusal.reviewStatus, 'REVIEWED');
   const integration = model.traceability.find((row) => row.acId === 'CS-9-AC2').exactBindings;
   assert.deepEqual(
     integration.map((entry) => entry.type),
@@ -110,10 +188,78 @@ test('proxy plan limits container publication without prohibiting approved manag
   const binding = buildCatalog(fresh()).traceability.find((row) => row.acId === 'CS-3-AC2')
     .exactBindings[0];
   assert.equal(binding.type, 'LIVE_HOST');
-  assert.match(binding.assertion, /Anchor namespace identity remains unchanged/);
-  assert.match(binding.assertion, /Application\/container host-publication/);
-  assert.match(binding.assertion, /never require disabling operator access/);
+  assert.match(binding.assertion, /anchor and dependent namespace identities are unchanged/);
+  assert.match(binding.assertion, /Host publication remains only the intended edge ports/);
+  assert.match(binding.assertion, /SSH\/operator access is not disabled/);
   assert.equal(binding.testStatus, 'PLANNED');
+});
+
+test('CS3 distinguishes tested recovery logic from current deployed topology evidence', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-3');
+  const ticket = inputs.backlog.items.find((entry) => entry.id === 'CS-3');
+  assert.equal(ticket.releaseTarget, '3.0.1');
+  assert.equal(ticket.status, 'UAT');
+  assert.equal(ticket.blocked, true);
+  assert.equal(spec.sections.delivery.requirements[0].releaseState, 'ACTIVE_R1');
+  assert.equal(spec.sections.delivery.requirements[0].deliveryMode, 'MANUAL_GATE');
+  assert.equal(spec.reviewState, 'APPROVED');
+  assert.equal(spec.readiness, 'IMPLEMENTATION_READY');
+  const current = spec.sections.completionEvidence.requirements.map((entry) =>
+    typeof entry === 'string' ? entry : entry.requirement,
+  );
+  assert.ok(current.some((entry) => /2026-09-28/.test(entry) && /2026-09-29/.test(entry)));
+  assert.ok(current.some((entry) => /currentStep mentions backup work unrelated/.test(entry)));
+  const checklist = spec.sections.implementationChecklist.requirements.map((entry) =>
+    typeof entry === 'string' ? entry : entry.requirement,
+  );
+  assert.ok(checklist.some((entry) => /infra\/compose\.production\.yml/.test(entry)));
+  assert.ok(checklist.some((entry) => /human-approved live-host Caddy-only crash procedure/.test(entry)));
+  const ac1 = model.traceability.find((entry) => entry.acId === 'CS-3-AC1').exactBindings[0];
+  const ac2 = model.traceability.find((entry) => entry.acId === 'CS-3-AC2').exactBindings[0];
+  assert.deepEqual(
+    spec.sections.acceptanceCriteria.requirements.map((entry) => entry.verificationIds),
+    [['AUTOMATED_UNIT'], ['LIVE_HOST']],
+  );
+  assert.deepEqual([ac1.type, ac2.type], ['AUTOMATED_UNIT', 'LIVE_HOST']);
+  assert.ok(
+    spec.sections.testStrategy.requirements.some(
+      (entry) =>
+        entry.verification?.some(
+          (verification) =>
+            verification.type === 'LIVE_HOST' &&
+            verification.expectedCheck === ac2.assertion &&
+            verification.releaseGate === 'LIVE_PROXY_TOPOLOGY_RECOVERY',
+        ),
+    ),
+  );
+  assert.match(ac1.assertion, /cooldown/);
+  assert.match(ac2.procedure, /terminate only that container/);
+  assert.ok([ac1, ac2].every((entry) => entry.testStatus === 'PLANNED'));
+  assert.equal(ac2.reviewStatus, 'REVIEWED');
+  assert.match(ac2.preconditions, /otherwise this AC cannot pass/);
+  assert.match(ac2.setup, /owner-defined start\/end bounds/);
+  const asyncScope = spec.sections.functionalRequirements.requirements
+    .map((entry) => (typeof entry === 'string' ? entry : entry.requirement))
+    .join(' ');
+  assert.match(asyncScope, /frozen AC2 only requires killing Caddy and observing the result/);
+  assert.match(asyncScope, /frozen host observation separately as PARTIAL/);
+  assert.match(asyncScope, /strengthened AC2 verification NOT_VERIFIED/);
+  assert.match(asyncScope, /do not accept the ticket/);
+  const operatorRunbook = fs.readFileSync(
+    path.join(root, '.ai/OPERATOR-RUNBOOK-host-evidence.md'),
+    'utf8',
+  );
+  const cs3Runbook = operatorRunbook.split('## CS-3 — proxy crash and stable-anchor observation')[1]
+    .split('## CS-25 —')[0];
+  assert.match(cs3Runbook, /infra\/check-proxy-recovery\.sh/);
+  assert.doesNotMatch(cs3Runbook, /infra\/v3\/check-proxy-recovery\.sh/);
+  assert.match(
+    spec.sections.manualExternalGates.requirements.map((entry) => entry.requirement).join(' '),
+    /historical warning against a proxy-only restart applies if Caddy owns the shared namespace/,
+  );
+  assert.equal(model.designTraceability.find((entry) => entry.ticketId === 'CS-3').status, 'DESIGN_NOT_APPLICABLE');
 });
 
 test('native reviewer no-edit observation is not capability enforcement evidence', () => {
@@ -122,6 +268,25 @@ test('native reviewer no-edit observation is not capability enforcement evidence
   assert.match(binding.assertion, /not PASS/);
   assert.match(binding.negativeCase, /zero observed edits alone cannot pass/);
   assert.equal(binding.testStatus, 'PLANNED');
+});
+
+test('whole-spec approval is content-bound and invalidates after substantive changes', () => {
+  const inputs = fresh();
+  const approved = buildCatalog(inputs).specs.find((entry) => entry.ticketId === 'CS-3');
+  assert.equal(approved.reviewState, 'APPROVED');
+  assert.equal(approved.readiness, 'IMPLEMENTATION_READY');
+  assert.equal(approved.gaps[0].disposition, 'RESOLVED');
+  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 1);
+
+  inputs.policy.ticketRefinements['CS-3'].additionalRequirements.value[0] +=
+    ' Substantive mutation invalidates review.';
+  const changedModel = buildCatalog(inputs);
+  assert.equal(changedModel.specs.find((entry) => entry.ticketId === 'CS-3').reviewState, 'DRAFT');
+  assert.ok(
+    validate(changedModel, inputs).some((error) =>
+      error.includes('unproven content-bound whole-specification review CS-3'),
+    ),
+  );
 });
 
 test('public static planning retains partial design and named future audit boundaries', () => {
@@ -158,12 +323,14 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   });
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
-  assert.equal(model.counts.completeSpecificationCount, 0);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 49);
+  assert.equal(model.counts.completeSpecificationCount, 1);
+  assert.equal(model.counts.incompleteSpecificationCount, 215);
+  assert.equal(model.counts.approvedSpecificationCount, 1);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 47);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 46);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 860);
-  assert.equal(model.counts.authoredExactTestBindingCount, 49);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 44);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 862);
+  assert.equal(model.counts.authoredExactTestBindingCount, 52);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -171,12 +338,16 @@ test('216 source-linked drafts preserve registry and canonical stages without re
     ).disposition,
     'RESOLVED',
   );
-  assert.equal(model.findings.length, 630);
+  assert.equal(model.findings.length, 651);
   for (const id of ['CS-45', 'CS-107', 'CS-108'])
     assert.equal(model.designTraceability.find((entry) => entry.ticketId === id).ui, true);
   assert.ok(
     model.traceability.every((row) =>
-      row.verification.every((entry) => /NOT_EXECUTED$/.test(entry.automationStatus)),
+      row.verification.every((entry) =>
+        /^(MANUAL_OR_EXTERNAL_NOT_EXECUTED|PLANNED|PLANNED_NOT_EXECUTED)$/.test(
+          entry.automationStatus,
+        ),
+      ),
     ),
   );
   assert.equal(
@@ -201,7 +372,7 @@ test('existing owner directions retain source provenance without fabricated read
   assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
   assert.match(direction.remainingGate, /lower bound/);
   assert.equal(spec.reviewState, 'DRAFT');
-  assert.equal(model.counts.approvedSpecificationCount, 0);
+  assert.equal(model.counts.approvedSpecificationCount, 1);
   inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>
@@ -317,6 +488,24 @@ test('unknown release assignments do not become implementation authorization', (
   inputs.coverage.tickets = inputs.coverage.tickets.filter((entry) => entry.ticketId !== ticket.id);
   const spec = buildCatalog(inputs).specs.find((entry) => entry.ticketId === ticket.id);
   assert.equal(spec.sections.delivery.requirements[0].deliveryMode, 'UNDECIDED');
+});
+
+test('design release scope cannot authorize an unassigned ticket for implementation', () => {
+  const inputs = fresh();
+  const ticket = inputs.backlog.items.find((entry) => entry.id === 'CS-6');
+  delete ticket.releaseState;
+  ticket.releaseTarget = null;
+  const design = inputs.coverage.tickets.find((entry) => entry.ticketId === ticket.id);
+  design.releaseState = 'RELEASE';
+
+  const model = buildCatalog(inputs);
+  const spec = model.specs.find((entry) => entry.ticketId === ticket.id);
+  const delivery = spec.sections.delivery.requirements[0];
+  assert.equal(design.releaseState, 'RELEASE');
+  assert.equal(delivery.releaseState, 'UNSPECIFIED');
+  assert.equal(delivery.deliveryMode, 'UNDECIDED');
+  assert.ok(spec.gaps.some((gap) => gap.code === 'RELEASE_TARGET_UNDECIDED'));
+  assert.ok(spec.gaps.some((gap) => gap.code === 'RELEASE_STATE_UNSPECIFIED'));
 });
 
 test('graph rejects dangling, duplicate, self and cyclic prerequisites without repairing source', () => {

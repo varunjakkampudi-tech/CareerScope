@@ -4,38 +4,54 @@ This is a resumable execution checkpoint, not completion evidence or a competing
 ticket registry. Canonical source remains backlog.json; authored specification
 content is ticket-specification-policy.json; generated coverage owns counters.
 
-- Branch: phase-3.25/ticket-specification-catalog.
+- Source branch: phase-3.25/ticket-specification-catalog.
 - Initial clean checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14.
 - Previous clean checkpoint: 2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111.
 - Completed prior local checkpoints: c794c2ff95d98ad35e504d526fe1c0e310c4ff47
   and13b801de478bbbe0f0b077503624c4ee911f70dd.
 - Latest checkpoint: resolve `git log -1 --format=%H -- docs/PHASE-3-25-EXECUTION-STATE.md`
   after committing this state; a document cannot honestly embed its own SHA.
-- Last whole-spec approved ticket: NONE. Approved: 0/216. All 216 still require
-  whole-content review, not just binding receipts.
+- Last whole-spec approved ticket: CS-3. Approved: 1/216. CS-4/CS-5/CS-6
+  have independent content-only approvals but remain incomplete due to open
+  release/activation metadata and do not have whole-spec receipts. CS-2 remains
+  DRAFT with owner scope/disposition and UX geometry gates.
+- Latest vertical ticket review: CS-7 has a detailed authored specification
+  and three exact AC procedures. The independent read-only reviewer approved
+  corrected AC1/AC2/AC3 bindings; scoped verdicts and content hashes are in
+  REMEDIATION-REVIEW-01. Procedures remain PLANNED, not executed. AC3 separates
+  failed CI for A, successful CI for A followed by main advancing to B before
+  downstream work, and a successful unchanged-A control. A safe non-shipping
+  hosted substitute remains an owner/Release Manager decision; the moving-main
+  runtime defect is recorded, not fixed in this specification phase. Last
+  processed: CS-7. Next ticket: CS-8.
 - Reviewed ACs: CS-1 AC1–3; CS-3 AC1–2; CS-4 AC1–2; CS-5 AC1–3;
   CS-6 AC1–3; CS-7 AC1–3; CS-8 AC1–3; CS-9 AC1–3; CS-10 AC1–3; CS-11 AC1–5;
   CS-12 AC1–4; CS-46 AC1–3; CS-67 AC1–3; CS-70 AC1–3; CS-71 AC1–3.
-  Forty-six criteria have49 reviewed PLANNED procedures (CS-8 AC2, CS-9
-  AC2 and CS-11 AC5 each have two);860 criteria remain unmapped. Content-bound hashes are
-  in policy and independently observed REVIEW-01, not execution evidence.
-- Next content ticket: CS-2, within continuing CS-1–CS-18 batch, then
-  CS-13–CS-18. CS-11 bindings are now reviewed, but its exact static visual
+  Current generated evidence: 216 tickets/specifications; 1 whole-spec
+  approved (CS-3), 215 incomplete; 906 ACs, 44 mapped with 47 reviewed exact
+  PLANNED procedures, and 862 unmapped. The coverage artifact reports 651
+  findings: 630 OPEN, 14 RESOLVED and 7 RECLASSIFIED. These are planning and
+  review counts, not execution evidence. Content-bound hashes are in policy and
+  independently observed in REMEDIATION-REVIEW-01.
+- Next content ticket: CS-8, continuing the CS-1–CS-18 vertical batch in
+  canonical order after documenting CS-2's and CS-7's unresolved gates. CS-11 bindings are now reviewed, but its exact static visual
   mapping remains PARTIAL and named accessibility audit remains future evidence.
   The historical LeadTable/check-ui.mjs paths no longer exist
-  after canonical consolidation; reconcile original768px defect with current
-  saved route and existing historical proof, without inventing current parity.
+  after canonical consolidation. CS-2 now has three authored but unreviewed
+  procedures; these are not in the reviewed AC numerator. The saved-jobs image
+  maps to `/saved` but does not specify the 768px sticky geometry. CS-2's
+  original 768px defect remains separate from the historical 390px overlap fix.
   Already reviewed bindings must not be regenerated or counted as whole approval.
 - Remaining whole-spec tickets: CS-1 through CS-216. Continue through every
   bounded batch, without runtime implementation or ticket promotion.
 
 ## Exact remaining ledgers
 
-The608 OPEN finding identifiers are the `(ticketId, code)` pairs in
+The 630 OPEN finding identifiers are the `(ticketId, code)` pairs in
 `.ai/ticket-specification-coverage.json` where `disposition === 'OPEN'`.
-All630 original records remain, with15 resolved binding findings and seven
-historical owner-choice reclassifications. Do not delete history or infer closure
-from source-file presence.
+All 651 original records remain, with 14 resolved findings and seven
+historical owner-choice reclassifications. Do not delete history or infer
+closure from source-file presence.
 
 Nine design gaps and 27 partial mappings remain in `.ai/design-traceability.json`.
 Use its ticket IDs and actual imported paths; classification is not yet reviewed
@@ -104,5 +120,7 @@ content findings or spend another cycle optimizing unrelated tooling.
 
 Node v24.19.0 at the bundled runtime path is verified. Serialize legacy mutable
 fixture gates; final validation is recorded in PHASE-3-25-VALIDATION.md. Execute
-targeted specification checks after each content batch, locally commit, confirm
-clean tree and continue. No push, merge, deployment or Phase 3.5 is authorized.
+targeted specification checks after each content batch, commit checkpoints and
+continue. The local handoff is authorized to publish only
+`phase-3.25/cloud-continuation`; merge, deployment, workflow promotion and
+Phase 3.5 remain prohibited.

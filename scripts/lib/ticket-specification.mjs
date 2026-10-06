@@ -53,6 +53,13 @@ export const VERIFICATION_TYPES = Object.freeze([
 export const digest = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 export const bindingDigest = (bindings) =>
   digest(bindings.map(({ reviewStatus: _reviewStatus, ...binding }) => binding));
+export const specificationDigest = (specification) =>
+  digest({
+    ticketId: specification.ticketId,
+    primaryEpicId: specification.primaryEpicId,
+    gaps: specification.gaps,
+    sections: specification.sections,
+  });
 const present = (requirements, sources) => ({ applicability: 'APPLICABLE', requirements, sources });
 const na = (reason) => ({ applicability: 'NOT_APPLICABLE', reason });
 const group = (items, key) =>
@@ -289,7 +296,15 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         'EPIC-VISUAL-REGRESSION',
         'EPIC-SEO',
       ].includes(epicId);
-    const release = ticket.releaseState ?? designModel?.releaseState ?? 'UNSPECIFIED';
+    // Design release scope controls design sequencing, not product activation.
+    // Only the canonical ticket or an explicitly reviewed blocker disposition
+    // may supply effective release state. A design map's RELEASE label must
+    // never turn an unassigned ticket into IMPLEMENT_NOW.
+    const release =
+      ticket.releaseState ??
+      (ticket.blocked && blocker?.hostpending && blocker.releaseDisposition === 'ACTIVE_R1'
+        ? 'ACTIVE_R1'
+        : 'UNSPECIFIED');
     const deliveryMode =
       release === 'UNSPECIFIED'
         ? 'UNDECIDED'
@@ -314,7 +329,21 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     const rows = ticket.acceptanceCriteria.map((criterion, index) =>
       verification(ticket, criterion, index, profile.commands),
     );
-    for (const row of rows) row.exactBindings = policy.exactVerificationBindings?.[row.acId] ?? [];
+    for (const row of rows) {
+      row.exactBindings = policy.exactVerificationBindings?.[row.acId] ?? [];
+      if (row.exactBindings.length) {
+        row.verification = row.exactBindings.map((binding) => ({
+          type: binding.type,
+          expectedCheck: binding.assertion,
+          candidateCommand: null,
+          evidenceRequired: binding.evidenceArtifact,
+          automationStatus: binding.testStatus,
+          owner: binding.reviewer,
+          releaseGate: binding.releaseGate,
+        }));
+        row.mappingBasis = 'Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.';
+      }
+    }
     traceability.push(...rows);
     const gaps = [];
     const gap = (code, section, reason, owner, requiredEvidence) =>
@@ -425,9 +454,20 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           ? 'RESOLVED'
           : item.code === 'OWNER_DECISION' && decision
             ? 'RECLASSIFIED'
-            : 'OPEN';
+            : (policy.findingDispositions?.[ticket.id]?.[item.code]?.disposition ?? 'OPEN');
+      const dispositionOverride = policy.findingDispositions?.[ticket.id]?.[item.code];
       item.disposition = disposition;
-      findings.push({ ticketId: ticket.id, ...item, disposition });
+      findings.push({
+        ticketId: ticket.id,
+        ...item,
+        disposition,
+        ...(dispositionOverride
+          ? {
+              dispositionRationale: dispositionOverride.rationale,
+              dispositionSources: dispositionOverride.sources,
+            }
+          : {}),
+      });
     }
     const source = `.ai/backlog.json#${ticket.id}`;
     const trace = {
@@ -458,7 +498,13 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       id: row.acId,
       sourceText: row.criterion,
       expectedResult: row.criterion,
-      verificationIds: row.verification.map((entry) => entry.type),
+      verificationIds: row.exactBindings.length > 0
+        ? [
+            ...new Set(
+              row.exactBindings.map((binding) => binding.type),
+            ),
+          ]
+        : row.verification.map((entry) => entry.type),
       authority: source,
       reviewStatus: 'UNREVIEWED_SPECIFICATION',
     }));
@@ -724,8 +770,20 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           [...new Set([...(sections[section].sources ?? []), ...refinement.sourceReferences])],
         );
       }
+      if (refinement.implementationChecklistOverride) {
+        sections.implementationChecklist = present(
+          refinement.implementationChecklistOverride.map((requirement) => ({
+            requirement,
+            reviewStatus: refinement.reviewStatus,
+            authority: decision
+              ? 'OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING'
+              : 'EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR',
+          })),
+          [source, ...refinement.sourceReferences],
+        );
+      }
     }
-    return {
+    const specification = {
       ticketId: ticket.id,
       primaryEpicId: epicId,
       readiness: 'INCOMPLETE',
@@ -733,6 +791,18 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       gaps,
       sections,
     };
+    const receipt = policy.specificationReviewReceipts?.[ticket.id];
+    const receiptMatches =
+      receipt?.verdict === 'APPROVED' &&
+      receipt.reviewer === '/root/phase325_review' &&
+      receipt.artifact === 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' &&
+      receipt.contentHash === specificationDigest(specification) &&
+      gaps.every((gap) => gap.disposition !== 'OPEN');
+    if (receiptMatches) {
+      specification.readiness = 'IMPLEMENTATION_READY';
+      specification.reviewState = 'APPROVED';
+    }
+    return specification;
   });
   const epicIds = [...new Set(specs.map((spec) => spec.primaryEpicId))];
   const epics = epicIds.map((id) => {
@@ -761,7 +831,9 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         })),
       totals: {
         tickets: members.length,
-        completeSpecifications: 0,
+      completeSpecifications: members.filter(
+        (ticket) => specs.find((spec) => spec.ticketId === ticket.id)?.reviewState === 'APPROVED',
+      ).length,
         blocked: members.filter((ticket) => ticket.blocked).length,
         workflow: Object.fromEntries(
           TICKET_STATUSES.map((status) => [
@@ -777,8 +849,8 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
   const counts = {
     ticketCount: tickets.length,
     specificationCount: specs.length,
-    completeSpecificationCount: 0,
-    incompleteSpecificationCount: specs.length,
+    completeSpecificationCount: specs.filter((spec) => spec.reviewState === 'APPROVED').length,
+    incompleteSpecificationCount: specs.filter((spec) => spec.reviewState !== 'APPROVED').length,
     epicMappedCount: specs.filter((spec) => !!spec.primaryEpicId).length,
     orphanTicketCount: 0,
     duplicateIdCount: tickets.length - new Set(tickets.map((ticket) => ticket.id)).size,
@@ -814,7 +886,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     draftSpecificationCount: specs.filter((spec) => spec.reviewState === 'DRAFT').length,
     reviseSpecificationCount: 0,
     reviewedSpecificationCount: 0,
-    approvedSpecificationCount: 0,
+    approvedSpecificationCount: specs.filter((spec) => spec.reviewState === 'APPROVED').length,
     ownerDecisionReconciliationCount: Object.keys(policy.decisionReconciliations ?? {}).length,
     uiTicketCount: designTraceability.filter((entry) => entry.ui).length,
     designCounts: group(designTraceability, (entry) => entry.status),
@@ -834,7 +906,10 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       ]),
     ),
     sourceBacklogHash: digest(backlog),
-    specificationCoveragePercent: 0,
+    specificationCoveragePercent:
+      specs.length === 0
+        ? 0
+        : (100 * specs.filter((spec) => spec.reviewState === 'APPROVED').length) / specs.length,
     suggestedVerificationMappingPercent: traceability.length ? 100 : 0,
     exactReviewedTraceabilityPercent: traceability.length
       ? (traceability.filter(
@@ -925,6 +1000,24 @@ export function validateCatalog(model, inputs, resolvePath) {
       names.add(binding.testName);
     }
   }
+  const specificationReceipts = inputs.policy.specificationReviewReceipts ?? {};
+  for (const [ticketId, receipt] of Object.entries(specificationReceipts)) {
+    const specification = model.specs.find((entry) => entry.ticketId === ticketId);
+    if (!specification) {
+      errors.push(`orphan whole-specification review receipt ${ticketId}`);
+      continue;
+    }
+    if (
+      receipt?.verdict !== 'APPROVED' ||
+      receipt.reviewer !== '/root/phase325_review' ||
+      receipt.artifact !== 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' ||
+      !resolvePath(receipt.artifact ?? '') ||
+      receipt.contentHash !== specificationDigest(specification) ||
+      specification.gaps.some((gap) => gap.disposition === 'OPEN') ||
+      !inputs.verificationReviewText?.includes(receipt.contentHash)
+    )
+      errors.push(`unproven content-bound whole-specification review ${ticketId}`);
+  }
   for (const [id, refinement] of Object.entries(inputs.policy.ticketRefinements ?? {})) {
     if (!inputs.backlog.items.some((ticket) => ticket.id === id))
       errors.push(`orphan refinement ${id}`);
@@ -953,6 +1046,33 @@ export function validateCatalog(model, inputs, resolvePath) {
         requirements.some((requirement) => typeof requirement !== 'string' || !requirement.trim())
       )
         errors.push(`invalid refinement requirements ${id}.${section}`);
+    }
+    if (
+      refinement.implementationChecklistOverride !== undefined &&
+      (!Array.isArray(refinement.implementationChecklistOverride) ||
+        refinement.implementationChecklistOverride.length === 0 ||
+        refinement.implementationChecklistOverride.some(
+          (requirement) => typeof requirement !== 'string' || !requirement.trim(),
+        ))
+    )
+      errors.push(`invalid implementation checklist override ${id}`);
+  }
+  for (const [ticketId, dispositions] of Object.entries(inputs.policy.findingDispositions ?? {})) {
+    if (!inputs.backlog.items.some((ticket) => ticket.id === ticketId))
+      errors.push(`orphan finding disposition ${ticketId}`);
+    for (const [code, disposition] of Object.entries(dispositions)) {
+      if (!model.findings.some((finding) => finding.ticketId === ticketId && finding.code === code))
+        errors.push(`unknown finding disposition ${ticketId}.${code}`);
+      if (!['RESOLVED', 'RECLASSIFIED', 'OWNER_DECISION_REQUIRED', 'EXTERNAL_GATE'].includes(disposition.disposition))
+        errors.push(`invalid finding disposition ${ticketId}.${code}`);
+      if (
+        typeof disposition.rationale !== 'string' ||
+        !disposition.rationale.trim() ||
+        !Array.isArray(disposition.sources) ||
+        disposition.sources.length === 0 ||
+        disposition.sources.some((source) => !resolvePath(source.split('#')[0]))
+      )
+        errors.push(`unproven finding disposition ${ticketId}.${code}`);
     }
   }
   const expected = buildCatalog(inputs);

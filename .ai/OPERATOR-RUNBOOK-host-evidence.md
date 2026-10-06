@@ -70,9 +70,15 @@ and restart individual units. Read those before running them.
 
 - **Never run `nft flush ruleset`.** It deletes Docker's NAT rules and kills
   container egress. The symptom is an unrelated timeout, not a firewall error.
-- **Never restart the proxy alone.** Every service joins its network namespace;
-  restarting it orphans them all behind a 502 while they still report healthy.
-  Use `infra/v3/restart-stack.sh`.
+- **Do not apply the historical proxy-network warning without checking the
+  deployed Compose topology.** Current `infra/compose.production.yml` assigns
+  the shared namespace to `network-anchor`, not Caddy. For CS-3 evidence, first
+  verify the exact deployed revision, anchor/proxy/dependent network modes,
+  timer state, and port bindings against
+  [PROXY-RECOVERY.md](../docs/OPERATIONS/PROXY-RECOVERY.md). Only an explicitly
+  approved Caddy-only crash observation is in scope; never terminate or replace
+  `network-anchor`, publish private service ports, or touch volumes. If the
+  deployed topology differs from the reviewed source, abort before disruption.
 - **Never run `docker system prune -a`.** It removes the images a rollback
   depends on.
 - **Never regenerate `POSTGRES_PASSWORD`** against an existing volume.
@@ -371,32 +377,35 @@ concluded, not whether you agree with it.
 
 ---
 
-## CS-3 — proxy restart does not strand services
+## CS-3 — proxy crash and stable-anchor observation
 
-**This step restarts the stack.** Do it at a quiet moment. It is the only way
-to prove the criterion.
+The current deployment uses `network-anchor` as shared namespace owner; this
+differs from the historical proxy-owned namespace failure described elsewhere
+in this file. Do not use the old `infra/v3/restart-stack.sh` path for this
+ticket. The current acceptance procedure is maintained in
+[PROXY-RECOVERY.md](../docs/OPERATIONS/PROXY-RECOVERY.md).
 
-```bash
-curl -fsS -o /dev/null -w '%{http_code}\n' https://careerscope.tech/
-sudo bash infra/v3/restart-stack.sh
-sleep 20
-curl -fsS -o /dev/null -w '%{http_code}\n' https://careerscope.tech/
-curl -fsS https://careerscope.tech/api/health
-docker ps --format '{{.Names}}\t{{.Status}}'
-```
+This is a service-disrupting live proof and requires an explicitly approved
+operator window for the exact deployed revision. Before any termination,
+verify the deployed revision and current Compose project, ensure the recovery
+timer is active, confirm origin and `/api/health` are healthy, inspect that
+`network-anchor` owns the namespace and publishes only intended edge ports,
+and confirm Caddy plus private dependents use the anchor namespace. Abort if
+the deployed topology differs, any database/Redis/LocalStack/API/worker port is
+host-published, the baseline is unhealthy, or no rollback operator is present.
 
-**Pass criterion:** HTTP 200 before and after, `/api/health` answers, and every
-container reports healthy. **A 502 after the restart is the exact defect this
-ticket exists for — if you see one, record it and do not retry until it clears
-by itself, because "it worked the second time" is not the evidence.**
-
-> Use `restart-stack.sh`. **Never** `docker restart` the proxy alone — that is
-> the original incident this ticket documents.
+During an approved proof, terminate only the resolved Caddy container using
+the procedure in PROXY-RECOVERY.md; never stop or replace `network-anchor`.
+Capture redacted pre/post namespace identities, proxy restart count, public
+origin and API readiness, the approved safe async canary result if required by
+the exact AC binding, alert/recovery outcome, timestamps and any first failure.
+Do not retry a failed observation into a pass. Do not capture credentials,
+environment values, candidate data, resume files or database contents.
 
 Also verify the recovery path:
 
 ```bash
-bash infra/v3/check-proxy-recovery.sh; echo "EXIT=$?"   # stub-driven: NOT host evidence, see note
+bash infra/check-proxy-recovery.sh; echo "EXIT=$?"   # stub-driven: NOT host evidence, see note
 systemctl status careerscope-proxy-recovery.timer --no-pager
 ```
 

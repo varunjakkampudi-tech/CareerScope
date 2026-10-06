@@ -1,6 +1,6 @@
 # CS-8 — Readers of canonical state may treat unreadable as empty
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Readiness: INCOMPLETE.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -155,7 +155,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-8-AC1",
       "sourceText": "Every reader of .ai/*.json distinguishes absent, valid and unparseable",
       "expectedResult": "Every reader of .ai/*.json distinguishes absent, valid and unparseable",
-      "verificationIds": ["AUTOMATED_BROWSER"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-8",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -163,7 +163,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-8-AC2",
       "sourceText": "Unparseable refuses; it is never reported as no findings",
       "expectedResult": "Unparseable refuses; it is never reported as no findings",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_CONTRACT", "AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-8",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -171,7 +171,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-8-AC3",
       "sourceText": "Each is mutation-tested with all three cases, malformed included",
       "expectedResult": "Each is mutation-tested with all three cases, malformed included",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_UNIT"],
       "authority": ".ai/backlog.json#CS-8",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -441,16 +441,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Every reader of .ai/*.json distinguishes absent, valid and unparseable",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-8-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Every reader distinguishes valid parsed state from absence and parse failure. Required missing files refuse; optional absence uses documented fallback without readiness claim. Malformed present files expose integrity errors and cannot be classified as a healthy empty state.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named matrix result showing consumer inventory, cases executed, exit codes and byte preservation; the planned harness is not represented as existing coverage.",
+          "automationStatus": "PLANNED",
+          "owner": "Delivery tooling reviewer, QA and Security reviewer",
+          "releaseGate": "CANONICAL_EVIDENCE_INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -467,7 +468,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "reviewer": "Delivery tooling reviewer, QA and Security reviewer",
           "releaseGate": "CANONICAL_EVIDENCE_INTEGRITY",
           "testStatus": "PLANNED",
-          "reviewStatus": "REVIEWED"
+          "reviewStatus": "DRAFT"
         }
       ]
     },
@@ -478,15 +479,25 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-8-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Corruption yields artifact/category stateErrors or nonzero CLI refusal as appropriate. No release permission, completed-review claim or healthy 'no findings' assertion may result merely because fallback arrays are empty. Diagnostics contain file/category, not rejected payload.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named consumer refusal assertions and sanitized diagnostic categories, plus the separately required named CS8 corrupted-state browser result; Node snapshot checks do not prove visible rendering.",
+          "automationStatus": "PLANNED",
+          "owner": "Delivery tooling reviewer and Security reviewer",
+          "releaseGate": "FAIL_CLOSED_RELEASE_EVIDENCE"
+        },
+        {
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Corrupted present file visibly displays the integrity warning rather than a healthy no-findings claim; valid restoration clears corruption warning and shows exact synthetic finding totals. Canonical files remain byte-identical.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named browser result with visible warning/restoration assertions, exact revision and canonical byte preservation; no hosted evidence inferred.",
+          "automationStatus": "PLANNED",
+          "owner": "Engineering UI, Accessibility and QA reviewers",
+          "releaseGate": "CANONICAL_EVIDENCE_VISIBLE_INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_CONTRACT",
@@ -503,7 +514,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "reviewer": "Delivery tooling reviewer and Security reviewer",
           "releaseGate": "FAIL_CLOSED_RELEASE_EVIDENCE",
           "testStatus": "PLANNED",
-          "reviewStatus": "REVIEWED"
+          "reviewStatus": "DRAFT"
         },
         {
           "type": "AUTOMATED_BROWSER",
@@ -530,16 +541,17 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "criterion": "Each is mutation-tested with all three cases, malformed included",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-8-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "All inventory entries have executed valid/absent/malformed assertions; a catch-and-empty mutation is rejected. Original fixture bytes are restored on failure; canonical repository hashes and ticket states are unchanged; no orphan absent-test file remains.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future named mutation and preservation test results, case totals, zero skipped and sanitized path classification.",
+          "automationStatus": "PLANNED",
+          "owner": "QA and Delivery tooling reviewer",
+          "releaseGate": "STATE_READER_REGRESSION_AND_FIXTURE_SAFETY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
           "type": "AUTOMATED_UNIT",
@@ -584,7 +596,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-8-AC1",
       "sourceText": "Every reader of .ai/*.json distinguishes absent, valid and unparseable",
       "expectedResult": "Every reader of .ai/*.json distinguishes absent, valid and unparseable",
-      "verificationIds": ["AUTOMATED_BROWSER"],
+      "verificationIds": ["AUTOMATED_CONTRACT"],
       "authority": ".ai/backlog.json#CS-8",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -592,7 +604,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-8-AC2",
       "sourceText": "Unparseable refuses; it is never reported as no findings",
       "expectedResult": "Unparseable refuses; it is never reported as no findings",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_CONTRACT", "AUTOMATED_BROWSER"],
       "authority": ".ai/backlog.json#CS-8",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     },
@@ -600,7 +612,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "id": "CS-8-AC3",
       "sourceText": "Each is mutation-tested with all three cases, malformed included",
       "expectedResult": "Each is mutation-tested with all three cases, malformed included",
-      "verificationIds": ["AUTOMATED_CONTRACT"],
+      "verificationIds": ["AUTOMATED_UNIT"],
       "authority": ".ai/backlog.json#CS-8",
       "reviewStatus": "UNREVIEWED_SPECIFICATION"
     }
@@ -811,4 +823,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
