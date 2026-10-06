@@ -321,3 +321,22 @@ Dependencies remain valid and acyclic. Workflow remains 141 BACKLOG, 5 QA,
 CS-38, CS-39, CS-45 and CS-49 onward; CS-31/CS-32 remain parked for exact design
 evidence. Specification generation/check pass; deterministic generation and
 targeted tests are required before checkpoint commit.
+
+## CS-41 and CS-48 review closure (2026-10-06)
+
+CS-41 and CS-48 were corrected against the independent reviewer’s exact
+findings. CS-41 now binds legal-source and coverage limits plus required
+architecture/security approval artifacts. CS-48 now binds deterministic
+functionality isolation, prohibited LLM decision boundaries, payload allowlists,
+authored-content protection, the canonical `preparation-coaching elaboration`
+use case with five explicit `NOT_BUILT` entries, the complete mocked provider
+matrix, and all four required documentation paths. A fresh independent review
+returned `APPROVE_AUTHORED_CONTENT`; all procedures remain `PLANNED`, not
+executed. Content-bound whole-spec receipts now approve both tickets.
+
+Current metrics: 25 approved and 191 incomplete specifications; 906 ACs, 127
+mapped and 779 unmapped; 550 OPEN findings (651 total, 42 resolved, 13
+reclassified). Workflow remains unchanged at 141 BACKLOG, 5 QA, 70 UAT and
+`STATUS_CHANGES_DURING_PHASE_3_25: 0`. CS-17, CS-31 and CS-32 remain parked
+with their existing owner/design blockers. Next actionable work is the next
+independent ticket batch after this checkpoint.
