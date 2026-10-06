@@ -300,3 +300,24 @@ passes `tickets:spec:check`, `tickets:spec:test` (49/49), deterministic
 generation, and `git diff --check`. No implementation, merge, deployment, or
 production change occurred. Next actionable tickets are CS-31 and CS-32 after
 their exact design evidence is supplied; then CS-38 onward.
+
+## CS-31/CS-32 design parking and CS-41/CS-48/CS-52 batch (2026-10-06)
+
+The single focused design-evidence pass searched the design index, implementation
+order, page references, boards and semantic accessibility/search/viewport terms.
+No exact skip-link authenticated-shell reference for CS-31 or exact
+`chromium-search-light-320` visual baseline/state reference for CS-32 was found.
+Both remain `DESIGN_GAP: BLOCKING`; no design was invented and they are parked.
+CS-17 remains `OWNER_DECISION_REQUIRED` without further rediscovery.
+
+CS-41, CS-48 and CS-52 were authored with exact procedures. Independent review
+approved CS-52; CS-41 and CS-48 returned REVISE and remain incomplete until
+criterion-specific corrections are independently reviewed. Current metrics: 23
+approved and 193 incomplete specifications; 906 ACs, 127 mapped and 779
+unmapped; 550 OPEN findings (651 total, 42 resolved, 13 reclassified); 130
+reviewed exact and 147 authored bindings.
+Dependencies remain valid and acyclic. Workflow remains 141 BACKLOG, 5 QA,
+70 UAT with `STATUS_CHANGES_DURING_PHASE_3_25: 0`. Next actionable tickets are
+CS-38, CS-39, CS-45 and CS-49 onward; CS-31/CS-32 remain parked for exact design
+evidence. Specification generation/check pass; deterministic generation and
+targeted tests are required before checkpoint commit.
