@@ -6,8 +6,8 @@ Structural section coverage and generated count are not implementation readiness
 | -------------------------------------- | ------------------ |
 | ticketCount                            | 216                |
 | specificationCount                     | 216                |
-| completeSpecificationCount             | 40                 |
-| incompleteSpecificationCount           | 176                |
+| completeSpecificationCount             | 41                 |
+| incompleteSpecificationCount           | 175                |
 | epicMappedCount                        | 216                |
 | orphanTicketCount                      | 0                  |
 | duplicateIdCount                       | 0                  |
@@ -22,22 +22,22 @@ Structural section coverage and generated count are not implementation readiness
 | reviewedExactTestBindingCount          | 170                |
 | authoredExactTestBindingCount          | 187                |
 | acceptanceCriteriaWithAuthoredBindings | 184                |
-| draftSpecificationCount                | 176                |
+| draftSpecificationCount                | 175                |
 | reviseSpecificationCount               | 0                  |
 | reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 40                 |
+| approvedSpecificationCount             | 41                 |
 | ownerDecisionReconciliationCount       | 11                 |
 | uiTicketCount                          | 146                |
 | blockedTicketCount                     | 37                 |
 | hostpendingActionCount                 | 15                 |
 | holdTicketCount                        | 33                 |
 | currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 18.51851851851852  |
+| specificationCoveragePercent           | 18.98148148148148  |
 | suggestedVerificationMappingPercent    | 100                |
 | exactReviewedTraceabilityPercent       | 18.432671081677704 |
 | findingsCount                          | 651                |
-| openFindingCount                       | 494                |
-| resolvedFindingCount                   | 69                 |
+| openFindingCount                       | 490                |
+| resolvedFindingCount                   | 71                 |
 | reclassifiedFindingCount               | 13                 |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                       |
@@ -282,10 +282,10 @@ Structural section coverage and generated count are not implementation readiness
 | CS-70  | MISSING_SECURITY_ASSESSMENT     | RESOLVED                | securityPrivacy        | Source security/privacy impact note is absent.                                                                                                                           | Security reviewer                     | Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.                         |
 | CS-70  | RELEASE_TARGET_UNDECIDED        | EXTERNAL_GATE           | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-70  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
-| CS-71  | MISSING_ARCHITECTURE_ASSESSMENT | OPEN                    | technicalApproach      | Source architecture impact note is absent.                                                                                                                               | Backend                               | Ticket-specific affected modules, integration boundary and reviewed change rationale.                                                   |
-| CS-71  | MISSING_SECURITY_ASSESSMENT     | OPEN                    | securityPrivacy        | Source security/privacy impact note is absent.                                                                                                                           | Security reviewer                     | Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.                         |
-| CS-71  | RELEASE_TARGET_UNDECIDED        | OPEN                    | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
-| CS-71  | RELEASE_STATE_UNSPECIFIED       | OPEN                    | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
+| CS-71  | MISSING_ARCHITECTURE_ASSESSMENT | RESOLVED                | technicalApproach      | Source architecture impact note is absent.                                                                                                                               | Backend                               | Ticket-specific affected modules, integration boundary and reviewed change rationale.                                                   |
+| CS-71  | MISSING_SECURITY_ASSESSMENT     | RESOLVED                | securityPrivacy        | Source security/privacy impact note is absent.                                                                                                                           | Security reviewer                     | Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.                         |
+| CS-71  | RELEASE_TARGET_UNDECIDED        | EXTERNAL_GATE           | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
+| CS-71  | RELEASE_STATE_UNSPECIFIED       | EXTERNAL_GATE           | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
 | CS-71  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-72  | MISSING_ARCHITECTURE_ASSESSMENT | OPEN                    | technicalApproach      | Source architecture impact note is absent.                                                                                                                               | Code Quality                          | Ticket-specific affected modules, integration boundary and reviewed change rationale.                                                   |
 | CS-72  | MISSING_SECURITY_ASSESSMENT     | OPEN                    | securityPrivacy        | Source security/privacy impact note is absent.                                                                                                                           | Security reviewer                     | Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.                         |

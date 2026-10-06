@@ -390,3 +390,15 @@ ACs, 167 mapped and 739 unmapped; 494 OPEN findings (651 total, 69 resolved,
 13 reclassified); 170 reviewed exact planned bindings and 187 authored exact
 bindings. CS-17, CS-31 and CS-32 remain parked. Next actionable queue begins
 at the next incomplete ticket after CS-70, excluding those parked blockers.
+
+## CS-71 approval pass (2026-10-06)
+
+CS-71 received a pure resume-derivation architecture boundary, synthetic
+privacy/input controls, exact paired English/non-English procedures and an
+independent `APPROVE_AUTHORED_CONTENT` review. Its content-bound receipt
+approves the whole specification; future domain execution remains PLANNED.
+
+Current generated metrics: 41 approved and 175 incomplete specifications; 906
+ACs, 167 mapped and 739 unmapped; 490 OPEN findings (651 total, 71 resolved,
+13 reclassified). Next actionable queue begins at CS-72, excluding CS-17,
+CS-31 and CS-32.
