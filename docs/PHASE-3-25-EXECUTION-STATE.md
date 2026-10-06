@@ -415,3 +415,11 @@ ACs, 178 mapped and 728 unmapped; 475 OPEN findings (651 total, 80 resolved,
 13 reclassified); 181 reviewed exact planned bindings and 198 authored exact
 bindings. Next actionable queue begins at CS-76, excluding CS-17, CS-31 and
 CS-32.
+
+## CS-76/CS-77 continuation checkpoint (2026-10-06)
+
+Ticket-specific architecture/security refinements and finding dispositions were
+started for CS-76 and CS-77. No approval is claimed: their exact AC bindings
+and independent receipts remain outstanding. Generated metrics remain 44
+approved, 172 incomplete, 178 mapped ACs and 475 OPEN findings. Resume at
+CS-76 and complete its bindings before adding whole-spec receipts.
