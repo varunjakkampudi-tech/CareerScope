@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "3b24753627dc05a0310ae441cd14b0b2205c2a55a4bf895289b87e664da81167",
+    ".ai/ticket-specification-policy.json": "505b1b503adf9192e083b32a4d97926bb1d549677e37b8c7b7abaf029ec742ec",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "f431a0b1ebc2af9da8255a499bc80b8e21955a9c4b37ad010823f8aabe364556"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "95b1af3d298fedce6589c92567f32eec25b32ffea4b6f4bee80fd6c6354051f8"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -14112,7 +14112,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -14376,9 +14376,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: status and review refuse when backlog.json or findings.json is absent or unparseable.",
+                  "expectedCheck": "Each missing or malformed backlog.json and findings.json matrix variant exits nonzero, names the exact affected file and reports either missing-file refusal or parse-error reason.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-20-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-20-AC1-RELEASE-GATE"
@@ -14390,18 +14390,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-20 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-20 fixture for acceptance criterion: status and review refuse when backlog.json or findings.json is absent or unparseable.",
-                  "procedure": "Run the registered CS-20 verification procedure and record input, command/procedure identifier and observed output for: status and review refuse when backlog.json or findings.json is absent or unparseable.",
-                  "assertion": "The procedure must assert exactly this criterion: status and review refuse when backlog.json or findings.json is absent or unparseable.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: status and review refuse when backlog.json or findings.json is absent or unparseable.",
-                  "testName": "CS-20 AC1 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-20-AC1-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-20; canonical project checkout; no production or destructive host action.",
+                  "setup": "Copy both .ai files to a temp root and run one missing/unparseable variant at a time; canonical files remain untouched.",
+                  "fixtureOrData": "copy .ai/backlog.json and findings.json into temp; remove backlog",
+                  "action": "Run `npm run agile:gate:test` against the planned procedure at `scripts/check-agile-gates.mjs`.",
+                  "repositoryCommand": "npm run agile:gate:test",
+                  "procedure": "scripts/check-agile-gates.mjs::CS-20-AC1 with the fixture and command above.",
+                  "assertion": "Each missing or malformed backlog.json and findings.json matrix variant exits nonzero, names the exact affected file and reports either missing-file refusal or parse-error reason.",
+                  "expectedResult": "nonzero refusal with no canonical mutation",
+                  "testName": "CS-20-AC1 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-agile-gates.mjs::CS-20-AC1",
+                  "fixtures": "Two isolated variants: missing backlog.json with valid findings.json, and valid backlog.json with missing findings.json; repeat with each file syntactically unparseable.",
+                  "negativeCase": "A missing or malformed source file must name that file and refuse without modifying canonical state.",
+                  "evidenceArtifact": "Future CS-20-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-20-AC1-RELEASE-GATE"
                 }
               ]
@@ -14413,9 +14416,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: The refusal names the file and the reason.",
+                  "expectedCheck": "refusal names exact file and parse reason",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-20-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-20-AC2-RELEASE-GATE"
@@ -14427,18 +14430,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-20 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-20 fixture for acceptance criterion: The refusal names the file and the reason.",
-                  "procedure": "Run the registered CS-20 verification procedure and record input, command/procedure identifier and observed output for: The refusal names the file and the reason.",
-                  "assertion": "The procedure must assert exactly this criterion: The refusal names the file and the reason.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: The refusal names the file and the reason.",
-                  "testName": "CS-20 AC2 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-20-AC2-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-20; canonical project checkout; no production or destructive host action.",
+                  "setup": "copy valid files then corrupt findings JSON; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "copy valid files then corrupt findings JSON",
+                  "action": "Run `npm run agile:gate:test` against the planned procedure at `scripts/check-agile-gates.mjs`.",
+                  "repositoryCommand": "npm run agile:gate:test",
+                  "procedure": "scripts/check-agile-gates.mjs::CS-20-AC2 with the fixture and command above.",
+                  "assertion": "refusal names exact file and parse reason",
+                  "expectedResult": "file-specific diagnostic and no review/carry result",
+                  "testName": "CS-20-AC2 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-agile-gates.mjs::CS-20-AC2",
+                  "fixtures": "copy valid files then corrupt findings JSON",
+                  "negativeCase": "A missing or malformed source file must name that file and refuse without modifying canonical state.",
+                  "evidenceArtifact": "Future CS-20-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-20-AC2-RELEASE-GATE"
                 }
               ]
@@ -14450,9 +14456,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: Covered by the agile gate mutation suite.",
+                  "expectedCheck": "mutation suite reports failure without touching canonical files",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-20-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-20-AC3-RELEASE-GATE"
@@ -14464,18 +14470,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-20 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-20 fixture for acceptance criterion: Covered by the agile gate mutation suite.",
-                  "procedure": "Run the registered CS-20 verification procedure and record input, command/procedure identifier and observed output for: Covered by the agile gate mutation suite.",
-                  "assertion": "The procedure must assert exactly this criterion: Covered by the agile gate mutation suite.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: Covered by the agile gate mutation suite.",
-                  "testName": "CS-20 AC3 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-20-AC3-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-20; canonical project checkout; no production or destructive host action.",
+                  "setup": "run missing/unparseable matrix; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "run missing/unparseable matrix",
+                  "action": "Run `npm run agile:gate:test` against the planned procedure at `scripts/check-agile-gates.mjs`.",
+                  "repositoryCommand": "npm run agile:gate:test",
+                  "procedure": "scripts/check-agile-gates.mjs::CS-20-AC3 with the fixture and command above.",
+                  "assertion": "mutation suite reports failure without touching canonical files",
+                  "expectedResult": "agile gate negative control passes",
+                  "testName": "CS-20-AC3 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-agile-gates.mjs::CS-20-AC3",
+                  "fixtures": "run missing/unparseable matrix",
+                  "negativeCase": "A missing or malformed source file must name that file and refuse without modifying canonical state.",
+                  "evidenceArtifact": "Future CS-20-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-20-AC3-RELEASE-GATE"
                 }
               ]
@@ -14673,7 +14682,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -14937,9 +14946,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: One shared definition of complete used by review and carry.",
+                  "expectedCheck": "review and carry call same completion predicate",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-21-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-21-AC1-RELEASE-GATE"
@@ -14951,18 +14960,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-21 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-21 fixture for acceptance criterion: One shared definition of complete used by review and carry.",
-                  "procedure": "Run the registered CS-21 verification procedure and record input, command/procedure identifier and observed output for: One shared definition of complete used by review and carry.",
-                  "assertion": "The procedure must assert exactly this criterion: One shared definition of complete used by review and carry.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: One shared definition of complete used by review and carry.",
-                  "testName": "CS-21 AC1 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-21-AC1-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-21; canonical project checkout; no production or destructive host action.",
+                  "setup": "synthetic ticket with shared complete predicate; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "synthetic ticket with shared complete predicate",
+                  "action": "Run `node scripts/check-agile-gates.mjs` against the planned procedure at `scripts/agile.mjs and scripts/check-agile-gates.mjs`.",
+                  "repositoryCommand": "node scripts/check-agile-gates.mjs",
+                  "procedure": "Run `node scripts/check-agile-gates.mjs` with a synthetic ticket consumed by both review and carry completion paths.",
+                  "assertion": "review and carry call same completion predicate",
+                  "expectedResult": "both consumers agree for same fixture",
+                  "testName": "CS-21-AC1 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-agile-gates.mjs::sharedCompletionPredicate fixture test",
+                  "fixtures": "synthetic ticket with shared complete predicate",
+                  "negativeCase": "An invalid workflow token or released item incorrectly carried forward must fail the assertion.",
+                  "evidenceArtifact": "Future CS-21-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-21-AC1-RELEASE-GATE"
                 }
               ]
@@ -14974,9 +14986,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: The value is one the status vocabulary actually contains.",
+                  "expectedCheck": "returned value is in canonical workflow vocabulary",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-21-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-21-AC2-RELEASE-GATE"
@@ -14988,18 +15000,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-21 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-21 fixture for acceptance criterion: The value is one the status vocabulary actually contains.",
-                  "procedure": "Run the registered CS-21 verification procedure and record input, command/procedure identifier and observed output for: The value is one the status vocabulary actually contains.",
-                  "assertion": "The procedure must assert exactly this criterion: The value is one the status vocabulary actually contains.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: The value is one the status vocabulary actually contains.",
-                  "testName": "CS-21 AC2 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-21-AC2-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-21; canonical project checkout; no production or destructive host action.",
+                  "setup": "status vocabulary fixture including UAT and PROD; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "status vocabulary fixture including UAT and PROD",
+                  "action": "Run `node scripts/check-agile-gates.mjs` against the planned procedure at `scripts/agile.mjs and scripts/check-agile-gates.mjs`.",
+                  "repositoryCommand": "node scripts/check-agile-gates.mjs",
+                  "procedure": "Run `node scripts/check-agile-gates.mjs` against each canonical workflow status and an invalid synthetic token.",
+                  "assertion": "returned value is in canonical workflow vocabulary",
+                  "expectedResult": "no invented status token",
+                  "testName": "CS-21-AC2 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/agile.mjs::canonicalStatusVocabulary validation",
+                  "fixtures": "status vocabulary fixture including UAT and PROD",
+                  "negativeCase": "An invalid workflow token or released item incorrectly carried forward must fail the assertion.",
+                  "evidenceArtifact": "Future CS-21-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-21-AC2-RELEASE-GATE"
                 }
               ]
@@ -15011,9 +15026,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: A released item is reported as completed by carry, not carried forward.",
+                  "expectedCheck": "released item is counted completed and not carried",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-21-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-21-AC3-RELEASE-GATE"
@@ -15025,18 +15040,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-21 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-21 fixture for acceptance criterion: A released item is reported as completed by carry, not carried forward.",
-                  "procedure": "Run the registered CS-21 verification procedure and record input, command/procedure identifier and observed output for: A released item is reported as completed by carry, not carried forward.",
-                  "assertion": "The procedure must assert exactly this criterion: A released item is reported as completed by carry, not carried forward.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: A released item is reported as completed by carry, not carried forward.",
-                  "testName": "CS-21 AC3 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-21-AC3-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-21; canonical project checkout; no production or destructive host action.",
+                  "setup": "released ticket plus unreleased backlog ticket; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "released ticket plus unreleased backlog ticket",
+                  "action": "Run `node scripts/check-agile-gates.mjs` against the planned procedure at `scripts/agile.mjs and scripts/check-agile-gates.mjs`.",
+                  "repositoryCommand": "node scripts/check-agile-gates.mjs",
+                  "procedure": "Run the carry procedure against one PROD/released synthetic item and one unreleased backlog item; inspect the emitted carry set.",
+                  "assertion": "released item is counted completed and not carried",
+                  "expectedResult": "only unreleased item remains carry candidate",
+                  "testName": "CS-21-AC3 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/agile.mjs::carry released-item fixture",
+                  "fixtures": "released ticket plus unreleased backlog ticket",
+                  "negativeCase": "An invalid workflow token or released item incorrectly carried forward must fail the assertion.",
+                  "evidenceArtifact": "Future CS-21-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-21-AC3-RELEASE-GATE"
                 }
               ]
@@ -15234,7 +15252,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -15520,9 +15538,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: Two profiles identical except for resume-derived skills produce different scores.",
+                  "expectedCheck": "scores differ and resume skill contributes",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-22-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-22-AC1-RELEASE-GATE"
@@ -15534,18 +15552,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-22 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-22 fixture for acceptance criterion: Two profiles identical except for resume-derived skills produce different scores.",
-                  "procedure": "Run the registered CS-22 verification procedure and record input, command/procedure identifier and observed output for: Two profiles identical except for resume-derived skills produce different scores.",
-                  "assertion": "The procedure must assert exactly this criterion: Two profiles identical except for resume-derived skills produce different scores.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: Two profiles identical except for resume-derived skills produce different scores.",
-                  "testName": "CS-22 AC1 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-22-AC1-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-22; canonical project checkout; no production or destructive host action.",
+                  "setup": "profile O1 and same profile with skill Python from resume R1; job J1; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "profile O1 and same profile with skill Python from resume R1; job J1",
+                  "action": "Run `npx vitest run packages/matching/src/score.test.ts` against the planned procedure at `packages/matching/src/score.test.ts`.",
+                  "repositoryCommand": "npx vitest run packages/matching/src/score.test.ts",
+                  "procedure": "packages/matching/src/score.test.ts::CS-22-AC1 with the fixture and command above.",
+                  "assertion": "scores differ and resume skill contributes",
+                  "expectedResult": "deterministic score delta from resume input",
+                  "testName": "CS-22-AC1 ticket-specific verification",
+                  "testFileOrProcedureId": "packages/matching/src/score.test.ts::CS-22-AC1",
+                  "fixtures": "profile O1 and same profile with skill Python from resume R1; job J1",
+                  "negativeCase": "A resume with no skills, a changed skill set, or absent resume must produce the exact distinct contract state, never a fabricated score/evidence field.",
+                  "evidenceArtifact": "Future CS-22-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-22-AC1-RELEASE-GATE"
                 }
               ]
@@ -15557,9 +15578,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: The resume contribution is visible in the match evidence, not silently folded in.",
+                  "expectedCheck": "Match evidence exposes resumeConsidered=true and the exact resumeSkills [\"Python\",\"TypeScript\"] for the scored result; no opaque resumeEvidence field is invented.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-22-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-22-AC2-RELEASE-GATE"
@@ -15571,18 +15592,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-22 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-22 fixture for acceptance criterion: The resume contribution is visible in the match evidence, not silently folded in.",
-                  "procedure": "Run the registered CS-22 verification procedure and record input, command/procedure identifier and observed output for: The resume contribution is visible in the match evidence, not silently folded in.",
-                  "assertion": "The procedure must assert exactly this criterion: The resume contribution is visible in the match evidence, not silently folded in.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: The resume contribution is visible in the match evidence, not silently folded in.",
-                  "testName": "CS-22 AC2 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-22-AC2-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-22; canonical project checkout; no production or destructive host action.",
+                  "setup": "Render the matching result with canonical resumeConsidered=true and resumeSkills=[\"Python\",\"TypeScript\"] fields from the score output.",
+                  "fixtureOrData": "Profile O1 with resume R1; canonical matching output fixture resumeConsidered=true and resumeSkills=[\"Python\",\"TypeScript\"].",
+                  "action": "Run `npx vitest run packages/matching/src/score.test.ts` against the planned procedure at `packages/matching/src/score.test.ts`.",
+                  "repositoryCommand": "npx vitest run packages/matching/src/score.test.ts",
+                  "procedure": "packages/matching/src/score.test.ts::CS-22-AC2 with the fixture and command above.",
+                  "assertion": "Match evidence exposes resumeConsidered=true and the exact resumeSkills [\"Python\",\"TypeScript\"] for the scored result; no opaque resumeEvidence field is invented.",
+                  "expectedResult": "Resume-derived contribution is visible through the existing resumeConsidered/resumeSkills contract.",
+                  "testName": "CS-22-AC2 ticket-specific verification",
+                  "testFileOrProcedureId": "packages/matching/src/score.test.ts::CS-22-AC2",
+                  "fixtures": "Profile O1 with resume R1 containing Python and TypeScript; matching output fixture with canonical resumeConsidered=true and resumeSkills=[\"Python\",\"TypeScript\"].",
+                  "negativeCase": "A resume with no skills, a changed skill set, or absent resume must produce the exact distinct contract state, never a fabricated score/evidence field.",
+                  "evidenceArtifact": "Future CS-22-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-22-AC2-RELEASE-GATE"
                 }
               ]
@@ -15594,9 +15618,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: A profile with no resume still scores, and says the resume is absent rather than scoring it as zero.",
+                  "expectedCheck": "no-resume result remains scored and explicitly says resume absent",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-22-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-22-AC3-RELEASE-GATE"
@@ -15608,18 +15632,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-22 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-22 fixture for acceptance criterion: A profile with no resume still scores, and says the resume is absent rather than scoring it as zero.",
-                  "procedure": "Run the registered CS-22 verification procedure and record input, command/procedure identifier and observed output for: A profile with no resume still scores, and says the resume is absent rather than scoring it as zero.",
-                  "assertion": "The procedure must assert exactly this criterion: A profile with no resume still scores, and says the resume is absent rather than scoring it as zero.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: A profile with no resume still scores, and says the resume is absent rather than scoring it as zero.",
-                  "testName": "CS-22 AC3 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-22-AC3-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-22; canonical project checkout; no production or destructive host action.",
+                  "setup": "profile O2 without resume plus same job J1; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "profile O2 without resume plus same job J1",
+                  "action": "Run `npx vitest run packages/matching/src/score.test.ts` against the planned procedure at `packages/matching/src/score.test.ts`.",
+                  "repositoryCommand": "npx vitest run packages/matching/src/score.test.ts",
+                  "procedure": "packages/matching/src/score.test.ts::CS-22-AC3 with the fixture and command above.",
+                  "assertion": "no-resume result remains scored and explicitly says resume absent",
+                  "expectedResult": "absence is distinct from zero contribution",
+                  "testName": "CS-22-AC3 ticket-specific verification",
+                  "testFileOrProcedureId": "packages/matching/src/score.test.ts::CS-22-AC3",
+                  "fixtures": "profile O2 without resume plus same job J1",
+                  "negativeCase": "A resume with no skills, a changed skill set, or absent resume must produce the exact distinct contract state, never a fabricated score/evidence field.",
+                  "evidenceArtifact": "Future CS-22-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-22-AC3-RELEASE-GATE"
                 }
               ]
@@ -15821,7 +15848,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -16092,9 +16119,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: A provider returning 0 rows on an HTTP 200 is not reported as completed for that source.",
+                  "expectedCheck": "source state is not completed when 200 returns zero rows",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-23-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-23-AC1-RELEASE-GATE"
@@ -16106,18 +16133,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-23 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-23 fixture for acceptance criterion: A provider returning 0 rows on an HTTP 200 is not reported as completed for that source.",
-                  "procedure": "Run the registered CS-23 verification procedure and record input, command/procedure identifier and observed output for: A provider returning 0 rows on an HTTP 200 is not reported as completed for that source.",
-                  "assertion": "The procedure must assert exactly this criterion: A provider returning 0 rows on an HTTP 200 is not reported as completed for that source.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: A provider returning 0 rows on an HTTP 200 is not reported as completed for that source.",
-                  "testName": "CS-23 AC1 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-23-AC1-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-23; canonical project checkout; no production or destructive host action.",
+                  "setup": "provider HTTP 200 with zero rows; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "provider HTTP 200 with zero rows",
+                  "action": "Run `npx vitest run packages/providers/src/boards.test.ts packages/providers/src/normalize.test.ts` against the planned procedure at `packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts`.",
+                  "repositoryCommand": "npx vitest run packages/providers/src/boards.test.ts packages/providers/src/normalize.test.ts",
+                  "procedure": "packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts::CS-23-AC1 with the fixture and command above.",
+                  "assertion": "source state is not completed when 200 returns zero rows",
+                  "expectedResult": "source remains empty/unknown per contract, never successful completion",
+                  "testName": "CS-23-AC1 ticket-specific verification",
+                  "testFileOrProcedureId": "packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts::CS-23-AC1",
+                  "fixtures": "provider HTTP 200 with zero rows",
+                  "negativeCase": "HTTP 200 zero rows, consecutive zero runs, and malformed provider shape must remain distinguishable and must not be marked completed.",
+                  "evidenceArtifact": "Future CS-23-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-23-AC1-RELEASE-GATE"
                 }
               ]
@@ -16129,9 +16159,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: A source yielding zero across consecutive runs is surfaced to the owner.",
+                  "expectedCheck": "consecutive empty runs emit owner-visible signal",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-23-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-23-AC2-RELEASE-GATE"
@@ -16143,18 +16173,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-23 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-23 fixture for acceptance criterion: A source yielding zero across consecutive runs is surfaced to the owner.",
-                  "procedure": "Run the registered CS-23 verification procedure and record input, command/procedure identifier and observed output for: A source yielding zero across consecutive runs is surfaced to the owner.",
-                  "assertion": "The procedure must assert exactly this criterion: A source yielding zero across consecutive runs is surfaced to the owner.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: A source yielding zero across consecutive runs is surfaced to the owner.",
-                  "testName": "CS-23 AC2 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-23-AC2-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-23; canonical project checkout; no production or destructive host action.",
+                  "setup": "same provider zero rows on consecutive run fixtures; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "same provider zero rows on consecutive run fixtures",
+                  "action": "Run `npx vitest run packages/providers/src/boards.test.ts packages/providers/src/normalize.test.ts` against the planned procedure at `packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts`.",
+                  "repositoryCommand": "npx vitest run packages/providers/src/boards.test.ts packages/providers/src/normalize.test.ts",
+                  "procedure": "packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts::CS-23-AC2 with the fixture and command above.",
+                  "assertion": "consecutive empty runs emit owner-visible signal",
+                  "expectedResult": "alert/ledger output identifies source and run count",
+                  "testName": "CS-23-AC2 ticket-specific verification",
+                  "testFileOrProcedureId": "packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts::CS-23-AC2",
+                  "fixtures": "same provider zero rows on consecutive run fixtures",
+                  "negativeCase": "HTTP 200 zero rows, consecutive zero runs, and malformed provider shape must remain distinguishable and must not be marked completed.",
+                  "evidenceArtifact": "Future CS-23-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-23-AC2-RELEASE-GATE"
                 }
               ]
@@ -16166,9 +16199,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The procedure must assert exactly this criterion: Proven by pointing a provider at a fixture whose shape no longer matches.",
+                  "expectedCheck": "shape mismatch is recorded as provider failure/partial, not success",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-23-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-23-AC3-RELEASE-GATE"
@@ -16180,18 +16213,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "Authoritative CS-23 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-23 fixture for acceptance criterion: Proven by pointing a provider at a fixture whose shape no longer matches.",
-                  "procedure": "Run the registered CS-23 verification procedure and record input, command/procedure identifier and observed output for: Proven by pointing a provider at a fixture whose shape no longer matches.",
-                  "assertion": "The procedure must assert exactly this criterion: Proven by pointing a provider at a fixture whose shape no longer matches.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: Proven by pointing a provider at a fixture whose shape no longer matches.",
-                  "testName": "CS-23 AC3 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-23-AC3-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-23; canonical project checkout; no production or destructive host action.",
+                  "setup": "provider row shape missing required field; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "provider row shape missing required field",
+                  "action": "Run `npx vitest run packages/providers/src/boards.test.ts packages/providers/src/normalize.test.ts` against the planned procedure at `packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts`.",
+                  "repositoryCommand": "npx vitest run packages/providers/src/boards.test.ts packages/providers/src/normalize.test.ts",
+                  "procedure": "packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts::CS-23-AC3 with the fixture and command above.",
+                  "assertion": "shape mismatch is recorded as provider failure/partial, not success",
+                  "expectedResult": "fixture produces named failure and no fabricated postings",
+                  "testName": "CS-23-AC3 ticket-specific verification",
+                  "testFileOrProcedureId": "packages/providers/src/boards.test.ts and packages/providers/src/normalize.test.ts::CS-23-AC3",
+                  "fixtures": "provider row shape missing required field",
+                  "negativeCase": "HTTP 200 zero rows, consecutive zero runs, and malformed provider shape must remain distinguishable and must not be marked completed.",
+                  "evidenceArtifact": "Future CS-23-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-23-AC3-RELEASE-GATE"
                 }
               ]
@@ -16381,7 +16417,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -16671,9 +16707,9 @@
               "verification": [
                 {
                   "type": "HOSTED_CI",
-                  "expectedCheck": "The procedure must assert exactly this criterion: Stopping the workers container surfaces to the owner within 15 minutes without opening the app.",
+                  "expectedCheck": "owner alert arrives within 15 minutes without app access",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-24-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-24-AC1-RELEASE-GATE"
@@ -16685,18 +16721,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
-                  "preconditions": "Authoritative CS-24 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-24 fixture for acceptance criterion: Stopping the workers container surfaces to the owner within 15 minutes without opening the app.",
-                  "procedure": "Run the registered CS-24 verification procedure and record input, command/procedure identifier and observed output for: Stopping the workers container surfaces to the owner within 15 minutes without opening the app.",
-                  "assertion": "The procedure must assert exactly this criterion: Stopping the workers container surfaces to the owner within 15 minutes without opening the app.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: Stopping the workers container surfaces to the owner within 15 minutes without opening the app.",
-                  "testName": "CS-24 AC1 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-24-AC1-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-24; canonical project checkout; no production or destructive host action.",
+                  "setup": "worker service identity careerscope-worker stopped; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "worker service identity careerscope-worker stopped",
+                  "action": "Run `npm run test:queue-runtime` against the planned procedure at `scripts/check-queue-runtime.ts and hosted monitoring procedure`.",
+                  "repositoryCommand": "npm run test:queue-runtime",
+                  "procedure": "scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC1 with the fixture and command above.",
+                  "assertion": "owner alert arrives within 15 minutes without app access",
+                  "expectedResult": "alert timestamp <=15 minutes from stop",
+                  "testName": "CS-24-AC1 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC1",
+                  "fixtures": "worker service identity careerscope-worker stopped",
+                  "negativeCase": "Stopped, unreachable, unhealthy and stale service fixtures must produce distinct states; config-only evidence or an alert after the 15-minute bound fails.",
+                  "evidenceArtifact": "Future CS-24-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-24-AC1-RELEASE-GATE"
                 }
               ]
@@ -16708,9 +16747,9 @@
               "verification": [
                 {
                   "type": "HOSTED_CI",
-                  "expectedCheck": "The procedure must assert exactly this criterion: The check distinguishes unreachable from unhealthy from stale.",
+                  "expectedCheck": "states are distinct and include service identity",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-24-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-24-AC2-RELEASE-GATE"
@@ -16722,18 +16761,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
-                  "preconditions": "Authoritative CS-24 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-24 fixture for acceptance criterion: The check distinguishes unreachable from unhealthy from stale.",
-                  "procedure": "Run the registered CS-24 verification procedure and record input, command/procedure identifier and observed output for: The check distinguishes unreachable from unhealthy from stale.",
-                  "assertion": "The procedure must assert exactly this criterion: The check distinguishes unreachable from unhealthy from stale.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: The check distinguishes unreachable from unhealthy from stale.",
-                  "testName": "CS-24 AC2 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-24-AC2-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-24; canonical project checkout; no production or destructive host action.",
+                  "setup": "monitor responses for unreachable, unhealthy and stale; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "monitor responses for unreachable, unhealthy and stale",
+                  "action": "Run `npm run test:queue-runtime` against the planned procedure at `scripts/check-queue-runtime.ts and hosted monitoring procedure`.",
+                  "repositoryCommand": "npm run test:queue-runtime",
+                  "procedure": "scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC2 with the fixture and command above.",
+                  "assertion": "states are distinct and include service identity",
+                  "expectedResult": "three health classes are distinguishable",
+                  "testName": "CS-24-AC2 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC2",
+                  "fixtures": "monitor responses for unreachable, unhealthy and stale",
+                  "negativeCase": "Stopped, unreachable, unhealthy and stale service fixtures must produce distinct states; config-only evidence or an alert after the 15-minute bound fails.",
+                  "evidenceArtifact": "Future CS-24-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-24-AC2-RELEASE-GATE"
                 }
               ]
@@ -16745,9 +16787,9 @@
               "verification": [
                 {
                   "type": "HOSTED_CI",
-                  "expectedCheck": "The procedure must assert exactly this criterion: Proven by stopping a container and observing the alert, not by reading the config.",
+                  "expectedCheck": "observed stop produces alert while config-only inspection cannot pass",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-24-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-24-AC3-RELEASE-GATE"
@@ -16759,18 +16801,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
-                  "preconditions": "Authoritative CS-24 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-24 fixture for acceptance criterion: Proven by stopping a container and observing the alert, not by reading the config.",
-                  "procedure": "Run the registered CS-24 verification procedure and record input, command/procedure identifier and observed output for: Proven by stopping a container and observing the alert, not by reading the config.",
-                  "assertion": "The procedure must assert exactly this criterion: Proven by stopping a container and observing the alert, not by reading the config.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: Proven by stopping a container and observing the alert, not by reading the config.",
-                  "testName": "CS-24 AC3 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-24-AC3-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-24; canonical project checkout; no production or destructive host action.",
+                  "setup": "isolated stop/start timeline with alert sink; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "isolated stop/start timeline with alert sink",
+                  "action": "Run `npm run test:queue-runtime` against the planned procedure at `scripts/check-queue-runtime.ts and hosted monitoring procedure`.",
+                  "repositoryCommand": "npm run test:queue-runtime",
+                  "procedure": "scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC3 with the fixture and command above.",
+                  "assertion": "observed stop produces alert while config-only inspection cannot pass",
+                  "expectedResult": "retained alert evidence contains stop and recovery times",
+                  "testName": "CS-24-AC3 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC3",
+                  "fixtures": "isolated stop/start timeline with alert sink",
+                  "negativeCase": "Stopped, unreachable, unhealthy and stale service fixtures must produce distinct states; config-only evidence or an alert after the 15-minute bound fails.",
+                  "evidenceArtifact": "Future CS-24-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-24-AC3-RELEASE-GATE"
                 }
               ]
@@ -16984,7 +17029,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -17289,9 +17334,9 @@
               "verification": [
                 {
                   "type": "HOSTED_CI",
-                  "expectedCheck": "The procedure must assert exactly this criterion: Restore yesterday's dump from a file produced without a human running anything.",
+                  "expectedCheck": "The scheduler produces the yesterday dump automatically and that exact file restores DB2 to the DB1 fixture rows/checksum.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-25-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-25-AC1-RELEASE-GATE"
@@ -17303,18 +17348,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
-                  "preconditions": "Authoritative CS-25 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-25 fixture for acceptance criterion: Restore yesterday's dump from a file produced without a human running anything.",
-                  "procedure": "Run the registered CS-25 verification procedure and record input, command/procedure identifier and observed output for: Restore yesterday's dump from a file produced without a human running anything.",
-                  "assertion": "The procedure must assert exactly this criterion: Restore yesterday's dump from a file produced without a human running anything.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: Restore yesterday's dump from a file produced without a human running anything.",
-                  "testName": "CS-25 AC1 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-25-AC1-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-25; canonical project checkout; no production or destructive host action.",
+                  "setup": "Run the scheduler path without human invocation, locate the automatically produced yesterday dump, and restore it into disposable DB2; preserve DB1/DB2 checksums.",
+                  "fixtureOrData": "scheduled dump job and synthetic database DB1",
+                  "action": "Run `npm run test:database-recovery` against `scripts/check-database-recovery.ts::CS-25-AC1` and assert both dump creation and restore.",
+                  "repositoryCommand": "npm run test:database-recovery",
+                  "procedure": "scripts/check-database-recovery.ts::CS-25-AC1 with the fixture and command above.",
+                  "assertion": "The scheduler produces the yesterday dump automatically and that exact file restores DB2 to the DB1 fixture rows/checksum.",
+                  "expectedResult": "An automatically produced yesterday dump exists and a restore from it reproduces DB1 in DB2.",
+                  "testName": "CS-25-AC1 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-database-recovery.ts::CS-25-AC1",
+                  "fixtures": "Scheduler fixture creates yesterday-dated dump D1 for synthetic DB1, then restores D1 into disposable DB2.",
+                  "negativeCase": "Scheduler failure, missing dump, restore checksum mismatch, or failed dump must be visible and must not advance the last-good marker.",
+                  "evidenceArtifact": "Future CS-25-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-25-AC1-RELEASE-GATE"
                 }
               ]
@@ -17326,9 +17374,9 @@
               "verification": [
                 {
                   "type": "HOSTED_CI",
-                  "expectedCheck": "The procedure must assert exactly this criterion: The restore is exercised, not documented — a dump nobody has restored is a guess.",
+                  "expectedCheck": "restore changes DB2 to exact DB1 fixture rows and passes integrity check",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-25-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-25-AC2-RELEASE-GATE"
@@ -17340,18 +17388,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
-                  "preconditions": "Authoritative CS-25 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-25 fixture for acceptance criterion: The restore is exercised, not documented — a dump nobody has restored is a guess.",
-                  "procedure": "Run the registered CS-25 verification procedure and record input, command/procedure identifier and observed output for: The restore is exercised, not documented — a dump nobody has restored is a guess.",
-                  "assertion": "The procedure must assert exactly this criterion: The restore is exercised, not documented — a dump nobody has restored is a guess.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: The restore is exercised, not documented — a dump nobody has restored is a guess.",
-                  "testName": "CS-25 AC2 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-25-AC2-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-25; canonical project checkout; no production or destructive host action.",
+                  "setup": "dump file produced by scheduler then restore into disposable DB2; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "dump file produced by scheduler then restore into disposable DB2",
+                  "action": "Run `npm run test:database-recovery` against the planned procedure at `scripts/check-database-recovery.ts`.",
+                  "repositoryCommand": "npm run test:database-recovery",
+                  "procedure": "scripts/check-database-recovery.ts::CS-25-AC2 with the fixture and command above.",
+                  "assertion": "restore changes DB2 to exact DB1 fixture rows and passes integrity check",
+                  "expectedResult": "restored rows/checksum match DB1",
+                  "testName": "CS-25-AC2 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-database-recovery.ts::CS-25-AC2",
+                  "fixtures": "dump file produced by scheduler then restore into disposable DB2",
+                  "negativeCase": "Scheduler failure, missing dump, restore checksum mismatch, or failed dump must be visible and must not advance the last-good marker.",
+                  "evidenceArtifact": "Future CS-25-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-25-AC2-RELEASE-GATE"
                 }
               ]
@@ -17363,9 +17414,9 @@
               "verification": [
                 {
                   "type": "HOSTED_CI",
-                  "expectedCheck": "The procedure must assert exactly this criterion: A failed dump is reported rather than leaving the last good file in place looking current.",
+                  "expectedCheck": "failed dump reports failure and does not advance last-good timestamp",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "evidenceRequired": "Future CS-25-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "automationStatus": "PLANNED",
                   "owner": "QA / ticket owner",
                   "releaseGate": "CS-25-AC3-RELEASE-GATE"
@@ -17377,18 +17428,21 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
-                  "preconditions": "Authoritative CS-25 implementation and isolated synthetic fixture are available; no production action is permitted.",
-                  "setup": "Prepare the named CS-25 fixture for acceptance criterion: A failed dump is reported rather than leaving the last good file in place looking current.",
-                  "procedure": "Run the registered CS-25 verification procedure and record input, command/procedure identifier and observed output for: A failed dump is reported rather than leaving the last good file in place looking current.",
-                  "assertion": "The procedure must assert exactly this criterion: A failed dump is reported rather than leaving the last good file in place looking current.",
-                  "expectedResult": "The expected result matches the source criterion without inferring execution: A failed dump is reported rather than leaving the last good file in place looking current.",
-                  "testName": "CS-25 AC3 exact acceptance procedure",
-                  "testFileOrProcedureId": "CS-25-AC3-VERIFICATION",
-                  "fixtures": "Synthetic, isolated fixture with deterministic positive and negative controls.",
-                  "negativeCase": "Malformed, missing, stale, unauthorized or unavailable input must fail closed and must not be reported as success.",
-                  "evidenceArtifact": "Future named test/procedure output, exact SHA, fixture summary and owner/reviewer record; hosted/operator evidence is required where applicable.",
+                  "preconditions": "Synthetic isolated fixture for CS-25; canonical project checkout; no production or destructive host action.",
+                  "setup": "failed dump with prior good file timestamp; use disposable temp roots/IDs and preserve canonical files.",
+                  "fixtureOrData": "failed dump with prior good file timestamp",
+                  "action": "Run `npm run test:database-recovery` against the planned procedure at `scripts/check-database-recovery.ts`.",
+                  "repositoryCommand": "npm run test:database-recovery",
+                  "procedure": "scripts/check-database-recovery.ts::CS-25-AC3 with the fixture and command above.",
+                  "assertion": "failed dump reports failure and does not advance last-good timestamp",
+                  "expectedResult": "last good file remains clearly stale and failure is visible",
+                  "testName": "CS-25-AC3 ticket-specific verification",
+                  "testFileOrProcedureId": "scripts/check-database-recovery.ts::CS-25-AC3",
+                  "fixtures": "failed dump with prior good file timestamp",
+                  "negativeCase": "Scheduler failure, missing dump, restore checksum mismatch, or failed dump must be visible and must not advance the last-good marker.",
+                  "evidenceArtifact": "Future CS-25-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.",
                   "releaseGate": "CS-25-AC3-RELEASE-GATE"
                 }
               ]

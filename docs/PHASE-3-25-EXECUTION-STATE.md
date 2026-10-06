@@ -222,3 +222,25 @@ resolved, 7 reclassified, 73 reviewed exact procedures and 94 authored exact
 procedures. The next actionable work is to revise CS-20–CS-25 bindings from
 actual repository evidence, obtain a clean independent authored-content review,
 then continue to CS-26. Workflow state and release metadata remain untouched.
+
+## CS-20 through CS-25 review closure (2026-10-06)
+
+The six-ticket review loop is now closed at the strongest locally supported
+state. All 18 bindings were rewritten against real repository commands and
+paths: `npm run agile:gate:test`, `node scripts/check-agile-gates.mjs`, focused
+matching/provider Vitest paths, `npm run test:queue-runtime`, and
+`npm run test:database-recovery`. Fixtures now identify concrete owners,
+resume fields, provider responses, service identities, dump/restore databases,
+exact outputs and criterion-specific negatives. A fresh independent read-only
+review approved authored content; all procedures remain `PLANNED` and receipts
+are content-bound in policy and the remediation review ledger.
+
+CS-14–CS-19 remain incomplete because their local OPEN findings are unresolved
+design/release gates (and CS-17 has an owner decision); receipt-bound AC review
+alone cannot approve a whole specification. CS-20–CS-25 likewise retain
+unassigned release metadata, so no whole-spec approval is fabricated.
+
+Current counts: 1 approved, 215 incomplete; 906 ACs, 88 mapped, 818 unmapped;
+617 OPEN, 27 resolved and 7 reclassified findings; 91 reviewed planned and 94
+authored procedures. Dependencies remain valid and acyclic; workflow state is
+unchanged. Next ticket is CS-26.
