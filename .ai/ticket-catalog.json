@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "5bf2dcf828eabcc19c1aa3b849972fb2b7745baae8c90bba3fb99a7354290235",
+    ".ai/ticket-specification-policy.json": "59a5fb132d4702eba25abad17d79d66e0782b9392105aebcce2d1b1125189063",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "ae09faf60c2b31ef220e143fcccc600ef4c0a9b1e036de451c39de02f05ece4c"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bab653c9ffde5d254612579d25d4c725d4be8db30a9b0165d801066085cb296c"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -42177,8 +42177,8 @@
     {
       "ticketId": "CS-67",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "MISSING_ARCHITECTURE_ASSESSMENT",
@@ -42186,7 +42186,7 @@
           "reason": "Source architecture impact note is absent.",
           "owner": "Code Quality",
           "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "MISSING_SECURITY_ASSESSMENT",
@@ -42194,7 +42194,7 @@
           "reason": "Source security/privacy impact note is absent.",
           "owner": "Security reviewer",
           "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -42202,7 +42202,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -42210,7 +42210,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -43764,15 +43764,15 @@
     {
       "ticketId": "CS-70",
       "primaryEpicId": "EPIC-CANDIDATE-CORE",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "MISSING_ARCHITECTURE_ASSESSMENT",
           "section": "technicalApproach",
           "reason": "Source architecture impact note is absent.",
           "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "MISSING_SECURITY_ASSESSMENT",
@@ -43780,7 +43780,7 @@
           "reason": "Source security/privacy impact note is absent.",
           "owner": "Security reviewer",
           "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -43788,7 +43788,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -43913,30 +43913,9 @@
               "verificationIds": ["AUTOMATED_INTEGRATION"],
               "authority": ".ai/backlog.json#CS-70",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
-            },
-            {
-              "requirement": "GET /api/leads/by-job/:jobId resolves the session owner's saved lead by run-local search job fingerprint. Valid unknown/foreign job IDs return {lead:null}, never another owner's lead; malformed UUID returns 400. No lookup changes lifecycle status.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            },
-            {
-              "requirement": "SaveJob mounts an owner-keyed lookup with cancellation signal. Pending/error lookup is not a confirmed unsaved state; an existing non-archived lead is reflected in accessible saved state before any save click. Archived state must not be presented as an active saved job.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            },
-            {
-              "requirement": "Repeated or concurrent POST /api/leads for the same owner's deduplicated posting returns the existing lead ID and leaves that owner's lead count unchanged; a genuinely new posting proves the positive path can add a lead.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [
-            ".ai/backlog.json#CS-70",
-            "apps/api/src/app.ts",
-            "packages/core/src/leads.ts",
-            "packages/core/src/database.test.ts",
-            "apps/web/src/components/saved-leads.tsx"
-          ]
+          "sources": [".ai/backlog.json#CS-70"]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -43951,7 +43930,12 @@
             "UNRESOLVED: source architecture assessment is absent; see recorded specification gap.",
             "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
             {
-              "requirement": "ARCHITECTURE_IMPACT: CROSS_MODULE, API_CONTRACT. Fastify lookup delegates to LeadRepository.getByJob; SaveJob uses canonical same-origin api client and ownerKey cache. No client-selected owner or second save implementation.",
+              "requirement": "ARCHITECTURE_IMPACT: preserve the existing Fastify API, owner-scoped LeadRepository and SaveJob component boundaries; the lookup is read-only and deduplication remains in the domain/data layer.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Use the existing PostgreSQL/Redis integration harness and same-origin CSRF/session contracts; do not add a new service, persistence model or client-supplied owner selector.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -43975,22 +43959,13 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": [],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
-            },
-            {
-              "requirement": "Existing saved_leads owner_id/fingerprint and search_jobs/run owner joins are authoritative. Lookup is read-only; preserve lead status/revision/notes/history. No new table/index/migration is prescribed without query evidence.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-70",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md",
-            "apps/api/src/app.ts",
-            "packages/core/src/leads.ts",
-            "packages/core/src/database.test.ts",
-            "apps/web/src/components/saved-leads.tsx"
+            "docs/KNOWN-LIMITATIONS.md"
           ]
         },
         "apiContract": {
@@ -44009,21 +43984,9 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
-            },
-            {
-              "requirement": "Existing GET route uses jobIdentifier UUID validation, request.ownerId and leads-read budget. Response envelope is {lead:LeadRecord|null}; no pagination/idempotency key is needed for a read. POST /api/leads preserves existing session/CSRF/rate-budget/domain validation; opening an external URL must not invoke save or mark Applied.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [
-            ".ai/backlog.json#CS-70",
-            "docs/API-SURFACE.md",
-            "apps/api/src/app.ts",
-            "packages/core/src/leads.ts",
-            "packages/core/src/database.test.ts",
-            "apps/web/src/components/saved-leads.tsx"
-          ]
+          "sources": [".ai/backlog.json#CS-70", "docs/API-SURFACE.md"]
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -44034,21 +43997,8 @@
           "reason": "No UI component is introduced by this engineering/domain scope."
         },
         "accessibility": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "requirement": "Before any click, aria-pressed reflects successfully hydrated persisted state. Loading is disabled/noninteractive as appropriate; lookup error is announced rather than represented as unsaved. Both icon-only and labeled variants expose meaningful saved/archived accessible names.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-70",
-            "apps/api/src/app.ts",
-            "packages/core/src/leads.ts",
-            "packages/core/src/database.test.ts",
-            "apps/web/src/components/saved-leads.tsx"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "No user-facing rendered control in this scope; accessible reports remain readable Markdown."
         },
         "responsive": {
           "applicability": "NOT_APPLICABLE",
@@ -44073,7 +44023,7 @@
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
             "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
-              "requirement": "SECURITY_IMPACT: AUTHORIZATION, PRIVACY_PII, INPUT_VALIDATION, ABUSE_RATE_LIMITING. Session-derived owner must constrain lead, job and run joins. Foreign IDs share null result with unknown IDs; don't expose foreign notes, metadata or existence. Hydrate stored job data through the canonical stripped schema; avoid raw private payloads in evidence.",
+              "requirement": "SECURITY_IMPACT: authenticate every lookup, derive owner identity only from the session, return null for foreign/unknown jobs without existence leakage, reject malformed identifiers, preserve CSRF/rate-limit/read-budget controls, and never log tokens or resume/lead PII.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -44085,7 +44035,9 @@
             "apps/api/src/app.ts",
             "packages/core/src/leads.ts",
             "packages/core/src/database.test.ts",
-            "apps/web/src/components/saved-leads.tsx"
+            "apps/web/src/components/saved-leads.tsx",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "observability": {
@@ -44292,27 +44244,17 @@
             "Implement and verify CS-70-AC3: Saving a posting that deduplicates to an existing saved lead is recognised rather than creating a second lead, and the test proves it by attempting the duplicate and asserting the lead count is unchanged - not merely that no error was thrown",
             "Reconcile CS-70 documentation, redacted evidence and independent review before workflow promotion.",
             {
-              "requirement": "Review SQL owner joins and UUID/error envelope against OpenAPI before any later implementation change.",
+              "requirement": "Bind all CS-70 criteria to the owner-isolation, mount-hydration and duplicate/concurrency procedures already named in the ticket.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Run isolated Postgres/Redis API assertions for owner, foreign, unknown and malformed IDs.",
+              "requirement": "Run npm run test:integration and the named browser procedure only when implementation and service dependencies exist; retain PLANNED until evidence is collected.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Exercise both SaveJob variants with delayed lookup, saved/archived/null/error results and owner cache isolation.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            },
-            {
-              "requirement": "Assert duplicate save identity AND unchanged row count, paired with a genuinely new posting control.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            },
-            {
-              "requirement": "Record exact service-backed and browser evidence separately; leave hosted acceptance blocked until actually observed.",
+              "requirement": "Record hosted failures, archived-state behavior and owner-cache isolation explicitly; do not infer approval from static typecheck or lint.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -44322,7 +44264,9 @@
             "apps/api/src/app.ts",
             "packages/core/src/leads.ts",
             "packages/core/src/database.test.ts",
-            "apps/web/src/components/saved-leads.tsx"
+            "apps/web/src/components/saved-leads.tsx",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "dependencies": {
@@ -44358,12 +44302,23 @@
                   "source": "hostpending.txt#CS-70"
                 }
               ]
+            },
+            {
+              "requirement": "Hosted Postgres/Redis integration and cross-browser accessibility evidence remain future gates; PLANNED procedures are not execution evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-70",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "apps/api/src/app.ts",
+            "packages/core/src/leads.ts",
+            "packages/core/src/database.test.ts",
+            "apps/web/src/components/saved-leads.tsx",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -44376,22 +44331,13 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
-            },
-            {
-              "requirement": "A null-only implementation could falsely pass foreign/unknown checks; owner-positive lookup is required. A no-op save could falsely pass duplicate count assertions; new-posting control is required. Roll back API/UI changes together if contract regresses, without deleting existing leads.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-70",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md",
-            "apps/api/src/app.ts",
-            "packages/core/src/leads.ts",
-            "packages/core/src/database.test.ts",
-            "apps/web/src/components/saved-leads.tsx"
+            "docs/KNOWN-LIMITATIONS.md"
           ]
         },
         "delivery": {

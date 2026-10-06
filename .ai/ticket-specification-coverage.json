@@ -9,17 +9,17 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "5bf2dcf828eabcc19c1aa3b849972fb2b7745baae8c90bba3fb99a7354290235",
+    ".ai/ticket-specification-policy.json": "59a5fb132d4702eba25abad17d79d66e0782b9392105aebcce2d1b1125189063",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "ae09faf60c2b31ef220e143fcccc600ef4c0a9b1e036de451c39de02f05ece4c"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bab653c9ffde5d254612579d25d4c725d4be8db30a9b0165d801066085cb296c"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "counts": {
     "ticketCount": 216,
     "specificationCount": 216,
-    "completeSpecificationCount": 33,
-    "incompleteSpecificationCount": 183,
+    "completeSpecificationCount": 35,
+    "incompleteSpecificationCount": 181,
     "epicMappedCount": 216,
     "orphanTicketCount": 0,
     "duplicateIdCount": 0,
@@ -34,10 +34,10 @@
     "reviewedExactTestBindingCount": 156,
     "authoredExactTestBindingCount": 173,
     "acceptanceCriteriaWithAuthoredBindings": 170,
-    "draftSpecificationCount": 183,
+    "draftSpecificationCount": 181,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
-    "approvedSpecificationCount": 33,
+    "approvedSpecificationCount": 35,
     "ownerDecisionReconciliationCount": 11,
     "uiTicketCount": 146,
     "designCounts": {
@@ -62,12 +62,12 @@
     "currentReleaseTicketCount": 47,
     "workflow": { "BACKLOG": 141, "TODO": 0, "IN_PROGRESS": 0, "QA": 5, "UAT": 70, "PROD": 0 },
     "sourceBacklogHash": "5102b42c99208411fa6885d5d753346307c84efe32ae9b62c62cd12f8c2194bb",
-    "specificationCoveragePercent": 15.277777777777779,
+    "specificationCoveragePercent": 16.203703703703702,
     "suggestedVerificationMappingPercent": 100,
     "exactReviewedTraceabilityPercent": 16.887417218543046,
     "findingsCount": 651,
-    "openFindingCount": 526,
-    "resolvedFindingCount": 50,
+    "openFindingCount": 519,
+    "resolvedFindingCount": 54,
     "reclassifiedFindingCount": 13
   },
   "findings": [
@@ -2393,7 +2393,13 @@
       "reason": "Source architecture impact note is absent.",
       "owner": "Code Quality",
       "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The renderer is a local Engineering module consuming the canonical workflow enum and isolated snapshots; no product API or persistence boundary is added.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json",
+        "scripts/engineering-ui.mjs",
+        "scripts/lib/ticket-workflow.mjs"
+      ]
     },
     {
       "ticketId": "CS-67",
@@ -2402,7 +2408,12 @@
       "reason": "Source security/privacy impact note is absent.",
       "owner": "Security reviewer",
       "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "Ticket-specific review defines escaping, hostile fixture handling, no secrets/PII, and read-only operator scope.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
     },
     {
       "ticketId": "CS-67",
@@ -2411,7 +2422,9 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "Backlog has no release target; preserve the source assignment and require release-manager classification before activation.",
+      "dispositionSources": [".ai/backlog.json", ".ai/blocker-classification.json"]
     },
     {
       "ticketId": "CS-67",
@@ -2420,7 +2433,9 @@
       "reason": "Source ticket has no release/HOLD activation classification.",
       "owner": "Product owner / release reviewer",
       "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "Activation remains a future release gate; no release number or implementation authorization is inferred.",
+      "dispositionSources": [".ai/backlog.json"]
     },
     {
       "ticketId": "CS-67",
@@ -2525,7 +2540,9 @@
       "section": "technicalApproach",
       "reason": "Source architecture impact note is absent.",
       "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The specification preserves the existing Fastify, owner-scoped repository and SaveJob boundaries; no new service or persistence model is prescribed.",
+      "dispositionSources": [".ai/ticket-specification-policy.json", "docs/ARCHITECTURE.md"]
     },
     {
       "ticketId": "CS-70",
@@ -2534,7 +2551,12 @@
       "reason": "Source security/privacy impact note is absent.",
       "owner": "Security reviewer",
       "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "Owner derivation, foreign/unknown null behavior, malformed-ID rejection, CSRF/rate limits and safe logging are explicitly reviewed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
     },
     {
       "ticketId": "CS-70",
@@ -2543,7 +2565,9 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "Backlog has no release target; preserve the source assignment and require release-manager classification before activation.",
+      "dispositionSources": [".ai/backlog.json", ".ai/blocker-classification.json"]
     },
     {
       "ticketId": "CS-70",

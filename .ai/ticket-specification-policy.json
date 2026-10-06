@@ -1599,6 +1599,35 @@
           "Record unsupported environment capabilities as pending rather than PASS."
         ]
       }
+    },
+    "CS-70": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-70",
+        "apps/api/src/app.ts",
+        "packages/core/src/leads.ts",
+        "packages/core/src/database.test.ts",
+        "apps/web/src/components/saved-leads.tsx",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: preserve the existing Fastify API, owner-scoped LeadRepository and SaveJob component boundaries; the lookup is read-only and deduplication remains in the domain/data layer.",
+          "Use the existing PostgreSQL/Redis integration harness and same-origin CSRF/session contracts; do not add a new service, persistence model or client-supplied owner selector."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: authenticate every lookup, derive owner identity only from the session, return null for foreign/unknown jobs without existence leakage, reject malformed identifiers, preserve CSRF/rate-limit/read-budget controls, and never log tokens or resume/lead PII."
+        ],
+        "manualExternalGates": [
+          "Hosted Postgres/Redis integration and cross-browser accessibility evidence remain future gates; PLANNED procedures are not execution evidence."
+        ],
+        "implementationChecklist": [
+          "Bind all CS-70 criteria to the owner-isolation, mount-hydration and duplicate/concurrency procedures already named in the ticket.",
+          "Run npm run test:integration and the named browser procedure only when implementation and service dependencies exist; retain PLANNED until evidence is collected.",
+          "Record hosted failures, archived-state behavior and owner-cache isolation explicitly; do not infer approval from static typecheck or lint."
+        ]
+      }
     }
   },
   "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
@@ -2226,6 +2255,8 @@
     }
   },
  "CS-41": {"RELEASE_TARGET_UNDECIDED":{"disposition":"EXTERNAL_GATE","rationale":"Release activation remains an external gate; no release number or implementation authorization is inferred.","sources":[".ai/backlog.json",".ai/blocker-classification.json"]},"RELEASE_STATE_UNSPECIFIED":{"disposition":"EXTERNAL_GATE","rationale":"Activation state remains a future release gate.","sources":[".ai/backlog.json"]},"EXACT_AC_TEST_BINDING":{"disposition":"RESOLVED","rationale":"All CS-41 acceptance criteria have exact planned bindings with fixtures, commands, assertions, negatives and evidence requirements.","sources":[".ai/ticket-specification-policy.json","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}},
+  "CS-67": {"MISSING_ARCHITECTURE_ASSESSMENT":{"disposition":"RESOLVED","rationale":"The renderer is a local Engineering module consuming the canonical workflow enum and isolated snapshots; no product API or persistence boundary is added.","sources":[".ai/ticket-specification-policy.json","scripts/engineering-ui.mjs","scripts/lib/ticket-workflow.mjs"]},"MISSING_SECURITY_ASSESSMENT":{"disposition":"RESOLVED","rationale":"Ticket-specific review defines escaping, hostile fixture handling, no secrets/PII, and read-only operator scope.","sources":[".ai/ticket-specification-policy.json","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]},"RELEASE_TARGET_UNDECIDED":{"disposition":"EXTERNAL_GATE","rationale":"Backlog has no release target; preserve the source assignment and require release-manager classification before activation.","sources":[".ai/backlog.json",".ai/blocker-classification.json"]},"RELEASE_STATE_UNSPECIFIED":{"disposition":"EXTERNAL_GATE","rationale":"Activation remains a future release gate; no release number or implementation authorization is inferred.","sources":[".ai/backlog.json"]}},
+  "CS-70": {"MISSING_ARCHITECTURE_ASSESSMENT":{"disposition":"RESOLVED","rationale":"The specification preserves the existing Fastify, owner-scoped repository and SaveJob boundaries; no new service or persistence model is prescribed.","sources":[".ai/ticket-specification-policy.json","docs/ARCHITECTURE.md"]},"MISSING_SECURITY_ASSESSMENT":{"disposition":"RESOLVED","rationale":"Owner derivation, foreign/unknown null behavior, malformed-ID rejection, CSRF/rate limits and safe logging are explicitly reviewed.","sources":[".ai/ticket-specification-policy.json","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]},"RELEASE_TARGET_UNDECIDED":{"disposition":"EXTERNAL_GATE","rationale":"Backlog has no release target; preserve the source assignment and require release-manager classification before activation.","sources":[".ai/backlog.json",".ai/blocker-classification.json"]}},
   "CS-53": {"RELEASE_TARGET_UNDECIDED":{"disposition":"EXTERNAL_GATE","rationale":"Release activation remains a future external gate; no release number or authorization is inferred.","sources":[".ai/backlog.json",".ai/blocker-classification.json"]},"RELEASE_STATE_UNSPECIFIED":{"disposition":"EXTERNAL_GATE","rationale":"Activation state remains a future release gate.","sources":[".ai/backlog.json"]},"EXACT_AC_TEST_BINDING":{"disposition":"RESOLVED","rationale":"All acceptance criteria have exact planned bindings with commands, fixtures, assertions, negatives and evidence requirements.","sources":[".ai/ticket-specification-policy.json","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}},
   "CS-54": {"RELEASE_TARGET_UNDECIDED":{"disposition":"EXTERNAL_GATE","rationale":"Release activation remains a future external gate; no release number or authorization is inferred.","sources":[".ai/backlog.json",".ai/blocker-classification.json"]},"RELEASE_STATE_UNSPECIFIED":{"disposition":"EXTERNAL_GATE","rationale":"Activation state remains a future release gate.","sources":[".ai/backlog.json"]},"EXACT_AC_TEST_BINDING":{"disposition":"RESOLVED","rationale":"All acceptance criteria have exact planned bindings with commands, fixtures, assertions, negatives and evidence requirements.","sources":[".ai/ticket-specification-policy.json","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}},
   "CS-55": {"RELEASE_TARGET_UNDECIDED":{"disposition":"EXTERNAL_GATE","rationale":"Release activation remains a future external gate; no release number or authorization is inferred.","sources":[".ai/backlog.json",".ai/blocker-classification.json"]},"RELEASE_STATE_UNSPECIFIED":{"disposition":"EXTERNAL_GATE","rationale":"Activation state remains a future release gate.","sources":[".ai/backlog.json"]},"EXACT_AC_TEST_BINDING":{"disposition":"RESOLVED","rationale":"All acceptance criteria have exact planned bindings with commands, fixtures, assertions, negatives and evidence requirements.","sources":[".ai/ticket-specification-policy.json","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}},
@@ -3930,6 +3961,8 @@
     "CS-58":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"d03ce9122aed71de50d1454cab82f8f0336ebc7c8cf8ab50837b6c8a8f64527e"},
     "CS-59":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"2b7a65f2100744c354dcaae4764e372a2fd2da5f1779d7cbae632e9e7788881b"},
     "CS-60":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"be7c00c0b40b433b6dd0d937cf0805158d59a0e67e3cd7f025a4b0ae4fe7bafa"},
+    "CS-67":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"8ed9316f36b297b884ea4b1b07e3fc0581d379f8692fe0800fc3354b24112c60"},
+    "CS-70":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"3c6eae4e8a9e2e83738bfa6cbdc6033566ea2ce424c5ea9fee565e997720137e"},
     "CS-48":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"1d3fea6449d98699874808639fe187ad866e96e5eb66a7f496598b480929f59e"}
   }
 }

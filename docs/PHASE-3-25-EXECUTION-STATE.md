@@ -359,3 +359,20 @@ bindings. CS-17 remains `OWNER_DECISION_REQUIRED`; CS-31 and CS-32 remain
 dependencies remain valid and acyclic. Workflow remains 141 BACKLOG, 5 QA, 70
 UAT with `STATUS_CHANGES_DURING_PHASE_3_25: 0`. Next actionable queue begins
 after CS-60, excluding the three parked blockers.
+
+## CS-67 and CS-70 whole-spec approval pass (2026-10-06)
+
+Independent review approved authored content for CS-67 and CS-70. CS-67 now
+has a local renderer architecture/security assessment and exact integrity
+fixture coverage; CS-70 has the existing Fastify/repository/SaveJob boundary,
+owner-isolation security contract and exact service/browser/concurrency
+procedures. Both correctly remain DESIGN_NOT_APPLICABLE. Their absent release
+target/state are explicit EXTERNAL_GATE dispositions; no release number was
+invented. Whole-spec content-bound receipts approve both tickets. All future
+procedures remain PLANNED.
+
+Current generated metrics: 35 approved and 181 incomplete specifications; 906
+ACs, 153 mapped and 753 unmapped; 519 OPEN findings (651 total, 54 resolved,
+13 reclassified); 156 reviewed exact planned bindings and 173 authored exact
+bindings. CS-17, CS-31 and CS-32 remain parked blockers. Next actionable
+specifications are the remaining locally actionable tickets after CS-70.
