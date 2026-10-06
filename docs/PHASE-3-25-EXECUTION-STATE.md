@@ -423,3 +423,15 @@ started for CS-76 and CS-77. No approval is claimed: their exact AC bindings
 and independent receipts remain outstanding. Generated metrics remain 44
 approved, 172 incomplete, 178 mapped ACs and 475 OPEN findings. Resume at
 CS-76 and complete its bindings before adding whole-spec receipts.
+## CS-76 through CS-77 approval batch (2026-10-06)
+
+CS-76 and CS-77 completed exact AC verification bindings, ticket-specific
+fixtures/assertions/negative cases, architecture and security review, and
+content-bound independent approval receipts. All future procedures remain
+PLANNED; no implementation evidence is claimed.
+
+Current generated metrics: 46 approved and 170 incomplete specifications; 906
+ACs, 187 mapped and 719 unmapped; 465 OPEN findings (651 total, 86 resolved,
+13 reclassified); 190 reviewed exact planned bindings and 207 authored exact
+bindings. Workflow counts remain unchanged and CS-17, CS-31 and CS-32 remain
+parked. Next actionable queue begins at CS-78.
