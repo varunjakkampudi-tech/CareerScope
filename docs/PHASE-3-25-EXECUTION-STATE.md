@@ -204,3 +204,21 @@ findings, 21 resolved, 7 reclassified, 73 reviewed exact planned bindings and
 76 authored bindings. Dependency edges remain 276 with zero invalid edges or
 cycles. Workflow counts remain unchanged (141 BACKLOG, 5 QA, 70 UAT); status
 changes remain zero. Next content ticket is CS-20.
+
+## CS-20 through CS-25 draft checkpoint (2026-10-06)
+
+The next six tickets were authored with source-linked refinements and 18 exact
+AC binding records. The specification checker passes, but the independent
+second-pass reviewer returned `REVISE`: the procedures still need concrete
+implementation/test paths, command names, fixture values, exact outputs and
+ticket-specific negative controls for agile file refusal, carry/review status
+semantics, resume-to-matching evidence, provider-empty detection, monitoring
+state/alert timing and scheduled backup/restore behavior. All 18 remain
+`PLANNED`/`DRAFT`; no execution or approval receipt is claimed.
+
+Current generated counts remain 216 tickets, 1 approved whole specification,
+215 incomplete, 906 ACs, 70 mapped, 836 unmapped, 623 OPEN findings, 21
+resolved, 7 reclassified, 73 reviewed exact procedures and 94 authored exact
+procedures. The next actionable work is to revise CS-20–CS-25 bindings from
+actual repository evidence, obtain a clean independent authored-content review,
+then continue to CS-26. Workflow state and release metadata remain untouched.

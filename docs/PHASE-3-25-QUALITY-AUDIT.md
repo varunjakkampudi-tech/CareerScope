@@ -20,8 +20,8 @@ Structural section coverage and generated count are not implementation readiness
 | mappedAcceptanceCriterionCount         | 70                  |
 | unmappedAcceptanceCriterionCount       | 836                 |
 | reviewedExactTestBindingCount          | 73                  |
-| authoredExactTestBindingCount          | 76                  |
-| acceptanceCriteriaWithAuthoredBindings | 73                  |
+| authoredExactTestBindingCount          | 94                  |
+| acceptanceCriteriaWithAuthoredBindings | 91                  |
 | draftSpecificationCount                | 215                 |
 | reviseSpecificationCount               | 0                   |
 | reviewedSpecificationCount             | 0                   |
