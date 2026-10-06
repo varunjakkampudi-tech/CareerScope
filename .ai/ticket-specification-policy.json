@@ -1227,6 +1227,366 @@
           "Marketing reference can be mistaken for static job-list approval; keep missing state mapping explicit. Styling rollback retains public projection and previous valid snapshot. Audit tool absence is not permission to install or fake independent sign-off; no change to frozen blocker metadata."
         ]
       }
+    },
+    "CS-26": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-26",
+        "docs/tickets/CS-26.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "With no user interaction for 48 hours, sighting counts increase. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "A failed scheduled run is visible rather than silently skipped. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Respects per-source rate limits and the legitimate-access rules. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: discovery boundary for CS-26; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-26 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:integration only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-27": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-27",
+        "docs/tickets/CS-27.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "A lead whose apply URL now returns 404 is visibly marked stale. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Age and liveness are distinguished; an old posting is not assumed dead, nor a recent one assumed live. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Search results have a retention policy that is enforced, not just written down. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: discovery boundary for CS-27; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-27 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:integration only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-28": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-28",
+        "docs/tickets/CS-28.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Two distinct postings sharing title, company and city remain two leads. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Genuine duplicates across sources still collapse to one. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Market evidence counts are recomputed so an earlier false merge does not persist as history. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: discovery boundary for CS-28; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-28 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:integration only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-29": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-29",
+        "docs/tickets/CS-29.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "v2 depends on the shared packages through workspace resolution, not relative dist paths. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "A stale or missing build fails loudly at start rather than being silently consumed. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Split out of CS-5 so it can ship in days without waiting on the full retirement. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: build boundary for CS-29; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-29 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run build only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-30": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-30",
+        "docs/tickets/CS-30.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Record actual managed firewall attachment and policy; any hPanel or host change requires separate operator authorization. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "After authorized configuration, verify intended SSH access and public HTTP/HTTPS while unwanted inbound ports remain blocked, including applicable IPv4 and IPv6 paths. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Preserve administrative recovery access and Docker networking; never flush the host ruleset, publish internal ports or equate local simulation with managed-firewall evidence. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: infrastructure boundary for CS-30; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-30 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run gates:test only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-31": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-31",
+        "docs/tickets/CS-31.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Reproduce the saved v2/scripts/check-ui.ts hiddenSkip failure on current bytes and identify the implementation or harness cause without weakening the intended contract. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Verify the unfocused hidden state, visible keyboard-focus state and activation moving focus to main content. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Run the focused check in Chromium, Firefox and WebKit at the affected viewport and a narrow mobile viewport; report unavailable engines rather than implying a pass. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: accessibility boundary for CS-31; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-31 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:ui only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-32": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-32",
+        "docs/tickets/CS-32.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: frontend boundary for CS-32; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-32 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:ui only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-33": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-33",
+        "docs/tickets/CS-33.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Inventory existing owner/run/job identity and stored evidence; define a bounded validated read contract for facts, source links, freshness and frozen-profile match evidence with explicit unknown fields. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Keep existing API/export compatibility and allowlists, ordering and row limits; reuse a projection only where the detail/export semantics actually agree. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Prove valid stored data renders, malformed data fails safely, foreign-owner identifiers reveal no data, and evidence uses deterministic stored results rather than recalculating frontend scores. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: api boundary for CS-33; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-33 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:integration only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-34": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-34",
+        "docs/tickets/CS-34.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Inspect web build/runtime configuration consumers and define the smallest required environment without printing secret values. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Verify with synthetic configuration that DATABASE_URL and other API-only credentials are absent from the web runtime while API database access remains configured. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Prove web startup and API proxy behavior still work, and missing required web configuration fails clearly rather than falling back to unsafe defaults. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: security boundary for CS-34; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-34 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run build only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-35": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-35",
+        "docs/tickets/CS-35.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Trace revision conflict, idempotency-key reuse and missing-target-role paths and assign distinct stable safe machine codes while preserving existing HTTP and redaction contracts. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Offer the appropriate client action for each known code without discarding unsaved profile or lead edits. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Test every supported code plus unknown codes and malformed responses; fall back to a safe generic error without treating malformed input as success or exposing server details. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: api boundary for CS-35; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-35 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:integration only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-36": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-36",
+        "docs/tickets/CS-36.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Verify login, private deep-link entry, logout, expiry and reauthentication without transient protected rendering; keep registration disabled unless separately authorized. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Define and test a shared reset policy across search SSE, preparation, leads, profile and resumes so old requests or caches cannot restore prior-session data; explicitly define unsaved-edit handling. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Exercise existing authenticated password-change and session-revocation journeys with failure/retry states, preserved CSRF/origin/rate limits and server owner-isolation tests; do not add self-service recovery. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: security boundary for CS-36; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-36 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:ui only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-37": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-37",
+        "docs/tickets/CS-37.md",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Support establishing a profile with or without a resume, then upload, parse, review, edit and explicitly save proposed fields; unapproved parsed data never changes matching inputs. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Preserve edits on revision conflicts and show actionable invalid-file, parse-failure, pending and capacity-refusal states using existing storage and API contracts. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Respect advertised cancellation capabilities without activating disabled paths; test synthetic owner isolation, keyboard/mobile flows and the resulting approved profile revision. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: frontend boundary for CS-37; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+        ],
+        "securityPrivacy": [
+          "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
+        ],
+        "manualExternalGates": [
+          "Source release target/state and any hosted/manual evidence remain future gates; no release number, production configuration or executed result is inferred."
+        ],
+        "implementationChecklist": [
+          "Bind each CS-37 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
+          "Run npm run test:integration only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
     }
   },
   "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
@@ -1588,6 +1948,286 @@
         ".ai/blocker-classification.json",
         ".ai/backlog.json",
         ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-26": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-27": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-28": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-29": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-30": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-31": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-32": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-33": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-34": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-35": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-36": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Activation state remains an external release gate; no release number or implementation authorization is inferred.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
+    }
+  },
+  "CS-37": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/backlog records provide release semantics without a version number; preserve metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json"
+      ]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All source acceptance criteria now have complete exact planned bindings with commands, fixtures, assertions, negative cases, evidence, owners and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
       ]
     }
   },
@@ -2627,7 +3267,43 @@
     "CS-24-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"HOSTED_CI","preconditions":"Synthetic isolated fixture for CS-24; canonical project checkout; no production or destructive host action.","setup":"isolated stop/start timeline with alert sink; use disposable temp roots/IDs and preserve canonical files.","fixtureOrData":"isolated stop/start timeline with alert sink","action":"Run `npm run test:queue-runtime` against the planned procedure at `scripts/check-queue-runtime.ts and hosted monitoring procedure`.","repositoryCommand":"npm run test:queue-runtime","procedure":"scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC3 with the fixture and command above.","assertion":"observed stop produces alert while config-only inspection cannot pass","expectedResult":"retained alert evidence contains stop and recovery times","testName":"CS-24-AC3 ticket-specific verification","testFileOrProcedureId":"scripts/check-queue-runtime.ts and hosted monitoring procedure::CS-24-AC3","fixtures":"isolated stop/start timeline with alert sink","negativeCase":"Stopped, unreachable, unhealthy and stale service fixtures must produce distinct states; config-only evidence or an alert after the 15-minute bound fails.","evidenceArtifact":"Future CS-24-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.","releaseGate":"CS-24-AC3-RELEASE-GATE"}],
     "CS-25-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"HOSTED_CI","preconditions":"Synthetic isolated fixture for CS-25; canonical project checkout; no production or destructive host action.","setup":"Run the scheduler path without human invocation, locate the automatically produced yesterday dump, and restore it into disposable DB2; preserve DB1/DB2 checksums.","fixtureOrData":"scheduled dump job and synthetic database DB1","action":"Run `npm run test:database-recovery` against `scripts/check-database-recovery.ts::CS-25-AC1` and assert both dump creation and restore.","repositoryCommand":"npm run test:database-recovery","procedure":"scripts/check-database-recovery.ts::CS-25-AC1 with the fixture and command above.","assertion":"The scheduler produces the yesterday dump automatically and that exact file restores DB2 to the DB1 fixture rows/checksum.","expectedResult":"An automatically produced yesterday dump exists and a restore from it reproduces DB1 in DB2.","testName":"CS-25-AC1 ticket-specific verification","testFileOrProcedureId":"scripts/check-database-recovery.ts::CS-25-AC1","fixtures":"Scheduler fixture creates yesterday-dated dump D1 for synthetic DB1, then restores D1 into disposable DB2.","negativeCase":"Scheduler failure, missing dump, restore checksum mismatch, or failed dump must be visible and must not advance the last-good marker.","evidenceArtifact":"Future CS-25-AC1 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.","releaseGate":"CS-25-AC1-RELEASE-GATE"}],
     "CS-25-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"HOSTED_CI","preconditions":"Synthetic isolated fixture for CS-25; canonical project checkout; no production or destructive host action.","setup":"dump file produced by scheduler then restore into disposable DB2; use disposable temp roots/IDs and preserve canonical files.","fixtureOrData":"dump file produced by scheduler then restore into disposable DB2","action":"Run `npm run test:database-recovery` against the planned procedure at `scripts/check-database-recovery.ts`.","repositoryCommand":"npm run test:database-recovery","procedure":"scripts/check-database-recovery.ts::CS-25-AC2 with the fixture and command above.","assertion":"restore changes DB2 to exact DB1 fixture rows and passes integrity check","expectedResult":"restored rows/checksum match DB1","testName":"CS-25-AC2 ticket-specific verification","testFileOrProcedureId":"scripts/check-database-recovery.ts::CS-25-AC2","fixtures":"dump file produced by scheduler then restore into disposable DB2","negativeCase":"Scheduler failure, missing dump, restore checksum mismatch, or failed dump must be visible and must not advance the last-good marker.","evidenceArtifact":"Future CS-25-AC2 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.","releaseGate":"CS-25-AC2-RELEASE-GATE"}],
-    "CS-25-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"HOSTED_CI","preconditions":"Synthetic isolated fixture for CS-25; canonical project checkout; no production or destructive host action.","setup":"failed dump with prior good file timestamp; use disposable temp roots/IDs and preserve canonical files.","fixtureOrData":"failed dump with prior good file timestamp","action":"Run `npm run test:database-recovery` against the planned procedure at `scripts/check-database-recovery.ts`.","repositoryCommand":"npm run test:database-recovery","procedure":"scripts/check-database-recovery.ts::CS-25-AC3 with the fixture and command above.","assertion":"failed dump reports failure and does not advance last-good timestamp","expectedResult":"last good file remains clearly stale and failure is visible","testName":"CS-25-AC3 ticket-specific verification","testFileOrProcedureId":"scripts/check-database-recovery.ts::CS-25-AC3","fixtures":"failed dump with prior good file timestamp","negativeCase":"Scheduler failure, missing dump, restore checksum mismatch, or failed dump must be visible and must not advance the last-good marker.","evidenceArtifact":"Future CS-25-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.","releaseGate":"CS-25-AC3-RELEASE-GATE"}]
+    "CS-25-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"HOSTED_CI","preconditions":"Synthetic isolated fixture for CS-25; canonical project checkout; no production or destructive host action.","setup":"failed dump with prior good file timestamp; use disposable temp roots/IDs and preserve canonical files.","fixtureOrData":"failed dump with prior good file timestamp","action":"Run `npm run test:database-recovery` against the planned procedure at `scripts/check-database-recovery.ts`.","repositoryCommand":"npm run test:database-recovery","procedure":"scripts/check-database-recovery.ts::CS-25-AC3 with the fixture and command above.","assertion":"failed dump reports failure and does not advance last-good timestamp","expectedResult":"last good file remains clearly stale and failure is visible","testName":"CS-25-AC3 ticket-specific verification","testFileOrProcedureId":"scripts/check-database-recovery.ts::CS-25-AC3","fixtures":"failed dump with prior good file timestamp","negativeCase":"Scheduler failure, missing dump, restore checksum mismatch, or failed dump must be visible and must not advance the last-good marker.","evidenceArtifact":"Future CS-25-AC3 output: exact command, SHA, fixture IDs, assertion output and owner review; hosted/operator logs where applicable.","releaseGate":"CS-25-AC3-RELEASE-GATE"}],
+    "CS-26-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-26; no production or destructive host action.","setup":"Prepare O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger and execute only the CS-26-AC1 procedure.","fixtureOrData":"O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger","action":"Run npm run test:integration and inspect the named CS-26-AC1 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/run-scheduled-discovery.test.ts::CS-26-AC1","assertion":"scheduled run row for owner O1 has origin=scheduled, completed terminal status and run timestamp within the 48-hour window; sightingsBefore=N and sightingsAfter=N+1 for synthetic posting P1","expectedResult":"scheduled run row for owner O1 has origin=scheduled, completed terminal status and run timestamp within the 48-hour window; sightingsBefore=N and sightingsAfter=N+1 for synthetic posting P1","testName":"CS-26-AC1 exact verification","testFileOrProcedureId":"scripts/run-scheduled-discovery.test.ts::CS-26-AC1","fixtures":"O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-26-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-26-AC1-RELEASE-GATE"}],
+    "CS-26-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-26; no production or destructive host action.","setup":"Prepare O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger and execute only the CS-26-AC2 procedure.","fixtureOrData":"O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger","action":"Run npm run test:integration and inspect the named CS-26-AC2 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/run-scheduled-discovery.test.ts::CS-26-AC2","assertion":"the same run row has status=failed and a safe owner-visible failure event containing the run ID; no successful completion or silent omission is recorded","expectedResult":"the same run row has status=failed and a safe owner-visible failure event containing the run ID; no successful completion or silent omission is recorded","testName":"CS-26-AC2 exact verification","testFileOrProcedureId":"scripts/run-scheduled-discovery.test.ts::CS-26-AC2","fixtures":"O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-26-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-26-AC2-RELEASE-GATE"}],
+    "CS-26-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-26; no production or destructive host action.","setup":"Prepare O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger and execute only the CS-26-AC3 procedure.","fixtureOrData":"O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger","action":"Run npm run test:integration and inspect the named CS-26-AC3 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/run-scheduled-discovery.test.ts::CS-26-AC3","assertion":"per-source request ledger contains no request above its configured rate-limit budget, every URL is from the allowlisted legitimate-access fixture, and no disallowed source request is emitted","expectedResult":"per-source request ledger contains no request above its configured rate-limit budget, every URL is from the allowlisted legitimate-access fixture, and no disallowed source request is emitted","testName":"CS-26-AC3 exact verification","testFileOrProcedureId":"scripts/run-scheduled-discovery.test.ts::CS-26-AC3","fixtures":"O1 enabled scheduledDiscovery, P1/P2 synthetic postings, run R1, per-source ledger","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-26-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-26-AC3-RELEASE-GATE"}],
+    "CS-27-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-27; no production or destructive host action.","setup":"Prepare O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps and execute only the CS-27-AC1 procedure.","fixtureOrData":"O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps","action":"Run npm run test:integration and inspect the named CS-27-AC1 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/job-freshness.test.ts::CS-27-AC1","assertion":"job J1 persists stale=true (or the existing canonical stale state) after the synthetic apply URL returns HTTP 404; the owner view shows the stale marker and retains the last checked timestamp","expectedResult":"job J1 persists stale=true (or the existing canonical stale state) after the synthetic apply URL returns HTTP 404; the owner view shows the stale marker and retains the last checked timestamp","testName":"CS-27-AC1 exact verification","testFileOrProcedureId":"PLANNED:scripts/job-freshness.test.ts::CS-27-AC1","fixtures":"O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-27-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-27-AC1-RELEASE-GATE"}],
+    "CS-27-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-27; no production or destructive host action.","setup":"Prepare O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps and execute only the CS-27-AC2 procedure.","fixtureOrData":"O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps","action":"Run npm run test:integration and inspect the named CS-27-AC2 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/job-freshness.test.ts::CS-27-AC2","assertion":"job J_old with an old timestamp and live probe remains actionable while J_recent with a failed probe is not asserted live; the output records age and liveness as separate fields","expectedResult":"job J_old with an old timestamp and live probe remains actionable while J_recent with a failed probe is not asserted live; the output records age and liveness as separate fields","testName":"CS-27-AC2 exact verification","testFileOrProcedureId":"PLANNED:scripts/job-freshness.test.ts::CS-27-AC2","fixtures":"O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-27-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-27-AC2-RELEASE-GATE"}],
+    "CS-27-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-27; no production or destructive host action.","setup":"Prepare O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps and execute only the CS-27-AC3 procedure.","fixtureOrData":"O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps","action":"Run npm run test:integration and inspect the named CS-27-AC3 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/job-freshness.test.ts::CS-27-AC3","assertion":"a result older than the configured retention boundary is absent from the active result set and the retention audit records its removal; a result inside the boundary remains","expectedResult":"a result older than the configured retention boundary is absent from the active result set and the retention audit records its removal; a result inside the boundary remains","testName":"CS-27-AC3 exact verification","testFileOrProcedureId":"PLANNED:scripts/job-freshness.test.ts::CS-27-AC3","fixtures":"O1 jobs J1/J_old/J_recent with 404/live probes and retention timestamps","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-27-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-27-AC3-RELEASE-GATE"}],
+    "CS-28-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-28; no production or destructive host action.","setup":"Prepare distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M and execute only the CS-28-AC1 procedure.","fixtureOrData":"distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M","action":"Run npm run test:integration and inspect the named CS-28-AC1 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/job-dedupe.test.ts::CS-28-AC1","assertion":"two rows with distinct source IDs remain count=2 after dedupe and retain distinct lead IDs despite equal title/company/city","expectedResult":"two rows with distinct source IDs remain count=2 after dedupe and retain distinct lead IDs despite equal title/company/city","testName":"CS-28-AC1 exact verification","testFileOrProcedureId":"PLANNED:scripts/job-dedupe.test.ts::CS-28-AC1","fixtures":"distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-28-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-28-AC1-RELEASE-GATE"}],
+    "CS-28-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-28; no production or destructive host action.","setup":"Prepare distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M and execute only the CS-28-AC2 procedure.","fixtureOrData":"distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M","action":"Run npm run test:integration and inspect the named CS-28-AC2 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/job-dedupe.test.ts::CS-28-AC2","assertion":"the true duplicate pair resolves to one canonical lead ID with both source references and an idempotent second run creates zero additional rows","expectedResult":"the true duplicate pair resolves to one canonical lead ID with both source references and an idempotent second run creates zero additional rows","testName":"CS-28-AC2 exact verification","testFileOrProcedureId":"PLANNED:scripts/job-dedupe.test.ts::CS-28-AC2","fixtures":"distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-28-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-28-AC2-RELEASE-GATE"}],
+    "CS-28-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-28; no production or destructive host action.","setup":"Prepare distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M and execute only the CS-28-AC3 procedure.","fixtureOrData":"distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M","action":"Run npm run test:integration and inspect the named CS-28-AC3 procedure output.","repositoryCommand":"npm run test:integration","procedure":"scripts/job-dedupe.test.ts::CS-28-AC3","assertion":"market evidence count before merge is recorded as M and after correction equals M-1 only for the false duplicate; unrelated posting counts are byte-for-byte unchanged","expectedResult":"market evidence count before merge is recorded as M and after correction equals M-1 only for the false duplicate; unrelated posting counts are byte-for-byte unchanged","testName":"CS-28-AC3 exact verification","testFileOrProcedureId":"PLANNED:scripts/job-dedupe.test.ts::CS-28-AC3","fixtures":"distinct source IDs A/B plus true duplicate pair D1/D2 and count snapshot M","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-28-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-28-AC3-RELEASE-GATE"}],
+    "CS-29-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-29; no production or destructive host action.","setup":"Prepare workspace package graph, removed/stale build artifact fixture and startup process and execute only the CS-29-AC1 procedure.","fixtureOrData":"workspace package graph, removed/stale build artifact fixture and startup process","action":"Run npm run build and inspect the named CS-29-AC1 procedure output.","repositoryCommand":"npm run build","procedure":"scripts/check-workspace-resolution.mjs::CS-29-AC1","assertion":"require.resolve for each shared package resolves under the workspace package path and no runtime import contains a relative dist fallback","expectedResult":"require.resolve for each shared package resolves under the workspace package path and no runtime import contains a relative dist fallback","testName":"CS-29-AC1 exact verification","testFileOrProcedureId":"PLANNED:scripts/check-workspace-resolution.mjs::CS-29-AC1","fixtures":"workspace package graph, removed/stale build artifact fixture and startup process","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-29-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-29-AC1-RELEASE-GATE"}],
+    "CS-29-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-29; no production or destructive host action.","setup":"Prepare workspace package graph, removed/stale build artifact fixture and startup process and execute only the CS-29-AC2 procedure.","fixtureOrData":"workspace package graph, removed/stale build artifact fixture and startup process","action":"Run npm run build and inspect the named CS-29-AC2 procedure output.","repositoryCommand":"npm run build","procedure":"scripts/check-workspace-resolution.mjs::CS-29-AC2","assertion":"with the package output removed or stale, startup exits nonzero before serving and emits the package name plus missing/stale-artifact reason; it never serves stale code","expectedResult":"with the package output removed or stale, startup exits nonzero before serving and emits the package name plus missing/stale-artifact reason; it never serves stale code","testName":"CS-29-AC2 exact verification","testFileOrProcedureId":"PLANNED:scripts/check-workspace-resolution.mjs::CS-29-AC2","fixtures":"workspace package graph, removed/stale build artifact fixture and startup process","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-29-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-29-AC2-RELEASE-GATE"}],
+    "CS-29-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-29; no production or destructive host action.","setup":"Prepare workspace package graph, removed/stale build artifact fixture and startup process and execute only the CS-29-AC3 procedure.","fixtureOrData":"workspace package graph, removed/stale build artifact fixture and startup process","action":"Run npm run build and inspect the named CS-29-AC3 procedure output.","repositoryCommand":"npm run build","procedure":"scripts/check-workspace-resolution.mjs::CS-29-AC3","assertion":"The scoped CS-29 check runs from the workspace package graph independently of the broader CS-5 retirement matrix and records the exact package-resolution graph, candidate SHA and release-scope statement showing this ticket can ship without waiting for CS-5.","expectedResult":"The procedure proves package resolution and records an explicit independent release scope for CS-29; it does not claim CS-5 retirement completion.","testName":"CS-29-AC3 exact verification","testFileOrProcedureId":"PLANNED:scripts/check-workspace-resolution.mjs::CS-29-AC3","fixtures":"workspace package graph, removed/stale build artifact fixture and startup process","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-29-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-29-AC3-RELEASE-GATE"}],
+    "CS-30-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_OPERATOR","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-30; no production or destructive host action.","setup":"Prepare operator-approved managed firewall evidence with IPv4/IPv6 probes and execute only the CS-30-AC1 procedure.","fixtureOrData":"operator-approved managed firewall evidence with IPv4/IPv6 probes","action":"Run npm run gates:test and inspect the named CS-30-AC1 procedure output.","repositoryCommand":"npm run gates:test","procedure":"docs/OPERATIONS/HOST-FIREWALL-VERIFICATION.md::CS-30-AC1","assertion":"operator evidence names the managed firewall attachment and immutable policy revision; no local simulation or hPanel change is counted as evidence","expectedResult":"operator evidence names the managed firewall attachment and immutable policy revision; no local simulation or hPanel change is counted as evidence","testName":"CS-30-AC1 exact verification","testFileOrProcedureId":"PLANNED:docs/OPERATIONS/HOST-FIREWALL-VERIFICATION.md::CS-30-AC1","fixtures":"operator-approved managed firewall evidence with IPv4/IPv6 probes","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-30-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-30-AC1-RELEASE-GATE"}],
+    "CS-30-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_OPERATOR","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-30; no production or destructive host action.","setup":"Prepare operator-approved managed firewall evidence with IPv4/IPv6 probes and execute only the CS-30-AC2 procedure.","fixtureOrData":"operator-approved managed firewall evidence with IPv4/IPv6 probes","action":"Run npm run gates:test and inspect the named CS-30-AC2 procedure output.","repositoryCommand":"npm run gates:test","procedure":"docs/OPERATIONS/HOST-FIREWALL-VERIFICATION.md::CS-30-AC2","assertion":"probe matrix records SSH/HTTP/HTTPS allowed and internal ports 3000/5432/6379 blocked for both IPv4 and IPv6 where supported, with timestamps and source addresses","expectedResult":"probe matrix records SSH/HTTP/HTTPS allowed and internal ports 3000/5432/6379 blocked for both IPv4 and IPv6 where supported, with timestamps and source addresses","testName":"CS-30-AC2 exact verification","testFileOrProcedureId":"PLANNED:docs/OPERATIONS/HOST-FIREWALL-VERIFICATION.md::CS-30-AC2","fixtures":"operator-approved managed firewall evidence with IPv4/IPv6 probes","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-30-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-30-AC2-RELEASE-GATE"}],
+    "CS-30-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_OPERATOR","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-30; no production or destructive host action.","setup":"Prepare operator-approved managed firewall evidence with IPv4/IPv6 probes and execute only the CS-30-AC3 procedure.","fixtureOrData":"operator-approved managed firewall evidence with IPv4/IPv6 probes","action":"Run npm run gates:test and inspect the named CS-30-AC3 procedure output.","repositoryCommand":"npm run gates:test","procedure":"docs/OPERATIONS/HOST-FIREWALL-VERIFICATION.md::CS-30-AC3","assertion":"recovery SSH remains reachable, Docker bridge networking is unchanged, and the evidence contains no ruleset flush or published internal-port operation","expectedResult":"recovery SSH remains reachable, Docker bridge networking is unchanged, and the evidence contains no ruleset flush or published internal-port operation","testName":"CS-30-AC3 exact verification","testFileOrProcedureId":"PLANNED:docs/OPERATIONS/HOST-FIREWALL-VERIFICATION.md::CS-30-AC3","fixtures":"operator-approved managed firewall evidence with IPv4/IPv6 probes","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-30-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-30-AC3-RELEASE-GATE"}],
+    "CS-31-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_ACCESSIBILITY","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.","setup":"Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC1 procedure.","fixtureOrData":"saved route at affected and narrow-mobile viewports with keyboard focus","action":"Run npm run test:ui and inspect the named CS-31-AC1 procedure output.","repositoryCommand":"npm run test:ui","procedure":"scripts/check-ui.ts::hiddenSkip::CS-31-AC1","assertion":"the current check-ui run records hiddenSkip failure with exact SHA/viewport and identifies the selector or harness cause; the assertion is not weakened","expectedResult":"the current check-ui run records hiddenSkip failure with exact SHA/viewport and identifies the selector or harness cause; the assertion is not weakened","testName":"CS-31-AC1 exact verification","testFileOrProcedureId":"scripts/check-ui.ts::hiddenSkip::CS-31-AC1","fixtures":"saved route at affected and narrow-mobile viewports with keyboard focus","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-31-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-31-AC1-RELEASE-GATE"}],
+    "CS-31-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_ACCESSIBILITY","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.","setup":"Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC2 procedure.","fixtureOrData":"saved route at affected and narrow-mobile viewports with keyboard focus","action":"Run npm run test:ui and inspect the named CS-31-AC2 procedure output.","repositoryCommand":"npm run test:ui","procedure":"scripts/check-ui.ts::hiddenSkip::CS-31-AC2","assertion":"when unfocused the skip link is not visible to the visual viewport; on keyboard focus it is visible and document.activeElement is the skip link; activation focuses the main landmark","expectedResult":"when unfocused the skip link is not visible to the visual viewport; on keyboard focus it is visible and document.activeElement is the skip link; activation focuses the main landmark","testName":"CS-31-AC2 exact verification","testFileOrProcedureId":"scripts/check-ui.ts::hiddenSkip::CS-31-AC2","fixtures":"saved route at affected and narrow-mobile viewports with keyboard focus","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-31-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-31-AC2-RELEASE-GATE"}],
+    "CS-31-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_ACCESSIBILITY","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.","setup":"Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC3 procedure.","fixtureOrData":"saved route at affected and narrow-mobile viewports with keyboard focus","action":"Run npm run test:ui and inspect the named CS-31-AC3 procedure output.","repositoryCommand":"npm run test:ui","procedure":"scripts/check-ui.ts::hiddenSkip::CS-31-AC3","assertion":"the focused procedure records separate Chromium, Firefox and WebKit results at the affected and narrow-mobile viewports, using NOT_RUN for unavailable engines","expectedResult":"the focused procedure records separate Chromium, Firefox and WebKit results at the affected and narrow-mobile viewports, using NOT_RUN for unavailable engines","testName":"CS-31-AC3 exact verification","testFileOrProcedureId":"scripts/check-ui.ts::hiddenSkip::CS-31-AC3","fixtures":"saved route at affected and narrow-mobile viewports with keyboard focus","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-31-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-31-AC3-RELEASE-GATE"}],
+    "CS-32-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_ACCESSIBILITY","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.","setup":"Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC1 procedure.","fixtureOrData":"expected/actual/diff images and renderer metadata for chromium-search-light-320","action":"Run npm run test:ui and inspect the named CS-32-AC1 procedure output.","repositoryCommand":"npm run test:ui","procedure":"scripts/check-ui.ts::chromium-search-light-320::CS-32-AC1","assertion":"the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result","expectedResult":"the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result","testName":"CS-32-AC1 exact verification","testFileOrProcedureId":"scripts/check-ui.ts::chromium-search-light-320::CS-32-AC1","fixtures":"expected/actual/diff images and renderer metadata for chromium-search-light-320","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-32-AC1-RELEASE-GATE"}],
+    "CS-32-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_ACCESSIBILITY","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.","setup":"Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC2 procedure.","fixtureOrData":"expected/actual/diff images and renderer metadata for chromium-search-light-320","action":"Run npm run test:ui and inspect the named CS-32-AC2 procedure output.","repositoryCommand":"npm run test:ui","procedure":"scripts/check-ui.ts::chromium-search-light-320::CS-32-AC2","assertion":"the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review","expectedResult":"the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review","testName":"CS-32-AC2 exact verification","testFileOrProcedureId":"scripts/check-ui.ts::chromium-search-light-320::CS-32-AC2","fixtures":"expected/actual/diff images and renderer metadata for chromium-search-light-320","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-32-AC2-RELEASE-GATE"}],
+    "CS-32-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_ACCESSIBILITY","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.","setup":"Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC3 procedure.","fixtureOrData":"expected/actual/diff images and renderer metadata for chromium-search-light-320","action":"Run npm run pages:workspace:test for the Pages visual check, then npm run test:ui for the focused three-engine mobile workspace checks, and inspect each engine result.","repositoryCommand":"npm run pages:workspace:test && npm run test:ui","procedure":"scripts/check-public-workspace.mjs::CS-32-AC3 Pages visual procedure; scripts/check-ui.ts::CS-32-AC3 three-engine workspace procedure","assertion":"Pages visual checks and focused three-engine mobile checks rerun with unchanged snapshot allowlists and publication boundaries; Pages output comes from check-public-workspace.mjs and application/browser output comes from check-ui.ts, with each engine result separately recorded.","expectedResult":"Both named procedures complete or explicitly report NOT_RUN for an unavailable engine; no snapshot allowlist or publication boundary changes.","testName":"CS-32-AC3 exact verification","testFileOrProcedureId":"scripts/check-public-workspace.mjs::CS-32-AC3; scripts/check-ui.ts::CS-32-AC3","fixtures":"expected/actual/diff images and renderer metadata for chromium-search-light-320","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-32-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-32-AC3-RELEASE-GATE"}],
+    "CS-33-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-33; no production or destructive host action.","setup":"Prepare O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence and execute only the CS-33-AC1 procedure.","fixtureOrData":"O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence","action":"Run npm run test:integration and inspect the named CS-33-AC1 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/api/src/routes/job-detail.test.ts::CS-33-AC1","assertion":"the read contract returns HTTP 200 with the documented owner-scoped schema for O1/J1/R1, including stored facts/source links/freshness and explicit unknown fields; no frontend score is recomputed","expectedResult":"the read contract returns HTTP 200 with the documented owner-scoped schema for O1/J1/R1, including stored facts/source links/freshness and explicit unknown fields; no frontend score is recomputed","testName":"CS-33-AC1 exact verification","testFileOrProcedureId":"PLANNED:apps/api/src/routes/job-detail.test.ts::CS-33-AC1","fixtures":"O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-33-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-33-AC1-RELEASE-GATE"}],
+    "CS-33-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-33; no production or destructive host action.","setup":"Prepare O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence and execute only the CS-33-AC2 procedure.","fixtureOrData":"O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence","action":"Run npm run test:integration and inspect the named CS-33-AC2 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/api/src/routes/job-detail.test.ts::CS-33-AC2","assertion":"field names, ordering, row limit and allowlist match the existing API/export contract for the fixture; incompatible projection is rejected rather than silently reused","expectedResult":"field names, ordering, row limit and allowlist match the existing API/export contract for the fixture; incompatible projection is rejected rather than silently reused","testName":"CS-33-AC2 exact verification","testFileOrProcedureId":"PLANNED:apps/api/src/routes/job-detail.test.ts::CS-33-AC2","fixtures":"O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-33-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-33-AC2-RELEASE-GATE"}],
+    "CS-33-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-33; no production or destructive host action.","setup":"Prepare O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence and execute only the CS-33-AC3 procedure.","fixtureOrData":"O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence","action":"Run npm run test:integration and inspect the named CS-33-AC3 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/api/src/routes/job-detail.test.ts::CS-33-AC3","assertion":"O2 requesting O1's J1 receives the existing denial status with no job/evidence fields; malformed stored evidence returns the existing validation error and no partial secret data","expectedResult":"O2 requesting O1's J1 receives the existing denial status with no job/evidence fields; malformed stored evidence returns the existing validation error and no partial secret data","testName":"CS-33-AC3 exact verification","testFileOrProcedureId":"PLANNED:apps/api/src/routes/job-detail.test.ts::CS-33-AC3","fixtures":"O1/J1/R1 valid data, O2 foreign-owner request and malformed evidence","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-33-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-33-AC3-RELEASE-GATE"}],
+    "CS-34-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-34; no production or destructive host action.","setup":"Prepare synthetic web/API env allowlists with DATABASE_URL only in API and execute only the CS-34-AC1 procedure.","fixtureOrData":"synthetic web/API env allowlists with DATABASE_URL only in API","action":"Run npm run build and inspect the named CS-34-AC1 procedure output.","repositoryCommand":"npm run build","procedure":"scripts/check-web-runtime-env.mjs::CS-34-AC1","assertion":"the web allowlist contains only the documented public runtime variables and the API process alone receives DATABASE_URL; secret values are redacted from output","expectedResult":"the web allowlist contains only the documented public runtime variables and the API process alone receives DATABASE_URL; secret values are redacted from output","testName":"CS-34-AC1 exact verification","testFileOrProcedureId":"PLANNED:scripts/check-web-runtime-env.mjs::CS-34-AC1","fixtures":"synthetic web/API env allowlists with DATABASE_URL only in API","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-34-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-34-AC1-RELEASE-GATE"}],
+    "CS-34-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-34; no production or destructive host action.","setup":"Prepare synthetic web/API env allowlists with DATABASE_URL only in API and execute only the CS-34-AC2 procedure.","fixtureOrData":"synthetic web/API env allowlists with DATABASE_URL only in API","action":"Run npm run build and inspect the named CS-34-AC2 procedure output.","repositoryCommand":"npm run build","procedure":"scripts/check-web-runtime-env.mjs::CS-34-AC2","assertion":"a synthetic web process environment has no DATABASE_URL/DB credentials while the API environment has DATABASE_URL; process inspection confirms no secret crosses the boundary","expectedResult":"a synthetic web process environment has no DATABASE_URL/DB credentials while the API environment has DATABASE_URL; process inspection confirms no secret crosses the boundary","testName":"CS-34-AC2 exact verification","testFileOrProcedureId":"PLANNED:scripts/check-web-runtime-env.mjs::CS-34-AC2","fixtures":"synthetic web/API env allowlists with DATABASE_URL only in API","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-34-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-34-AC2-RELEASE-GATE"}],
+    "CS-34-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-34; no production or destructive host action.","setup":"Prepare synthetic web/API env allowlists with DATABASE_URL only in API and execute only the CS-34-AC3 procedure.","fixtureOrData":"synthetic web/API env allowlists with DATABASE_URL only in API","action":"Run npm run build and inspect the named CS-34-AC3 procedure output.","repositoryCommand":"npm run build","procedure":"scripts/check-web-runtime-env.mjs::CS-34-AC3","assertion":"web startup and API proxy return the documented healthy response with complete config; removing one required web variable exits nonzero with its variable name and no unsafe default","expectedResult":"web startup and API proxy return the documented healthy response with complete config; removing one required web variable exits nonzero with its variable name and no unsafe default","testName":"CS-34-AC3 exact verification","testFileOrProcedureId":"PLANNED:scripts/check-web-runtime-env.mjs::CS-34-AC3","fixtures":"synthetic web/API env allowlists with DATABASE_URL only in API","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-34-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-34-AC3-RELEASE-GATE"}],
+    "CS-35-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-35; no production or destructive host action.","setup":"Prepare HTTP 409 fixtures for PROFILE_REVISION_CONFLICT, LEAD_REVISION_CONFLICT, UPLOAD_VERSION_CONFLICT, IDEMPOTENCY_KEY_REUSED and MISSING_TARGET_ROLES; execute only the named contract procedure.","fixtureOrData":"HTTP 409 code matrix using authoritative codes PROFILE_REVISION_CONFLICT, LEAD_REVISION_CONFLICT, UPLOAD_VERSION_CONFLICT, IDEMPOTENCY_KEY_REUSED and MISSING_TARGET_ROLES","action":"Run npm run test:integration and inspect the named CS-35-AC1 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/api/src/contracts/conflict-errors.test.ts::CS-35-AC1","assertion":"The contract test maps revision/idempotency/target-role cases to stable codes PROFILE_REVISION_CONFLICT, LEAD_REVISION_CONFLICT, UPLOAD_VERSION_CONFLICT, IDEMPOTENCY_KEY_REUSED and MISSING_TARGET_ROLES while preserving HTTP 409/redaction.","expectedResult":"the contract test maps revision/idempotency/target-role cases to stable codes PROFILE_REVISION_CONFLICT, LEAD_REVISION_CONFLICT, UPLOAD_VERSION_CONFLICT, IDEMPOTENCY_KEY_REUSED and MISSING_TARGET_ROLES while preserving HTTP 409/redaction","testName":"CS-35-AC1 exact verification","testFileOrProcedureId":"PLANNED:apps/api/src/contracts/conflict-errors.test.ts::CS-35-AC1","fixtures":"HTTP 409 code matrix and malformed/unknown response payloads","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-35-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-35-AC1-RELEASE-GATE"}],
+    "CS-35-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-35; no production or destructive host action.","setup":"Prepare HTTP 409 code matrix and malformed/unknown response payloads and execute only the CS-35-AC2 procedure.","fixtureOrData":"HTTP 409 code matrix and malformed/unknown response payloads","action":"Run npm run test:integration and inspect the named CS-35-AC2 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/api/src/contracts/conflict-errors.test.ts::CS-35-AC2","assertion":"PROFILE_REVISION_CONFLICT and LEAD_REVISION_CONFLICT offer discard/reload while other supported codes preserve unsaved edits and expose their mapped client action","expectedResult":"PROFILE_REVISION_CONFLICT and LEAD_REVISION_CONFLICT offer discard/reload while other supported codes preserve unsaved edits and expose their mapped client action","testName":"CS-35-AC2 exact verification","testFileOrProcedureId":"PLANNED:apps/api/src/contracts/conflict-errors.test.ts::CS-35-AC2","fixtures":"HTTP 409 code matrix and malformed/unknown response payloads","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-35-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-35-AC2-RELEASE-GATE"}],
+    "CS-35-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-35; no production or destructive host action.","setup":"Prepare HTTP 409 code matrix and malformed/unknown response payloads and execute only the CS-35-AC3 procedure.","fixtureOrData":"HTTP 409 code matrix and malformed/unknown response payloads","action":"Run npm run test:integration and inspect the named CS-35-AC3 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/api/src/contracts/conflict-errors.test.ts::CS-35-AC3","assertion":"unknown code, malformed body and server-detail payload produce the generic safe client error; no malformed response is treated as success and no raw detail is rendered","expectedResult":"unknown code, malformed body and server-detail payload produce the generic safe client error; no malformed response is treated as success and no raw detail is rendered","testName":"CS-35-AC3 exact verification","testFileOrProcedureId":"PLANNED:apps/api/src/contracts/conflict-errors.test.ts::CS-35-AC3","fixtures":"HTTP 409 code matrix and malformed/unknown response payloads","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-35-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-35-AC3-RELEASE-GATE"}],
+    "CS-36-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-36; no production or destructive host action.","setup":"Prepare O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change and execute only the CS-36-AC1 procedure.","fixtureOrData":"O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change","action":"Run npm run test:ui and inspect the named CS-36-AC1 procedure output.","repositoryCommand":"npm run test:ui","procedure":"apps/web/tests/session-reset.spec.ts::CS-36-AC1","assertion":"private deep-link unauthenticated response redirects/denies before protected content renders; logout and expiry clear session state and reauthentication restores only the new owner's data","expectedResult":"private deep-link unauthenticated response redirects/denies before protected content renders; logout and expiry clear session state and reauthentication restores only the new owner's data","testName":"CS-36-AC1 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/session-reset.spec.ts::CS-36-AC1","fixtures":"O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-36-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-36-AC1-RELEASE-GATE"}],
+    "CS-36-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-36; no production or destructive host action.","setup":"Prepare O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change and execute only the CS-36-AC2 procedure.","fixtureOrData":"O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change","action":"Run npm run test:ui and inspect the named CS-36-AC2 procedure output.","repositoryCommand":"npm run test:ui","procedure":"apps/web/tests/session-reset.spec.ts::CS-36-AC2","assertion":"after O1 logout/session reset, in-flight SSE, preparation, leads, profile and resume requests are aborted or ignored and caches contain no O1 data; unsaved-edit policy is shown","expectedResult":"after O1 logout/session reset, in-flight SSE, preparation, leads, profile and resume requests are aborted or ignored and caches contain no O1 data; unsaved-edit policy is shown","testName":"CS-36-AC2 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/session-reset.spec.ts::CS-36-AC2","fixtures":"O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-36-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-36-AC2-RELEASE-GATE"}],
+    "CS-36-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-36; no production or destructive host action.","setup":"Prepare O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change and execute only the CS-36-AC3 procedure.","fixtureOrData":"O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change","action":"Run npm run test:ui and inspect the named CS-36-AC3 procedure output.","repositoryCommand":"npm run test:ui","procedure":"apps/web/tests/session-reset.spec.ts::CS-36-AC3","assertion":"password change/session revocation preserve CSRF/origin/rate-limit checks, return the documented success/failure state, and O2 cannot read O1 data","expectedResult":"password change/session revocation preserve CSRF/origin/rate-limit checks, return the documented success/failure state, and O2 cannot read O1 data","testName":"CS-36-AC3 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/session-reset.spec.ts::CS-36-AC3","fixtures":"O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-36-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-36-AC3-RELEASE-GATE"}],
+    "CS-37-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.","setup":"Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC1 procedure.","fixtureOrData":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","action":"Run npm run test:integration and inspect the named CS-37-AC1 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/web/tests/profile-resume-review.spec.ts::CS-37-AC1","assertion":"O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; only explicit save increments the revision and changes matching inputs","expectedResult":"O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; only explicit save increments the revision and changes matching inputs","testName":"CS-37-AC1 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC1","fixtures":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-37-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-37-AC1-RELEASE-GATE"}],
+    "CS-37-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.","setup":"Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC2 procedure.","fixtureOrData":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","action":"Run npm run test:integration and inspect the named CS-37-AC2 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/web/tests/profile-resume-review.spec.ts::CS-37-AC2","assertion":"stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state","expectedResult":"stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state","testName":"CS-37-AC2 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC2","fixtures":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-37-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-37-AC2-RELEASE-GATE"}],
+    "CS-37-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.","setup":"Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC3 procedure.","fixtureOrData":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","action":"Run npm run test:integration and inspect the named CS-37-AC3 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/web/tests/profile-resume-review.spec.ts::CS-37-AC3","assertion":"cancellation remains disabled unless the existing capability is present; keyboard/mobile flow completes for O1 and O2 receives no O1 profile/resume data","expectedResult":"cancellation remains disabled unless the existing capability is present; keyboard/mobile flow completes for O1 and O2 receives no O1 profile/resume data","testName":"CS-37-AC3 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC3","fixtures":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-37-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-37-AC3-RELEASE-GATE"}]
   },
   "ownerDecisionSource": {
     "commit": "154974acc372ee0ec2434c95107e7746ee3c59a7",
@@ -3010,7 +3686,43 @@
     "CS-24-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "9964c008015a80b45b03383ceaccc5eb38c144781b36985fae40981baed9634d"},
     "CS-25-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "267be7319ea6c4a8734e72f6816f48a81f88f8ebc6f12c3e70dcc93814b95b23"},
     "CS-25-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "22234c29224b60e0574e7ad4da955fd19636f76b0d635ea4bb954deb07e5861f"},
-    "CS-25-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "a71cfd65d8f8d8e0bf189059e610ca8f07eb4120b9108f60d9ef4e3dc1badbcd"}
+    "CS-25-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "a71cfd65d8f8d8e0bf189059e610ca8f07eb4120b9108f60d9ef4e3dc1badbcd"},
+    "CS-26-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "4945a26a312afcc498ca2c93e7152ed595cafa642dea5f8c72bd271550639632"},
+    "CS-26-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "4d0791dcec53b71ed17426e52ce511aec404664075c80c10ad95887085a3c871"},
+    "CS-26-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "5c1c7de7d880669c86eb02dd1fdc03a42619e9ab4511745cc55d99b2802233c8"},
+    "CS-27-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "d4e7085dd7681d6f1ae70c8b2c4d489d7e97c0147adb3eca814bc4a21d815eef"},
+    "CS-27-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "b2af243824928d8ef959f4d39df2b59f614747c6d638ee98732535014884f19e"},
+    "CS-27-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "4326bf290fb69c899417aa9acb20df4f074690ec7c6f0a4352872c48ea1e6839"},
+    "CS-28-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "bf8a326f44e6a46f5542d5e726b06235ca931c69c016206ab3cbd60f3f5ac881"},
+    "CS-28-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "61741984ab423626b14f95bb3a45128779f02d49d6e887d318d077fb90ae48cc"},
+    "CS-28-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "dcf455d5e79079543e6c8122114eb57a5aa83a8a464562343fa99f5ff648b555"},
+    "CS-29-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "f813ad9364a000b5949ff4960b1824fdad49c2d776226bd87a4d10913d521ea1"},
+    "CS-29-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "83bfc5248325b34d75d13ecd16dedeca85b682a9659114f8b9abc58d26d37007"},
+    "CS-29-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "3ae2eeb5bb64ccd25e705f5134be020a6eea1cc0e1e5f584ee9c944333e226bc"},
+    "CS-30-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "a4a8f1887bda623f3593104ddfb177b38d36607ec4000753b4597cb8792e82af"},
+    "CS-30-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "c07b8b17806ef44337be89e867149b662524319eba2961c7bfa47ae99700a494"},
+    "CS-30-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "8e2ac59fb2f7d6b728c306b7de15425020dad4bc01096467bac4d83f3d567aa5"},
+    "CS-31-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "5e68d226775686af80e3d2f8d494703f21933130baf391012f6a6e656e6b91db"},
+    "CS-31-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "684f62ce3ab7f3860b575e42c17501ae2f9304adc74c914480bf790b6dcc2565"},
+    "CS-31-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "9898849095eb8e61e82faff728c6bb55705a9119cb7ab26adca5e16a8640c6a0"},
+    "CS-32-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "6b658d5973d8a08fdf7969c39499b59fc6d9825c8414d22a0059fb653ed54e1f"},
+    "CS-32-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "e560216eb5004e2486b8bfb9640e2733c80e5c284c380a9b43f70e92ba332e7d"},
+    "CS-32-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "2fd80f4e4e4d4dc84bb4accbd09fc8cd0f798054eebf1480bdfd7fbc19f2f350"},
+    "CS-33-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "e5977a9515ed126aac5139bd0cdd60ee15b7aeb07e52c9b623ec8a24d7beea52"},
+    "CS-33-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "a7ebfdf3efb808b8ac5369dc541a024fffa27decfa8ecbf3ddf07ab8f9449ed3"},
+    "CS-33-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "68ea440be8bb801a8e60387649556a408901e7136455057ae768cd7803d95e78"},
+    "CS-34-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "1e3d066b2c8e63bb75236f5f3aef04c311a649b752d3af1c7dc4c810f909829c"},
+    "CS-34-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "a86c74b35cb24940f54482211ad69c3e4f235b9bcf00378ea26d9abdb3d3c5fe"},
+    "CS-34-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "ae37b8e0cdcaa569e87ed67f29c8c75b4fed24c9bce7e241cf0c2f557233eba0"},
+    "CS-35-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "b055ba0a3686366c7162c9867e7eb30d450129d20f80fd2ffe075c61b1fed5df"},
+    "CS-35-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "4ef1ee70a0424f3ca3d21aab63c16ef13b6b7f786ef8c735987ba68ebb741a3a"},
+    "CS-35-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "c0155d2bdd60df8a8dcb07f12f6ab990de539c86eea8b396cddbeac6b97a8e72"},
+    "CS-36-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "68a2ec8ad2040973a8ff6643bbb1092be09bb653d36af870590af0c930dff2ca"},
+    "CS-36-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "41ebc23e255fcb5fc51cdb9d21d4471c1d9780542566c8edbf7b384bbba980a5"},
+    "CS-36-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "84e4fce1097ba2125b8aebd9e2ab9fd914c67cbd58bff0716cdcfc8e857f12b7"},
+    "CS-37-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "7e5696de5c71a1c3068511d6179d1babc584ee1df97c126ec6d87da9aca8d3dc"},
+    "CS-37-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "8712e2a697faff2e72f6e2ff4efb74e66f0913a5acbd3bd3de36057797ffd97c"},
+    "CS-37-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "872aaa09b6a00db28892d70d1940231e2e32cfa37704c72b07592f6f013ab37c"}
   },
   "specificationReviewReceipts": {
     "CS-3": {
@@ -3084,6 +3796,16 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "d49f1a2dfd8bfb410a05bdd56db435a46716dee1a07988b4a1d3ab1362ce4352"
-    }
+    },
+    "CS-26": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"d5f0159d927b7ad88a0edd3ea8e596f02147aae9212e804515632e4ef7641a7c"},
+    "CS-27": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"db59c0768d882b4d46fffde6d9cfab2edef83ff5e35cee5d456c35f14b2a3680"},
+    "CS-28": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"e7860508b31904a2c6fb36e0516d6650136fc7a5121f65ffe39f8fa7283b8cde"},
+    "CS-29": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"dd62b90d746a2c47d142f6aec5cb7914efe94fd4cffb402ab62c2e97354265ac"},
+    "CS-30": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"8f0d8092f7a767673a58d61b256541b16aead72558f0d64be6a4cb5881f5cea9"},
+    "CS-33": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"a4c1def540afc6c5704a2e64ac6b3b8fa485c918874e9cc095bcdc56721445b2"},
+    "CS-34": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"9a517b7c7205136cd2fa22c53d4be82abc074d3e150ce7f208776b9adca0468d"},
+    "CS-35": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"eee0f48d116b4731eae46dc9c92e5c3dc99074a802d0e3d44c0d38c4f4cea742"},
+    "CS-36": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"7a4945502aad99f20ea9b591a4994a7ec3101f4aa8fed503a80cc721061f681d"},
+    "CS-37": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"9ad7bc397fe4a2512ab59ffe5191e7c2194daa46d250fea2a7a2174a0cfba129"}
   }
 }

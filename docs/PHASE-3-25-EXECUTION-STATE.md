@@ -271,3 +271,32 @@ procedures and 94 authored procedures. Dependencies remain valid and acyclic,
 and workflow/status changes remain zero. `tickets:spec:check` and
 `tickets:spec:test` pass (49/49); no implementation, merge, deployment or
 production change occurred.
+
+## CS-17 reconciliation and CS-26 through CS-37 approval pass (2026-10-06)
+
+CS-17 was reconciled against authoritative records. `docs/PHASE-2-BLOCKER-RESOLUTION.md`
+and `.ai/blocker-classification.json` both state `Decision source: None` for
+persisted dismissal semantics. Product acceptance confirms discovery is not
+application lifecycle and forbids incidental status rewriting, but does not
+decide persistence, reversibility, auditability, owner/job scoping, or API
+ordering. CS-17 remains `OWNER_DECISION_REQUIRED`; no semantics were invented.
+
+CS-26 through CS-37 received ticket-specific requirements and 36 exact,
+content-bound AC procedures. Independent second review approved authored
+content after corrections for repository commands, concrete fixtures, exact
+observables, planned-path labels, and ticket-specific negative cases. All
+procedures remain `PLANNED`, not executed. Whole-spec receipts approve CS-26,
+CS-27, CS-28, CS-29, CS-30, CS-33, CS-34, CS-35, CS-36, and CS-37. CS-31 and
+CS-32 remain incomplete solely because exact imported design evidence is
+missing (`MISSING_EXACT_DESIGN: OPEN`).
+
+Current metrics: 22 approved and 194 incomplete specifications; 906 ACs, 124
+mapped and 782 unmapped; 559 OPEN findings (651 total, 39 resolved, 13
+reclassified); 127 reviewed exact planned bindings and 130 authored exact
+bindings. Design counts are 110 verified, 27 partial, 9 gaps, and 70 not
+applicable. Dependencies remain valid and acyclic. Workflow remains 141
+BACKLOG, 5 QA, 70 UAT with `STATUS_CHANGES_DURING_PHASE_3_25: 0`. Validation
+passes `tickets:spec:check`, `tickets:spec:test` (49/49), deterministic
+generation, and `git diff --check`. No implementation, merge, deployment, or
+production change occurred. Next actionable tickets are CS-31 and CS-32 after
+their exact design evidence is supplied; then CS-38 onward.
