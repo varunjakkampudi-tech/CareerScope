@@ -750,6 +750,57 @@
         ]
       }
     },
+    "CS-13": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-13",
+        "docs/tickets/CS-13.md",
+        "apps/web/src/components/ui-states.tsx",
+        "apps/web/src/components/saved-leads.tsx",
+        "apps/web/src/components/job-search-view.tsx",
+        "scripts/check-ui.ts",
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The shared-state requirement is a signed-in route contract. The sign-in route and its account form are unauthenticated surfaces and must not be counted as signed-in consumers; this boundary must be stated in the implementation evidence rather than inferred from a file count."
+        ],
+        "functionalRequirements": [
+          "Enumerate every authenticated route and every async-bearing component that renders its page-level loading, empty or error state. Each in-scope consumer must import LoadingState, EmptyState or ErrorState from the shared module, or the documented census must explain why it is a field-level/action-level message outside this ticket.",
+          "Require the ErrorState contract to identify the failed operation and provide the next action where recovery is possible. A raw transport error, default unnamed title, or substring-only assertion is insufficient; negative fixtures must prove those regressions fail.",
+          "Exercise both empty-data branches with isolated fixtures: no records at all must use the nothing-yet copy, while a filter that excludes records must name the filter and preserve evidence that another filter has records. Do not collapse these branches into one generic empty state.",
+          "The browser procedure must run the registered current harness against Chromium, Firefox and WebKit at CSS widths 320, 768 and 1440, recording engine/version, viewport width and exact assertion output. An engine that cannot launch is NOT_RUN and cannot be reported as verified."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE. Reuse the existing shared ui-states module and current authenticated route composition; no new service, endpoint, persistence or design system is implied. Source evidence must name the actual importing modules and current scripts/check-ui.ts entry point."
+        ],
+        "apiContract": [
+          "NOT_APPLICABLE: this ticket consumes existing route data and does not change an API request, response, authorization boundary or error code. Fixtures must use existing client contracts and must not weaken owner scoping."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no schema, migration, retention or durable state change is required. Browser and component fixtures use synthetic isolated records and never mutate canonical data."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: LOW. Error and empty copy must not expose transport details, tokens, provider credentials or another owner's records. Cross-owner denial remains an existing API contract and is outside this UI-only change."
+        ],
+        "accessibility": [
+          "Shared state components preserve semantic headings, status/error announcements, keyboard focus order and named retry/clear actions. The planned browser procedure must assert accessible names and aria-describedby relationships for representative error and form states; manual assistive-technology review remains a separate gate."
+        ],
+        "responsive": [
+          "Use CSS viewport widths exactly 320, 768 and 1440 for each browser engine. Record documentElement.scrollWidth and any overflow failure; do not substitute device labels or a nearby viewport."
+        ],
+        "implementationChecklist": [
+          "Build a route/component census from current source imports and classify unauthenticated and field-level feedback explicitly.",
+          "Verify shared loading, empty and error variants against current call sites and preserve operation-specific error wording.",
+          "Add named negative fixtures for a bare error, missing failed-operation label, and conflated filtered-empty state.",
+          "Run the registered three-engine responsive procedure when a supported browser runtime is available and retain exact logs; do not claim the cloud runtime's missing browser executable as PASS."
+        ],
+        "manualExternalGates": [
+          "Source releaseTarget is null and releaseState is unspecified. Product/release ownership must assign IMPLEMENT_NOW, FEATURE_FLAGGED, HOLD, FUTURE_RELEASE, EXTERNAL_DEPENDENCY or MANUAL_GATE before activation. This content refinement does not infer a release or change workflow status."
+        ]
+      }
+    },
     "CS-12": {
       "reviewStatus": "DRAFT",
       "sourceReferences": [

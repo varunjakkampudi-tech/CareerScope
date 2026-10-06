@@ -154,3 +154,29 @@ No ticket workflow status changed. No implementation, merge, deployment or
 production action was performed. The next content task remains CS-8's unresolved
 release/activation disposition; release assignments and owner decisions must be
 sourced or supplied by the authorized owner, never inferred from this runtime.
+
+## Cloud continuation checkpoint (2026-10-06, CS-13 content pass)
+
+The continuation branch remains `phase-3.25/cloud-continuation` at
+`9790cc5dd15b08915590424254b275e4ea8c98d4` before this checkpoint commit.
+CS-13 was the next locally actionable content ticket. Its policy refinement now
+records the authenticated-route census boundary, shared-state/error contracts,
+negative fixtures, accessibility and responsive requirements, and the explicit
+release decision gate. The source release target/state remain null/unspecified;
+no release was inferred and no workflow state changed.
+
+Generated artifacts remain deterministic: 216 tickets, 1 approved whole
+specification, 215 incomplete, 906 acceptance criteria, 46 mapped, 860
+unmapped, 629 OPEN findings, 9 design gaps, 27 partial mappings, 11 propagated
+owner reconciliations and 74 unassigned registry release targets.
+`tickets:spec:check` passed with zero drift and `tickets:spec:test` passed
+49/49. The repository `format:check` still reports three pre-existing
+formatting warnings in the remediation review and specification test sources;
+no unrelated source was reformatted in this pass.
+
+Validation limitation remains `CLOUD_RUNTIME_VALIDATION_PENDING`: the bounded
+Engineering browser run did not complete, and direct Playwright launch failed
+because the pinned Chromium executable is absent. The exact command and
+supported-runtime rerun requirement are recorded in
+`docs/PHASE-3-25-VALIDATION.md`. No browser PASS, implementation, merge,
+deployment, production change or Phase 3.5 work is claimed.

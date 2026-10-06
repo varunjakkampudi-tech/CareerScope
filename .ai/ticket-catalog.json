@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "33636cdeaead9860f97c8428049069c283950751f344659ba05f8cb220573648",
+    ".ai/ticket-specification-policy.json": "ad79cad837295a10b5345a7771650ff5e8148911ff7756e727f8aad54da05be3",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "a25c68714b56ee2fea39419fd3f6d89df794f514d17518e57d6e7fd4d7fda16d"
@@ -8930,9 +8930,23 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "A screen that silently shows nothing is indistinguishable from a screen that is still loading."
+            "A screen that silently shows nothing is indistinguishable from a screen that is still loading.",
+            {
+              "requirement": "The shared-state requirement is a signed-in route contract. The sign-in route and its account form are unauthenticated surfaces and must not be counted as signed-in consumers; this boundary must be stated in the implementation evidence rather than inferred from a file count.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-13"]
+          "sources": [
+            ".ai/backlog.json#CS-13",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "value": {
           "applicability": "APPLICABLE",
@@ -9067,9 +9081,38 @@
               "verificationIds": ["AUTOMATED_BROWSER"],
               "authority": ".ai/backlog.json#CS-13",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Enumerate every authenticated route and every async-bearing component that renders its page-level loading, empty or error state. Each in-scope consumer must import LoadingState, EmptyState or ErrorState from the shared module, or the documented census must explain why it is a field-level/action-level message outside this ticket.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Require the ErrorState contract to identify the failed operation and provide the next action where recovery is possible. A raw transport error, default unnamed title, or substring-only assertion is insufficient; negative fixtures must prove those regressions fail.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Exercise both empty-data branches with isolated fixtures: no records at all must use the nothing-yet copy, while a filter that excludes records must name the filter and preserve evidence that another filter has records. Do not collapse these branches into one generic empty state.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "The browser procedure must run the registered current harness against Chromium, Firefox and WebKit at CSS widths 320, 768 and 1440, recording engine/version, viewport width and exact assertion output. An engine that cannot launch is NOT_RUN and cannot be reported as verified.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-13"]
+          "sources": [
+            ".ai/backlog.json#CS-13",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -9082,13 +9125,23 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "shared UI primitives",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: LOCAL_MODULE. Reuse the existing shared ui-states module and current authenticated route composition; no new service, endpoint, persistence or design system is implied. Source evidence must name the actual importing modules and current scripts/check-ui.ts entry point.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-13",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts"
           ]
         },
         "persistence": {
@@ -9099,13 +9152,23 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": [],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "NOT_APPLICABLE: no schema, migration, retention or durable state change is required. Browser and component fixtures use synthetic isolated records and never mutate canonical data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-13",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts"
           ]
         },
         "apiContract": {
@@ -9124,9 +9187,24 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "NOT_APPLICABLE: this ticket consumes existing route data and does not change an API request, response, authorization boundary or error code. Fixtures must use existing client contracts and must not weaken owner scoping.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-13", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-13",
+            "docs/API-SURFACE.md",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -9160,24 +9238,48 @@
           "requirements": [
             "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
             "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+            {
+              "requirement": "Shared state components preserve semantic headings, status/error announcements, keyboard focus order and named retry/clear actions. The planned browser procedure must assert accessible names and aria-describedby relationships for representative error and form states; manual assistive-technology review remains a separate gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-13",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md"
           ]
         },
         "responsive": {
           "applicability": "APPLICABLE",
           "requirements": [
             "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
-            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
+            {
+              "requirement": "Use CSS viewport widths exactly 320, 768 and 1440 for each browser engine. Record documentElement.scrollWidth and any overflow failure; do not substitute device labels or a nearby viewport.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-13",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md"
           ]
         },
         "browsers": {
@@ -9198,9 +9300,25 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: LOW. Error and empty copy must not expose transport details, tokens, provider credentials or another owner's records. Cross-owner denial remains an existing API contract and is outside this UI-only change.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-13", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-13",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
@@ -9387,9 +9505,38 @@
             "Implement and verify CS-13-AC2: Every error state says what failed and offers the next action, never a bare message",
             "Implement and verify CS-13-AC3: Empty states distinguish \"nothing yet\" from \"nothing matches your filters\"",
             "Implement and verify CS-13-AC4: Verified in all three browser engines at 320, 768 and 1440 widths",
-            "Reconcile CS-13 documentation, redacted evidence and independent review before workflow promotion."
+            "Reconcile CS-13 documentation, redacted evidence and independent review before workflow promotion.",
+            {
+              "requirement": "Build a route/component census from current source imports and classify unauthenticated and field-level feedback explicitly.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Verify shared loading, empty and error variants against current call sites and preserve operation-specific error wording.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add named negative fixtures for a bare error, missing failed-operation label, and conflated filtered-empty state.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Run the registered three-engine responsive procedure when a supported browser runtime is available and retain exact logs; do not claim the cloud runtime's missing browser executable as PASS.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-13"]
+          "sources": [
+            ".ai/backlog.json#CS-13",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -9405,11 +9552,25 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "Source releaseTarget is null and releaseState is unspecified. Product/release ownership must assign IMPLEMENT_NOW, FEATURE_FLAGGED, HOLD, FUTURE_RELEASE, EXTERNAL_DEPENDENCY or MANUAL_GATE before activation. This content refinement does not infer a release or change workflow status.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-13",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "docs/tickets/CS-13.md",
+            "apps/web/src/components/ui-states.tsx",
+            "apps/web/src/components/saved-leads.tsx",
+            "apps/web/src/components/job-search-view.tsx",
+            "scripts/check-ui.ts",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {

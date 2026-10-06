@@ -248,6 +248,28 @@ merely because their specification-content regressions passed.
 
 ### CS-2 review correction and final validation
 
+### Cloud browser runtime diagnostic (2026-10-06)
+
+`npm run engineering:browser:test` was run once with a bounded 90-second
+timeout. The server printed its loopback URL and the test then stopped after
+the browser step without completing. The direct diagnostic
+
+`timeout 30s node -e "import('playwright').then(async ({chromium})=>{const b=await chromium.launch({headless:true}); console.log('chromium-launched'); await b.close()}).catch(e=>{console.error(e); process.exit(1)})"`
+
+failed immediately because the pinned Playwright Chromium executable is absent
+from `/home/agent/.cache/ms-playwright`. Playwright reported that
+`chrome-headless-shell` does not exist and suggested downloading browsers.
+This is a cloud-runtime limitation, not repository evidence; no browser PASS is
+claimed. Classification: `CLOUD_RUNTIME_VALIDATION_PENDING`.
+
+Required future evidence is a supported local or hosted browser runtime with
+the repository-pinned Chromium, Firefox and WebKit executables. Rerun
+`npm run engineering:browser:test` and the registered `npm run test:ui`
+procedure at the required widths, retain the exact engine/version logs, and
+record a completed result against the candidate SHA. Do not weaken the test,
+install an unpinned browser as a substitute, or infer readiness from this
+cloud failure.
+
 The CS-2 regression protects separation of the unreproduced 768px defect from
 the historically fixed 390px overlap. Its exact procedures remain PLANNED;
 they were not executed as product/browser tests. Independent review first

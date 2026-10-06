@@ -145,4 +145,14 @@ owner decision or a reason to block specification readiness.
   proven in hosted orchestration. No push, merge, deploy or branch-protection
   bypass is authorized.
 
-`OWNER_DECISIONS_REMAINING: 4`
+## CS-13 — assign release and activation state for shared signed-in UI states
+
+- **Question:** What release and activation classification should be recorded for CS-13, whose source `releaseTarget` is null and whose `releaseState` is unspecified?
+- **Why required:** The ticket is at UAT in the source backlog, but UAT status and historical browser evidence are not release authorization. No authoritative release mapping, feature flag, hold, or manual gate is recorded for this ticket.
+- **Options:** Assign an approved release target and classify it `IMPLEMENT_NOW`, `FEATURE_FLAGGED`, or `MANUAL_GATE`; or classify it `HOLD`, `FUTURE_RELEASE`, or `EXTERNAL_DEPENDENCY` with the responsible owner and rationale. Preserve the source null/unspecified values until that decision is entered in the canonical registry.
+- **Consequences:** The route census, shared-state contract, negative fixtures, accessibility requirements, and future three-engine browser procedure can proceed. Final activation, release evidence, and promotion remain blocked until the owner decision is recorded.
+- **Affected specification sections:** Delivery, manual/external gates, release evidence, and definition of done.
+- **Can proceed without this decision:** Source-level route/component census, shared loading/empty/error contract, privacy and accessibility review, and exact planned AC procedures.
+- **Blocked:** Release assignment, activation classification, and any promotion claim. No application implementation or deployment is authorized by this planning record.
+
+`OWNER_DECISIONS_REMAINING: 5`
