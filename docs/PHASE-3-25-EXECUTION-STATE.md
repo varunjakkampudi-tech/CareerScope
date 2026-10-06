@@ -157,8 +157,8 @@ sourced or supplied by the authorized owner, never inferred from this runtime.
 
 ## Cloud continuation checkpoint (2026-10-06, CS-13 content pass)
 
-The continuation branch remains `phase-3.25/cloud-continuation` at
-`9790cc5dd15b08915590424254b275e4ea8c98d4` before this checkpoint commit.
+The continuation branch is `phase-3.25/cloud-continuation` at
+`79cbc3e5f36cb30923582d0685de42dc0d4875d6`.
 CS-13 was the next locally actionable content ticket. Its policy refinement now
 records the authenticated-route census boundary, shared-state/error contracts,
 negative fixtures, accessibility and responsive requirements, and the explicit
