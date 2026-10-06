@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "59a5fb132d4702eba25abad17d79d66e0782b9392105aebcce2d1b1125189063",
+    ".ai/ticket-specification-policy.json": "6b3ccc5d57e889d56c280fe69fed57f7b8d5df8d70db61b4f81825190f38e25e",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bab653c9ffde5d254612579d25d4c725d4be8db30a9b0165d801066085cb296c"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "00397abdc2a27e88e83cd7a1fe0a937e615974c367b784e0cc62d182160e6714"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -7597,16 +7597,39 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-63-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "launcher reads current v2/.env",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-63-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare v2/.env fixture F63.",
+          "fixtureOrData": "v2/.env fixture F63",
+          "action": "inspect launcher against current v2/.env",
+          "repositoryCommand": "npm run engineering:test",
+          "procedure": "v2/scripts/launcher.test.mjs::CS-63-AC1",
+          "assertion": "launcher reads current v2/.env",
+          "expectedResult": "launcher reads current v2/.env",
+          "testName": "CS-63-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:v2/scripts/launcher.test.mjs::CS-63-AC1",
+          "fixtures": "v2/.env fixture F63",
+          "negativeCase": "stale env fails",
+          "failureCase": "stale env fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-63-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-63",
@@ -7615,16 +7638,39 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-63-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "child receives exactly allowlist",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-63-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare allowlist A63 with extra/missing keys.",
+          "fixtureOrData": "allowlist A63 with extra/missing keys",
+          "action": "run exact-set comparison",
+          "repositoryCommand": "npm run engineering:test",
+          "procedure": "v2/scripts/launcher.test.mjs::CS-63-AC2",
+          "assertion": "child receives exactly allowlist",
+          "expectedResult": "child receives exactly allowlist",
+          "testName": "CS-63-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:v2/scripts/launcher.test.mjs::CS-63-AC2",
+          "fixtures": "allowlist A63 with extra/missing keys",
+          "negativeCase": "presence-only comparison fails",
+          "failureCase": "presence-only comparison fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-63-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-63",
@@ -7632,17 +7678,40 @@
       "criterion": "A failure names the specific unexpected or missing keys and tells the reader to extend the allowlist rather than loosen the comparison",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-63-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "error names each key and extension advice",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-63-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare unexpected K63 and missing M63.",
+          "fixtureOrData": "unexpected K63 and missing M63",
+          "action": "invoke diagnostic formatter",
+          "repositoryCommand": "npm run engineering:test",
+          "procedure": "v2/scripts/launcher.test.mjs::CS-63-AC3",
+          "assertion": "error names each key and extension advice",
+          "expectedResult": "error names each key and extension advice",
+          "testName": "CS-63-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:v2/scripts/launcher.test.mjs::CS-63-AC3",
+          "fixtures": "unexpected K63 and missing M63",
+          "negativeCase": "generic error fails",
+          "failureCase": "generic error fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-63-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-64",
@@ -7720,17 +7789,40 @@
       "criterion": "Every tracked text file has an explicit eol attribute",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-65-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "every tracked text has explicit eol",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-65-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare tracked text T65.",
+          "fixtureOrData": "tracked text T65",
+          "action": "run line-ending audit",
+          "repositoryCommand": "npm run eol:check",
+          "procedure": "scripts/check-line-endings.test.mjs::CS-65-AC1",
+          "assertion": "every tracked text has explicit eol",
+          "expectedResult": "every tracked text has explicit eol",
+          "testName": "CS-65-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/check-line-endings.test.mjs::CS-65-AC1",
+          "fixtures": "tracked text T65",
+          "negativeCase": "unclassified file fails",
+          "failureCase": "unclassified file fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-65-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-65",
@@ -7739,16 +7831,39 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-65-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "review.txt bytes preserved append-only",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-65-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare append-only review.txt R65.",
+          "fixtureOrData": "append-only review.txt R65",
+          "action": "run before/after append audit",
+          "repositoryCommand": "npm run eol:check",
+          "procedure": "scripts/check-line-endings.test.mjs::CS-65-AC2",
+          "assertion": "review.txt bytes preserved append-only",
+          "expectedResult": "review.txt bytes preserved append-only",
+          "testName": "CS-65-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/check-line-endings.test.mjs::CS-65-AC2",
+          "fixtures": "append-only review.txt R65",
+          "negativeCase": "rewrite fails",
+          "failureCase": "rewrite fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-65-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-66",
@@ -7757,16 +7872,39 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-66-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "boundary constrains every inlet",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-66-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare owner titles O1/O2 hostile and accented.",
+          "fixtureOrData": "owner titles O1/O2 hostile and accented",
+          "action": "construct score reason boundary",
+          "repositoryCommand": "npm run test:domain",
+          "procedure": "packages/matching/src/score.test.ts::CS-66-AC1",
+          "assertion": "boundary constrains every inlet",
+          "expectedResult": "boundary constrains every inlet",
+          "testName": "CS-66-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:packages/matching/src/score.test.ts::CS-66-AC1",
+          "fixtures": "owner titles O1/O2 hostile and accented",
+          "negativeCase": "unconstrained inlet fails",
+          "failureCase": "unconstrained inlet fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-66-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-66",
@@ -7774,25 +7912,40 @@
       "criterion": "Hostile fixtures - markup, control characters, template syntax, bidirectional overrides, variation selectors - are refused or neutralised on the owner-typed path, proven with tests that fail before the fix",
       "verification": [
         {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-66-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "hostile values refused or neutralized",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-66-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-66-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare hostile H66 markup/control/bidi.",
+          "fixtureOrData": "hostile H66 markup/control/bidi",
+          "action": "run refusal matrix",
+          "repositoryCommand": "npm run test:domain",
+          "procedure": "packages/matching/src/score.test.ts::CS-66-AC2",
+          "assertion": "hostile values refused or neutralized",
+          "expectedResult": "hostile values refused or neutralized",
+          "testName": "CS-66-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:packages/matching/src/score.test.ts::CS-66-AC2",
+          "fixtures": "hostile H66 markup/control/bidi",
+          "negativeCase": "raw hostile value fails",
+          "failureCase": "raw hostile value fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-66-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-66",
@@ -7800,17 +7953,40 @@
       "criterion": "Legitimate titles including accented and non-Latin text continue to render unchanged; the constraint must not silently discard real data",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-66-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "legitimate titles unchanged",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-66-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare legitimate accented/non-Latin L66.",
+          "fixtureOrData": "legitimate accented/non-Latin L66",
+          "action": "run positive regression",
+          "repositoryCommand": "npm run test:domain",
+          "procedure": "packages/matching/src/score.test.ts::CS-66-AC3",
+          "assertion": "legitimate titles unchanged",
+          "expectedResult": "legitimate titles unchanged",
+          "testName": "CS-66-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:packages/matching/src/score.test.ts::CS-66-AC3",
+          "fixtures": "legitimate accented/non-Latin L66",
+          "negativeCase": "overbroad filter fails",
+          "failureCase": "overbroad filter fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-66-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-67",
@@ -7929,17 +8105,40 @@
       "criterion": "Every *.test.mjs under root scripts/ is either invoked by an npm script or explicitly recorded as excluded with a reason",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-68-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "each root test invoked or excluded with reason",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-68-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare root scripts test inventory I68.",
+          "fixtureOrData": "root scripts test inventory I68",
+          "action": "run registration checker",
+          "repositoryCommand": "npm run test:registration",
+          "procedure": "scripts/check-test-registration.test.mjs::CS-68-AC1",
+          "assertion": "each root test invoked or excluded with reason",
+          "expectedResult": "each root test invoked or excluded with reason",
+          "testName": "CS-68-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/check-test-registration.test.mjs::CS-68-AC1",
+          "fixtures": "root scripts test inventory I68",
+          "negativeCase": "orphan fails",
+          "failureCase": "orphan fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-68-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-68",
@@ -7948,16 +8147,39 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-68-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "guard covers both extensions",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-68-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare root .mjs/.test.ts guard G68.",
+          "fixtureOrData": "root .mjs/.test.ts guard G68",
+          "action": "run extension matrix",
+          "repositoryCommand": "npm run test:registration",
+          "procedure": "scripts/check-test-registration.test.mjs::CS-68-AC2",
+          "assertion": "guard covers both extensions",
+          "expectedResult": "guard covers both extensions",
+          "testName": "CS-68-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/check-test-registration.test.mjs::CS-68-AC2",
+          "fixtures": "root .mjs/.test.ts guard G68",
+          "negativeCase": "uncovered path fails",
+          "failureCase": "uncovered path fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-68-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-68",
@@ -7965,17 +8187,40 @@
       "criterion": "The two currently-red suites are fixed or quarantined with their diagnosis recorded; neither is weakened to go green",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-68-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "fixed or quarantined with diagnosis, no weakening",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-68-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare two red suites D68.",
+          "fixtureOrData": "two red suites D68",
+          "action": "run suites and inspect diagnosis",
+          "repositoryCommand": "npm run engineering:test",
+          "procedure": "scripts/engineering.test.mjs::CS-68-AC3",
+          "assertion": "fixed or quarantined with diagnosis, no weakening",
+          "expectedResult": "fixed or quarantined with diagnosis, no weakening",
+          "testName": "CS-68-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/engineering.test.mjs::CS-68-AC3",
+          "fixtures": "two red suites D68",
+          "negativeCase": "suppression fails",
+          "failureCase": "suppression fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-68-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-69",
@@ -7983,25 +8228,40 @@
       "criterion": "Visual baselines are versioned, or the visual check is explicitly recorded as advisory-only with the reason, so nobody cites it as proof",
       "verification": [
         {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-69-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-69-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "missing baseline refuses self-approval",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-69-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare fresh clone no baseline B69.",
+          "fixtureOrData": "fresh clone no baseline B69",
+          "action": "run visual check no update",
+          "repositoryCommand": "npm run test:visual",
+          "procedure": "scripts/visual-regression.test.mjs::CS-69-AC1",
+          "assertion": "missing baseline refuses self-approval",
+          "expectedResult": "missing baseline refuses self-approval",
+          "testName": "CS-69-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/visual-regression.test.mjs::CS-69-AC1",
+          "fixtures": "fresh clone no baseline B69",
+          "negativeCase": "auto-baseline pass fails",
+          "failureCase": "auto-baseline pass fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-69-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-69",
@@ -8010,16 +8270,39 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-69-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "versioned or explicit advisory rationale",
+          "candidateCommand": null,
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-69-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare versioned baseline/advisory A69.",
+          "fixtureOrData": "versioned baseline/advisory A69",
+          "action": "inspect manifest/evidence",
+          "repositoryCommand": "npm run test:visual",
+          "procedure": "scripts/visual-regression.test.mjs::CS-69-AC2",
+          "assertion": "versioned or explicit advisory rationale",
+          "expectedResult": "versioned or explicit advisory rationale",
+          "testName": "CS-69-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/visual-regression.test.mjs::CS-69-AC2",
+          "fixtures": "versioned baseline/advisory A69",
+          "negativeCase": "unclassified pass fails",
+          "failureCase": "unclassified pass fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-69-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-69",
@@ -8027,17 +8310,40 @@
       "criterion": "Evidence cited in a ticket can be re-derived by someone who did not run the original command",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-69-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "independent checkout reproduces evidence",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-69-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical isolated checkout; no production data.",
+          "setup": "Prepare fresh clone evidence E69.",
+          "fixtureOrData": "fresh clone evidence E69",
+          "action": "rederive cited evidence",
+          "repositoryCommand": "npm run test:visual",
+          "procedure": "scripts/visual-regression.test.mjs::CS-69-AC3",
+          "assertion": "independent checkout reproduces evidence",
+          "expectedResult": "independent checkout reproduces evidence",
+          "testName": "CS-69-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/visual-regression.test.mjs::CS-69-AC3",
+          "fixtures": "fresh clone evidence E69",
+          "negativeCase": "untracked dependency fails",
+          "failureCase": "untracked dependency fails",
+          "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+          "releaseGate": "CS-69-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-70",
