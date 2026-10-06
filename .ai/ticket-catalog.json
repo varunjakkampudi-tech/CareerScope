@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "e514555ffd50d2b746a00fd022e42de295e6bbe095fb9f0a84c4a069b46a1e96",
+    ".ai/ticket-specification-policy.json": "fddf3e9a0e26f764379b5bb9ffbada4517f1df0b56617cd6a55b989ff4005dd1",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bfcb51cd606d7ccc6360e6c41759f69e6a13a3b542afc77ce4c5a245c3d77aef"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "166d09e1804bd44e14c066803453a4f16d0c634d176a5c1a2ec6c51889589824"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -45466,8 +45466,8 @@
     {
       "ticketId": "CS-72",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "MISSING_ARCHITECTURE_ASSESSMENT",
@@ -45475,7 +45475,7 @@
           "reason": "Source architecture impact note is absent.",
           "owner": "Code Quality",
           "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "MISSING_SECURITY_ASSESSMENT",
@@ -45483,7 +45483,7 @@
           "reason": "Source security/privacy impact note is absent.",
           "owner": "Security reviewer",
           "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -45491,7 +45491,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -45499,7 +45499,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -45507,7 +45507,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -45650,7 +45650,7 @@
               "id": "CS-72-AC2",
               "sourceText": "It distinguishes RECORDED-UNMET (blocks promotion) from NO-EVIDENCE-RECORDED (demands a write-up but does not by itself prove the code is undelivered), because CS-18 proved those are different failures with opposite correct responses",
               "expectedResult": "It distinguishes RECORDED-UNMET (blocks promotion) from NO-EVIDENCE-RECORDED (demands a write-up but does not by itself prove the code is undelivered), because CS-18 proved those are different failures with opposite correct responses",
-              "verificationIds": ["AUTOMATED_BROWSER", "LIVE_HOST"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-72",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -45692,7 +45692,12 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "UNRESOLVED: source architecture assessment is absent; see recorded specification gap.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: promotion checker preserves evidence semantics and sibling consistency.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-72",
@@ -45764,9 +45769,20 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: Synthetic ticket evidence only; no production promotion or secret data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-72", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-72",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
@@ -45790,16 +45806,39 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "CS-72-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "recorded unmet blocks promotion while no-evidence demands write-up only",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-72-AC1-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare CS-19 and CS-51 disclosed-residual fixtures plus clean ticket C72.",
+                  "fixtureOrData": "CS-19 and CS-51 disclosed-residual fixtures plus clean ticket C72",
+                  "action": "run promotion checker on all three",
+                  "repositoryCommand": "npm run promotion:check",
+                  "procedure": "scripts/check-promotion-evidence.test.mjs::CS-72-AC1",
+                  "assertion": "recorded unmet blocks promotion while no-evidence demands write-up only",
+                  "expectedResult": "recorded unmet blocks promotion while no-evidence demands write-up only",
+                  "testName": "CS-72-AC1 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-promotion-evidence.test.mjs::CS-72-AC1",
+                  "fixtures": "CS-19 and CS-51 disclosed-residual fixtures plus clean ticket C72",
+                  "negativeCase": "clean fixture unexpectedly blocked fails",
+                  "failureCase": "clean fixture unexpectedly blocked fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-72-AC1-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-72",
@@ -45807,25 +45846,40 @@
               "criterion": "It distinguishes RECORDED-UNMET (blocks promotion) from NO-EVIDENCE-RECORDED (demands a write-up but does not by itself prove the code is undelivered), because CS-18 proved those are different failures with opposite correct responses",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-72-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "LIVE_HOST",
-                  "expectedCheck": "CS-72-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "statuses produce distinct documented outcomes",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-72-AC2-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare RECORDED-UNMET and NO-EVIDENCE status pair R72.",
+                  "fixtureOrData": "RECORDED-UNMET and NO-EVIDENCE status pair R72",
+                  "action": "run classification matrix",
+                  "repositoryCommand": "npm run promotion:check",
+                  "procedure": "scripts/check-promotion-evidence.test.mjs::CS-72-AC2",
+                  "assertion": "statuses produce distinct documented outcomes",
+                  "expectedResult": "statuses produce distinct documented outcomes",
+                  "testName": "CS-72-AC2 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-promotion-evidence.test.mjs::CS-72-AC2",
+                  "fixtures": "RECORDED-UNMET and NO-EVIDENCE status pair R72",
+                  "negativeCase": "conflating statuses fails",
+                  "failureCase": "conflating statuses fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-72-AC2-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-72",
@@ -45834,16 +45888,39 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "CS-72-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "residual rejected and clean accepted in same run",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-72-AC3-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare synthetic residual ticket X72 and clean Y72.",
+                  "fixtureOrData": "synthetic residual ticket X72 and clean Y72",
+                  "action": "run fail/pass mutation pair",
+                  "repositoryCommand": "npm run promotion:check",
+                  "procedure": "scripts/check-promotion-evidence.test.mjs::CS-72-AC3",
+                  "assertion": "residual rejected and clean accepted in same run",
+                  "expectedResult": "residual rejected and clean accepted in same run",
+                  "testName": "CS-72-AC3 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-promotion-evidence.test.mjs::CS-72-AC3",
+                  "fixtures": "synthetic residual ticket X72 and clean Y72",
+                  "negativeCase": "always-pass/always-fail checker fails",
+                  "failureCase": "always-pass/always-fail checker fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-72-AC3-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-72",
@@ -45852,16 +45929,39 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "CS-72-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "real-system evidence shape applies consistent sibling demotion",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-72-AC4-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare sibling demotion matrix S72.",
+                  "fixtureOrData": "sibling demotion matrix S72",
+                  "action": "run consistency comparison",
+                  "repositoryCommand": "npm run promotion:check",
+                  "procedure": "scripts/check-promotion-evidence.test.mjs::CS-72-AC4",
+                  "assertion": "real-system evidence shape applies consistent sibling demotion",
+                  "expectedResult": "real-system evidence shape applies consistent sibling demotion",
+                  "testName": "CS-72-AC4 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-promotion-evidence.test.mjs::CS-72-AC4",
+                  "fixtures": "sibling demotion matrix S72",
+                  "negativeCase": "inconsistent sibling outcome fails",
+                  "failureCase": "inconsistent sibling outcome fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-72-AC4-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-72",
@@ -45870,16 +45970,39 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "CS-72-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "CS-19 demoted and CS-51 held as recorded",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-72-AC5-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare CS-19/CS-51 identical residual pair P72.",
+                  "fixtureOrData": "CS-19/CS-51 identical residual pair P72",
+                  "action": "run opposite expected-outcome regression",
+                  "repositoryCommand": "npm run promotion:check",
+                  "procedure": "scripts/check-promotion-evidence.test.mjs::CS-72-AC5",
+                  "assertion": "CS-19 demoted and CS-51 held as recorded",
+                  "expectedResult": "CS-19 demoted and CS-51 held as recorded",
+                  "testName": "CS-72-AC5 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-promotion-evidence.test.mjs::CS-72-AC5",
+                  "fixtures": "CS-19/CS-51 identical residual pair P72",
+                  "negativeCase": "same outcome for both fails",
+                  "failureCase": "same outcome for both fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-72-AC5-RELEASE-GATE"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-72", "docs/TESTING.md"]
@@ -45903,7 +46026,7 @@
               "id": "CS-72-AC2",
               "sourceText": "It distinguishes RECORDED-UNMET (blocks promotion) from NO-EVIDENCE-RECORDED (demands a write-up but does not by itself prove the code is undelivered), because CS-18 proved those are different failures with opposite correct responses",
               "expectedResult": "It distinguishes RECORDED-UNMET (blocks promotion) from NO-EVIDENCE-RECORDED (demands a write-up but does not by itself prove the code is undelivered), because CS-18 proved those are different failures with opposite correct responses",
-              "verificationIds": ["AUTOMATED_BROWSER", "LIVE_HOST"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-72",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -45973,9 +46096,19 @@
             "Implement and verify CS-72-AC3: Proven able to fail: a synthetic ticket carrying a disclosed-residual phrase must be rejected, and a clean ticket must pass, in the same run",
             "Implement and verify CS-72-AC4: SIBLING CONSISTENCY: if a criterion of the form \"proven by doing X on a real system\" has siblings that were demoted for that exact shape, the ticket must be demoted too. Consistency across tickets is itself checkable, and this is the rule that would have caught the highest-cost instance - five tickets were treated one way and a sixth, the only P0, was not.",
             "Implement and verify CS-72-AC5: NEGATIVE FIXTURE PAIR, mandatory: CS-19 and CS-51 carry an IDENTICAL disclosed residual in near-identical language, and the correct outcomes are OPPOSITE - CS-19 demoted, CS-51 held. The check must produce both. A check with only positive fixtures can prove it fires but not that it DISCRIMINATES.",
-            "Reconcile CS-72 documentation, redacted evidence and independent review before workflow promotion."
+            "Reconcile CS-72 documentation, redacted evidence and independent review before workflow promotion.",
+            {
+              "requirement": "Run each named positive/negative procedure when implemented.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Retain PLANNED until evidence is collected.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-72"]
+          "sources": [".ai/backlog.json#CS-72", "docs/ARCHITECTURE.md", "docs/TESTING.md"]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -45991,11 +46124,20 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "Future hosted/runtime evidence remains a gate; PLANNED is not execution.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-72",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -46041,15 +46183,15 @@
     {
       "ticketId": "CS-73",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "MISSING_ARCHITECTURE_ASSESSMENT",
           "section": "technicalApproach",
           "reason": "Source architecture impact note is absent.",
           "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "MISSING_SECURITY_ASSESSMENT",
@@ -46057,7 +46199,7 @@
           "reason": "Source security/privacy impact note is absent.",
           "owner": "Security reviewer",
           "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -46065,7 +46207,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -46073,7 +46215,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -46081,7 +46223,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -46175,7 +46317,7 @@
               "id": "CS-73-AC1",
               "sourceText": "A validator asserts that ownerAgent and architectureImpact are consistent with the tier the evidence says the remaining work lives in, and fails when they disagree",
               "expectedResult": "A validator asserts that ownerAgent and architectureImpact are consistent with the tier the evidence says the remaining work lives in, and fails when they disagree",
-              "verificationIds": ["LIVE_HOST", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-73",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46183,7 +46325,7 @@
               "id": "CS-73-AC2",
               "sourceText": "It fails on CS-54 as it stood before correction - ownerAgent Frontend, architectureImpact naming a Next.js strategy, evidence saying the work belongs to the infrastructure session - and passes on CS-59, which declares the cross-tier dependency in architectureImpact",
               "expectedResult": "It fails on CS-54 as it stood before correction - ownerAgent Frontend, architectureImpact naming a Next.js strategy, evidence saying the work belongs to the infrastructure session - and passes on CS-59, which declares the cross-tier dependency in architectureImpact",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-73",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46191,7 +46333,7 @@
               "id": "CS-73-AC3",
               "sourceText": "Proven able to fail: a synthetic ticket with a contradicting ownerAgent is rejected and a consistent one passes, in the same run",
               "expectedResult": "Proven able to fail: a synthetic ticket with a contradicting ownerAgent is rejected and a consistent one passes, in the same run",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-73",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -46209,7 +46351,12 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "UNRESOLVED: source architecture assessment is absent; see recorded specification gap.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: validator compares ownerAgent and architectureImpact across existing ticket metadata.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-73",
@@ -46281,9 +46428,20 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: Inputs are repository metadata; diagnostics expose no secrets or user data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-73", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-73",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
@@ -46306,25 +46464,40 @@
               "criterion": "A validator asserts that ownerAgent and architectureImpact are consistent with the tier the evidence says the remaining work lives in, and fails when they disagree",
               "verification": [
                 {
-                  "type": "LIVE_HOST",
-                  "expectedCheck": "CS-73-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "tier metadata agrees with evidence",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-73-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-73-AC1-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare CS-54 contradiction and CS-59 consistent fixtures C73.",
+                  "fixtureOrData": "CS-54 contradiction and CS-59 consistent fixtures C73",
+                  "action": "run owner/architecture validator",
+                  "repositoryCommand": "npm run ticket:consistency",
+                  "procedure": "scripts/check-ticket-consistency.test.mjs::CS-73-AC1",
+                  "assertion": "tier metadata agrees with evidence",
+                  "expectedResult": "tier metadata agrees with evidence",
+                  "testName": "CS-73-AC1 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-ticket-consistency.test.mjs::CS-73-AC1",
+                  "fixtures": "CS-54 contradiction and CS-59 consistent fixtures C73",
+                  "negativeCase": "contradicting owner fails",
+                  "failureCase": "contradicting owner fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-73-AC1-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-73",
@@ -46332,17 +46505,40 @@
               "criterion": "It fails on CS-54 as it stood before correction - ownerAgent Frontend, architectureImpact naming a Next.js strategy, evidence saying the work belongs to the infrastructure session - and passes on CS-59, which declares the cross-tier dependency in architectureImpact",
               "verification": [
                 {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-73-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "CS-54 fails and CS-59 passes",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-73-AC2-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare CS-54 and CS-59 exact metadata M73.",
+                  "fixtureOrData": "CS-54 and CS-59 exact metadata M73",
+                  "action": "run named comparison",
+                  "repositoryCommand": "npm run ticket:consistency",
+                  "procedure": "scripts/check-ticket-consistency.test.mjs::CS-73-AC2",
+                  "assertion": "CS-54 fails and CS-59 passes",
+                  "expectedResult": "CS-54 fails and CS-59 passes",
+                  "testName": "CS-73-AC2 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-ticket-consistency.test.mjs::CS-73-AC2",
+                  "fixtures": "CS-54 and CS-59 exact metadata M73",
+                  "negativeCase": "reversed result fails",
+                  "failureCase": "reversed result fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-73-AC2-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-73",
@@ -46350,17 +46546,40 @@
               "criterion": "Proven able to fail: a synthetic ticket with a contradicting ownerAgent is rejected and a consistent one passes, in the same run",
               "verification": [
                 {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-73-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "contradiction rejected and consistent accepted",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-73-AC3-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare synthetic contradictory/consistent tickets X73.",
+                  "fixtureOrData": "synthetic contradictory/consistent tickets X73",
+                  "action": "run fail/pass mutation pair",
+                  "repositoryCommand": "npm run ticket:consistency",
+                  "procedure": "scripts/check-ticket-consistency.test.mjs::CS-73-AC3",
+                  "assertion": "contradiction rejected and consistent accepted",
+                  "expectedResult": "contradiction rejected and consistent accepted",
+                  "testName": "CS-73-AC3 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-ticket-consistency.test.mjs::CS-73-AC3",
+                  "fixtures": "synthetic contradictory/consistent tickets X73",
+                  "negativeCase": "always-pass checker fails",
+                  "failureCase": "always-pass checker fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-73-AC3-RELEASE-GATE"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-73", "docs/TESTING.md"]
@@ -46376,7 +46595,7 @@
               "id": "CS-73-AC1",
               "sourceText": "A validator asserts that ownerAgent and architectureImpact are consistent with the tier the evidence says the remaining work lives in, and fails when they disagree",
               "expectedResult": "A validator asserts that ownerAgent and architectureImpact are consistent with the tier the evidence says the remaining work lives in, and fails when they disagree",
-              "verificationIds": ["LIVE_HOST", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-73",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46384,7 +46603,7 @@
               "id": "CS-73-AC2",
               "sourceText": "It fails on CS-54 as it stood before correction - ownerAgent Frontend, architectureImpact naming a Next.js strategy, evidence saying the work belongs to the infrastructure session - and passes on CS-59, which declares the cross-tier dependency in architectureImpact",
               "expectedResult": "It fails on CS-54 as it stood before correction - ownerAgent Frontend, architectureImpact naming a Next.js strategy, evidence saying the work belongs to the infrastructure session - and passes on CS-59, which declares the cross-tier dependency in architectureImpact",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-73",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46392,7 +46611,7 @@
               "id": "CS-73-AC3",
               "sourceText": "Proven able to fail: a synthetic ticket with a contradicting ownerAgent is rejected and a consistent one passes, in the same run",
               "expectedResult": "Proven able to fail: a synthetic ticket with a contradicting ownerAgent is rejected and a consistent one passes, in the same run",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-73",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -46436,9 +46655,19 @@
             "Implement and verify CS-73-AC1: A validator asserts that ownerAgent and architectureImpact are consistent with the tier the evidence says the remaining work lives in, and fails when they disagree",
             "Implement and verify CS-73-AC2: It fails on CS-54 as it stood before correction - ownerAgent Frontend, architectureImpact naming a Next.js strategy, evidence saying the work belongs to the infrastructure session - and passes on CS-59, which declares the cross-tier dependency in architectureImpact",
             "Implement and verify CS-73-AC3: Proven able to fail: a synthetic ticket with a contradicting ownerAgent is rejected and a consistent one passes, in the same run",
-            "Reconcile CS-73 documentation, redacted evidence and independent review before workflow promotion."
+            "Reconcile CS-73 documentation, redacted evidence and independent review before workflow promotion.",
+            {
+              "requirement": "Run each named positive/negative procedure when implemented.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Retain PLANNED until evidence is collected.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-73"]
+          "sources": [".ai/backlog.json#CS-73", "docs/ARCHITECTURE.md", "docs/TESTING.md"]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -46454,11 +46683,20 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "Future hosted/runtime evidence remains a gate; PLANNED is not execution.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-73",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -46504,8 +46742,8 @@
     {
       "ticketId": "CS-74",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "MISSING_ARCHITECTURE_ASSESSMENT",
@@ -46513,7 +46751,7 @@
           "reason": "Source architecture impact note is absent.",
           "owner": "Code Quality",
           "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "MISSING_SECURITY_ASSESSMENT",
@@ -46521,7 +46759,7 @@
           "reason": "Source security/privacy impact note is absent.",
           "owner": "Security reviewer",
           "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -46529,7 +46767,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -46537,7 +46775,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -46545,7 +46783,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -46652,7 +46890,7 @@
               "id": "CS-74-AC1",
               "sourceText": "A preflight in gates:test fails loudly when the running Node is below engines.node, BEFORE any suite runs, naming both the required and the running version",
               "expectedResult": "A preflight in gates:test fails loudly when the running Node is below engines.node, BEFORE any suite runs, naming both the required and the running version",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-74",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46660,7 +46898,7 @@
               "id": "CS-74-AC2",
               "sourceText": "The required version is read from package.json engines.node rather than hardcoded, so it cannot drift from the declaration it enforces",
               "expectedResult": "The required version is read from package.json engines.node rather than hardcoded, so it cannot drift from the declaration it enforces",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-74",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46686,7 +46924,12 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "UNRESOLVED: source architecture assessment is absent; see recorded specification gap.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: node preflight reads package.json engines.node before suites.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-74",
@@ -46758,9 +47001,20 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: Only version strings are reported; no credentials or runtime mutation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-74", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-74",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
@@ -46783,17 +47037,40 @@
               "criterion": "A preflight in gates:test fails loudly when the running Node is below engines.node, BEFORE any suite runs, naming both the required and the running version",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-74-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "preflight runs before suites and reports required/running versions",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-74-AC1-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare package.json engines.node and compliant runtime V74.",
+                  "fixtureOrData": "package.json engines.node and compliant runtime V74",
+                  "action": "run node preflight",
+                  "repositoryCommand": "npm run node:check",
+                  "procedure": "scripts/check-node-version.test.mjs::CS-74-AC1",
+                  "assertion": "preflight runs before suites and reports required/running versions",
+                  "expectedResult": "preflight runs before suites and reports required/running versions",
+                  "testName": "CS-74-AC1 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-node-version.test.mjs::CS-74-AC1",
+                  "fixtures": "package.json engines.node and compliant runtime V74",
+                  "negativeCase": "below-floor runtime not rejected fails",
+                  "failureCase": "below-floor runtime not rejected fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-74-AC1-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-74",
@@ -46801,17 +47078,40 @@
               "criterion": "The required version is read from package.json engines.node rather than hardcoded, so it cannot drift from the declaration it enforces",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-74-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "required version is read from package.json, not hardcoded",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-74-AC2-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare package engine declaration E74.",
+                  "fixtureOrData": "package engine declaration E74",
+                  "action": "change synthetic declaration fixture and rerun",
+                  "repositoryCommand": "npm run node:check",
+                  "procedure": "scripts/check-node-version.test.mjs::CS-74-AC2",
+                  "assertion": "required version is read from package.json, not hardcoded",
+                  "expectedResult": "required version is read from package.json, not hardcoded",
+                  "testName": "CS-74-AC2 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-node-version.test.mjs::CS-74-AC2",
+                  "fixtures": "package engine declaration E74",
+                  "negativeCase": "drifted hardcoded floor fails",
+                  "failureCase": "drifted hardcoded floor fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-74-AC2-RELEASE-GATE"
+                }
+              ]
             },
             {
               "ticketId": "CS-74",
@@ -46820,16 +47120,39 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "CS-74-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "below floor rejects and compliant passes",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA / ticket owner",
+                  "releaseGate": "CS-74-AC3-RELEASE-GATE"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "reviewer": "QA / ticket owner",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "type": "AUTOMATED_CONTRACT",
+                  "preconditions": "Canonical isolated checkout with synthetic ticket fixtures; no production data.",
+                  "setup": "Prepare below-floor and compliant version pair P74.",
+                  "fixtureOrData": "below-floor and compliant version pair P74",
+                  "action": "run simulated matrix",
+                  "repositoryCommand": "npm run node:check",
+                  "procedure": "scripts/check-node-version.test.mjs::CS-74-AC3",
+                  "assertion": "below floor rejects and compliant passes",
+                  "expectedResult": "below floor rejects and compliant passes",
+                  "testName": "CS-74-AC3 exact verification",
+                  "testFileOrProcedureId": "PLANNED:scripts/check-node-version.test.mjs::CS-74-AC3",
+                  "fixtures": "below-floor and compliant version pair P74",
+                  "negativeCase": "both outcomes same fails",
+                  "failureCase": "both outcomes same fails",
+                  "evidenceArtifact": "Future command output, commit SHA, fixture IDs and reviewer receipt; planned is not execution.",
+                  "releaseGate": "CS-74-AC3-RELEASE-GATE"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-74", "docs/TESTING.md"]
@@ -46845,7 +47168,7 @@
               "id": "CS-74-AC1",
               "sourceText": "A preflight in gates:test fails loudly when the running Node is below engines.node, BEFORE any suite runs, naming both the required and the running version",
               "expectedResult": "A preflight in gates:test fails loudly when the running Node is below engines.node, BEFORE any suite runs, naming both the required and the running version",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-74",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46853,7 +47176,7 @@
               "id": "CS-74-AC2",
               "sourceText": "The required version is read from package.json engines.node rather than hardcoded, so it cannot drift from the declaration it enforces",
               "expectedResult": "The required version is read from package.json engines.node rather than hardcoded, so it cannot drift from the declaration it enforces",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-74",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -46905,9 +47228,19 @@
             "Implement and verify CS-74-AC1: A preflight in gates:test fails loudly when the running Node is below engines.node, BEFORE any suite runs, naming both the required and the running version",
             "Implement and verify CS-74-AC2: The required version is read from package.json engines.node rather than hardcoded, so it cannot drift from the declaration it enforces",
             "Implement and verify CS-74-AC3: Proven able to fail: simulate a below-floor version and confirm the preflight rejects it, and confirm a compliant version passes, in the same run",
-            "Reconcile CS-74 documentation, redacted evidence and independent review before workflow promotion."
+            "Reconcile CS-74 documentation, redacted evidence and independent review before workflow promotion.",
+            {
+              "requirement": "Run each named positive/negative procedure when implemented.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Retain PLANNED until evidence is collected.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-74"]
+          "sources": [".ai/backlog.json#CS-74", "docs/ARCHITECTURE.md", "docs/TESTING.md"]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -46923,11 +47256,20 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "Future hosted/runtime evidence remains a gate; PLANNED is not execution.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-74",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {

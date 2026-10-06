@@ -402,3 +402,16 @@ Current generated metrics: 41 approved and 175 incomplete specifications; 906
 ACs, 167 mapped and 739 unmapped; 490 OPEN findings (651 total, 71 resolved,
 13 reclassified). Next actionable queue begins at CS-72, excluding CS-17,
 CS-31 and CS-32.
+
+## CS-72 through CS-74 approval batch (2026-10-06)
+
+CS-72, CS-73 and CS-74 received exact promotion, metadata-consistency and
+Node-preflight AC procedures with paired positive/negative fixtures, scoped
+architecture/security reviews, external release gates and independent
+content-bound approval receipts. Future procedures remain PLANNED.
+
+Current generated metrics: 44 approved and 172 incomplete specifications; 906
+ACs, 178 mapped and 728 unmapped; 475 OPEN findings (651 total, 80 resolved,
+13 reclassified); 181 reviewed exact planned bindings and 198 authored exact
+bindings. Next actionable queue begins at CS-76, excluding CS-17, CS-31 and
+CS-32.
