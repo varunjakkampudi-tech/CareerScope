@@ -244,3 +244,30 @@ Current counts: 1 approved, 215 incomplete; 906 ACs, 88 mapped, 818 unmapped;
 617 OPEN, 27 resolved and 7 reclassified findings; 91 reviewed planned and 94
 authored procedures. Dependencies remain valid and acyclic; workflow state is
 unchanged. Next ticket is CS-26.
+
+## CS-14 through CS-25 whole-spec unblock pass (2026-10-06)
+
+Authoritative release evidence was reconciled without inventing release
+numbers. CS-14 through CS-24 are classified `IMPLEMENT_NOW`/`ACTIVE_R1` where
+the blocker ledger says active; CS-25 is `DEFERRED_BY_OWNER` from the backlog
+and batch plan. Future hosted/manual evidence remains a Definition-of-Done
+gate, not a specification-approval blocker. CS-17 remains the sole ticket in
+this set requiring an owner decision: the blocker ledger explicitly records no
+decision source for persisted, reversible, owner/job-scoped dismissal
+semantics, so no lifecycle contract was invented.
+
+Imported design mappings were recorded as `DESIGN_PARTIAL` where exact parity
+is not certified and `DESIGN_NOT_APPLICABLE` for non-visual contracts; no
+blocking design gap remains for the approved tickets. All CS-14–CS-25 findings
+are no longer OPEN: release/design uncertainties are `EXTERNAL_GATE` or
+`RECLASSIFIED`, and CS-17 is `OWNER_DECISION_REQUIRED`.
+
+Content-bound whole-spec receipts now approve CS-14, CS-15, CS-16, CS-18,
+CS-19, CS-20, CS-21, CS-22, CS-23, CS-24 and CS-25. CS-17 is incomplete only
+for the owner decision above. Current generated metrics are 12 approved and
+204 incomplete specifications; 906 ACs with 88 mapped and 818 unmapped; 591
+OPEN findings (651 total, 27 resolved, 13 reclassified); 91 reviewed planned
+procedures and 94 authored procedures. Dependencies remain valid and acyclic,
+and workflow/status changes remain zero. `tickets:spec:check` and
+`tickets:spec:test` pass (49/49); no implementation, merge, deployment or
+production change occurred.

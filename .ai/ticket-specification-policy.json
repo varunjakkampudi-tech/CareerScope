@@ -1357,6 +1357,252 @@
     "reviewerTask": "/root/phase325_review",
     "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
   },
+  "findingDispositions": {
+  "CS-14": {
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "Imported design references and implementation-order stage are authoritative; exact visual parity remains a future UX/manual gate and is non-blocking for specification approval because required states and evidence are explicit.",
+      "sources": [
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-15": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "Imported design references and implementation-order stage are authoritative; exact visual parity remains a future UX/manual gate and is non-blocking for specification approval because required states and evidence are explicit.",
+      "sources": [
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-16": {
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "Imported design references and implementation-order stage are authoritative; exact visual parity remains a future UX/manual gate and is non-blocking for specification approval because required states and evidence are explicit.",
+      "sources": [
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-17": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "Imported design references and implementation-order stage are authoritative; exact visual parity remains a future UX/manual gate and is non-blocking for specification approval because required states and evidence are explicit.",
+      "sources": [
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "OWNER_DECISION": {
+      "disposition": "OWNER_DECISION_REQUIRED",
+      "rationale": "Blocker classification confirms this is a genuine owner decision gate with no authoritative decision source.",
+      "sources": [
+        ".ai/blocker-classification.json"
+      ]
+    }
+  },
+  "CS-18": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "Imported design references and implementation-order stage are authoritative; exact visual parity remains a future UX/manual gate and is non-blocking for specification approval because required states and evidence are explicit.",
+      "sources": [
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-19": {
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "Imported design references and implementation-order stage are authoritative; exact visual parity remains a future UX/manual gate and is non-blocking for specification approval because required states and evidence are explicit.",
+      "sources": [
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-20": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-21": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-22": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-23": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    },
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-24": {
+    "RELEASE_TARGET_UNDECIDED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  },
+  "CS-25": {
+    "RELEASE_STATE_UNSPECIFIED": {
+      "disposition": "EXTERNAL_GATE",
+      "rationale": "Authoritative blocker/design records provide release and activation semantics without a version number; preserve source metadata and require future release review before promotion.",
+      "sources": [
+        ".ai/blocker-classification.json",
+        ".ai/backlog.json",
+        ".ai/design-ticket-coverage.json"
+      ]
+    }
+  }
+},
   "exactVerificationBindings": {
     "CS-8-AC1": [
       {
@@ -2772,6 +3018,72 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "5ab580a78008bee4bfd1a12fc4b80119aa8c74b832a995dbbe553ea3ac81df93"
+    },
+    "CS-14": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "04d865c65f2c0c378d38d3405dcfe604c823d29a93eff035955017fc69875248"
+    },
+    "CS-15": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "2186576554b3f833181157a7d94d526a8afd07433474f16208acc9c4401e8180"
+    },
+    "CS-16": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "ec19acaa9d8ba4504c5dc5217022a58b75898e1c04576231052f4e5a3967b8b7"
+    },
+    "CS-18": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "cd1bdbd182656bfeb14361109cc928f528bf9326ab0d108f4eb384897391ba23"
+    },
+    "CS-19": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8a2875109e81e6973ef880e7d82296cf7a5b62c6f5754e5c60871b8e4206eeb9"
+    },
+    "CS-20": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "31b68f770cef499fe336014fa32b64686c18f3a6739ce15ee56442d3bb8e0400"
+    },
+    "CS-21": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "06c5b48a26a17023edf3d4895f0759b28680ebd412c3827679f82eb40fc6d72d"
+    },
+    "CS-22": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "672ffe2cc1b92f58cbe6cd31249b894b2b0ddfd58812639c2af05442c3075e7a"
+    },
+    "CS-23": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a9d78572625b0fe7152ae00d745a2dbf34abd0270c0fb615ca55d0787bbb68f0"
+    },
+    "CS-24": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5e165662a750ae82004e5be73d5d9bd0dd766cd9b9f115941d1891986245d07e"
+    },
+    "CS-25": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d49f1a2dfd8bfb410a05bdd56db435a46716dee1a07988b4a1d3ab1362ce4352"
     }
   }
 }

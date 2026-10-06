@@ -463,3 +463,26 @@ Final independent approval for CS-20–CS-25 authored content (procedures remain
 - `CS-25-AC1`: `267be7319ea6c4a8734e72f6816f48a81f88f8ebc6f12c3e70dcc93814b95b23` — APPROVED; PLANNED, not executed.
 - `CS-25-AC2`: `22234c29224b60e0574e7ad4da955fd19636f76b0d635ea4bb954deb07e5861f` — APPROVED; PLANNED, not executed.
 - `CS-25-AC3`: `a71cfd65d8f8d8e0bf189059e610ca8f07eb4120b9108f60d9ef4e3dc1badbcd` — APPROVED; PLANNED, not executed.
+
+### Whole-spec approval receipts (2026-10-06)
+
+The following whole specifications passed the independent second-pass gate.
+Each receipt is content-bound to the generated specification and approves the
+implementation-ready plan only; PLANNED, hosted, manual, or external evidence
+remains a future Definition-of-Done gate and is not claimed as executed.
+
+- `CS-14`: `04d865c65f2c0c378d38d3405dcfe604c823d29a93eff035955017fc69875248` — APPROVED.
+- `CS-15`: `2186576554b3f833181157a7d94d526a8afd07433474f16208acc9c4401e8180` — APPROVED.
+- `CS-16`: `ec19acaa9d8ba4504c5dc5217022a58b75898e1c04576231052f4e5a3967b8b7` — APPROVED.
+- `CS-18`: `cd1bdbd182656bfeb14361109cc928f528bf9326ab0d108f4eb384897391ba23` — APPROVED.
+- `CS-19`: `8a2875109e81e6973ef880e7d82296cf7a5b62c6f5754e5c60871b8e4206eeb9` — APPROVED.
+- `CS-20`: `31b68f770cef499fe336014fa32b64686c18f3a6739ce15ee56442d3bb8e0400` — APPROVED.
+- `CS-21`: `06c5b48a26a17023edf3d4895f0759b28680ebd412c3827679f82eb40fc6d72d` — APPROVED.
+- `CS-22`: `672ffe2cc1b92f58cbe6cd31249b894b2b0ddfd58812639c2af05442c3075e7a` — APPROVED.
+- `CS-23`: `a9d78572625b0fe7152ae00d745a2dbf34abd0270c0fb615ca55d0787bbb68f0` — APPROVED.
+- `CS-24`: `5e165662a750ae82004e5be73d5d9bd0dd766cd9b9f115941d1891986245d07e` — APPROVED.
+- `CS-25`: `d49f1a2dfd8bfb410a05bdd56db435a46716dee1a07988b4a1d3ab1362ce4352` — APPROVED.
+
+CS-17 remains incomplete because the authoritative blocker ledger records a
+genuine owner decision requirement for persisted dismissal semantics; no
+repository decision source was found, so no whole-spec approval is claimed.
