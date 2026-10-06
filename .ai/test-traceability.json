@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "ad79cad837295a10b5345a7771650ff5e8148911ff7756e727f8aad54da05be3",
+    ".ai/ticket-specification-policy.json": "ad2d6b40c7eacc8ba357eb5c7066f8da73c1805e6006a038cc810557831f29c7",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "a25c68714b56ee2fea39419fd3f6d89df794f514d17518e57d6e7fd4d7fda16d"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "f431a0b1ebc2af9da8255a499bc80b8e21955a9c4b37ad010823f8aabe364556"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -1541,17 +1541,36 @@
       "criterion": "A layout designed for narrow widths, not a horizontally scrolled table",
       "verification": [
         {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-14-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Accessibility reviewer"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Saved leads use the narrow card/stack layout and documentElement.scrollWidth equals viewport width.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future engine/version log and screenshot/DOM measurements.",
+          "automationStatus": "PLANNED",
+          "owner": "QA/UX",
+          "releaseGate": "CS-14-RESPONSIVE-UI"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA/UX",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Authenticated synthetic owner with two saved leads.",
+          "setup": "Open /saved at CSS width 320 with deterministic fixture data.",
+          "procedure": "Run scripts/check-ui.ts saved-leads narrow-layout case.",
+          "assertion": "Saved leads use the narrow card/stack layout and documentElement.scrollWidth equals viewport width.",
+          "expectedResult": "No page-level horizontal overflow or table-only presentation.",
+          "testName": "CS-14 narrow saved leads layout",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-14",
+          "fixtures": "Two synthetic saved leads with complete fields.",
+          "negativeCase": "Injected min-width/table fixture must fail overflow assertion.",
+          "evidenceArtifact": "Future engine/version log and screenshot/DOM measurements.",
+          "releaseGate": "CS-14-RESPONSIVE-UI"
+        }
+      ]
     },
     {
       "ticketId": "CS-14",
@@ -1559,17 +1578,36 @@
       "criterion": "Score, title, company and status remain readable without zooming",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-14-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "All four fields are visible, readable and not clipped without zoom.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future DOM assertion log per engine.",
+          "automationStatus": "PLANNED",
+          "owner": "QA/UX",
+          "releaseGate": "CS-14-CONTENT-READABILITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA/UX",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Authenticated fixture at 320px.",
+          "setup": "Render one saved lead containing score, title, company and status.",
+          "procedure": "Query the four named elements and measure visible text bounds.",
+          "assertion": "All four fields are visible, readable and not clipped without zoom.",
+          "expectedResult": "Each required field is present and readable.",
+          "testName": "CS-14 required saved-lead fields at 320px",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-14-fields",
+          "fixtures": "Synthetic lead with known values.",
+          "negativeCase": "Hide or clip any required field; assertion must fail.",
+          "evidenceArtifact": "Future DOM assertion log per engine.",
+          "releaseGate": "CS-14-CONTENT-READABILITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-14",
@@ -1577,17 +1615,36 @@
       "criterion": "No horizontal page overflow at 320px",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-14-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "scrollWidth is no greater than clientWidth.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future width measurements and engine logs.",
+          "automationStatus": "PLANNED",
+          "owner": "QA/UX",
+          "releaseGate": "CS-14-OVERFLOW"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA/UX",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Authenticated saved-lead fixture.",
+          "setup": "Run at 320px and capture scrollWidth/clientWidth.",
+          "procedure": "Load /saved and inspect documentElement dimensions.",
+          "assertion": "scrollWidth is no greater than clientWidth.",
+          "expectedResult": "No horizontal page overflow at 320px.",
+          "testName": "CS-14 no horizontal overflow",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-14-overflow",
+          "fixtures": "Two long synthetic company/title values.",
+          "negativeCase": "Long unbroken content causing overflow must fail.",
+          "evidenceArtifact": "Future width measurements and engine logs.",
+          "releaseGate": "CS-14-OVERFLOW"
+        }
+      ]
     },
     {
       "ticketId": "CS-14",
@@ -1595,25 +1652,36 @@
       "criterion": "Keyboard and screen-reader operable, verified not assumed",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-14-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "MANUAL_OPERATOR",
+          "expectedCheck": "All controls are keyboard operable and announced with meaningful names.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Accessibility reviewer"
-        },
-        {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-14-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Reviewer-owned manual accessibility report.",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility owner",
+          "releaseGate": "CS-14-A11Y"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Accessibility owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_OPERATOR",
+          "preconditions": "Keyboard-only and screen-reader test environment.",
+          "setup": "Use authenticated synthetic saved leads at 320px.",
+          "procedure": "Tab through controls, invoke actions and inspect accessible names/announcements.",
+          "assertion": "All controls are keyboard operable and announced with meaningful names.",
+          "expectedResult": "No keyboard trap or unnamed action; manual report records assistive technology.",
+          "testName": "CS-14 keyboard and screen-reader review",
+          "testFileOrProcedureId": "CS-14-A11Y-MANUAL",
+          "fixtures": "Synthetic saved leads and status controls.",
+          "negativeCase": "Unnamed or unreachable control is a failure, not waived by visual pass.",
+          "evidenceArtifact": "Reviewer-owned manual accessibility report.",
+          "releaseGate": "CS-14-A11Y"
+        }
+      ]
     },
     {
       "ticketId": "CS-15",
@@ -1621,17 +1689,36 @@
       "criterion": "Every signed-in route and the public Pages surface audited against WCAG 2.2 AA",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-15-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_OPERATOR",
+          "expectedCheck": "Every signed-in route and the public Pages surface has an individual audit result; missing either scope fails completeness.",
+          "candidateCommand": null,
+          "evidenceRequired": "Versioned per-route and public-surface audit reports.",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility owner",
+          "releaseGate": "CS-15-WCAG-COVERAGE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Accessibility owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_OPERATOR",
+          "preconditions": "Complete signed-in route inventory plus public Pages surface and supported audit engine.",
+          "setup": "Audit every authenticated route and the public Pages surface as separate inventory entries.",
+          "procedure": "Run named WCAG 2.2 AA audit per route/surface and retain raw reports.",
+          "assertion": "Every signed-in route and the public Pages surface has an individual audit result; missing either scope fails completeness.",
+          "expectedResult": "No required route or public surface is represented only by an aggregate score.",
+          "testName": "CS-15 route-complete WCAG audit",
+          "testFileOrProcedureId": "CS-15-WCAG-ROUTE-AUDIT",
+          "fixtures": "Synthetic authenticated account and public Pages fixture.",
+          "negativeCase": "Omit one signed-in route or Pages surface; completeness check fails.",
+          "evidenceArtifact": "Versioned per-route and public-surface audit reports.",
+          "releaseGate": "CS-15-WCAG-COVERAGE"
+        }
+      ]
     },
     {
       "ticketId": "CS-15",
@@ -1639,17 +1726,36 @@
       "criterion": "Findings recorded with severity rather than summarised as a score",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-15-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_OPERATOR",
+          "expectedCheck": "Every finding has reproducible evidence and severity; no score-only summary.",
+          "candidateCommand": null,
+          "evidenceRequired": "Finding ledger and reviewer sign-off.",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility owner",
+          "releaseGate": "CS-15-TRACEABILITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Accessibility owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_OPERATOR",
+          "preconditions": "Audit reports exist for every route.",
+          "setup": "Normalize findings by WCAG rule and severity.",
+          "procedure": "Review report ledger for element, route, severity and evidence fields.",
+          "assertion": "Every finding has reproducible evidence and severity; no score-only summary.",
+          "expectedResult": "Finding ledger is complete and attributable.",
+          "testName": "CS-15 finding severity ledger review",
+          "testFileOrProcedureId": "CS-15-FINDING-LEDGER",
+          "fixtures": "Raw audit outputs plus synthetic reproduction links.",
+          "negativeCase": "Score without finding details is rejected.",
+          "evidenceArtifact": "Finding ledger and reviewer sign-off.",
+          "releaseGate": "CS-15-TRACEABILITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-15",
@@ -1657,17 +1763,36 @@
       "criterion": "Blocking issues fixed; the rest become tracked items with reasons",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-15-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_OPERATOR",
+          "expectedCheck": "No blocking issue is silently closed; non-blocking items retain rationale.",
+          "candidateCommand": null,
+          "evidenceRequired": "Owner/QA disposition record.",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility owner",
+          "releaseGate": "CS-15-BLOCKING-FINDINGS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Accessibility owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_OPERATOR",
+          "preconditions": "Severity ledger approved.",
+          "setup": "Classify blocking findings and documented non-blocking dispositions.",
+          "procedure": "Verify each blocking issue has a fix result or explicit owner decision.",
+          "assertion": "No blocking issue is silently closed; non-blocking items retain rationale.",
+          "expectedResult": "Disposition is explicit for every finding.",
+          "testName": "CS-15 blocking accessibility disposition",
+          "testFileOrProcedureId": "CS-15-DISPOSITION-REVIEW",
+          "fixtures": "Finding ledger with positive and negative controls.",
+          "negativeCase": "Unclassified blocking finding fails review.",
+          "evidenceArtifact": "Owner/QA disposition record.",
+          "releaseGate": "CS-15-BLOCKING-FINDINGS"
+        }
+      ]
     },
     {
       "ticketId": "CS-15",
@@ -1676,16 +1801,35 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-15-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The check exits nonzero and identifies route/rule; clean fixture exits zero.",
+          "candidateCommand": null,
+          "evidenceRequired": "CI/local command output and exact SHA.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-15-REGRESSION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Baseline rules and route inventory committed.",
+          "setup": "Run the registered accessibility regression check against a known clean fixture.",
+          "procedure": "Introduce a synthetic blocking violation and run the check.",
+          "assertion": "The check exits nonzero and identifies route/rule; clean fixture exits zero.",
+          "expectedResult": "Accessibility regressions cannot pass silently.",
+          "testName": "CS-15 accessibility regression gate",
+          "testFileOrProcedureId": "CS-15-REGRESSION-GATE",
+          "fixtures": "Clean baseline plus injected contrast/label violation.",
+          "negativeCase": "Injected blocking violation must fail.",
+          "evidenceArtifact": "CI/local command output and exact SHA.",
+          "releaseGate": "CS-15-REGRESSION"
+        }
+      ]
     },
     {
       "ticketId": "CS-16",
@@ -1693,17 +1837,36 @@
       "criterion": "A result row shows enough to decide whether to open it: role, company, location, recency, salary when known, and why it matched",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-16-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "All required fields appear; missing salary is explicitly unknown.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Accessibility reviewer"
+          "evidenceRequired": "Future DOM assertions and fixture log.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-16-RESULT-CONTENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Authenticated search fixture with known posting fields.",
+          "setup": "Open /jobs with one complete and one missing-salary result.",
+          "procedure": "Render result cards and inspect role/company/location/recency/salary/match-reason nodes.",
+          "assertion": "All required fields appear; missing salary is explicitly unknown.",
+          "expectedResult": "User can decide whether to open without invented data.",
+          "testName": "CS-16 actionable result fields",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-16-fields",
+          "fixtures": "Synthetic results with known and unknown optional salary.",
+          "negativeCase": "Missing field or fabricated salary fails.",
+          "evidenceArtifact": "Future DOM assertions and fixture log.",
+          "releaseGate": "CS-16-RESULT-CONTENT"
+        }
+      ]
     },
     {
       "ticketId": "CS-16",
@@ -1711,17 +1874,36 @@
       "criterion": "Filters that exist in the API are reachable from the UI",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-16-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Every supported filter is reachable; unsupported/malformed filter is rejected or absent.",
+          "candidateCommand": null,
+          "evidenceRequired": "Registry snapshot and command output.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-16-FILTERS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "API filter registry and UI filter inventory available.",
+          "setup": "Enumerate supported filters and render /jobs.",
+          "procedure": "Apply each supported filter and send an unsupported filter fixture.",
+          "assertion": "Every supported filter is reachable; unsupported/malformed filter is rejected or absent.",
+          "expectedResult": "UI/API filter surface is one-to-one and fail-closed.",
+          "testName": "CS-16 filter reachability contract",
+          "testFileOrProcedureId": "CS-16-FILTER-REACHABILITY",
+          "fixtures": "Registry-derived filter list and malformed control.",
+          "negativeCase": "Unsupported filter silently changing results fails.",
+          "evidenceArtifact": "Registry snapshot and command output.",
+          "releaseGate": "CS-16-FILTERS"
+        }
+      ]
     },
     {
       "ticketId": "CS-16",
@@ -1730,16 +1912,35 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-16-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Order and explanation derive from output; UI has no duplicate weight constants.",
+          "candidateCommand": null,
+          "evidenceRequired": "Scorer/UI field mapping and test output.",
+          "automationStatus": "PLANNED",
+          "owner": "Matching owner",
+          "releaseGate": "CS-16-MATCHING-CONTRACT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Matching owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Deterministic matching fixture with dimension explanations.",
+          "setup": "Render results from canonical matching output.",
+          "procedure": "Compare displayed order/explanation to scorer output and mutate a weight fixture.",
+          "assertion": "Order and explanation derive from output; UI has no duplicate weight constants.",
+          "expectedResult": "Ranking is visible and explainable without a second algorithm.",
+          "testName": "CS-16 ranking explanation provenance",
+          "testFileOrProcedureId": "CS-16-RANKING-PROVENANCE",
+          "fixtures": "Synthetic postings with distinct dimensions.",
+          "negativeCase": "Omitted dimension or duplicated UI weight fails.",
+          "evidenceArtifact": "Scorer/UI field mapping and test output.",
+          "releaseGate": "CS-16-MATCHING-CONTRACT"
+        }
+      ]
     },
     {
       "ticketId": "CS-16",
@@ -1747,17 +1948,36 @@
       "criterion": "Readable at 320, 768 and 1440 widths in all three engines",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-16-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Required result content is readable and no page overflow occurs at every width/engine.",
+          "candidateCommand": null,
+          "evidenceRequired": "Engine/version/viewport logs and screenshots.",
+          "automationStatus": "PLANNED",
+          "owner": "QA/UX",
+          "releaseGate": "CS-16-RESPONSIVE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA/UX",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Three browser engines available.",
+          "setup": "Run /jobs fixture at CSS widths 320, 768 and 1440.",
+          "procedure": "Execute responsive result assertions in each engine.",
+          "assertion": "Required result content is readable and no page overflow occurs at every width/engine.",
+          "expectedResult": "Responsive discovery is verified, not assumed.",
+          "testName": "CS-16 three-engine responsive discovery",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-16-responsive",
+          "fixtures": "Complete and long-content synthetic results.",
+          "negativeCase": "Clipped content or overflow fails.",
+          "evidenceArtifact": "Engine/version/viewport logs and screenshots.",
+          "releaseGate": "CS-16-RESPONSIVE"
+        }
+      ]
     },
     {
       "ticketId": "CS-17",
@@ -1766,16 +1986,35 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-17-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Description, requirements, company, location, salary and source link are present or explicitly unknown.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future DOM assertion log.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-17-DETAIL-CONTENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Selected synthetic posting with complete detail payload.",
+          "setup": "Open detail from /jobs.",
+          "procedure": "Inspect detail fields and optional unknown rendering.",
+          "assertion": "Description, requirements, company, location, salary and source link are present or explicitly unknown.",
+          "expectedResult": "Detail contains the complete actionable posting context.",
+          "testName": "CS-17 complete job detail fields",
+          "testFileOrProcedureId": "CS-17-DETAIL-FIELDS",
+          "fixtures": "Synthetic posting with complete fields.",
+          "negativeCase": "Missing field silently omitted fails.",
+          "evidenceArtifact": "Future DOM assertion log.",
+          "releaseGate": "CS-17-DETAIL-CONTENT"
+        }
+      ]
     },
     {
       "ticketId": "CS-17",
@@ -1783,17 +2022,36 @@
       "criterion": "Original posting always reachable, and clearly marked as leaving the app",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-17-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "The original posting is reachable at the validated destination, visibly marked as leaving CareerScope, and unsafe schemes are rejected before navigation.",
+          "candidateCommand": null,
+          "evidenceRequired": "DOM/link safety report plus isolated navigation result or documented external-gate record.",
+          "automationStatus": "PLANNED",
+          "owner": "QA/Security",
+          "releaseGate": "CS-17-SOURCE-SAFETY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA/Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Posting with validated HTTPS source URL and controlled external destination.",
+          "setup": "Open detail, inspect source-link attributes, then activate the safe fixture link in an isolated navigation context.",
+          "procedure": "Verify visible external-destination labeling, safe scheme/URL validation and successful navigation to the expected original-posting destination.",
+          "assertion": "The original posting is reachable at the validated destination, visibly marked as leaving CareerScope, and unsafe schemes are rejected before navigation.",
+          "expectedResult": "External source navigation is both reachable and safe without ambiguous in-app navigation.",
+          "testName": "CS-17 external source link contract",
+          "testFileOrProcedureId": "CS-17-SOURCE-LINK",
+          "fixtures": "Safe HTTPS URL plus controlled destination and unsafe javascript control.",
+          "negativeCase": "Unsafe scheme, unexpected destination or missing external label fails; no live provider navigation is required.",
+          "evidenceArtifact": "DOM/link safety report plus isolated navigation result or documented external-gate record.",
+          "releaseGate": "CS-17-SOURCE-SAFETY"
+        }
+      ]
     },
     {
       "ticketId": "CS-17",
@@ -1801,17 +2059,36 @@
       "criterion": "Untrusted posting content is rendered safely — no HTML injection from a job source",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-17-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Payloads render inertly or are rejected; no script/event handler executes.",
+          "candidateCommand": null,
+          "evidenceRequired": "Sanitizer test output and DOM snapshot.",
+          "automationStatus": "PLANNED",
+          "owner": "Security owner",
+          "releaseGate": "CS-17-CONTENT-SAFETY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Security owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Sanitizer/rendering boundary is identified.",
+          "setup": "Pass script/event-handler/javascript-url payloads as posting fields.",
+          "procedure": "Render detail and inspect DOM/execution markers.",
+          "assertion": "Payloads render inertly or are rejected; no script/event handler executes.",
+          "expectedResult": "Untrusted posting content cannot inject HTML/JS.",
+          "testName": "CS-17 untrusted posting content safety",
+          "testFileOrProcedureId": "CS-17-XSS-NEGATIVE",
+          "fixtures": "Synthetic malicious posting payloads.",
+          "negativeCase": "Any executable node or marker is failure.",
+          "evidenceArtifact": "Sanitizer test output and DOM snapshot.",
+          "releaseGate": "CS-17-CONTENT-SAFETY"
+        }
+      ]
     },
     {
       "ticketId": "CS-17",
@@ -1819,17 +2096,36 @@
       "criterion": "Save, dismiss and apply actions available without returning to the list",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-17-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Each action is present, named and reaches its existing contract without returning to list.",
+          "candidateCommand": null,
+          "evidenceRequired": "DOM/action response log.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-17-ACTIONS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Authenticated selected posting.",
+          "setup": "Open detail at 320px and keyboard navigate actions.",
+          "procedure": "Invoke save, dismiss and apply controls from detail.",
+          "assertion": "Each action is present, named and reaches its existing contract without returning to list.",
+          "expectedResult": "All shortlist actions are available in detail.",
+          "testName": "CS-17 detail actions operable",
+          "testFileOrProcedureId": "CS-17-DETAIL-ACTIONS",
+          "fixtures": "Synthetic posting and owner.",
+          "negativeCase": "Missing or unnamed action fails.",
+          "evidenceArtifact": "DOM/action response log.",
+          "releaseGate": "CS-17-ACTIONS"
+        }
+      ]
     },
     {
       "ticketId": "CS-18",
@@ -1838,16 +2134,35 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-18-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Every dimension, including low/negative contribution, is displayed with its canonical identifier.",
+          "candidateCommand": null,
+          "evidenceRequired": "Scorer/UI mapping and output.",
+          "automationStatus": "PLANNED",
+          "owner": "Matching owner",
+          "releaseGate": "CS-18-DIMENSIONS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Matching owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Matching output includes all dimension contributions.",
+          "setup": "Render a result with positive, zero and negative dimensions.",
+          "procedure": "Compare each displayed contribution to scorer output.",
+          "assertion": "Every dimension, including low/negative contribution, is displayed with its canonical identifier.",
+          "expectedResult": "No dimension is hidden to make score appear better.",
+          "testName": "CS-18 complete dimension explanation",
+          "testFileOrProcedureId": "CS-18-DIMENSIONS",
+          "fixtures": "Synthetic profile/posting with mixed contributions.",
+          "negativeCase": "Omitted negative dimension fails.",
+          "evidenceArtifact": "Scorer/UI mapping and output.",
+          "releaseGate": "CS-18-DIMENSIONS"
+        }
+      ]
     },
     {
       "ticketId": "CS-18",
@@ -1856,16 +2171,35 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-18-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The hard exclusion states exactly which canonical rule excluded the job; no generic unexplained exclusion is accepted.",
+          "candidateCommand": null,
+          "evidenceRequired": "Explanation assertion log.",
+          "automationStatus": "PLANNED",
+          "owner": "Matching owner",
+          "releaseGate": "CS-18-EXCLUSION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Matching owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Deterministic matching fixture with one hard-excluded result.",
+          "setup": "Produce an excluded result with the canonical exclusion rule in matching output.",
+          "procedure": "Render the explanation and inspect the exclusion label and rule identifier.",
+          "assertion": "The hard exclusion states exactly which canonical rule excluded the job; no generic unexplained exclusion is accepted.",
+          "expectedResult": "User can identify the exclusion reason from matching output.",
+          "testName": "CS-18 hard-exclusion rule explanation",
+          "testFileOrProcedureId": "CS-18-EXCLUSION-RULE",
+          "fixtures": "Deterministic hard-exclusion fixture and included control.",
+          "negativeCase": "Missing, generic or mismatched exclusion rule fails.",
+          "evidenceArtifact": "Explanation assertion log.",
+          "releaseGate": "CS-18-EXCLUSION"
+        }
+      ]
     },
     {
       "ticketId": "CS-18",
@@ -1874,16 +2208,35 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-18-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The low-confidence result is explicitly labelled and is not presented as a confident-looking number.",
+          "candidateCommand": null,
+          "evidenceRequired": "Explanation assertion log.",
+          "automationStatus": "PLANNED",
+          "owner": "Matching owner",
+          "releaseGate": "CS-18-CONFIDENCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Matching owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Deterministic matching fixture with low-confidence result.",
+          "setup": "Produce a low-confidence result and a normal-confidence control from canonical matching output.",
+          "procedure": "Render both explanations and inspect confidence labels.",
+          "assertion": "The low-confidence result is explicitly labelled and is not presented as a confident-looking number.",
+          "expectedResult": "Confidence state is truthful and distinct from score magnitude.",
+          "testName": "CS-18 low-confidence presentation",
+          "testFileOrProcedureId": "CS-18-CONFIDENCE-LABEL",
+          "fixtures": "Deterministic low-confidence and control results.",
+          "negativeCase": "Missing, generic or confident-looking label fails.",
+          "evidenceArtifact": "Explanation assertion log.",
+          "releaseGate": "CS-18-CONFIDENCE"
+        }
+      ]
     },
     {
       "ticketId": "CS-18",
@@ -1891,17 +2244,36 @@
       "criterion": "Presentation derives from the matching output; no second copy of the weights in the UI",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-18-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Presentation derives from matching output, including all dimensions and exclusions, and contains no second copy of matching weights.",
+          "candidateCommand": null,
+          "evidenceRequired": "Source scan and contract output.",
+          "automationStatus": "PLANNED",
+          "owner": "Matching owner",
+          "releaseGate": "CS-18-PROVENANCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Matching owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical scorer and UI bundle available.",
+          "setup": "Mutate scorer output/dimension in an isolated fixture and inspect UI source for duplicated weights.",
+          "procedure": "Run the provenance contract against changed canonical output and source-scan the presentation layer.",
+          "assertion": "Presentation derives from matching output, including all dimensions and exclusions, and contains no second copy of matching weights.",
+          "expectedResult": "UI cannot drift from the deterministic matching engine or silently reimplement its weights.",
+          "testName": "CS-18 scorer provenance contract",
+          "testFileOrProcedureId": "CS-18-PROVENANCE",
+          "fixtures": "Source scan plus synthetic changed-output fixture.",
+          "negativeCase": "Hard-coded duplicate weight, stale display or omitted output dimension fails.",
+          "evidenceArtifact": "Source scan and contract output.",
+          "releaseGate": "CS-18-PROVENANCE"
+        }
+      ]
     },
     {
       "ticketId": "CS-19",
@@ -1909,17 +2281,36 @@
       "criterion": "Save from both list and detail, with immediate confirmation and an undo",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-19-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Both origins show immediate confirmation and undo; failed save names operation and preserves recoverability.",
+          "candidateCommand": null,
+          "evidenceRequired": "DOM and API response log.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-19-SAVE-FLOW"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Authenticated owner and unsaved synthetic posting.",
+          "setup": "Save from list and detail; observe toast/undo.",
+          "procedure": "Invoke save, undo and failure control paths.",
+          "assertion": "Both origins show immediate confirmation and undo; failed save names operation and preserves recoverability.",
+          "expectedResult": "Save flow is coherent from both surfaces.",
+          "testName": "CS-19 list/detail save and undo",
+          "testFileOrProcedureId": "CS-19-SAVE-UNDO",
+          "fixtures": "Synthetic posting with success and API failure controls.",
+          "negativeCase": "Duplicate click or failed request must not create phantom saved record.",
+          "evidenceArtifact": "DOM and API response log.",
+          "releaseGate": "CS-19-SAVE-FLOW"
+        }
+      ]
     },
     {
       "ticketId": "CS-19",
@@ -1927,17 +2318,36 @@
       "criterion": "Status changes persist and survive a reload",
       "verification": [
         {
-          "type": "AUTOMATED_INTEGRATION",
-          "expectedCheck": "CS-19-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:integration",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Status survives reload; stale revision is rejected without overwriting newer state.",
+          "candidateCommand": null,
+          "evidenceRequired": "Database/API assertion log.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-19-PERSISTENCE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Owner lead with status and revision.",
+          "setup": "Change status, reload and submit stale revision control.",
+          "procedure": "Assert persisted status and conflict response.",
+          "assertion": "Status survives reload; stale revision is rejected without overwriting newer state.",
+          "expectedResult": "Persistence and concurrency semantics remain intact.",
+          "testName": "CS-19 status persistence and conflict",
+          "testFileOrProcedureId": "CS-19-STATUS-PERSISTENCE",
+          "fixtures": "Synthetic owner lead and competing revision.",
+          "negativeCase": "Stale update overwriting current status fails.",
+          "evidenceArtifact": "Database/API assertion log.",
+          "releaseGate": "CS-19-PERSISTENCE"
+        }
+      ]
     },
     {
       "ticketId": "CS-19",
@@ -1945,17 +2355,36 @@
       "criterion": "The shortlist makes clear what is waiting on the user",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-19-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Waiting-on-user state is explicit and distinct from completed/external states.",
+          "candidateCommand": null,
+          "evidenceRequired": "DOM state mapping and fixture log.",
+          "automationStatus": "PLANNED",
+          "owner": "QA/UX",
+          "releaseGate": "CS-19-STATE-TRUTH"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA/UX",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Shortlist with waiting, completed and externally opened states.",
+          "setup": "Render shortlist for authenticated owner.",
+          "procedure": "Inspect state labels and action affordances.",
+          "assertion": "Waiting-on-user state is explicit and distinct from completed/external states.",
+          "expectedResult": "Shortlist does not imply fabricated application outcomes.",
+          "testName": "CS-19 shortlist waiting state",
+          "testFileOrProcedureId": "CS-19-WAITING-STATE",
+          "fixtures": "Synthetic leads across allowed states.",
+          "negativeCase": "Applied/interview/offer invented without evidence fails.",
+          "evidenceArtifact": "DOM state mapping and fixture log.",
+          "releaseGate": "CS-19-STATE-TRUTH"
+        }
+      ]
     },
     {
       "ticketId": "CS-19",
@@ -1964,16 +2393,35 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-19-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Same owner's duplicate is recognized once; other owner's record remains isolated.",
+          "candidateCommand": null,
+          "evidenceRequired": "Database/API query log with synthetic IDs.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "CS-19-DEDUP-ISOLATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Two postings sharing canonical duplicate identity and distinct owners.",
+          "setup": "Attempt saves from both list/detail and both owner contexts.",
+          "procedure": "Create/save duplicate fixtures and query owner-scoped records.",
+          "assertion": "Same owner's duplicate is recognized once; other owner's record remains isolated.",
+          "expectedResult": "No duplicate saved posting and no cross-owner leakage.",
+          "testName": "CS-19 duplicate identity and owner isolation",
+          "testFileOrProcedureId": "CS-19-DUPLICATE-OWNER",
+          "fixtures": "Two owners, shared fingerprint, distinct lead IDs.",
+          "negativeCase": "Second same-owner save or cross-owner read must fail/return existing record.",
+          "evidenceArtifact": "Database/API query log with synthetic IDs.",
+          "releaseGate": "CS-19-DEDUP-ISOLATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-20",

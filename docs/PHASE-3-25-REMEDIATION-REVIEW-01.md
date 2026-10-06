@@ -275,9 +275,9 @@ specification content. Both procedures remain PLANNED; the live host proof,
 canary, implementation, and release acceptance have not been executed. This
 content approval is not UAT/PROD acceptance or Phase 3.25 approval.
 
-| Item | Current content SHA-256 | Verdict | Reviewer |
-| ---- | ----------------------- | ------- | -------- |
-| CS-3-AC2 exact binding | e0c9557503fe19772c066f1a671c9e5d3615f44360771bc26a123b5d67e722e3 | APPROVED | /root/phase325_review |
+| Item                                | Current content SHA-256                                          | Verdict  | Reviewer              |
+| ----------------------------------- | ---------------------------------------------------------------- | -------- | --------------------- |
+| CS-3-AC2 exact binding              | e0c9557503fe19772c066f1a671c9e5d3615f44360771bc26a123b5d67e722e3 | APPROVED | /root/phase325_review |
 | CS-3 complete specification content | 5ab580a78008bee4bfd1a12fc4b80119aa8c74b832a995dbbe553ea3ac81df93 | APPROVED | /root/phase325_review |
 
 ## CS-4 whole-specification and exact-binding review
@@ -296,10 +296,10 @@ activation unspecified in the source registry, so this does not make CS-4
 implementation-ready or release-ready. The separate future `git add`
 assertions remain PLANNED; the current 7/7 result does not cover them.
 
-| Item | Current content SHA-256 | Verdict | Reviewer |
-| ---- | ----------------------- | ------- | -------- |
-| CS-4-AC1 exact binding | 8bf172841d6973843d8794b117fb56ac21df2facd228e66299d2d6fea50bec03 | APPROVED | /root/phase325_review |
-| CS-4-AC2 exact binding | 572a00ed3f722d91de92d2f1ca0199c8a6b25f959e78d1aa8ff137e0a32621f8 | APPROVED | /root/phase325_review |
+| Item                                | Current content SHA-256                                                       | Verdict               | Reviewer              |
+| ----------------------------------- | ----------------------------------------------------------------------------- | --------------------- | --------------------- |
+| CS-4-AC1 exact binding              | 8bf172841d6973843d8794b117fb56ac21df2facd228e66299d2d6fea50bec03              | APPROVED              | /root/phase325_review |
+| CS-4-AC2 exact binding              | 572a00ed3f722d91de92d2f1ca0199c8a6b25f959e78d1aa8ff137e0a32621f8              | APPROVED              | /root/phase325_review |
 | CS-4 complete specification content | Reviewer-approved; no ready receipt because release metadata gaps remain OPEN | APPROVED_CONTENT_ONLY | /root/phase325_review |
 
 The next CS-5 whole-specification pass initially returned REVISE because the
@@ -312,11 +312,11 @@ checker execution and exact-SHA hosted clean-checkout evidence remain PLANNED.
 CS-5 `releaseTarget` remains null and activation remains unspecified, so no
 whole-spec readiness receipt is issued.
 
-| Item | Current content SHA-256 | Verdict | Reviewer |
-| ---- | ----------------------- | ------- | -------- |
-| CS-5-AC1 exact binding | a8996f79ded372f68c44f123a574db9f75f72036c9f39c7b2776c820c74eda80 | APPROVED | /root/phase325_review |
-| CS-5-AC2 exact binding | 5ea24a787af9008bde3ae2352ea6f3337773dd4bf2fc3e84cb4aa2dbdc44c0e9 | APPROVED | /root/phase325_review |
-| CS-5-AC3 exact binding | 99d29c244e563c182e08d842a49bcb9e6d05ffccc7db525b182cadabcb0c7d1a | APPROVED | /root/phase325_review |
+| Item                                | Current content SHA-256                                                       | Verdict               | Reviewer              |
+| ----------------------------------- | ----------------------------------------------------------------------------- | --------------------- | --------------------- |
+| CS-5-AC1 exact binding              | a8996f79ded372f68c44f123a574db9f75f72036c9f39c7b2776c820c74eda80              | APPROVED              | /root/phase325_review |
+| CS-5-AC2 exact binding              | 5ea24a787af9008bde3ae2352ea6f3337773dd4bf2fc3e84cb4aa2dbdc44c0e9              | APPROVED              | /root/phase325_review |
+| CS-5-AC3 exact binding              | 99d29c244e563c182e08d842a49bcb9e6d05ffccc7db525b182cadabcb0c7d1a              | APPROVED              | /root/phase325_review |
 | CS-5 complete specification content | Reviewer-approved; no ready receipt because release metadata gaps remain OPEN | APPROVED_CONTENT_ONLY | /root/phase325_review |
 
 ## CS-6 whole-specification content review
@@ -373,8 +373,8 @@ and all three binding plans. This is scoped specification precision approval;
 all three tests remain PLANNED, the safe hosted substitute still needs owner /
 Release Manager acceptance, and no runtime or hosted execution is claimed.
 
-| Item | Current SHA-256 | Verdict |
-| --- | --- | --- |
+| Item                   | Current SHA-256                                                    | Verdict  |
+| ---------------------- | ------------------------------------------------------------------ | -------- |
 | CS-7-AC1 exact binding | `859c349d2999ed5c73e51ffb6edd1fcd63a76520926f80e8a8a55e321a3c04fe` | APPROVED |
 | CS-7-AC2 exact binding | `bc2aece1a4666a097398e404564fb9f9b3242f959683fcccc47eb4f5668f1955` | APPROVED |
 | CS-7-AC3 exact binding | `121c1885a2c3a86599ac523cb9401cd3e8e8d521c06dc1101bdf0ec82ea0bcad` | APPROVED |
@@ -400,3 +400,46 @@ mapped acceptance criteria, 860 unmapped criteria, and 651 findings (629 OPEN,
 15 RESOLVED, 7 RECLASSIFIED). The existing suite had 49 tests before the added
 regression assertion for CS-8 disposition; the post-change result is recorded
 in the local validation report, not inferred here.
+
+### CS-14–CS-19 independent second-pass review (2026-10-06)
+
+An independent read-only reviewer inspected the six newly authored ticket
+refinements and 24 exact AC bindings. The first pass returned `REVISE` for
+three mapping defects: CS-18 AC3/AC4 were aligned to the wrong source criteria,
+CS-15 AC1 did not assert both signed-in and public Pages coverage, and CS-17
+AC2 did not explicitly require validated destination reachability. No binding
+was treated as executed; all remained `PLANNED`.
+
+Those findings were corrected in policy and regenerated specifications. A
+follow-up review then identified one remaining scope issue: CS-18 AC2 also
+asserted low-confidence labeling, which belongs only to AC3. CS-18 AC2 is now
+narrowed to canonical hard-exclusion rule identification; AC3 retains
+low-confidence labeling and AC4 retains scorer provenance. Final independent
+follow-up is pending; no receipt or approval is fabricated in this record.
+
+Follow-up independent approval (authored content only):
+
+- `CS-14-AC1`: `6712790a3cc8fd6765d00bd97c3aaad33b79a0ad1ec7066a4c4e07d64dc07d2e` — APPROVED; PLANNED, not executed.
+- `CS-14-AC2`: `e497d451acd65cf5d9825f94b5489cd1e08734fe07cc21427ccd1c8c7cea8cc5` — APPROVED; PLANNED, not executed.
+- `CS-14-AC3`: `5c4e58c5cd02bdc9c16f79eae367aba9a039b1b2ed6c15d0b330f2ac486255bf` — APPROVED; PLANNED, not executed.
+- `CS-14-AC4`: `e25f5f879f9c7a6dde84390e8092c408d33dbd09aa9fa4ffefb4b51d731550bb` — APPROVED; PLANNED, not executed.
+- `CS-15-AC1`: `c98cdbeba7c86c98d87dd97b3b52c28c9dd673c0e9de8d8cf2e343615638859f` — APPROVED; PLANNED, not executed.
+- `CS-15-AC2`: `1496f72e93639a87e99f6ebc4dc0439205a18dde331138cb100ad1218d6d4dee` — APPROVED; PLANNED, not executed.
+- `CS-15-AC3`: `48659397bb634c8573095cb6a54083319640d6380874ddfac6bb376b59f2692f` — APPROVED; PLANNED, not executed.
+- `CS-15-AC4`: `0fa55808155fd73e9b7c7cfd7fef0a1519c25b6b40ae269baa9eb7bd508a1fc5` — APPROVED; PLANNED, not executed.
+- `CS-16-AC1`: `618ca3cec93d3d1e8770cb77d7b7664a4f15caf9856843df6be7aed9e3932971` — APPROVED; PLANNED, not executed.
+- `CS-16-AC2`: `e2080dfa9e0b42cdf982a1afa47cc01ec47f1beb8af257bedc5d433fc8b71072` — APPROVED; PLANNED, not executed.
+- `CS-16-AC3`: `6c04a19400f2db46157d64165ac841f365ba42842f92e267bcfe188d84eb7914` — APPROVED; PLANNED, not executed.
+- `CS-16-AC4`: `d25fe8036716a4936c60d2cf733d47fa7d7bfad51e24210f6fb6b53dfb10129c` — APPROVED; PLANNED, not executed.
+- `CS-17-AC1`: `4221156b47d51ddf5eb4d2cbb94f5b72954bb2ce9b5c6a32b607c7fbc6e1ff77` — APPROVED; PLANNED, not executed.
+- `CS-17-AC2`: `a8a612972f765f2f621af96072e93395437e07872516d1d82ce2d06396a10b58` — APPROVED; PLANNED, not executed.
+- `CS-17-AC3`: `84f444bcbf76d43693804cfa2c8e70df06860c22c62d86a4b426d2a3ff3a0646` — APPROVED; PLANNED, not executed.
+- `CS-17-AC4`: `cb69c62c50c51b5febe412c0e9366daeef51bb6792ab88eb1990834ced81b45c` — APPROVED; PLANNED, not executed.
+- `CS-18-AC1`: `0bd2422f42aed107162242ae8d02d8495a1bc7bff2cf41a1fe969a3d6dd7034c` — APPROVED; PLANNED, not executed.
+- `CS-18-AC2`: `298aa39e720783ed6daf2798662bce655f9d1ea3414b6fc5819847886239cdf6` — APPROVED; PLANNED, not executed.
+- `CS-18-AC3`: `cef4a75c097366b78d85c85691925127a11dd9aeb24c7903d31fdba2fb440b06` — APPROVED; PLANNED, not executed.
+- `CS-18-AC4`: `7efd2808a3fda9270e81b7b80cd4015aadf095031c8ab252a5c77284f2c394b4` — APPROVED; PLANNED, not executed.
+- `CS-19-AC1`: `53e401c9b3315babdecd535011bf70986f895b5557a649d869b153df6405511a` — APPROVED; PLANNED, not executed.
+- `CS-19-AC2`: `961fc69fa9760fb3051e39119845bcf6a49bdc7b3e8b8d63d86e8612693777fd` — APPROVED; PLANNED, not executed.
+- `CS-19-AC3`: `a5ec07884d266c820e166aaa5e0e181b73e18f5e80d425be7409703246abd8c0` — APPROVED; PLANNED, not executed.
+- `CS-19-AC4`: `6dc76481c5e2398e2150ad63d5a57087e4b3c605fb639ba6e75d7ff058e41d80` — APPROVED; PLANNED, not executed.

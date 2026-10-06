@@ -140,15 +140,27 @@ test('CI bindings preserve no bypass and separate registration from service exec
   const cs7 = model.specs.find((entry) => entry.ticketId === 'CS-7');
   const cs7Criteria = cs7.sections.acceptanceCriteria.requirements;
   const cs7Ac2 = cs7Criteria.find((entry) => entry.id === 'CS-7-AC2');
-  assert.equal(cs7Ac2.sourceText, 'An override exists, requires explicit intent and is recorded in the run log');
+  assert.equal(
+    cs7Ac2.sourceText,
+    'An override exists, requires explicit intent and is recorded in the run log',
+  );
   assert.equal(cs7Ac2.expectedResult, cs7Ac2.sourceText);
   const cs7Ac3 = cs7Criteria.find((entry) => entry.id === 'CS-7-AC3');
   assert.equal(cs7Ac3.expectedResult, cs7Ac3.sourceText);
-  assert.match(cs7.sections.functionalRequirements.requirements.map((entry) => entry.requirement).join(' '), /supersedes historical AC2: no override/i);
-  assert.match(cs7.sections.manualExternalGates.requirements.map((entry) => entry.requirement).join(' '), /owner.*approve/i);
-  assert.ok(cs7.sections.implementationChecklist.requirements.every((entry) =>
-    !/implement .*override|push(?:ing)? .*deliberately failing/i.test(entry.requirement),
-  ));
+  assert.match(
+    cs7.sections.functionalRequirements.requirements.map((entry) => entry.requirement).join(' '),
+    /supersedes historical AC2: no override/i,
+  );
+  assert.match(
+    cs7.sections.manualExternalGates.requirements.map((entry) => entry.requirement).join(' '),
+    /owner.*approve/i,
+  );
+  assert.ok(
+    cs7.sections.implementationChecklist.requirements.every(
+      (entry) =>
+        !/implement .*override|push(?:ing)? .*deliberately failing/i.test(entry.requirement),
+    ),
+  );
   const exactSha = model.traceability.find((row) => row.acId === 'CS-7-AC1').exactBindings[0];
   assert.match(exactSha.setup, /advance fixture origin\/main to SHA B/);
   assert.match(exactSha.testFileOrProcedureId, /require-ci-workflow\.test\.mjs/);
@@ -215,7 +227,9 @@ test('CS3 distinguishes tested recovery logic from current deployed topology evi
     typeof entry === 'string' ? entry : entry.requirement,
   );
   assert.ok(checklist.some((entry) => /infra\/compose\.production\.yml/.test(entry)));
-  assert.ok(checklist.some((entry) => /human-approved live-host Caddy-only crash procedure/.test(entry)));
+  assert.ok(
+    checklist.some((entry) => /human-approved live-host Caddy-only crash procedure/.test(entry)),
+  );
   const ac1 = model.traceability.find((entry) => entry.acId === 'CS-3-AC1').exactBindings[0];
   const ac2 = model.traceability.find((entry) => entry.acId === 'CS-3-AC2').exactBindings[0];
   assert.deepEqual(
@@ -224,14 +238,13 @@ test('CS3 distinguishes tested recovery logic from current deployed topology evi
   );
   assert.deepEqual([ac1.type, ac2.type], ['AUTOMATED_UNIT', 'LIVE_HOST']);
   assert.ok(
-    spec.sections.testStrategy.requirements.some(
-      (entry) =>
-        entry.verification?.some(
-          (verification) =>
-            verification.type === 'LIVE_HOST' &&
-            verification.expectedCheck === ac2.assertion &&
-            verification.releaseGate === 'LIVE_PROXY_TOPOLOGY_RECOVERY',
-        ),
+    spec.sections.testStrategy.requirements.some((entry) =>
+      entry.verification?.some(
+        (verification) =>
+          verification.type === 'LIVE_HOST' &&
+          verification.expectedCheck === ac2.assertion &&
+          verification.releaseGate === 'LIVE_PROXY_TOPOLOGY_RECOVERY',
+      ),
     ),
   );
   assert.match(ac1.assertion, /cooldown/);
@@ -251,7 +264,8 @@ test('CS3 distinguishes tested recovery logic from current deployed topology evi
     path.join(root, '.ai/OPERATOR-RUNBOOK-host-evidence.md'),
     'utf8',
   );
-  const cs3Runbook = operatorRunbook.split('## CS-3 — proxy crash and stable-anchor observation')[1]
+  const cs3Runbook = operatorRunbook
+    .split('## CS-3 — proxy crash and stable-anchor observation')[1]
     .split('## CS-25 —')[0];
   assert.match(cs3Runbook, /infra\/check-proxy-recovery\.sh/);
   assert.doesNotMatch(cs3Runbook, /infra\/v3\/check-proxy-recovery\.sh/);
@@ -259,7 +273,10 @@ test('CS3 distinguishes tested recovery logic from current deployed topology evi
     spec.sections.manualExternalGates.requirements.map((entry) => entry.requirement).join(' '),
     /historical warning against a proxy-only restart applies if Caddy owns the shared namespace/,
   );
-  assert.equal(model.designTraceability.find((entry) => entry.ticketId === 'CS-3').status, 'DESIGN_NOT_APPLICABLE');
+  assert.equal(
+    model.designTraceability.find((entry) => entry.ticketId === 'CS-3').status,
+    'DESIGN_NOT_APPLICABLE',
+  );
 });
 
 test('native reviewer no-edit observation is not capability enforcement evidence', () => {
@@ -326,11 +343,11 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.completeSpecificationCount, 1);
   assert.equal(model.counts.incompleteSpecificationCount, 215);
   assert.equal(model.counts.approvedSpecificationCount, 1);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 49);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 73);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 46);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 860);
-  assert.equal(model.counts.authoredExactTestBindingCount, 52);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 70);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 836);
+  assert.equal(model.counts.authoredExactTestBindingCount, 76);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
