@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "974f2252a505f64492b94fc3c7cedd566045cf087e5354e4f45aaf0df9ebdbb3",
+    ".ai/ticket-specification-policy.json": "5bf2dcf828eabcc19c1aa3b849972fb2b7745baae8c90bba3fb99a7354290235",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "6197bd35ae0ca0e86c9dc9ac277992e8e744594f5162afe24b5604f669bae02c",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "83ac1c19333b48e185fb8a4237103e40e228047b75ff765e727655a4b5a6b4bf"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "ae09faf60c2b31ef220e143fcccc600ef4c0a9b1e036de451c39de02f05ece4c"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -6416,25 +6416,39 @@
       "criterion": "search_jobs and run_events either gain composite (owner_id, run_id) foreign keys matching the pattern already used by lead_history and resume_results, or the divergence is documented with an explicit reason",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-53-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "search_jobs and run_events either gain composite (owner_id, run_id) foreign keys matching the pattern already used by lead_history and resume_results, or the divergence is documented with an explicit reason; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-53-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future CS-53-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-53-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-53; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-53 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs53.test.ts::CS-53-AC1.",
+          "fixtureOrData": "Synthetic CS-53 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "cross-owner composite-FK insert and documented-divergence fixture",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs53.test.ts::CS-53-AC1",
+          "assertion": "search_jobs and run_events either gain composite (owner_id, run_id) foreign keys matching the pattern already used by lead_history and resume_results, or the divergence is documented with an explicit reason; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "search_jobs and run_events either gain composite (owner_id, run_id) foreign keys matching the pattern already used by lead_history and resume_results, or the divergence is documented with an explicit reason",
+          "testName": "CS-53-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs53.test.ts::CS-53-AC1",
+          "fixtures": "Synthetic CS-53 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "cross-owner composite-FK insert must be rejected at database layer; undocumented divergence fails",
+          "evidenceArtifact": "Future CS-53-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-53-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-53",
@@ -6442,17 +6456,39 @@
       "criterion": "Any migration is forward-only, tested on a disposable database, and proven not to break existing rows",
       "verification": [
         {
-          "type": "AUTOMATED_INTEGRATION",
-          "expectedCheck": "CS-53-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:integration",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Any migration is forward-only, tested on a disposable database, and proven not to break existing rows; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-53-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-53-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-53; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-53 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs53.test.ts::CS-53-AC2.",
+          "fixtureOrData": "Synthetic CS-53 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "forward-only migration on disposable DB with preexisting rows and rollback-control fixture",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs53.test.ts::CS-53-AC2",
+          "assertion": "Any migration is forward-only, tested on a disposable database, and proven not to break existing rows; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Any migration is forward-only, tested on a disposable database, and proven not to break existing rows",
+          "testName": "CS-53-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs53.test.ts::CS-53-AC2",
+          "fixtures": "Synthetic CS-53 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "migration rollback, destructive rewrite or changed existing row fails",
+          "evidenceArtifact": "Future CS-53-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-53-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-53",
@@ -6460,25 +6496,39 @@
       "criterion": "Owner isolation tests prove a cross-owner row is rejected at the database layer, not only at the application layer",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-53-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_INTEGRATION",
-          "expectedCheck": "CS-53-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:integration",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Owner isolation tests prove a cross-owner row is rejected at the database layer, not only at the application layer; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-53-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-53-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-53; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-53 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs53.test.ts::CS-53-AC3.",
+          "fixtureOrData": "Synthetic CS-53 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "O1/O2 database sessions inserting the same run/job identity",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs53.test.ts::CS-53-AC3",
+          "assertion": "Owner isolation tests prove a cross-owner row is rejected at the database layer, not only at the application layer; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Owner isolation tests prove a cross-owner row is rejected at the database layer, not only at the application layer",
+          "testName": "CS-53-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs53.test.ts::CS-53-AC3",
+          "fixtures": "Synthetic CS-53 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "cross-owner row insert must fail at database constraint, not only API validation",
+          "evidenceArtifact": "Future CS-53-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-53-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-54",
@@ -6486,17 +6536,39 @@
       "criterion": "script-src 'unsafe-inline' is removed from the web Content-Security-Policy, or retained with a documented, specific reason and a recorded compensating control",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-54-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "script-src 'unsafe-inline' is removed from the web Content-Security-Policy, or retained with a documented, specific reason and a recorded compensating control; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future CS-54-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-54-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-54; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-54 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs54.test.ts::CS-54-AC1.",
+          "fixtureOrData": "Synthetic CS-54 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "CSP header with nonce/hash and unsafe-inline control",
+          "repositoryCommand": "npm run test:ui",
+          "procedure": "PLANNED:scripts/cs54.test.ts::CS-54-AC1",
+          "assertion": "script-src 'unsafe-inline' is removed from the web Content-Security-Policy, or retained with a documented, specific reason and a recorded compensating control; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "script-src 'unsafe-inline' is removed from the web Content-Security-Policy, or retained with a documented, specific reason and a recorded compensating control",
+          "testName": "CS-54-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs54.test.ts::CS-54-AC1",
+          "fixtures": "Synthetic CS-54 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "unsafe-inline remains only with documented compensating control; missing nonce/hash fails",
+          "evidenceArtifact": "Future CS-54-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-54-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-54",
@@ -6504,17 +6576,39 @@
       "criterion": "Any nonce or hash strategy works with the Next.js App Router in production, not only in development",
       "verification": [
         {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-54-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Any nonce or hash strategy works with the Next.js App Router in production, not only in development; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future CS-54-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-54-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-54; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-54 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs54.test.ts::CS-54-AC2.",
+          "fixtureOrData": "Synthetic CS-54 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "production Next App Router build served with nonce/hash and development control",
+          "repositoryCommand": "npm run test:ui",
+          "procedure": "PLANNED:scripts/cs54.test.ts::CS-54-AC2",
+          "assertion": "Any nonce or hash strategy works with the Next.js App Router in production, not only in development; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Any nonce or hash strategy works with the Next.js App Router in production, not only in development",
+          "testName": "CS-54-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs54.test.ts::CS-54-AC2",
+          "fixtures": "Synthetic CS-54 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "development-only success or production nonce/hash mismatch fails",
+          "evidenceArtifact": "Future CS-54-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-54-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-54",
@@ -6522,17 +6616,39 @@
       "criterion": "The change is proven by a real browser run, not asserted - the repaired cross-engine suite can enforce it",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-54-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The change is proven by a real browser run, not asserted - the repaired cross-engine suite can enforce it; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-54-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-54-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-54; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-54 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs54.test.ts::CS-54-AC3.",
+          "fixtureOrData": "Synthetic CS-54 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "Chromium/Firefox/WebKit browser matrix exercising CSP violation and allowed script",
+          "repositoryCommand": "npm run test:ui",
+          "procedure": "PLANNED:scripts/cs54.test.ts::CS-54-AC3",
+          "assertion": "The change is proven by a real browser run, not asserted - the repaired cross-engine suite can enforce it; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "The change is proven by a real browser run, not asserted - the repaired cross-engine suite can enforce it",
+          "testName": "CS-54-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs54.test.ts::CS-54-AC3",
+          "fixtures": "Synthetic CS-54 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "missing browser violation or allowlist bypass fails",
+          "evidenceArtifact": "Future CS-54-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-54-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-55",
@@ -6540,17 +6656,39 @@
       "criterion": "Authenticated GET routes carry a proportionate rate limit, with the most expensive reads limited most strictly",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-55-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Authenticated GET routes carry a proportionate rate limit, with the most expensive reads limited most strictly; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-55-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-55-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-55; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-55 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs55.test.ts::CS-55-AC1.",
+          "fixtureOrData": "Synthetic CS-55 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "eleven authenticated GET routes with per-route budgets and expensive-read strict budget",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs55.test.ts::CS-55-AC1",
+          "assertion": "Authenticated GET routes carry a proportionate rate limit, with the most expensive reads limited most strictly; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Authenticated GET routes carry a proportionate rate limit, with the most expensive reads limited most strictly",
+          "testName": "CS-55-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs55.test.ts::CS-55-AC1",
+          "fixtures": "Synthetic CS-55 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "unlimited or shared budget on expensive route fails",
+          "evidenceArtifact": "Future CS-55-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-55-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-55",
@@ -6559,16 +6697,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-55-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Existing legitimate client polling continues to work and is not broken by the limit - the limit must be derived from the real polling intervals, not guessed; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-55-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-55-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-55; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-55 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs55.test.ts::CS-55-AC2.",
+          "fixtureOrData": "Synthetic CS-55 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "real polling interval trace and sustained allowed polling control",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs55.test.ts::CS-55-AC2",
+          "assertion": "Existing legitimate client polling continues to work and is not broken by the limit - the limit must be derived from the real polling intervals, not guessed; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Existing legitimate client polling continues to work and is not broken by the limit - the limit must be derived from the real polling intervals, not guessed",
+          "testName": "CS-55-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs55.test.ts::CS-55-AC2",
+          "fixtures": "Synthetic CS-55 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "legitimate polling rejected below derived budget fails",
+          "evidenceArtifact": "Future CS-55-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-55-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-55",
@@ -6577,16 +6737,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-55-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Limits are proven by test at both the allowed and the rejected boundary, never only the happy path; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-55-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-55-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-55; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-55 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs55.test.ts::CS-55-AC3.",
+          "fixtureOrData": "Synthetic CS-55 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "N-1 allowed and N rejected request boundary for each route",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs55.test.ts::CS-55-AC3",
+          "assertion": "Limits are proven by test at both the allowed and the rejected boundary, never only the happy path; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Limits are proven by test at both the allowed and the rejected boundary, never only the happy path",
+          "testName": "CS-55-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs55.test.ts::CS-55-AC3",
+          "fixtures": "Synthetic CS-55 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "only happy-path pass or wrong boundary response fails",
+          "evidenceArtifact": "Future CS-55-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-55-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-56",
@@ -6594,17 +6776,39 @@
       "criterion": "derived.titles is constrained at extraction time in packages/resume/src/derive.ts, matching the discipline already applied to techStack and recentSkills",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-56-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "derived.titles is constrained at extraction time in packages/resume/src/derive.ts, matching the discipline already applied to techStack and recentSkills; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future CS-56-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-56-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-56; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-56 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs56.test.ts::CS-56-AC1.",
+          "fixtureOrData": "Synthetic CS-56 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "resume derive fixture with titles, techStack and recentSkills",
+          "repositoryCommand": "npm run test:domain",
+          "procedure": "PLANNED:scripts/cs56.test.ts::CS-56-AC1",
+          "assertion": "derived.titles is constrained at extraction time in packages/resume/src/derive.ts, matching the discipline already applied to techStack and recentSkills; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "derived.titles is constrained at extraction time in packages/resume/src/derive.ts, matching the discipline already applied to techStack and recentSkills",
+          "testName": "CS-56-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs56.test.ts::CS-56-AC1",
+          "fixtures": "Synthetic CS-56 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "derived title bypassing character allowlist fails",
+          "evidenceArtifact": "Future CS-56-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-56-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-56",
@@ -6612,17 +6816,39 @@
       "criterion": "The constraint is proven with hostile fixtures - markup, control characters, template syntax - that must be rejected or stripped, not merely length-bounded",
       "verification": [
         {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-56-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The constraint is proven with hostile fixtures - markup, control characters, template syntax - that must be rejected or stripped, not merely length-bounded; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future CS-56-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-56-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-56; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-56 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs56.test.ts::CS-56-AC2.",
+          "fixtureOrData": "Synthetic CS-56 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "markup/control/template hostile titles and sanitized output capture",
+          "repositoryCommand": "npm run test:domain",
+          "procedure": "PLANNED:scripts/cs56.test.ts::CS-56-AC2",
+          "assertion": "The constraint is proven with hostile fixtures - markup, control characters, template syntax - that must be rejected or stripped, not merely length-bounded; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "The constraint is proven with hostile fixtures - markup, control characters, template syntax - that must be rejected or stripped, not merely length-bounded",
+          "testName": "CS-56-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs56.test.ts::CS-56-AC2",
+          "fixtures": "Synthetic CS-56 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "hostile characters persisted or only length checked fails",
+          "evidenceArtifact": "Future CS-56-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-56-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-56",
@@ -6631,16 +6857,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-56-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Existing legitimate titles continue to extract correctly; the constraint must not silently discard real data; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-56-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-56-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-56; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-56 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs56.test.ts::CS-56-AC3.",
+          "fixtureOrData": "Synthetic CS-56 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "legitimate multilingual and punctuation-bearing title corpus",
+          "repositoryCommand": "npm run test:domain",
+          "procedure": "PLANNED:scripts/cs56.test.ts::CS-56-AC3",
+          "assertion": "Existing legitimate titles continue to extract correctly; the constraint must not silently discard real data; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Existing legitimate titles continue to extract correctly; the constraint must not silently discard real data",
+          "testName": "CS-56-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs56.test.ts::CS-56-AC3",
+          "fixtures": "Synthetic CS-56 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "legitimate title silently discarded fails",
+          "evidenceArtifact": "Future CS-56-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-56-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-57",
@@ -6649,16 +6897,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-57-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "POST /api/logout handles a missing session cookie without a non-null assertion and without a 500; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-57-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-57-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-57; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-57 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs57.test.ts::CS-57-AC1.",
+          "fixtureOrData": "Synthetic CS-57 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "POST /api/logout with absent cookie and normal cookie controls",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs57.test.ts::CS-57-AC1",
+          "assertion": "POST /api/logout handles a missing session cookie without a non-null assertion and without a 500; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "POST /api/logout handles a missing session cookie without a non-null assertion and without a 500",
+          "testName": "CS-57-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs57.test.ts::CS-57-AC1",
+          "fixtures": "Synthetic CS-57 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "absent cookie produces 500 or non-safe response fails",
+          "evidenceArtifact": "Future CS-57-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-57-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-57",
@@ -6667,16 +6937,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-57-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "A logout with no cookie returns the same safe, non-enumerating response as a normal logout; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-57-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-57-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-57; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-57 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs57.test.ts::CS-57-AC2.",
+          "fixtureOrData": "Synthetic CS-57 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "missing-cookie and normal-logout response comparison",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs57.test.ts::CS-57-AC2",
+          "assertion": "A logout with no cookie returns the same safe, non-enumerating response as a normal logout; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "A logout with no cookie returns the same safe, non-enumerating response as a normal logout",
+          "testName": "CS-57-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs57.test.ts::CS-57-AC2",
+          "fixtures": "Synthetic CS-57 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "different enumerable response or timing-sensitive detail fails",
+          "evidenceArtifact": "Future CS-57-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-57-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-57",
@@ -6685,16 +6977,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-57-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "A test covers the missing-cookie path and is proven able to fail; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-57-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-57-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-57; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-57 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs57.test.ts::CS-57-AC3.",
+          "fixtureOrData": "Synthetic CS-57 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "mutation removing missing-cookie branch and test run",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs57.test.ts::CS-57-AC3",
+          "assertion": "A test covers the missing-cookie path and is proven able to fail; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "A test covers the missing-cookie path and is proven able to fail",
+          "testName": "CS-57-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs57.test.ts::CS-57-AC3",
+          "fixtures": "Synthetic CS-57 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "test remains green after removing branch fails the proof",
+          "evidenceArtifact": "Future CS-57-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-57-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-58",
@@ -6702,17 +7016,39 @@
       "criterion": "Each of the two flakes is either root-caused and fixed, or reproduced deterministically and documented with the precise trigger - not merely re-run until green",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-58-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Each of the two flakes is either root-caused and fixed, or reproduced deterministically and documented with the precise trigger - not merely re-run until green; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future CS-58-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-58-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-58; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-58 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs58.test.ts::CS-58-AC1.",
+          "fixtureOrData": "Synthetic CS-58 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "the two documented UI/integration flake reproduction matrices with trigger/environment capture",
+          "repositoryCommand": "npm run engineering:test",
+          "procedure": "PLANNED:scripts/cs58.test.ts::CS-58-AC1",
+          "assertion": "Each of the two flakes is either root-caused and fixed, or reproduced deterministically and documented with the precise trigger - not merely re-run until green; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Each of the two flakes is either root-caused and fixed, or reproduced deterministically and documented with the precise trigger - not merely re-run until green",
+          "testName": "CS-58-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs58.test.ts::CS-58-AC1",
+          "fixtures": "Synthetic CS-58 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "rerun-until-green without root cause or deterministic trigger is insufficient and fails",
+          "evidenceArtifact": "Future CS-58-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-58-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-58",
@@ -6721,16 +7057,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-58-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "No assertion is weakened, no timeout is inflated and no retry is added to make either disappear; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-58-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-58-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-58; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-58 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs58.test.ts::CS-58-AC2.",
+          "fixtureOrData": "Synthetic CS-58 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "mutation controls for weakened assertion, inflated timeout and retry insertion",
+          "repositoryCommand": "npm run engineering:test",
+          "procedure": "PLANNED:scripts/cs58.test.ts::CS-58-AC2",
+          "assertion": "No assertion is weakened, no timeout is inflated and no retry is added to make either disappear; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "No assertion is weakened, no timeout is inflated and no retry is added to make either disappear",
+          "testName": "CS-58-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs58.test.ts::CS-58-AC2",
+          "fixtures": "Synthetic CS-58 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "weakened assertion, timeout inflation or retry makes check pass fails",
+          "evidenceArtifact": "Future CS-58-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-58-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-58",
@@ -6739,16 +7097,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-58-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "docs/KNOWN-LIMITATIONS.md reflects the outcome, including any part that remains unexplained; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-58-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-58-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-58; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-58 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs58.test.ts::CS-58-AC3.",
+          "fixtureOrData": "Synthetic CS-58 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "known-limitations diff fixture for explained and unexplained outcomes",
+          "repositoryCommand": "npm run engineering:test",
+          "procedure": "PLANNED:scripts/cs58.test.ts::CS-58-AC3",
+          "assertion": "docs/KNOWN-LIMITATIONS.md reflects the outcome, including any part that remains unexplained; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "docs/KNOWN-LIMITATIONS.md reflects the outcome, including any part that remains unexplained",
+          "testName": "CS-58-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs58.test.ts::CS-58-AC3",
+          "fixtures": "Synthetic CS-58 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "missing limitation entry or unexplained outcome omitted fails",
+          "evidenceArtifact": "Future CS-58-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-58-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-59",
@@ -6756,17 +7136,39 @@
       "criterion": "The login limiter cannot be exhausted by a third party in a way that locks the legitimate owner out of signing in",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-59-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The login limiter cannot be exhausted by a third party in a way that locks the legitimate owner out of signing in; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-59-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-59-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-59; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-59 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs59.test.ts::CS-59-AC1.",
+          "fixtureOrData": "Synthetic CS-59 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "third-party IP exhaustion against login plus legitimate owner login control",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs59.test.ts::CS-59-AC1",
+          "assertion": "The login limiter cannot be exhausted by a third party in a way that locks the legitimate owner out of signing in; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "The login limiter cannot be exhausted by a third party in a way that locks the legitimate owner out of signing in",
+          "testName": "CS-59-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs59.test.ts::CS-59-AC1",
+          "fixtures": "Synthetic CS-59 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "third-party exhaustion locking owner out fails",
+          "evidenceArtifact": "Future CS-59-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-59-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-59",
@@ -6774,17 +7176,39 @@
       "criterion": "The register limiter is either keyed usefully or explicitly documented as global-and-acceptable while registration stays disabled",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-59-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The register limiter is either keyed usefully or explicitly documented as global-and-acceptable while registration stays disabled; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future CS-59-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-59-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-59; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-59 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs59.test.ts::CS-59-AC2.",
+          "fixtureOrData": "Synthetic CS-59 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "register limiter key matrix with disabled-registration control",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs59.test.ts::CS-59-AC2",
+          "assertion": "The register limiter is either keyed usefully or explicitly documented as global-and-acceptable while registration stays disabled; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "The register limiter is either keyed usefully or explicitly documented as global-and-acceptable while registration stays disabled",
+          "testName": "CS-59-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs59.test.ts::CS-59-AC2",
+          "fixtures": "Synthetic CS-59 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "unjustified global bucket or enabled registration without documented key fails",
+          "evidenceArtifact": "Future CS-59-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-59-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-59",
@@ -6792,17 +7216,39 @@
       "criterion": "Any future limiter on POST /api/logout is keyed on something other than the client IP, and exhausting any other limiter must never prevent signing out - the property test at database.test.ts:3300 must keep passing unchanged",
       "verification": [
         {
-          "type": "AUTOMATED_INTEGRATION",
-          "expectedCheck": "CS-59-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:integration",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Any future limiter on POST /api/logout is keyed on something other than the client IP, and exhausting any other limiter must never prevent signing out - the property test at database.test.ts:3300 must keep passing unchanged; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-59-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-59-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-59; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-59 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs59.test.ts::CS-59-AC3.",
+          "fixtureOrData": "Synthetic CS-59 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "logout request under exhausted non-logout limiter and property test at database.test.ts:3300",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs59.test.ts::CS-59-AC3",
+          "assertion": "Any future limiter on POST /api/logout is keyed on something other than the client IP, and exhausting any other limiter must never prevent signing out - the property test at database.test.ts:3300 must keep passing unchanged; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Any future limiter on POST /api/logout is keyed on something other than the client IP, and exhausting any other limiter must never prevent signing out - the property test at database.test.ts:3300 must keep passing unchanged",
+          "testName": "CS-59-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs59.test.ts::CS-59-AC3",
+          "fixtures": "Synthetic CS-59 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "logout blocked by another limiter or changed property test fails",
+          "evidenceArtifact": "Future CS-59-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-59-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-59",
@@ -6810,17 +7256,39 @@
       "criterion": "No limit is implemented by skipping auth.logout for malformed tokens, which would reintroduce the timing asymmetry CS-57 AC2 exists to remove",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-59-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "No limit is implemented by skipping auth.logout for malformed tokens, which would reintroduce the timing asymmetry CS-57 AC2 exists to remove; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-59-AC4 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-59-AC4-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-59; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-59 fixture F4: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs59.test.ts::CS-59-AC4.",
+          "fixtureOrData": "Synthetic CS-59 fixture F4: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "malformed token logout timing matrix",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs59.test.ts::CS-59-AC4",
+          "assertion": "No limit is implemented by skipping auth.logout for malformed tokens, which would reintroduce the timing asymmetry CS-57 AC2 exists to remove; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "No limit is implemented by skipping auth.logout for malformed tokens, which would reintroduce the timing asymmetry CS-57 AC2 exists to remove",
+          "testName": "CS-59-AC4 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs59.test.ts::CS-59-AC4",
+          "fixtures": "Synthetic CS-59 fixture F4: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "skipping auth.logout for malformed token reintroduces timing asymmetry and fails",
+          "evidenceArtifact": "Future CS-59-AC4 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-59-AC4-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-59",
@@ -6828,17 +7296,39 @@
       "criterion": "docs/SECURITY.md and docs/KNOWN-LIMITATIONS.md accurately describe which limits are per-owner, which are per-account and which are global",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-59-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "docs/SECURITY.md and docs/KNOWN-LIMITATIONS.md accurately describe which limits are per-owner, which are per-account and which are global; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-59-AC5 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-59-AC5-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-59; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-59 fixture F5: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs59.test.ts::CS-59-AC5.",
+          "fixtureOrData": "Synthetic CS-59 fixture F5: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "SECURITY.md and KNOWN-LIMITATIONS.md classification matrix",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs59.test.ts::CS-59-AC5",
+          "assertion": "docs/SECURITY.md and docs/KNOWN-LIMITATIONS.md accurately describe which limits are per-owner, which are per-account and which are global; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "docs/SECURITY.md and docs/KNOWN-LIMITATIONS.md accurately describe which limits are per-owner, which are per-account and which are global",
+          "testName": "CS-59-AC5 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs59.test.ts::CS-59-AC5",
+          "fixtures": "Synthetic CS-59 fixture F5: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "missing or inaccurate per-owner/per-account/global classification fails",
+          "evidenceArtifact": "Future CS-59-AC5 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-59-AC5-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-60",
@@ -6846,17 +7336,39 @@
       "criterion": "API HTTP-level tests are discoverable from v2/apps/api, whether by living there or by an explicit pointer that a reader cannot miss",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-60-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "API HTTP-level tests are discoverable from v2/apps/api, whether by living there or by an explicit pointer that a reader cannot miss; criterion-specific negative control fails closed with no forbidden mutation or exposure",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future CS-60-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-60-AC1-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-60; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-60 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs60.test.ts::CS-60-AC1.",
+          "fixtureOrData": "Synthetic CS-60 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "v2/apps/api discoverability pointer and test file inventory",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs60.test.ts::CS-60-AC1",
+          "assertion": "API HTTP-level tests are discoverable from v2/apps/api, whether by living there or by an explicit pointer that a reader cannot miss; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "API HTTP-level tests are discoverable from v2/apps/api, whether by living there or by an explicit pointer that a reader cannot miss",
+          "testName": "CS-60-AC1 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs60.test.ts::CS-60-AC1",
+          "fixtures": "Synthetic CS-60 fixture F1: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "API HTTP test not discoverable from v2/apps/api fails",
+          "evidenceArtifact": "Future CS-60-AC1 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-60-AC1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-60",
@@ -6865,16 +7377,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-60-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Any move preserves the existing assertions exactly - no test is weakened, skipped or dropped in the relocation, and the same npm script still executes them; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-60-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-60-AC2-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-60; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-60 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs60.test.ts::CS-60-AC2.",
+          "fixtureOrData": "Synthetic CS-60 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "before/after relocation assertion hash and same npm script control",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs60.test.ts::CS-60-AC2",
+          "assertion": "Any move preserves the existing assertions exactly - no test is weakened, skipped or dropped in the relocation, and the same npm script still executes them; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "Any move preserves the existing assertions exactly - no test is weakened, skipped or dropped in the relocation, and the same npm script still executes them",
+          "testName": "CS-60-AC2 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs60.test.ts::CS-60-AC2",
+          "fixtures": "Synthetic CS-60 fixture F2: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "changed, skipped or dropped assertion fails",
+          "evidenceArtifact": "Future CS-60-AC2 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-60-AC2-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-60",
@@ -6883,16 +7417,38 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-60-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The test count before and after is identical, proving nothing was lost in the move; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "candidateCommand": null,
+          "evidenceRequired": "Future CS-60-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / ticket owner",
+          "releaseGate": "CS-60-AC3-RELEASE-GATE"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "QA / ticket owner",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_CONTRACT",
+          "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-60; no production or destructive host action.",
+          "setup": "Prepare Synthetic CS-60 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state and execute only PLANNED:scripts/cs60.test.ts::CS-60-AC3.",
+          "fixtureOrData": "Synthetic CS-60 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "action": "before/after test count and named-case inventory",
+          "repositoryCommand": "npm run test:integration",
+          "procedure": "PLANNED:scripts/cs60.test.ts::CS-60-AC3",
+          "assertion": "The test count before and after is identical, proving nothing was lost in the move; criterion-specific negative control fails closed with no forbidden mutation or exposure",
+          "expectedResult": "The test count before and after is identical, proving nothing was lost in the move",
+          "testName": "CS-60-AC3 exact verification",
+          "testFileOrProcedureId": "PLANNED:scripts/cs60.test.ts::CS-60-AC3",
+          "fixtures": "Synthetic CS-60 fixture F3: owner O1, unauthorized O2 control, malformed/hostile input and criterion-specific state",
+          "negativeCase": "count mismatch or missing named case fails",
+          "evidenceArtifact": "Future CS-60-AC3 evidence: exact command, commit SHA, fixture IDs, raw output and reviewer receipt; planned procedure is not execution.",
+          "releaseGate": "CS-60-AC3-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-61",
