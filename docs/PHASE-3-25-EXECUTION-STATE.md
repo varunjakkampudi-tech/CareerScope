@@ -22,8 +22,12 @@ content is ticket-specification-policy.json; generated coverage owns counters.
   failed CI for A, successful CI for A followed by main advancing to B before
   downstream work, and a successful unchanged-A control. A safe non-shipping
   hosted substitute remains an owner/Release Manager decision; the moving-main
-  runtime defect is recorded, not fixed in this specification phase. Last
-  processed: CS-7. Next ticket: CS-8.
+  runtime defect is recorded, not fixed in this specification phase. CS-7 is
+  the last ticket with a full vertical content review. A later CS-8 checkpoint
+  propagated already-approved AC1/AC2 receipt states; CS-8 remains incomplete
+  due to its unresolved release activation classification. Next content task:
+  finish CS-8 disposition/specification or record the precise decision gate,
+  then proceed to CS-9.
 - Reviewed ACs: CS-1 AC1–3; CS-3 AC1–2; CS-4 AC1–2; CS-5 AC1–3;
   CS-6 AC1–3; CS-7 AC1–3; CS-8 AC1–3; CS-9 AC1–3; CS-10 AC1–3; CS-11 AC1–5;
   CS-12 AC1–4; CS-46 AC1–3; CS-67 AC1–3; CS-70 AC1–3; CS-71 AC1–3.
@@ -34,7 +38,10 @@ content is ticket-specification-policy.json; generated coverage owns counters.
   review counts, not execution evidence. Content-bound hashes are in policy and
   independently observed in REMEDIATION-REVIEW-01.
 - Next content ticket: CS-8, continuing the CS-1–CS-18 vertical batch in
-  canonical order after documenting CS-2's and CS-7's unresolved gates. CS-11 bindings are now reviewed, but its exact static visual
+  canonical order after documenting CS-2's and CS-7's unresolved gates. CS-8's
+  three AC binding groups now have valid independent receipts (49 reviewed
+  procedures total); the content-level release state is still unspecified.
+  CS-11 bindings are now reviewed, but its exact static visual
   mapping remains PARTIAL and named accessibility audit remains future evidence.
   The historical LeadTable/check-ui.mjs paths no longer exist
   after canonical consolidation. CS-2 now has three authored but unreviewed
