@@ -981,6 +981,31 @@ runtime, workflow stage, deployment, merge, or hosted evidence was changed.
 
 Current campaign state is unchanged: 46/216 approved, 170 incomplete, 906 ACs,
 197 mapped/709 unmapped, 304 authored bindings across 296 ACs, 200 reviewed
-bindings, and 442 OPEN findings. Next content ticket remains CS-101. The
-checkpoint commit and feature-branch push are pending final staged-path and
-post-commit verification.
+bindings, and 442 OPEN findings. Next content ticket remains CS-101.
+
+Checkpoint publication verified: commit
+`5c587ce2bed7aedeee6f5fee69520f6d132a7f2a` is on
+`phase-3.25/cloud-continuation`; local `HEAD` and
+`origin/phase-3.25/cloud-continuation` matched, the worktree was clean, and
+`3911a52fb2167707a1b04e258c15c403815286e4` is an ancestor. The post-commit
+`tickets:spec:check` passed with zero drift, proving the immutable-base rule
+after `HEAD` advanced. `LATEST_COMMIT` here identifies the content checkpoint;
+the immediately following documentation-only commit updates this ledger and
+can be identified with `git rev-parse HEAD` because a commit cannot contain its
+own SHA. Cloud resume is ready at the pushed branch.
+
+LATEST_COMMIT: `5c587ce2bed7aedeee6f5fee69520f6d132a7f2a` (content checkpoint)
+APPROVED_SPECS: 46/216
+INCOMPLETE_SPECS: 170/216
+AUTHORED_BINDINGS: 304 across 296 ACs
+REVIEWED_BINDINGS: 200
+OPEN_FINDINGS: 442
+CS80_STATUS: DRAFT / INCOMPLETE; scoped checkpoint controls independently approved
+NEXT_CONTENT_TICKET: CS-101
+NEXT_ACTIONABLE_TICKET: CS-101
+OWNER_DECISIONS_REMAINING: 6
+DESIGN_BLOCKERS_REMAINING: 9 DESIGN_GAP classifications (blocking status remains ticket-specific)
+VALIDATION_STATE: PASS (Node 24.19.0; details above)
+WORKTREE_STATE: clean at the content checkpoint
+LOCAL_REMOTE_MATCH: YES at checkpoint SHA above
+CLOUD_RESUME_READY: YES at `phase-3.25/cloud-continuation`
