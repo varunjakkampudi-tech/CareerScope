@@ -6,8 +6,8 @@ Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc
 | -------------------------------------- | ------------------ |
 | ticketCount                            | 216                |
 | specificationCount                     | 216                |
-| completeSpecificationCount             | 57                 |
-| incompleteSpecificationCount           | 159                |
+| completeSpecificationCount             | 63                 |
+| incompleteSpecificationCount           | 153                |
 | epicMappedCount                        | 216                |
 | orphanTicketCount                      | 0                  |
 | duplicateIdCount                       | 0                  |
@@ -17,27 +17,27 @@ Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc
 | dependencySemanticGapCount             | 0                  |
 | acceptanceCriterionCount               | 906                |
 | suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 232                |
-| unmappedAcceptanceCriterionCount       | 674                |
-| reviewedExactTestBindingCount          | 248                |
+| mappedAcceptanceCriterionCount         | 255                |
+| unmappedAcceptanceCriterionCount       | 651                |
+| reviewedExactTestBindingCount          | 272                |
 | authoredExactTestBindingCount          | 348                |
 | acceptanceCriteriaWithAuthoredBindings | 326                |
-| draftSpecificationCount                | 159                |
+| draftSpecificationCount                | 153                |
 | reviseSpecificationCount               | 0                  |
 | reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 57                 |
+| approvedSpecificationCount             | 63                 |
 | ownerDecisionReconciliationCount       | 11                 |
 | uiTicketCount                          | 146                |
 | blockedTicketCount                     | 37                 |
 | hostpendingActionCount                 | 15                 |
 | holdTicketCount                        | 33                 |
 | currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 26.38888888888889  |
+| specificationCoveragePercent           | 29.166666666666668 |
 | suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 25.607064017660043 |
+| exactReviewedTraceabilityPercent       | 28.14569536423841  |
 | findingsCount                          | 650                |
-| openFindingCount                       | 420                |
-| resolvedFindingCount                   | 114                |
+| openFindingCount                       | 413                |
+| resolvedFindingCount                   | 120                |
 | reclassifiedFindingCount               | 20                 |
 
 Workflow before/after: {"BACKLOG":141,"TODO":0,"IN_PROGRESS":0,"QA":5,"UAT":70,"PROD":0}. Status changes: 0. All six frozen Phase 3 inputs, including migration/design/blocker evidence and hostpending, are compared against the source commit.
@@ -50,8 +50,8 @@ All open gaps are enumerated in PHASE-3-25-QUALITY-AUDIT.md and ticket-specifica
 
 Independent review: REVISE. The real read-only independent reviewer resumed after the initial usage-limit failure, delivered findings and independently verified the mechanical corrections, including source projection validation, cross-cutting UI scope, honest AC metrics, exact-ID sequencing and CS-25 owner deferral. No unresolved mechanical defect remained among the reviewed fixes. Exact AC bindings, ticket-specific requirements/contracts, design gaps and release decisions remain incomplete. Whole-phase disposition is REVISE, not approval.
 
-Remediation starting checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14. Initial reviewed readiness: 0/216. Owner-direction reconciliations: 11, sourced from existing local branch history; CS-46 is approved exclusion scope, not an undecided recommendation. Authored exact verification bindings: 348; independently reviewed bindings: 248; all execution remains PLANNED. Reviewed binding quality does not approve a whole specification. No runtime implementation, status promotion, push, merge, deployment, hosted/provider validation or fabricated evidence was performed. CS-25 historical deferral is retained while the later approved multi-user backup boundary is explicit.
+Remediation starting checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14. Initial reviewed readiness: 0/216. Owner-direction reconciliations: 11, sourced from existing local branch history; CS-46 is approved exclusion scope, not an undecided recommendation. Authored exact verification bindings: 348; independently reviewed bindings: 272; all execution remains PLANNED. Reviewed binding quality does not approve a whole specification. No runtime implementation, status promotion, push, merge, deployment, hosted/provider validation or fabricated evidence was performed. CS-25 historical deferral is retained while the later approved multi-user backup boundary is explicit.
 
 Continuation checkpoint: 2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111. The bounded CS-62–CS-71 remediation ledger records individually reviewed CS-67/CS-70/CS-71 bindings, corrected verification-design findings and unimplemented SaveJob defects. See PHASE-3-25-REMEDIATION-LEDGER.md and PHASE-3-25-REMEDIATION-REVIEW-01.md. Scoped binding approval does not resolve whole-spec release classification or approve the entire phase. The final local artifact commit is resolvable through git log for this report; no self-referential SHA is invented.
 
-PHASE_3_25_COMPLETION: 26.39% reviewed implementation-ready specifications (57/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.
+PHASE_3_25_COMPLETION: 29.17% reviewed implementation-ready specifications (63/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.

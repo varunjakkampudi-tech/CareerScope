@@ -419,7 +419,7 @@ test('whole-spec approval is content-bound and invalidates after substantive cha
   assert.equal(approved.reviewState, 'APPROVED');
   assert.equal(approved.readiness, 'IMPLEMENTATION_READY');
   assert.equal(approved.gaps[0].disposition, 'RESOLVED');
-  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 57);
+  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 63);
 
   inputs.policy.ticketRefinements['CS-3'].additionalRequirements.value[0] +=
     ' Substantive mutation invalidates review.';
@@ -855,13 +855,13 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   });
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
-  assert.equal(model.counts.completeSpecificationCount, 57);
-  assert.equal(model.counts.incompleteSpecificationCount, 159);
-  assert.equal(model.counts.approvedSpecificationCount, 57);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 248);
+  assert.equal(model.counts.completeSpecificationCount, 63);
+  assert.equal(model.counts.incompleteSpecificationCount, 153);
+  assert.equal(model.counts.approvedSpecificationCount, 63);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 272);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 232);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 674);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 255);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 651);
   assert.equal(model.counts.authoredExactTestBindingCount, 348);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
@@ -910,7 +910,7 @@ test('existing owner directions retain source provenance without fabricated read
   assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
   assert.match(direction.remainingGate, /lower bound/);
   assert.equal(spec.reviewState, 'DRAFT');
-  assert.equal(model.counts.approvedSpecificationCount, 57);
+  assert.equal(model.counts.approvedSpecificationCount, 63);
   inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>

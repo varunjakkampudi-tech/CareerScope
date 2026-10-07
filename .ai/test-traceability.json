@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "425bb996eaa334d9ba33fe63cd7a052f201371ce83dc252b344dd835904059e1",
+    ".ai/ticket-specification-policy.json": "c7daec5d8ac656ddb006b1490debfe971b38bcecfc56b729ca4a52d45a0441fb",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "8148f16508742acb65c74ca5508eca84ece2f6f1580b23aef6a0110c20258de8"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "dea1c869d2f613b44d1ee89b032f71c4c6ac0086cf936e8cb38e894a3ce727a7"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -9496,7 +9496,7 @@
         {
           "reviewer": "QA / matching-domain reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Run against the canonical tracked TypeScript source at a recorded commit with the supported Node runtime; no live services, owner data, or production environment.",
           "setup": "Use the TypeScript compiler API to inspect current application-property reads in `packages/matching/src/context.ts` and build an in-memory TypeScript program containing a minimal declaration copied from the authoritative `MatchableProfile['application']` fields plus a synthetic `noticePeriodDays` read; do not modify tracked source.",
@@ -9537,7 +9537,7 @@
         {
           "reviewer": "QA / matching-domain reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_UNIT",
           "preconditions": "Use the existing pure `matchingProfile` projection with a synthetic writable profile containing values for all supported application fields.",
           "setup": "Call `matchingProfile(profile)` with application values `expectedCtc: '18-22 LPA'`, `yearsOfExperience: 7`, `willingToRelocate: true`, and distinct excluded values `currentCtc: '9 LPA'`, `noticePeriodDays: 30`; then pass the projected profile through `buildCandidateContext` with its default resumeText.",
@@ -9578,7 +9578,7 @@
         {
           "reviewer": "QA / matching-domain reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Use a disposable source copy at a recorded commit; do not edit or leave mutations in the working checkout.",
           "setup": "Parse `apps/workers/search/src/collect.ts` with the repository TypeScript compiler API and identify the call expression whose callee is `buildCandidateContext`.",
@@ -9619,7 +9619,7 @@
         {
           "reviewer": "System Designer / Documentation reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "MANUAL_PRODUCT",
           "preconditions": "Current canonical repository tree and architecture document at one reviewed source SHA.",
           "setup": "Inspect the dependency declarations and source exports/calls in the four active packages: core, shared, matching, and search worker.",
@@ -9660,7 +9660,7 @@
         {
           "reviewer": "QA / independent type-contract reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Disposable isolated checkout with dependencies already available and supported Node version; test executes only against copied tracked source and never against production.",
           "setup": "Starting from a clean unmutated copy, run the canonical typecheck and require exit zero; apply the fourth-property mutation to `packages/matching/src/context.ts`; run the same typecheck and require the precise missing-property failure; restore the exact pre-mutation file; rerun and require exit zero.",
@@ -9701,7 +9701,7 @@
         {
           "reviewer": "Repository QA / independent reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Run against the tracked repository checkout; use no production configuration or data.",
           "setup": "Read `.gitattributes` as bytes and identify its final byte without normalizing line endings.",
@@ -9742,7 +9742,7 @@
         {
           "reviewer": "Repository QA / independent reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_INTEGRATION",
           "preconditions": "Run in a unique temporary directory with Git available; no write to the canonical checkout beyond reading the source file.",
           "setup": "Copy `.gitattributes` bytes into a temporary initialized Git repository and preserve a checksum of the fixture before mutation.",
@@ -9783,7 +9783,7 @@
         {
           "reviewer": "Repository QA / independent reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Use a temporary Git repository containing the tracked file and a separately appended synthetic rule; never mutate canonical `.gitattributes`.",
           "setup": "Copy `.gitattributes` into a unique temporary Git repository. Parse every non-comment declaration into an ordered (pattern, exact attribute-token-list) pair and record effective Git attributes for deterministic sentinel paths matching each pre-existing declaration.",
@@ -10275,7 +10275,7 @@
         {
           "reviewer": "Infrastructure QA and Independent Reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Run only against the repository's synthetic CI workflow/env fixture; no live or production database access.",
           "setup": "Load the recovery job's CI-built DATABASE_URL from .github/workflows/ci.yml into a URL parser fixture without emitting credentials; prepare valid loopback and malformed/non-loopback negative variants.",
@@ -10316,7 +10316,7 @@
         {
           "reviewer": "Infrastructure QA and Independent Reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "HOSTED_CI",
           "preconditions": "A commit exists on the intended feature/release branch and GitHub Actions runs the repository's canonical CI workflow; do not dispatch deployment/release jobs.",
           "setup": "Inspect the recovery job in `.github/workflows/ci.yml`; confirm disposable Postgres and LocalStack readiness, explicit pinned Redis image availability, and CI-built DATABASE_URL, REDIS_URL, APP_ORIGIN and local AWS endpoint.",
@@ -10357,7 +10357,7 @@
         {
           "reviewer": "Infrastructure / PostgreSQL QA reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "MANUAL_PRODUCT",
           "preconditions": "Historical run logs 36328261899, 36338480336 and 36338726795 are available through authorized GitHub access or preserved evidence; redact secrets before review.",
           "setup": "Collect timestamped job/step logs, exit codes and CI env-construction revisions for those three historical runs; compare with the workflow changes fixing URL syntax, Redis image availability, REDIS_URL and APP_ORIGIN.",
@@ -10398,7 +10398,7 @@
         {
           "reviewer": "Release Manager and Independent Reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "HOSTED_CI",
           "preconditions": "The four recovery checks are on a committed immutable SHA in the repository; only CI is dispatched, never deployment or release publication.",
           "setup": "Open the normal GitHub Actions run and verify event/ref/checked-out SHA from run metadata without revealing secrets.",
@@ -10562,7 +10562,7 @@
         {
           "reviewer": "QA and Independent Reviewer",
           "testStatus": "HOSTED_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "HOSTED_CI",
           "preconditions": "Use the exact workflow-run records for the original 40-minute timeout and diagnostic runs; current exact-SHA acceptance is not inferred from those records.",
           "setup": "Collect sanitized run/attempt/job/step timestamps for run 36328261899 and the follow-up diagnostics cited in .ai/backlog.json#CS-85; redact credentials and unrelated personal data.",
@@ -10603,7 +10603,7 @@
         {
           "reviewer": "QA and Independent Reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_INTEGRATION",
           "preconditions": "Disposable services are healthy in the canonical CI integration job; tests cannot resolve production endpoints or credentials.",
           "setup": "Use the candidate-SHA root `.env` and workflow service definitions. Derive the current registered integration case/file list from package.json#test:integration and the test-registration check; preserve REDIS_URL loopback configuration and the CI Redis persistence preflight.",
@@ -10644,7 +10644,7 @@
         {
           "reviewer": "Infrastructure QA and Security Reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Use the actual browser harness with injected test-only dependencies under a temporary isolated fixture; no production service or real user data.",
           "setup": "Exercise the existing `scripts/check-ui.ts` runner and its actual spawned files worker, `finally` cleanup and failure path. A test-only injection seam may be added by the future implementation; do not create a parallel cleanup mock that bypasses the production harness path.",
@@ -10685,7 +10685,7 @@
         {
           "reviewer": "QA and Release Manager",
           "testStatus": "HOSTED_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "HOSTED_CI",
           "preconditions": "Two consecutive completed integration workflow runs exist for reviewed candidate commits; no release/deployment workflow is dispatched.",
           "setup": "For each run inspect workflow conclusion, exact checked-out SHA, declared job timeout/budget and the integration, backfill, browser-engine and axe steps.",
@@ -10712,7 +10712,7 @@
       "verification": [
         {
           "type": "EXTERNAL_PROVIDER",
-          "expectedCheck": "The provider policy contains no additional ingress allow, and the external probe finds no accepting port beyond TCP 22, 80 and 443; all other unsolicited traffic is denied or filtered by the provider policy.",
+          "expectedCheck": "The provider policy contains no unapproved TCP/UDP application or management ingress, required stateful/control traffic is explicitly accounted for, and every configured public address accepts no port beyond TCP 22, 80 and 443; IPv6 is either verified identically or evidenced disabled/not applicable.",
           "candidateCommand": null,
           "evidenceRequired": "Redacted hPanel policy export/screenshot, timestamped authorized probe summary, tested host label, reviewer and sanitized results.",
           "automationStatus": "EXTERNAL_REQUIRED",
@@ -10726,19 +10726,19 @@
         {
           "reviewer": "Hostinger operator and Security reviewer",
           "testStatus": "EXTERNAL_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "EXTERNAL_PROVIDER",
           "preconditions": "Owner-authorized hPanel access and an independent external client are available; scope is the production host's inbound firewall only. Keep a second authenticated SSH session and hPanel recovery console available before changing rules.",
           "setup": "Record the existing managed-firewall policy without credentials; prepare an approved external probe plan covering TCP and UDP ports and the exact host under test. Do not run scans outside the authorized host.",
           "fixtureOrData": "Hostinger rule identifiers, direction/protocol/port/action, sanitized host identity, UTC verification time and external probe results; no account secrets, session state, SSH keys, or personal data.",
-          "action": "Set inbound allows for TCP 22, 80 and 443 and configure the provider's explicit default deny for all other unsolicited inbound ports/protocols; verify with read-only policy review and an external scan.",
-          "procedure": "In hPanel inspect the saved firewall policy and confirm ingress rules are TCP 22/80/443 allow plus explicit/default deny for all other unsolicited inbound traffic. From an authorized external network probe the host's full TCP and UDP port ranges; record open/closed/filtered outcomes and verify only the three approved TCP ports accept inbound connections. Do not infer a full deny from a small sample scan; the policy's default-deny rule is authoritative for unprobed ports.",
-          "assertion": "The provider policy contains no additional ingress allow, and the external probe finds no accepting port beyond TCP 22, 80 and 443; all other unsolicited traffic is denied or filtered by the provider policy.",
-          "expectedResult": "Managed firewall is explicitly default-deny except for the three approved TCP ingress ports, corroborated by independent external observation.",
+          "action": "Set inbound allows for TCP 22, 80 and 443 and configure the provider's explicit default deny for all other unsolicited TCP/UDP application and management ports; verify stateful/control-traffic handling and inspect every configured public IPv4/IPv6 address.",
+          "procedure": "In hPanel inspect the saved managed policy and the production edge topology from `infra/compose.production.yml`; confirm TCP 22/80/443 are the only application/management ingress allows, the provider's default-deny behavior covers other TCP/UDP ports, and required ICMP/ICMPv6 control traffic is handled explicitly. From an authorized external network probe every configured public IPv4 and IPv6 address across the full TCP/UDP port ranges; record open/closed/filtered outcomes and distinguish IPv6 disabled/not applicable only with provider evidence.",
+          "assertion": "The provider policy contains no unapproved TCP/UDP application or management ingress, required stateful/control traffic is explicitly accounted for, and every configured public address accepts no port beyond TCP 22, 80 and 443; IPv6 is either verified identically or evidenced disabled/not applicable.",
+          "expectedResult": "Managed firewall is explicitly default-deny for unapproved TCP/UDP application and management ingress, while explicitly documented necessary stateful/ICMP/ICMPv6 control traffic is preserved and independently observed.",
           "testName": "CS-86-AC1 Hostinger allows only approved inbound ports",
           "testFileOrProcedureId": "MANUAL-CS86-AC1-HOSTINGER-POLICY-AND-EXTERNAL-PROBE",
           "fixtures": "Authorized target host and external probe client; no production credentials are used by the scan.",
-          "negativeCase": "Any additional allow rule, additional open TCP/UDP port, missing default-deny policy, or unapproved target scope fails and leaves the ticket blocked.",
+          "negativeCase": "Any additional unapproved TCP/UDP application or management ingress, additional open application port, missing default-deny policy, undocumented control-traffic allow, or unapproved target scope fails and leaves the ticket blocked.",
           "failureCase": "No hPanel access, incomplete full-range scan, ambiguous filtered/open result, or loss of the recovery SSH session requires stop and operator recovery; do not change unrelated rules.",
           "evidenceArtifact": "Redacted hPanel policy export/screenshot, timestamped authorized probe summary, tested host label, reviewer and sanitized results.",
           "releaseGate": "HOSTINGER_MANAGED_FIREWALL",
@@ -10767,7 +10767,7 @@
         {
           "reviewer": "Hostinger operator and Infrastructure reviewer",
           "testStatus": "EXTERNAL_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "LIVE_HOST",
           "preconditions": "Run only on the authorized CareerScope host after preserving a second SSH session; do not modify firewall rules during this verification step.",
           "setup": "Use read-only `nft` commands against `inet careerscope` and `ip nat`; retain command exit statuses and redact unrelated host output.",
@@ -10808,7 +10808,7 @@
         {
           "reviewer": "Infrastructure QA and Independent Reviewer",
           "testStatus": "EXTERNAL_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "LIVE_HOST",
           "preconditions": "Managed policy is configured and verified; an already-open second SSH session is active before any host command. Run from that session and do not restart the proxy.",
           "setup": "Record a UTC timestamp and current deployed revision using approved provenance checks; run only the repository-owned firewall checker and read-only exposure inspection.",
@@ -10849,7 +10849,7 @@
         {
           "reviewer": "Hostinger operator and Security reviewer",
           "testStatus": "EXTERNAL_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "MANUAL_OPERATOR",
           "preconditions": "AC1-AC3 have completed successfully; the record is stored only in the approved restricted operations evidence location.",
           "setup": "Collect the redacted provider rule summary, external probe results, exact host-side command summaries and UTC timestamps; inspect the record for secrets before saving.",
@@ -10890,7 +10890,7 @@
         {
           "reviewer": "QA and Independent Reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Use Node 24 and the current archived builder path; any mutation is performed only in an isolated temporary copy.",
           "setup": "Confirm the historical path is absent or historical and inspect effective ESLint config for `design/archive/legacy-pre-approved-handoff/build-refined-dark.mjs`.",
@@ -10940,7 +10940,7 @@
         {
           "reviewer": "QA and Security Reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Run source checks and failure simulation only in an isolated repository/temp directory; never expose environment values or run a production workflow.",
           "setup": "Parse every job in .github/workflows/ci.yml; enumerate required and optional jobs, failure outputs, artifact upload steps, paths and retention; inject synthetic child failure through the actual harness seam.",
@@ -10960,7 +10960,7 @@
         {
           "reviewer": "QA and Release Manager",
           "testStatus": "HOSTED_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "HOSTED_CI",
           "preconditions": "A naturally failing non-production CI run exists for a reviewed exact SHA; do not induce failure on production or disclose sensitive payloads.",
           "setup": "Inspect every failed CI job, its failure upload step, artifact name/paths/retention and exact failed step/native log reference.",
@@ -11042,7 +11042,7 @@
         {
           "reviewer": "QA and Release Manager",
           "testStatus": "HOSTED_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "HOSTED_CI",
           "preconditions": "Two consecutive complete canonical CI workflows exist on reviewed exact candidate SHAs; no deployment is dispatched.",
           "setup": "Inspect each run's checked-out SHA and required verify, integration, backfill, browser/axe and recovery jobs/steps under the current root-workspace workflow names.",

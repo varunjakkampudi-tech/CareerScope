@@ -2777,7 +2777,7 @@
         "infra/provision-host.sh",
         "infra/check-host-firewall.sh",
         "infra/audit-host.sh",
-        "infra/compose.canonical.yml"
+        "infra/compose.production.yml"
       ],
       "additionalRequirements": {
         "problem": [
@@ -2787,7 +2787,7 @@
           "Add the documented provider-managed inbound deny layer while preserving SSH recovery, required web traffic, IPv4/IPv6 control traffic, Docker NAT/egress, and the invariant that application/data services are not public."
         ],
         "functionalRequirements": [
-          "AC1 requires the Hostinger managed inbound policy to allow TCP 22, 80, and 443 only and deny unsolicited inbound traffic on every other port; record protocol/direction and the provider's default-deny behavior rather than assuming omitted rules are denied.",
+          "AC1 requires the Hostinger managed inbound policy to allow TCP 22, 80, and 443 only for application/management ingress and deny unsolicited TCP/UDP application ports; preserve and explicitly inspect the provider's stateful/control-traffic handling for required ICMP/ICMPv6. Verify every configured public IPv4 and IPv6 address, or record evidence that IPv6 is disabled/not applicable; an IPv4-only scan is insufficient.",
           "AC2 requires the existing `inet careerscope` input policy to remain `drop`, retain established/related handling, invalid-state drop, loopback and Docker bridge allowances, IPv4 ICMP echo-request/destination-unreachable/time-exceeded, IPv6 ICMP, DHCP UDP destination 68/546, and TCP 22/80/443; preserve Docker's `ip nat` table and its NAT rules. Do not run `nft flush ruleset`.",
           "AC3 requires `bash infra/check-host-firewall.sh` to exit 0 from a second already-open SSH session after the managed/OS policy is applied; independently confirm only the network-anchor/proxy publishes intended edge ports and internal ports 5280, 5390, 5432, 6379, and 4566 are not externally listening. The checker's 14 assertions are host evidence, not a local CI substitute.",
           "AC4 stores only redacted policy evidence: provider rule identifiers/protocol/direction/ports/actions, verification timestamp with timezone, source IP/range only if non-sensitive and approved, external probe method/results, script exit summary, and reviewer. Never store credentials, hPanel session state, SSH keys, or unredacted account/host secrets."
@@ -5190,6 +5190,14 @@
           ".ai/backlog.json#CS-78",
           ".ai/blocker-classification.json#CS-78"
         ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all five authored CS-78 binding groups; each criterion has an exact procedure, assertion, planned test path and content-bound receipt.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-78",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
       }
     },
     "CS-79": {
@@ -5222,6 +5230,14 @@
         "rationale": "No explicit HOLD/activation classification is recorded; preserve source metadata and request product/release-owner classification.",
         "sources": [
           ".ai/backlog.json#CS-79"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all three authored CS-79 binding groups; each criterion has an isolated fixture procedure, exact assertion, planned test path and content-bound receipt.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-79",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
     },
@@ -5969,6 +5985,14 @@
           ".ai/backlog.json#CS-83",
           ".ai/ticket-specification-policy.json#CS-83"
         ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all four authored CS-83 binding groups, including exact CI environment, recovery-suite, historical-causality and exact-SHA assertions.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-83",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
       }
     },
     "CS-85": {
@@ -5979,6 +6003,32 @@
           ".ai/backlog.json#CS-85",
           ".ai/ticket-specification-policy.json#CS-85"
         ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all four authored CS-85 binding groups, including measured timeout localization, complete browser/axe execution, cleanup preservation and consecutive exact-SHA hosted evidence.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-85",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
+    },
+    "CS-86": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "OWNER_DECISION_REQUIRED",
+        "rationale": "The source ticket has no approved numbered release target. Preserve the external firewall scope and leave release assignment to product/release ownership without inferring authorization from UAT.",
+        "sources": [
+          ".ai/backlog.json#CS-86",
+          "hostpending.txt#CS-86"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all four authored CS-86 binding groups after correcting production topology reference and IPv4/IPv6/control-traffic semantics.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-86",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
       }
     },
     "CS-87": {
@@ -5988,6 +6038,14 @@
         "sources": [
           ".ai/backlog.json#CS-87",
           ".ai/ticket-specification-policy.json#CS-87"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all current CS-87 binding groups, including focused archived-source lint, per-job diagnostics, exact-SHA transport/moving-main controls and consecutive hosted CI evidence.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-87",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
     }
@@ -8011,19 +8069,19 @@
       {
         "reviewer": "Hostinger operator and Security reviewer",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "EXTERNAL_PROVIDER",
         "preconditions": "Owner-authorized hPanel access and an independent external client are available; scope is the production host's inbound firewall only. Keep a second authenticated SSH session and hPanel recovery console available before changing rules.",
         "setup": "Record the existing managed-firewall policy without credentials; prepare an approved external probe plan covering TCP and UDP ports and the exact host under test. Do not run scans outside the authorized host.",
         "fixtureOrData": "Hostinger rule identifiers, direction/protocol/port/action, sanitized host identity, UTC verification time and external probe results; no account secrets, session state, SSH keys, or personal data.",
-        "action": "Set inbound allows for TCP 22, 80 and 443 and configure the provider's explicit default deny for all other unsolicited inbound ports/protocols; verify with read-only policy review and an external scan.",
-        "procedure": "In hPanel inspect the saved firewall policy and confirm ingress rules are TCP 22/80/443 allow plus explicit/default deny for all other unsolicited inbound traffic. From an authorized external network probe the host's full TCP and UDP port ranges; record open/closed/filtered outcomes and verify only the three approved TCP ports accept inbound connections. Do not infer a full deny from a small sample scan; the policy's default-deny rule is authoritative for unprobed ports.",
-        "assertion": "The provider policy contains no additional ingress allow, and the external probe finds no accepting port beyond TCP 22, 80 and 443; all other unsolicited traffic is denied or filtered by the provider policy.",
-        "expectedResult": "Managed firewall is explicitly default-deny except for the three approved TCP ingress ports, corroborated by independent external observation.",
+        "action": "Set inbound allows for TCP 22, 80 and 443 and configure the provider's explicit default deny for all other unsolicited TCP/UDP application and management ports; verify stateful/control-traffic handling and inspect every configured public IPv4/IPv6 address.",
+        "procedure": "In hPanel inspect the saved managed policy and the production edge topology from `infra/compose.production.yml`; confirm TCP 22/80/443 are the only application/management ingress allows, the provider's default-deny behavior covers other TCP/UDP ports, and required ICMP/ICMPv6 control traffic is handled explicitly. From an authorized external network probe every configured public IPv4 and IPv6 address across the full TCP/UDP port ranges; record open/closed/filtered outcomes and distinguish IPv6 disabled/not applicable only with provider evidence.",
+        "assertion": "The provider policy contains no unapproved TCP/UDP application or management ingress, required stateful/control traffic is explicitly accounted for, and every configured public address accepts no port beyond TCP 22, 80 and 443; IPv6 is either verified identically or evidenced disabled/not applicable.",
+        "expectedResult": "Managed firewall is explicitly default-deny for unapproved TCP/UDP application and management ingress, while explicitly documented necessary stateful/ICMP/ICMPv6 control traffic is preserved and independently observed.",
         "testName": "CS-86-AC1 Hostinger allows only approved inbound ports",
         "testFileOrProcedureId": "MANUAL-CS86-AC1-HOSTINGER-POLICY-AND-EXTERNAL-PROBE",
         "fixtures": "Authorized target host and external probe client; no production credentials are used by the scan.",
-        "negativeCase": "Any additional allow rule, additional open TCP/UDP port, missing default-deny policy, or unapproved target scope fails and leaves the ticket blocked.",
+        "negativeCase": "Any additional unapproved TCP/UDP application or management ingress, additional open application port, missing default-deny policy, undocumented control-traffic allow, or unapproved target scope fails and leaves the ticket blocked.",
         "failureCase": "No hPanel access, incomplete full-range scan, ambiguous filtered/open result, or loss of the recovery SSH session requires stop and operator recovery; do not change unrelated rules.",
         "evidenceArtifact": "Redacted hPanel policy export/screenshot, timestamped authorized probe summary, tested host label, reviewer and sanitized results.",
         "releaseGate": "HOSTINGER_MANAGED_FIREWALL",
@@ -8034,7 +8092,7 @@
       {
         "reviewer": "Hostinger operator and Infrastructure reviewer",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "LIVE_HOST",
         "preconditions": "Run only on the authorized CareerScope host after preserving a second SSH session; do not modify firewall rules during this verification step.",
         "setup": "Use read-only `nft` commands against `inet careerscope` and `ip nat`; retain command exit statuses and redact unrelated host output.",
@@ -8057,7 +8115,7 @@
       {
         "reviewer": "Infrastructure QA and Independent Reviewer",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "LIVE_HOST",
         "preconditions": "Managed policy is configured and verified; an already-open second SSH session is active before any host command. Run from that session and do not restart the proxy.",
         "setup": "Record a UTC timestamp and current deployed revision using approved provenance checks; run only the repository-owned firewall checker and read-only exposure inspection.",
@@ -8080,7 +8138,7 @@
       {
         "reviewer": "Hostinger operator and Security reviewer",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_OPERATOR",
         "preconditions": "AC1-AC3 have completed successfully; the record is stored only in the approved restricted operations evidence location.",
         "setup": "Collect the redacted provider rule summary, external probe results, exact host-side command summaries and UTC timestamps; inspect the record for secrets before saving.",
@@ -8172,7 +8230,7 @@
       {
         "reviewer": "Infrastructure QA and Independent Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Run only against the repository's synthetic CI workflow/env fixture; no live or production database access.",
         "setup": "Load the recovery job's CI-built DATABASE_URL from .github/workflows/ci.yml into a URL parser fixture without emitting credentials; prepare valid loopback and malformed/non-loopback negative variants.",
@@ -8195,7 +8253,7 @@
       {
         "reviewer": "Infrastructure QA and Independent Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "HOSTED_CI",
         "preconditions": "A commit exists on the intended feature/release branch and GitHub Actions runs the repository's canonical CI workflow; do not dispatch deployment/release jobs.",
         "setup": "Inspect the recovery job in `.github/workflows/ci.yml`; confirm disposable Postgres and LocalStack readiness, explicit pinned Redis image availability, and CI-built DATABASE_URL, REDIS_URL, APP_ORIGIN and local AWS endpoint.",
@@ -8218,7 +8276,7 @@
       {
         "reviewer": "Infrastructure / PostgreSQL QA reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "Historical run logs 36328261899, 36338480336 and 36338726795 are available through authorized GitHub access or preserved evidence; redact secrets before review.",
         "setup": "Collect timestamped job/step logs, exit codes and CI env-construction revisions for those three historical runs; compare with the workflow changes fixing URL syntax, Redis image availability, REDIS_URL and APP_ORIGIN.",
@@ -8241,7 +8299,7 @@
       {
         "reviewer": "Release Manager and Independent Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "HOSTED_CI",
         "preconditions": "The four recovery checks are on a committed immutable SHA in the repository; only CI is dispatched, never deployment or release publication.",
         "setup": "Open the normal GitHub Actions run and verify event/ref/checked-out SHA from run metadata without revealing secrets.",
@@ -8356,7 +8414,7 @@
       {
         "reviewer": "Repository QA / independent reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Run against the tracked repository checkout; use no production configuration or data.",
         "setup": "Read `.gitattributes` as bytes and identify its final byte without normalizing line endings.",
@@ -8379,7 +8437,7 @@
       {
         "reviewer": "Repository QA / independent reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Run in a unique temporary directory with Git available; no write to the canonical checkout beyond reading the source file.",
         "setup": "Copy `.gitattributes` bytes into a temporary initialized Git repository and preserve a checksum of the fixture before mutation.",
@@ -8402,7 +8460,7 @@
       {
         "reviewer": "Repository QA / independent reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Use a temporary Git repository containing the tracked file and a separately appended synthetic rule; never mutate canonical `.gitattributes`.",
         "setup": "Copy `.gitattributes` into a unique temporary Git repository. Parse every non-comment declaration into an ordered (pattern, exact attribute-token-list) pair and record effective Git attributes for deterministic sentinel paths matching each pre-existing declaration.",
@@ -11432,7 +11490,7 @@
       {
         "reviewer": "QA / matching-domain reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Run against the canonical tracked TypeScript source at a recorded commit with the supported Node runtime; no live services, owner data, or production environment.",
         "setup": "Use the TypeScript compiler API to inspect current application-property reads in `packages/matching/src/context.ts` and build an in-memory TypeScript program containing a minimal declaration copied from the authoritative `MatchableProfile['application']` fields plus a synthetic `noticePeriodDays` read; do not modify tracked source.",
@@ -11455,7 +11513,7 @@
       {
         "reviewer": "QA / matching-domain reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_UNIT",
         "preconditions": "Use the existing pure `matchingProfile` projection with a synthetic writable profile containing values for all supported application fields.",
         "setup": "Call `matchingProfile(profile)` with application values `expectedCtc: '18-22 LPA'`, `yearsOfExperience: 7`, `willingToRelocate: true`, and distinct excluded values `currentCtc: '9 LPA'`, `noticePeriodDays: 30`; then pass the projected profile through `buildCandidateContext` with its default resumeText.",
@@ -11478,7 +11536,7 @@
       {
         "reviewer": "QA / matching-domain reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Use a disposable source copy at a recorded commit; do not edit or leave mutations in the working checkout.",
         "setup": "Parse `apps/workers/search/src/collect.ts` with the repository TypeScript compiler API and identify the call expression whose callee is `buildCandidateContext`.",
@@ -11501,7 +11559,7 @@
       {
         "reviewer": "System Designer / Documentation reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "Current canonical repository tree and architecture document at one reviewed source SHA.",
         "setup": "Inspect the dependency declarations and source exports/calls in the four active packages: core, shared, matching, and search worker.",
@@ -11524,7 +11582,7 @@
       {
         "reviewer": "QA / independent type-contract reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Disposable isolated checkout with dependencies already available and supported Node version; test executes only against copied tracked source and never against production.",
         "setup": "Starting from a clean unmutated copy, run the canonical typecheck and require exit zero; apply the fourth-property mutation to `packages/matching/src/context.ts`; run the same typecheck and require the precise missing-property failure; restore the exact pre-mutation file; rerun and require exit zero.",
@@ -13072,7 +13130,7 @@
       {
         "reviewer": "QA and Independent Reviewer",
         "testStatus": "HOSTED_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "HOSTED_CI",
         "preconditions": "Use the exact workflow-run records for the original 40-minute timeout and diagnostic runs; current exact-SHA acceptance is not inferred from those records.",
         "setup": "Collect sanitized run/attempt/job/step timestamps for run 36328261899 and the follow-up diagnostics cited in .ai/backlog.json#CS-85; redact credentials and unrelated personal data.",
@@ -13095,7 +13153,7 @@
       {
         "reviewer": "QA and Independent Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Disposable services are healthy in the canonical CI integration job; tests cannot resolve production endpoints or credentials.",
         "setup": "Use the candidate-SHA root `.env` and workflow service definitions. Derive the current registered integration case/file list from package.json#test:integration and the test-registration check; preserve REDIS_URL loopback configuration and the CI Redis persistence preflight.",
@@ -13118,7 +13176,7 @@
       {
         "reviewer": "Infrastructure QA and Security Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Use the actual browser harness with injected test-only dependencies under a temporary isolated fixture; no production service or real user data.",
         "setup": "Exercise the existing `scripts/check-ui.ts` runner and its actual spawned files worker, `finally` cleanup and failure path. A test-only injection seam may be added by the future implementation; do not create a parallel cleanup mock that bypasses the production harness path.",
@@ -13141,7 +13199,7 @@
       {
         "reviewer": "QA and Release Manager",
         "testStatus": "HOSTED_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "HOSTED_CI",
         "preconditions": "Two consecutive completed integration workflow runs exist for reviewed candidate commits; no release/deployment workflow is dispatched.",
         "setup": "For each run inspect workflow conclusion, exact checked-out SHA, declared job timeout/budget and the integration, backfill, browser-engine and axe steps.",
@@ -13164,7 +13222,7 @@
       {
         "reviewer": "QA and Independent Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Use Node 24 and the current archived builder path; any mutation is performed only in an isolated temporary copy.",
         "setup": "Confirm the historical path is absent or historical and inspect effective ESLint config for `design/archive/legacy-pre-approved-handoff/build-refined-dark.mjs`.",
@@ -13187,7 +13245,7 @@
       {
         "reviewer": "QA and Security Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Run source checks and failure simulation only in an isolated repository/temp directory; never expose environment values or run a production workflow.",
         "setup": "Parse every job in .github/workflows/ci.yml; enumerate required and optional jobs, failure outputs, artifact upload steps, paths and retention; inject synthetic child failure through the actual harness seam.",
@@ -13207,7 +13265,7 @@
       {
         "reviewer": "QA and Release Manager",
         "testStatus": "HOSTED_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "HOSTED_CI",
         "preconditions": "A naturally failing non-production CI run exists for a reviewed exact SHA; do not induce failure on production or disclose sensitive payloads.",
         "setup": "Inspect every failed CI job, its failure upload step, artifact name/paths/retention and exact failed step/native log reference.",
@@ -13253,7 +13311,7 @@
       {
         "reviewer": "QA and Release Manager",
         "testStatus": "HOSTED_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "HOSTED_CI",
         "preconditions": "Two consecutive complete canonical CI workflows exist on reviewed exact candidate SHAs; no deployment is dispatched.",
         "setup": "Inspect each run's checked-out SHA and required verify, integration, backfill, browser/axe and recovery jobs/steps under the current root-workspace workflow names.",
@@ -14920,6 +14978,144 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "b36a8304ec5522c18b1a04b36e47364ef1216339fc1ec663ab24d8aa534d9dac"
+    },
+    "CS-78-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f3ed0deb3b95854378531408bcf0a25379c30216b2c858d0a712422fc1da95f0"
+    },
+    "CS-78-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "43b3508b01b375e5b88f9602e4856526862434c0e86aeade57a315955c077cb0"
+    },
+    "CS-78-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e3a9b14833b48febc491d10db2860fc7bd34988aad33da93f4c34e12914ca70f"
+    },
+    "CS-78-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "3ed2681667016ea26eb532ae5ff1ca9d0f0438a7ee1308b2752348a2bc3b87ba"
+    },
+    "CS-78-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b123e68ddaf236973e94b6603e5d90816ceab43e96e9ca691ba81f1b5b1845ae"
+    },
+    "CS-79-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "715bc5df1deff76ddf5af2b43ce5ff8a20e46003d7afc31b744d1ca9847ccb97"
+    },
+    "CS-79-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9b78d001d720e92974b3e7ee23a76de63bd5a2f5f4961b533f37041ca5d58533"
+    },
+    "CS-79-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c3e2e38b4b5322b2ff442b548a34db977f48d2dde40fecc087a41b2d76bc19fa"
+    },
+    "CS-83-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a6de8673e90980fef56b91181e64e5af9113872b1cbdf32fd04b91112607a866"
+    },
+    "CS-83-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "6c85d5a6631b834bd376739c1add4aa64217591f46628c12be99aaee46be13bd"
+    },
+    "CS-83-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5cb8dd196e61adab8db062a97926e95cce9f45ead87a74cd33166b183ee07eb6"
+    },
+    "CS-83-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1d879f063e3dfb5470cec4e07ff3648477930848e91dc6eff0f0f796b72184c9"
+    },
+    "CS-85-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9c421f3c830c74b4804f1270e637caab234225338fe8d0a6db94c5caf6c21dc7"
+    },
+    "CS-85-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e35ec1a57bac04f3c988ba1917345696e786bf30cf9a1645142f07f04d78efa1"
+    },
+    "CS-85-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "0939e67413cdef2582a98a91367adc04a11a5763626e64b50fb9d7f31c0749b1"
+    },
+    "CS-85-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "6d44ce5207d877c2dd00e1c04b8e355b73e1bb3cad9a2a31a849793620607d16"
+    },
+    "CS-86-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "80377934d39ab819c67aef86072ca940c9c8077d96cac6ea1ae86dfd39e5404b"
+    },
+    "CS-86-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9e08722af695515a55621c2155000a2d0d580e05285b47c60669fb08ba5bd482"
+    },
+    "CS-86-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "55f4803933cbe51bc04cda229e4ef6ece7e1d573749146f2a726e84a6be38fd8"
+    },
+    "CS-86-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "abb32f38718f1c6db6b2cb8d4fe69dac100a4cf277d3c7e36e367b76907836a4"
+    },
+    "CS-87-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "601e4127cfadc3d6164cc9f6284784b9e6cc9fd11d5afecd9b73f4babd9654e6"
+    },
+    "CS-87-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "510035bb682f89b7bc919021297a3cae1d194488781325bc59325bcc4ff9c087"
+    },
+    "CS-87-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "7e2dcc7855fece1a22ce2cb2b08819c36ecaf88c236fe2b6112a960461e59030"
     }
   },
   "specificationReviewReceipts": {
@@ -14928,6 +15124,42 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "d22f6bbfa84c09392dc8c7bf4d5765cc6ac1ad5733910aa8eeaff3bcb67c80c0"
+    },
+    "CS-78": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "034dff30a8ff904d5bd7344c4858094cc852570c93a4d3cd7352f1f27dc5a9a6"
+    },
+    "CS-79": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "fd2d988117eb87c3003597e4cb89c2844ac4f008b0a203386eb80d833db25f77"
+    },
+    "CS-83": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "bebe064c0360797f1b0b3fecb09044b171979121bf3339a4c9852de4be2c462e"
+    },
+    "CS-85": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d8ea1b24d1e67b46707136d4c5d77b45fa71a1a9dfaa4498f29412e223b24bee"
+    },
+    "CS-86": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "23f093ac5e3369f5cdac731bc85c53ce265dd959e025b0cfbaa95c33e2cba703"
+    },
+    "CS-87": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "7ea5fc7f23dfcbcf0a9a88e329f23342e6d41197abdd20ba3a28b363ba78fa25"
     },
     "CS-82": {
       "verdict": "APPROVED",

@@ -605,3 +605,87 @@ The independent read-only reviewer `/root/phase325_review` returned `APPROVED` f
 CS-100 AC1–AC4 authored content: initial read-only review found two issues (the proposed `stage_7_enabled` metadata was overstated as a live flag, and CS-40 RBAC was overstated as an existing contract) plus an unconditional AC4 RBAC negative case. The specification now describes proposed metadata only, names CS-40 as an unimplemented conditional gate only for privileged admin fixtures/actions, and keeps the candidate-only shell independent. After deterministic regeneration, `/root/phase325_review` returned `APPROVE_AUTHORED_CONTENT` on the source AC4 binding and generated projection. No binding receipt or whole-spec approval exists; all CS-100 checks remain planned, design remains partial, and the ticket remains DRAFT. This disposition is scoped authored-content review, not independent approval of the complete ticket.
 
 CS-82 AC1–AC4 authored verification bindings: `/root/phase325_review` returned `APPROVE_AUTHORED_CONTENT` after AC4 was corrected to name its future mutation test and AC2 was revised to conditionally test fixed-main/no-input versus explicit-input contracts. Both branches require owner disposition and canonical criterion agreement before passing; Pages remains a separate contract. Receipt hashes: CS-82-AC1 `a1e99ae78163eb7cad1a729c62c0b6db6880e6c5ac98f163dea412eeeb17a4d4`; CS-82-AC2 `974106e954b4a709b73efca305fde5e4452796d03b442a0017f2a852822d0453`; CS-82-AC3 `bdc7519f6a14b2e9549493f1ef2aff4e05d186e4b50d7cbb923b6f6c6a910f8f`; CS-82-AC4 `55544293effe94f74128b9dc144f6f4bd4336436ab7378ccba9d3f2a3fae0cfb`. Binding procedures remain `PLANNED`; no hosted protection, deployment, or publication was executed. This does not approve CS-82 as a whole: owner disposition, release classification, and hosted environment protection remain gates.
+
+### CS-78 and CS-79 authored-content approval
+
+The independent reviewer `/root/phase325_review` approved the complete authored
+specifications and exact binding groups for CS-78 and CS-79. CS-78 confirms the
+canonical root-workspace three-field matching projection and treats historical
+V1/V2 wording as provenance; its type-boundary mutation proof remains planned.
+CS-79 confirms the historical final-LF defect is not current behavior and
+requires an isolated temporary Git fixture for append/effective-attribute
+regression coverage. Whole-specification hashes are CS-78
+`034dff30a8ff904d5bd7344c4858094cc852570c93a4d3cd7352f1f27dc5a9a6` and CS-79
+`fd2d988117eb87c3003597e4cb89c2844ac4f008b0a203386eb80d833db25f77`. All
+procedures remain planned; release/activation metadata remains an explicit
+owner gate and no ticket workflow status changed.
+
+Content-bound binding receipts for this review are CS-78-AC1
+`f3ed0deb3b95854378531408bcf0a25379c30216b2c858d0a712422fc1da95f0`, AC2
+`43b3508b01b375e5b88f9602e4856526862434c0e86aeade57a315955c077cb0`, AC3
+`e3a9b14833b48febc491d10db2860fc7bd34988aad33da93f4c34e12914ca70f`, AC4
+`3ed2681667016ea26eb532ae5ff1ca9d0f0438a7ee1308b2752348a2bc3b87ba`, AC5
+`b123e68ddaf236973e94b6603e5d90816ceab43e96e9ca691ba81f1b5b1845ae`, CS-79-AC1
+`715bc5df1deff76ddf5af2b43ce5ff8a20e46003d7afc31b744d1ca9847ccb97`, AC2
+`9b78d001d720e92974b3e7ee23a76de63bd5a2f5f4961b533f37041ca5d58533`, and AC3
+`c3e2e38b4b5322b2ff442b548a34db977f48d2dde40fecc087a41b2d76bc19fa`.
+
+Content-bound binding receipts for CS-83/85/87 are CS-83-AC1
+`a6de8673e90980fef56b91181e64e5af9113872b1cbdf32fd04b91112607a866`, AC2
+`6c85d5a6631b834bd376739c1add4aa64217591f46628c12be99aaee46be13bd`, AC3
+`5cb8dd196e61adab8db062a97926e95cce9f45ead87a74cd33166b183ee07eb6`, AC4
+`1d879f063e3dfb5470cec4e07ff3648477930848e91dc6eff0f0f796b72184c9`, CS-85-AC1
+`9c421f3c830c74b4804f1270e637caab234225338fe8d0a6db94c5caf6c21dc7`, AC2
+`e35ec1a57bac04f3c988ba1917345696e786bf30cf9a1645142f07f04d78efa1`, AC3
+`0939e67413cdef2582a98a91367adc04a11a5763626e64b50fb9d7f31c0749b1`, AC4
+`6d44ce5207d877c2dd00e1c04b8e355b73e1bb3cad9a2a31a849793620607d16`, CS-87-AC1
+`601e4127cfadc3d6164cc9f6284784b9e6cc9fd11d5afecd9b73f4babd9654e6`, AC2
+`510035bb682f89b7bc919021297a3cae1d194488781325bc59325bcc4ff9c087`, AC3
+`0b4261c97d6a65dd38ea973c39ad8494a33cf67b135c60d102074ffd0c310eb9`, and AC4
+`7e2dcc7855fece1a22ce2cb2b08819c36ecaf88c236fe2b6112a960461e59030`.
+
+### CS-86 authored-content approval
+
+The independent reviewer `/root/phase325_review` approved CS-86 after the
+production topology reference was corrected to `infra/compose.production.yml`
+and AC1 consistently separated unapproved TCP/UDP application/management
+ingress from explicitly documented stateful and ICMP/ICMPv6 control traffic.
+The specification also requires verification of every configured public IPv4
+and IPv6 address, or evidence that IPv6 is disabled/not applicable. Whole-spec
+hash: `343634c5b268d441bcf8dd7345877b6c1212a02ff92710512d582115248f5c54`.
+Binding hashes: AC1 `80377934d39ab819c67aef86072ca940c9c8077d96cac6ea1ae86dfd39e5404b`,
+AC2 `9e08722af695515a55621c2155000a2d0d580e05285b47c60669fb08ba5bd482`, AC3
+`55f4803933cbe51bc04cda229e4ef6ece7e1d573749146f2a726e84a6be38fd8`, and AC4
+`abb32f38718f1c6db6b2cb8d4fe69dac100a4cf277d3c7e36e367b76907836a4`. Live
+Hostinger evidence and release assignment remain future gates; no host action
+or workflow status change occurred.
+
+### CS-83, CS-85 and CS-87 authored-content approval
+
+The independent reviewer `/root/phase325_review` approved the authored
+specifications and current exact binding groups for CS-83, CS-85 and CS-87.
+CS-83 binds recovery URLs to same-job disposable Docker provisioning and keeps
+historical causality explicitly unproven unless logs and source establish it.
+CS-85 separates measured timeout localization, complete integration/browser/axe
+execution, cleanup preservation and the two-run exact-SHA hosted gate. CS-87
+preserves per-job diagnostics, focused archived-source lint and distinct
+transport-SHA/moving-main deployment controls. Whole-specification hashes are
+CS-83 `bebe064c0360797f1b0b3fecb09044b171979121bf3339a4c9852de4be2c462e`,
+CS-85 `d8ea1b24d1e67b46707136d4c5d77b45fa71a1a9dfaa4498f29412e223b24bee`,
+and CS-87 `7ea5fc7f23dfcbcf0a9a88e329f23342e6d41197abdd20ba3a28b363ba78fa25`.
+Hosted exact-SHA and production evidence remain future gates; no runtime,
+workflow or release status changed.
+
+Binding hashes: CS-83-AC1 `a6de8673e90980fef56b91181e64e5af9113872b1cbdf32fd04b91112607a866`,
+AC2 `6c85d5a6631b834bd376739c1add4aa64217591f46628c12be99aaee46be13bd`, AC3
+`5cb8dd196e61adab8db062a97926e95cce9f45ead87a74cd33166b183ee07eb6`, AC4
+`1d879f063e3dfb5470cec4e07ff3648477930848e91dc6eff0f0f796b72184c9`, CS-85-AC1
+`9c421f3c830c74b4804f1270e637caab234225338fe8d0a6db94c5caf6c21dc7`, AC2
+`e35ec1a57bac04f3c988ba1917345696e786bf30cf9a1645142f07f04d78efa1`, AC3
+`0939e67413cdef2582a98a91367adc04a11a5763626e64b50fb9d7f31c0749b1`, AC4
+`6d44ce5207d877c2dd00e1c04b8e355b73e1bb3cad9a2a31a849793620607d16`, CS-87-AC1
+`601e4127cfadc3d6164cc9f6284784b9e6cc9fd11d5afecd9b73f4babd9654e6`, AC2
+`510035bb682f89b7bc919021297a3cae1d194488781325bc59325bcc4ff9c087`, and AC4
+`7e2dcc7855fece1a22ce2cb2b08819c36ecaf88c236fe2b6112a960461e59030`.
+CS-86 final regenerated whole-specification digest after policy normalization:
+`23f093ac5e3369f5cdac731bc85c53ce265dd959e025b0cfbaa95c33e2cba703`.
