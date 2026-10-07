@@ -6,8 +6,8 @@ Structural section coverage and generated count are not implementation readiness
 | -------------------------------------- | ------------------ |
 | ticketCount                            | 216                |
 | specificationCount                     | 216                |
-| completeSpecificationCount             | 55                 |
-| incompleteSpecificationCount           | 161                |
+| completeSpecificationCount             | 57                 |
+| incompleteSpecificationCount           | 159                |
 | epicMappedCount                        | 216                |
 | orphanTicketCount                      | 0                  |
 | duplicateIdCount                       | 0                  |
@@ -22,21 +22,21 @@ Structural section coverage and generated count are not implementation readiness
 | reviewedExactTestBindingCount          | 248                |
 | authoredExactTestBindingCount          | 348                |
 | acceptanceCriteriaWithAuthoredBindings | 326                |
-| draftSpecificationCount                | 161                |
+| draftSpecificationCount                | 159                |
 | reviseSpecificationCount               | 0                  |
 | reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 55                 |
+| approvedSpecificationCount             | 57                 |
 | ownerDecisionReconciliationCount       | 11                 |
 | uiTicketCount                          | 146                |
 | blockedTicketCount                     | 37                 |
 | hostpendingActionCount                 | 15                 |
 | holdTicketCount                        | 33                 |
 | currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 25.462962962962962 |
+| specificationCoveragePercent           | 26.38888888888889  |
 | suggestedVerificationMappingPercent    | 100                |
 | exactReviewedTraceabilityPercent       | 25.607064017660043 |
 | findingsCount                          | 650                |
-| openFindingCount                       | 421                |
+| openFindingCount                       | 420                |
 | resolvedFindingCount                   | 114                |
 | reclassifiedFindingCount               | 20                 |
 
@@ -356,7 +356,7 @@ Structural section coverage and generated count are not implementation readiness
 | CS-88  | RELEASE_TARGET_UNDECIDED        | OPEN                    | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-88  | RELEASE_STATE_UNSPECIFIED       | OPEN                    | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
 | CS-88  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
-| CS-89  | RELEASE_TARGET_UNDECIDED        | OPEN                    | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
+| CS-89  | RELEASE_TARGET_UNDECIDED        | EXTERNAL_GATE           | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-89  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-90  | OWNER_DECISION                  | RECLASSIFIED            | technicalApproach      | Cognito would change the authentication authority; account, region, migration, rollback, and identity mapping must be approved first.                                    | Product owner                         | Owner-approved Cognito architecture, migration mapping, trust-boundary threat model, and rollback policy.                               |
 | CS-90  | RELEASE_TARGET_UNDECIDED        | OPEN                    | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |

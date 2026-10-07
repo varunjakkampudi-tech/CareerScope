@@ -6,8 +6,8 @@ Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc
 | -------------------------------------- | ------------------ |
 | ticketCount                            | 216                |
 | specificationCount                     | 216                |
-| completeSpecificationCount             | 55                 |
-| incompleteSpecificationCount           | 161                |
+| completeSpecificationCount             | 57                 |
+| incompleteSpecificationCount           | 159                |
 | epicMappedCount                        | 216                |
 | orphanTicketCount                      | 0                  |
 | duplicateIdCount                       | 0                  |
@@ -22,21 +22,21 @@ Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc
 | reviewedExactTestBindingCount          | 248                |
 | authoredExactTestBindingCount          | 348                |
 | acceptanceCriteriaWithAuthoredBindings | 326                |
-| draftSpecificationCount                | 161                |
+| draftSpecificationCount                | 159                |
 | reviseSpecificationCount               | 0                  |
 | reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 55                 |
+| approvedSpecificationCount             | 57                 |
 | ownerDecisionReconciliationCount       | 11                 |
 | uiTicketCount                          | 146                |
 | blockedTicketCount                     | 37                 |
 | hostpendingActionCount                 | 15                 |
 | holdTicketCount                        | 33                 |
 | currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 25.462962962962962 |
+| specificationCoveragePercent           | 26.38888888888889  |
 | suggestedVerificationMappingPercent    | 100                |
 | exactReviewedTraceabilityPercent       | 25.607064017660043 |
 | findingsCount                          | 650                |
-| openFindingCount                       | 421                |
+| openFindingCount                       | 420                |
 | resolvedFindingCount                   | 114                |
 | reclassifiedFindingCount               | 20                 |
 
@@ -54,4 +54,4 @@ Remediation starting checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14. Initi
 
 Continuation checkpoint: 2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111. The bounded CS-62–CS-71 remediation ledger records individually reviewed CS-67/CS-70/CS-71 bindings, corrected verification-design findings and unimplemented SaveJob defects. See PHASE-3-25-REMEDIATION-LEDGER.md and PHASE-3-25-REMEDIATION-REVIEW-01.md. Scoped binding approval does not resolve whole-spec release classification or approve the entire phase. The final local artifact commit is resolvable through git log for this report; no self-referential SHA is invented.
 
-PHASE_3_25_COMPLETION: 25.46% reviewed implementation-ready specifications (55/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.
+PHASE_3_25_COMPLETION: 26.39% reviewed implementation-ready specifications (57/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.

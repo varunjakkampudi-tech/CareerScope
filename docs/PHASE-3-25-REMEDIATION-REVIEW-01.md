@@ -541,6 +541,31 @@ Independent read-only whole-spec and exact-binding review by `/root/phase325_rev
 CS-87 AC3 and CS-89 AC1–AC5 authored verification bindings: independent reviewer `/root/phase325_review` returned `APPROVE_AUTHORED_CONTENT` after the exact procedures, controls, and negative cases were revised. Content-bound binding receipt hashes: CS-87-AC3 `0b4261c97d6a65dd38ea973c39ad8494a33cf67b135c60d102074ffd0c310eb9`; CS-89-AC1 `63d986df92f98ee3f5306cf2f908d26bf68092c65c291cc589d909e3a6b3306c`; CS-89-AC2 `404d4743c67cf070293269fb480e32fdac179af828a2598ed39838775b874a34`; CS-89-AC3 `34ee37cfd51471014150fb9324866ef3dba8aa37c1b02d1ec973c9dc157b8f08`; CS-89-AC4 `b32e507d9e74a1b38922f829a0da7eb64237875644fcb93e7239399e343e7cd3`; CS-89-AC5 `114aa1668ed82dd6fa1c7adce21a5f18ddd8df7ec5b0f89d5e0d09d69c18e190`. These are binding-only approvals, not whole-ticket approvals; planned checks and external/manual evidence remain unexecuted. No product code, AI activation, credentials, deployment or release evidence was changed or claimed.
 CS-82 AC1–AC4 authored verification bindings: `/root/phase325_review` returned `APPROVE_AUTHORED_CONTENT` after AC4 was corrected to name its future mutation test and AC2 was revised to conditionally test fixed-main/no-input versus explicit-input contracts. Both branches require owner disposition and canonical criterion agreement before passing; Pages remains a separate contract. Receipt hashes: CS-82-AC1 `a1e99ae78163eb7cad1a729c62c0b6db6880e6c5ac98f163dea412eeeb17a4d4`; CS-82-AC2 `974106e954b4a709b73efca305fde5e4452796d03b442a0017f2a852822d0453`; CS-82-AC3 `bdc7519f6a14b2e9549493f1ef2aff4e05d186e4b50d7cbb923b6f6c6a910f8f`; CS-82-AC4 `55544293effe94f74128b9dc144f6f4bd4336436ab7378ccba9d3f2a3fae0cfb`. Binding procedures remain `PLANNED`; no hosted protection, deployment, or publication was executed. This does not approve CS-82 as a whole: owner disposition, release classification, and hosted environment protection remain gates.
 
+### CS-82 final whole-ticket approval
+
+After the owner-approved fixed-main/protected-production classification was
+projected without altering historical source metadata, `/root/phase325_review`
+independently approved CS-82 and its four exact bindings. Final binding hashes:
+AC1 `a1e99ae78163eb7cad1a729c62c0b6db6880e6c5ac98f163dea412eeeb17a4d4`, AC2
+`cd2b2deb6e8be3832e7d1c73cee04eaa1a75c6a11931cd69c467309f42f873b9`, AC3
+`bdc7519f6a14b2e9549493f1ef2aff4e05d186e4b50d7cbb923b6f6c6a910f8f`, and AC4
+`55544293effe94f74128b9dc144f6f4bd4336436ab7378ccba9d3f2a3fae0cfb`. The
+content-bound whole-specification digest is
+`d068b76ac1fed99c8bbd1c8044514dec4a7e783479ee5938b0106ef93ec8a35d`. All
+procedures remain planned future evidence; no hosted protection, deployment or
+publication was executed.
+
+### CS-89 whole-ticket approval
+
+`/root/phase325_review` independently approved the complete CS-89
+OpenRouter/AI specification at content hash
+`d22f6bbfa84c09392dc8c7bf4d5765cc6ac1ad5733910aa8eeaff3bcb67c80c0` after the
+effective delivery classification was corrected to `OWNER_PENDING` /
+`CONDITIONAL` / `MANUAL_GATE`. Historical backlog metadata remains preserved;
+provider/model verification, owner approval, secret provisioning and hosted
+safety evidence remain future gates. No AI activation or production/provider
+execution was performed.
+
 ### CS-107 authored review
 
 Independent review by `/root/phase325_review` returned `APPROVE_AUTHORED_CONTENT` after the cross-surface specification was narrowed to current route/state contracts, AC2 gained an independently authored locale/timezone expected-output oracle, AC3 separated server authorization/error assertions from browser recovery behavior, and both local findings were dispositioned as resolved. Binding hashes: CS-107-AC1 `6b38a9cdc2da86214ee5e43e97e4e5daa28b15eea48039b0f680e4aa9d995a4f`, AC2 `c17c35f6d8c6f9234c871b3a3e36f00cae10fb4d221ed5aa18f08aafb6168044`, AC3 `a8825bd4a1af96aca468c5cf93f91bd5c7d934edc4d3921f5c2618953f749d56`, AC4 `b36a8304ec5522c18b1a04b36e47364ef1216339fc1ec663ab24d8aa534d9dac`. Final whole-spec digest: `049fc2b87fa2dc98fc22bb65ed5bc776c7eb421ba186feebeb47bd4796fa0ce5`. Planned, hosted and manual evidence remains unexecuted.

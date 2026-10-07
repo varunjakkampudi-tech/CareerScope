@@ -2627,6 +2627,26 @@
         "Record GitHub hosted environment-protection evidence separately from repository YAML checks; no source workflow or host configuration changes are implied by this specification."
       ]
     },
+    "CS-89": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-89",
+        ".ai/ticket-specification-policy.json#CS-89",
+        "docs/OWNER-DECISIONS-2026-10-02.md"
+      ],
+      "additionalRequirements": {},
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "OWNER_PENDING",
+        "effectiveReleaseState": "CONDITIONAL",
+        "deliveryMode": "MANUAL_GATE",
+        "rationale": "The approved AI activation contract is optional, default-off and conditional/manual. OpenRouter provider/model, secret provisioning, owner approval and live safety evidence remain future gates; historical backlog release metadata is preserved and does not authorize activation.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-89",
+          ".ai/backlog.json#CS-89",
+          "docs/OWNER-DECISIONS-2026-10-02.md"
+        ]
+      }
+    },
     "CS-85": {
       "reviewStatus": "DRAFT",
       "sourceReferences": [
@@ -5213,6 +5233,17 @@
           ".ai/backlog.json#CS-82",
           ".github/workflows/deploy.yml",
           ".github/workflows/publish-pages.yml"
+        ]
+      }
+    },
+    "CS-89": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "OpenRouter activation remains guarded by explicit owner approval and external provider/model verification; no product release target is inferred from historical backlog metadata. The specification is implementation-ready while activation remains a future gate.",
+        "sources": [
+          ".ai/backlog.json#CS-89",
+          ".ai/ticket-specification-policy.json#CS-89",
+          "docs/OWNER-DECISIONS-2026-10-02.md"
         ]
       }
     },
@@ -14721,7 +14752,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "974106e954b4a709b73efca305fde5e4452796d03b442a0017f2a852822d0453"
+      "contentHash": "cd2b2deb6e8be3832e7d1c73cee04eaa1a75c6a11931cd69c467309f42f873b9"
     },
     "CS-82-AC3": {
       "verdict": "APPROVED",
@@ -14892,6 +14923,18 @@
     }
   },
   "specificationReviewReceipts": {
+    "CS-89": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d22f6bbfa84c09392dc8c7bf4d5765cc6ac1ad5733910aa8eeaff3bcb67c80c0"
+    },
+    "CS-82": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d068b76ac1fed99c8bbd1c8044514dec4a7e783479ee5938b0106ef93ec8a35d"
+    },
     "CS-107": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
