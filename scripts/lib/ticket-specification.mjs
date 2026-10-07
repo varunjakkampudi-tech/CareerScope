@@ -271,18 +271,37 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
   const specs = tickets.map((ticket) => {
     const designModel = mapped.get(ticket.id);
     const blocker = blockerMap.get(ticket.id);
+    const refinement = policy.ticketRefinements?.[ticket.id];
+    const processScope = refinement?.processScope;
     const profile = policy.domains[ticket.area] ?? policy.domains.default;
     const epicId =
       ticket.epicId ??
       designModel?.epicId ??
       policy.epicAssignments[ticket.id] ??
       policy.areaEpicMap[ticket.area];
-    const screens = designIndex.entries.filter(
+    const ownedScreens = designIndex.entries.filter(
       (entry) =>
         entry.primaryTicketId === ticket.id ||
         entry.childTicketIds?.includes(ticket.id) ||
         entry.crossCuttingTicketIds?.includes(ticket.id),
     );
+    const relatedMapping = refinement?.relatedDesignScreenMapping;
+    const relatedScreens = relatedMapping
+      ? relatedMapping.screenIds
+          .map((screenId) => designIndex.entries.find((entry) => entry.designId === screenId))
+          .filter(Boolean)
+          .map((screen) => ({
+            ...screen,
+            mappingRelationship: relatedMapping.relationship,
+            mappingRationale: relatedMapping.rationale,
+          }))
+      : [];
+    const screens = [
+      ...ownedScreens,
+      ...relatedScreens.filter(
+        (screen) => !ownedScreens.some((owned) => owned.designId === screen.designId),
+      ),
+    ];
     const refs = [...new Set(designModel?.designRefs ?? ticket.designRefs ?? [])].sort();
     const ui =
       ticket.area === 'frontend' ||
@@ -300,13 +319,15 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     // Only the canonical ticket or an explicitly reviewed blocker disposition
     // may supply effective release state. A design map's RELEASE label must
     // never turn an unassigned ticket into IMPLEMENT_NOW.
-    const release =
-      ticket.releaseState ??
-      (ticket.blocked && blocker?.hostpending && blocker.releaseDisposition === 'ACTIVE_R1'
-        ? 'ACTIVE_R1'
-        : 'UNSPECIFIED');
-    const deliveryMode =
-      release === 'UNSPECIFIED'
+    const release = processScope
+      ? processScope.effectiveReleaseState
+      : (ticket.releaseState ??
+        (ticket.blocked && blocker?.hostpending && blocker.releaseDisposition === 'ACTIVE_R1'
+          ? 'ACTIVE_R1'
+          : 'UNSPECIFIED'));
+    const deliveryMode = processScope
+      ? processScope.deliveryMode
+      : release === 'UNSPECIFIED'
         ? 'UNDECIDED'
         : release === 'HOLD'
           ? 'HOLD'
@@ -323,14 +344,17 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       ? 'DESIGN_NOT_APPLICABLE'
       : ticket.id === 'CS-216' || !refs.length
         ? 'DESIGN_GAP'
-        : screens.length
+        : ownedScreens.length
           ? 'DESIGN_VERIFIED'
           : 'DESIGN_PARTIAL';
     const rows = ticket.acceptanceCriteria.map((criterion, index) =>
       verification(ticket, criterion, index, profile.commands),
     );
     for (const row of rows) {
-      row.exactBindings = policy.exactVerificationBindings?.[row.acId] ?? [];
+      const amendments = refinement?.bindingAmendments?.[row.acId] ?? {};
+      row.exactBindings = (policy.exactVerificationBindings?.[row.acId] ?? []).map(
+        (binding, index) => ({ ...binding, ...(amendments[String(index)] ?? {}) }),
+      );
       if (row.exactBindings.length) {
         row.verification = row.exactBindings.map((binding) => ({
           type: binding.type,
@@ -408,13 +432,17 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         'Product owner',
         'Explicit release assignment or owner-approved future-release disposition.',
       );
-    if (release === 'UNSPECIFIED')
+    if (release === 'UNSPECIFIED' || processScope)
       gap(
         'RELEASE_STATE_UNSPECIFIED',
         'delivery',
-        'Source ticket has no release/HOLD activation classification.',
+        processScope
+          ? 'Source has no product release/HOLD state because this ticket is a repository process checkpoint; product release/activation is explicitly not applicable.'
+          : 'Source ticket has no release/HOLD activation classification.',
         'Product owner / release reviewer',
-        'Approved activation classification; historical package versions are not release authorization.',
+        processScope
+          ? 'Preserve the source workflow/status and distinguish the branch-local process checkpoint from product release/activation.'
+          : 'Approved activation classification; historical package versions are not release authorization.',
       );
     if (
       ticket.id === 'CS-47' &&
@@ -484,6 +512,13 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         role: designModel?.role ?? ticket.role ?? null,
         state: screen.surface,
         variantType: screen.variantType,
+        ...(screen.mappingRelationship
+          ? {
+              ownerTicketId: screen.primaryTicketId,
+              mappingRelationship: screen.mappingRelationship,
+              mappingRationale: screen.mappingRationale,
+            }
+          : {}),
         componentContract: 'CS-105 / CS-106',
         viewport:
           'Exact reference dimensions; approved mobile policy must be recorded before visual acceptance.',
@@ -492,7 +527,9 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       reason:
         designStatus === 'DESIGN_NOT_APPLICABLE'
           ? 'Non-UI engineering/domain task; no page rendering is required by its scope.'
-          : 'Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability.',
+          : designStatus === 'DESIGN_PARTIAL' && relatedScreens.length > 0
+            ? 'The canonical full-reference board maps this ticket to related screens, but those screens remain owned by their named child tickets; parent-level state designs are incomplete, so this remains partial.'
+            : 'Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability.',
     };
     designTraceability.push(trace);
     const criteria = rows.map((row) => ({
@@ -723,8 +760,16 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           {
             size: ticket.size,
             complexity: ticket.complexity,
-            releaseTarget: ticket.releaseTarget ?? null,
+            releaseTarget: processScope
+              ? processScope.effectiveReleaseTarget
+              : (ticket.releaseTarget ?? null),
             releaseState: release,
+            ...(processScope
+              ? {
+                  sourceReleaseTarget: ticket.releaseTarget ?? null,
+                  processScope,
+                }
+              : {}),
             sourceDisposition: blocker?.releaseDisposition ?? null,
             deferredDecision:
               blocker?.releaseDisposition === 'DEFERRED_BY_OWNER'
@@ -749,7 +794,6 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         ],
       ),
     };
-    const refinement = policy.ticketRefinements?.[ticket.id];
     const decision = policy.decisionReconciliations?.[ticket.id];
     if (decision) {
       const reconciliation = {
@@ -794,6 +838,43 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           [source, ...refinement.sourceReferences],
         );
       }
+    }
+    if (processScope) {
+      const processDoD = [
+        'Specification/process DoD: preserve the canonical backlog status and Phase 3 migration evidence; record the exact branch, immutable base SHA, complete authored-input path set, generated-output subset and rolling predecessor/current manifest hashes.',
+        'Run the named Phase 3.25 generation twice and require zero second-run drift; validate the exact rolling manifest, privacy/publication guards, focused specification tests and diff/path review before any separately authorized branch-local checkpoint.',
+        'Obtain independent whole-ticket and exact-AC review receipts bound to the resulting specification/binding content; do not treat this process checkpoint as product acceptance, PROD evidence, main integration authorization, merge or deployment approval.',
+      ];
+      sections.definitionOfDone = present(processDoD, [
+        source,
+        'docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2',
+        'docs/TESTING.md',
+      ]);
+      sections.completionEvidence = present(
+        [
+          {
+            commands: [
+              'npm run tickets:spec:generate (run twice; second run must report changedFiles: 0)',
+              'npm run tickets:spec:check',
+              'npm run tickets:spec:test',
+              'npm run privacy:test',
+              'npm run privacy:check',
+              'node --test scripts/stage-pages.test.mjs',
+              'git diff --check',
+            ],
+            sourceEvidence:
+              'Record the actual base/branch and manifest predecessor/current hash, path count/delta, redacted path review, reviewer verdict and clean/dirty result; command output must be from the exact checkpoint content.',
+            required: [
+              'exact branch-local manifest and path/diff review',
+              'deterministic second-generation no-op',
+              'passing Phase 3.25 specification and privacy/publication validation',
+              'content-bound independent whole-specification and AC-binding receipts',
+            ],
+            rule: 'This is repository process evidence only; product integration/browser/production acceptance and deployed-revision evidence are not CS-80 completion criteria.',
+          },
+        ],
+        [source, 'docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2'],
+      );
     }
     const specification = {
       ticketId: ticket.id,
@@ -1043,6 +1124,47 @@ export function validateCatalog(model, inputs, resolvePath) {
     if (!inputs.backlog.items.some((ticket) => ticket.id === id))
       errors.push(`orphan refinement ${id}`);
     if (refinement.reviewStatus !== 'DRAFT') errors.push(`unproven editorial review ${id}`);
+    if (refinement.processScope !== undefined) {
+      const scope = refinement.processScope;
+      if (
+        id !== 'CS-80' ||
+        scope.kind !== 'REPOSITORY_PROCESS_CHECKPOINT' ||
+        scope.phase !== 'PHASE_3_25' ||
+        scope.effectiveReleaseTarget !== 'NOT_APPLICABLE' ||
+        scope.effectiveReleaseState !== 'NOT_APPLICABLE' ||
+        scope.deliveryMode !== 'PROCESS_CHECKPOINT' ||
+        scope.branch !== 'phase-3.25/cloud-continuation' ||
+        scope.mainIntegrationAuthorized !== false ||
+        typeof scope.rationale !== 'string' ||
+        !scope.rationale.trim()
+      )
+        errors.push(`invalid process delivery classification ${id}`);
+    }
+    if (refinement.relatedDesignScreenMapping !== undefined) {
+      const mapping = refinement.relatedDesignScreenMapping;
+      const board = (inputs.designIndex.fullReferenceBoards ?? []).find(
+        (entry) => entry.primaryTicketId === id,
+      );
+      if (
+        !board ||
+        mapping.relationship !== 'RELATED_SCOPE_NOT_OWNERSHIP' ||
+        typeof mapping.rationale !== 'string' ||
+        !mapping.rationale.trim() ||
+        !Array.isArray(mapping.screenIds) ||
+        mapping.screenIds.length === 0 ||
+        new Set(mapping.screenIds).size !== mapping.screenIds.length
+      )
+        errors.push(`invalid related design screen mapping ${id}`);
+      for (const screenId of mapping.screenIds ?? []) {
+        const screen = inputs.designIndex.entries.find((entry) => entry.designId === screenId);
+        if (
+          !screen ||
+          !board?.componentScreenIds.includes(screenId) ||
+          !inputs.backlog.items.some((ticket) => ticket.id === screen.primaryTicketId)
+        )
+          errors.push(`unresolved related design screen mapping ${id}.${screenId}`);
+      }
+    }
     if (
       !refinement.sourceReferences?.length ||
       refinement.sourceReferences.some((source) => !resolvePath(source.split('#')[0]))
@@ -1077,6 +1199,42 @@ export function validateCatalog(model, inputs, resolvePath) {
         ))
     )
       errors.push(`invalid implementation checklist override ${id}`);
+    for (const [acId, amendments] of Object.entries(refinement.bindingAmendments ?? {})) {
+      if (!canonicalAcs.has(acId) || !acId.startsWith(`${id}-AC`))
+        errors.push(`orphan binding amendment ${acId}`);
+      const sourceBindings = inputs.policy.exactVerificationBindings?.[acId];
+      if (!Array.isArray(sourceBindings)) {
+        errors.push(`binding amendment has no source binding ${acId}`);
+        continue;
+      }
+      for (const [index, fields] of Object.entries(amendments)) {
+        if (
+          !Number.isInteger(Number(index)) ||
+          Number(index) < 0 ||
+          Number(index) >= sourceBindings.length
+        )
+          errors.push(`invalid binding amendment index ${acId}.${index}`);
+        if (
+          !fields ||
+          typeof fields !== 'object' ||
+          Array.isArray(fields) ||
+          Object.entries(fields).some(
+            ([field, value]) =>
+              ![
+                'setup',
+                'fixtureOrData',
+                'action',
+                'procedure',
+                'failureCase',
+                'negativeCase',
+              ].includes(field) ||
+              typeof value !== 'string' ||
+              !value.trim(),
+          )
+        )
+          errors.push(`invalid binding amendment fields ${acId}.${index}`);
+      }
+    }
   }
   for (const [ticketId, dispositions] of Object.entries(inputs.policy.findingDispositions ?? {})) {
     if (!inputs.backlog.items.some((ticket) => ticket.id === ticketId))

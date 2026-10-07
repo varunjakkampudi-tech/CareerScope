@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "5368e8e4d21922c18d8fb6facd0b8f30883022b377b3006a1a31f238fdc34e43",
+    ".ai/ticket-specification-policy.json": "47a0b031dfa6b4a84d21bb165410f3cb45f73ed72d1ac56960040bec8ff96790",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "648664dcf9286c148f1e117bacd9c780dae50163829df0e309b94b914e32858e"
@@ -50842,15 +50842,15 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OWNER_DECISION_REQUIRED"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
           "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
+          "reason": "Source has no product release/HOLD state because this ticket is a repository process checkpoint; product release/activation is explicitly not applicable.",
           "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OWNER_DECISION_REQUIRED"
+          "requiredEvidence": "Preserve the source workflow/status and distinguish the branch-local process checkpoint from product release/activation.",
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -50889,7 +50889,7 @@
           "requirements": [
             "Nothing has been committed since 2026-09-19. 260 files are untracked, including 25 of the 37 files under v2/apps/web/src. For an untracked file git diff HEAD has no baseline at all, so a reviewer cannot certify that a change is limited to what was claimed, cannot certify a freeze, and cannot reconstruct what any earlier review actually saw.",
             {
-              "requirement": "CS-80 is historical evidence about an earlier missing baseline, not a claim that the present branch is still the measured 2026-09-25 tree. The current worktree is dirty at 3911a52 and its proposed checkpoint consists only of Phase 3.25 policy, generated catalogs/specs, tests and documentation. Reviewers need a precise, owner-authorized path baseline and a pre-stage exclusion/privacy check before a checkpoint can be created.",
+              "requirement": "CS-80 records a historical missing-baseline finding, not a claim that the present branch is still the measured 2026-09-25 tree. The current continuation starts at a committed Phase 3.25 branch checkpoint; every subsequent checkpoint still requires an exact branch/path manifest, deterministic output review and pre-stage exclusion/privacy checks. The owner-authorized rolling-manifest exception is limited to the current Phase 3.25 branch and does not authorize main integration.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -50900,7 +50900,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "value": {
@@ -50919,7 +50920,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "currentState": {
@@ -51030,7 +51032,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "persistence": {
@@ -51057,7 +51060,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "apiContract": {
@@ -51083,7 +51087,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "design": {
@@ -51109,7 +51114,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "responsive": {
@@ -51148,7 +51154,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "observability": {
@@ -51200,7 +51207,7 @@
                   "testFileOrProcedureId": "MANUAL-CS80-AC1",
                   "fixtures": "No application data; repository paths only.",
                   "negativeCase": "An untracked file, unexplained modified file, path outside the named scope, or unresolved diff makes the result FAIL rather than an empty/success result.",
-                  "failureCase": "If the proposed scope contains a generated artifact prohibited by AC3, or includes any unclassified path, the checkpoint remains pending; do not treat a separate local authorization as a compatible AC3 disposition.",
+                  "failureCase": "A path outside the exact owner-authorized total checkpoint scope, an unexplained untracked/modified path, or a generated-output path outside the rolling manifest fails. Authored policy/scripts/tests/docs within the explicitly named Phase 3.25 task scope are reviewed separately and are not required to belong to generated-output roots/classes.",
                   "evidenceArtifact": "Redacted path manifest, starting/final SHA, `git status --short`, `git diff --check` and post-checkpoint tree comparison; never include file contents containing secrets or private data.",
                   "repositoryCommand": "git status --short; git diff --name-only; git diff --check",
                   "releaseGate": "CS-80-AC1-RELEASE-GATE"
@@ -51214,7 +51221,7 @@
               "verification": [
                 {
                   "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "Authorization for the named branch is explicit and valid; no path is presumed exempt from AC3 and the policy/source conflict is independently visible.",
+                  "expectedCheck": "The owner explicitly authorizes the named branch-local checkpoint actions; every changed path is within the named task scope, and only generated outputs are constrained by the rolling generated-artifact roots/classes. Main integration and shipping remain unauthorized.",
                   "candidateCommand": null,
                   "evidenceRequired": "Redacted authorization scope record plus reviewed policy references and disposition; no secrets or unrelated conversation content.",
                   "automationStatus": "PLANNED",
@@ -51233,15 +51240,15 @@
                   "preconditions": "The current task expressly names the Phase 3.25 branch and checkpoint commit/push scope; confirm no higher-level branch or security prohibition applies.",
                   "setup": "Retain the current task authorization and compare its exact branch, actions and path scope with .github/copilot-instructions.md, the CS-80 source criterion and the proposed path manifest.",
                   "fixtureOrData": "Owner authorization text and the exact path manifest only; no credentials, user data, generated runtime output, or production state.",
-                  "action": "Confirm commit/push authorization is explicit and repository-policy compatible, then separately determine whether the authorized generated projections conflict with frozen CS-80 AC3; do not resolve the latter by interpretation.",
-                  "procedure": "Record the authorized branch and actions, exact allowed paths, exclusions, and reviewed policy clauses. Compare the generated catalog/specification paths to AC3 verbatim. If the authorized path list contains generated artifacts forbidden by AC3, leave the checkpoint blocked until the owner supplies a source-backed compatible disposition.",
-                  "assertion": "Authorization for the named branch is explicit and valid; no path is presumed exempt from AC3 and the policy/source conflict is independently visible.",
-                  "expectedResult": "The checkpoint may proceed only when the explicit authorization and every included path are consistent with the source criterion; otherwise no commit/push is performed.",
-                  "testName": "CS-80-AC2 verifies scoped authorization and artifact compatibility",
+                  "action": "Verify the owner decision OD-2026-10-07-CS80-AC3-V2 authorizes only the controlled rolling generated-artifact manifest on phase-3.25/cloud-continuation, and verify the current user instruction separately authorizes only branch-local commit/push after checks; main integration, merge and deployment remain unauthorized.",
+                  "procedure": "Record the explicitly authorized branch-local actions and exclusions, then compare the complete changed-path set with the exact Phase 3.25 task scope. Partition it into authored source inputs/tooling/tests/docs and generator-owned outputs. Review every authored path for task necessity and inspect its diff; validate only the generated-output subset against OD-2026-10-07-CS80-AC3-V2 roots/classes, source derivation, predecessor/hash chain and added/removed/unchanged manifest. Stop for any unclassified/extra path, prohibited content, or attempted main integration/merge/deploy.",
+                  "assertion": "The owner explicitly authorizes the named branch-local checkpoint actions; every changed path is within the named task scope, and only generated outputs are constrained by the rolling generated-artifact roots/classes. Main integration and shipping remain unauthorized.",
+                  "expectedResult": "The exact total checkpoint path set is reviewed and task-scoped; its generated-output subset independently satisfies the rolling manifest policy. No main integration permission is inferred.",
+                  "testName": "CS-80-AC2 verifies branch-scoped owner authorization and rolling manifest policy",
                   "testFileOrProcedureId": "MANUAL-CS80-AC2",
                   "fixtures": "Task authorization and repository policy text; no external/production data.",
                   "negativeCase": "Missing target branch, implicit authorization, broad scope, disallowed path, or a generated artifact excluded only by assertion fails closed.",
-                  "failureCase": "The remaining frozen AC3 artifact-scope conflict blocks a checkpoint; this is not a missing commit authorization or an AGENTS.md prohibition.",
+                  "failureCase": "Missing or ambiguous branch/action authorization, any unrelated/unclassified total path, invalid generated-output manifest, privacy violation, or attempted main integration/deployment blocks the checkpoint.",
                   "evidenceArtifact": "Redacted authorization scope record plus reviewed policy references and disposition; no secrets or unrelated conversation content.",
                   "repositoryCommand": "Read-only review of .github/copilot-instructions.md and CS-80 source criterion",
                   "releaseGate": "CS-80-AC2-RELEASE-GATE"
@@ -51255,9 +51262,9 @@
               "verification": [
                 {
                   "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "All ignore and publication guards pass before commit, every path is classified, no secret/private/runtime artifact is present, and no generated artifact is added contrary to AC3.",
+                  "expectedCheck": "Only source-derived, deterministic generator outputs within an already represented root/class and required for Phase 3.25 evidence may enter the branch checkpoint; prohibited or unclassified content is absent.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Command exit summaries, redacted path classification, `git check-ignore -v` for representative excluded paths, full diff review record and exact SHA; no private contents.",
+                  "evidenceRequired": "Test exit summaries, manifest and predecessor hashes, complete path/class delta, redacted path and diff review record, second-generation zero-diff result and exact checkpoint SHA; never include private content.",
                   "automationStatus": "PLANNED",
                   "owner": "Security / repository-integrity reviewer",
                   "releaseGate": "CS-80-AC3-RELEASE-GATE"
@@ -51272,18 +51279,18 @@
                   "reviewStatus": "DRAFT",
                   "type": "AUTOMATED_SECURITY",
                   "preconditions": "Before staging, with the current repository state preserved; checks must not print secret values or scan private runtime data into logs.",
-                  "setup": "Run the repository privacy checks and inspect ignore/publication rules against the exact proposed path manifest; classify every generated artifact path as prohibited by the frozen AC3; keep it out of history unless a compatible owner-approved policy/criterion disposition is recorded.",
+                  "setup": "Run the repository privacy/publication checks and inspect the exact rolling manifest against immutable base commit and prior manifest hash. Confirm every output is generator-owned, derived from approved source-controlled Phase 3.25 inputs, required for specification/catalog/traceability/review/handoff, and belongs to the existing docs/tickets, .ai catalog or docs/PHASE-3-25 report roots/classes. Classify every added, removed, changed and unchanged path; reject secrets, personal data, runtime/provider/user data, logs, caches, build output and unrelated files.",
                   "fixtureOrData": "Synthetic repository fixtures and path names only; no real credentials, resumes, database files, auth sessions, environment files or user data.",
-                  "action": "Execute `npm run privacy:test`, `npm run privacy:check`, and focused `node --test scripts/stage-pages.test.mjs`; inspect git check-ignore results and the complete proposed path manifest without staging or committing; `pages:workspace:test` is only a browser regression and is not a publication guard.",
-                  "procedure": "Require each named privacy and Pages snapshot allowlist check to exit zero; inspect `scripts/stage-pages.mjs` for the `pageFiles` allowlist and `validatePublicSnapshot` boundary; assert excluded secret/runtime/build paths are ignored; assert the proposed history manifest contains no personal/private data and does not include any generated artifact prohibited by the unchanged source AC.",
-                  "assertion": "All ignore and publication guards pass before commit, every path is classified, no secret/private/runtime artifact is present, and no generated artifact is added contrary to AC3.",
-                  "expectedResult": "Only paths demonstrably allowed by the frozen ticket criterion can enter history; checks run before any future commit and a passing scanner is not treated as a substitute for full path/diff review.",
-                  "testName": "CS-80-AC3 guards sensitive and prohibited artifacts before history",
-                  "testFileOrProcedureId": "PLANNED:scripts/check-privacy.test.mjs::CS-80-AC3; scripts/stage-pages.test.mjs::Pages rejects plaintext admin data and private fields in public jobs; MANUAL-CS80-AC3-DIFF",
+                  "action": "Run `npm run privacy:test`, `npm run privacy:check`, and the focused Pages publication guard; regenerate twice and require the second run to make zero changes; inspect the exact branch, manifest delta, full diff and ignore/publication rules without staging until each path is classified.",
+                  "procedure": "Require all privacy and publication checks to exit zero. Verify the generated manifest's predecessor/hash chain, exact path inventory, class/root ownership and delta; confirm the second generation has zero changes; inspect every changed path and diff for private/secret/runtime content without printing sensitive values; verify excluded classes remain excluded and no main integration/deploy artifact appears. A scanner pass does not replace path/diff review.",
+                  "assertion": "Only source-derived, deterministic generator outputs within an already represented root/class and required for Phase 3.25 evidence may enter the branch checkpoint; prohibited or unclassified content is absent.",
+                  "expectedResult": "The rolling manifest is internally consistent and exactly describes eligible generated outputs; all exclusions remain enforced; the branch-local checkpoint is safe to review, while main integration remains unauthorized.",
+                  "testName": "CS-80-AC3 validates the rolling manifest and rejects sensitive or out-of-scope artifacts",
+                  "testFileOrProcedureId": "MANUAL-CS80-AC3-ROLLING-MANIFEST",
                   "fixtures": "Synthetic path-list cases for ignored secrets, runtime artifacts, and intentionally generated catalogs; never include actual secret values.",
-                  "negativeCase": "A fixture containing `.env`, resume/database/auth material, deployment archive, build output, or an unapproved generated artifact must be refused; a generic ignore result cannot hide a staged path.",
-                  "failureCase": "Any failed guard, unclassified path, scanner blind spot, or unresolved meaning of generated artifact blocks the check.",
-                  "evidenceArtifact": "Command exit summaries, redacted path classification, `git check-ignore -v` for representative excluded paths, full diff review record and exact SHA; no private contents.",
+                  "negativeCase": "A synthetic `.env`, private resume, database/auth material, runtime/log/cache/build artifact, unrelated source path, unknown root/class or changed regeneration output must fail; an allowed generated projection must not be rejected solely because it is generated.",
+                  "failureCase": "Any failed privacy/publication check, changed second-generation output, invalid predecessor/hash, unknown path/class/root, prohibited data, or unclassified diff blocks checkpointing; the prior fixed 32-path list is not used.",
+                  "evidenceArtifact": "Test exit summaries, manifest and predecessor hashes, complete path/class delta, redacted path and diff review record, second-generation zero-diff result and exact checkpoint SHA; never include private content.",
                   "repositoryCommand": "npm run privacy:test; npm run privacy:check; node --test scripts/stage-pages.test.mjs",
                   "releaseGate": "CS-80-AC3-RELEASE-GATE"
                 }
@@ -51329,58 +51336,74 @@
         "definitionOfDone": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Each acceptance criterion has named executable assertions or a dated manual procedure and expected result.",
-            "Required unit/integration/contract/browser/accessibility/privacy checks pass for current content under Node >=24; no skips/retries conceal failure.",
-            "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
-            "Independent current-content review resolves specification/implementation findings before promotion.",
-            "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Specification/process DoD: preserve the canonical backlog status and Phase 3 migration evidence; record the exact branch, immutable base SHA, complete authored-input path set, generated-output subset and rolling predecessor/current manifest hashes.",
+            "Run the named Phase 3.25 generation twice and require zero second-run drift; validate the exact rolling manifest, privacy/publication guards, focused specification tests and diff/path review before any separately authorized branch-local checkpoint.",
+            "Obtain independent whole-ticket and exact-AC review receipts bound to the resulting specification/binding content; do not treat this process checkpoint as product acceptance, PROD evidence, main integration authorization, merge or deployment approval."
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            ".ai/backlog.json#CS-80",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2",
+            "docs/TESTING.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
           "requirements": [
             {
-              "commands": {
-                "contract": "npm run gates:test",
-                "integration": "npm run test:integration",
-                "browser": "npm run test:ui"
-              },
-              "sourceEvidence": "Historical evidence is retained above, not treated as fresh pass.",
-              "required": [
-                "Owner authorization for the named commit scope, followed by a clean-tree review."
+              "commands": [
+                "npm run tickets:spec:generate (run twice; second run must report changedFiles: 0)",
+                "npm run tickets:spec:check",
+                "npm run tickets:spec:test",
+                "npm run privacy:test",
+                "npm run privacy:check",
+                "node --test scripts/stage-pages.test.mjs",
+                "git diff --check"
               ],
-              "rule": "Future exact-content command results, independent review, docs and relevant service/manual acceptance; specification completion is not ticket promotion."
+              "sourceEvidence": "Record the actual base/branch and manifest predecessor/current hash, path count/delta, redacted path review, reviewer verdict and clean/dirty result; command output must be from the exact checkpoint content.",
+              "required": [
+                "exact branch-local manifest and path/diff review",
+                "deterministic second-generation no-op",
+                "passing Phase 3.25 specification and privacy/publication validation",
+                "content-bound independent whole-specification and AC-binding receipts"
+              ],
+              "rule": "This is repository process evidence only; product integration/browser/production acceptance and deployed-revision evidence are not CS-80 completion criteria."
             }
           ],
-          "sources": ["docs/TESTING.md", ".ai/backlog.json#CS-80"]
+          "sources": [
+            ".ai/backlog.json#CS-80",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
+          ]
         },
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
             {
-              "requirement": "Record the exact repository base SHA, target branch and changed-path manifest before any staging.",
+              "requirement": "Record the exact repository base SHA, target branch and total changed-path manifest before staging; classify authored source inputs separately from generator-owned outputs.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Run privacy:test, privacy:check and the focused Pages publication guard with isolated synthetic fixtures; do not dispatch any shipping action.",
+              "requirement": "For the generated-output subset, verify the rolling predecessor/hash chain, exact added/removed/unchanged paths and approved existing roots/classes; do not apply generated-root restrictions to authored inputs.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Classify every proposed path and reject credentials, personal data, resumes, databases, runtime state, build outputs and generated projections outside the explicit Phase 3.25 allowlist.",
+              "requirement": "Run privacy:test, privacy:check and the focused Pages publication guard with isolated synthetic fixtures; do not dispatch shipping actions.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Regenerate the approved projections twice and require zero changes on the second run; verify the current branch is exactly phase-3.25/cloud-continuation.",
+              "requirement": "Regenerate twice and require zero changes on the second run; confirm the current branch is exactly phase-3.25/cloud-continuation.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Review the complete staged diff and require exact path-manifest equality; the narrow decision resolves the AC3 artifact-policy conflict for the named checkpoint only and does not authorize main integration.",
+              "requirement": "Review every total checkpoint path and its diff; reject secrets, personal data, resumes, databases, runtime state, build outputs, unrelated files and any unclassified path.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Confirm the process delivery classification is not product release/activation; retain BACKLOG and do not merge, deploy or authorize main integration.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -51392,7 +51415,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "dependencies": {
@@ -51419,7 +51443,7 @@
               "actions": []
             },
             {
-              "requirement": "OWNER DECISION OD-2026-10-07-CS80-AC3 resolves only the generated-artifact conflict for the exact Phase 3.25 outputs allowlisted in this checkpoint on phase-3.25/cloud-continuation. No main-branch integration is authorized. The generator allowlist, deterministic regeneration, pre-stage privacy/publication checks and exact staged-path review are mandatory. CS-80 remains blocked for any other unresolved AC, release target or activation/HOLD classification; none is inferred from BACKLOG status.",
+              "requirement": "Owner decision OD-2026-10-07-CS80-AC3-V2 replaces the fixed generated-output list with a controlled rolling manifest for source-derived generator outputs within already represented roots/classes on phase-3.25/cloud-continuation. Maintain a separate exact total checkpoint path manifest for authored policy/scripts/tests/docs plus generated projections; apply rolling root/class checks only to the generated subset. Branch-local commit/push requires explicit task authorization and all path, privacy, publication and determinism checks. Main integration, merge, deployment and product activation remain unauthorized/not applicable to this process ticket.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -51432,7 +51456,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "risksRecovery": {
@@ -51461,7 +51486,8 @@
             "scripts/check-privacy.mjs",
             "scripts/check-public-workspace.mjs",
             "docs/ai/task-contract.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md"
+            "docs/PHASE-3-25-EXECUTION-STATE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"
           ]
         },
         "delivery": {
@@ -51470,11 +51496,22 @@
             {
               "size": "S",
               "complexity": "low",
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "NOT_APPLICABLE",
+              "releaseState": "NOT_APPLICABLE",
+              "sourceReleaseTarget": null,
+              "processScope": {
+                "kind": "REPOSITORY_PROCESS_CHECKPOINT",
+                "phase": "PHASE_3_25",
+                "effectiveReleaseTarget": "NOT_APPLICABLE",
+                "effectiveReleaseState": "NOT_APPLICABLE",
+                "deliveryMode": "PROCESS_CHECKPOINT",
+                "branch": "phase-3.25/cloud-continuation",
+                "mainIntegrationAuthorized": false,
+                "rationale": "CS-80 controls a repository baseline/evidence checkpoint rather than a shippable product capability. The branch-local Phase 3.25 checkpoint is its process delivery; it does not activate CareerScope functionality or assign an R1/R2 product release. Main integration remains a separate unauthorized decision."
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "PROCESS_CHECKPOINT",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -67888,7 +67925,7 @@
           "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
           "owner": "UX",
           "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-          "disposition": "OPEN"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -67904,7 +67941,7 @@
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
           "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -67935,7 +67972,7 @@
           "requirements": [
             "Authorized connection and integration shell: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented.",
             {
-              "requirement": "The source ticket's future integrations board depicts candidate and administrative connected-account panels, but the canonical runtime currently exposes no connected-account/provider API. The ticket itself is a HOLD/R2-R3 shell; the board does not authorize provider connections or admin operations.",
+              "requirement": "The source ticket's future integrations board depicts candidate and administrative connected-account panels, but the canonical runtime currently exposes no connected-account/provider API. The ticket itself is a BACKLOG/HOLD R2/R3 candidate shell; the board does not authorize provider connections or admin operations. Screen-level OAuth, account detail, permission/consent, email integration, privacy and sync-history work is assigned to child tickets; admin surfaces require a separate authorization boundary.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -68028,7 +68065,7 @@
               "id": "CS-100-AC1",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-100",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -68044,7 +68081,7 @@
               "id": "CS-100-AC3",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-100",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -68057,22 +68094,27 @@
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
             {
-              "requirement": "No user-visible connected-account capability is currently registered. `stage_7_enabled` is proposed default-off delivery metadata, not a verified runtime flag. Candidate and admin are separate actors; this ticket defines no action usable across those roles.",
+              "requirement": "The parent shell scope is the candidate Connected Accounts overview/list only. Its desktop composition maps to panel 01 `design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/01-01-connected-accounts-user.png`; the mobile list variant maps to panel 08 `design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/08-08-mobile-connected-accounts.png`. Do not infer a route path: the canonical design index records the route as UNKNOWN.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Do not add or infer a route, provider adapter, OAuth scope, connection, sync, persistence, API operation or admin control from the board. A future implementation requires separately approved contracts and the required future approved CS-40 server-side Admin RBAC contract, which is not yet approved or implemented for any privileged operation.",
+              "requirement": "Panels 02–07 (OAuth flow, account details, permissions/consent, email integration, data/privacy and sync history) are separately owned by child tickets CS-163–CS-168; panel 08's responsive connected-account view is CS-169. Panels 09–15 are administrative surfaces and are outside this candidate-only parent shell. No admin control, user enumeration or privileged data read is authorized here; any future privileged operation requires the approved and implemented CS-40 server-enforced RBAC contract.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "If a later explicitly authorized shell is rendered while held, it must use real registered API state or an explicit unavailable/empty state; illustrative provider logos, names, connected statuses, identities, sync timestamps and counts are not production fixtures or claims.",
+              "requirement": "No user-visible connected-account capability is currently registered. `stage_7_enabled` is proposed default-off delivery metadata, not a verified runtime flag. This ticket does not specify a new route, API endpoint, provider adapter, OAuth scope, connection, sync, persistence or cross-role action.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Unknown or unavailable provider state remains explicitly unknown/unavailable. No connected status may be inferred from an account name, screenshot, browser redirect or local UI state.",
+              "requirement": "For any separately authorized future candidate shell, render a connection state only from a registered authenticated server contract deriving ownership from the session. If that contract/capability is absent or unavailable, render a neutral explicit empty/unavailable state; never infer a connected state or populate it from sample provider logos, names, identities, statuses, timestamps or counts shown in design artwork.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Keep the capability absent from active navigation while release state is HOLD. An implementation authorization must name the permitted candidate surface and contract; neither proposed `stage_7_enabled` metadata nor design approval proves a runtime flag or authorizes activation.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -68203,8 +68245,57 @@
                 "design/future-releases/release-2-3/connected-accounts/careerscope-connected-accounts-admin-integrations-reference-board.png",
                 "design/references/careerscope-connected-accounts-admin-integrations-reference-board.png"
               ],
-              "screens": [],
-              "reason": "Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability."
+              "screens": [
+                {
+                  "designId": "connectors-connected-accounts-connected-accounts-user",
+                  "referencePath": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/01-01-connected-accounts-user.png",
+                  "route": {
+                    "state": "UNKNOWN",
+                    "path": null,
+                    "evidence": "No canonical product route exists for this design; naming is a future implementation decision."
+                  },
+                  "role": "candidate/admin",
+                  "state": "connected accounts user",
+                  "variantType": "ROUTE_PAGE",
+                  "ownerTicketId": "CS-162",
+                  "mappingRelationship": "RELATED_SCOPE_NOT_OWNERSHIP",
+                  "mappingRationale": "CS-100 specifies the candidate overview shell only. The desktop screen and mobile variant remain implementation-owned by CS-162 and CS-169 respectively; child detail/consent/provider screens and administrative panels are not reassigned to the parent.",
+                  "componentContract": "CS-105 / CS-106",
+                  "viewport": "Exact reference dimensions; approved mobile policy must be recorded before visual acceptance.",
+                  "testRequirements": [
+                    "component",
+                    "browser",
+                    "visual-regression",
+                    "accessibility",
+                    "manual-UAT"
+                  ]
+                },
+                {
+                  "designId": "connectors-connected-accounts-mobile-connected-accounts",
+                  "referencePath": "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/08-08-mobile-connected-accounts.png",
+                  "route": {
+                    "state": "UNKNOWN",
+                    "path": null,
+                    "evidence": "No canonical product route exists for this design; naming is a future implementation decision."
+                  },
+                  "role": "candidate/admin",
+                  "state": "mobile connected accounts",
+                  "variantType": "RESPONSIVE_VARIANT",
+                  "ownerTicketId": "CS-169",
+                  "mappingRelationship": "RELATED_SCOPE_NOT_OWNERSHIP",
+                  "mappingRationale": "CS-100 specifies the candidate overview shell only. The desktop screen and mobile variant remain implementation-owned by CS-162 and CS-169 respectively; child detail/consent/provider screens and administrative panels are not reassigned to the parent.",
+                  "componentContract": "CS-105 / CS-106",
+                  "viewport": "Exact reference dimensions; approved mobile policy must be recorded before visual acceptance.",
+                  "testRequirements": [
+                    "component",
+                    "browser",
+                    "visual-regression",
+                    "accessibility",
+                    "manual-UAT"
+                  ]
+                }
+              ],
+              "reason": "The canonical full-reference board maps this ticket to related screens, but those screens remain owned by their named child tickets; parent-level state designs are incomplete, so this remains partial."
             }
           ],
           "sources": ["design/DESIGN-INDEX.json", ".ai/design-ticket-coverage.json"]
@@ -68249,7 +68340,7 @@
             "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
             "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
             {
-              "requirement": "Use only approved candidate/admin board panels and corresponding mapped crops; verify 320/390/768/1024/1440px reflow without ordinary content overflow. Do not infer unseen mobile states from desktop-only panels.",
+              "requirement": "The parent overview comparison uses desktop panel 01 and mobile list panel 08, with 1440px and 390px CSS viewports; inspect reflow additionally at 320, 768 and 1024px without ordinary-content horizontal overflow. Panels 02–07 are separate child-screen work; do not infer mobile details/dialog variants absent from the approved mobile reference.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -68378,13 +68469,13 @@
               "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "verification": [
                 {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "The held shell does not expose or activate a connected-account capability or represent illustrative board data as current account state.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "For an authorized future shell, content is either from the approved server contract or explicitly unavailable; the current implementation remains absent under HOLD.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Exact-source route/API/schema inventory with flag value and zero-call/zero-write assertions.",
+                  "evidenceRequired": "Future test output and fixture provenance plus current source inventory showing no registered capability; no production screenshot or provider data.",
                   "automationStatus": "PLANNED",
                   "owner": "Product, Security and QA reviewers",
-                  "releaseGate": "CONNECTED_ACCOUNTS_HOLD_ENFORCEMENT"
+                  "releaseGate": "CONNECTED_ACCOUNTS_SOURCE_STATE_PARITY"
                 }
               ],
               "releaseGate": "HOLD",
@@ -68394,22 +68485,22 @@
                   "reviewer": "Product, Security and QA reviewers",
                   "testStatus": "PLANNED",
                   "reviewStatus": "DRAFT",
-                  "type": "AUTOMATED_SECURITY",
-                  "preconditions": "Current source contains no connected-account API; `stage_7_enabled` is proposed/default-off metadata only, not a verified runtime flag. No provider credentials or connection data are configured.",
-                  "setup": "Inspect Next.js route/navigation, feature-flag defaults, Fastify route registry, provider adapters and PostgreSQL schema using repository source and isolated synthetic fixtures.",
-                  "fixtureOrData": "Proposed `stage_7_enabled` metadata, synthetic candidate/admin principals, route/API/schema inventory and provider-call/write sentinels; no real provider account or secrets.",
-                  "action": "Attempt candidate/admin navigation and direct access while confirming no connected-account route or capability is registered; do not require an unimplemented runtime flag.",
-                  "procedure": "Assert there is no active connected-account route/navigation action, registered connected-account endpoint, provider request or connection/sync persistence attributable to CS-100; where no surface exists, report the absence rather than substituting a fabricated empty connected state. Keep the source ticket BACKLOG/HOLD; do not claim or test an unimplemented runtime flag.",
-                  "assertion": "The held shell does not expose or activate a connected-account capability or represent illustrative board data as current account state.",
-                  "expectedResult": "Only the future design boundary is recorded; runtime state remains absent/unavailable and no provider-side effect occurs.",
-                  "testName": "Connected account HOLD exposes no active route API provider call or persistence",
-                  "testFileOrProcedureId": "PLANNED:apps/web/tests/connected-accounts-hold.spec.ts::Connected account HOLD exposes no active route API provider call or persistence",
-                  "fixtures": "Isolated default config, synthetic principals, route registry snapshot, provider spy and DB write counter.",
-                  "negativeCase": "Any active CTA/route, connected badge derived from sample data, provider call, token, account row or sync write fails.",
-                  "failureCase": "If route denial semantics are undefined because no route exists, assert no route is registered; do not invent a redirect/404 contract.",
-                  "evidenceArtifact": "Exact-source route/API/schema inventory with flag value and zero-call/zero-write assertions.",
-                  "releaseGate": "CONNECTED_ACCOUNTS_HOLD_ENFORCEMENT",
-                  "repositoryCommand": "Planned isolated route/API/schema security test"
+                  "type": "AUTOMATED_COMPONENT",
+                  "preconditions": "Current runtime has no connected-account API or route and CS-100 remains BACKLOG/HOLD. Run this planned component test only in a separately authorized future implementation; proposed `stage_7_enabled` metadata is not treated as a runtime flag.",
+                  "setup": "Inspect current route/API/schema registries to establish the absent baseline; mount the future candidate overview component with two synthetic owner-scoped view-model fixtures: one explicitly unavailable because no approved API contract exists and one whose values are marked as returned by the separately approved API contract.",
+                  "fixtureOrData": "Synthetic typed view-models with neutral values and explicit provenance labels only; no provider accounts, logos, identities, statuses, timestamps, counts, tokens or real owner data.",
+                  "action": "Render the unavailable fixture and API-backed fixture independently, then inspect visible text, accessible names and component inputs.",
+                  "procedure": "Assert the unavailable fixture produces an explicit empty/unavailable state and does not render fabricated provider/account details. Assert the API-backed fixture renders only the exact supplied fields and does not infer connected, consented or synchronized status from provider name or local browser state. Separately inventory current source and assert no CS-100 route, API, provider call or persistence exists at the current HOLD baseline.",
+                  "assertion": "For an authorized future shell, content is either from the approved server contract or explicitly unavailable; the current implementation remains absent under HOLD.",
+                  "expectedResult": "No board illustration is used as product data, no new endpoint or route is inferred, and current HOLD produces zero provider side effects.",
+                  "testName": "Connected accounts overview renders only supplied server state or explicit unavailable state",
+                  "testFileOrProcedureId": "PLANNED:apps/web/src/features/connected-accounts/connected-accounts-list.test.tsx::Connected accounts overview renders only supplied server state or explicit unavailable state",
+                  "fixtures": "Two isolated synthetic view models (API-backed and unavailable) plus current route/API/schema inventory.",
+                  "negativeCase": "Any hard-coded sample identity/status/count, local-state-derived connection claim, unapproved route/API, provider call, persistence write or private-field leak fails.",
+                  "failureCase": "If no authorized component/API contract exists, record the future rendered test as not yet executable and keep runtime capability absent; do not fabricate an empty account row.",
+                  "evidenceArtifact": "Future test output and fixture provenance plus current source inventory showing no registered capability; no production screenshot or provider data.",
+                  "releaseGate": "CONNECTED_ACCOUNTS_SOURCE_STATE_PARITY",
+                  "repositoryCommand": "Planned component test; current HOLD source inventory is read-only"
                 }
               ]
             },
@@ -68420,9 +68511,9 @@
               "verification": [
                 {
                   "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "Every visual comparison is traceable to an exact approved panel/state and does not treat illustrative connected-account samples as production content.",
+                  "expectedCheck": "The candidate overview and mobile list are compared to exact source panels on the required engine/viewport matrix under an explicitly approved deterministic tolerance, without treating illustrative content as product truth.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Reference hashes, role/state/crop matrix, viewport/browser screenshots, diff report and named UX approval.",
+                  "evidenceRequired": "Reference and rendered hashes, browser/version/viewport matrix, raw diff/mismatch ratios, approved tolerance and signed UX disposition.",
                   "automationStatus": "PLANNED",
                   "owner": "UX and Visual QA reviewers",
                   "releaseGate": "CONNECTED_ACCOUNTS_DESIGN_ACCEPTANCE"
@@ -68436,21 +68527,21 @@
                   "testStatus": "PLANNED",
                   "reviewStatus": "DRAFT",
                   "type": "VISUAL_REGRESSION",
-                  "preconditions": "A future shell is separately authorized and exact candidate/admin panel scope plus mobile reference are approved; current ticket remains HOLD.",
-                  "setup": "Resolve the canonical board and README panel/crop mappings; record reference asset hash, exact included state, viewport, browser versions, diff tool/tolerance and any minimal dynamic masks.",
-                  "fixtureOrData": "Canonical reference assets only and synthetic neutral unavailable state; exclude board names, logos, counts, identities, connection badges and timestamps as app data.",
-                  "action": "Capture the specifically approved candidate or admin shell state at 1440px and the approved mobile viewport in Chromium, Firefox and WebKit, then compare with its mapped reference crop.",
-                  "procedure": "For each actor/state/viewport/browser, attach the exact crop path and screenshot pair; assert diff is within the pre-approved threshold and masks cover only documented nondeterministic pixels. If no approved screen/crop mapping exists, classify the state PARTIAL and do not claim visual pass. Verify no active connection capability is presented as current product UI; do not assert a runtime flag exists.",
-                  "assertion": "Every visual comparison is traceable to an exact approved panel/state and does not treat illustrative connected-account samples as production content.",
-                  "expectedResult": "Only approved shell geometry can pass; unmapped states remain disclosed as design gaps/partial coverage and HOLD remains unchanged.",
-                  "testName": "Connected account shell screenshot comparison uses approved role state and exact crop",
-                  "testFileOrProcedureId": "PLANNED:apps/web/tests/connected-accounts-hold.visual.spec.ts::Connected account shell screenshot comparison uses approved role state and exact crop",
-                  "fixtures": "Approved reference crops and sanitized synthetic shell state.",
-                  "negativeCase": "Missing mobile mapping, wrong actor panel, sample data, unbounded mask, missing browser result or unapproved screenshot baseline fails.",
-                  "failureCase": "Do not generate or approve a new visual baseline to erase a difference; request design clarification and keep this AC pending.",
-                  "evidenceArtifact": "Reference hashes, role/state/crop matrix, viewport/browser screenshots, diff report and named UX approval.",
+                  "preconditions": "CS-100 remains HOLD. Run only after a separately authorized candidate overview implementation and UX has accepted the exact baseline and pass tolerance; no admin surface is in this ticket.",
+                  "setup": "Use `design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/01-01-connected-accounts-user.png` for the candidate desktop overview and `08-08-mobile-connected-accounts.png` for its mobile list variant; record the canonical board asset SHA-256, 1440px and 390px viewport, browser/tool versions, pre-agreed tolerance and a mask manifest before capture.",
+                  "fixtureOrData": "Reference crops and neutral unavailable-state fixture only; all names, provider logos, statuses, identities, counts and times visible in design artwork are illustrative and excluded from app data.",
+                  "action": "Capture the candidate overview in Chromium, Firefox and WebKit at 1440px and 390px, and run the existing repository visual diff tooling without changing baselines or thresholds.",
+                  "procedure": "For each browser/viewport attach the exact source crop, output image and diff. Record pixelmatch per-pixel threshold, total mismatched-pixel ratio and the UX-approved maximum; mask only unavoidable time/random regions and never layout, text, focus, status or controls. Fail when any comparison exceeds the pre-recorded limit, a browser/viewport is absent, the wrong panel is used, or the image contains sample account data. There is no numeric maximum approved in current source, so a future UX acceptance must supply it before execution; do not report a pass before then.",
+                  "assertion": "The candidate overview and mobile list are compared to exact source panels on the required engine/viewport matrix under an explicitly approved deterministic tolerance, without treating illustrative content as product truth.",
+                  "expectedResult": "All required comparisons have reproducible inputs and a recorded accepted tolerance; missing approval or any failed comparison leaves the visual gate open and HOLD unchanged.",
+                  "testName": "Connected accounts candidate overview matches approved desktop and mobile references across engines",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/connected-accounts-hold.visual.spec.ts::Connected accounts candidate overview matches approved desktop and mobile references across engines",
+                  "fixtures": "Canonical panel 01/panel 08 assets and neutral synthetic unavailable state.",
+                  "negativeCase": "Missing UX tolerance, wrong crop, omitted engine/viewport, broad mask, sample data or threshold alteration after capture fails.",
+                  "failureCase": "If candidate implementation/reference state is not authorized, keep the visual procedure PLANNED; do not capture a synthetic production-like screen or force a baseline update.",
+                  "evidenceArtifact": "Reference and rendered hashes, browser/version/viewport matrix, raw diff/mismatch ratios, approved tolerance and signed UX disposition.",
                   "releaseGate": "CONNECTED_ACCOUNTS_DESIGN_ACCEPTANCE",
-                  "repositoryCommand": "Planned three-engine visual regression and manual design review"
+                  "repositoryCommand": "Planned three-engine visual regression plus manual UX review"
                 }
               ]
             },
@@ -68461,12 +68552,21 @@
               "verification": [
                 {
                   "type": "AUTOMATED_ACCESSIBILITY",
-                  "expectedCheck": "Applicable held/unavailable/error states are accessible and privacy-safe without inventing API states or reporting screen-reader completion.",
+                  "expectedCheck": "Every implemented future state is accessible and privacy-safe, unsupported states are not fabricated, and this ticket currently activates no capability.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Exact-SHA axe/keyboard result, redacted storage/network inspection and separate human AT checklist.",
+                  "evidenceRequired": "Exact-SHA axe/keyboard output, redacted DOM/network/storage summary and separate human screen-reader checklist.",
                   "automationStatus": "PLANNED",
                   "owner": "Accessibility, Security and QA reviewers",
                   "releaseGate": "CONNECTED_ACCOUNTS_ACCESSIBILITY_PRIVACY"
+                },
+                {
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "expectedCheck": "A human screen-reader reviewer can complete the overview/status and failure-state tasks without inaccessible focus, ambiguous status, private-data disclosure or activation of a held action.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Redacted task sheet with tool/browser/OS versions, exact SHA, per-task outcomes and defect references; no speech recordings or PII.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Manual accessibility reviewer using NVDA on Windows or VoiceOver on macOS",
+                  "releaseGate": "CONNECTED_ACCOUNTS_MANUAL_ACCESSIBILITY"
                 }
               ],
               "releaseGate": "HOLD",
@@ -68477,21 +68577,42 @@
                   "testStatus": "PLANNED",
                   "reviewStatus": "DRAFT",
                   "type": "AUTOMATED_ACCESSIBILITY",
-                  "preconditions": "Only separately authorized shell state is rendered; the source contains no connected-account runtime capability and the proposed default-off metadata is not treated as an implemented flag; use synthetic sessions and no provider credentials.",
-                  "setup": "Prepare candidate/admin role fixtures, pending/empty/error/unauthorized/expired/stale states only where the implemented shared API contract supports them; initialize axe, keyboard and browser storage/network sentinels.",
-                  "fixtureOrData": "Synthetic state responses and role permissions; no real identity, provider payload, token or connection history.",
-                  "action": "Render each applicable state, traverse all controls by keyboard, test focus behavior and run axe while observing DOM, network, cookies, local/session storage and persistence.",
-                  "procedure": "Assert role-inappropriate content is absent, unauthorized/expired states expose no private details, only an authorized server-derived state is announced, keyboard focus is visible and ordered, status is text not color alone, and no token/provider payload enters browser storage or logs. Distinguish network error from empty/unavailable; stale-revision behavior is tested only if a real revision contract is introduced by an authorized dependent ticket. Record NVDA/VoiceOver as required manual evidence, not automated PASS.",
-                  "assertion": "Applicable held/unavailable/error states are accessible and privacy-safe without inventing API states or reporting screen-reader completion.",
-                  "expectedResult": "Automated accessibility and privacy assertions pass for actual implemented shell states; missing states and manual AT review remain explicit future gates.",
-                  "testName": "Connected account held states preserve role privacy keyboard access and announcements",
-                  "testFileOrProcedureId": "PLANNED:apps/web/tests/connected-accounts-hold.a11y.spec.ts::Connected account held states preserve role privacy keyboard access and announcements",
-                  "fixtures": "Synthetic role/session states, axe and browser storage/network sentinels.",
-                  "negativeCase": "Sensitive field exposure, unauthorized admin state, inaccessible active control, token in storage/logs or color-only status fails.",
-                  "failureCase": "If no shell is implemented, report rendered-state coverage as not applicable pending future authorization; do not claim UI or screen-reader verification.",
-                  "evidenceArtifact": "Exact-SHA axe/keyboard result, redacted storage/network inspection and separate human AT checklist.",
+                  "preconditions": "No connected-account UI currently exists and CS-100 remains BACKLOG/HOLD. Run only for a separately authorized candidate shell with synthetic sessions and no provider credentials.",
+                  "setup": "Prepare candidate-only pending, empty, API-unavailable, network-error, unauthorized and expired-session fixtures only where their semantics are defined by the approved API/session contract; stale-revision is included only if that contract defines revisions. Initialize axe, keyboard and DOM/network/storage sentinels.",
+                  "fixtureOrData": "Synthetic state responses and role permissions only; no real identity, provider payload, token or account history. No admin-state fixture is in scope for this parent ticket.",
+                  "action": "Run axe and keyboard traversal on each supported future state and inspect rendered text, focus order, announcements, browser storage and network requests.",
+                  "procedure": "Assert empty results are distinct from network/API failure; unauthorized and expired responses reveal no account detail; pending and unavailable states expose meaningful status text; focus remains visible and all implemented controls have accessible names and keyboard operation; status is not color-only; no token/provider payload enters browser storage or logs. Do not test stale-revision behavior absent a real approved revision contract. Confirm current source still has no active CS-100 UI/provider call/write under HOLD.",
+                  "assertion": "Every implemented future state is accessible and privacy-safe, unsupported states are not fabricated, and this ticket currently activates no capability.",
+                  "expectedResult": "Future automated accessibility checks are planned, not passed; current HOLD has no user-facing integration action and no private connection state.",
+                  "testName": "Connected accounts candidate states expose accessible privacy-safe pending empty error and denial behavior",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/connected-accounts-hold.a11y.spec.ts::Connected accounts candidate states expose accessible privacy-safe pending empty error and denial behavior",
+                  "fixtures": "Synthetic candidate session/state fixtures, axe and browser storage/network sentinels.",
+                  "negativeCase": "Private detail after unauthorized/expired, missing announcement, color-only status, inaccessible control, unexpected provider request, token persistence, sample status or invented stale state fails.",
+                  "failureCase": "If no authorized shell or supported API state exists, keep UI absent and defer the future state assertion; do not claim accessibility coverage of absent UI.",
+                  "evidenceArtifact": "Exact-SHA axe/keyboard output, redacted DOM/network/storage summary and separate human screen-reader checklist.",
                   "releaseGate": "CONNECTED_ACCOUNTS_ACCESSIBILITY_PRIVACY",
-                  "repositoryCommand": "Planned browser accessibility/security suite plus future manual NVDA/VoiceOver"
+                  "repositoryCommand": "Planned browser axe/keyboard/security test"
+                },
+                {
+                  "reviewer": "Manual accessibility reviewer using NVDA on Windows or VoiceOver on macOS",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "DRAFT",
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "preconditions": "A candidate shell has explicit implementation authorization and is rendered in the selected supported desktop browser with a separate mobile verification plan; current production contains no connected-account UI.",
+                  "setup": "Record OS, screen-reader/browser/version, test build SHA, candidate role, route/component entry, fixture provenance and whether the state is pending, empty, unavailable, error, unauthorized or expired-session. Include expired-session only when the approved session/API contract exposes that state; otherwise record the exact contract basis for N/A. Use only sanitized synthetic view models; no provider account or real user data.",
+                  "fixtureOrData": "Synthetic candidate fixtures for pending, empty and unavailable/error/unauthorized states supported by the approved API contract; add expired-session only when that contract defines it. Never use the illustrative reference-board identity or status values.",
+                  "action": "Using only the screen reader and keyboard, navigate from the containing Settings context into the Connected Accounts overview, inspect the heading and list/status, traverse each actionable item (if authorized and implemented), and recover from each explicit unavailable/error state and contract-supported expired-session state.",
+                  "procedure": "Verify landmark/heading order announces Settings then Connected Accounts without an invented route claim; each account/status item has a unique accessible name and textual state derived from server data; pending/empty/unavailable/error/denied status is announced once and does not disclose account details when unauthorized. When the approved session/API contract exposes expired-session, verify its status is announced once, no account detail remains visible, focus moves or remains at the contract-defined recovery destination, and keyboard navigation can reach that destination; if the contract has no such rendered state, record N/A with its exact citation. Focus is visible, ordered and restored after any approved dialog; Tab/Shift+Tab and Escape behave as specified for implemented controls; no disabled/HOLD control is actionable. Record actual speech/keyboard result, defects and exact SHA; mark unsupported states N/A with the contract citation rather than passing them.",
+                  "assertion": "A human screen-reader reviewer can complete the overview/status and failure-state tasks without inaccessible focus, ambiguous status, private-data disclosure or activation of a held action.",
+                  "expectedResult": "Dated, revision-bound manual result with pass/fail per task; this procedure is not executed during specification work and absence of UI remains no evidence.",
+                  "testName": "MANUAL-CS100-AC3-AT-01 Connected Accounts candidate overview AT smoke",
+                  "testFileOrProcedureId": "MANUAL-CS100-AC3-AT-01",
+                  "fixtures": "Synthetic candidate state matrix and approved screen reference only.",
+                  "negativeCase": "Any unannounced state, ambiguous control name, keyboard trap, lost focus, private account detail on denial or actionable held control fails. A contract-supported expired-session state that is not announced once, leaves account details visible or makes its recovery destination unreachable also fails.",
+                  "failureCase": "If no authorized shell or supported API/session state exists, record BLOCKED/NOT RUN and preserve HOLD; never substitute axe or source inspection for manual AT evidence. If the approved session contract exposes expired-session UI but its status/contract-defined recovery destination is not announced or keyboard reachable, mark this manual criterion FAIL.",
+                  "evidenceArtifact": "Redacted task sheet with tool/browser/OS versions, exact SHA, per-task outcomes and defect references; no speech recordings or PII.",
+                  "releaseGate": "CONNECTED_ACCOUNTS_MANUAL_ACCESSIBILITY",
+                  "repositoryCommand": "Human NVDA or VoiceOver procedure; no automated pass claimed"
                 }
               ]
             },
@@ -68554,10 +68675,25 @@
               "masks": "Only unavoidable dynamic regions; no blanket widget masks.",
               "tolerance": "Owner-approved deterministic threshold is required; not invented in planning.",
               "evidence": "Future reference/render capture, dimensions, state, browser and independent approval."
+            },
+            {
+              "requirement": "DESIGN_PARTIAL / NON_BLOCKING for this parent shell: candidate overview panel 01 and its mobile list variant panel 08 are exact references in the ordered implementation README; the board and README mark functionality HOLD and warn that names, statuses, counts and provider capabilities are illustrative. Panels 02–07 belong to CS-163–CS-168, panel 08 is also owned by CS-169, and admin panels 09–15 are excluded here and require CS-40 for any privileged behavior. The parent route is UNKNOWN, not invented. Empty/error/expired states do not have exact screenshot panels and require future state-specific design/acceptance before implementation; that is non-blocking for this held parent specification because it introduces no runtime UI or capability.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
-            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md"
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
+            ".ai/backlog.json#CS-100",
+            "design/canonical/future-integrations/careerscope-connected-accounts-admin-integrations-reference-board.png",
+            "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/README.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/FUTURE-RELEASES-R2-R3-DESIGN-CONTRACT.md",
+            "docs/PROJECT-STATE.md",
+            "docs/API-SURFACE.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/TESTING.md"
           ]
         },
         "acceptanceCriteria": {
@@ -68567,7 +68703,7 @@
               "id": "CS-100-AC1",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-100",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -68583,7 +68719,7 @@
               "id": "CS-100-AC3",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-100",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -68608,7 +68744,12 @@
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
             "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
             {
-              "requirement": "Specification DoD: HOLD and default-off semantics are explicit; no unsupported provider, endpoint, data model or admin permission is invented; candidate/admin trust boundaries are distinguished; all ACs have exact planned checks; mapped references and mobile limitations remain honest. Any later implementation/release requires separate provider/product authorization, privacy/security review; CS-40 RBAC verification is required before any separately authorized privileged admin capability, accessibility/design acceptance, exact-SHA CI and external provider evidence. No runtime feature is implemented or activated by this ticket.",
+              "requirement": "Specification DoD: BACKLOG and R2/R3 HOLD are preserved; candidate-only parent scope, exact panels 01/08, child screen ownership, admin exclusions, UNKNOWN route, no existing API/persistence contract and illustrative-data prohibitions are explicit; all four ACs have exact planned bindings; design limitations and a concrete manual AT procedure are disclosed; CS-40 is conditional only for future privileged admin operations. This phase implements no runtime feature and grants no activation/release authority.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Future implementation/release DoD: separately approved scope/provider contracts, server-derived ownership, truthful API or unavailable states, privacy/security review, candidate browser/visual/accessibility acceptance, manual screen-reader evidence, exact-SHA CI, external provider acceptance where applicable and explicit release authorization must be recorded before activation; no provider or admin behavior is inferred from the board.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -68646,41 +68787,44 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-100 problem and each criterion with Frontend.",
-            "Resolve only the recorded CS-100 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for Authorized connection and integration shell.",
-            "Implement and verify CS-100-AC1: Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-            "Implement and verify CS-100-AC2: Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-            "Implement and verify CS-100-AC3: Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-            "Implement and verify CS-100-AC4: Preserve HOLD release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-100 documentation, redacted evidence and independent review before workflow promotion.",
             {
-              "requirement": "Treat proposed `stage_7_enabled` as source metadata only, not a verified runtime feature flag; preserve releaseState HOLD and verify no active route/navigation/provider call/write is implied by the current ticket.",
+              "requirement": "Keep source status BACKLOG, releaseTarget R2/R3, releaseState HOLD and proposed flag metadata unchanged; verify the current API registry/schema has no connected-account capability and do not create or imply a route.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Map only the canonical reference board and implementation README; record candidate/admin roles separately and classify unapproved or desktop-only states as partial.",
+              "requirement": "Scope the parent to candidate overview panel 01 and mobile panel 08; map panels 02–07 to CS-163–CS-168 and exclude admin panels 09–15. Preserve route state UNKNOWN until separately approved.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Inventory the actual API registry and schema to confirm no connected-account contract is assumed; retain NOT_APPLICABLE for endpoints and persistence while held.",
+              "requirement": "Specify a neutral explicit empty/unavailable fallback when no approved owner-scoped API view model exists; require a future component test to reject illustrative identities, statuses, timestamps, counts and provider claims.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "For a future authorized implementation, split provider integration and admin operations into contracts that name consent, scopes, ownership, token isolation, revocation, audit and failure states.",
+              "requirement": "For authorized implementation only, define pending, empty, transport-error, unauthorized and expired-session behavior; cover stale revision only if an approved API contract introduces revisions. Network failure must not become empty data or disclose private details.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Require future visual/browser/accessibility and server-side authorization evidence on exact content/release scope; keep PLANNED/HUMAN/EXTERNAL evidence distinct from completed evidence.",
+              "requirement": "Compare future candidate rendering at 1440px and 390px in Chromium, Firefox and WebKit against exact panels 01/08; record reference hashes, versions, measured diff, minimal masks and UX-approved tolerance before execution.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Run future axe/keyboard checks and the named manual NVDA/VoiceOver procedure; distinguish absent UI, planned automation, human review and provider/live evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Require separate provider/product/security/privacy authorization before integration behavior and CS-40 approval/implementation before any privileged admin operation; keep HOLD until independent release authorization and exact-SHA evidence.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
+            ".ai/backlog.json#CS-100",
             ".ai/backlog.json#CS-100",
             "design/canonical/future-integrations/careerscope-connected-accounts-admin-integrations-reference-board.png",
             "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/README.md",

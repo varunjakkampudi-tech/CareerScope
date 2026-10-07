@@ -446,6 +446,64 @@ test('public static planning retains partial design and named future audit bound
   assert.match(privacy.assertion, /pageFiles list unchanged/);
 });
 
+test('CS-100 full-reference board maps related candidate screens without transferring ownership', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const trace = model.designTraceability.find((row) => row.ticketId === 'CS-100');
+
+  assert.equal(trace.status, 'DESIGN_PARTIAL');
+  assert.deepEqual(
+    trace.screens.map((screen) => [
+      screen.designId,
+      screen.ownerTicketId,
+      screen.mappingRelationship,
+    ]),
+    [
+      [
+        'connectors-connected-accounts-connected-accounts-user',
+        'CS-162',
+        'RELATED_SCOPE_NOT_OWNERSHIP',
+      ],
+      [
+        'connectors-connected-accounts-mobile-connected-accounts',
+        'CS-169',
+        'RELATED_SCOPE_NOT_OWNERSHIP',
+      ],
+    ],
+  );
+  assert.ok(
+    trace.screens.every((screen) =>
+      screen.mappingRationale.includes('remain implementation-owned'),
+    ),
+  );
+  assert.ok(!trace.screens.some((screen) => screen.variantType === 'ADMIN_SURFACE'));
+  const ac3 = model.traceability.find((row) => row.acId === 'CS-100-AC3');
+  assert.match(ac3.exactBindings[1].procedure, /expired-session/);
+  assert.match(ac3.exactBindings[1].procedure, /contract-defined recovery destination/);
+  assert.equal(ac3.exactBindings[1].testStatus, 'MANUAL_REQUIRED');
+  assert.equal(ac3.exactBindings[1].reviewStatus, 'DRAFT');
+  assert.ok(validate(model, inputs).every((error) => !error.includes('board mapping')));
+});
+
+test('CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes', () => {
+  const inputs = fresh();
+  inputs.policy.ticketRefinements['CS-100'].bindingAmendments['CS-100-AC9'] = {
+    0: { procedure: 'No source criterion exists.' },
+  };
+  inputs.policy.ticketRefinements['CS-100'].bindingAmendments['CS-100-AC3']['9'] = {
+    procedure: 'There is no ninth AC3 binding.',
+  };
+  inputs.policy.ticketRefinements['CS-100'].bindingAmendments['CS-100-AC3']['1'].reviewStatus =
+    'APPROVED';
+
+  const errors = validate(buildCatalog(inputs), inputs);
+  assert.ok(errors.some((error) => error.includes('orphan binding amendment CS-100-AC9')));
+  assert.ok(errors.some((error) => error.includes('invalid binding amendment index CS-100-AC3.9')));
+  assert.ok(
+    errors.some((error) => error.includes('invalid binding amendment fields CS-100-AC3.1')),
+  );
+});
+
 test('216 source-linked drafts preserve registry and canonical stages without readiness fabrication', () => {
   const inputs = fresh();
   const before = JSON.stringify(inputs);
@@ -471,7 +529,7 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.acceptanceCriterionCount, 906);
   assert.equal(model.counts.mappedAcceptanceCriterionCount, 197);
   assert.equal(model.counts.unmappedAcceptanceCriterionCount, 709);
-  assert.equal(model.counts.authoredExactTestBindingCount, 304);
+  assert.equal(model.counts.authoredExactTestBindingCount, 305);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -1057,6 +1115,13 @@ test('CS-80 V2 manifest admits CS-101 only as an existing generator-owned ticket
   const { output } = await artifacts(inputs, root);
   const coverage = JSON.parse(output.get('.ai/ticket-specification-coverage.json'));
   const manifest = coverage.artifactManifest;
+  const committedCoverage = JSON.parse(
+    spawnSync('git', ['show', 'HEAD:.ai/ticket-specification-coverage.json'], {
+      cwd: root,
+      encoding: 'utf8',
+      maxBuffer: 20 * 1024 * 1024,
+    }).stdout,
+  );
   const cs101 = manifest.paths.find((entry) => entry.path === 'docs/tickets/CS-101.md');
 
   assert.equal(manifest.policy, 'CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST');
@@ -1064,14 +1129,24 @@ test('CS-80 V2 manifest admits CS-101 only as an existing generator-owned ticket
   assert.equal(manifest.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
   assert.equal(
     manifest.previousManifestHash,
-    '0f1eb5d8a80ef12ae7c3c01c08f0686950b42f1c5b430122b5025a298e82fa69',
+    committedCoverage.artifactManifest.currentManifestHash,
+  );
+  const previousPathCount = committedCoverage.artifactManifest.currentPathCount;
+  const previousPaths = new Set(
+    committedCoverage.artifactManifest.paths.map((entry) => entry.path),
   );
   assert.equal(manifest.currentPathCount, output.size);
-  assert.equal(manifest.previousPathCount, 32);
-  assert.equal(manifest.addedPaths.length, output.size - 32);
-  assert.ok(manifest.addedPaths.includes('docs/tickets/CS-101.md'));
+  assert.equal(manifest.previousPathCount, previousPathCount);
+  assert.equal(
+    manifest.addedPaths.length,
+    manifest.paths.filter((entry) => !previousPaths.has(entry.path)).length,
+  );
+  assert.equal(
+    manifest.addedPaths.includes('docs/tickets/CS-101.md'),
+    !previousPaths.has('docs/tickets/CS-101.md'),
+  );
   assert.equal(manifest.removedPaths.length, 0);
-  assert.equal(manifest.unchangedPaths.length, 32);
+  assert.equal(manifest.unchangedPaths.length, previousPathCount);
   assert.match(manifest.currentManifestHash, /^[0-9a-f]{64}$/);
   assert.ok(
     manifest.changedContentPathsFromBase.every((name) =>
@@ -1103,7 +1178,14 @@ test('CS-80 rolling manifest validates strict predecessor schema, deltas and com
   const coverage = JSON.parse(output.get('.ai/ticket-specification-coverage.json'));
   const manifest = coverage.artifactManifest;
   const ticketIds = new Set(inputs.backlog.items.map((ticket) => ticket.id));
-  const approvedPreviousHash = inputs.policy.generatedArtifactCheckpoint.previousManifestHash;
+  const committedCoverage = JSON.parse(
+    spawnSync('git', ['show', 'HEAD:.ai/ticket-specification-coverage.json'], {
+      cwd: root,
+      encoding: 'utf8',
+      maxBuffer: 20 * 1024 * 1024,
+    }).stdout,
+  );
+  const approvedPreviousHash = committedCoverage.artifactManifest.currentManifestHash;
   assert.doesNotThrow(() => validatePreviousManifest(manifest, ticketIds, approvedPreviousHash));
 
   const malformedCases = [
@@ -1141,21 +1223,33 @@ test('CS-80 rolling manifest validates strict predecessor schema, deltas and com
       /malformed, unprovenanced or hash-invalid/,
     );
   }
-  assert.equal(committedPredecessorManifestHash(root, ticketIds), approvedPreviousHash);
+  assert.equal(
+    committedPredecessorManifestHash(root, ticketIds),
+    inputs.policy.generatedArtifactCheckpoint.previousManifestHash,
+  );
 });
 
-test('CS-80 V1 bootstrap is bound to the exact committed coverage and owner decision bytes', () => {
+test('CS-80 V1 bootstrap is bound to the exact immutable base coverage and owner decision bytes', () => {
   const checkpoint = fresh().policy.generatedArtifactCheckpoint;
-  const coverageBytes = spawnSync('git', ['show', 'HEAD:.ai/ticket-specification-coverage.json'], {
-    cwd: root,
-    encoding: 'buffer',
-    maxBuffer: 20 * 1024 * 1024,
-  }).stdout;
-  const ownerBytes = spawnSync('git', ['show', 'HEAD:docs/OWNER-DECISIONS-2026-10-02.md'], {
-    cwd: root,
-    encoding: 'buffer',
-    maxBuffer: 5 * 1024 * 1024,
-  }).stdout;
+  const legacyBootstrapCommit = '281618e63e1c2d8130e667600fc7e2b643238477';
+  const coverageBytes = spawnSync(
+    'git',
+    ['show', `${legacyBootstrapCommit}:.ai/ticket-specification-coverage.json`],
+    {
+      cwd: root,
+      encoding: 'buffer',
+      maxBuffer: 20 * 1024 * 1024,
+    },
+  ).stdout;
+  const ownerBytes = spawnSync(
+    'git',
+    ['show', `${legacyBootstrapCommit}:docs/OWNER-DECISIONS-2026-10-02.md`],
+    {
+      cwd: root,
+      encoding: 'buffer',
+      maxBuffer: 5 * 1024 * 1024,
+    },
+  ).stdout;
   assert.equal(isApprovedV1Bootstrap(coverageBytes, ownerBytes, checkpoint), true);
   assert.equal(isApprovedV1CoverageAnchor(coverageBytes, ownerBytes), true);
   assert.equal(
@@ -1177,6 +1271,34 @@ test('CS-80 V1 bootstrap is bound to the exact committed coverage and owner deci
     }),
     false,
   );
+});
+
+test('CS-80 delivery is classified as a branch-local process checkpoint, not product release', () => {
+  const inputs = fresh();
+  const before = JSON.stringify(inputs.backlog);
+  const model = buildCatalog(inputs);
+  const source = inputs.backlog.items.find((ticket) => ticket.id === 'CS-80');
+  const specification = model.specs.find((spec) => spec.ticketId === 'CS-80');
+  const delivery = specification.sections.delivery.requirements[0];
+
+  assert.equal(source.status, 'BACKLOG');
+  assert.equal(source.releaseTarget, undefined);
+  assert.equal(delivery.releaseTarget, 'NOT_APPLICABLE');
+  assert.equal(delivery.sourceReleaseTarget, null);
+  assert.equal(delivery.releaseState, 'NOT_APPLICABLE');
+  assert.equal(delivery.deliveryMode, 'PROCESS_CHECKPOINT');
+  assert.equal(delivery.processScope.mainIntegrationAuthorized, false);
+  assert.ok(
+    specification.sections.definitionOfDone.requirements.some((entry) =>
+      entry.includes('product acceptance, PROD evidence'),
+    ),
+  );
+  const completion = specification.sections.completionEvidence.requirements[0];
+  assert.ok(completion.commands.includes('npm run tickets:spec:test'));
+  assert.ok(!completion.commands.includes('test:integration'));
+  assert.ok(!completion.commands.includes('test:ui'));
+  assert.match(completion.rule, /not CS-80 completion criteria/);
+  assert.equal(JSON.stringify(inputs.backlog), before);
 });
 
 test('CS-80 rolling manifest fails closed for new roots, unknown tickets, and altered deltas', async () => {
