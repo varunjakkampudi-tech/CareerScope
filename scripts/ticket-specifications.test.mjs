@@ -1460,9 +1460,13 @@ test('CS-80 V2 manifest admits reviewed ticket specs only as generator-owned art
   assert.equal(manifest.policy, 'CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST');
   assert.equal(manifest.decisionId, 'OD-2026-10-07-CS80-AC3-V2');
   assert.equal(manifest.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
+  const manifestIsNoOp =
+    manifest.currentManifestHash === committedCoverage.artifactManifest.currentManifestHash;
   assert.equal(
     manifest.previousManifestHash,
-    committedCoverage.artifactManifest.currentManifestHash,
+    manifestIsNoOp
+      ? committedCoverage.artifactManifest.previousManifestHash
+      : committedCoverage.artifactManifest.currentManifestHash,
   );
   assert.equal(manifest.currentManifestHash, rollingManifestDigest(manifest));
   const previousPathCount = committedCoverage.artifactManifest.currentPathCount;
@@ -1519,7 +1523,10 @@ test('CS-80 rolling manifest validates strict predecessor schema, deltas and com
       maxBuffer: 20 * 1024 * 1024,
     }).stdout,
   );
-  const approvedPreviousHash = committedCoverage.artifactManifest.currentManifestHash;
+  const approvedPreviousHash =
+    manifest.currentManifestHash === committedCoverage.artifactManifest.currentManifestHash
+      ? committedCoverage.artifactManifest.previousManifestHash
+      : committedCoverage.artifactManifest.currentManifestHash;
   assert.doesNotThrow(() => validatePreviousManifest(manifest, ticketIds, approvedPreviousHash));
 
   const malformedCases = [
