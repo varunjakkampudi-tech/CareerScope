@@ -121,7 +121,7 @@ test('CS79 tooling scope renders its scoped architecture and security assessment
   );
 });
 
-test('CS82 preserves the fixed-main host contract conflict as an owner gate', () => {
+test('CS82 preserves the fixed-main host contract and moving-main gate', () => {
   const inputs = fresh();
   const model = buildCatalog(inputs);
   const ticket = inputs.backlog.items.find((item) => item.id === 'CS-82');
@@ -139,7 +139,7 @@ test('CS82 preserves the fixed-main host contract conflict as an owner gate', ()
   assert.equal(bindings.length, 4);
   assert.ok(bindings.every((binding) => binding.testStatus === 'PLANNED'));
   assert.match(bindings[0].testName, /reject automatic triggers/);
-  assert.match(bindings[1].negativeCase, /source\/decision mismatch remains an owner gate/);
+  assert.match(bindings[1].negativeCase, /moving-main race/);
   assert.match(bindings[2].assertion, /exact resolved SHA/);
   assert.match(
     bindings[3].testName,
@@ -155,7 +155,7 @@ test('CS82 preserves the fixed-main host contract conflict as an owner gate', ()
   assert.doesNotMatch(hostWorkflow, /^\s{6}ref:\r?$/m);
   assert.match(pagesWorkflow, /inputs\.ref/);
   assert.match(pagesWorkflow, /inputs\.environment/);
-  assert.match(scope.manualExternalGates.join('\n'), /OWNER_DECISION_REQUIRED/);
+  assert.match(scope.manualExternalGates.join('\n'), /OWNER_DECISION_RESOLVED/);
   assert.equal(ticket.status, 'UAT');
 });
 
@@ -858,11 +858,11 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.completeSpecificationCount, 55);
   assert.equal(model.counts.incompleteSpecificationCount, 161);
   assert.equal(model.counts.approvedSpecificationCount, 55);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 250);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 248);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 234);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 672);
-  assert.equal(model.counts.authoredExactTestBindingCount, 347);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 232);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 674);
+  assert.equal(model.counts.authoredExactTestBindingCount, 348);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -876,7 +876,7 @@ test('216 source-linked drafts preserve registry and canonical stages without re
     ).disposition,
     'RESOLVED',
   );
-  assert.equal(model.findings.length, 651);
+  assert.equal(model.findings.length, 650);
   for (const id of ['CS-45', 'CS-107', 'CS-108'])
     assert.equal(model.designTraceability.find((entry) => entry.ticketId === id).ui, true);
   assert.ok(

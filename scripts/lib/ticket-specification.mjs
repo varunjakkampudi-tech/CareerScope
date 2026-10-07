@@ -273,6 +273,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     const blocker = blockerMap.get(ticket.id);
     const refinement = policy.ticketRefinements?.[ticket.id];
     const processScope = refinement?.processScope;
+    const deliveryClassification = refinement?.deliveryClassification;
     const profile = policy.domains[ticket.area] ?? policy.domains.default;
     const epicId =
       ticket.epicId ??
@@ -321,25 +322,29 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     // never turn an unassigned ticket into IMPLEMENT_NOW.
     const release = processScope
       ? processScope.effectiveReleaseState
-      : (ticket.releaseState ??
-        (ticket.blocked && blocker?.hostpending && blocker.releaseDisposition === 'ACTIVE_R1'
-          ? 'ACTIVE_R1'
-          : 'UNSPECIFIED'));
+      : deliveryClassification
+        ? deliveryClassification.effectiveReleaseState
+        : (ticket.releaseState ??
+          (ticket.blocked && blocker?.hostpending && blocker.releaseDisposition === 'ACTIVE_R1'
+            ? 'ACTIVE_R1'
+            : 'UNSPECIFIED'));
     const deliveryMode = processScope
       ? processScope.deliveryMode
-      : release === 'UNSPECIFIED'
-        ? 'UNDECIDED'
-        : release === 'HOLD'
-          ? 'HOLD'
-          : release === 'FUTURE'
-            ? 'FUTURE_RELEASE'
-            : release === 'CONDITIONAL'
-              ? 'FEATURE_FLAGGED'
-              : ticket.blocked
-                ? blocker?.hostpending
-                  ? 'MANUAL_GATE'
-                  : 'EXTERNAL_DEPENDENCY'
-                : 'IMPLEMENT_NOW';
+      : deliveryClassification
+        ? deliveryClassification.deliveryMode
+        : release === 'UNSPECIFIED'
+          ? 'UNDECIDED'
+          : release === 'HOLD'
+            ? 'HOLD'
+            : release === 'FUTURE'
+              ? 'FUTURE_RELEASE'
+              : release === 'CONDITIONAL'
+                ? 'FEATURE_FLAGGED'
+                : ticket.blocked
+                  ? blocker?.hostpending
+                    ? 'MANUAL_GATE'
+                    : 'EXTERNAL_DEPENDENCY'
+                  : 'IMPLEMENT_NOW';
     const designStatus = !ui
       ? 'DESIGN_NOT_APPLICABLE'
       : ticket.id === 'CS-216' || !refs.length
@@ -762,14 +767,21 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
             complexity: ticket.complexity,
             releaseTarget: processScope
               ? processScope.effectiveReleaseTarget
-              : (ticket.releaseTarget ?? null),
+              : deliveryClassification
+                ? deliveryClassification.effectiveReleaseTarget
+                : (ticket.releaseTarget ?? null),
             releaseState: release,
             ...(processScope
               ? {
                   sourceReleaseTarget: ticket.releaseTarget ?? null,
                   processScope,
                 }
-              : {}),
+              : deliveryClassification
+                ? {
+                    sourceReleaseTarget: ticket.releaseTarget ?? null,
+                    deliveryClassification,
+                  }
+                : {}),
             sourceDisposition: blocker?.releaseDisposition ?? null,
             deferredDecision:
               blocker?.releaseDisposition === 'DEFERRED_BY_OWNER'
@@ -1139,6 +1151,20 @@ export function validateCatalog(model, inputs, resolvePath) {
         !scope.rationale.trim()
       )
         errors.push(`invalid process delivery classification ${id}`);
+    }
+    if (refinement.deliveryClassification !== undefined) {
+      const classification = refinement.deliveryClassification;
+      if (
+        typeof classification.effectiveReleaseTarget !== 'string' ||
+        typeof classification.effectiveReleaseState !== 'string' ||
+        typeof classification.deliveryMode !== 'string' ||
+        typeof classification.rationale !== 'string' ||
+        !classification.rationale.trim() ||
+        !Array.isArray(classification.sources) ||
+        classification.sources.length === 0 ||
+        classification.sources.some((source) => !resolvePath(source.split('#')[0]))
+      )
+        errors.push(`invalid delivery classification ${id}`);
     }
     if (refinement.relatedDesignScreenMapping !== undefined) {
       const mapping = refinement.relatedDesignScreenMapping;

@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "5ab7b4fd20f8e0071aea4e9155ef04601e19909ed80b595a33e0f60597faf1db",
+    ".ai/ticket-specification-policy.json": "5c097888f4a126b3ae0c470ac9eb26e643b92e0b74ee74d149b1cf35c7059119",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d66968d9fa55d3e23c2ff3b1d25f3715b0386c649625b7333a0a3b6d99a54f73"
@@ -11858,7 +11858,7 @@
           "reason": "Dismissal has no persisted domain representation; deciding whether it is a lead status or another explicit user-controlled state is a product/domain decision.",
           "owner": "Product owner",
           "requiredEvidence": "Owner-confirmed dismissal semantics and the resulting lifecycle/schema contract.",
-          "disposition": "OWNER_DECISION_REQUIRED"
+          "disposition": "RESOLVED"
         },
         {
           "code": "PARTIAL_DESIGN",
@@ -11890,7 +11890,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "RESOLVED"
+          "disposition": "OPEN"
         }
       ],
       "sections": {
@@ -12021,7 +12021,7 @@
               "id": "CS-17-AC4",
               "sourceText": "Save, dismiss and apply actions available without returning to the list",
               "expectedResult": "Save, dismiss and apply actions available without returning to the list",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_INTEGRATION"],
               "authority": ".ai/backlog.json#CS-17",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -12036,7 +12036,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Render untrusted posting content as text/sanitized content. A fixture containing script, event-handler and javascript-url payloads must produce no executable DOM effect. Save, dismiss and apply actions must remain reachable from detail.",
+              "requirement": "Render untrusted posting content as text/sanitized content. A fixture containing script, event-handler and javascript-url payloads must produce no executable DOM effect. Save and dismiss actions remain reachable from detail; dismissal is a reversible candidate-owned discovery disposition persisted against the canonical job, while apply only opens the validated external destination and never changes application lifecycle state.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -12090,7 +12090,7 @@
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
             },
             {
-              "requirement": "Status actions use existing saved-lead persistence and revision/conflict semantics; no schema change is inferred.",
+              "requirement": "Dismissal persistence must be an explicit candidate-owner plus canonical-job disposition with reversible restore, audit history and revision/conflict protection; it must not reuse or mutate Applied, Interviewing, Offer, Rejected or Withdrawn lifecycle state.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -12371,12 +12371,21 @@
               "verification": [
                 {
                   "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "Each action is present, named and reaches its existing contract without returning to list.",
+                  "expectedCheck": "Detail actions are named and operable; the browser sends separate reversible-disposition and restore requests with revision context, and opening an external application destination never marks Applied or changes another lifecycle state.",
                   "candidateCommand": null,
                   "evidenceRequired": "DOM/action response log.",
                   "automationStatus": "PLANNED",
                   "owner": "QA",
                   "releaseGate": "CS-17-ACTIONS"
+                },
+                {
+                  "type": "AUTOMATED_INTEGRATION",
+                  "expectedCheck": "Dismissal is persisted against O1/J1, survives a fresh read, produces an auditable reversible change, restore clears only the discovery disposition without changing application lifecycle, O2 receives the canonical ownership error, and the stale revision receives the canonical conflict without overwriting data.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future integration test output containing status/error codes, persisted revision/audit assertions and redacted correlation identifiers only.",
+                  "automationStatus": "PLANNED",
+                  "owner": "QA and data-integrity reviewer",
+                  "releaseGate": "CS-17-DISPOSITION-INTEGRITY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
@@ -12385,19 +12394,36 @@
                 {
                   "reviewer": "QA",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
+                  "reviewStatus": "DRAFT",
                   "type": "AUTOMATED_BROWSER",
-                  "preconditions": "Authenticated selected posting.",
-                  "setup": "Open detail at 320px and keyboard navigate actions.",
-                  "procedure": "Invoke save, dismiss and apply controls from detail.",
-                  "assertion": "Each action is present, named and reaches its existing contract without returning to list.",
-                  "expectedResult": "All shortlist actions are available in detail.",
+                  "preconditions": "Authenticated candidate owns a synthetic canonical job and its current discovery disposition; application lifecycle is independent.",
+                  "setup": "Open detail at 320px and keyboard-navigate Save, Dismiss/Restore and Apply controls. Stub the registered owner-scoped disposition contract and external navigation boundary; persistence and audit proof is delegated to the service-backed integration binding below.",
+                  "procedure": "Invoke Save and assert the existing owner-scoped saved request. Invoke Dismiss and Restore and assert the UI sends the distinct owner-plus-canonical-job operations with the current revision. Invoke Apply and assert only the validated external destination opens; no Application lifecycle mutation request is issued.",
+                  "assertion": "Detail actions are named and operable; the browser sends separate reversible-disposition and restore requests with revision context, and opening an external application destination never marks Applied or changes another lifecycle state.",
+                  "expectedResult": "The browser presents separate Save, dismiss/restore and apply controls and emits the correct server-owned requests; persistence, ownership, audit and revision outcomes are proven by the integration binding.",
                   "testName": "CS-17 detail actions operable",
                   "testFileOrProcedureId": "CS-17-DETAIL-ACTIONS",
                   "fixtures": "Synthetic posting and owner.",
-                  "negativeCase": "Missing or unnamed action fails.",
+                  "negativeCase": "Missing/unnamed action, non-owner mutation, irreversible dismissal, implicit restore, lifecycle mutation from dismissal or Applied transition from external navigation fails.",
                   "evidenceArtifact": "DOM/action response log.",
                   "releaseGate": "CS-17-ACTIONS"
+                },
+                {
+                  "reviewer": "QA and data-integrity reviewer",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "type": "AUTOMATED_INTEGRATION",
+                  "preconditions": "Authenticated owner O1, canonical job J1 owned by the discovery source, isolated PostgreSQL test database, and a persisted disposition revision are available.",
+                  "setup": "Create O1/J1 with an active discovery disposition and revision R1; create a second owner O2 and retain a foreign-owner control. Use the registered disposition repository/API contract only.",
+                  "procedure": "Submit the owner-scoped dismiss operation for O1/J1 with R1, read the disposition as O1 after a fresh service/database boundary, restore it with the returned revision, then repeat with O2 and a stale revision.",
+                  "assertion": "Dismissal is persisted against O1/J1, survives a fresh read, produces an auditable reversible change, restore clears only the discovery disposition without changing application lifecycle, O2 receives the canonical ownership error, and the stale revision receives the canonical conflict without overwriting data.",
+                  "expectedResult": "The service-backed contract proves ownership, persistence, auditability, reversibility and revision safety independently of browser interception; external navigation never creates Applied state.",
+                  "testName": "CS-17 AC4 persists reversible owner disposition with revision and ownership protection",
+                  "testFileOrProcedureId": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4",
+                  "fixtures": "Isolated PostgreSQL owner/job/disposition fixtures O1/J1/O2 with revision R1; no production data.",
+                  "negativeCase": "Missing canonical job, non-owner mutation, stale revision, duplicate dismiss, implicit restore, lifecycle mutation or external URL navigation marking Applied must fail with no unauthorized persistence.",
+                  "evidenceArtifact": "Future integration test output containing status/error codes, persisted revision/audit assertions and redacted correlation identifiers only.",
+                  "releaseGate": "CS-17-DISPOSITION-INTEGRITY"
                 }
               ]
             }
@@ -12454,7 +12480,7 @@
               "id": "CS-17-AC4",
               "sourceText": "Save, dismiss and apply actions available without returning to the list",
               "expectedResult": "Save, dismiss and apply actions available without returning to the list",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_INTEGRATION"],
               "authority": ".ai/backlog.json#CS-17",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -52273,14 +52299,6 @@
       "reviewState": "DRAFT",
       "gaps": [
         {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OWNER_DECISION_REQUIRED"
-        },
-        {
           "code": "EXACT_AC_TEST_BINDING",
           "section": "testStrategy",
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
@@ -52317,7 +52335,7 @@
           "requirements": [
             "A push to main could deploy the production host and publish GitHub Pages without an explicit release decision.",
             {
-              "requirement": "The source criteria need to distinguish the host deploy's fixed-main authorization model from Pages' caller-selected ref model. Current deploy.yml checks out main, verifies checkout equals origin/main, and uses the fixed production environment; it intentionally has no dispatch ref/environment inputs. Current publish-pages.yml requires ref and environment inputs, resolves the selected checkout SHA, and requires CI for that exact SHA. Therefore CS-82 AC2's explicit host ref/environment-input wording conflicts with the active host contract and must not be silently reinterpreted.",
+              "requirement": "The source criteria need to distinguish the host deploy's fixed-main authorization model from Pages' caller-selected ref model. Current deploy.yml checks out main, verifies checkout equals origin/main, and uses protected production; it intentionally has no caller-selected deploy ref/environment. Current publish-pages.yml separately requires ref and environment inputs, resolves the selected SHA and requires CI for that exact SHA. The owner decision supersedes the conflicting host-input wording without deleting its historical provenance.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -52337,7 +52355,7 @@
           "requirements": [
             "A push to main could deploy the production host and publish GitHub Pages without an explicit release decision.",
             {
-              "requirement": "Preserve manual-only, fail-closed release controls: host deployment is pinned to current main and protected production environment with exact-head/CI checks; Pages selects and validates an explicit ref/environment. Resolve the host-input wording before approval.",
+              "requirement": "Preserve manual-only, fail-closed release controls: host deployment resolves only protected main HEAD into protected production with exact-head/CI checks; Pages separately selects and validates an explicit ref/environment. Reject arbitrary ref/environment injection and moving-main races.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -52454,7 +52472,7 @@
             "Separates continuous validation from explicit host and Pages publication workflows.",
             "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
             {
-              "requirement": "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Scope is GitHub Actions configuration and the repository deploy-gate checker. Host deploy currently uses workflow_dispatch, fixed main, origin/main equality, require-ci-success.mjs, and protected production environment. Pages accepts required ref/environment inputs, resolves HEAD, and requires exact-revision CI. No workflow change is authorized by this specification pass.",
+              "requirement": "ARCHITECTURE_IMPACT: INFRASTRUCTURE. Scope is GitHub Actions configuration and the repository deploy-gate checker. Host deploy uses workflow_dispatch, protected main HEAD, origin/main equality, require-ci-success.mjs and protected production. Pages remains a separate manual workflow with required ref/environment inputs, resolved SHA and exact-revision CI. No workflow change is authorized by this specification pass.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -52655,7 +52673,7 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The selected branch matches both the owner decision and reconciled canonical AC: fixed-main requires no caller ref/environment inputs and enforces main, protected production and exact-SHA CI; explicit-inputs requires and validates the approved inputs before secret use. Both branches reject bypass paths. No branch passes while the source criterion remains inconsistent.",
+                  "expectedCheck": "Host deploy is manual-only and fixed to the approved protected main SHA and production environment; moving-main races, arbitrary ref/environment injection and CI bypass are refused.",
                   "candidateCommand": null,
                   "evidenceRequired": "Future test result, owner decision reference, workflow SHA and redacted protected-environment metadata; no deployment proof is implied.",
                   "automationStatus": "PLANNED",
@@ -52669,20 +52687,20 @@
                 {
                   "reviewer": "Infrastructure, Security and release owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
+                  "reviewStatus": "DRAFT",
                   "type": "AUTOMATED_CONTRACT",
-                  "preconditions": "The release owner has resolved the source mismatch between explicit dispatch inputs and the host workflow's fixed-main/fixed-production model; do not modify workflow during this specification pass.",
-                  "setup": "Inspect deploy.yml and the triggered CI gate using synthetic YAML. Build only the branch selected by the owner decision and reconciled source criterion: fixed-main/protected-production without caller inputs, or explicit approved inputs with branch-specific malformed/missing cases.",
-                  "fixtureOrData": "Synthetic host dispatch contract for the single owner-selected/source-reconciled branch; include no caller values for fixed-main or approved synthetic values for explicit-inputs; no credentials, live deployment, or environment mutation.",
-                  "action": "Validate the selected source-reconciled contract: fixed-main/protected-production without required caller inputs, or the exact approved ref/environment inputs. In both branches verify protected-environment wiring, exact-SHA CI prerequisite and no bypass.",
-                  "procedure": "Read the owner decision and the reconciled canonical AC wording before selecting one test branch. FIXED_MAIN_PRODUCTION branch: AC2 must first be amended by the authorized owner/source update to remove the incompatible caller-input requirement; then assert workflow_dispatch has no ref/environment inputs, deployment is fixed to main and protected production, exact-SHA CI is a prerequisite, and no caller-selected-ref or bypass path exists. EXPLICIT_INPUTS branch: require the owner-approved input names, types and allowlist; reject missing/unknown values before any secret-consuming job; verify the selected protected environment and exact-SHA CI prerequisite. If the owner decision and canonical AC text do not select the same branch, report unresolved and do not pass.",
-                  "assertion": "The selected branch matches both the owner decision and reconciled canonical AC: fixed-main requires no caller ref/environment inputs and enforces main, protected production and exact-SHA CI; explicit-inputs requires and validates the approved inputs before secret use. Both branches reject bypass paths. No branch passes while the source criterion remains inconsistent.",
-                  "expectedResult": "Exactly one owner-selected and source-reconciled dispatch contract is enforced; both valid contract variants preserve manual-only execution, exact-revision CI and protected-environment gates.",
-                  "testName": "CS-82-AC2 host dispatch enforces approved ref environment and CI gates",
+                  "preconditions": "The owner-approved fixed-main/protected-production decision is recorded; Pages' separate explicit ref/environment contract is tested independently; do not modify workflows or execute deployment.",
+                  "setup": "Inspect deploy.yml and the triggered CI gate using synthetic YAML. Prepare fixed-main/protected-production fixtures plus malformed caller-ref/environment injection and moving-main cases.",
+                  "fixtureOrData": "Synthetic host dispatch workflow, protected environment metadata and exact-SHA CI payloads; no credentials, live deployment or environment mutation.",
+                  "action": "Validate that host dispatch has no caller-selected ref/environment inputs, resolves protected main HEAD, verifies origin/main equality, requires exact-SHA CI and targets protected production.",
+                  "procedure": "First resolve protected origin/main to immutable SHA A and require green exact-SHA CI for A. In an isolated sequence advance origin/main to SHA B before downstream dispatch, then assert the host path either refuses the moving-main mismatch or continues only with immutable A; it must never silently deploy unchecked B. Also assert the workflow rejects or cannot express arbitrary ref/environment injection; mutate checkout ref, origin/main equality, protected environment, exact-SHA CI and bypass paths and require each gate to fail closed. Keep Pages explicit-input validation in CS-82-AC3.",
+                  "assertion": "Host deploy is manual-only and fixed to the approved protected main SHA and production environment; moving-main races, arbitrary ref/environment injection and CI bypass are refused.",
+                  "expectedResult": "The secure host contract is deterministic and fail closed without weakening the historical source requirement.",
+                  "testName": "CS-82-AC2 host dispatch enforces protected main SHA and production gates",
                   "testFileOrProcedureId": "PLANNED:scripts/check-deploy-gate.test.mjs::CS-82-AC2",
                   "fixtures": "Synthetic workflow YAML variants and decision-record fixture; never include real secret values.",
-                  "negativeCase": "For EXPLICIT_INPUTS, missing/unknown ref or environment, stale SHA, missing CI dependency, or bypass must be refused. For FIXED_MAIN_PRODUCTION, caller ref/environment inputs are not required, but any path that changes fixed main/protected production or bypasses exact-SHA CI must be refused. A source/decision mismatch remains an owner gate, never a pass.",
-                  "failureCase": "Any input/decision ambiguity or weakened environment/CI protection blocks readiness.",
+                  "negativeCase": "Any caller-selected ref/environment, changed main target, moving-main race, stale SHA, missing CI dependency, unprotected production target or bypass must be refused.",
+                  "failureCase": "Any weakened fixed-main, protected-production or exact-SHA condition blocks readiness.",
                   "evidenceArtifact": "Future test result, owner decision reference, workflow SHA and redacted protected-environment metadata; no deployment proof is implied.",
                   "releaseGate": "HOST_DEPLOY_AUTHORIZATION",
                   "repositoryCommand": "npm run deploy:gate:test"
@@ -52848,12 +52866,12 @@
           "applicability": "APPLICABLE",
           "requirements": [
             {
-              "requirement": "Resolve the AC2 contract before implementation: if the owner retains fixed main/protected production, reconcile the canonical criterion to that no-caller-input model; if the owner selects caller inputs, reconcile and validate exact allowed values. Do not implement either model before the decision and source wording agree.",
+              "requirement": "Record the owner decision as the superseding secure contract while preserving AC2 historical wording and provenance; do not implement or weaken delivery controls in this specification pass.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "After disposition, verify the selected host contract only: fixed model requires no ref/environment inputs and rejects caller selection or CI bypass; explicit-input model requires and validates approved inputs before any secret-consuming job. Both require protected environment and exact-SHA CI.",
+              "requirement": "Verify the host contract: no caller ref/environment inputs, protected main HEAD, origin/main equality, exact-SHA CI and protected production; reject arbitrary ref/environment injection and moving-main races.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -52896,7 +52914,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "OWNER_DECISION_REQUIRED: AC2 requires explicit host ref/environment inputs while the current approved host contract fixes main and production. Owner must disposition this mismatch before approval; do not infer a preferred interpretation.",
+              "requirement": "OWNER_DECISION_RESOLVED: the owner-approved fixed-main/protected-production contract supersedes the conflicting host-input wording; historical AC text remains preserved as provenance.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -52953,11 +52971,24 @@
             {
               "size": "S",
               "complexity": 2,
-              "releaseTarget": "3.0.1",
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1-boundary",
+              "releaseState": "CONDITIONAL",
+              "sourceReleaseTarget": "3.0.1",
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1-boundary",
+                "effectiveReleaseState": "CONDITIONAL",
+                "deliveryMode": "MANUAL_GATE",
+                "rationale": "Owner-approved delivery control is manual and protected-main/protected-production only; hosted environment protection and exact-SHA acceptance remain future evidence gates. Historical source release fields remain unchanged.",
+                "sources": [
+                  ".ai/ticket-specification-policy.json#CS-82",
+                  ".ai/backlog.json#CS-82",
+                  ".github/workflows/deploy.yml",
+                  ".github/workflows/publish-pages.yml"
+                ]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "MANUAL_GATE",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
