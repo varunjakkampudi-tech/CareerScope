@@ -6,8 +6,8 @@ Structural section coverage and generated count are not implementation readiness
 | -------------------------------------- | ------------------ |
 | ticketCount                            | 216                |
 | specificationCount                     | 216                |
-| completeSpecificationCount             | 53                 |
-| incompleteSpecificationCount           | 163                |
+| completeSpecificationCount             | 54                 |
+| incompleteSpecificationCount           | 162                |
 | epicMappedCount                        | 216                |
 | orphanTicketCount                      | 0                  |
 | duplicateIdCount                       | 0                  |
@@ -17,27 +17,27 @@ Structural section coverage and generated count are not implementation readiness
 | dependencySemanticGapCount             | 0                  |
 | acceptanceCriterionCount               | 906                |
 | suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 225                |
-| unmappedAcceptanceCriterionCount       | 681                |
-| reviewedExactTestBindingCount          | 238                |
-| authoredExactTestBindingCount          | 335                |
-| acceptanceCriteriaWithAuthoredBindings | 317                |
-| draftSpecificationCount                | 163                |
+| mappedAcceptanceCriterionCount         | 230                |
+| unmappedAcceptanceCriterionCount       | 676                |
+| reviewedExactTestBindingCount          | 244                |
+| authoredExactTestBindingCount          | 341                |
+| acceptanceCriteriaWithAuthoredBindings | 322                |
+| draftSpecificationCount                | 162                |
 | reviseSpecificationCount               | 0                  |
 | reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 53                 |
+| approvedSpecificationCount             | 54                 |
 | ownerDecisionReconciliationCount       | 11                 |
 | uiTicketCount                          | 146                |
 | blockedTicketCount                     | 37                 |
 | hostpendingActionCount                 | 15                 |
 | holdTicketCount                        | 33                 |
 | currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 24.537037037037038 |
+| specificationCoveragePercent           | 25                 |
 | suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 24.834437086092716 |
+| exactReviewedTraceabilityPercent       | 25.386313465783665 |
 | findingsCount                          | 651                |
-| openFindingCount                       | 424                |
-| resolvedFindingCount                   | 110                |
+| openFindingCount                       | 422                |
+| resolvedFindingCount                   | 112                |
 | reclassifiedFindingCount               | 20                 |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                       |
@@ -407,8 +407,8 @@ Structural section coverage and generated count are not implementation readiness
 | CS-105 | PARTIAL_DESIGN                  | RECLASSIFIED            | design                 | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.                                                            | UX                                    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.                                              |
 | CS-105 | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-105 | SURFACE_SPEC_REFINEMENT         | RESOLVED                | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels. |
-| CS-106 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
-| CS-106 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels. |
+| CS-106 | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-106 | SURFACE_SPEC_REFINEMENT         | RESOLVED                | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels. |
 | CS-107 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-107 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels. |
 | CS-108 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |

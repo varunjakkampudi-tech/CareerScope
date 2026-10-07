@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "7769fb1840e6e6e944ee7b1c7fefb6657da1149f8b3c72702da6a43c22f9dc00",
+    ".ai/ticket-specification-policy.json": "606a52f2a87318b9f96a47bfbdf7b5efd1da0c287635b5c32fc371651d55a8b3",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "3eb7c9f4e2b5c3c4fc4154539eb0d81ae1f3e150b64fa74ce8650b3015a312ff"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d51c63a59e8664a73fcc47cbb1204586e9fbd3876264ef5c0d182e29ca84e758"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -73963,8 +73963,8 @@
     {
       "ticketId": "CS-106",
       "primaryEpicId": "EPIC-FOUNDATIONS",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -73972,7 +73972,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "SURFACE_SPEC_REFINEMENT",
@@ -73980,7 +73980,7 @@
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
           "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -74009,14 +74009,42 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Shared form, card, dialog, table and template contracts: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented."
+            "Shared form, card, dialog, table and template contracts: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented.",
+            {
+              "requirement": "Shared SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog, table and component contracts are referenced by approved foundations material but are not yet a ticket-specific implementation-ready boundary.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-106"]
+          "sources": [
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "value": {
           "applicability": "APPLICABLE",
-          "requirements": ["Shared form, card, dialog, table and template contracts"],
-          "sources": [".ai/backlog.json#CS-106"]
+          "requirements": [
+            "Shared form, card, dialog, table and template contracts",
+            {
+              "requirement": "Prevent route-specific form/dialog/table behavior and ensure shared components remain accessible, responsive, source-backed and safe for real API state.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "currentState": {
           "applicability": "APPLICABLE",
@@ -74072,7 +74100,7 @@
               "id": "CS-106-AC1",
               "sourceText": "Compose SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table behavior from shared atoms.",
               "expectedResult": "Compose SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table behavior from shared atoms.",
-              "verificationIds": ["EXTERNAL_PROVIDER"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74080,13 +74108,7 @@
               "id": "CS-106-AC2",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74094,7 +74116,7 @@
               "id": "CS-106-AC3",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74102,11 +74124,7 @@
               "id": "CS-106-AC4",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74114,12 +74132,35 @@
               "id": "CS-106-AC5",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Compose only SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table from CS-105 atoms/tokens; exclude page/shell templates and assign any future template to its owning route ticket.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define controlled value/change/submit boundaries. OTP paste/edit/validation and resend follow the owning auth contract without inventing code length or provider limits; FileUpload selection/progress/cancellation/error follows the owning resume/storage contract without inventing size/type limits; Pagination emits owning cursor callbacks and never invents totals; ConfirmationDialog resolves only from the owning server result.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "FileUpload never exposes raw resume bytes in evidence; Toast and ConfirmationDialog never imply mutation success before the owning server result. The reference is a component contract, not production data or a route.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-106"]
+          "sources": [
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -74132,13 +74173,22 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: LOCAL_MODULE / CROSS_MODULE. Future implementation belongs to canonical shared UI components; API clients, authorization and ownership remain in feature/server boundaries.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-106",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/SECURITY.md"
           ]
         },
         "persistence": {
@@ -74149,13 +74199,22 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": [],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "NOT_APPLICABLE: no schema or migration; fixtures are synthetic and isolated.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-106",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/SECURITY.md"
           ]
         },
         "apiContract": {
@@ -74174,9 +74233,23 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "NOT_APPLICABLE for new endpoints. Components accept typed view models from existing/planned contracts and preserve stable validation/error/concurrency semantics.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-106", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-106",
+            "docs/API-SURFACE.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -74230,43 +74303,109 @@
         "sharedComponents": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Reuse tokens, atoms and composites through CS-95, CS-105 and CS-106; routes compose feature components and the canonical API client."
+            "Reuse tokens, atoms and composites through CS-95, CS-105 and CS-106; routes compose feature components and the canonical API client.",
+            {
+              "requirement": "Depends on CS-105 atoms/tokens and composes only the seven named components without duplicate route-local primitives or page templates.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["design/foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md"]
+          "sources": [
+            "design/foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "accessibility": {
           "applicability": "APPLICABLE",
           "requirements": [
             "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
             "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+            {
+              "requirement": "WCAG 2.2 AA: labels, keyboard menu/dialog focus trap/restoration and Escape, upload progress/error association, toast live-region politeness, table headers/overflow, visible focus and reduced motion; NVDA/VoiceOver remains manual.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
           ]
         },
         "responsive": {
           "applicability": "APPLICABLE",
           "requirements": [
             "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
-            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
+            {
+              "requirement": "Verify 320/390/768/1024/1440 CSS-pixel layouts, deliberate narrow table behavior and touch targets without unintended overflow.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
           ]
         },
         "browsers": {
           "applicability": "APPLICABLE",
-          "requirements": ["Chromium", "Firefox", "WebKit"],
-          "sources": ["docs/TESTING.md"]
+          "requirements": [
+            "Chromium",
+            "Firefox",
+            "WebKit",
+            {
+              "requirement": "Future component checks cover Chromium, Firefox and WebKit with pinned versions and synthetic fixtures.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
+          ]
         },
         "seo": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "NOT_APPLICABLE: shared authenticated components do not create indexable pages.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "securityPrivacy": {
           "applicability": "APPLICABLE",
@@ -74277,20 +74416,43 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: INPUT_VALIDATION / PRIVACY_PII / AUTHORIZATION. Components never authorize actions or trust client owner IDs; upload metadata is untrusted and secrets/tokens/resumes stay out of logs/screenshots.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-106", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-106",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts."
+            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts.",
+            {
+              "requirement": "Record component/state/test identifiers only; no raw input, file bytes, tokens or user data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-106",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/SECURITY.md"
           ]
         },
         "testStrategy": {
@@ -74302,17 +74464,36 @@
               "criterion": "Compose SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table behavior from shared atoms.",
               "verification": [
                 {
-                  "type": "EXTERNAL_PROVIDER",
-                  "expectedCheck": "CS-106-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "The seven named components expose explicit typed interaction boundaries and compose from canonical atoms; page/shell templates remain outside CS-106.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "Component test output and import/state manifest.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_COMPOSITION"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_COMPONENT",
+                  "preconditions": "Canonical CS-105 atoms and synthetic component-library state contracts are available.",
+                  "setup": "Mount only SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table with typed synthetic props; do not mount page or shell templates.",
+                  "procedure": "Exercise controlled value/change/submit callbacks; OTP paste/edit/validation using the owning auth contract; upload selection/progress/cancellation/error callbacks using the owning resume/storage contract; cursor pagination callbacks; toast and confirmation result handling. Assert no invented OTP length, file limit or total and no route-local duplicate primitive.",
+                  "assertion": "The seven named components expose explicit typed interaction boundaries and compose from canonical atoms; page/shell templates remain outside CS-106.",
+                  "expectedResult": "Component contracts are reusable and deterministic.",
+                  "testName": "shared component library composes named components from canonical atoms",
+                  "testFileOrProcedureId": "PLANNED:apps/web/src/components/ui/component-library.test.tsx::shared component library composes named components from canonical atoms",
+                  "fixtures": "Synthetic typed view models and component manifest.",
+                  "negativeCase": "Duplicate route-local primitive, untyped owner prop or invented endpoint passes -> fail.",
+                  "evidenceArtifact": "Component test output and import/state manifest.",
+                  "reviewer": "Frontend QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_COMPOSITION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-106",
@@ -74320,49 +74501,36 @@
               "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-106-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "Shared components preserve owning server result and honest unavailable states.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-106-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-106-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-106-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "LIVE_HOST",
-                  "expectedCheck": "CS-106-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "Rendered-state assertions and redacted log capture.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend Security and QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_STATE_PARITY"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_COMPONENT",
+                  "preconditions": "Synthetic real/empty/error/unauthorized/expired/stale states exist only where owning contracts support them.",
+                  "setup": "Drive each named component through pending, empty, validation error, unauthorized, expired-session and stale-revision state fixtures.",
+                  "procedure": "Assert explicit status/error/empty rendering, no premature success toast or confirmation, no fabricated totals, and no upload bytes/content in the DOM or logs.",
+                  "assertion": "Shared components preserve owning server result and honest unavailable states.",
+                  "expectedResult": "Failure and unavailable states are visible and do not mutate state implicitly.",
+                  "testName": "shared components render server-owned failure and empty states",
+                  "testFileOrProcedureId": "PLANNED:apps/web/src/components/ui/component-library.states.test.tsx::shared components render server-owned failure and empty states",
+                  "fixtures": "Synthetic state/error matrix and redacted file metadata.",
+                  "negativeCase": "Toast claims success before response, fabricated page total, raw file bytes or client-only authorization appears -> fail.",
+                  "evidenceArtifact": "Rendered-state assertions and redacted log capture.",
+                  "reviewer": "Frontend Security and QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_STATE_PARITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-106",
@@ -74370,33 +74538,36 @@
               "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-106-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-106-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-106-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Every required state/engine/reference is compared within the approved tolerance; missing evidence fails.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Per-engine screenshots/diffs and UX approval.",
+                  "automationStatus": "PLANNED",
+                  "owner": "UX and Visual QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_VISUAL_PARITY"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "VISUAL_REGRESSION",
+                  "preconditions": "UX approves component-library reference, desktop/mobile crops, masks and numeric threshold.",
+                  "setup": "Capture each named component/state in Chromium, Firefox and WebKit at approved viewports with synthetic values.",
+                  "procedure": "Compare against the approved reference and record engine, viewport, diff, masks and threshold; do not mask controls, focus, errors or substantive content.",
+                  "assertion": "Every required state/engine/reference is compared within the approved tolerance; missing evidence fails.",
+                  "expectedResult": "Visual evidence is deterministic and scoped to the component library.",
+                  "testName": "shared component library meets approved visual matrix",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/component-library.visual.spec.ts::shared component library meets approved visual matrix",
+                  "fixtures": "Reference hashes, state matrix, viewport/browser manifest.",
+                  "negativeCase": "Unapproved crop/threshold, blanket mask or missing engine passes -> fail.",
+                  "evidenceArtifact": "Per-engine screenshots/diffs and UX approval.",
+                  "reviewer": "UX and Visual QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_VISUAL_PARITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-106",
@@ -74404,33 +74575,62 @@
               "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "CS-106-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "AUTOMATED_ACCESSIBILITY",
-                  "expectedCheck": "CS-106-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "All applicable shared interactions are keyboard and axe accessible without color-only meaning or focus loss.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Axe report, keyboard matrix and responsive screenshots.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Accessibility QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_A11Y"
                 },
                 {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-106-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "expectedCheck": "All interactive controls have expected spoken names/states; progress/errors/toasts announce once, table navigation is meaningful, dialog traps/restores focus and OTP/upload behavior is operable. Missing AT/version or mismatch is not a pass.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Accessibility reviewer (NVDA/VoiceOver operator)",
+                  "releaseGate": "MANUAL_SCREEN_READER_SHARED_COMPONENTS"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_ACCESSIBILITY",
+                  "preconditions": "Synthetic labelled forms, dialogs, table and upload states are rendered in the approved build.",
+                  "setup": "Run axe and keyboard traversal at 320/390/768/1024/1440; include dialog open/close, toast, table overflow and upload progress/error.",
+                  "procedure": "Assert labels, focus trap/restoration, Escape, live-region announcements, table headers, visible focus, reduced-motion behavior and deliberate narrow overflow.",
+                  "assertion": "All applicable shared interactions are keyboard and axe accessible without color-only meaning or focus loss.",
+                  "expectedResult": "Automated accessibility/reflow checks pass for supported states.",
+                  "testName": "shared forms dialogs tables and upload states pass accessibility checks",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/component-library.a11y.spec.ts::shared forms dialogs tables and upload states pass accessibility checks",
+                  "fixtures": "Synthetic labelled controls and redacted upload metadata.",
+                  "negativeCase": "Focus escape, unlabeled control, silent error, inaccessible table overflow or motion violation fails.",
+                  "evidenceArtifact": "Axe report, keyboard matrix and responsive screenshots.",
+                  "reviewer": "Accessibility QA reviewer",
+                  "releaseGate": "SHARED_COMPONENT_A11Y",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                },
+                {
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "preconditions": "A synthetic approved build renders OTP input, upload progress/error, pagination/table, toast and confirmation dialog; no real user data.",
+                  "setup": "Record OS, browser, build SHA, NVDA or VoiceOver version, viewport and initial focus. Prepare keyboard-only tasks for OTP paste/edit/error, upload progress/cancel/error, pagination/table navigation, toast announcement and dialog open/Escape/restore.",
+                  "procedure": "Perform each task and record spoken name/role/state, error/status announcement, focus order, cancellation/result announcement, table header/navigation behavior, Escape handling and focus restoration. Capture only redacted observations.",
+                  "assertion": "All interactive controls have expected spoken names/states; progress/errors/toasts announce once, table navigation is meaningful, dialog traps/restores focus and OTP/upload behavior is operable. Missing AT/version or mismatch is not a pass.",
+                  "expectedResult": "Manual screen-reader evidence is tied to the exact build and named component states; axe does not substitute for observation.",
+                  "testName": "shared component library passes manual screen-reader interaction procedure",
+                  "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-106-AC4-screen-reader-components",
+                  "fixtures": "Synthetic OTP/upload/table/dialog state matrix and redacted observation form.",
+                  "negativeCase": "Silent state, focus loss, unannounced toast/error, inaccessible table, failed Escape/restore or unrecorded AT/version fails.",
+                  "evidenceArtifact": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+                  "reviewer": "Accessibility reviewer (NVDA/VoiceOver operator)",
+                  "releaseGate": "MANUAL_SCREEN_READER_SHARED_COMPONENTS",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-106",
@@ -74438,25 +74638,36 @@
               "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-106-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-106-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_PRODUCT",
+                  "expectedCheck": "A component or client flag alone cannot activate unsupported behavior or claim server authorization.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Signed review checklist and exact-SHA gate references.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Release and Security reviewer",
+                  "releaseGate": "SHARED_COMPONENT_RELEASE_GATE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "MANUAL_PRODUCT",
+                  "preconditions": "No runtime activation is performed in Phase 3.25 and release/authorization metadata remains unchanged.",
+                  "setup": "Review the component contract, source reference, test outputs, UX approval and release checklist.",
+                  "procedure": "Confirm RELEASE is not activation; record exact future hosted, visual, manual screen-reader and owning-contract evidence and rollback owner.",
+                  "assertion": "A component or client flag alone cannot activate unsupported behavior or claim server authorization.",
+                  "expectedResult": "Release semantics and evidence ownership remain explicit.",
+                  "testName": "shared component release gate remains fail closed",
+                  "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-106-AC5-release-semantics-review",
+                  "fixtures": "Redacted catalog/policy and approval checklist.",
+                  "negativeCase": "Missing approval or client-only activation is a failed gate.",
+                  "evidenceArtifact": "Signed review checklist and exact-SHA gate references.",
+                  "reviewer": "Release and Security reviewer",
+                  "releaseGate": "SHARED_COMPONENT_RELEASE_GATE",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-106", "docs/TESTING.md"]
@@ -74481,10 +74692,22 @@
               "masks": "Only unavoidable dynamic regions; no blanket widget masks.",
               "tolerance": "Owner-approved deterministic threshold is required; not invented in planning.",
               "evidence": "Future reference/render capture, dimensions, state, browser and independent approval."
+            },
+            {
+              "requirement": "Compare the approved component-library reference and UX-approved desktop/mobile matrix with minimal masks and bounded tolerance across three engines; missing evidence is NOT_RUN.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
-            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md"
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
           ]
         },
         "acceptanceCriteria": {
@@ -74494,7 +74717,7 @@
               "id": "CS-106-AC1",
               "sourceText": "Compose SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table behavior from shared atoms.",
               "expectedResult": "Compose SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table behavior from shared atoms.",
-              "verificationIds": ["EXTERNAL_PROVIDER"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74502,13 +74725,7 @@
               "id": "CS-106-AC2",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74516,7 +74733,7 @@
               "id": "CS-106-AC3",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74524,11 +74741,7 @@
               "id": "CS-106-AC4",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -74536,7 +74749,7 @@
               "id": "CS-106-AC5",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-106",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -74551,9 +74764,23 @@
             "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
             "Independent current-content review resolves specification/implementation findings before promotion.",
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+            {
+              "requirement": "Specification DoD: named components, interaction/server-state boundaries, failure/accessibility/responsive/security/visual gates and no-fabrication rules are explicit. Future implementation DoD requires component/browser/axe/manual evidence and owning-contract tests.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            "docs/ai/quality-gates.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
@@ -74574,17 +74801,37 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-106 problem and each criterion with Frontend.",
-            "Resolve only the recorded CS-106 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for Shared form, card, dialog, table and template contracts.",
-            "Implement and verify CS-106-AC1: Compose SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table behavior from shared atoms.",
-            "Implement and verify CS-106-AC2: Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-            "Implement and verify CS-106-AC3: Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-            "Implement and verify CS-106-AC4: Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-            "Implement and verify CS-106-AC5: Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-106 documentation, redacted evidence and independent review before workflow promotion."
+            {
+              "requirement": "Inventory shared primitives and component-library references; identify missing states without inventing visuals.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define typed props/state contracts for the seven named components; leave page/shell templates to owning tickets.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add component, keyboard, axe, responsive and three-engine visual procedures with synthetic values and redacted upload fixtures.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Review server-result/authorization/concurrency boundaries and obtain UX, Security, QA and manual accessibility evidence before activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-106"]
+          "sources": [
+            ".ai/backlog.json#CS-106",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -74705,11 +74952,24 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "UX approval of state/crop/tolerance and manual screen-reader review; exact-SHA browser/axe evidence remains future.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-106",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -74722,13 +74982,22 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+            },
+            {
+              "requirement": "A generic component can hide authorization or stale-revision failure. Revert the component consumer or flag while preserving server state; no schema rollback is implied.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-106",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/page-references/foundations/07-component-library.png",
+            "docs/SECURITY.md"
           ]
         },
         "delivery": {

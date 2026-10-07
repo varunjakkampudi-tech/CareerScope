@@ -3675,6 +3675,30 @@
         "Review redaction and data-source boundaries, then obtain UX, QA, Security and manual accessibility evidence before release activation."
       ]
     },
+    "CS-106": {
+      "reviewStatus":"DRAFT",
+      "sourceReferences":[".ai/backlog.json#CS-106","design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md","design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md","design/page-references/foundations/07-component-library.png","docs/ARCHITECTURE.md","docs/SECURITY.md","docs/TESTING.md"],
+      "additionalRequirements":{
+        "problem":["Shared SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog, table and component contracts are referenced by approved foundations material but are not yet a ticket-specific implementation-ready boundary."],
+        "value":["Prevent route-specific form/dialog/table behavior and ensure shared components remain accessible, responsive, source-backed and safe for real API state."],
+        "functionalRequirements":["Compose only SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table from CS-105 atoms/tokens; exclude page/shell templates and assign any future template to its owning route ticket.","Define controlled value/change/submit boundaries. OTP paste/edit/validation and resend follow the owning auth contract without inventing code length or provider limits; FileUpload selection/progress/cancellation/error follows the owning resume/storage contract without inventing size/type limits; Pagination emits owning cursor callbacks and never invents totals; ConfirmationDialog resolves only from the owning server result.","FileUpload never exposes raw resume bytes in evidence; Toast and ConfirmationDialog never imply mutation success before the owning server result. The reference is a component contract, not production data or a route."],
+        "technicalApproach":["ARCHITECTURE_IMPACT: LOCAL_MODULE / CROSS_MODULE. Future implementation belongs to canonical shared UI components; API clients, authorization and ownership remain in feature/server boundaries."],
+        "apiContract":["NOT_APPLICABLE for new endpoints. Components accept typed view models from existing/planned contracts and preserve stable validation/error/concurrency semantics."],
+        "persistence":["NOT_APPLICABLE: no schema or migration; fixtures are synthetic and isolated."],
+        "sharedComponents":["Depends on CS-105 atoms/tokens and composes only the seven named components without duplicate route-local primitives or page templates."],
+        "accessibility":["WCAG 2.2 AA: labels, keyboard menu/dialog focus trap/restoration and Escape, upload progress/error association, toast live-region politeness, table headers/overflow, visible focus and reduced motion; NVDA/VoiceOver remains manual."],
+        "responsive":["Verify 320/390/768/1024/1440 CSS-pixel layouts, deliberate narrow table behavior and touch targets without unintended overflow."],
+        "browsers":["Future component checks cover Chromium, Firefox and WebKit with pinned versions and synthetic fixtures."],
+        "seo":["NOT_APPLICABLE: shared authenticated components do not create indexable pages."],
+        "securityPrivacy":["SECURITY_IMPACT: INPUT_VALIDATION / PRIVACY_PII / AUTHORIZATION. Components never authorize actions or trust client owner IDs; upload metadata is untrusted and secrets/tokens/resumes stay out of logs/screenshots."],
+        "observability":["Record component/state/test identifiers only; no raw input, file bytes, tokens or user data."],
+        "visualRegression":["Compare the approved component-library reference and UX-approved desktop/mobile matrix with minimal masks and bounded tolerance across three engines; missing evidence is NOT_RUN."],
+        "manualExternalGates":["UX approval of state/crop/tolerance and manual screen-reader review; exact-SHA browser/axe evidence remains future."],
+        "risksRecovery":["A generic component can hide authorization or stale-revision failure. Revert the component consumer or flag while preserving server state; no schema rollback is implied."],
+        "definitionOfDone":["Specification DoD: named components, interaction/server-state boundaries, failure/accessibility/responsive/security/visual gates and no-fabrication rules are explicit. Future implementation DoD requires component/browser/axe/manual evidence and owning-contract tests."]
+      },
+      "implementationChecklistOverride":["Inventory shared primitives and component-library references; identify missing states without inventing visuals.","Define typed props/state contracts for the seven named components; leave page/shell templates to owning tickets.","Add component, keyboard, axe, responsive and three-engine visual procedures with synthetic values and redacted upload fixtures.","Review server-result/authorization/concurrency boundaries and obtain UX, Security, QA and manual accessibility evidence before activation."]
+    },
     "CS-104": {
       "reviewStatus": "DRAFT",
       "sourceReferences": [
@@ -4237,6 +4261,29 @@
     "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
   },
   "findingDispositions": {
+    "CS-106": {
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The specification names only the seven source components, excludes page/shell templates, defines controlled interaction/server-result boundaries, failure states, accessibility, security, responsive and visual gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-106",
+          "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+          "docs/ARCHITECTURE.md"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All five acceptance criteria have independently reviewed exact procedures; AC4 includes the concrete manual NVDA/VoiceOver procedure for OTP, upload, pagination/table, toast and dialog behavior. Planned/manual evidence remains unexecuted.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-106-AC1",
+          ".ai/ticket-specification-policy.json#CS-106-AC2",
+          ".ai/ticket-specification-policy.json#CS-106-AC3",
+          ".ai/ticket-specification-policy.json#CS-106-AC4",
+          ".ai/ticket-specification-policy.json#CS-106-AC5",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
+    },
     "CS-14": {
       "PARTIAL_DESIGN": {
         "disposition": "RECLASSIFIED",
@@ -5814,6 +5861,118 @@
     }
   },
   "exactVerificationBindings": {
+    "CS-106-AC1": [
+      {
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Canonical CS-105 atoms and synthetic component-library state contracts are available.",
+        "setup": "Mount only SearchInput, OTPField, FileUpload, Pagination, Toast, ConfirmationDialog and responsive table with typed synthetic props; do not mount page or shell templates.",
+        "procedure": "Exercise controlled value/change/submit callbacks; OTP paste/edit/validation using the owning auth contract; upload selection/progress/cancellation/error callbacks using the owning resume/storage contract; cursor pagination callbacks; toast and confirmation result handling. Assert no invented OTP length, file limit or total and no route-local duplicate primitive.",
+        "assertion": "The seven named components expose explicit typed interaction boundaries and compose from canonical atoms; page/shell templates remain outside CS-106.",
+        "expectedResult": "Component contracts are reusable and deterministic.",
+        "testName": "shared component library composes named components from canonical atoms",
+        "testFileOrProcedureId": "PLANNED:apps/web/src/components/ui/component-library.test.tsx::shared component library composes named components from canonical atoms",
+        "fixtures": "Synthetic typed view models and component manifest.",
+        "negativeCase": "Duplicate route-local primitive, untyped owner prop or invented endpoint passes -> fail.",
+        "evidenceArtifact": "Component test output and import/state manifest.",
+        "reviewer": "Frontend QA reviewer",
+        "releaseGate": "SHARED_COMPONENT_COMPOSITION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-106-AC2": [
+      {
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Synthetic real/empty/error/unauthorized/expired/stale states exist only where owning contracts support them.",
+        "setup": "Drive each named component through pending, empty, validation error, unauthorized, expired-session and stale-revision state fixtures.",
+        "procedure": "Assert explicit status/error/empty rendering, no premature success toast or confirmation, no fabricated totals, and no upload bytes/content in the DOM or logs.",
+        "assertion": "Shared components preserve owning server result and honest unavailable states.",
+        "expectedResult": "Failure and unavailable states are visible and do not mutate state implicitly.",
+        "testName": "shared components render server-owned failure and empty states",
+        "testFileOrProcedureId": "PLANNED:apps/web/src/components/ui/component-library.states.test.tsx::shared components render server-owned failure and empty states",
+        "fixtures": "Synthetic state/error matrix and redacted file metadata.",
+        "negativeCase": "Toast claims success before response, fabricated page total, raw file bytes or client-only authorization appears -> fail.",
+        "evidenceArtifact": "Rendered-state assertions and redacted log capture.",
+        "reviewer": "Frontend Security and QA reviewer",
+        "releaseGate": "SHARED_COMPONENT_STATE_PARITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-106-AC3": [
+      {
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "UX approves component-library reference, desktop/mobile crops, masks and numeric threshold.",
+        "setup": "Capture each named component/state in Chromium, Firefox and WebKit at approved viewports with synthetic values.",
+        "procedure": "Compare against the approved reference and record engine, viewport, diff, masks and threshold; do not mask controls, focus, errors or substantive content.",
+        "assertion": "Every required state/engine/reference is compared within the approved tolerance; missing evidence fails.",
+        "expectedResult": "Visual evidence is deterministic and scoped to the component library.",
+        "testName": "shared component library meets approved visual matrix",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/component-library.visual.spec.ts::shared component library meets approved visual matrix",
+        "fixtures": "Reference hashes, state matrix, viewport/browser manifest.",
+        "negativeCase": "Unapproved crop/threshold, blanket mask or missing engine passes -> fail.",
+        "evidenceArtifact": "Per-engine screenshots/diffs and UX approval.",
+        "reviewer": "UX and Visual QA reviewer",
+        "releaseGate": "SHARED_COMPONENT_VISUAL_PARITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-106-AC4": [
+      {
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Synthetic labelled forms, dialogs, table and upload states are rendered in the approved build.",
+        "setup": "Run axe and keyboard traversal at 320/390/768/1024/1440; include dialog open/close, toast, table overflow and upload progress/error.",
+        "procedure": "Assert labels, focus trap/restoration, Escape, live-region announcements, table headers, visible focus, reduced-motion behavior and deliberate narrow overflow.",
+        "assertion": "All applicable shared interactions are keyboard and axe accessible without color-only meaning or focus loss.",
+        "expectedResult": "Automated accessibility/reflow checks pass for supported states.",
+        "testName": "shared forms dialogs tables and upload states pass accessibility checks",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/component-library.a11y.spec.ts::shared forms dialogs tables and upload states pass accessibility checks",
+        "fixtures": "Synthetic labelled controls and redacted upload metadata.",
+        "negativeCase": "Focus escape, unlabeled control, silent error, inaccessible table overflow or motion violation fails.",
+        "evidenceArtifact": "Axe report, keyboard matrix and responsive screenshots.",
+        "reviewer": "Accessibility QA reviewer",
+        "releaseGate": "SHARED_COMPONENT_A11Y",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "MANUAL_ACCESSIBILITY",
+        "preconditions": "A synthetic approved build renders OTP input, upload progress/error, pagination/table, toast and confirmation dialog; no real user data.",
+        "setup": "Record OS, browser, build SHA, NVDA or VoiceOver version, viewport and initial focus. Prepare keyboard-only tasks for OTP paste/edit/error, upload progress/cancel/error, pagination/table navigation, toast announcement and dialog open/Escape/restore.",
+        "procedure": "Perform each task and record spoken name/role/state, error/status announcement, focus order, cancellation/result announcement, table header/navigation behavior, Escape handling and focus restoration. Capture only redacted observations.",
+        "assertion": "All interactive controls have expected spoken names/states; progress/errors/toasts announce once, table navigation is meaningful, dialog traps/restores focus and OTP/upload behavior is operable. Missing AT/version or mismatch is not a pass.",
+        "expectedResult": "Manual screen-reader evidence is tied to the exact build and named component states; axe does not substitute for observation.",
+        "testName": "shared component library passes manual screen-reader interaction procedure",
+        "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-106-AC4-screen-reader-components",
+        "fixtures": "Synthetic OTP/upload/table/dialog state matrix and redacted observation form.",
+        "negativeCase": "Silent state, focus loss, unannounced toast/error, inaccessible table, failed Escape/restore or unrecorded AT/version fails.",
+        "evidenceArtifact": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+        "reviewer": "Accessibility reviewer (NVDA/VoiceOver operator)",
+        "releaseGate": "MANUAL_SCREEN_READER_SHARED_COMPONENTS",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-106-AC5": [
+      {
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "No runtime activation is performed in Phase 3.25 and release/authorization metadata remains unchanged.",
+        "setup": "Review the component contract, source reference, test outputs, UX approval and release checklist.",
+        "procedure": "Confirm RELEASE is not activation; record exact future hosted, visual, manual screen-reader and owning-contract evidence and rollback owner.",
+        "assertion": "A component or client flag alone cannot activate unsupported behavior or claim server authorization.",
+        "expectedResult": "Release semantics and evidence ownership remain explicit.",
+        "testName": "shared component release gate remains fail closed",
+        "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-106-AC5-release-semantics-review",
+        "fixtures": "Redacted catalog/policy and approval checklist.",
+        "negativeCase": "Missing approval or client-only activation is a failed gate.",
+        "evidenceArtifact": "Signed review checklist and exact-SHA gate references.",
+        "reviewer": "Release and Security reviewer",
+        "releaseGate": "SHARED_COMPONENT_RELEASE_GATE",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
     "CS-101-AC1": [
       {
         "type": "AUTOMATED_COMPONENT",
@@ -14396,6 +14555,11 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "131e213d551c90e9a17525957f9e2cb44f0b2d9b9a39120ab7b4945e7a22b66a"
     },
+    "CS-106-AC1": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"93cf6077b7932d3ac7aa120191d8719d8b8176b99e0f6747f3ef1262a4cae7e1"},
+    "CS-106-AC2": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"5ac00bb14181dd16aacf5a39ee861de313853fbeb647826eeef086c37aa80b93"},
+    "CS-106-AC3": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"8a029d629446b091143aa2082b11c7317d7409b96b8763d5013448e867b7ae6d"},
+    "CS-106-AC4": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"5b6adb52f329b7a8c93edcc87e3135e9ccf5805ad360905709bd4ddc5da5bc13"},
+    "CS-106-AC5": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"b0b8a24263543984e8181913135fa8be92f6258ef24c8746be532f28eaca4171"},
     "CS-105-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -14476,6 +14640,7 @@
     }
   },
   "specificationReviewReceipts": {
+    "CS-106": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"71c25d01855d385a835944e836aabf0751f1eb0fe878f85fca8d4e37f9f09d88"},
     "CS-105": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
