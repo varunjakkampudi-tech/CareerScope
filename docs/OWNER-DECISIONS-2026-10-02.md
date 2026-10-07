@@ -198,3 +198,51 @@ main-branch integration permission.
 allowlist, a privacy/publication check fails, or this direction is revoked before commit, do not stage or
 publish the affected outputs. Remove only the explicitly authorized feature-branch checkpoint by a
 normal follow-up revert if already pushed; do not rewrite history or force-push.
+
+## OD-2026-10-07-CS80-AC3-V2 — Rolling deterministic generated-artifact manifest
+
+**Date:** 2026-10-07
+**Supersedes/extends:** OD-2026-10-07-CS80-AC3; only the fixed 32-path checkpoint list is replaced by a
+controlled rolling manifest. All other limits remain in force.
+**Affected ticket/criterion:** CS-80 / AC3
+**Policy:** `CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST`
+
+**Decision:** A newly generated path is automatically eligible for a Phase 3.25 checkpoint only when it
+is emitted by the approved deterministic specification generator, belongs to an already represented
+artifact class and existing generator-owned output root, derives solely from approved source-controlled
+Phase 3.25 inputs, is required for specification/catalog/traceability/review/handoff, contains no
+secret, credential, token, cookie, runtime/provider/user data, log, cache, build output or unintended
+personal data, and is added to a recomputed exact manifest whose delta is reviewed before staging.
+Generator-owned outputs are not manually edited. The applicable privacy, publication, determinism and
+specification checks must pass before a checkpoint is made.
+
+**Manifest contract:** Each checkpoint records the immutable base commit, previous and current manifest
+hashes, current path count, added/removed/unchanged path sets, artifact class and generator ownership for
+each path, plus safety and determinism validation state. The rolling manifest is the exact inventory of
+all currently emitted generator-owned outputs; the validator separately derives and records which of
+those outputs differ from the immutable base, and rejects unknown roots, classes, filenames or branch
+scope. This allows the approved generator's existing output to be reviewed without requiring every
+unchanged projection to appear in the current Git diff. `docs/tickets/CS-NNN.md`, the existing `.ai` catalog outputs, and
+the existing `docs/PHASE-3-25-*.md` projections are the only presently represented roots/classes; a
+new root or class still requires explicit owner approval.
+
+**CS-101 determination:** `docs/tickets/CS-101.md` is a per-ticket specification projection in the
+existing `docs/tickets/` root and is emitted by the existing approved generator from the canonical
+backlog, policy, design index and traceability inputs. Its addition does not create a new artifact class
+or root; it is eligible under the rolling manifest after the checks above pass. This determination does
+not approve the CS-101 specification itself, activate AI, authorize product/runtime changes or turn
+planned visual/browser evidence into completed evidence.
+
+**Branch scope:** `phase-3.25/cloud-continuation` only. **Main integration authorized: NO.** The V2
+decision does not decide whether generated artifacts are retained on `main`, regenerated in CI,
+excluded from `main`, or handled by another canonical model. That decision is deferred to a separate
+explicit owner decision before integration.
+
+**Owner approval remains required** for a new output root, new artifact class or evidence type, output
+outside the current generator-owned model, binary/runtime/user/provider data, logs, caches, secrets or
+personal data, or any change to main-branch integration policy.
+
+**Revocation conditions:** Stop checkpointing if determinism, exact-manifest membership, privacy or
+publication validation fails; if any path or content falls outside this policy; if branch scope changes;
+or if the owner revokes this direction. If already pushed, use a normal reviewed revert on this feature
+branch; never rewrite history or force-push.

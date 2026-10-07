@@ -13,10 +13,15 @@ import {
 import {
   artifacts,
   authorizedCs80SourceAmendment,
+  committedPredecessorManifestHash,
   exactCheckpointPathsMatch,
   isAuthorizedOwnerDecisionAppend,
+  isApprovedV1Bootstrap,
+  isApprovedV1CoverageAnchor,
   loadInputs,
+  rollingManifestDigest,
   validateCs80AmendmentPair,
+  validatePreviousManifest,
   validateGeneratedArtifactCheckpoint,
 } from './ticket-specifications.mjs';
 
@@ -1045,4 +1050,195 @@ test('CS-80 checkpoint requires its manifest and remains bound to the immutable 
     /requires its exact checkpoint manifest/,
   );
   assert.equal(checkpoint.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
+});
+
+test('CS-80 V2 manifest admits CS-101 only as an existing generator-owned ticket-spec class', async () => {
+  const inputs = fresh();
+  const { output } = await artifacts(inputs, root);
+  const coverage = JSON.parse(output.get('.ai/ticket-specification-coverage.json'));
+  const manifest = coverage.artifactManifest;
+  const cs101 = manifest.paths.find((entry) => entry.path === 'docs/tickets/CS-101.md');
+
+  assert.equal(manifest.policy, 'CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST');
+  assert.equal(manifest.decisionId, 'OD-2026-10-07-CS80-AC3-V2');
+  assert.equal(manifest.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
+  assert.equal(
+    manifest.previousManifestHash,
+    '0f1eb5d8a80ef12ae7c3c01c08f0686950b42f1c5b430122b5025a298e82fa69',
+  );
+  assert.equal(manifest.currentPathCount, output.size);
+  assert.equal(manifest.previousPathCount, 32);
+  assert.equal(manifest.addedPaths.length, output.size - 32);
+  assert.ok(manifest.addedPaths.includes('docs/tickets/CS-101.md'));
+  assert.equal(manifest.removedPaths.length, 0);
+  assert.equal(manifest.unchangedPaths.length, 32);
+  assert.match(manifest.currentManifestHash, /^[0-9a-f]{64}$/);
+  assert.ok(
+    manifest.changedContentPathsFromBase.every((name) =>
+      manifest.paths.some((entry) => entry.path === name),
+    ),
+  );
+  assert.equal(cs101.artifactClass, 'TICKET_SPECIFICATION');
+  assert.equal(cs101.generatorOwned, 'YES');
+  assert.equal(manifest.safetyValidated, 'YES');
+  assert.equal(manifest.determinismValidated, 'YES');
+  assert.equal(manifest.mainIntegrationAuthorized, 'NO');
+  assert.doesNotThrow(() =>
+    validateGeneratedArtifactCheckpoint(
+      inputs.policy,
+      output,
+      root,
+      inputs.policy.generatedArtifactCheckpoint.branch,
+    ),
+  );
+  assert.throws(
+    () => validateGeneratedArtifactCheckpoint(inputs.policy, output, root, 'main'),
+    /decision, base, branch or manifest is invalid|policy, base, branch or prior manifest is invalid/,
+  );
+});
+
+test('CS-80 rolling manifest validates strict predecessor schema, deltas and committed provenance', async () => {
+  const inputs = fresh();
+  const { output } = await artifacts(inputs, root);
+  const coverage = JSON.parse(output.get('.ai/ticket-specification-coverage.json'));
+  const manifest = coverage.artifactManifest;
+  const ticketIds = new Set(inputs.backlog.items.map((ticket) => ticket.id));
+  const approvedPreviousHash = inputs.policy.generatedArtifactCheckpoint.previousManifestHash;
+  assert.doesNotThrow(() => validatePreviousManifest(manifest, ticketIds, approvedPreviousHash));
+
+  const malformedCases = [
+    (copy) => {
+      copy.schemaVersion = 2;
+    },
+    (copy) => {
+      copy.previousPathCount += 1;
+    },
+    (copy) => {
+      copy.addedPaths.push(copy.addedPaths[0]);
+    },
+    (copy) => {
+      copy.unchangedPaths.push(copy.unchangedPaths[0]);
+    },
+    (copy) => {
+      copy.changedContentPathsFromBase.push(copy.changedContentPathsFromBase[0]);
+    },
+    (copy) => {
+      copy.previousManifestHash = 'f'.repeat(64);
+    },
+    (copy) => {
+      copy.unhashedExtension = 'ignored-by-digest';
+    },
+    (copy) => {
+      copy.paths[0].unhashedExtension = 'ignored-by-digest';
+    },
+  ];
+  for (const mutate of malformedCases) {
+    const copy = structuredClone(manifest);
+    mutate(copy);
+    copy.currentManifestHash = rollingManifestDigest(copy);
+    assert.throws(
+      () => validatePreviousManifest(copy, ticketIds, approvedPreviousHash),
+      /malformed, unprovenanced or hash-invalid/,
+    );
+  }
+  assert.equal(committedPredecessorManifestHash(root, ticketIds), approvedPreviousHash);
+});
+
+test('CS-80 V1 bootstrap is bound to the exact committed coverage and owner decision bytes', () => {
+  const checkpoint = fresh().policy.generatedArtifactCheckpoint;
+  const coverageBytes = spawnSync('git', ['show', 'HEAD:.ai/ticket-specification-coverage.json'], {
+    cwd: root,
+    encoding: 'buffer',
+    maxBuffer: 20 * 1024 * 1024,
+  }).stdout;
+  const ownerBytes = spawnSync('git', ['show', 'HEAD:docs/OWNER-DECISIONS-2026-10-02.md'], {
+    cwd: root,
+    encoding: 'buffer',
+    maxBuffer: 5 * 1024 * 1024,
+  }).stdout;
+  assert.equal(isApprovedV1Bootstrap(coverageBytes, ownerBytes, checkpoint), true);
+  assert.equal(isApprovedV1CoverageAnchor(coverageBytes, ownerBytes), true);
+  assert.equal(
+    isApprovedV1Bootstrap(Buffer.concat([coverageBytes, Buffer.from(' ')]), ownerBytes, checkpoint),
+    false,
+  );
+  assert.equal(
+    isApprovedV1Bootstrap(coverageBytes, Buffer.from('altered owner decision'), checkpoint),
+    false,
+  );
+  assert.equal(
+    isApprovedV1CoverageAnchor(coverageBytes, Buffer.from('altered owner decision')),
+    false,
+  );
+  assert.equal(
+    isApprovedV1Bootstrap(coverageBytes, ownerBytes, {
+      ...checkpoint,
+      previousManifestHash: '0'.repeat(64),
+    }),
+    false,
+  );
+});
+
+test('CS-80 rolling manifest fails closed for new roots, unknown tickets, and altered deltas', async () => {
+  const inputs = fresh();
+  const { output } = await artifacts(inputs, root);
+  const unexpectedRoot = new Map(output);
+  unexpectedRoot.set('.ai/unapproved.json', '{}');
+  assert.throws(
+    () =>
+      validateGeneratedArtifactCheckpoint(
+        inputs.policy,
+        unexpectedRoot,
+        root,
+        inputs.policy.generatedArtifactCheckpoint.branch,
+      ),
+    /outside the approved artifact classes\/roots/,
+  );
+
+  const unknownTicket = new Map(output);
+  unknownTicket.set('docs/tickets/CS-217.md', '# not a canonical ticket');
+  assert.throws(
+    () =>
+      validateGeneratedArtifactCheckpoint(
+        inputs.policy,
+        unknownTicket,
+        root,
+        inputs.policy.generatedArtifactCheckpoint.branch,
+      ),
+    /outside the approved artifact classes\/roots/,
+  );
+
+  const unchangedDisallowedPath = new Map(output);
+  const baseBacklog = spawnSync(
+    'git',
+    ['show', `${inputs.policy.generatedArtifactCheckpoint.baseCommit}:.ai/backlog.json`],
+    { cwd: root, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 },
+  ).stdout;
+  unchangedDisallowedPath.set('.ai/backlog.json', baseBacklog);
+  assert.throws(
+    () =>
+      validateGeneratedArtifactCheckpoint(
+        inputs.policy,
+        unchangedDisallowedPath,
+        root,
+        inputs.policy.generatedArtifactCheckpoint.branch,
+      ),
+    /outside the approved artifact classes\/roots/,
+    'an output matching a base blob is still rejected if its path/class is not approved',
+  );
+
+  const alteredDelta = new Map(output);
+  const coverage = JSON.parse(alteredDelta.get('.ai/ticket-specification-coverage.json'));
+  coverage.artifactManifest.addedPaths.push('docs/tickets/CS-217.md');
+  alteredDelta.set('.ai/ticket-specification-coverage.json', JSON.stringify(coverage));
+  assert.throws(
+    () =>
+      validateGeneratedArtifactCheckpoint(
+        inputs.policy,
+        alteredDelta,
+        root,
+        inputs.policy.generatedArtifactCheckpoint.branch,
+      ),
+    /does not exactly match generator output/,
+  );
 });

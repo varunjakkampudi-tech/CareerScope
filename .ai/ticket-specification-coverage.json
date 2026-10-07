@@ -9,9 +9,9 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "4f98e342c064c20419a387d9c60ae4837249619fe70a14829fef69ee4c35303a",
+    ".ai/ticket-specification-policy.json": "5368e8e4d21922c18d8fb6facd0b8f30883022b377b3006a1a31f238fdc34e43",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
-    "docs/OWNER-DECISIONS-2026-10-02.md": "380c0218caeed2bd4a34fe32fac8a67eb36c59eabd58537630734a45b2a61b14",
+    "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "648664dcf9286c148f1e117bacd9c780dae50163829df0e309b94b914e32858e"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -6454,5 +6454,1447 @@
     "reason": "The real read-only independent reviewer resumed after the initial usage-limit failure, delivered findings and independently verified the mechanical corrections, including source projection validation, cross-cutting UI scope, honest AC metrics, exact-ID sequencing and CS-25 owner deferral. No unresolved mechanical defect remained among the reviewed fixes. Exact AC bindings, ticket-specific requirements/contracts, design gaps and release decisions remain incomplete. Whole-phase disposition is REVISE, not approval.",
     "reviewerTask": "/root/phase325_review",
     "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
+  },
+  "artifactManifest": {
+    "schemaVersion": 1,
+    "policy": "CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST",
+    "decisionId": "OD-2026-10-07-CS80-AC3-V2",
+    "baseCommit": "3911a52fb2167707a1b04e258c15c403815286e4",
+    "previousManifestHash": "0f1eb5d8a80ef12ae7c3c01c08f0686950b42f1c5b430122b5025a298e82fa69",
+    "previousPathCount": 32,
+    "paths": [
+      {
+        "path": ".ai/design-traceability.json",
+        "artifactClass": "MACHINE_CATALOG",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": ".ai/epic-catalog.json",
+        "artifactClass": "MACHINE_CATALOG",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": ".ai/test-traceability.json",
+        "artifactClass": "MACHINE_CATALOG",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": ".ai/ticket-catalog.json",
+        "artifactClass": "MACHINE_CATALOG",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": ".ai/ticket-dependency-graph.json",
+        "artifactClass": "MACHINE_CATALOG",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": ".ai/ticket-specification-coverage.json",
+        "artifactClass": "MACHINE_CATALOG",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-DEPENDENCY-GRAPH.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-DESIGN-TRACEABILITY.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-EPIC-CATALOG.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-FINAL-REPORT.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-IMPLEMENTATION-ORDER.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-QUALITY-AUDIT.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-REVIEW.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-TEST-TRACEABILITY.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/PHASE-3-25-TICKET-CATALOG.md",
+        "artifactClass": "PHASE_REPORT",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-1.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-10.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-100.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-101.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-102.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-103.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-104.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-105.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-106.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-107.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-108.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-109.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-11.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-110.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-111.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-112.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-113.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-114.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-115.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-116.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-117.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-118.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-119.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-12.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-120.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-121.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-122.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-123.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-124.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-125.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-126.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-127.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-128.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-129.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-13.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-130.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-131.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-132.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-133.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-134.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-135.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-136.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-137.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-138.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-139.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-14.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-140.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-141.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-142.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-143.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-144.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-145.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-146.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-147.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-148.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-149.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-15.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-150.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-151.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-152.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-153.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-154.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-155.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-156.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-157.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-158.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-159.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-16.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-160.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-161.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-162.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-163.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-164.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-165.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-166.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-167.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-168.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-169.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-17.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-170.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-171.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-172.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-173.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-174.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-175.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-176.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-177.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-178.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-179.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-18.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-180.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-181.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-182.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-183.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-184.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-185.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-186.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-187.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-188.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-189.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-19.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-190.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-191.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-192.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-193.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-194.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-195.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-196.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-197.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-198.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-199.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-2.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-20.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-200.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-201.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-202.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-203.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-204.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-205.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-206.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-207.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-208.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-209.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-21.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-210.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-211.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-212.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-213.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-214.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-215.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-216.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-22.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-23.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-24.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-25.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-26.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-27.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-28.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-29.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-3.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-30.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-31.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-32.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-33.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-34.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-35.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-36.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-37.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-38.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-39.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-4.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-40.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-41.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-42.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-43.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-44.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-45.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-46.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-47.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-48.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-49.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-5.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-50.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-51.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-52.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-53.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-54.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-55.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-56.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-57.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-58.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-59.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-6.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-60.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-61.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-62.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-63.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-64.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-65.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-66.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-67.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-68.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-69.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-7.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-70.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-71.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-72.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-73.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-74.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-75.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-76.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-77.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-78.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-79.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-8.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-80.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-81.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-82.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-83.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-84.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-85.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-86.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-87.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-88.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-89.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-9.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-90.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-91.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-92.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-93.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-94.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-95.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-96.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-97.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-98.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      },
+      {
+        "path": "docs/tickets/CS-99.md",
+        "artifactClass": "TICKET_SPECIFICATION",
+        "generatorOwned": "YES"
+      }
+    ],
+    "changedContentPathsFromBase": [
+      ".ai/design-traceability.json",
+      ".ai/epic-catalog.json",
+      ".ai/test-traceability.json",
+      ".ai/ticket-catalog.json",
+      ".ai/ticket-dependency-graph.json",
+      ".ai/ticket-specification-coverage.json",
+      "docs/PHASE-3-25-FINAL-REPORT.md",
+      "docs/PHASE-3-25-QUALITY-AUDIT.md",
+      "docs/PHASE-3-25-TEST-TRACEABILITY.md",
+      "docs/tickets/CS-100.md",
+      "docs/tickets/CS-78.md",
+      "docs/tickets/CS-79.md",
+      "docs/tickets/CS-80.md",
+      "docs/tickets/CS-81.md",
+      "docs/tickets/CS-82.md",
+      "docs/tickets/CS-83.md",
+      "docs/tickets/CS-84.md",
+      "docs/tickets/CS-85.md",
+      "docs/tickets/CS-86.md",
+      "docs/tickets/CS-87.md",
+      "docs/tickets/CS-88.md",
+      "docs/tickets/CS-89.md",
+      "docs/tickets/CS-90.md",
+      "docs/tickets/CS-91.md",
+      "docs/tickets/CS-92.md",
+      "docs/tickets/CS-93.md",
+      "docs/tickets/CS-94.md",
+      "docs/tickets/CS-95.md",
+      "docs/tickets/CS-96.md",
+      "docs/tickets/CS-97.md",
+      "docs/tickets/CS-98.md",
+      "docs/tickets/CS-99.md"
+    ],
+    "currentPathCount": 231,
+    "addedPaths": [
+      "docs/PHASE-3-25-DEPENDENCY-GRAPH.md",
+      "docs/PHASE-3-25-DESIGN-TRACEABILITY.md",
+      "docs/PHASE-3-25-EPIC-CATALOG.md",
+      "docs/PHASE-3-25-IMPLEMENTATION-ORDER.md",
+      "docs/PHASE-3-25-REVIEW.md",
+      "docs/PHASE-3-25-TICKET-CATALOG.md",
+      "docs/tickets/CS-1.md",
+      "docs/tickets/CS-10.md",
+      "docs/tickets/CS-101.md",
+      "docs/tickets/CS-102.md",
+      "docs/tickets/CS-103.md",
+      "docs/tickets/CS-104.md",
+      "docs/tickets/CS-105.md",
+      "docs/tickets/CS-106.md",
+      "docs/tickets/CS-107.md",
+      "docs/tickets/CS-108.md",
+      "docs/tickets/CS-109.md",
+      "docs/tickets/CS-11.md",
+      "docs/tickets/CS-110.md",
+      "docs/tickets/CS-111.md",
+      "docs/tickets/CS-112.md",
+      "docs/tickets/CS-113.md",
+      "docs/tickets/CS-114.md",
+      "docs/tickets/CS-115.md",
+      "docs/tickets/CS-116.md",
+      "docs/tickets/CS-117.md",
+      "docs/tickets/CS-118.md",
+      "docs/tickets/CS-119.md",
+      "docs/tickets/CS-12.md",
+      "docs/tickets/CS-120.md",
+      "docs/tickets/CS-121.md",
+      "docs/tickets/CS-122.md",
+      "docs/tickets/CS-123.md",
+      "docs/tickets/CS-124.md",
+      "docs/tickets/CS-125.md",
+      "docs/tickets/CS-126.md",
+      "docs/tickets/CS-127.md",
+      "docs/tickets/CS-128.md",
+      "docs/tickets/CS-129.md",
+      "docs/tickets/CS-13.md",
+      "docs/tickets/CS-130.md",
+      "docs/tickets/CS-131.md",
+      "docs/tickets/CS-132.md",
+      "docs/tickets/CS-133.md",
+      "docs/tickets/CS-134.md",
+      "docs/tickets/CS-135.md",
+      "docs/tickets/CS-136.md",
+      "docs/tickets/CS-137.md",
+      "docs/tickets/CS-138.md",
+      "docs/tickets/CS-139.md",
+      "docs/tickets/CS-14.md",
+      "docs/tickets/CS-140.md",
+      "docs/tickets/CS-141.md",
+      "docs/tickets/CS-142.md",
+      "docs/tickets/CS-143.md",
+      "docs/tickets/CS-144.md",
+      "docs/tickets/CS-145.md",
+      "docs/tickets/CS-146.md",
+      "docs/tickets/CS-147.md",
+      "docs/tickets/CS-148.md",
+      "docs/tickets/CS-149.md",
+      "docs/tickets/CS-15.md",
+      "docs/tickets/CS-150.md",
+      "docs/tickets/CS-151.md",
+      "docs/tickets/CS-152.md",
+      "docs/tickets/CS-153.md",
+      "docs/tickets/CS-154.md",
+      "docs/tickets/CS-155.md",
+      "docs/tickets/CS-156.md",
+      "docs/tickets/CS-157.md",
+      "docs/tickets/CS-158.md",
+      "docs/tickets/CS-159.md",
+      "docs/tickets/CS-16.md",
+      "docs/tickets/CS-160.md",
+      "docs/tickets/CS-161.md",
+      "docs/tickets/CS-162.md",
+      "docs/tickets/CS-163.md",
+      "docs/tickets/CS-164.md",
+      "docs/tickets/CS-165.md",
+      "docs/tickets/CS-166.md",
+      "docs/tickets/CS-167.md",
+      "docs/tickets/CS-168.md",
+      "docs/tickets/CS-169.md",
+      "docs/tickets/CS-17.md",
+      "docs/tickets/CS-170.md",
+      "docs/tickets/CS-171.md",
+      "docs/tickets/CS-172.md",
+      "docs/tickets/CS-173.md",
+      "docs/tickets/CS-174.md",
+      "docs/tickets/CS-175.md",
+      "docs/tickets/CS-176.md",
+      "docs/tickets/CS-177.md",
+      "docs/tickets/CS-178.md",
+      "docs/tickets/CS-179.md",
+      "docs/tickets/CS-18.md",
+      "docs/tickets/CS-180.md",
+      "docs/tickets/CS-181.md",
+      "docs/tickets/CS-182.md",
+      "docs/tickets/CS-183.md",
+      "docs/tickets/CS-184.md",
+      "docs/tickets/CS-185.md",
+      "docs/tickets/CS-186.md",
+      "docs/tickets/CS-187.md",
+      "docs/tickets/CS-188.md",
+      "docs/tickets/CS-189.md",
+      "docs/tickets/CS-19.md",
+      "docs/tickets/CS-190.md",
+      "docs/tickets/CS-191.md",
+      "docs/tickets/CS-192.md",
+      "docs/tickets/CS-193.md",
+      "docs/tickets/CS-194.md",
+      "docs/tickets/CS-195.md",
+      "docs/tickets/CS-196.md",
+      "docs/tickets/CS-197.md",
+      "docs/tickets/CS-198.md",
+      "docs/tickets/CS-199.md",
+      "docs/tickets/CS-2.md",
+      "docs/tickets/CS-20.md",
+      "docs/tickets/CS-200.md",
+      "docs/tickets/CS-201.md",
+      "docs/tickets/CS-202.md",
+      "docs/tickets/CS-203.md",
+      "docs/tickets/CS-204.md",
+      "docs/tickets/CS-205.md",
+      "docs/tickets/CS-206.md",
+      "docs/tickets/CS-207.md",
+      "docs/tickets/CS-208.md",
+      "docs/tickets/CS-209.md",
+      "docs/tickets/CS-21.md",
+      "docs/tickets/CS-210.md",
+      "docs/tickets/CS-211.md",
+      "docs/tickets/CS-212.md",
+      "docs/tickets/CS-213.md",
+      "docs/tickets/CS-214.md",
+      "docs/tickets/CS-215.md",
+      "docs/tickets/CS-216.md",
+      "docs/tickets/CS-22.md",
+      "docs/tickets/CS-23.md",
+      "docs/tickets/CS-24.md",
+      "docs/tickets/CS-25.md",
+      "docs/tickets/CS-26.md",
+      "docs/tickets/CS-27.md",
+      "docs/tickets/CS-28.md",
+      "docs/tickets/CS-29.md",
+      "docs/tickets/CS-3.md",
+      "docs/tickets/CS-30.md",
+      "docs/tickets/CS-31.md",
+      "docs/tickets/CS-32.md",
+      "docs/tickets/CS-33.md",
+      "docs/tickets/CS-34.md",
+      "docs/tickets/CS-35.md",
+      "docs/tickets/CS-36.md",
+      "docs/tickets/CS-37.md",
+      "docs/tickets/CS-38.md",
+      "docs/tickets/CS-39.md",
+      "docs/tickets/CS-4.md",
+      "docs/tickets/CS-40.md",
+      "docs/tickets/CS-41.md",
+      "docs/tickets/CS-42.md",
+      "docs/tickets/CS-43.md",
+      "docs/tickets/CS-44.md",
+      "docs/tickets/CS-45.md",
+      "docs/tickets/CS-46.md",
+      "docs/tickets/CS-47.md",
+      "docs/tickets/CS-48.md",
+      "docs/tickets/CS-49.md",
+      "docs/tickets/CS-5.md",
+      "docs/tickets/CS-50.md",
+      "docs/tickets/CS-51.md",
+      "docs/tickets/CS-52.md",
+      "docs/tickets/CS-53.md",
+      "docs/tickets/CS-54.md",
+      "docs/tickets/CS-55.md",
+      "docs/tickets/CS-56.md",
+      "docs/tickets/CS-57.md",
+      "docs/tickets/CS-58.md",
+      "docs/tickets/CS-59.md",
+      "docs/tickets/CS-6.md",
+      "docs/tickets/CS-60.md",
+      "docs/tickets/CS-61.md",
+      "docs/tickets/CS-62.md",
+      "docs/tickets/CS-63.md",
+      "docs/tickets/CS-64.md",
+      "docs/tickets/CS-65.md",
+      "docs/tickets/CS-66.md",
+      "docs/tickets/CS-67.md",
+      "docs/tickets/CS-68.md",
+      "docs/tickets/CS-69.md",
+      "docs/tickets/CS-7.md",
+      "docs/tickets/CS-70.md",
+      "docs/tickets/CS-71.md",
+      "docs/tickets/CS-72.md",
+      "docs/tickets/CS-73.md",
+      "docs/tickets/CS-74.md",
+      "docs/tickets/CS-75.md",
+      "docs/tickets/CS-76.md",
+      "docs/tickets/CS-77.md",
+      "docs/tickets/CS-8.md",
+      "docs/tickets/CS-9.md"
+    ],
+    "removedPaths": [],
+    "unchangedPaths": [
+      ".ai/design-traceability.json",
+      ".ai/epic-catalog.json",
+      ".ai/test-traceability.json",
+      ".ai/ticket-catalog.json",
+      ".ai/ticket-dependency-graph.json",
+      ".ai/ticket-specification-coverage.json",
+      "docs/PHASE-3-25-FINAL-REPORT.md",
+      "docs/PHASE-3-25-QUALITY-AUDIT.md",
+      "docs/PHASE-3-25-TEST-TRACEABILITY.md",
+      "docs/tickets/CS-100.md",
+      "docs/tickets/CS-78.md",
+      "docs/tickets/CS-79.md",
+      "docs/tickets/CS-80.md",
+      "docs/tickets/CS-81.md",
+      "docs/tickets/CS-82.md",
+      "docs/tickets/CS-83.md",
+      "docs/tickets/CS-84.md",
+      "docs/tickets/CS-85.md",
+      "docs/tickets/CS-86.md",
+      "docs/tickets/CS-87.md",
+      "docs/tickets/CS-88.md",
+      "docs/tickets/CS-89.md",
+      "docs/tickets/CS-90.md",
+      "docs/tickets/CS-91.md",
+      "docs/tickets/CS-92.md",
+      "docs/tickets/CS-93.md",
+      "docs/tickets/CS-94.md",
+      "docs/tickets/CS-95.md",
+      "docs/tickets/CS-96.md",
+      "docs/tickets/CS-97.md",
+      "docs/tickets/CS-98.md",
+      "docs/tickets/CS-99.md"
+    ],
+    "safetyValidated": "YES",
+    "safetyValidationScope": "All changed outputs are generator-owned and classified within approved roots/classes; repository privacy and publication checks remain separately required before checkpoint.",
+    "determinismValidated": "YES",
+    "determinismValidationScope": "Generation uses deterministic canonical inputs and formatting; tickets:spec:test and repeated generation are separately required checkpoint evidence.",
+    "mainIntegrationAuthorized": "NO",
+    "currentManifestHash": "01e696e37da6f022776a5798360829c9dea3928c7b23b49459fdf9d8ea11a2d9"
   }
 }

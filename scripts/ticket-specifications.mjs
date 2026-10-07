@@ -46,24 +46,68 @@ const CS80_CHECKPOINT_BASE_SHA = '3911a52fb2167707a1b04e258c15c403815286e4';
 const CS80_CHECKPOINT_PATH_COUNT = 32;
 const CS80_CHECKPOINT_PATHS_SHA256 =
   '0f1eb5d8a80ef12ae7c3c01c08f0686950b42f1c5b430122b5025a298e82fa69';
+const CS80_V2_DECISION_ID = 'OD-2026-10-07-CS80-AC3-V2';
+const CS80_V2_POLICY = 'CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST';
 const CS80_PREVIOUS_CRITERIA_HASH =
   '2c20cd612efbb6bc030114f3647fef1e97a6aeaeb3a2d861f67023e9e90727df';
 const CS80_AMENDED_CRITERIA_HASH =
   '32a705b339219358468b6f8e49ee056c4a81e0d91e48219dcb768407c554eb28';
 const CS80_AMENDED_AC3 =
   'No personal data, resume, database, credential, runtime/provider/user-generated data, logs, caches, build output or unrelated agent-generated artifact enters history. Deterministic Phase 3.25 specification, catalog and traceability projections produced solely by the approved generator may enter `phase-3.25/cloud-continuation` only under owner decision OD-2026-10-07-CS80-AC3, an exact allowlist, deterministic regeneration, pre-stage privacy/publication checks and an atomic commit with corresponding source changes. This branch exception does not authorize merge to `main`; integration requires a later explicit owner decision. Existing ignore rules and publication guards must be verified before staging.';
-const CS80_OWNER_SUFFIX_HASH = 'ed58add38319f2637fcdd37412b2d5b059e93eacb5eee3376b4be50725f6fc4c';
+const CS80_OWNER_SUFFIX_HASH = '24d280ffad50f49de39df61d33b2f41792a4541f50eb4b4aaa57360c9c327d03';
+const CS80_V1_OWNER_FILE_SHA256 =
+  '08ac917f012dab260828952b926c5a1eb04a5c226ec0854d8bf11e9e39051a70';
+const CS80_V1_COVERAGE_FILE_SHA256 =
+  'eee9b0068d068dca64f0d025ae17a2a496d37846ee2b649dec711fc3ed496d9a';
+const ROLLING_MANIFEST_KEYS = [
+  'schemaVersion',
+  'policy',
+  'decisionId',
+  'baseCommit',
+  'previousManifestHash',
+  'previousPathCount',
+  'paths',
+  'changedContentPathsFromBase',
+  'currentPathCount',
+  'addedPaths',
+  'removedPaths',
+  'unchangedPaths',
+  'safetyValidated',
+  'safetyValidationScope',
+  'determinismValidated',
+  'determinismValidationScope',
+  'mainIntegrationAuthorized',
+  'currentManifestHash',
+];
+const ROLLING_MANIFEST_PATH_KEYS = ['path', 'artifactClass', 'generatorOwned'];
+
+const MACHINE_CATALOG_PATHS = [
+  '.ai/design-traceability.json',
+  '.ai/epic-catalog.json',
+  '.ai/test-traceability.json',
+  '.ai/ticket-catalog.json',
+  '.ai/ticket-dependency-graph.json',
+  '.ai/ticket-specification-coverage.json',
+];
+const PHASE_REPORT_PATHS = [
+  'docs/PHASE-3-25-DEPENDENCY-GRAPH.md',
+  'docs/PHASE-3-25-DESIGN-TRACEABILITY.md',
+  'docs/PHASE-3-25-EPIC-CATALOG.md',
+  'docs/PHASE-3-25-FINAL-REPORT.md',
+  'docs/PHASE-3-25-IMPLEMENTATION-ORDER.md',
+  'docs/PHASE-3-25-QUALITY-AUDIT.md',
+  'docs/PHASE-3-25-REVIEW.md',
+  'docs/PHASE-3-25-TEST-TRACEABILITY.md',
+  'docs/PHASE-3-25-TICKET-CATALOG.md',
+];
 
 export function isAuthorizedOwnerDecisionAppend(original, current) {
   const normalizedOriginal = original.replace(/\r\n/g, '\n');
   const normalizedCurrent = current.replace(/\r\n/g, '\n');
   const heading = `## ${CS80_DECISION_ID} — Phase 3.25 generated-artifact checkpoint exception`;
   const index = normalizedCurrent.indexOf(heading);
-  if (
-    index <= 0 ||
-    (normalizedCurrent.match(new RegExp(`^## ${CS80_DECISION_ID}\\b`, 'gm')) ?? []).length !== 1
-  )
-    return false;
+  const exactHeadingCount = normalizedCurrent.split('\n').filter((line) => line === heading).length;
+  if (index <= 0 || exactHeadingCount !== 1) return false;
   const normalize = (text) => text.replace(/\s+/g, ' ').trim();
   const prefix = normalizedCurrent.slice(0, index).trimEnd();
   const suffix = normalizedCurrent.slice(index).replace(/\s+/g, ' ').trim();
@@ -71,6 +115,349 @@ export function isAuthorizedOwnerDecisionAppend(original, current) {
   return (
     normalize(prefix) === normalize(normalizedOriginal) && suffixHash === CS80_OWNER_SUFFIX_HASH
   );
+}
+
+function classifyGeneratedArtifact(name, ticketIds) {
+  if (MACHINE_CATALOG_PATHS.includes(name)) return 'MACHINE_CATALOG';
+  if (PHASE_REPORT_PATHS.includes(name)) return 'PHASE_REPORT';
+  const match = /^docs\/tickets\/(CS-\d+)\.md$/.exec(name);
+  if (match && ticketIds.has(match[1])) return 'TICKET_SPECIFICATION';
+  return null;
+}
+
+function gitTreeBlobHashes(root, commit) {
+  const tree = execFileSync('git', ['ls-tree', '-r', '-z', commit], {
+    cwd: root,
+    encoding: 'buffer',
+    maxBuffer: 32 * 1024 * 1024,
+  });
+  const hashes = new Map();
+  for (const record of tree.toString('utf8').split('\0')) {
+    if (!record) continue;
+    const tab = record.indexOf('\t');
+    if (tab < 0) throw new Error(`Malformed git tree entry at ${commit}`);
+    const [mode, type, objectId] = record.slice(0, tab).split(' ');
+    if (type === 'blob' && mode !== '120000') hashes.set(record.slice(tab + 1), objectId);
+  }
+  return hashes;
+}
+
+function gitBlobHash(content) {
+  const body = Buffer.from(content, 'utf8');
+  return createHash('sha1').update(`blob ${body.byteLength}\0`).update(body).digest('hex');
+}
+
+export function rollingManifestDigest(manifest) {
+  const canonical = {
+    schemaVersion: manifest.schemaVersion,
+    policy: manifest.policy,
+    decisionId: manifest.decisionId,
+    baseCommit: manifest.baseCommit,
+    previousManifestHash: manifest.previousManifestHash,
+    previousPathCount: manifest.previousPathCount,
+    paths: [...manifest.paths]
+      .sort((left, right) => left.path.localeCompare(right.path))
+      .map(({ path: artifactPath, artifactClass, generatorOwned }) => ({
+        path: artifactPath,
+        artifactClass,
+        generatorOwned,
+      })),
+    changedContentPathsFromBase: [...manifest.changedContentPathsFromBase].sort(),
+    currentPathCount: manifest.currentPathCount,
+    addedPaths: [...manifest.addedPaths].sort(),
+    removedPaths: [...manifest.removedPaths].sort(),
+    unchangedPaths: [...manifest.unchangedPaths].sort(),
+    safetyValidated: manifest.safetyValidated,
+    safetyValidationScope: manifest.safetyValidationScope,
+    determinismValidated: manifest.determinismValidated,
+    determinismValidationScope: manifest.determinismValidationScope,
+    mainIntegrationAuthorized: manifest.mainIntegrationAuthorized,
+  };
+  return createHash('sha256').update(JSON.stringify(canonical)).digest('hex');
+}
+
+function uniqueSortedStrings(value) {
+  return (
+    Array.isArray(value) &&
+    value.every((entry) => typeof entry === 'string' && entry.length > 0) &&
+    new Set(value).size === value.length &&
+    value.every((entry, index) => index === 0 || value[index - 1].localeCompare(entry) < 0)
+  );
+}
+
+function hasExactKeys(value, expected) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const actual = Object.keys(value).sort();
+  const wanted = [...expected].sort();
+  return actual.length === wanted.length && actual.every((key, index) => key === wanted[index]);
+}
+
+export function validatePreviousManifest(prior, ticketIds, predecessorHash) {
+  const isNonNegativeInteger = (value) => Number.isSafeInteger(value) && value >= 0;
+  const pathsAreValid =
+    Array.isArray(prior.paths) &&
+    prior.paths.every(
+      (entry) =>
+        hasExactKeys(entry, ROLLING_MANIFEST_PATH_KEYS) &&
+        typeof entry.path === 'string' &&
+        entry.generatorOwned === 'YES' &&
+        classifyGeneratedArtifact(entry.path, ticketIds) === entry.artifactClass,
+    ) &&
+    new Set(prior.paths.map((entry) => entry.path)).size === prior.paths.length &&
+    prior.paths.every(
+      (entry, index) => index === 0 || prior.paths[index - 1].path.localeCompare(entry.path) < 0,
+    );
+  const currentPaths = new Set((prior.paths ?? []).map((entry) => entry.path));
+  const arraysAreValid =
+    uniqueSortedStrings(prior.addedPaths) &&
+    uniqueSortedStrings(prior.removedPaths) &&
+    uniqueSortedStrings(prior.unchangedPaths) &&
+    uniqueSortedStrings(prior.changedContentPathsFromBase);
+  const added = new Set(prior.addedPaths ?? []);
+  const unchanged = new Set(prior.unchangedPaths ?? []);
+  const removed = new Set(prior.removedPaths ?? []);
+  const deltasAreValid =
+    arraysAreValid &&
+    isNonNegativeInteger(prior.currentPathCount) &&
+    isNonNegativeInteger(prior.previousPathCount) &&
+    prior.currentPathCount === prior.paths.length &&
+    prior.previousPathCount === removed.size + unchanged.size &&
+    added.size + unchanged.size === currentPaths.size &&
+    [...added].every((name) => currentPaths.has(name) && !unchanged.has(name)) &&
+    [...unchanged].every((name) => currentPaths.has(name) && !added.has(name)) &&
+    [...removed].every((name) => !currentPaths.has(name)) &&
+    prior.changedContentPathsFromBase.every((name) => currentPaths.has(name));
+  if (
+    !hasExactKeys(prior, ROLLING_MANIFEST_KEYS) ||
+    !pathsAreValid ||
+    !arraysAreValid ||
+    !deltasAreValid ||
+    prior.schemaVersion !== 1 ||
+    prior.currentManifestHash !== rollingManifestDigest(prior) ||
+    !/^[0-9a-f]{40}$/.test(prior.baseCommit ?? '') ||
+    prior.policy !== CS80_V2_POLICY ||
+    prior.decisionId !== CS80_V2_DECISION_ID ||
+    prior.mainIntegrationAuthorized !== 'NO' ||
+    prior.safetyValidated !== 'YES' ||
+    prior.determinismValidated !== 'YES' ||
+    !/^[0-9a-f]{64}$/.test(prior.previousManifestHash ?? '') ||
+    prior.previousManifestHash !== predecessorHash
+  )
+    throw new Error(
+      'Previous generated-artifact manifest is malformed, unprovenanced or hash-invalid',
+    );
+  return prior.paths.map((entry) => entry.path);
+}
+
+export function isApprovedV1Bootstrap(coverageBytes, ownerBytes, checkpoint) {
+  return (
+    isApprovedV1CoverageAnchor(coverageBytes, ownerBytes) &&
+    checkpoint.previousManifestHash === CS80_CHECKPOINT_PATHS_SHA256 &&
+    checkpoint.generatedPathsSha256 === CS80_CHECKPOINT_PATHS_SHA256
+  );
+}
+
+export function isApprovedV1CoverageAnchor(coverageBytes, ownerBytes) {
+  let coverage;
+  try {
+    coverage = JSON.parse(Buffer.from(coverageBytes).toString('utf8'));
+  } catch {
+    return false;
+  }
+  return (
+    coverage.phase === 'PHASE_3_25' &&
+    coverage.schemaVersion === 1 &&
+    !Object.hasOwn(coverage, 'artifactManifest') &&
+    createHash('sha256').update(coverageBytes).digest('hex') === CS80_V1_COVERAGE_FILE_SHA256 &&
+    createHash('sha256').update(ownerBytes).digest('hex') === CS80_V1_OWNER_FILE_SHA256
+  );
+}
+
+export function committedPredecessorManifestHash(root, ticketIds) {
+  const coveragePath = '.ai/ticket-specification-coverage.json';
+  const history = execFileSync('git', ['log', '--format=%H', 'HEAD^', '--', coveragePath], {
+    cwd: root,
+    encoding: 'utf8',
+    maxBuffer: 4 * 1024 * 1024,
+  })
+    .trim()
+    .split(/\r?\n/)
+    .filter(Boolean);
+  let foundV1Anchor = false;
+  let expectedHash = null;
+  for (const commit of history.reverse()) {
+    let text;
+    try {
+      text = execFileSync('git', ['show', `${commit}:${coveragePath}`], {
+        cwd: root,
+        encoding: 'buffer',
+        maxBuffer: 20 * 1024 * 1024,
+      });
+    } catch (error) {
+      throw new Error(`Cannot verify rolling-manifest predecessor ${commit}: ${error.message}`);
+    }
+    let coverage;
+    try {
+      coverage = JSON.parse(text.toString('utf8'));
+    } catch (error) {
+      throw new Error(`Committed predecessor coverage is malformed at ${commit}: ${error.message}`);
+    }
+    if (!foundV1Anchor) {
+      if (createHash('sha256').update(text).digest('hex') === CS80_V1_COVERAGE_FILE_SHA256) {
+        let ownerBytes;
+        try {
+          ownerBytes = execFileSync(
+            'git',
+            ['show', `${commit}:docs/OWNER-DECISIONS-2026-10-02.md`],
+            {
+              cwd: root,
+              encoding: 'buffer',
+              maxBuffer: 5 * 1024 * 1024,
+            },
+          );
+        } catch (error) {
+          throw new Error(
+            `Cannot verify V1 owner-decision provenance at ${commit}: ${error.message}`,
+          );
+        }
+        if (!isApprovedV1CoverageAnchor(text, ownerBytes))
+          throw new Error(
+            `V1 coverage anchor is not paired with the exact owner decision at ${commit}`,
+          );
+        foundV1Anchor = true;
+        expectedHash = CS80_CHECKPOINT_PATHS_SHA256;
+      }
+      continue;
+    }
+    if (!coverage.artifactManifest)
+      throw new Error(
+        `Committed coverage after the approved V1 anchor has no rolling manifest at ${commit}`,
+      );
+    validatePreviousManifest(coverage.artifactManifest, ticketIds, expectedHash);
+    expectedHash = coverage.artifactManifest.currentManifestHash;
+  }
+  if (!foundV1Anchor)
+    throw new Error('Cannot verify the rolling-manifest predecessor from committed history');
+  return expectedHash;
+}
+
+function previousManifest(root, checkpoint, ticketIds) {
+  const coveragePath = '.ai/ticket-specification-coverage.json';
+  const exists = spawnSync('git', ['cat-file', '-e', `HEAD:${coveragePath}`], {
+    cwd: root,
+    encoding: 'utf8',
+  });
+  if (exists.status !== 0)
+    throw new Error(
+      'Cannot derive a rolling manifest without the previous committed coverage artifact',
+    );
+  let coverage;
+  try {
+    coverage = JSON.parse(
+      execFileSync('git', ['show', `HEAD:${coveragePath}`], {
+        cwd: root,
+        encoding: 'utf8',
+        maxBuffer: 20 * 1024 * 1024,
+      }),
+    );
+  } catch (error) {
+    throw new Error(
+      `Previous coverage artifact is unreadable; refusing manifest fallback: ${error.message}`,
+    );
+  }
+  const prior = coverage.artifactManifest ?? null;
+  if (prior) {
+    const paths = validatePreviousManifest(
+      prior,
+      ticketIds,
+      committedPredecessorManifestHash(root, ticketIds),
+    );
+    if (prior.baseCommit !== checkpoint.baseCommit)
+      throw new Error('Previous generated-artifact manifest is malformed or hash-invalid');
+    return {
+      hash: prior.currentManifestHash,
+      paths,
+      manifest: prior,
+      previousCoverage: coverage,
+    };
+  }
+  const v1OwnerText = execFileSync('git', ['show', 'HEAD:docs/OWNER-DECISIONS-2026-10-02.md'], {
+    cwd: root,
+    encoding: 'buffer',
+    maxBuffer: 5 * 1024 * 1024,
+  });
+  const coverageBytes = execFileSync('git', ['show', `HEAD:${coveragePath}`], {
+    cwd: root,
+    encoding: 'buffer',
+    maxBuffer: 20 * 1024 * 1024,
+  });
+  if (!isApprovedV1Bootstrap(coverageBytes, v1OwnerText, checkpoint))
+    throw new Error(
+      'V1 bootstrap is permitted only from the exact owner-approved 32-path checkpoint',
+    );
+  return {
+    hash: checkpoint.generatedPathsSha256,
+    paths: checkpoint.generatedPaths,
+    manifest: null,
+    previousCoverage: coverage,
+  };
+}
+
+function createRollingManifest({ root, output, inputs, checkpoint }) {
+  const baseTree = gitTreeBlobHashes(root, checkpoint.baseCommit);
+  const ticketIds = new Set(inputs.backlog.items.map((ticket) => ticket.id));
+  const paths = [];
+  const changedContentPathsFromBase = [];
+  for (const [name, body] of output) {
+    const artifactClass = classifyGeneratedArtifact(name, ticketIds);
+    if (!artifactClass)
+      throw new Error(`Generated path is outside the approved artifact classes/roots: ${name}`);
+    paths.push({ path: name, artifactClass, generatorOwned: 'YES' });
+    if (baseTree.get(name) !== gitBlobHash(body)) changedContentPathsFromBase.push(name);
+  }
+  paths.sort((left, right) => left.path.localeCompare(right.path));
+  changedContentPathsFromBase.sort();
+
+  const prior = previousManifest(root, checkpoint, ticketIds);
+  const priorSet = new Set(prior.paths);
+  const currentSet = new Set(paths.map((entry) => entry.path));
+  const sameContentDelta =
+    prior.manifest &&
+    JSON.stringify([...prior.manifest.changedContentPathsFromBase].sort()) ===
+      JSON.stringify(changedContentPathsFromBase);
+  if (
+    prior.manifest &&
+    sameContentDelta &&
+    currentSet.size === priorSet.size &&
+    [...currentSet].every((name) => priorSet.has(name))
+  )
+    return prior.manifest;
+  const addedPaths = [...currentSet].filter((name) => !priorSet.has(name)).sort();
+  const removedPaths = [...priorSet].filter((name) => !currentSet.has(name)).sort();
+  const unchangedPaths = [...currentSet].filter((name) => priorSet.has(name)).sort();
+  const manifest = {
+    schemaVersion: 1,
+    policy: CS80_V2_POLICY,
+    decisionId: CS80_V2_DECISION_ID,
+    baseCommit: checkpoint.baseCommit,
+    previousManifestHash: prior.hash,
+    previousPathCount: prior.paths.length,
+    paths,
+    changedContentPathsFromBase,
+    currentPathCount: paths.length,
+    addedPaths,
+    removedPaths,
+    unchangedPaths,
+    safetyValidated: 'YES',
+    safetyValidationScope:
+      'All changed outputs are generator-owned and classified within approved roots/classes; repository privacy and publication checks remain separately required before checkpoint.',
+    determinismValidated: 'YES',
+    determinismValidationScope:
+      'Generation uses deterministic canonical inputs and formatting; tickets:spec:test and repeated generation are separately required checkpoint evidence.',
+    mainIntegrationAuthorized: 'NO',
+  };
+  manifest.currentManifestHash = rollingManifestDigest(manifest);
+  return manifest;
 }
 
 function normalizeJson(value) {
@@ -156,8 +543,23 @@ export function validateGeneratedArtifactCheckpoint(policy, output, root, branch
     throw new Error('CS-80 generated-artifact exception requires its exact checkpoint manifest');
   if (!checkpoint) return;
 
-  if (!exactCheckpointPathsMatch(checkpoint, checkpoint.generatedPaths, branch))
-    throw new Error('Generated-artifact checkpoint decision, base, branch or manifest is invalid');
+  const allowedArtifactClasses = {
+    MACHINE_CATALOG: MACHINE_CATALOG_PATHS,
+    PHASE_REPORT: PHASE_REPORT_PATHS,
+    TICKET_SPECIFICATION: 'docs/tickets/<canonical-ticket-id>.md',
+  };
+  if (
+    !exactCheckpointPathsMatch(checkpoint, checkpoint.generatedPaths, branch) ||
+    checkpoint.manifestVersion !== 2 ||
+    checkpoint.rollingPolicy !== CS80_V2_POLICY ||
+    checkpoint.rollingDecisionId !== CS80_V2_DECISION_ID ||
+    checkpoint.previousManifestHash !== CS80_CHECKPOINT_PATHS_SHA256 ||
+    checkpoint.mainIntegrationAuthorized !== false ||
+    JSON.stringify(checkpoint.allowedArtifactClasses) !== JSON.stringify(allowedArtifactClasses)
+  )
+    throw new Error(
+      'Generated-artifact checkpoint policy, base, branch or prior manifest is invalid',
+    );
   const ancestor = spawnSync(
     'git',
     ['merge-base', '--is-ancestor', checkpoint.baseCommit, 'HEAD'],
@@ -168,25 +570,12 @@ export function validateGeneratedArtifactCheckpoint(policy, output, root, branch
   );
   if (ancestor.status !== 0)
     throw new Error('Generated-artifact checkpoint base must be an ancestor of HEAD');
-
-  const generatedChanges = [];
-  for (const [name, body] of output) {
-    let baseline = null;
-    try {
-      baseline = execFileSync('git', ['show', `${checkpoint.baseCommit}:${name}`], {
-        cwd: root,
-        encoding: 'utf8',
-        maxBuffer: 20 * 1024 * 1024,
-      });
-    } catch {
-      baseline = null;
-    }
-    if (baseline !== body) generatedChanges.push(name);
-  }
-  if (!exactCheckpointPathsMatch(checkpoint, generatedChanges, branch))
-    throw new Error(
-      'Generated-artifact checkpoint allowlist does not exactly match generator output',
-    );
+  const coverage = output.get('.ai/ticket-specification-coverage.json');
+  if (!coverage) throw new Error('Rolling generated-artifact manifest must be in coverage output');
+  const recorded = JSON.parse(coverage).artifactManifest;
+  const expected = createRollingManifest({ root, output, inputs: { backlog }, checkpoint });
+  if (!recorded || JSON.stringify(recorded) !== JSON.stringify(expected))
+    throw new Error('Rolling generated-artifact manifest does not exactly match generator output');
 }
 
 export async function artifacts(inputs, root) {
@@ -197,7 +586,9 @@ export async function artifacts(inputs, root) {
       encoding: 'utf8',
     });
     if (!isAuthorizedOwnerDecisionAppend(original, inputs.ownerDecisionText))
-      throw new Error('Owner decision record is not a valid append-only CS-80 decision amendment');
+      throw new Error(
+        'Owner decision record is not the exact append-only CS-80 V1/V2 decision chain',
+      );
   }
   const formatting = JSON.parse(fs.readFileSync(path.join(root, '.prettierrc.json'), 'utf8'));
   const model = buildCatalog(inputs);
@@ -232,12 +623,12 @@ export async function artifacts(inputs, root) {
     authority: inputs.policy.authority,
     tickets: model.specs,
   });
-  await addJson('.ai/ticket-specification-coverage.json', {
+  const coveragePayload = {
     counts: model.counts,
     findings: model.findings,
     readiness: 'INCOMPLETE',
     review: inputs.policy.review,
-  });
+  };
   await addJson('.ai/epic-catalog.json', { epics: model.epics });
   await addJson('.ai/ticket-dependency-graph.json', {
     ...model.graph,
@@ -398,6 +789,27 @@ export async function artifacts(inputs, root) {
       await format(doc, { ...formatting, parser: 'markdown' }),
     );
   }
+  const coverageName = '.ai/ticket-specification-coverage.json';
+  output.set(
+    coverageName,
+    await format(JSON.stringify({ ...meta, ...coveragePayload, artifactManifest: null }), {
+      ...formatting,
+      parser: 'json',
+    }),
+  );
+  const manifest = createRollingManifest({
+    root,
+    output,
+    inputs,
+    checkpoint: inputs.policy.generatedArtifactCheckpoint,
+  });
+  output.set(
+    coverageName,
+    await format(JSON.stringify({ ...meta, ...coveragePayload, artifactManifest: manifest }), {
+      ...formatting,
+      parser: 'json',
+    }),
+  );
   return { output, model };
 }
 

@@ -4831,6 +4831,33 @@
   },
   "generatedArtifactCheckpoint": {
     "decisionId": "OD-2026-10-07-CS80-AC3",
+    "rollingDecisionId": "OD-2026-10-07-CS80-AC3-V2",
+    "rollingPolicy": "CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST",
+    "manifestVersion": 2,
+    "previousManifestHash": "0f1eb5d8a80ef12ae7c3c01c08f0686950b42f1c5b430122b5025a298e82fa69",
+    "mainIntegrationAuthorized": false,
+    "allowedArtifactClasses": {
+      "MACHINE_CATALOG": [
+        ".ai/design-traceability.json",
+        ".ai/epic-catalog.json",
+        ".ai/test-traceability.json",
+        ".ai/ticket-catalog.json",
+        ".ai/ticket-dependency-graph.json",
+        ".ai/ticket-specification-coverage.json"
+      ],
+      "PHASE_REPORT": [
+        "docs/PHASE-3-25-DEPENDENCY-GRAPH.md",
+        "docs/PHASE-3-25-DESIGN-TRACEABILITY.md",
+        "docs/PHASE-3-25-EPIC-CATALOG.md",
+        "docs/PHASE-3-25-FINAL-REPORT.md",
+        "docs/PHASE-3-25-IMPLEMENTATION-ORDER.md",
+        "docs/PHASE-3-25-QUALITY-AUDIT.md",
+        "docs/PHASE-3-25-REVIEW.md",
+        "docs/PHASE-3-25-TEST-TRACEABILITY.md",
+        "docs/PHASE-3-25-TICKET-CATALOG.md"
+      ],
+      "TICKET_SPECIFICATION": "docs/tickets/<canonical-ticket-id>.md"
+    },
     "baseCommit": "3911a52fb2167707a1b04e258c15c403815286e4",
     "branch": "phase-3.25/cloud-continuation",
     "generatedPathCount": 32,
