@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -1129,6 +1130,10 @@ test('CS-80 V2 manifest admits CS-101 only as an existing generator-owned ticket
   assert.equal(manifest.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
   assert.equal(
     manifest.previousManifestHash,
+    committedCoverage.artifactManifest.previousManifestHash,
+  );
+  assert.equal(
+    manifest.currentManifestHash,
     committedCoverage.artifactManifest.currentManifestHash,
   );
   const previousPathCount = committedCoverage.artifactManifest.currentPathCount;
@@ -1185,7 +1190,7 @@ test('CS-80 rolling manifest validates strict predecessor schema, deltas and com
       maxBuffer: 20 * 1024 * 1024,
     }).stdout,
   );
-  const approvedPreviousHash = committedCoverage.artifactManifest.currentManifestHash;
+  const approvedPreviousHash = committedCoverage.artifactManifest.previousManifestHash;
   assert.doesNotThrow(() => validatePreviousManifest(manifest, ticketIds, approvedPreviousHash));
 
   const malformedCases = [
@@ -1225,8 +1230,85 @@ test('CS-80 rolling manifest validates strict predecessor schema, deltas and com
   }
   assert.equal(
     committedPredecessorManifestHash(root, ticketIds),
-    inputs.policy.generatedArtifactCheckpoint.previousManifestHash,
+    committedCoverage.artifactManifest.previousManifestHash,
   );
+});
+
+test('CS-80 predecessor lookup tolerates unrelated commits and repeated coverage snapshots', (t) => {
+  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'careerscope-cs80-history-'));
+  t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
+  const run = (args, options = {}) => {
+    const result = spawnSync('git', args, {
+      cwd: fixture,
+      encoding: 'utf8',
+      ...options,
+    });
+    assert.equal(result.status, 0, result.stderr || `git ${args.join(' ')} failed`);
+    return result.stdout.trim();
+  };
+  const readAt = (commit, file) =>
+    spawnSync('git', ['show', `${commit}:${file}`], {
+      cwd: root,
+      encoding: 'buffer',
+      maxBuffer: 20 * 1024 * 1024,
+    }).stdout;
+  const coveragePath = '.ai/ticket-specification-coverage.json';
+  const history = spawnSync(
+    'git',
+    ['log', '--format=%H', '--reverse', 'HEAD', '--', coveragePath],
+    {
+      cwd: root,
+      encoding: 'utf8',
+    },
+  )
+    .stdout.trim()
+    .split(/\r?\n/);
+  const anchor = history.findIndex((commit) =>
+    isApprovedV1CoverageAnchor(
+      readAt(commit, coveragePath),
+      readAt(commit, 'docs/OWNER-DECISIONS-2026-10-02.md'),
+    ),
+  );
+  assert.notEqual(anchor, -1, 'the fixture source history contains the approved V1 anchor');
+
+  run(['init', '-b', 'main']);
+  run(['config', 'user.name', 'CareerScope Test']);
+  run(['config', 'user.email', 'careerscope-test@example.invalid']);
+  for (const [index, commit] of history.slice(anchor).entries()) {
+    const coverage = readAt(commit, coveragePath);
+    const coverageFile = path.join(fixture, coveragePath);
+    fs.mkdirSync(path.dirname(coverageFile), { recursive: true });
+    fs.writeFileSync(coverageFile, coverage);
+    if (index === 0) {
+      const ownerFile = path.join(fixture, 'docs/OWNER-DECISIONS-2026-10-02.md');
+      fs.mkdirSync(path.dirname(ownerFile), { recursive: true });
+      fs.writeFileSync(ownerFile, readAt(commit, 'docs/OWNER-DECISIONS-2026-10-02.md'));
+      run(['add', '--', coveragePath, 'docs/OWNER-DECISIONS-2026-10-02.md']);
+    } else {
+      run(['add', '--', coveragePath]);
+    }
+    run(['commit', '-m', `fixture coverage snapshot ${index}`]);
+  }
+
+  const ticketIds = new Set(fresh().backlog.items.map((ticket) => ticket.id));
+  const expected = JSON.parse(fs.readFileSync(path.join(fixture, coveragePath), 'utf8'))
+    .artifactManifest.previousManifestHash;
+  assert.equal(committedPredecessorManifestHash(fixture, ticketIds), expected);
+
+  fs.writeFileSync(path.join(fixture, 'unrelated.txt'), 'unrelated process checkpoint\n');
+  run(['add', '--', 'unrelated.txt']);
+  run(['commit', '-m', 'unrelated commit after generated coverage']);
+  assert.equal(committedPredecessorManifestHash(fixture, ticketIds), expected);
+
+  const repeatedCoverage = JSON.parse(fs.readFileSync(path.join(fixture, coveragePath), 'utf8'));
+  repeatedCoverage.processCheckpointNote = 'same generated manifest, separate coverage commit';
+  fs.writeFileSync(
+    path.join(fixture, coveragePath),
+    `${JSON.stringify(repeatedCoverage, null, 2)}\n`,
+  );
+  run(['add', '--', coveragePath]);
+  run(['commit', '-m', 'same manifest in a later coverage checkpoint']);
+  assert.equal(committedPredecessorManifestHash(fixture, ticketIds), expected);
 });
 
 test('CS-80 V1 bootstrap is bound to the exact immutable base coverage and owner decision bytes', () => {

@@ -275,17 +275,23 @@ export function isApprovedV1CoverageAnchor(coverageBytes, ownerBytes) {
 
 export function committedPredecessorManifestHash(root, ticketIds) {
   const coveragePath = '.ai/ticket-specification-coverage.json';
-  const history = execFileSync('git', ['log', '--format=%H', 'HEAD^', '--', coveragePath], {
-    cwd: root,
-    encoding: 'utf8',
-    maxBuffer: 4 * 1024 * 1024,
-  })
+  const history = execFileSync(
+    'git',
+    ['log', '--format=%H', '--reverse', 'HEAD', '--', coveragePath],
+    {
+      cwd: root,
+      encoding: 'utf8',
+      maxBuffer: 4 * 1024 * 1024,
+    },
+  )
     .trim()
     .split(/\r?\n/)
     .filter(Boolean);
   let foundV1Anchor = false;
   let expectedHash = null;
-  for (const commit of history.reverse()) {
+  let latestManifestHash = null;
+  let predecessorOfLatestManifest = null;
+  for (const commit of history) {
     let text;
     try {
       text = execFileSync('git', ['show', `${commit}:${coveragePath}`], {
@@ -333,12 +339,34 @@ export function committedPredecessorManifestHash(root, ticketIds) {
       throw new Error(
         `Committed coverage after the approved V1 anchor has no rolling manifest at ${commit}`,
       );
-    validatePreviousManifest(coverage.artifactManifest, ticketIds, expectedHash);
+    const manifest = coverage.artifactManifest;
+    if (manifest.currentManifestHash === latestManifestHash) {
+      if (manifest.previousManifestHash !== predecessorOfLatestManifest)
+        throw new Error(
+          `Repeated rolling manifest has inconsistent provenance at ${commit}: ` +
+            `expected predecessor ${predecessorOfLatestManifest}, found ${manifest.previousManifestHash}`,
+        );
+      continue;
+    }
+    validatePreviousManifest(manifest, ticketIds, expectedHash);
+    predecessorOfLatestManifest = expectedHash;
     expectedHash = coverage.artifactManifest.currentManifestHash;
+    latestManifestHash = expectedHash;
   }
   if (!foundV1Anchor)
     throw new Error('Cannot verify the rolling-manifest predecessor from committed history');
-  return expectedHash;
+  if (latestManifestHash === null || predecessorOfLatestManifest === null)
+    throw new Error('Cannot verify a rolling-manifest predecessor after the approved V1 anchor');
+  const headCoverage = JSON.parse(
+    execFileSync('git', ['show', `HEAD:${coveragePath}`], {
+      cwd: root,
+      encoding: 'utf8',
+      maxBuffer: 20 * 1024 * 1024,
+    }),
+  );
+  if (headCoverage.artifactManifest?.currentManifestHash !== latestManifestHash)
+    throw new Error('HEAD coverage does not match the latest committed rolling manifest');
+  return predecessorOfLatestManifest;
 }
 
 function previousManifest(root, checkpoint, ticketIds) {
