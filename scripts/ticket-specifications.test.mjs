@@ -419,7 +419,7 @@ test('whole-spec approval is content-bound and invalidates after substantive cha
   assert.equal(approved.reviewState, 'APPROVED');
   assert.equal(approved.readiness, 'IMPLEMENTATION_READY');
   assert.equal(approved.gaps[0].disposition, 'RESOLVED');
-  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 52);
+  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 53);
 
   inputs.policy.ticketRefinements['CS-3'].additionalRequirements.value[0] +=
     ' Substantive mutation invalidates review.';
@@ -765,6 +765,22 @@ test('CS-104 specifies the shared server-authoritative permission and transactio
   );
 });
 
+test('CS-105 shared primitives preserve source-backed assets and manual accessibility gates', () => {
+  const model = buildCatalog(fresh());
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-105');
+  assert.equal(spec.reviewState, 'APPROVED');
+  assert.equal(spec.readiness, 'IMPLEMENTATION_READY');
+  assert.match(JSON.stringify(spec.sections.functionalRequirements), /upward-growth-arrow/);
+  assert.match(JSON.stringify(spec.sections.testStrategy), /NVDA|VoiceOver/);
+  assert.match(JSON.stringify(spec.sections.securityPrivacy), /client-selected owner/);
+  assert.equal(spec.sections.design.applicability, 'APPLICABLE');
+  const ac5 = model.traceability.find((row) => row.acId === 'CS-105-AC5');
+  assert.equal(ac5.exactBindings.length, 2);
+  assert.ok(ac5.exactBindings.some((binding) => binding.type === 'MANUAL_ACCESSIBILITY'));
+  assert.ok(ac5.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'));
+  assert.ok(ac5.exactBindings.every((binding) => binding.testStatus !== 'EXISTING_VERIFIED'));
+});
+
 test('CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes', () => {
   const inputs = fresh();
   inputs.policy.ticketRefinements['CS-100'].bindingAmendments['CS-100-AC9'] = {
@@ -802,14 +818,14 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   });
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
-  assert.equal(model.counts.completeSpecificationCount, 52);
-  assert.equal(model.counts.incompleteSpecificationCount, 164);
-  assert.equal(model.counts.approvedSpecificationCount, 52);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 231);
+  assert.equal(model.counts.completeSpecificationCount, 53);
+  assert.equal(model.counts.incompleteSpecificationCount, 163);
+  assert.equal(model.counts.approvedSpecificationCount, 53);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 238);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 219);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 687);
-  assert.equal(model.counts.authoredExactTestBindingCount, 328);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 225);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 681);
+  assert.equal(model.counts.authoredExactTestBindingCount, 335);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -857,7 +873,7 @@ test('existing owner directions retain source provenance without fabricated read
   assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
   assert.match(direction.remainingGate, /lower bound/);
   assert.equal(spec.reviewState, 'DRAFT');
-  assert.equal(model.counts.approvedSpecificationCount, 52);
+  assert.equal(model.counts.approvedSpecificationCount, 53);
   inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>

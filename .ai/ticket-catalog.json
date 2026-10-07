@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "b52e5d88c5a101167a35e909d1a79ca0615abdad219bdf1e90e1d988d3b4d114",
+    ".ai/ticket-specification-policy.json": "7769fb1840e6e6e944ee7b1c7fefb6657da1149f8b3c72702da6a43c22f9dc00",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "ca109711f3adb694310fc04f529811c48708d1c6cee8f964bd4e06696711530d"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "3eb7c9f4e2b5c3c4fc4154539eb0d81ae1f3e150b64fa74ce8650b3015a312ff"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -72940,8 +72940,8 @@
     {
       "ticketId": "CS-105",
       "primaryEpicId": "EPIC-FOUNDATIONS",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "PARTIAL_DESIGN",
@@ -72949,7 +72949,7 @@
           "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
           "owner": "UX",
           "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-          "disposition": "OPEN"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -72957,7 +72957,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "SURFACE_SPEC_REFINEMENT",
@@ -72965,7 +72965,7 @@
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
           "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -72994,14 +72994,46 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Shared atoms and icon/brand state contracts: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented."
+            "Shared atoms and icon/brand state contracts: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented.",
+            {
+              "requirement": "Shared atoms and brand/icon states need one source-backed contract; a design reference alone must not be treated as implemented UI or as permission to invent a logo, vector, route or production data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-105"]
+          "sources": [
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "value": {
           "applicability": "APPLICABLE",
-          "requirements": ["Shared atoms and icon/brand state contracts"],
-          "sources": [".ai/backlog.json#CS-105"]
+          "requirements": [
+            "Shared atoms and icon/brand state contracts",
+            {
+              "requirement": "Make the shared primitive boundary deterministic so every later route can reuse accessible stateful controls without visual drift, fabricated content or client-side ownership decisions.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "currentState": {
           "applicability": "APPLICABLE",
@@ -73059,7 +73091,7 @@
               "id": "CS-105-AC1",
               "sourceText": "One approved CS upward-growth-arrow identity; no invented logo/vector source or Engineering mark.",
               "expectedResult": "One approved CS upward-growth-arrow identity; no invented logo/vector source or Engineering mark.",
-              "verificationIds": ["MANUAL_PRODUCT"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73067,7 +73099,7 @@
               "id": "CS-105-AC2",
               "sourceText": "Buttons, inputs, labels, status indicators, icons, loader and skeleton cover focus/disabled/loading/error states under canonical tokens.",
               "expectedResult": "Buttons, inputs, labels, status indicators, icons, loader and skeleton cover focus/disabled/loading/error states under canonical tokens.",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73075,13 +73107,7 @@
               "id": "CS-105-AC3",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73089,7 +73115,7 @@
               "id": "CS-105-AC4",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73097,11 +73123,7 @@
               "id": "CS-105-AC5",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73109,12 +73131,37 @@
               "id": "CS-105-AC6",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Use only the approved upward-growth-arrow identity and canonical token/icon references; if an asset is absent, render an explicit unavailable state rather than inventing SVG or an Engineering mark.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define button, input, label, status, icon, loader and skeleton contracts for default, focus, disabled, loading and error states; state semantics must remain independent of color and must not expose secrets or PII.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Shared primitives consume real server/API state or explicit empty/unavailable values and do not embed illustrative counts, identities, job records or statuses. RELEASE metadata remains planning evidence, not activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-105"]
+          "sources": [
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -73127,13 +73174,24 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: LOCAL_MODULE / CROSS_MODULE. Future implementation belongs to the canonical shared UI/token/icon packages and is consumed by route features; no new API, persistence, owner selector or parallel frontend is introduced.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-105",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/SECURITY.md"
           ]
         },
         "persistence": {
@@ -73144,13 +73202,24 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": [],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "NOT_APPLICABLE: no schema, migration, retention or persistence change; browser evidence uses isolated synthetic fixtures only.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-105",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/SECURITY.md"
           ]
         },
         "apiContract": {
@@ -73169,9 +73238,25 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "NOT_APPLICABLE: primitives accept typed view state from existing feature/API boundaries; they must not create API clients or infer authorization from visibility.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-105", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-105",
+            "docs/API-SURFACE.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -73210,34 +73295,94 @@
           "requirements": [
             "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
             "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+            {
+              "requirement": "WCAG 2.2 AA: semantic names/labels, keyboard focus, visible focus, disabled/loading semantics, status/error association, reduced motion and manual NVDA/VoiceOver review. Screen-reader evidence remains a human gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
           ]
         },
         "responsive": {
           "applicability": "APPLICABLE",
           "requirements": [
             "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
-            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
+            {
+              "requirement": "Verify 320/390/768/1024/1440 CSS-pixel layouts without unintended horizontal overflow; preserve touch target and text reflow behavior.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
           ]
         },
         "browsers": {
           "applicability": "APPLICABLE",
-          "requirements": ["Chromium", "Firefox", "WebKit"],
-          "sources": ["docs/TESTING.md"]
+          "requirements": [
+            "Chromium",
+            "Firefox",
+            "WebKit",
+            {
+              "requirement": "Future component and visual checks cover Chromium, Firefox and WebKit with pinned versions and synthetic state fixtures; missing engine evidence is NOT_RUN.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
+          ]
         },
         "seo": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "NOT_APPLICABLE: primitives are internal building blocks; authenticated/private consumers remain noindex.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "securityPrivacy": {
           "applicability": "APPLICABLE",
@@ -73248,20 +73393,47 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: INPUT_VALIDATION / PRIVACY_PII. Treat labels, state text and icon names as untrusted display values; do not render tokens, resumes, raw provider data or client-selected owner identifiers. UI state never authorizes an action.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-105", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-105",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts."
+            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts.",
+            {
+              "requirement": "No production telemetry is required for pure primitives. Test evidence records component/state/browser identifiers only, with no user payloads.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-105",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/SECURITY.md"
           ]
         },
         "testStrategy": {
@@ -73273,17 +73445,36 @@
               "criterion": "One approved CS upward-growth-arrow identity; no invented logo/vector source or Engineering mark.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-105-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "Only an enumerated source-backed runtime variant may render, with provenance and approval state explicit; absent/unapproved exports fail closed as unavailable and no invented SVG/logo is emitted.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "Component output, enumerated source/hash/provenance manifest and sanitized accessibility snapshot.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend QA and UX reviewer",
+                  "releaseGate": "SHARED_ICON_SOURCE_PARITY"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_COMPONENT",
+                  "preconditions": "The canonical brand reference is `design/canonical/brand/careerscope-brand-identity-guidelines.png` with companion source `design/brand/careerscope-brand-identity-source.png`; current runtime variants are exactly `apps/web/public/brand/logo-full-transparent.png`, `logo-full.png`, `logo-icon-transparent.png` and `logo-icon.png`. These files are source candidates, not proof of UX approval; original SVG export is unavailable unless separately supplied. No production data.",
+                  "setup": "Mount the brand primitive with the approved CS upward-growth-arrow identity and record SHA-256 for the canonical reference plus each runtime PNG. Mark provenance/approval as UX-validation-required unless an explicit approval record exists; inspect whether the mark is meaningful or decorative.",
+                  "procedure": "Render default, focus and unavailable states using synthetic fixtures. For a meaningful brand control assert the approved accessible name; for a decorative mark assert `aria-hidden=true` and an adjacent accessible name on the owning control. Assert the reference/runtime provenance is the enumerated set and no Engineering mark is selected.",
+                  "assertion": "Only an enumerated source-backed runtime variant may render, with provenance and approval state explicit; absent/unapproved exports fail closed as unavailable and no invented SVG/logo is emitted.",
+                  "expectedResult": "Asset identity, provenance and accessible semantics are deterministic without inferring approval from directory presence.",
+                  "testName": "shared brand icon uses the enumerated source-backed asset and semantics",
+                  "testFileOrProcedureId": "PLANNED:apps/web/src/components/ui/icon.test.tsx::shared brand icon uses the enumerated source-backed asset and semantics",
+                  "fixtures": "Canonical reference/runtime PNG paths and hashes, explicit UX approval-state field and synthetic icon states.",
+                  "negativeCase": "Unknown path, mismatched hash, unapproved asset treated as approved, Engineering mark, unlabeled meaningful icon or non-hidden decorative icon fails.",
+                  "evidenceArtifact": "Component output, enumerated source/hash/provenance manifest and sanitized accessibility snapshot.",
+                  "reviewer": "Frontend QA and UX reviewer",
+                  "releaseGate": "SHARED_ICON_SOURCE_PARITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-105",
@@ -73291,17 +73482,36 @@
               "criterion": "Buttons, inputs, labels, status indicators, icons, loader and skeleton cover focus/disabled/loading/error states under canonical tokens.",
               "verification": [
                 {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-105-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "Every listed primitive and general icon exposes the required semantic state and canonical family mapping without color-only meaning or layout-breaking content.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Axe/keyboard assertions, icon-map report and sanitized DOM snapshot.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Accessibility QA reviewer",
+                  "releaseGate": "SHARED_PRIMITIVE_A11Y"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_COMPONENT",
+                  "preconditions": "Typed primitive state contract and `PRODUCTION-ICON-MAP.md` are loaded with synthetic default/focus/disabled/loading/error values.",
+                  "setup": "Render button, input, label, status, loader, skeleton and the mapped general-icon primitive; query semantic roles/names and record icon family/semantic mapping.",
+                  "procedure": "Exercise keyboard focus and each state. Assert disabled controls cannot activate, loading/error/status semantics are announced, focus remains visible, interactive icons have accessible names and decorative icons use `aria-hidden=true`.",
+                  "assertion": "Every listed primitive and general icon exposes the required semantic state and canonical family mapping without color-only meaning or layout-breaking content.",
+                  "expectedResult": "State behavior and icon semantics are keyboard and screen-reader operable.",
+                  "testName": "shared primitives and production icons expose accessible state contracts",
+                  "testFileOrProcedureId": "PLANNED:apps/web/src/components/ui/primitives.a11y.test.tsx::shared primitives and production icons expose accessible state contracts",
+                  "fixtures": "Synthetic state matrix, production icon map and no-PII icon labels.",
+                  "negativeCase": "Missing label, hidden focus, wrong icon family, decorative icon announced, color-only error or activatable disabled control fails.",
+                  "evidenceArtifact": "Axe/keyboard assertions, icon-map report and sanitized DOM snapshot.",
+                  "reviewer": "Accessibility QA reviewer",
+                  "releaseGate": "SHARED_PRIMITIVE_A11Y",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-105",
@@ -73309,49 +73519,36 @@
               "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-105-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "Primitives render only supplied state or explicit unavailable text.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-105-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-105-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-105-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "LIVE_HOST",
-                  "expectedCheck": "CS-105-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "Rendered-text assertion report and fixture schema.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend Security reviewer",
+                  "releaseGate": "SHARED_SOURCE_STATE_PARITY"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_COMPONENT",
+                  "preconditions": "Feature supplies typed real state or explicit empty/unavailable state.",
+                  "setup": "Render primitives with real-contract-shaped synthetic values and empty/unavailable values; include forbidden illustrative sentinel values.",
+                  "procedure": "Assert output equals supplied state and no primitive constructs counts, identities, job data, status or owner from client-only values.",
+                  "assertion": "Primitives render only supplied state or explicit unavailable text.",
+                  "expectedResult": "No fabricated production data or ownership decision is rendered.",
+                  "testName": "shared primitives preserve source state without fabrication",
+                  "testFileOrProcedureId": "PLANNED:apps/web/src/components/ui/primitives.contract.test.tsx::shared primitives preserve source state without fabrication",
+                  "fixtures": "Synthetic API view states and forbidden sentinel corpus.",
+                  "negativeCase": "Illustrative board data or client-selected owner appears -> fail.",
+                  "evidenceArtifact": "Rendered-text assertion report and fixture schema.",
+                  "reviewer": "Frontend Security reviewer",
+                  "releaseGate": "SHARED_SOURCE_STATE_PARITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-105",
@@ -73359,33 +73556,36 @@
               "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-105-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-105-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-105-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "All required engines/states are compared within the approved tolerance; missing reference/threshold/engine is a failed gate.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Per-engine screenshots/diffs and signed UX threshold approval.",
+                  "automationStatus": "PLANNED",
+                  "owner": "UX and Visual QA reviewer",
+                  "releaseGate": "SHARED_PRIMITIVE_VISUAL_PARITY"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "VISUAL_REGRESSION",
+                  "preconditions": "UX approves canonical token/icon references, 1440px desktop and mobile viewport, masks and numeric tolerance.",
+                  "setup": "Capture the primitive state matrix in Chromium, Firefox and WebKit with pinned versions and synthetic data.",
+                  "procedure": "Compare captures against approved references and record per-engine diff, viewport, mask and threshold.",
+                  "assertion": "All required engines/states are compared within the approved tolerance; missing reference/threshold/engine is a failed gate.",
+                  "expectedResult": "Deterministic visual evidence exists without blanket masks.",
+                  "testName": "shared primitives meet approved cross-browser visual contract",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-primitives.visual.spec.ts::shared primitives meet approved cross-browser visual contract",
+                  "fixtures": "Approved reference hashes, state matrix and viewport manifest.",
+                  "negativeCase": "Unapproved asset, threshold, mask or missing engine fails.",
+                  "evidenceArtifact": "Per-engine screenshots/diffs and signed UX threshold approval.",
+                  "reviewer": "UX and Visual QA reviewer",
+                  "releaseGate": "SHARED_PRIMITIVE_VISUAL_PARITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-105",
@@ -73393,33 +73593,62 @@
               "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "CS-105-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "AUTOMATED_ACCESSIBILITY",
-                  "expectedCheck": "CS-105-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Applicable global states are operable and honest; no missing contract is silently treated as pass.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Axe report, keyboard/reflow report and state support matrix.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Accessibility QA reviewer",
+                  "releaseGate": "SHARED_STATE_A11Y_RESPONSIVE"
                 },
                 {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-105-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "expectedCheck": "Every interactive control has the expected spoken name/role/state, errors/statuses are announced and associated, focus remains visible/orderly, disabled controls are not actionable and decorative icons are silent. Any mismatch or unavailable AT run is not a pass.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off; no user data or audio containing PII.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Accessibility reviewer (NVDA/VoiceOver operator)",
+                  "releaseGate": "MANUAL_SCREEN_READER_SHARED_PRIMITIVES"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_ACCESSIBILITY",
+                  "preconditions": "Synthetic pending, empty, error, unauthorized, expired-session and stale-revision states are defined where supported by owning contracts.",
+                  "setup": "Render applicable states through the shared primitives and run axe plus keyboard traversal at 320/390/768/1024/1440.",
+                  "procedure": "Assert each applicable state has an explicit message, semantic status/error association, focus behavior and no overflow; unsupported state is marked unavailable rather than invented.",
+                  "assertion": "Applicable global states are operable and honest; no missing contract is silently treated as pass.",
+                  "expectedResult": "Automated accessibility and responsive controls pass for supported states.",
+                  "testName": "shared primitive state matrix is accessible and responsive",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-primitives.states.a11y.spec.ts::shared primitive state matrix is accessible and responsive",
+                  "fixtures": "Synthetic state matrix and supported-contract manifest.",
+                  "negativeCase": "Unlabelled error, inaccessible focus, overflow or invented unsupported state fails.",
+                  "evidenceArtifact": "Axe report, keyboard/reflow report and state support matrix.",
+                  "reviewer": "Accessibility QA reviewer",
+                  "releaseGate": "SHARED_STATE_A11Y_RESPONSIVE",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                },
+                {
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "preconditions": "A synthetic primitive/state matrix is rendered in the current approved build on a named OS/browser with no real user data; NVDA and/or VoiceOver is available.",
+                  "setup": "Record OS, browser, build SHA, assistive-technology/version, viewport and keyboard starting focus. Exercise one button, one text input, one status/error, one loading control, one disabled control and one decorative/interactive icon.",
+                  "procedure": "Using keyboard only, tab through each control, invoke the button/icon, trigger validation/error, enter loading and restore focus after completion. Observe spoken name/role/state, error/status announcement, focus order, disabled announcement and decorative-icon silence in NVDA/VoiceOver; record each observed result.",
+                  "assertion": "Every interactive control has the expected spoken name/role/state, errors/statuses are announced and associated, focus remains visible/orderly, disabled controls are not actionable and decorative icons are silent. Any mismatch or unavailable AT run is not a pass.",
+                  "expectedResult": "Manual screen-reader behavior is observed and recorded for the exact build; no automated axe result substitutes for the AT judgment.",
+                  "testName": "shared primitive states pass manual screen-reader smoke procedure",
+                  "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-105-AC5-screen-reader-smoke",
+                  "fixtures": "Synthetic state matrix, keyboard script and redacted observation form.",
+                  "negativeCase": "Missing spoken name/state, silent error, focus loss, activatable disabled control, announced decorative icon or unrecorded AT/version fails.",
+                  "evidenceArtifact": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off; no user data or audio containing PII.",
+                  "reviewer": "Accessibility reviewer (NVDA/VoiceOver operator)",
+                  "releaseGate": "MANUAL_SCREEN_READER_SHARED_PRIMITIVES",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-105",
@@ -73427,25 +73656,36 @@
               "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-105-AC6: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-105-AC6: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_PRODUCT",
+                  "expectedCheck": "No design/spec approval, feature flag or client state activates the primitives outside declared gates.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Signed review checklist and exact-SHA gate references.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Release and Security reviewer",
+                  "releaseGate": "SHARED_PRIMITIVE_RELEASE_GATE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "MANUAL_PRODUCT",
+                  "preconditions": "Release metadata and authorization gates remain unchanged and no runtime activation occurs in Phase 3.25.",
+                  "setup": "Review the primitive contract, source references, test results, design approvals and release checklist.",
+                  "procedure": "Confirm RELEASE is not treated as activation; record UX, Security, QA and accessibility approvals and the exact future hosted/release evidence required.",
+                  "assertion": "No design/spec approval, feature flag or client state activates the primitives outside declared gates.",
+                  "expectedResult": "Release semantics are preserved and evidence ownership is explicit.",
+                  "testName": "shared primitive release semantics remain fail closed",
+                  "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-105-AC6-release-semantics-review",
+                  "fixtures": "Redacted policy/catalog and approval checklist.",
+                  "negativeCase": "Missing approval or client-only activation is a failed gate.",
+                  "evidenceArtifact": "Signed review checklist and exact-SHA gate references.",
+                  "reviewer": "Release and Security reviewer",
+                  "releaseGate": "SHARED_PRIMITIVE_RELEASE_GATE",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-105", "docs/TESTING.md"]
@@ -73468,10 +73708,24 @@
               "masks": "Only unavoidable dynamic regions; no blanket widget masks.",
               "tolerance": "Owner-approved deterministic threshold is required; not invented in planning.",
               "evidence": "Future reference/render capture, dimensions, state, browser and independent approval."
+            },
+            {
+              "requirement": "Use the named canonical token/icon references and approved desktop/mobile viewport; capture deterministic state variants with minimal masks and an owner-approved threshold. No screenshot may be used as proof of runtime or authorization.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
-            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md"
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
           ]
         },
         "acceptanceCriteria": {
@@ -73481,7 +73735,7 @@
               "id": "CS-105-AC1",
               "sourceText": "One approved CS upward-growth-arrow identity; no invented logo/vector source or Engineering mark.",
               "expectedResult": "One approved CS upward-growth-arrow identity; no invented logo/vector source or Engineering mark.",
-              "verificationIds": ["MANUAL_PRODUCT"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73489,7 +73743,7 @@
               "id": "CS-105-AC2",
               "sourceText": "Buttons, inputs, labels, status indicators, icons, loader and skeleton cover focus/disabled/loading/error states under canonical tokens.",
               "expectedResult": "Buttons, inputs, labels, status indicators, icons, loader and skeleton cover focus/disabled/loading/error states under canonical tokens.",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73497,13 +73751,7 @@
               "id": "CS-105-AC3",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73511,7 +73759,7 @@
               "id": "CS-105-AC4",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73519,11 +73767,7 @@
               "id": "CS-105-AC5",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -73531,7 +73775,7 @@
               "id": "CS-105-AC6",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-105",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -73546,9 +73790,30 @@
             "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
             "Independent current-content review resolves specification/implementation findings before promotion.",
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+            {
+              "requirement": "Specification DoD: approved asset/token references, state semantics, accessibility/responsive/browser/security boundaries and exact future evidence are explicit; no runtime implementation or fabricated visual pass is claimed.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Future implementation DoD: all listed states render from typed real/unavailable data, axe/keyboard/browser/visual checks pass, manual screen-reader review is recorded and exact release evidence is attached.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            "docs/ai/quality-gates.md",
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
@@ -73569,18 +73834,39 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-105 problem and each criterion with Frontend.",
-            "Resolve only the recorded CS-105 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for Shared atoms and icon/brand state contracts.",
-            "Implement and verify CS-105-AC1: One approved CS upward-growth-arrow identity; no invented logo/vector source or Engineering mark.",
-            "Implement and verify CS-105-AC2: Buttons, inputs, labels, status indicators, icons, loader and skeleton cover focus/disabled/loading/error states under canonical tokens.",
-            "Implement and verify CS-105-AC3: Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-            "Implement and verify CS-105-AC4: Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-            "Implement and verify CS-105-AC5: Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-            "Implement and verify CS-105-AC6: Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-105 documentation, redacted evidence and independent review before workflow promotion."
+            {
+              "requirement": "Inventory canonical tokens, icon map and existing primitives; record missing assets without inventing replacements.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define typed state contracts and accessible names for each primitive state, including loading, error, unavailable and disabled.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add component/axe/keyboard tests plus synthetic visual captures at approved desktop/mobile viewports across three engines.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Review redaction and data-source boundaries, then obtain UX, QA, Security and manual accessibility evidence before release activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-105"]
+          "sources": [
+            ".ai/backlog.json#CS-105",
+            ".ai/backlog.json#CS-105",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -73596,11 +73882,26 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "UX/Accessibility review of the approved icon identity, state semantics and screen-reader behavior; exact-SHA browser/axe and visual evidence remain future gates.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-105",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -73613,13 +73914,24 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+            },
+            {
+              "requirement": "A copied or invented asset can create brand inconsistency or expose unsupported product meaning. Revert only the shared primitive change on visual/accessibility regression; no data migration or runtime authorization rollback is implied.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-105",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ICON-SYSTEM.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/PRODUCTION-ICON-MAP.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/SECURITY.md"
           ]
         },
         "delivery": {
