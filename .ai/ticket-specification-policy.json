@@ -3699,6 +3699,78 @@
       },
       "implementationChecklistOverride":["Inventory shared primitives and component-library references; identify missing states without inventing visuals.","Define typed props/state contracts for the seven named components; leave page/shell templates to owning tickets.","Add component, keyboard, axe, responsive and three-engine visual procedures with synthetic values and redacted upload fixtures.","Review server-result/authorization/concurrency boundaries and obtain UX, Security, QA and manual accessibility evidence before activation."]
     },
+    "CS-107": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-107",
+        "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+        "docs/ARCHITECTURE.md",
+        "docs/SECURITY.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The cross-surface accessibility, responsive and locale contract is broad and does not yet state which observable states, actors, viewports and authorization boundaries must be verified without claiming unsupported translations or product capabilities."
+        ],
+        "value": [
+          "Give each current route a repeatable accessibility and reflow evidence boundary while preserving server ownership, honest unavailable states and the existing release gates."
+        ],
+        "functionalRequirements": [
+          "For every applicable current route, enumerate the rendered keyboard path, focus order, visible focus, labels, errors/status announcements, dialog Escape/focus restoration and reduced-motion behavior; use the route's real or explicit unavailable state rather than adding a route or capability.",
+          "Exercise 320, 390, 768, 1024 and 1440 CSS-pixel viewports with long text and narrow tables; assert no ordinary-content horizontal overflow, deliberate table behavior and usable touch targets. Locale-aware number/date formatting must use the owning formatter and must not claim translations that are not present.",
+          "Run positive, denied, malformed, expired-session, stale-revision and dependency-failure fixtures through the existing session-derived ownership/API contracts; UI visibility never grants a role or capability and no private payload is captured in evidence.",
+          "Keep RELEASE metadata as a fail-closed acceptance state. Activation requires the declared automated, browser, manual screen-reader and authorization evidence; this ticket does not implement product routes, auth, localization catalogues or provider integrations."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE / API_CONTRACT. The future checks consume canonical route components and the same-origin API client; they do not create a second frontend, client-side authorization, persistence or a parallel locale system."
+        ],
+        "apiContract": [
+          "NOT_APPLICABLE for new endpoints. Existing routes and session-derived ownership remain authoritative; assertions must use registered contracts and stable error semantics."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no schema or migration. Locale/display fixtures are synthetic and must not persist user data."
+        ],
+        "accessibility": [
+          "WCAG 2.2 AA: semantic landmarks/headings, accessible names and labels, keyboard traversal, visible focus, dialog focus trap/restoration and Escape, status/error association and announcements, non-color state indication, reduced motion and manual NVDA/VoiceOver review."
+        ],
+        "responsive": [
+          "Verify 320/390/768/1024/1440 CSS-pixel layouts, long-content reflow, intentional narrow table handling and touch targets without unintended horizontal scrolling."
+        ],
+        "browsers": [
+          "Future automated checks cover Chromium, Firefox and WebKit at the approved viewport matrix; missing engine or manual evidence is NOT_RUN, not a pass."
+        ],
+        "seo": [
+          "NOT_APPLICABLE to authenticated/internal cross-surface checks; private surfaces remain noindex and must not place user data in metadata."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity and server policy determine access; never infer capability from rendered controls, never trust client-selected owner IDs, and keep tokens, resumes, OTPs and private payloads out of screenshots, fixtures, logs and reports."
+        ],
+        "observability": [
+          "Record only route/state/viewport/browser/build identifiers and failure categories; redact request bodies and personal data. Evidence must preserve correlation without leaking user content."
+        ],
+        "visualRegression": [
+          "Use approved reference paths and exact viewport/browser manifests where a visual comparison is applicable; masks must be minimal and must not cover controls, focus, errors or substantive content."
+        ],
+        "manualExternalGates": [
+          "Manual NVDA/VoiceOver observation, UX acceptance of responsive/locale states and exact-SHA browser/axe evidence remain future gates; no hosted or live result is claimed in Phase 3.25."
+        ],
+        "risksRecovery": [
+          "A global accessibility or formatting assertion can hide a route-specific authorization or stale-state defect. Scope failures to the route/state fixture and revert only the test/contract change; preserve server data and do not weaken the gate."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: route/state matrix, exact accessibility/reflow/locale assertions, ownership/security boundaries, negative cases and future evidence owners are explicit; no runtime capability or translation is fabricated.",
+          "Future implementation DoD: applicable component/browser/axe checks, responsive matrix, manual screen-reader evidence and route-owner contract tests pass on the reviewed SHA before activation."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Inventory current routes and state contracts from the design index and route/API sources; exclude absent routes and unsupported translations.",
+        "Define the route-by-viewport accessibility, focus, announcement, reduced-motion and narrow-content assertion matrix with synthetic/redacted fixtures.",
+        "Add browser/axe/keyboard/reflow procedures for Chromium, Firefox and WebKit plus the exact manual NVDA/VoiceOver procedure; keep planned evidence marked not run.",
+        "Review session ownership, redaction, formatter and release-gate boundaries with QA, Security, UX and route owners before activation."
+      ]
+    },
     "CS-104": {
       "reviewStatus": "DRAFT",
       "sourceReferences": [
@@ -4280,6 +4352,28 @@
           ".ai/ticket-specification-policy.json#CS-106-AC3",
           ".ai/ticket-specification-policy.json#CS-106-AC4",
           ".ai/ticket-specification-policy.json#CS-106-AC5",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
+    },
+    "CS-107": {
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The specification now defines route/state ownership, exact accessibility and responsive assertions, locale formatter boundaries, negative cases and a fail-closed release gate without adding routes or unsupported translations.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-107",
+          "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+          "docs/ARCHITECTURE.md"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All four criteria have independently reviewed exact procedures covering route/state accessibility, responsive and formatter assertions, authorization/failure fixtures and release semantics; manual and hosted evidence remain future gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-107-AC1",
+          ".ai/ticket-specification-policy.json#CS-107-AC2",
+          ".ai/ticket-specification-policy.json#CS-107-AC3",
+          ".ai/ticket-specification-policy.json#CS-107-AC4",
           "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
@@ -5861,6 +5955,116 @@
     }
   },
   "exactVerificationBindings": {
+    "CS-107-AC1": [
+      {
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "The reviewed build renders each applicable current route with synthetic, redacted state fixtures and session-derived ownership; no real user data is used.",
+        "setup": "Run axe and keyboard traversal at 320/390/768/1024/1440 CSS pixels for labels, headings, focus, dialogs, errors/status and reduced-motion states.",
+        "procedure": "Traverse every rendered interactive control with keyboard only; open/close each applicable dialog with Escape, verify focus restoration, trigger validation/error/status states and inspect live-region announcements. Assert controls remain usable without color-only meaning.",
+        "assertion": "Applicable route states meet the named WCAG 2.2 AA semantics and keyboard/focus/announcement contract; no hidden route or capability is inferred from a passing fixture.",
+        "expectedResult": "Automated axe and keyboard assertions pass for the reviewed state matrix.",
+        "testName": "current route states pass cross-surface accessibility contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-accessibility.spec.ts::current route states pass cross-surface accessibility contract",
+        "fixtures": "Synthetic route manifests, labelled controls, dialog/error/status fixtures and redacted session state.",
+        "negativeCase": "Unlabelled control, lost focus, failed Escape/restore, silent error/status, color-only state or unauthorized control is a failure.",
+        "evidenceArtifact": "Axe report, keyboard matrix, route/state manifest and redacted build SHA.",
+        "reviewer": "Accessibility QA reviewer",
+        "releaseGate": "CROSS_SURFACE_ACCESSIBILITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "MANUAL_ACCESSIBILITY",
+        "preconditions": "The exact reviewed build and synthetic route/state matrix are available with no personal data.",
+        "setup": "Record OS, browser, build SHA, NVDA or VoiceOver version, viewport and initial focus; prepare keyboard and screen-reader tasks for dialogs, forms, status/error updates and tables.",
+        "procedure": "Perform the named tasks and record spoken name/role/state, focus order, announcements, Escape handling, restoration and reflow observations. Capture only redacted observations and mark missing AT/version as not run.",
+        "assertion": "A human operator confirms the cross-surface controls are understandable and operable; automated axe output cannot substitute for this observation.",
+        "expectedResult": "Manual screen-reader evidence is tied to the exact build and state matrix.",
+        "testName": "cross-surface manual screen-reader smoke procedure",
+        "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-107-AC1-screen-reader-cross-surface",
+        "fixtures": "Synthetic route/state matrix and redacted observation form.",
+        "negativeCase": "Unannounced state, ambiguous name, focus loss, inaccessible dialog/table or missing AT/version fails.",
+        "evidenceArtifact": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+        "reviewer": "Accessibility reviewer (NVDA/VoiceOver operator)",
+        "releaseGate": "MANUAL_SCREEN_READER_CROSS_SURFACE",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-107-AC2": [
+      {
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "Applicable routes expose approved responsive states and the owning locale formatter; no translation catalogue is assumed.",
+        "setup": "Exercise long synthetic text, narrow tables, reduced-motion preference and fixed supported locale/timezone fixtures for the source-required dates, times, numbers and currency values at 320/390/768/1024/1440 CSS pixels in Chromium, Firefox and WebKit.",
+        "procedure": "Measure document and scroll containers, assert no ordinary-content horizontal overflow, deliberate table reflow/overflow, usable touch targets and stable long-text wrapping/reduced-motion behavior. Compare rendered date/time/number/currency strings to an independently authored expected-output oracle for each supported locale/timezone; absent translations remain explicitly unsupported.",
+        "assertion": "Responsive and locale-aware formatting behavior is deterministic at all required viewports without claiming unsupported translations.",
+        "expectedResult": "All supported engines and viewports satisfy reflow, overflow and formatter assertions.",
+        "testName": "cross-surface responsive and locale formatting matrix",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-responsive.spec.ts::cross-surface responsive and locale formatting matrix",
+        "fixtures": "Long redacted labels, synthetic table rows, reduced-motion preference, fixed locale/timezone fixtures and independently authored expected strings for supported date/time/number/currency cases.",
+        "negativeCase": "Unexpected page overflow, clipped ordinary content, fabricated translation or formatter mismatch fails.",
+        "evidenceArtifact": "Per-engine viewport measurements, screenshots and formatter assertion output.",
+        "reviewer": "Frontend QA reviewer",
+        "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-107-AC3": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Synthetic owner, foreign-owner, unauthenticated, malformed, expired-session, stale-revision and dependency-failure fixtures map to existing route/API contracts.",
+        "setup": "Run each fixture through the same-origin client and registered server contract; capture only status/error/correlation metadata.",
+        "procedure": "Assert an allowed owner action succeeds, a foreign-owner or unauthenticated action returns the canonical safe denial, malformed input has no persistence side effect, expired sessions return the existing unauthenticated contract, stale revisions return conflict semantics and dependency failures return the registered safe error. Assert UI visibility never grants access.",
+        "assertion": "Server contract paths preserve ownership and stable status/error semantics without promising browser recovery behavior.",
+        "expectedResult": "No cross-owner data or unauthorized capability is exposed and no test fixture mutates production state.",
+        "testName": "cross-surface server authorization and failure fixtures remain owner-scoped",
+        "testFileOrProcedureId": "PLANNED:apps/api/tests/cross-surface-contract.security.test.ts::cross-surface server authorization and failure fixtures remain owner-scoped",
+        "fixtures": "Synthetic owners/resources, malformed payloads, expired sessions, revisions and dependency error responses.",
+        "negativeCase": "Client-selected owner, capability inferred from visibility, leaked sensitive payload or mutation after denial fails.",
+        "evidenceArtifact": "Redacted contract/security test output and correlation-safe logs.",
+        "reviewer": "Security and API QA reviewer",
+        "releaseGate": "CROSS_SURFACE_AUTHORIZATION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "The reviewed browser build has synthetic expired-session, stale-revision and dependency-failure responses wired to the existing client error contract.",
+        "setup": "Mount the applicable route with synthetic server responses; do not enable automatic reauthentication or use real accounts.",
+        "procedure": "Trigger session expiry, stale revision and dependency failure from the UI and assert the client follows the registered navigation/error/retry or unavailable state; assert no automatic credential submission and no fabricated success.",
+        "assertion": "Browser recovery states are explicit and truthful while authorization remains server-owned.",
+        "expectedResult": "The user sees the existing session-expired, conflict or retry/unavailable state and the client performs no unauthorized recovery.",
+        "testName": "cross-surface browser renders explicit session and dependency recovery states",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-recovery.spec.ts::cross-surface browser renders explicit session and dependency recovery states",
+        "fixtures": "Synthetic expiry/conflict/dependency responses and redacted route state.",
+        "negativeCase": "Automatic reauthentication, hidden retry loop, fabricated success or client-side owner override fails.",
+        "evidenceArtifact": "Browser trace, response/status assertions and redacted screenshots.",
+        "reviewer": "Frontend Security and QA reviewer",
+        "releaseGate": "CROSS_SURFACE_BROWSER_RECOVERY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-107-AC4": [
+      {
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "No runtime activation occurs in Phase 3.25; release metadata and authorization gates remain unchanged.",
+        "setup": "Review the ticket contract, dependency gates, generated evidence manifest and exact future hosted/browser/manual owners.",
+        "procedure": "Confirm RELEASE is not activation, every applicable route/state has a named evidence owner, and missing automated/hosted/manual evidence keeps the gate closed.",
+        "assertion": "A client flag, screenshot or documentation-only record cannot activate unsupported behavior or claim release acceptance.",
+        "expectedResult": "Release semantics remain explicit and fail closed.",
+        "testName": "cross-surface release semantics remain fail closed",
+        "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-107-AC4-release-semantics-review",
+        "fixtures": "Redacted catalog/policy and release checklist.",
+        "negativeCase": "Missing route-owner evidence, client-only activation or unapproved gate is a failed release decision.",
+        "evidenceArtifact": "Signed review checklist and exact-SHA gate references.",
+        "reviewer": "Release and Security reviewer",
+        "releaseGate": "CROSS_SURFACE_RELEASE_GATE",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
     "CS-106-AC1": [
       {
         "type": "AUTOMATED_COMPONENT",
@@ -14637,9 +14841,39 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a509a1720f927fa4675603d3a9feb950c7d5b16d5a9be148cc427092ce3e3b1a"
+    },
+    "CS-107-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "6b38a9cdc2da86214ee5e43e97e4e5daa28b15eea48039b0f680e4aa9d995a4f"
+    },
+    "CS-107-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c17c35f6d8c6f9234c871b3a3e36f00cae10fb4d221ed5aa18f08aafb6168044"
+    },
+    "CS-107-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a8825bd4a1af96aca468c5cf93f91bd5c7d934edc4d3921f5c2618953f749d56"
+    },
+    "CS-107-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b36a8304ec5522c18b1a04b36e47364ef1216339fc1ec663ab24d8aa534d9dac"
     }
   },
   "specificationReviewReceipts": {
+    "CS-107": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "049fc2b87fa2dc98fc22bb65ed5bc776c7eb421ba186feebeb47bd4796fa0ce5"
+    },
     "CS-106": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"71c25d01855d385a835944e836aabf0751f1eb0fe878f85fca8d4e37f9f09d88"},
     "CS-105": {
       "verdict": "APPROVED",

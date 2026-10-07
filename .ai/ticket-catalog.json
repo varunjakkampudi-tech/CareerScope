@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "606a52f2a87318b9f96a47bfbdf7b5efd1da0c287635b5c32fc371651d55a8b3",
+    ".ai/ticket-specification-policy.json": "5ab7b4fd20f8e0071aea4e9155ef04601e19909ed80b595a33e0f60597faf1db",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d51c63a59e8664a73fcc47cbb1204586e9fbd3876264ef5c0d182e29ca84e758"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d66968d9fa55d3e23c2ff3b1d25f3715b0386c649625b7333a0a3b6d99a54f73"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -75029,8 +75029,8 @@
     {
       "ticketId": "CS-107",
       "primaryEpicId": "EPIC-ACCESSIBILITY-RESPONSIVE",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -75038,7 +75038,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "SURFACE_SPEC_REFINEMENT",
@@ -75046,7 +75046,7 @@
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
           "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -75075,14 +75075,42 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Cross-surface accessibility, responsive and locale evidence: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented."
+            "Cross-surface accessibility, responsive and locale evidence: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented.",
+            {
+              "requirement": "The cross-surface accessibility, responsive and locale contract is broad and does not yet state which observable states, actors, viewports and authorization boundaries must be verified without claiming unsupported translations or product capabilities.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-107"]
+          "sources": [
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "value": {
           "applicability": "APPLICABLE",
-          "requirements": ["Cross-surface accessibility, responsive and locale evidence"],
-          "sources": [".ai/backlog.json#CS-107"]
+          "requirements": [
+            "Cross-surface accessibility, responsive and locale evidence",
+            {
+              "requirement": "Give each current route a repeatable accessibility and reflow evidence boundary while preserving server ownership, honest unavailable states and the existing release gates.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "currentState": {
           "applicability": "APPLICABLE",
@@ -75136,7 +75164,7 @@
               "id": "CS-107-AC1",
               "sourceText": "WCAG 2.2 AA axe assertions; keyboard traversal, visible focus, dialog focus restoration and Escape, labelled forms, error/status announcements; manual screen-reader judgment recorded separately.",
               "expectedResult": "WCAG 2.2 AA axe assertions; keyboard traversal, visible focus, dialog focus restoration and Escape, labelled forms, error/status announcements; manual screen-reader judgment recorded separately.",
-              "verificationIds": ["MANUAL_ACCESSIBILITY", "AUTOMATED_ACCESSIBILITY"],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -75144,7 +75172,7 @@
               "id": "CS-107-AC2",
               "sourceText": "No ordinary-content horizontal overflow at 320,390,768,1024,1440px; long text and reduced motion supported; locale-aware formatting without claiming translations.",
               "expectedResult": "No ordinary-content horizontal overflow at 320,390,768,1024,1440px; long text and reduced motion supported; locale-aware formatting without claiming translations.",
-              "verificationIds": ["AUTOMATED_CONTRACT"],
+              "verificationIds": ["AUTOMATED_BROWSER"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -75152,12 +75180,7 @@
               "id": "CS-107-AC3",
               "sourceText": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "expectedResult": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY", "AUTOMATED_BROWSER"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -75165,12 +75188,40 @@
               "id": "CS-107-AC4",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "For every applicable current route, enumerate the rendered keyboard path, focus order, visible focus, labels, errors/status announcements, dialog Escape/focus restoration and reduced-motion behavior; use the route's real or explicit unavailable state rather than adding a route or capability.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Exercise 320, 390, 768, 1024 and 1440 CSS-pixel viewports with long text and narrow tables; assert no ordinary-content horizontal overflow, deliberate table behavior and usable touch targets. Locale-aware number/date formatting must use the owning formatter and must not claim translations that are not present.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Run positive, denied, malformed, expired-session, stale-revision and dependency-failure fixtures through the existing session-derived ownership/API contracts; UI visibility never grants a role or capability and no private payload is captured in evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Keep RELEASE metadata as a fail-closed acceptance state. Activation requires the declared automated, browser, manual screen-reader and authorization evidence; this ticket does not implement product routes, auth, localization catalogues or provider integrations.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-107"]
+          "sources": [
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -75183,13 +75234,22 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: CROSS_MODULE / API_CONTRACT. The future checks consume canonical route components and the same-origin API client; they do not create a second frontend, client-side authorization, persistence or a parallel locale system.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-107",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/SECURITY.md"
           ]
         },
         "persistence": {
@@ -75200,13 +75260,22 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": [],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "NOT_APPLICABLE: no schema or migration. Locale/display fixtures are synthetic and must not persist user data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-107",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/SECURITY.md"
           ]
         },
         "apiContract": {
@@ -75225,9 +75294,23 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "NOT_APPLICABLE for new endpoints. Existing routes and session-derived ownership remain authoritative; assertions must use registered contracts and stable error semantics.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-107", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-107",
+            "docs/API-SURFACE.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -77904,34 +77987,86 @@
           "requirements": [
             "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
             "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+            {
+              "requirement": "WCAG 2.2 AA: semantic landmarks/headings, accessible names and labels, keyboard traversal, visible focus, dialog focus trap/restoration and Escape, status/error association and announcements, non-color state indication, reduced motion and manual NVDA/VoiceOver review.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
           ]
         },
         "responsive": {
           "applicability": "APPLICABLE",
           "requirements": [
             "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
-            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
+            {
+              "requirement": "Verify 320/390/768/1024/1440 CSS-pixel layouts, long-content reflow, intentional narrow table handling and touch targets without unintended horizontal scrolling.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
           ]
         },
         "browsers": {
           "applicability": "APPLICABLE",
-          "requirements": ["Chromium", "Firefox", "WebKit"],
-          "sources": ["docs/TESTING.md"]
+          "requirements": [
+            "Chromium",
+            "Firefox",
+            "WebKit",
+            {
+              "requirement": "Future automated checks cover Chromium, Firefox and WebKit at the approved viewport matrix; missing engine or manual evidence is NOT_RUN, not a pass.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md"
+          ]
         },
         "seo": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "NOT_APPLICABLE to authenticated/internal cross-surface checks; private surfaces remain noindex and must not place user data in metadata.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "securityPrivacy": {
           "applicability": "APPLICABLE",
@@ -77942,20 +78077,43 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity and server policy determine access; never infer capability from rendered controls, never trust client-selected owner IDs, and keep tokens, resumes, OTPs and private payloads out of screenshots, fixtures, logs and reports.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-107", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-107",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts."
+            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts.",
+            {
+              "requirement": "Record only route/state/viewport/browser/build identifiers and failure categories; redact request bodies and personal data. Evidence must preserve correlation without leaking user content.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-107",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/SECURITY.md"
           ]
         },
         "testStrategy": {
@@ -77967,25 +78125,62 @@
               "criterion": "WCAG 2.2 AA axe assertions; keyboard traversal, visible focus, dialog focus restoration and Escape, labelled forms, error/status announcements; manual screen-reader judgment recorded separately.",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "CS-107-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_ACCESSIBILITY",
+                  "expectedCheck": "Applicable route states meet the named WCAG 2.2 AA semantics and keyboard/focus/announcement contract; no hidden route or capability is inferred from a passing fixture.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "Axe report, keyboard matrix, route/state manifest and redacted build SHA.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Accessibility QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_ACCESSIBILITY"
                 },
                 {
-                  "type": "AUTOMATED_ACCESSIBILITY",
-                  "expectedCheck": "CS-107-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "expectedCheck": "A human operator confirms the cross-surface controls are understandable and operable; automated axe output cannot substitute for this observation.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Accessibility reviewer (NVDA/VoiceOver operator)",
+                  "releaseGate": "MANUAL_SCREEN_READER_CROSS_SURFACE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_ACCESSIBILITY",
+                  "preconditions": "The reviewed build renders each applicable current route with synthetic, redacted state fixtures and session-derived ownership; no real user data is used.",
+                  "setup": "Run axe and keyboard traversal at 320/390/768/1024/1440 CSS pixels for labels, headings, focus, dialogs, errors/status and reduced-motion states.",
+                  "procedure": "Traverse every rendered interactive control with keyboard only; open/close each applicable dialog with Escape, verify focus restoration, trigger validation/error/status states and inspect live-region announcements. Assert controls remain usable without color-only meaning.",
+                  "assertion": "Applicable route states meet the named WCAG 2.2 AA semantics and keyboard/focus/announcement contract; no hidden route or capability is inferred from a passing fixture.",
+                  "expectedResult": "Automated axe and keyboard assertions pass for the reviewed state matrix.",
+                  "testName": "current route states pass cross-surface accessibility contract",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-accessibility.spec.ts::current route states pass cross-surface accessibility contract",
+                  "fixtures": "Synthetic route manifests, labelled controls, dialog/error/status fixtures and redacted session state.",
+                  "negativeCase": "Unlabelled control, lost focus, failed Escape/restore, silent error/status, color-only state or unauthorized control is a failure.",
+                  "evidenceArtifact": "Axe report, keyboard matrix, route/state manifest and redacted build SHA.",
+                  "reviewer": "Accessibility QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_ACCESSIBILITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                },
+                {
+                  "type": "MANUAL_ACCESSIBILITY",
+                  "preconditions": "The exact reviewed build and synthetic route/state matrix are available with no personal data.",
+                  "setup": "Record OS, browser, build SHA, NVDA or VoiceOver version, viewport and initial focus; prepare keyboard and screen-reader tasks for dialogs, forms, status/error updates and tables.",
+                  "procedure": "Perform the named tasks and record spoken name/role/state, focus order, announcements, Escape handling, restoration and reflow observations. Capture only redacted observations and mark missing AT/version as not run.",
+                  "assertion": "A human operator confirms the cross-surface controls are understandable and operable; automated axe output cannot substitute for this observation.",
+                  "expectedResult": "Manual screen-reader evidence is tied to the exact build and state matrix.",
+                  "testName": "cross-surface manual screen-reader smoke procedure",
+                  "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-107-AC1-screen-reader-cross-surface",
+                  "fixtures": "Synthetic route/state matrix and redacted observation form.",
+                  "negativeCase": "Unannounced state, ambiguous name, focus loss, inaccessible dialog/table or missing AT/version fails.",
+                  "evidenceArtifact": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+                  "reviewer": "Accessibility reviewer (NVDA/VoiceOver operator)",
+                  "releaseGate": "MANUAL_SCREEN_READER_CROSS_SURFACE",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-107",
@@ -77993,17 +78188,36 @@
               "criterion": "No ordinary-content horizontal overflow at 320,390,768,1024,1440px; long text and reduced motion supported; locale-aware formatting without claiming translations.",
               "verification": [
                 {
-                  "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "CS-107-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_BROWSER",
+                  "expectedCheck": "Responsive and locale-aware formatting behavior is deterministic at all required viewports without claiming unsupported translations.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Per-engine viewport measurements, screenshots and formatter assertion output.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_BROWSER",
+                  "preconditions": "Applicable routes expose approved responsive states and the owning locale formatter; no translation catalogue is assumed.",
+                  "setup": "Exercise long synthetic text, narrow tables, reduced-motion preference and fixed supported locale/timezone fixtures for the source-required dates, times, numbers and currency values at 320/390/768/1024/1440 CSS pixels in Chromium, Firefox and WebKit.",
+                  "procedure": "Measure document and scroll containers, assert no ordinary-content horizontal overflow, deliberate table reflow/overflow, usable touch targets and stable long-text wrapping/reduced-motion behavior. Compare rendered date/time/number/currency strings to an independently authored expected-output oracle for each supported locale/timezone; absent translations remain explicitly unsupported.",
+                  "assertion": "Responsive and locale-aware formatting behavior is deterministic at all required viewports without claiming unsupported translations.",
+                  "expectedResult": "All supported engines and viewports satisfy reflow, overflow and formatter assertions.",
+                  "testName": "cross-surface responsive and locale formatting matrix",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-responsive.spec.ts::cross-surface responsive and locale formatting matrix",
+                  "fixtures": "Long redacted labels, synthetic table rows, reduced-motion preference, fixed locale/timezone fixtures and independently authored expected strings for supported date/time/number/currency cases.",
+                  "negativeCase": "Unexpected page overflow, clipped ordinary content, fabricated translation or formatter mismatch fails.",
+                  "evidenceArtifact": "Per-engine viewport measurements, screenshots and formatter assertion output.",
+                  "reviewer": "Frontend QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-107",
@@ -78011,41 +78225,62 @@
               "criterion": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_SECURITY",
+                  "expectedCheck": "Server contract paths preserve ownership and stable status/error semantics without promising browser recovery behavior.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "Redacted contract/security test output and correlation-safe logs.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security and API QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_AUTHORIZATION"
                 },
                 {
                   "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "expectedCheck": "Browser recovery states are explicit and truthful while authorization remains server-owned.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "evidenceRequired": "Browser trace, response/status assertions and redacted screenshots.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend Security and QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_BROWSER_RECOVERY"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_SECURITY",
+                  "preconditions": "Synthetic owner, foreign-owner, unauthenticated, malformed, expired-session, stale-revision and dependency-failure fixtures map to existing route/API contracts.",
+                  "setup": "Run each fixture through the same-origin client and registered server contract; capture only status/error/correlation metadata.",
+                  "procedure": "Assert an allowed owner action succeeds, a foreign-owner or unauthenticated action returns the canonical safe denial, malformed input has no persistence side effect, expired sessions return the existing unauthenticated contract, stale revisions return conflict semantics and dependency failures return the registered safe error. Assert UI visibility never grants access.",
+                  "assertion": "Server contract paths preserve ownership and stable status/error semantics without promising browser recovery behavior.",
+                  "expectedResult": "No cross-owner data or unauthorized capability is exposed and no test fixture mutates production state.",
+                  "testName": "cross-surface server authorization and failure fixtures remain owner-scoped",
+                  "testFileOrProcedureId": "PLANNED:apps/api/tests/cross-surface-contract.security.test.ts::cross-surface server authorization and failure fixtures remain owner-scoped",
+                  "fixtures": "Synthetic owners/resources, malformed payloads, expired sessions, revisions and dependency error responses.",
+                  "negativeCase": "Client-selected owner, capability inferred from visibility, leaked sensitive payload or mutation after denial fails.",
+                  "evidenceArtifact": "Redacted contract/security test output and correlation-safe logs.",
+                  "reviewer": "Security and API QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_AUTHORIZATION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                },
+                {
+                  "type": "AUTOMATED_BROWSER",
+                  "preconditions": "The reviewed browser build has synthetic expired-session, stale-revision and dependency-failure responses wired to the existing client error contract.",
+                  "setup": "Mount the applicable route with synthetic server responses; do not enable automatic reauthentication or use real accounts.",
+                  "procedure": "Trigger session expiry, stale revision and dependency failure from the UI and assert the client follows the registered navigation/error/retry or unavailable state; assert no automatic credential submission and no fabricated success.",
+                  "assertion": "Browser recovery states are explicit and truthful while authorization remains server-owned.",
+                  "expectedResult": "The user sees the existing session-expired, conflict or retry/unavailable state and the client performs no unauthorized recovery.",
+                  "testName": "cross-surface browser renders explicit session and dependency recovery states",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-recovery.spec.ts::cross-surface browser renders explicit session and dependency recovery states",
+                  "fixtures": "Synthetic expiry/conflict/dependency responses and redacted route state.",
+                  "negativeCase": "Automatic reauthentication, hidden retry loop, fabricated success or client-side owner override fails.",
+                  "evidenceArtifact": "Browser trace, response/status assertions and redacted screenshots.",
+                  "reviewer": "Frontend Security and QA reviewer",
+                  "releaseGate": "CROSS_SURFACE_BROWSER_RECOVERY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-107",
@@ -78053,25 +78288,36 @@
               "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-107-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-107-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_PRODUCT",
+                  "expectedCheck": "A client flag, screenshot or documentation-only record cannot activate unsupported behavior or claim release acceptance.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Signed review checklist and exact-SHA gate references.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Release and Security reviewer",
+                  "releaseGate": "CROSS_SURFACE_RELEASE_GATE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "MANUAL_PRODUCT",
+                  "preconditions": "No runtime activation occurs in Phase 3.25; release metadata and authorization gates remain unchanged.",
+                  "setup": "Review the ticket contract, dependency gates, generated evidence manifest and exact future hosted/browser/manual owners.",
+                  "procedure": "Confirm RELEASE is not activation, every applicable route/state has a named evidence owner, and missing automated/hosted/manual evidence keeps the gate closed.",
+                  "assertion": "A client flag, screenshot or documentation-only record cannot activate unsupported behavior or claim release acceptance.",
+                  "expectedResult": "Release semantics remain explicit and fail closed.",
+                  "testName": "cross-surface release semantics remain fail closed",
+                  "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-107-AC4-release-semantics-review",
+                  "fixtures": "Redacted catalog/policy and release checklist.",
+                  "negativeCase": "Missing route-owner evidence, client-only activation or unapproved gate is a failed release decision.",
+                  "evidenceArtifact": "Signed review checklist and exact-SHA gate references.",
+                  "reviewer": "Release and Security reviewer",
+                  "releaseGate": "CROSS_SURFACE_RELEASE_GATE",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-107", "docs/TESTING.md"]
@@ -78094,10 +78340,22 @@
               "masks": "Only unavoidable dynamic regions; no blanket widget masks.",
               "tolerance": "Owner-approved deterministic threshold is required; not invented in planning.",
               "evidence": "Future reference/render capture, dimensions, state, browser and independent approval."
+            },
+            {
+              "requirement": "Use approved reference paths and exact viewport/browser manifests where a visual comparison is applicable; masks must be minimal and must not cover controls, focus, errors or substantive content.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
-            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md"
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
           ]
         },
         "acceptanceCriteria": {
@@ -78107,7 +78365,7 @@
               "id": "CS-107-AC1",
               "sourceText": "WCAG 2.2 AA axe assertions; keyboard traversal, visible focus, dialog focus restoration and Escape, labelled forms, error/status announcements; manual screen-reader judgment recorded separately.",
               "expectedResult": "WCAG 2.2 AA axe assertions; keyboard traversal, visible focus, dialog focus restoration and Escape, labelled forms, error/status announcements; manual screen-reader judgment recorded separately.",
-              "verificationIds": ["MANUAL_ACCESSIBILITY", "AUTOMATED_ACCESSIBILITY"],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY", "MANUAL_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -78115,7 +78373,7 @@
               "id": "CS-107-AC2",
               "sourceText": "No ordinary-content horizontal overflow at 320,390,768,1024,1440px; long text and reduced motion supported; locale-aware formatting without claiming translations.",
               "expectedResult": "No ordinary-content horizontal overflow at 320,390,768,1024,1440px; long text and reduced motion supported; locale-aware formatting without claiming translations.",
-              "verificationIds": ["AUTOMATED_CONTRACT"],
+              "verificationIds": ["AUTOMATED_BROWSER"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -78123,12 +78381,7 @@
               "id": "CS-107-AC3",
               "sourceText": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "expectedResult": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY", "AUTOMATED_BROWSER"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -78136,7 +78389,7 @@
               "id": "CS-107-AC4",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-107",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -78151,9 +78404,28 @@
             "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
             "Independent current-content review resolves specification/implementation findings before promotion.",
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+            {
+              "requirement": "Specification DoD: route/state matrix, exact accessibility/reflow/locale assertions, ownership/security boundaries, negative cases and future evidence owners are explicit; no runtime capability or translation is fabricated.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Future implementation DoD: applicable component/browser/axe checks, responsive matrix, manual screen-reader evidence and route-owner contract tests pass on the reviewed SHA before activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            "docs/ai/quality-gates.md",
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
@@ -78174,16 +78446,37 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-107 problem and each criterion with QA.",
-            "Resolve only the recorded CS-107 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for Cross-surface accessibility, responsive and locale evidence.",
-            "Implement and verify CS-107-AC1: WCAG 2.2 AA axe assertions; keyboard traversal, visible focus, dialog focus restoration and Escape, labelled forms, error/status announcements; manual screen-reader judgment recorded separately.",
-            "Implement and verify CS-107-AC2: No ordinary-content horizontal overflow at 320,390,768,1024,1440px; long text and reduced motion supported; locale-aware formatting without claiming translations.",
-            "Implement and verify CS-107-AC3: Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-            "Implement and verify CS-107-AC4: Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-107 documentation, redacted evidence and independent review before workflow promotion."
+            {
+              "requirement": "Inventory current routes and state contracts from the design index and route/API sources; exclude absent routes and unsupported translations.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define the route-by-viewport accessibility, focus, announcement, reduced-motion and narrow-content assertion matrix with synthetic/redacted fixtures.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add browser/axe/keyboard/reflow procedures for Chromium, Firefox and WebKit plus the exact manual NVDA/VoiceOver procedure; keep planned evidence marked not run.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Review session ownership, redaction, formatter and release-gate boundaries with QA, Security, UX and route owners before activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-107"]
+          "sources": [
+            ".ai/backlog.json#CS-107",
+            ".ai/backlog.json#CS-107",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -78199,11 +78492,24 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "Manual NVDA/VoiceOver observation, UX acceptance of responsive/locale states and exact-SHA browser/axe evidence remain future gates; no hosted or live result is claimed in Phase 3.25.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-107",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/ARCHITECTURE.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -78216,13 +78522,22 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+            },
+            {
+              "requirement": "A global accessibility or formatting assertion can hide a route-specific authorization or stale-state defect. Scope failures to the route/state fixture and revert only the test/contract change; preserve server data and do not weaken the gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-107",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/09-09-responsive-design.png",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/10-10-accessibility.png",
+            "docs/SECURITY.md"
           ]
         },
         "delivery": {

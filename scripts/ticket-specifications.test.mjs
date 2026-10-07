@@ -419,7 +419,7 @@ test('whole-spec approval is content-bound and invalidates after substantive cha
   assert.equal(approved.reviewState, 'APPROVED');
   assert.equal(approved.readiness, 'IMPLEMENTATION_READY');
   assert.equal(approved.gaps[0].disposition, 'RESOLVED');
-  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 54);
+  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 55);
 
   inputs.policy.ticketRefinements['CS-3'].additionalRequirements.value[0] +=
     ' Substantive mutation invalidates review.';
@@ -796,6 +796,28 @@ test('CS-106 shared interaction components keep ownership and accessibility boun
   assert.ok(ac4.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'));
 });
 
+test('CS-107 cross-surface evidence keeps accessibility, locale and authorization boundaries explicit', () => {
+  const model = buildCatalog(fresh());
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-107');
+  assert.equal(spec.reviewState, 'APPROVED');
+  assert.equal(spec.readiness, 'IMPLEMENTATION_READY');
+  assert.match(JSON.stringify(spec.sections.functionalRequirements), /must not claim translations/);
+  assert.match(JSON.stringify(spec.sections.securityPrivacy), /client-selected owner/);
+  const ac1 = model.traceability.find((row) => row.acId === 'CS-107-AC1');
+  const ac2 = model.traceability.find((row) => row.acId === 'CS-107-AC2');
+  const ac3 = model.traceability.find((row) => row.acId === 'CS-107-AC3');
+  assert.equal(ac1.exactBindings.length, 2);
+  assert.equal(ac3.exactBindings.length, 2);
+  assert.ok(ac1.exactBindings.some((binding) => binding.type === 'MANUAL_ACCESSIBILITY'));
+  assert.match(ac2.exactBindings[0].procedure, /independently authored expected-output oracle/);
+  assert.ok(ac3.exactBindings.some((binding) => binding.type === 'AUTOMATED_BROWSER'));
+  assert.ok(
+    [...ac1.exactBindings, ...ac2.exactBindings, ...ac3.exactBindings].every(
+      (binding) => binding.reviewStatus === 'REVIEWED',
+    ),
+  );
+});
+
 test('CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes', () => {
   const inputs = fresh();
   inputs.policy.ticketRefinements['CS-100'].bindingAmendments['CS-100-AC9'] = {
@@ -833,14 +855,14 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   });
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
-  assert.equal(model.counts.completeSpecificationCount, 54);
-  assert.equal(model.counts.incompleteSpecificationCount, 162);
-  assert.equal(model.counts.approvedSpecificationCount, 54);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 244);
+  assert.equal(model.counts.completeSpecificationCount, 55);
+  assert.equal(model.counts.incompleteSpecificationCount, 161);
+  assert.equal(model.counts.approvedSpecificationCount, 55);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 250);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 230);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 676);
-  assert.equal(model.counts.authoredExactTestBindingCount, 341);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 234);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 672);
+  assert.equal(model.counts.authoredExactTestBindingCount, 347);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -888,7 +910,7 @@ test('existing owner directions retain source provenance without fabricated read
   assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
   assert.match(direction.remainingGate, /lower bound/);
   assert.equal(spec.reviewState, 'DRAFT');
-  assert.equal(model.counts.approvedSpecificationCount, 54);
+  assert.equal(model.counts.approvedSpecificationCount, 55);
   inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>

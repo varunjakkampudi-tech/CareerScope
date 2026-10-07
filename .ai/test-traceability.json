@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "606a52f2a87318b9f96a47bfbdf7b5efd1da0c287635b5c32fc371651d55a8b3",
+    ".ai/ticket-specification-policy.json": "5ab7b4fd20f8e0071aea4e9155ef04601e19909ed80b595a33e0f60597faf1db",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d51c63a59e8664a73fcc47cbb1204586e9fbd3876264ef5c0d182e29ca84e758"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d66968d9fa55d3e23c2ff3b1d25f3715b0386c649625b7333a0a3b6d99a54f73"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -14636,25 +14636,62 @@
       "criterion": "WCAG 2.2 AA axe assertions; keyboard traversal, visible focus, dialog focus restoration and Escape, labelled forms, error/status announcements; manual screen-reader judgment recorded separately.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-107-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "expectedCheck": "Applicable route states meet the named WCAG 2.2 AA semantics and keyboard/focus/announcement contract; no hidden route or capability is inferred from a passing fixture.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Axe report, keyboard matrix, route/state manifest and redacted build SHA.",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility QA reviewer",
+          "releaseGate": "CROSS_SURFACE_ACCESSIBILITY"
         },
         {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-107-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_ACCESSIBILITY",
+          "expectedCheck": "A human operator confirms the cross-surface controls are understandable and operable; automated axe output cannot substitute for this observation.",
+          "candidateCommand": null,
+          "evidenceRequired": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+          "automationStatus": "MANUAL_REQUIRED",
+          "owner": "Accessibility reviewer (NVDA/VoiceOver operator)",
+          "releaseGate": "MANUAL_SCREEN_READER_CROSS_SURFACE"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "preconditions": "The reviewed build renders each applicable current route with synthetic, redacted state fixtures and session-derived ownership; no real user data is used.",
+          "setup": "Run axe and keyboard traversal at 320/390/768/1024/1440 CSS pixels for labels, headings, focus, dialogs, errors/status and reduced-motion states.",
+          "procedure": "Traverse every rendered interactive control with keyboard only; open/close each applicable dialog with Escape, verify focus restoration, trigger validation/error/status states and inspect live-region announcements. Assert controls remain usable without color-only meaning.",
+          "assertion": "Applicable route states meet the named WCAG 2.2 AA semantics and keyboard/focus/announcement contract; no hidden route or capability is inferred from a passing fixture.",
+          "expectedResult": "Automated axe and keyboard assertions pass for the reviewed state matrix.",
+          "testName": "current route states pass cross-surface accessibility contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-accessibility.spec.ts::current route states pass cross-surface accessibility contract",
+          "fixtures": "Synthetic route manifests, labelled controls, dialog/error/status fixtures and redacted session state.",
+          "negativeCase": "Unlabelled control, lost focus, failed Escape/restore, silent error/status, color-only state or unauthorized control is a failure.",
+          "evidenceArtifact": "Axe report, keyboard matrix, route/state manifest and redacted build SHA.",
+          "reviewer": "Accessibility QA reviewer",
+          "releaseGate": "CROSS_SURFACE_ACCESSIBILITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        },
+        {
+          "type": "MANUAL_ACCESSIBILITY",
+          "preconditions": "The exact reviewed build and synthetic route/state matrix are available with no personal data.",
+          "setup": "Record OS, browser, build SHA, NVDA or VoiceOver version, viewport and initial focus; prepare keyboard and screen-reader tasks for dialogs, forms, status/error updates and tables.",
+          "procedure": "Perform the named tasks and record spoken name/role/state, focus order, announcements, Escape handling, restoration and reflow observations. Capture only redacted observations and mark missing AT/version as not run.",
+          "assertion": "A human operator confirms the cross-surface controls are understandable and operable; automated axe output cannot substitute for this observation.",
+          "expectedResult": "Manual screen-reader evidence is tied to the exact build and state matrix.",
+          "testName": "cross-surface manual screen-reader smoke procedure",
+          "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-107-AC1-screen-reader-cross-surface",
+          "fixtures": "Synthetic route/state matrix and redacted observation form.",
+          "negativeCase": "Unannounced state, ambiguous name, focus loss, inaccessible dialog/table or missing AT/version fails.",
+          "evidenceArtifact": "Redacted observation matrix with OS/browser/AT/version/build SHA and reviewer sign-off.",
+          "reviewer": "Accessibility reviewer (NVDA/VoiceOver operator)",
+          "releaseGate": "MANUAL_SCREEN_READER_CROSS_SURFACE",
+          "testStatus": "MANUAL_REQUIRED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-107",
@@ -14662,17 +14699,36 @@
       "criterion": "No ordinary-content horizontal overflow at 320,390,768,1024,1440px; long text and reduced motion supported; locale-aware formatting without claiming translations.",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-107-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Responsive and locale-aware formatting behavior is deterministic at all required viewports without claiming unsupported translations.",
+          "candidateCommand": null,
+          "evidenceRequired": "Per-engine viewport measurements, screenshots and formatter assertion output.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA reviewer",
+          "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Applicable routes expose approved responsive states and the owning locale formatter; no translation catalogue is assumed.",
+          "setup": "Exercise long synthetic text, narrow tables, reduced-motion preference and fixed supported locale/timezone fixtures for the source-required dates, times, numbers and currency values at 320/390/768/1024/1440 CSS pixels in Chromium, Firefox and WebKit.",
+          "procedure": "Measure document and scroll containers, assert no ordinary-content horizontal overflow, deliberate table reflow/overflow, usable touch targets and stable long-text wrapping/reduced-motion behavior. Compare rendered date/time/number/currency strings to an independently authored expected-output oracle for each supported locale/timezone; absent translations remain explicitly unsupported.",
+          "assertion": "Responsive and locale-aware formatting behavior is deterministic at all required viewports without claiming unsupported translations.",
+          "expectedResult": "All supported engines and viewports satisfy reflow, overflow and formatter assertions.",
+          "testName": "cross-surface responsive and locale formatting matrix",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-responsive.spec.ts::cross-surface responsive and locale formatting matrix",
+          "fixtures": "Long redacted labels, synthetic table rows, reduced-motion preference, fixed locale/timezone fixtures and independently authored expected strings for supported date/time/number/currency cases.",
+          "negativeCase": "Unexpected page overflow, clipped ordinary content, fabricated translation or formatter mismatch fails.",
+          "evidenceArtifact": "Per-engine viewport measurements, screenshots and formatter assertion output.",
+          "reviewer": "Frontend QA reviewer",
+          "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-107",
@@ -14680,41 +14736,62 @@
       "criterion": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_SECURITY",
+          "expectedCheck": "Server contract paths preserve ownership and stable status/error semantics without promising browser recovery behavior.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Redacted contract/security test output and correlation-safe logs.",
+          "automationStatus": "PLANNED",
+          "owner": "Security and API QA reviewer",
+          "releaseGate": "CROSS_SURFACE_AUTHORIZATION"
         },
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "Browser recovery states are explicit and truthful while authorization remains server-owned.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-107-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Browser trace, response/status assertions and redacted screenshots.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend Security and QA reviewer",
+          "releaseGate": "CROSS_SURFACE_BROWSER_RECOVERY"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_SECURITY",
+          "preconditions": "Synthetic owner, foreign-owner, unauthenticated, malformed, expired-session, stale-revision and dependency-failure fixtures map to existing route/API contracts.",
+          "setup": "Run each fixture through the same-origin client and registered server contract; capture only status/error/correlation metadata.",
+          "procedure": "Assert an allowed owner action succeeds, a foreign-owner or unauthenticated action returns the canonical safe denial, malformed input has no persistence side effect, expired sessions return the existing unauthenticated contract, stale revisions return conflict semantics and dependency failures return the registered safe error. Assert UI visibility never grants access.",
+          "assertion": "Server contract paths preserve ownership and stable status/error semantics without promising browser recovery behavior.",
+          "expectedResult": "No cross-owner data or unauthorized capability is exposed and no test fixture mutates production state.",
+          "testName": "cross-surface server authorization and failure fixtures remain owner-scoped",
+          "testFileOrProcedureId": "PLANNED:apps/api/tests/cross-surface-contract.security.test.ts::cross-surface server authorization and failure fixtures remain owner-scoped",
+          "fixtures": "Synthetic owners/resources, malformed payloads, expired sessions, revisions and dependency error responses.",
+          "negativeCase": "Client-selected owner, capability inferred from visibility, leaked sensitive payload or mutation after denial fails.",
+          "evidenceArtifact": "Redacted contract/security test output and correlation-safe logs.",
+          "reviewer": "Security and API QA reviewer",
+          "releaseGate": "CROSS_SURFACE_AUTHORIZATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        },
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "The reviewed browser build has synthetic expired-session, stale-revision and dependency-failure responses wired to the existing client error contract.",
+          "setup": "Mount the applicable route with synthetic server responses; do not enable automatic reauthentication or use real accounts.",
+          "procedure": "Trigger session expiry, stale revision and dependency failure from the UI and assert the client follows the registered navigation/error/retry or unavailable state; assert no automatic credential submission and no fabricated success.",
+          "assertion": "Browser recovery states are explicit and truthful while authorization remains server-owned.",
+          "expectedResult": "The user sees the existing session-expired, conflict or retry/unavailable state and the client performs no unauthorized recovery.",
+          "testName": "cross-surface browser renders explicit session and dependency recovery states",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-recovery.spec.ts::cross-surface browser renders explicit session and dependency recovery states",
+          "fixtures": "Synthetic expiry/conflict/dependency responses and redacted route state.",
+          "negativeCase": "Automatic reauthentication, hidden retry loop, fabricated success or client-side owner override fails.",
+          "evidenceArtifact": "Browser trace, response/status assertions and redacted screenshots.",
+          "reviewer": "Frontend Security and QA reviewer",
+          "releaseGate": "CROSS_SURFACE_BROWSER_RECOVERY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-107",
@@ -14722,25 +14799,36 @@
       "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-107-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-107-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "A client flag, screenshot or documentation-only record cannot activate unsupported behavior or claim release acceptance.",
+          "candidateCommand": null,
+          "evidenceRequired": "Signed review checklist and exact-SHA gate references.",
+          "automationStatus": "MANUAL_REQUIRED",
+          "owner": "Release and Security reviewer",
+          "releaseGate": "CROSS_SURFACE_RELEASE_GATE"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "No runtime activation occurs in Phase 3.25; release metadata and authorization gates remain unchanged.",
+          "setup": "Review the ticket contract, dependency gates, generated evidence manifest and exact future hosted/browser/manual owners.",
+          "procedure": "Confirm RELEASE is not activation, every applicable route/state has a named evidence owner, and missing automated/hosted/manual evidence keeps the gate closed.",
+          "assertion": "A client flag, screenshot or documentation-only record cannot activate unsupported behavior or claim release acceptance.",
+          "expectedResult": "Release semantics remain explicit and fail closed.",
+          "testName": "cross-surface release semantics remain fail closed",
+          "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-107-AC4-release-semantics-review",
+          "fixtures": "Redacted catalog/policy and release checklist.",
+          "negativeCase": "Missing route-owner evidence, client-only activation or unapproved gate is a failed release decision.",
+          "evidenceArtifact": "Signed review checklist and exact-SHA gate references.",
+          "reviewer": "Release and Security reviewer",
+          "releaseGate": "CROSS_SURFACE_RELEASE_GATE",
+          "testStatus": "MANUAL_REQUIRED",
+          "reviewStatus": "REVIEWED"
+        }
+      ]
     },
     {
       "ticketId": "CS-108",
