@@ -1,10 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { format } from 'prettier';
 import { buildCatalog, validateCatalog, digest, SECTIONS } from './lib/ticket-specification.mjs';
+import { acceptanceCriteriaHashMatches } from './lib/ticket-workflow.mjs';
 
 export const INPUTS = [
   '.ai/backlog.json',
@@ -39,6 +41,153 @@ const cell = (value) =>
 const table = (headers, rows) =>
   `| ${headers.join(' | ')} |\n| ${headers.map(() => '---').join(' | ')} |\n${rows.map((row) => `| ${row.map(cell).join(' | ')} |`).join('\n')}\n`;
 const intro = '# Phase 3.25 — ';
+const CS80_DECISION_ID = 'OD-2026-10-07-CS80-AC3';
+const CS80_CHECKPOINT_BASE_SHA = '3911a52fb2167707a1b04e258c15c403815286e4';
+const CS80_CHECKPOINT_PATH_COUNT = 32;
+const CS80_CHECKPOINT_PATHS_SHA256 =
+  '0f1eb5d8a80ef12ae7c3c01c08f0686950b42f1c5b430122b5025a298e82fa69';
+const CS80_PREVIOUS_CRITERIA_HASH =
+  '2c20cd612efbb6bc030114f3647fef1e97a6aeaeb3a2d861f67023e9e90727df';
+const CS80_AMENDED_CRITERIA_HASH =
+  '32a705b339219358468b6f8e49ee056c4a81e0d91e48219dcb768407c554eb28';
+const CS80_AMENDED_AC3 =
+  'No personal data, resume, database, credential, runtime/provider/user-generated data, logs, caches, build output or unrelated agent-generated artifact enters history. Deterministic Phase 3.25 specification, catalog and traceability projections produced solely by the approved generator may enter `phase-3.25/cloud-continuation` only under owner decision OD-2026-10-07-CS80-AC3, an exact allowlist, deterministic regeneration, pre-stage privacy/publication checks and an atomic commit with corresponding source changes. This branch exception does not authorize merge to `main`; integration requires a later explicit owner decision. Existing ignore rules and publication guards must be verified before staging.';
+const CS80_OWNER_SUFFIX_HASH = 'ed58add38319f2637fcdd37412b2d5b059e93eacb5eee3376b4be50725f6fc4c';
+
+export function isAuthorizedOwnerDecisionAppend(original, current) {
+  const normalizedOriginal = original.replace(/\r\n/g, '\n');
+  const normalizedCurrent = current.replace(/\r\n/g, '\n');
+  const heading = `## ${CS80_DECISION_ID} — Phase 3.25 generated-artifact checkpoint exception`;
+  const index = normalizedCurrent.indexOf(heading);
+  if (
+    index <= 0 ||
+    (normalizedCurrent.match(new RegExp(`^## ${CS80_DECISION_ID}\\b`, 'gm')) ?? []).length !== 1
+  )
+    return false;
+  const normalize = (text) => text.replace(/\s+/g, ' ').trim();
+  const prefix = normalizedCurrent.slice(0, index).trimEnd();
+  const suffix = normalizedCurrent.slice(index).replace(/\s+/g, ' ').trim();
+  const suffixHash = createHash('sha256').update(suffix).digest('hex');
+  return (
+    normalize(prefix) === normalize(normalizedOriginal) && suffixHash === CS80_OWNER_SUFFIX_HASH
+  );
+}
+
+function normalizeJson(value) {
+  return JSON.stringify(value);
+}
+
+export function authorizedCs80SourceAmendment(name, baselineText, currentText) {
+  const baseline = JSON.parse(baselineText);
+  const current = JSON.parse(currentText);
+  if (name === '.ai/backlog.json') {
+    const oldTicket = baseline.items.find((ticket) => ticket.id === 'CS-80');
+    const newTicket = current.items.find((ticket) => ticket.id === 'CS-80');
+    if (
+      !oldTicket ||
+      !newTicket ||
+      digest(oldTicket.acceptanceCriteria) !== CS80_PREVIOUS_CRITERIA_HASH ||
+      digest(newTicket.acceptanceCriteria) !== CS80_AMENDED_CRITERIA_HASH ||
+      newTicket.acceptanceCriteria.length !== 3 ||
+      newTicket.acceptanceCriteria[2] !== CS80_AMENDED_AC3 ||
+      current.updatedAt !== baseline.updatedAt
+    )
+      return false;
+    newTicket.acceptanceCriteria = oldTicket.acceptanceCriteria;
+    return normalizeJson(current) === normalizeJson(baseline);
+  }
+  if (name === '.ai/workflow-migration.json') {
+    const record = current.records.find((entry) => entry.ticketId === 'CS-80');
+    if (!record || !acceptanceCriteriaHashMatches(record, CS80_AMENDED_CRITERIA_HASH)) return false;
+    delete record.acceptanceCriteriaAmendments;
+    return normalizeJson(current) === normalizeJson(baseline);
+  }
+  return false;
+}
+
+export function exactCheckpointPathsMatch(checkpoint, generatedChanges, branch) {
+  if (
+    checkpoint?.decisionId !== CS80_DECISION_ID ||
+    checkpoint.baseCommit !== CS80_CHECKPOINT_BASE_SHA ||
+    checkpoint.generatedPathCount !== CS80_CHECKPOINT_PATH_COUNT ||
+    checkpoint.generatedPathsSha256 !== CS80_CHECKPOINT_PATHS_SHA256 ||
+    checkpoint.branch !== branch ||
+    branch !== 'phase-3.25/cloud-continuation' ||
+    !Array.isArray(checkpoint.generatedPaths) ||
+    !Array.isArray(generatedChanges)
+  )
+    return false;
+  const allowed = [...checkpoint.generatedPaths].sort();
+  const allowedHash = createHash('sha256').update(allowed.join('\n')).digest('hex');
+  return (
+    allowed.length === CS80_CHECKPOINT_PATH_COUNT &&
+    allowedHash === CS80_CHECKPOINT_PATHS_SHA256 &&
+    new Set(allowed).size === allowed.length &&
+    JSON.stringify(allowed) === JSON.stringify([...generatedChanges].sort())
+  );
+}
+
+export function validateCs80AmendmentPair(backlog, migration) {
+  const ticket = backlog.items.find((entry) => entry.id === 'CS-80');
+  const record = migration.records.find((entry) => entry.ticketId === 'CS-80');
+  const backlogAmended =
+    !!ticket && digest(ticket.acceptanceCriteria) === CS80_AMENDED_CRITERIA_HASH;
+  const ledgerAmended =
+    !!record &&
+    Array.isArray(record.acceptanceCriteriaAmendments) &&
+    record.acceptanceCriteriaAmendments.length > 0 &&
+    acceptanceCriteriaHashMatches(record, CS80_AMENDED_CRITERIA_HASH);
+  const hasAnyAmendment = !!record?.acceptanceCriteriaAmendments?.length || backlogAmended;
+  if (hasAnyAmendment && backlogAmended !== ledgerAmended)
+    throw new Error(
+      'CS-80 amended criterion and migration provenance must be present as an exact pair',
+    );
+  return hasAnyAmendment;
+}
+
+export function validateGeneratedArtifactCheckpoint(policy, output, root, branch) {
+  const backlog = JSON.parse(fs.readFileSync(path.join(root, '.ai/backlog.json'), 'utf8'));
+  const migration = JSON.parse(
+    fs.readFileSync(path.join(root, '.ai/workflow-migration.json'), 'utf8'),
+  );
+  const hasAnyAmendment = validateCs80AmendmentPair(backlog, migration);
+  const checkpoint = policy.generatedArtifactCheckpoint;
+  if (hasAnyAmendment && !checkpoint)
+    throw new Error('CS-80 generated-artifact exception requires its exact checkpoint manifest');
+  if (!checkpoint) return;
+
+  if (!exactCheckpointPathsMatch(checkpoint, checkpoint.generatedPaths, branch))
+    throw new Error('Generated-artifact checkpoint decision, base, branch or manifest is invalid');
+  const ancestor = spawnSync(
+    'git',
+    ['merge-base', '--is-ancestor', checkpoint.baseCommit, 'HEAD'],
+    {
+      cwd: root,
+      encoding: 'utf8',
+    },
+  );
+  if (ancestor.status !== 0)
+    throw new Error('Generated-artifact checkpoint base must be an ancestor of HEAD');
+
+  const generatedChanges = [];
+  for (const [name, body] of output) {
+    let baseline = null;
+    try {
+      baseline = execFileSync('git', ['show', `${checkpoint.baseCommit}:${name}`], {
+        cwd: root,
+        encoding: 'utf8',
+        maxBuffer: 20 * 1024 * 1024,
+      });
+    } catch {
+      baseline = null;
+    }
+    if (baseline !== body) generatedChanges.push(name);
+  }
+  if (!exactCheckpointPathsMatch(checkpoint, generatedChanges, branch))
+    throw new Error(
+      'Generated-artifact checkpoint allowlist does not exactly match generator output',
+    );
+}
 
 export async function artifacts(inputs, root) {
   if (inputs.policy.ownerDecisionSource) {
@@ -47,9 +196,8 @@ export async function artifacts(inputs, root) {
       cwd: root,
       encoding: 'utf8',
     });
-    const normalize = (text) => text.replace(/\s+/g, ' ').trim();
-    if (normalize(original) !== normalize(inputs.ownerDecisionText))
-      throw new Error('Owner decision record differs from the recorded branch-history source');
+    if (!isAuthorizedOwnerDecisionAppend(original, inputs.ownerDecisionText))
+      throw new Error('Owner decision record is not a valid append-only CS-80 decision amendment');
   }
   const formatting = JSON.parse(fs.readFileSync(path.join(root, '.prettierrc.json'), 'utf8'));
   const model = buildCatalog(inputs);
@@ -264,10 +412,21 @@ export async function run(root, mode) {
     const current = fs.readFileSync(path.join(root, name), 'utf8');
     const canonical = (body) =>
       name.endsWith('.json') ? JSON.parse(body) : body.replace(/\r\n/g, '\n');
-    if (digest(canonical(baseline)) !== digest(canonical(current)))
+    if (
+      digest(canonical(baseline)) !== digest(canonical(current)) &&
+      !(
+        ['.ai/backlog.json', '.ai/workflow-migration.json'].includes(name) &&
+        authorizedCs80SourceAmendment(name, baseline, current)
+      )
+    )
       throw new Error(`Frozen Phase 3 source changed: ${name}`);
   }
   const { output, model } = await artifacts(inputs, root);
+  const branch = execFileSync('git', ['branch', '--show-current'], {
+    cwd: root,
+    encoding: 'utf8',
+  }).trim();
+  validateGeneratedArtifactCheckpoint(inputs.policy, output, root, branch);
   const changed = [];
   for (const [name, body] of output) {
     const full = path.join(root, name);

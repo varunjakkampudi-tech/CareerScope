@@ -1,6 +1,10 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
-import { TICKET_STATUSES, assertTicketWorkflow } from './lib/ticket-workflow.mjs';
+import {
+  TICKET_STATUSES,
+  acceptanceCriteriaHashMatches,
+  assertTicketWorkflow,
+} from './lib/ticket-workflow.mjs';
 
 const backlog = JSON.parse(fs.readFileSync('.ai/backlog.json', 'utf8'));
 const migration = JSON.parse(fs.readFileSync('.ai/workflow-migration.json', 'utf8'));
@@ -73,7 +77,7 @@ for (const item of items) {
       .digest('hex');
     if (record.evidenceHash !== evidenceHash)
       errors.push(`${item.id} evidence changed after migration`);
-    if (record.acceptanceCriteriaHash !== acceptanceHash)
+    if (!acceptanceCriteriaHashMatches(record, acceptanceHash))
       errors.push(`${item.id} acceptance criteria changed after migration`);
   }
 }

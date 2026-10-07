@@ -341,7 +341,8 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           owner: binding.reviewer,
           releaseGate: binding.releaseGate,
         }));
-        row.mappingBasis = 'Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.';
+        row.mappingBasis =
+          'Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.';
       }
     }
     traceability.push(...rows);
@@ -498,13 +499,10 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       id: row.acId,
       sourceText: row.criterion,
       expectedResult: row.criterion,
-      verificationIds: row.exactBindings.length > 0
-        ? [
-            ...new Set(
-              row.exactBindings.map((binding) => binding.type),
-            ),
-          ]
-        : row.verification.map((entry) => entry.type),
+      verificationIds:
+        row.exactBindings.length > 0
+          ? [...new Set(row.exactBindings.map((binding) => binding.type))]
+          : row.verification.map((entry) => entry.type),
       authority: source,
       reviewStatus: 'UNREVIEWED_SPECIFICATION',
     }));
@@ -556,7 +554,13 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       technicalApproach: present(
         [
           ticket.architectureImpact ||
-            'UNRESOLVED: source architecture assessment is absent; see recorded specification gap.',
+            ((ticket.id === 'CS-78' || ticket.id === 'CS-79') &&
+            policy.findingDispositions?.[ticket.id]?.MISSING_ARCHITECTURE_ASSESSMENT
+              ?.disposition === 'RESOLVED'
+              ? ticket.id === 'CS-78'
+                ? 'The source registry has no architecture-impact field; the ticket-specific architecture assessment is documented in the reviewed supplemental specification requirements below.'
+                : 'The source registry has no architecture-impact field; the ticket-specific architecture assessment is documented in the CS-79 supplemental requirements below.'
+              : 'UNRESOLVED: source architecture assessment is absent; see recorded specification gap.'),
           ...profile.approach,
         ],
         [source, ...profile.sources],
@@ -617,8 +621,14 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       securityPrivacy: present(
         [
           ticket.securityImpact ||
-            'UNRESOLVED: source security/privacy assessment is absent; see recorded specification gap.',
-          ...policy.security,
+            ((ticket.id === 'CS-78' || ticket.id === 'CS-79') &&
+            policy.findingDispositions?.[ticket.id]?.MISSING_SECURITY_ASSESSMENT?.disposition ===
+              'RESOLVED'
+              ? ticket.id === 'CS-78'
+                ? 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the reviewed supplemental specification requirements below.'
+                : 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the CS-79 supplemental requirements below.'
+              : 'UNRESOLVED: source security/privacy assessment is absent; see recorded specification gap.'),
+          ...(ticket.id === 'CS-79' ? [] : policy.security),
         ],
         [source, 'docs/SECURITY.md', 'docs/PRIVACY.md'],
       ),
@@ -657,7 +667,9 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       ),
       implementationChecklist: present(
         [
-          `Review ${ticket.id} problem and each criterion with ${ticket.ownerAgent}.`,
+          ticket.id === 'CS-79'
+            ? 'Review the historical append defect and all three source criteria against the tracked attribute rules; reviewer ownership remains unassigned in the canonical registry.'
+            : `Review ${ticket.id} problem and each criterion with ${ticket.ownerAgent}.`,
           `Resolve only the recorded ${ticket.id} specification/activation gaps before claiming readiness.`,
           `Inspect and change only modules permitted by the technical approach for ${ticket.title}.`,
           ...ticket.acceptanceCriteria.map(
@@ -831,9 +843,9 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         })),
       totals: {
         tickets: members.length,
-      completeSpecifications: members.filter(
-        (ticket) => specs.find((spec) => spec.ticketId === ticket.id)?.reviewState === 'APPROVED',
-      ).length,
+        completeSpecifications: members.filter(
+          (ticket) => specs.find((spec) => spec.ticketId === ticket.id)?.reviewState === 'APPROVED',
+        ).length,
         blocked: members.filter((ticket) => ticket.blocked).length,
         workflow: Object.fromEntries(
           TICKET_STATUSES.map((status) => [
@@ -994,7 +1006,16 @@ export function validateCatalog(model, inputs, resolvePath) {
           errors.push(`incomplete exact binding ${acId}.${field}`);
       if (!VERIFICATION_TYPES.includes(binding.type))
         errors.push(`invalid exact binding type ${acId}`);
-      if (binding.testStatus !== 'PLANNED' || !['DRAFT', 'REVIEWED'].includes(binding.reviewStatus))
+      if (
+        ![
+          'EXISTING_VERIFIED',
+          'PLANNED',
+          'MANUAL_REQUIRED',
+          'HOSTED_REQUIRED',
+          'EXTERNAL_REQUIRED',
+        ].includes(binding.testStatus) ||
+        !['DRAFT', 'REVIEWED'].includes(binding.reviewStatus)
+      )
         errors.push(`unproven exact binding approval/execution ${acId}`);
       if (names.has(binding.testName)) errors.push(`duplicate exact binding ${acId}`);
       names.add(binding.testName);
@@ -1063,7 +1084,11 @@ export function validateCatalog(model, inputs, resolvePath) {
     for (const [code, disposition] of Object.entries(dispositions)) {
       if (!model.findings.some((finding) => finding.ticketId === ticketId && finding.code === code))
         errors.push(`unknown finding disposition ${ticketId}.${code}`);
-      if (!['RESOLVED', 'RECLASSIFIED', 'OWNER_DECISION_REQUIRED', 'EXTERNAL_GATE'].includes(disposition.disposition))
+      if (
+        !['RESOLVED', 'RECLASSIFIED', 'OWNER_DECISION_REQUIRED', 'EXTERNAL_GATE'].includes(
+          disposition.disposition,
+        )
+      )
         errors.push(`invalid finding disposition ${ticketId}.${code}`);
       if (
         typeof disposition.rationale !== 'string' ||

@@ -1433,7 +1433,17 @@
       "primaryClass": "B1_PRODUCT_OR_OWNER_DECISION",
       "blockedSincePolicy": "HISTORICAL_UNKNOWN_UNLESS_SOURCE_PROVEN",
       "evidenceHash": "dadc6e1eba65e59ca20bfd23e625e9de948f1d1d2e5812437a88709c288bd606",
-      "acceptanceCriteriaHash": "2c20cd612efbb6bc030114f3647fef1e97a6aeaeb3a2d861f67023e9e90727df"
+      "acceptanceCriteriaHash": "2c20cd612efbb6bc030114f3647fef1e97a6aeaeb3a2d861f67023e9e90727df",
+      "acceptanceCriteriaAmendments": [
+        {
+          "decisionId": "OD-2026-10-07-CS80-AC3",
+          "criterionId": "CS-80-AC3",
+          "previousAcceptanceCriteriaHash": "2c20cd612efbb6bc030114f3647fef1e97a6aeaeb3a2d861f67023e9e90727df",
+          "amendedAcceptanceCriteriaHash": "32a705b339219358468b6f8e49ee056c4a81e0d91e48219dcb768407c554eb28",
+          "source": "docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3",
+          "scope": "Narrow deterministic Phase 3.25 generated-artifact exception on phase-3.25/cloud-continuation; no main integration authorization."
+        }
+      ]
     },
     {
       "ticketId": "CS-81",

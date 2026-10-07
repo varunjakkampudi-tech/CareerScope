@@ -155,4 +155,50 @@ owner decision or a reason to block specification readiness.
 - **Can proceed without this decision:** Source-level route/component census, shared loading/empty/error contract, privacy and accessibility review, and exact planned AC procedures.
 - **Blocked:** Release assignment, activation classification, and any promotion claim. No application implementation or deployment is authorized by this planning record.
 
-`OWNER_DECISIONS_REMAINING: 5`
+## CS-80 — reconcile scoped checkpoint authorization with the frozen artifact prohibition
+
+**RESOLVED FOR A NARROW FEATURE-BRANCH CHECKPOINT — NOT A WHOLE-SPEC APPROVAL.**
+Owner decision `OD-2026-10-07-CS80-AC3` is recorded in
+`docs/OWNER-DECISIONS-2026-10-02.md` and the canonical AC3/migration provenance.
+Only the exact deterministic output paths enumerated at
+`.ai/ticket-specification-policy.json#generatedArtifactCheckpoint.generatedPaths`
+may be checkpointed on `phase-3.25/cloud-continuation`, after the generator
+proves exact path-set equality and privacy/publication checks pass. The general
+prohibition remains in force for all other generated artifacts. Main integration
+is explicitly not authorized and requires a later owner decision. CS-80 remains
+incomplete for its separate release-target, activation/HOLD and verification
+gates.
+
+## CS-81 — approve the exact context-sensitive ZWNJ/ZWJ policy
+
+- **Question:** Which exact Unicode contexts and script set should permit U+200C
+  ZWNJ and U+200D ZWJ in candidate/resume-derived title evidence, and is the
+  current same-script letter/mark predicate the intended policy?
+- **Why required:** Existing code implements a contextual rule, but no
+  authoritative owner/security decision was found. Code and historical test
+  results establish behavior, not product policy. A broader allow can enable
+  invisible spoofing; an over-broad refusal can corrupt legitimate language.
+- **Options:** (1) Approve the current exact context/script matrix after
+  independent Unicode-security review. (2) Approve a different enumerated
+  context matrix with positive orthographic and negative decorative/script-
+  boundary fixtures. (3) Keep both characters refused until such a matrix is
+  approved, accepting that legitimate titles may be rejected/neutralized.
+  Do not choose silently from the implementation.
+- **Consequences:** The shared predicate and both consumers must follow one
+  approved matrix; resume extraction continues to reject a title segment for a
+  refused character while matching neutralizes only refused characters.
+  Existing user data is not rewritten and no migration is implied.
+- **Recommended neutral framing:** Keep the currently implemented behavior
+  unchanged until an explicit owner decision and cited anti-spoofing rationale
+  are recorded; do not represent the current code as approval.
+- **Affected specification sections:** CS-81 AC1–AC4, shared architecture,
+  input/security boundary, test fixtures, implementation checklist and
+  evidence requirements.
+- **Can proceed without this decision:** Preserve historical red-test evidence,
+  document the shared predicate/consumer boundary, define synthetic fixtures
+  and complete non-policy contract review.
+- **Blocked:** Final allowed-context assertions, whole-spec approval, and any
+  runtime policy modification.
+
+`OWNER_DECISIONS_REMAINING: 6` (CS-80's narrow checkpoint conflict is resolved;
+its whole-ticket readiness remains incomplete.)

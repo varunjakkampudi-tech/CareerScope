@@ -4801,7 +4801,7 @@
       "acceptanceCriteria": [
         "Every file a review is expected to certify has a committed baseline, so git diff HEAD returns a checkable answer rather than nothing",
         "The commit is authorised explicitly by the owner for a named scope - this ticket does not grant it and must not be read as granting it",
-        "No personal data, resume, database, credential or generated artefact enters history; the existing ignore rules and publication guards are verified BEFORE the commit, not after"
+        "No personal data, resume, database, credential, runtime/provider/user-generated data, logs, caches, build output or unrelated agent-generated artifact enters history. Deterministic Phase 3.25 specification, catalog and traceability projections produced solely by the approved generator may enter `phase-3.25/cloud-continuation` only under owner decision OD-2026-10-07-CS80-AC3, an exact allowlist, deterministic regeneration, pre-stage privacy/publication checks and an atomic commit with corresponding source changes. This branch exception does not authorize merge to `main`; integration requires a later explicit owner decision. Existing ignore rules and publication guards must be verified before staging."
       ],
       "evidence": [
         "MEASURED 2026-09-25, NOT ESTIMATED. Working tree: 247 porcelain entries - 127 modified tracked files and 120 untracked entries. EXPANDING UNTRACKED DIRECTORIES GIVES 260 UNTRACKED FILES, because a single porcelain line for a directory hides an arbitrary number of files and counting lines would have understated it by more than double.",

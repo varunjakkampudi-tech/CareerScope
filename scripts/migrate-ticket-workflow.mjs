@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { TICKET_STATUSES } from './lib/ticket-workflow.mjs';
+import { TICKET_STATUSES, acceptanceCriteriaHashMatches } from './lib/ticket-workflow.mjs';
 
 const backlogPath = '.ai/backlog.json';
 const blockerPath = '.ai/blocker-classification.json';
@@ -25,8 +25,35 @@ const sourceHash = crypto
   .createHash('sha256')
   .update(JSON.stringify({ ...backlog, updatedAt: undefined }))
   .digest('hex');
+const cs80OriginalAcceptanceCriteria = [
+  'Every file a review is expected to certify has a committed baseline, so git diff HEAD returns a checkable answer rather than nothing',
+  'The commit is authorised explicitly by the owner for a named scope - this ticket does not grant it and must not be read as granting it',
+  'No personal data, resume, database, credential or generated artefact enters history; the existing ignore rules and publication guards are verified BEFORE the commit, not after',
+];
+const backlogWithOriginalCs80Criteria = structuredClone(backlog);
+const cs80Ticket = backlogWithOriginalCs80Criteria.items.find((ticket) => ticket.id === 'CS-80');
+if (cs80Ticket) cs80Ticket.acceptanceCriteria = cs80OriginalAcceptanceCriteria;
+const sourceHashWithOriginalCs80Criteria = crypto
+  .createHash('sha256')
+  .update(JSON.stringify({ ...backlogWithOriginalCs80Criteria, updatedAt: undefined }))
+  .digest('hex');
+const cs80MigrationRecord = previousMigration?.records?.find(
+  (record) => record.ticketId === 'CS-80',
+);
+const approvedCs80AmendmentIsSourceOnly =
+  cs80MigrationRecord &&
+  acceptanceCriteriaHashMatches(
+    cs80MigrationRecord,
+    crypto
+      .createHash('sha256')
+      .update(
+        JSON.stringify(backlog.items.find((ticket) => ticket.id === 'CS-80').acceptanceCriteria),
+      )
+      .digest('hex'),
+  ) &&
+  previousMigration.sourceHash === sourceHashWithOriginalCs80Criteria;
 if (
-  previousMigration?.sourceHash === sourceHash &&
+  (previousMigration?.sourceHash === sourceHash || approvedCs80AmendmentIsSourceOnly) &&
   previousMigration.records?.length === backlog.items.length &&
   previousMigration.totalTickets === backlog.items.length &&
   previousMigration.records.every((record) => typeof record.blockedSincePolicy === 'string')

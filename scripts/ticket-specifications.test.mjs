@@ -10,7 +10,15 @@ import {
   validateCatalog,
   SECTIONS,
 } from './lib/ticket-specification.mjs';
-import { artifacts, loadInputs } from './ticket-specifications.mjs';
+import {
+  artifacts,
+  authorizedCs80SourceAmendment,
+  exactCheckpointPathsMatch,
+  isAuthorizedOwnerDecisionAppend,
+  loadInputs,
+  validateCs80AmendmentPair,
+  validateGeneratedArtifactCheckpoint,
+} from './ticket-specifications.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const fresh = () => loadInputs(root);
@@ -32,6 +40,117 @@ test('CS67 historical column criterion is preserved while its plan consumes the 
   assert.match(row.exactBindings[0].expectedResult, /historical AC1/);
   assert.equal(row.exactBindings[0].testStatus, 'PLANNED');
   assert.equal(JSON.stringify(inputs.backlog), before);
+});
+
+test('CS78 resolved supplemental architecture and security reviews do not render unresolved placeholders', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-78');
+  const technical = spec.sections.technicalApproach.requirements.map((entry) =>
+    typeof entry === 'string' ? entry : entry.requirement,
+  );
+  const security = spec.sections.securityPrivacy.requirements.map((entry) =>
+    typeof entry === 'string' ? entry : entry.requirement,
+  );
+
+  assert.ok(
+    technical.some((entry) => /ticket-specific architecture assessment is documented/.test(entry)),
+  );
+  assert.ok(
+    security.some((entry) =>
+      /ticket-specific security\/privacy assessment is documented/.test(entry),
+    ),
+  );
+  assert.ok(!technical.some((entry) => /UNRESOLVED: source architecture assessment/.test(entry)));
+  assert.ok(
+    !security.some((entry) => /UNRESOLVED: source security\/privacy assessment/.test(entry)),
+  );
+  assert.equal(
+    spec.gaps.find((gap) => gap.code === 'MISSING_ARCHITECTURE_ASSESSMENT').disposition,
+    'RESOLVED',
+  );
+  assert.equal(
+    spec.gaps.find((gap) => gap.code === 'MISSING_SECURITY_ASSESSMENT').disposition,
+    'RESOLVED',
+  );
+});
+
+test('CS79 tooling scope renders its scoped architecture and security assessment without candidate boilerplate', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-79');
+  const technical = spec.sections.technicalApproach.requirements.map((entry) =>
+    typeof entry === 'string' ? entry : entry.requirement,
+  );
+  const security = spec.sections.securityPrivacy.requirements.map((entry) =>
+    typeof entry === 'string' ? entry : entry.requirement,
+  );
+  const checklist = spec.sections.implementationChecklist.requirements;
+
+  assert.ok(
+    technical.some((entry) => /ticket-specific architecture assessment is documented/.test(entry)),
+  );
+  assert.ok(!technical.some((entry) => /UNRESOLVED: source architecture assessment/.test(entry)));
+  assert.ok(
+    security.some((entry) =>
+      /ticket-specific security\/privacy assessment is documented/.test(entry),
+    ),
+  );
+  assert.ok(
+    !security.some((entry) => /UNRESOLVED: source security\/privacy assessment/.test(entry)),
+  );
+  assert.ok(
+    !security.some((entry) =>
+      /candidate profile\/resume|Admin\/recruiter roles|cross-owner denial/.test(entry),
+    ),
+  );
+  assert.ok(!checklist.some((entry) => /with undefined/.test(entry)));
+  assert.equal(
+    spec.gaps.find((gap) => gap.code === 'MISSING_ARCHITECTURE_ASSESSMENT').disposition,
+    'RESOLVED',
+  );
+  assert.equal(
+    spec.gaps.find((gap) => gap.code === 'MISSING_SECURITY_ASSESSMENT').disposition,
+    'RESOLVED',
+  );
+});
+
+test('CS82 preserves the fixed-main host contract conflict as an owner gate', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const ticket = inputs.backlog.items.find((item) => item.id === 'CS-82');
+  const hostWorkflow = fs.readFileSync(path.join(root, '.github/workflows/deploy.yml'), 'utf8');
+  const pagesWorkflow = fs.readFileSync(
+    path.join(root, '.github/workflows/publish-pages.yml'),
+    'utf8',
+  );
+  const bindings = ticket.acceptanceCriteria.map(
+    (_, index) =>
+      model.traceability.find((entry) => entry.acId === `CS-82-AC${index + 1}`).exactBindings[0],
+  );
+  const scope = inputs.policy.ticketRefinements['CS-82'].additionalRequirements;
+
+  assert.equal(bindings.length, 4);
+  assert.ok(bindings.every((binding) => binding.testStatus === 'PLANNED'));
+  assert.match(bindings[0].testName, /reject automatic triggers/);
+  assert.match(bindings[1].negativeCase, /source\/decision mismatch remains an owner gate/);
+  assert.match(bindings[2].assertion, /exact resolved SHA/);
+  assert.match(
+    bindings[3].testName,
+    /push-trigger and bypass mutations make the executable delivery gate fail/,
+  );
+  assert.match(
+    bindings[3].testFileOrProcedureId,
+    /^PLANNED:scripts\/check-deploy-gate\.test\.mjs::rejects push-trigger and bypass mutations$/,
+  );
+  assert.match(bindings[3].repositoryCommand, /baseline command: npm run deploy:gate:test/);
+  assert.match(hostWorkflow, /ref: main/);
+  assert.match(hostWorkflow, /environment: production/);
+  assert.doesNotMatch(hostWorkflow, /^\s{6}ref:\r?$/m);
+  assert.match(pagesWorkflow, /inputs\.ref/);
+  assert.match(pagesWorkflow, /inputs\.environment/);
+  assert.match(scope.manualExternalGates.join('\n'), /OWNER_DECISION_REQUIRED/);
+  assert.equal(ticket.status, 'UAT');
 });
 
 test('CS71 scope separates explicit determination from language expansion and execution evidence', () => {
@@ -343,11 +462,11 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.completeSpecificationCount, 46);
   assert.equal(model.counts.incompleteSpecificationCount, 170);
   assert.equal(model.counts.approvedSpecificationCount, 46);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 190);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 200);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 187);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 719);
-  assert.equal(model.counts.authoredExactTestBindingCount, 207);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 197);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 709);
+  assert.equal(model.counts.authoredExactTestBindingCount, 304);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -367,7 +486,7 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.ok(
     model.traceability.every((row) =>
       row.verification.every((entry) =>
-        /^(MANUAL_OR_EXTERNAL_NOT_EXECUTED|PLANNED|PLANNED_NOT_EXECUTED)$/.test(
+        /^(MANUAL_OR_EXTERNAL_NOT_EXECUTED|PLANNED|PLANNED_NOT_EXECUTED|EXISTING_VERIFIED|MANUAL_REQUIRED|HOSTED_REQUIRED|EXTERNAL_REQUIRED)$/.test(
           entry.automationStatus,
         ),
       ),
@@ -414,6 +533,33 @@ test('exact draft bindings cannot masquerade as reviewed or passing tests', () =
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>
       error.includes('unproven exact binding approval/execution'),
+    ),
+  );
+});
+
+test('exact bindings preserve planned, existing, manual, hosted, and external evidence states', () => {
+  const inputs = fresh();
+  const binding = inputs.policy.exactVerificationBindings['CS-46-AC2'][0];
+  for (const status of [
+    'EXISTING_VERIFIED',
+    'PLANNED',
+    'MANUAL_REQUIRED',
+    'HOSTED_REQUIRED',
+    'EXTERNAL_REQUIRED',
+  ]) {
+    binding.testStatus = status;
+    assert.equal(
+      validate(buildCatalog(inputs), inputs).some((error) =>
+        error.includes('unproven exact binding approval/execution CS-46-AC2'),
+      ),
+      false,
+      `${status} should be representable without claiming a test passed`,
+    );
+  }
+  binding.testStatus = 'PASS';
+  assert.ok(
+    validate(buildCatalog(inputs), inputs).some((error) =>
+      error.includes('unproven exact binding approval/execution CS-46-AC2'),
     ),
   );
 });
@@ -735,4 +881,168 @@ test('generation twice has identical names and formatted bytes without timestamp
   const second = await artifacts(fresh(), root);
   assert.equal(first.output.size, 231);
   assert.deepEqual([...first.output], [...second.output]);
+});
+
+test('CS-80 owner decision append is exact and cannot broaden scope or authorize main integration', () => {
+  const inputs = fresh();
+  const source = inputs.policy.ownerDecisionSource;
+  const original = spawnSync('git', ['show', `${source.commit}:${source.path}`], {
+    cwd: root,
+    encoding: 'utf8',
+    maxBuffer: 5 * 1024 * 1024,
+  }).stdout;
+  const current = fs.readFileSync(path.join(root, source.path), 'utf8');
+  assert.equal(isAuthorizedOwnerDecisionAppend(original, current), true);
+  assert.equal(
+    isAuthorizedOwnerDecisionAppend(
+      original,
+      current.replace('No merge to `main` is authorized.', 'Merge to `main` is authorized.'),
+    ),
+    false,
+  );
+  assert.equal(
+    isAuthorizedOwnerDecisionAppend(
+      original,
+      current.replace('only for deterministic outputs', 'for all generated outputs'),
+    ),
+    false,
+  );
+});
+
+test('CS-80 source exception is limited to the exact canonical amendment and migration provenance', () => {
+  const inputs = fresh();
+  const baselineBacklog = spawnSync(
+    'git',
+    ['show', `${inputs.policy.sourcePhase3Commit}:.ai/backlog.json`],
+    { cwd: root, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 },
+  ).stdout;
+  const currentBacklog = fs.readFileSync(path.join(root, '.ai/backlog.json'), 'utf8');
+  const baselineMigration = spawnSync(
+    'git',
+    ['show', `${inputs.policy.sourcePhase3Commit}:.ai/workflow-migration.json`],
+    { cwd: root, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 },
+  ).stdout;
+  const currentMigration = fs.readFileSync(path.join(root, '.ai/workflow-migration.json'), 'utf8');
+  assert.equal(
+    authorizedCs80SourceAmendment('.ai/backlog.json', baselineBacklog, currentBacklog),
+    true,
+  );
+  assert.equal(
+    authorizedCs80SourceAmendment(
+      '.ai/backlog.json',
+      baselineBacklog,
+      currentBacklog.replace(
+        'No personal data, resume, database',
+        'All generated output, personal data, resume, database',
+      ),
+    ),
+    false,
+  );
+  assert.equal(
+    authorizedCs80SourceAmendment(
+      '.ai/workflow-migration.json',
+      baselineMigration,
+      currentMigration,
+    ),
+    true,
+  );
+  assert.equal(
+    authorizedCs80SourceAmendment(
+      '.ai/workflow-migration.json',
+      baselineMigration,
+      currentMigration.replace(
+        'no main integration authorization.',
+        'main integration authorization.',
+      ),
+    ),
+    false,
+  );
+});
+
+test('generated-artifact checkpoint allowlist must exactly match outputs and approved branch', () => {
+  const inputs = fresh();
+  const checkpoint = inputs.policy.generatedArtifactCheckpoint;
+  assert.equal(
+    exactCheckpointPathsMatch(checkpoint, checkpoint.generatedPaths, checkpoint.branch),
+    true,
+  );
+  assert.equal(
+    exactCheckpointPathsMatch(
+      { ...checkpoint, generatedPathCount: checkpoint.generatedPathCount + 1 },
+      checkpoint.generatedPaths,
+      checkpoint.branch,
+    ),
+    false,
+  );
+  assert.equal(
+    exactCheckpointPathsMatch(
+      { ...checkpoint, generatedPathsSha256: '0'.repeat(64) },
+      checkpoint.generatedPaths,
+      checkpoint.branch,
+    ),
+    false,
+  );
+  assert.equal(
+    exactCheckpointPathsMatch(
+      { ...checkpoint, baseCommit: '0000000000000000000000000000000000000000' },
+      checkpoint.generatedPaths,
+      checkpoint.branch,
+    ),
+    false,
+  );
+  assert.equal(
+    exactCheckpointPathsMatch(
+      { ...checkpoint, generatedPaths: checkpoint.generatedPaths.slice(1) },
+      checkpoint.generatedPaths,
+      checkpoint.branch,
+    ),
+    false,
+  );
+  assert.equal(
+    exactCheckpointPathsMatch(
+      { ...checkpoint, generatedPaths: [...checkpoint.generatedPaths, '.env'] },
+      checkpoint.generatedPaths,
+      checkpoint.branch,
+    ),
+    false,
+  );
+  assert.equal(exactCheckpointPathsMatch(checkpoint, checkpoint.generatedPaths, 'main'), false);
+});
+
+test('CS-80 checkpoint requires its manifest and remains bound to the immutable pre-checkpoint base', async () => {
+  const inputs = fresh();
+  assert.equal(validateCs80AmendmentPair(inputs.backlog, inputs.migration), true);
+  const sourceMigration = JSON.parse(
+    spawnSync('git', ['show', `${inputs.policy.sourcePhase3Commit}:.ai/workflow-migration.json`], {
+      cwd: root,
+      encoding: 'utf8',
+      maxBuffer: 20 * 1024 * 1024,
+    }).stdout,
+  );
+  assert.throws(
+    () => validateCs80AmendmentPair(inputs.backlog, sourceMigration),
+    /must be present as an exact pair/,
+    'amended backlog cannot bypass checkpoint validation by restoring the old migration ledger',
+  );
+  const { output } = await artifacts(inputs, root);
+  const checkpoint = inputs.policy.generatedArtifactCheckpoint;
+  assert.doesNotThrow(() =>
+    validateGeneratedArtifactCheckpoint(
+      inputs.policy,
+      output,
+      root,
+      'phase-3.25/cloud-continuation',
+    ),
+  );
+  assert.throws(
+    () =>
+      validateGeneratedArtifactCheckpoint(
+        { ...inputs.policy, generatedArtifactCheckpoint: undefined },
+        output,
+        root,
+        'phase-3.25/cloud-continuation',
+      ),
+    /requires its exact checkpoint manifest/,
+  );
+  assert.equal(checkpoint.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
 });
