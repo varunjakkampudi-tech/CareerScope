@@ -2226,6 +2226,328 @@
         "definitionOfDone": ["CS-90 specification is complete only when the approved decision provenance is propagated, remaining user-pool/callback/MFA configuration choices are explicitly resolved, migration/rollback and threat model are reviewed by Security and System Designer against the same revision, and no implementation begins before those gates. Provider provisioning, live OTP, account migration and deployment remain separate evidence gates." ]
       }
     },
+    "CS-104": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-104",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ROUTE-PERMISSION-FEATURE-FLAG-CONTRACT.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/TRANSACTIONAL-UX-CONTRACT.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ADMIN-CONTROL-PLANE-SPEC.md",
+        "docs/ARCHITECTURE.md",
+        "docs/API-SURFACE.md",
+        "docs/SECURITY.md",
+        "docs/PRIVACY.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The repository has a shared route/permission and transactional UX contract, but no single ticket-specific matrix currently proves how route surface, authenticated principal, server permission, release state, feature flag, denial behavior and high-risk mutation confirmation compose. UI visibility must not become authorization, and planned contracts must not be mistaken for implemented endpoints."
+        ],
+        "value": [
+          "Give implementation and reviewers one fail-closed contract for authorization boundaries and transactional interactions, reducing privilege-escalation, duplicate-command, stale-revision and unsafe-release risk without broadening any product surface."
+        ],
+        "functionalRequirements": [
+          "Maintain a machine-readable route/role/release/flag matrix from authoritative route registrations and approved design contracts. Every entry names surface, authentication requirement, server permission, release/feature gate and safe unauthorized/unavailable behavior; an omitted route remains absent rather than implicitly public.",
+          "Server/API authorization derives the principal and resource owner from the authenticated session and persisted data. Client-selected owner IDs, roles, permissions, flags, consent, route visibility and browser storage never grant access; direct unauthorized requests are denied before protected reads or writes.",
+          "For high-risk mutations, the owning domain contract must require explicit confirmation and, where specified, reason capture, idempotency/replay protection, revision or lease/fencing checks, and an immutable safe audit event. CS-104 does not invent a mutation endpoint or generic admin database operation.",
+          "Positive, unauthenticated, unauthorized, malformed, stale/conflicting, duplicate, unavailable and provider/queue failure fixtures map to each existing or explicitly planned contract. UI pending/disabled/denied state is a presentation of server result, never a security control.",
+          "Release or feature metadata alone cannot activate a surface. Activation requires the declared route, permission, domain contract, security/privacy, accessibility, hosted/release and rollback evidence; current ticket state remains BACKLOG/RELEASE and no runtime activation occurs in Phase 3.25."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE / API_CONTRACT / ASYNC_SYSTEM. Keep route composition in the canonical Next.js/Fastify modules and use existing session, CSRF/origin, idempotency, revision, outbox, lease and fencing abstractions where their domain contracts already exist. This ticket defines the contract and matrix; it does not add a new service, route, database model or queue.",
+          "SECURITY_IMPACT: AUTHENTICATION, AUTHORIZATION, ADMIN_PRIVILEGE, INPUT_VALIDATION, ABUSE_RATE_LIMITING and AUDIT. Treat the browser as untrusted and enforce all boundaries on the server before repository access; fail closed when a permission, release, revision or capability result is missing, stale or unavailable."
+        ],
+        "apiContract": [
+          "Use EXISTING_CONTRACT entries only where they are present in apps/api/src/app.ts and the documented API surface. For a future child capability, specify PLANNED_CONTRACT separately with method, route, actor, auth, authorization, request validation, response allowlist, stable errors and ownership before registration; do not invent paths in CS-104.",
+          "Every mutating contract preserves canonical CSRF/origin protections, stable 400/401/403/404/409/429/5xx semantics as applicable, idempotency or revision behavior where required, and no protected read on denial. UI route visibility and feature metadata are not authorization evidence."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE for new persistence in CS-104. Existing owner-scoped entities, revisions, outbox commands, leases and audit records remain authoritative. Any child migration must define constraints, uniqueness, retention, rollback and recovery in its own ticket before implementation."
+        ],
+        "accessibility": [
+          "Contract-driven pending, disabled, denied, expired, conflict and failure states must have semantic status/error associations, keyboard-operable confirmation controls, visible focus, focus restoration after dialogs, and non-color-only explanation. Automated axe/browser evidence and a separate NVDA/VoiceOver judgment remain future gates; inaccessible UI cannot be excused by a server denial."
+        ],
+        "responsive": [
+          "Shared confirmation/error/pending patterns must remain usable at 320, 390, 768, 1024 and 1440 CSS pixels with no unintended overflow, clipped focus or inaccessible touch targets. This shared contract does not create a new visual page; feature-specific layouts remain owned by their tickets."
+        ],
+        "browsers": [
+          "Future component/browser verification covers Chromium, Firefox and WebKit with synthetic principals and contract fixtures. Missing browser or contract evidence is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE for this internal contract; authenticated/private surfaces remain noindex and no route matrix entry may expose permission, operational or user data through metadata."
+        ],
+        "securityPrivacy": [
+          "Trust boundary: client route, method, IDs, headers, roles, flags, revisions, reason text and consent claims are untrusted. The session establishes the principal; repository queries enforce ownership and least privilege. Admin privilege is an allowlisted domain capability, not generic database access.",
+          "Sensitive fields include sessions, CSRF values, provider tokens, resumes, contact data, audit details and infrastructure metadata. Redact them from logs, error bodies, fixtures, screenshots and telemetry. Rate-limit authentication and high-risk mutations according to existing contracts; audit actor, action, target, reason, correlation ID and safe result without secrets or raw PII.",
+          "Abuse cases include direct-route privilege escalation, owner-ID substitution, stale-session replay, duplicate mutation, stale revision overwrite, forged confirmation/reason, malformed input, provider timeout and queue/DLQ failure. Each owning contract must return a safe error and preserve data/event invariants."
+        ],
+        "observability": [
+          "Use existing request/correlation IDs and safe outcome categories for allow, deny, conflict, duplicate, retry, timeout and unavailable states. Record audit events only for approved mutations; never log credentials, tokens, raw resumes, request bodies or fabricated success metrics."
+        ],
+        "visualRegression": [
+          "DESIGN_NOT_APPLICABLE for the shared contract itself. Feature tickets that render confirmation, denial or transactional states must bind their own approved screen/state reference and visual evidence; no screenshot is treated as an authorization or data contract."
+        ],
+        "manualExternalGates": [
+          "Security and release reviewers must approve the route/role/release/flag matrix and high-risk mutation contract before activation. Hosted exact-SHA CI, live authorization/rollback evidence and human accessibility review remain future gates where required; no operator or production action is performed by this specification."
+        ],
+        "risksRecovery": [
+          "Primary risks are UI-only authorization, overbroad admin capability, duplicate or stale mutation, and partial async effects. On a denied/unknown/stale result, perform no protected read/write and render the contract-defined safe state. On a conflict, preserve the current revision and require refresh/review; on an outbox/worker failure, retain at-least-once/idempotent/fenced semantics. Rollback removes the contract consumer or flag, not historical audit/data."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: route matrix fields and denial semantics are explicit; existing versus planned contracts are distinguished; ownership, CSRF/origin, idempotency/revision/fencing, audit/redaction, failure states, accessibility/responsive/browser gates and release boundary are ticket-specific; no runtime/API/schema implementation is claimed.",
+          "Future implementation DoD: every matrix entry has server tests for positive/denial/malformed/failure paths; high-risk mutations have confirmation/reason/idempotency/concurrency/audit evidence; UI states are keyboard/axe/browser verified; hosted exact-SHA, security, rollback and human accessibility evidence are recorded before RELEASE activation."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Inventory current route registrations, session/CSRF/origin checks, API schemas, ownership queries, revision/idempotency/lease abstractions and documented feature flags; record absent contracts without inventing replacements.",
+        "Build the route/role/release/flag matrix with explicit server permission and safe denial/unavailable behavior; link each entry to its owning ticket and source contract.",
+        "For each existing or planned high-risk mutation, document confirmation, reason, idempotency, concurrency/fencing, audit and rollback requirements without adding endpoints here.",
+        "Add synthetic unit/contract/security fixtures for allow, denial-before-read, malformed, duplicate, stale/conflict, timeout and unavailable paths; add browser/accessibility checks for shared states.",
+        "Review redaction, rate limits, ownership and admin least privilege with Security; obtain exact-SHA hosted/release and manual accessibility evidence before activation."
+      ]
+    },
+    "CS-103": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-103",
+        "design/DESIGN-INDEX.json#admin-production-operations",
+        "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png",
+        "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/README.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRODUCTION-OPERATIONS-DESIGN-CONTRACT.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ADMIN-CONTROL-PLANE-SPEC.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ROUTE-PERMISSION-FEATURE-FLAG-CONTRACT.md",
+        "docs/PROJECT-STATE.md",
+        "docs/ARCHITECTURE.md",
+        "docs/SECURITY.md",
+        "docs/PRIVACY.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The approved production-operations board groups privileged operational areas, but the repository has no active CS-103 operations shell, route, operations-data API, admin principal contract or telemetry-backed view contract. Design labels and illustrated values cannot establish that any host, provider, queue, database, backup, security event or deployment state exists."
+        ],
+        "value": [
+          "Provide a bounded future navigation/frame for approved production-operations screens while keeping private operational data, candidate PII and privileged mutations inaccessible until each has an explicit server-side contract and authorization gate."
+        ],
+        "functionalRequirements": [
+          "CS-103 owns only the FUTURE production-operations workspace frame/navigation boundary in the separate Admin Control Plane. It does not create a standalone route or own the operational pages; child ownership follows design/DESIGN-INDEX.json#admin-production-operations (CS-201–CS-212, CS-24, CS-25, CS-26, CS-27, CS-30 and CS-86) and cross-cutting design/accessibility ownership follows CS-105–CS-108.",
+          "The proposed `stage_11_enabled` registry value is planning metadata only. With current FUTURE/default-false configuration, no production-operations entry, direct route, API, telemetry request or mutation becomes active because this ticket or a design asset exists.",
+          "In a separately authorized future shell, navigation and rendered states are derived from server-authoritative authenticated administrative access and permitted capability data. Missing, unknown, expired, revoked or failed authorization must render the approved safe denial/unavailable state and issue no operations-data read; hiding a control is never authorization.",
+          "The shell itself performs no mutation, replay, retry, deploy, restore, flag change, user lookup, consent change, provider configuration, database query or generic administrative action. Every such operation remains owned by its child contract and must be authorized and audited server-side.",
+          "Use real contract-backed health/telemetry only when supplied by the owning child API. Unknown, delayed, empty, stale or unavailable telemetry is labeled as such; never render design-board names, counts, costs, percentages, timestamps, host states, queue states, logs or security events as production data.",
+          "Render no secret, token, cookie, authorization header, raw resume, raw candidate record or unnecessary PII in navigation, shell chrome, metadata, logs, telemetry, browser storage or screenshots. Operational messages are redacted by the server contract before the shell receives them.",
+          "This ticket does not define or expose a generic database console, unrestricted raw log viewer, secret reveal, credential rotation UI, candidate-wide data browser, security/compliance certification, or any child operational workflow. A design label or admin privilege does not authorize these capabilities."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation boundary in the existing Next.js application and shared UI, nested within the future Admin Control Plane. SECURITY_IMPACT: AUTHENTICATION, AUTHORIZATION, PRIVACY_PII, SECRETS, ADMIN_PRIVILEGE and AUDIT. No API, identity provider, database entity, telemetry collector, queue, worker, route or deployment control is created by this shell ticket.",
+          "Reuse the canonical authenticated layout and shared primitives after CS-95. Keep operation-specific read/write behavior in child tickets and server modules; treat the UI as a consumer of allowlisted, redacted view models rather than a security boundary. Route/role/release/flag decisions must use the approved CS-104 contract before any future shell activation."
+        ],
+        "apiContract": [
+          "NOT_APPLICABLE for CS-103 itself: the shell adds no endpoint, request, response, polling stream or mutation. Child APIs must declare actor, server authorization, field allowlist/redaction, error semantics, retention, audit and observability independently; no route or response shape is inferred from screenshots."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: the shell persists no admin identity, permissions, operational events, metrics, logs, secrets, candidate records or UI-derived authorization. Do not cache privileged view models or authorization decisions in local/session storage. Retention and audit storage belong to the independently specified child data contracts."
+        ],
+        "accessibility": [
+          "Future shell navigation must use named semantic landmarks and links, programmatic current-page state, visible focus, logical keyboard order, text labels for disabled/unavailable entries, keyboard/touch operation for mobile disclosure, and non-color-only status. Permission/session pending, denied, expired and load-error states must be announced without disclosing protected operational details. Human NVDA or VoiceOver testing remains a separate required acceptance gate; axe is not a human screen-reader result."
+        ],
+        "responsive": [
+          "Use the canonical production-operations board only as frame context; panel 14 illustrates selected mobile pages, not a separately approved CS-103 shell crop. Before visual implementation acceptance, UX must identify the shell/navigation subset and approve its mobile navigation state. Verify 320, 390, 768, 1024 and 1440 CSS-pixel widths, focus/touch usability and no unintended horizontal overflow; do not scale the desktop board or expose child screen content in the parent."
+        ],
+        "browsers": [
+          "Future acceptance covers Chromium, Firefox and WebKit with exact browser versions and authorized shell states. Missing engines or missing authorization fixtures are NOT_RUN, not PASS. Use synthetic admin principals and sanitized telemetry fixtures only."
+        ],
+        "seo": [
+          "NOT_APPLICABLE: the Admin Control Plane is authenticated and private. Any future operations routes must be noindex and must not expose operational state, user data, secrets or internal host metadata through metadata, canonical URLs, previews or sitemaps."
+        ],
+        "securityPrivacy": [
+          "Trust boundary: browser and all client-selected IDs, roles, permissions, flags and consent claims are untrusted; the session and API derive the principal and every capability. Resource owners vary by child domain; candidate data remains candidate-owned, and admin access is least-privilege operational access, not ownership transfer.",
+          "The shell receives only a server-authorized navigation/view model and has no direct database, host, provider or secret-manager access. Reject or safely deny unauthenticated, unauthorized, expired/revoked session, stale capability, malformed state and failed permission resolution before any child data read. Never use a UI flag or route visibility as authorization.",
+          "Operational logs/telemetry may contain security-sensitive infrastructure details and PII. Require child APIs to redact passwords, secrets, access/refresh tokens, cookies, authorization headers, resume contents, full email/phone, raw request bodies and unnecessary identifiers before returning or logging data. Do not expose raw credentials, arbitrary shell/database controls, or unbounded cross-candidate reads.",
+          "Potential abuse includes privilege escalation by direct URL/API call, cross-role access, stale-session replay, query/filter injection, log/metric cardinality abuse, secret enumeration and use of the shell to trigger destructive operations. The shell defines no mutation/query endpoint; child tickets must specify rate limits, audit events, reason capture and confirmation where their operation risk requires them."
+        ],
+        "observability": [
+          "The shell adds no operational telemetry or audit record. Future child APIs expose only contract-defined safe status categories and request correlation IDs; they must distinguish success, empty, stale, denied, unavailable and error without logging response payloads or secrets. Never substitute generated metrics for missing telemetry."
+        ],
+        "visualRegression": [
+          "DESIGN_PARTIAL / NON_BLOCKING for specification: the design index assigns a full 16-panel production-operations board to CS-103 and identifies selected mobile examples, but does not map a dedicated shell-only crop, exact shell state or mobile navigation frame. This is sufficient to specify a FUTURE reusable shell boundary, not sufficient to claim exact shell parity. UX must select the crop/state, approve mobile behavior, dynamic masks and numeric tolerance before visual implementation acceptance; no illustrated operational values may be used as fixtures or expected production values."
+        ],
+        "manualExternalGates": [
+          "MANUAL_PRODUCT / UX: approve the production-operations shell-only crop, mobile navigation, and predeclared visual comparison tolerance before implementation acceptance. SECURITY / RELEASE GATE: CS-104 must establish route, admin role, release/feature-flag and safe-denial semantics; each child operational ticket must establish its API, data allowlist, authorization, audit and retention contract before the shell exposes it. MANUAL_ACCESSIBILITY: a qualified human completes the NVDA or VoiceOver smoke test on the authorized future build. No operator/host action is performed by this specification."
+        ],
+        "risksRecovery": [
+          "Primary risks are treating the admin shell as authorization, rendering invented/overbroad telemetry, or leaking secrets/PII through logs and shell metadata. Default to no route/data and fail closed on missing/stale permission. On a future permission-loss or fetch error, discard sensitive view state and return to the contract-defined denial/unavailable screen. Rollback removes shell presentation only; it must not alter host, queue, backup, provider or candidate data."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: shell-only FUTURE scope; child and cross-cutting ownership; canonical board and partial-design/non-blocking rationale; no invented route/API/schema; server-side permission, redaction and no-fake-telemetry rules; pending/empty/error/denial/expiry behavior; accessibility/responsive/browser requirements; all exact AC bindings; no runtime implementation claim.",
+          "Future implementation/release DoD: CS-104 route/role/release contract and each exposed child API/data/security contract are approved; default hidden remains enforced; direct unauthorized requests cause zero protected reads; only redacted contract-backed state renders; all actions are owned and audited by child APIs; desktop/mobile visual and browser/a11y checks pass; human screen-reader validation and exact-SHA release gate evidence are recorded."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Inventory current admin route, session/permission boundary and operations data/API sources; record absence without reading production data or logs.",
+        "Confirm CS-104 route/role/flag denial contract and map the parent shell to the admin production-operations board while preserving child IDs and screen ownership.",
+        "Define only the shared frame/navigation view model; identify each destination by approved child ownership and server-derived permission.",
+        "Keep shell unavailable by default; connect only allowlisted redacted server state after the owning child API and audit contract exists.",
+        "Add synthetic authorization, redaction, pending/empty/error/expired and zero-read denial tests; add keyboard/axe and visual/responsive acceptance.",
+        "Complete human NVDA/VoiceOver review, exact-SHA release evidence and documentation before any separately authorized activation."
+      ]
+    },
+    "CS-102": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-102",
+        "design/DESIGN-INDEX.json#recruiter",
+        "design/canonical/recruiter/careerscope-recruiter-workspace-reference-board.png",
+        "design/01-IMPLEMENTATION-ORDER/09-recruiter/README.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/RECRUITER-WORKSPACE-SPEC.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ROUTE-PERMISSION-FEATURE-FLAG-CONTRACT.md",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+        "docs/PROJECT-STATE.md",
+        "docs/ARCHITECTURE.md",
+        "docs/SECURITY.md",
+        "docs/PRIVACY.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The approved recruiter board describes a FUTURE workspace, but the current repository does not provide a recruiter product route, recruiter authorization/session contract, candidate-consent persistence contract, or recruiter API. The ticket is a reusable shell boundary; it must not treat board data or proposed `stage_9_enabled` metadata as proof that recruiter functionality is active."
+        ],
+        "value": [
+          "Keep a future recruiter experience visually and architecturally composable while preventing shell/navigation visibility from becoming authorization or disclosing candidate data before server-enforced recruiter permissions and current candidate consent exist."
+        ],
+        "functionalRequirements": [
+          "CS-102 owns only a reusable recruiter workspace frame/navigation boundary. It does not assign a standalone URL; child screens remain owned by CS-177–CS-192, and their routes/actions are not inferred from image labels.",
+          "The recruiter surface remains FUTURE and hidden/unavailable under the current product configuration. The registry's proposed `stage_9_enabled` value is planning metadata, not an existing runtime feature flag or authorization decision.",
+          "In any separately authorized future rendering, the shell receives only a server-derived recruiter principal, permission result, and candidate-visibility result from approved contracts. If recruiter authentication, candidate consent, permission, or scope is absent, unknown, expired, or withdrawn, render no candidate-specific content and do not cache it; use the finalized safe denial/unavailable behavior from the route-permission contract.",
+          "Never accept a recruiter identity, candidate owner ID, consent state, role, or permission from a client-selected value as authority. Navigation hiding is not access control; each child API must enforce authorization independently.",
+          "The shell does not implement candidate search, match scoring, profile/resume/contact access, job posting, outreach, messaging, pipeline mutation, interview scheduling, analytics, company management or settings. These are separate child tickets and contracts.",
+          "All board names, counts, match values, candidate identities, messages, company values and statuses are illustrative. Use only contract-backed data or an explicit empty/unavailable state; unknown remains unknown.",
+          "No shell action may imply candidate consent, recruiter privilege, successful outreach, interview state, application state, or verified candidate data. Do not rank on protected traits, scrape unauthorized sources, expose secrets, or send messages from shell navigation."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation boundary over the canonical Next.js authenticated layout, shared UI primitives and future recruiter child features; no route, API, provider, database entity, queue or worker is created by this ticket.",
+          "Use the existing recruiter full reference board as contextual visual authority for the shared frame only. Keep individual screen geometry and business operations with CS-177–CS-192. Route/role/release/feature-flag and server denial behavior must follow CS-104's route-permission contract before implementation; shared UI primitives follow CS-95/CS-106 where applicable."
+        ],
+        "apiContract": [
+          "NOT_APPLICABLE for CS-102 itself: it defines no HTTP endpoint, request or persistence operation. Any recruiter read or mutation must be separately specified by its owning child ticket and server contract; this shell specification does not invent route paths, data shapes, consent endpoints, status codes, or candidate fields."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: the shell stores no recruiter identity, candidate record, consent, profile, resume, contact detail, message, campaign, pipeline state or audit event. Do not persist UI-derived permissions or consent state in browser storage. Data/consent persistence and retention require an independently approved domain contract before any child implementation."
+        ],
+        "securityPrivacy": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE. SECURITY_IMPACT: AUTHENTICATION, AUTHORIZATION, PRIVACY_PII, ADMIN_PRIVILEGE boundary separation, AUDIT for future sensitive child actions, and DATA_RETENTION for any future candidate disclosure.",
+          "Trust boundary: browser is untrusted; API/session and consent/permission service are authoritative. Candidate remains the data owner. Recruiter reads are limited to the exact fields and purpose authorized by a current server-validated consent and role policy; shell must fail closed on missing or stale decisions. No raw resume or contact information is allowed in shell chrome, navigation metadata, logs, screenshots or telemetry.",
+          "The shell must not provide an admin/database control surface or reuse candidate permissions as recruiter permissions. Any future privileged action is a child contract, must be least-privilege, server-authorized and auditable, and must not accept client-provided owner identity."
+        ],
+        "accessibility": [
+          "The shared frame must preserve semantic navigation/landmarks, a programmatic current-page state, visible keyboard focus, logical tab order, accessible names for navigation controls, Escape/focus restoration for any separately approved dialog, and non-color-only active/disabled indicators. A real NVDA or VoiceOver smoke test remains a human release gate after the shell exists; axe is not a substitute."
+        ],
+        "responsive": [
+          "Use the recruiter contract's desktop board as the visual reference and preserve its information hierarchy on small viewports; do not scale the desktop board. No canonical recruiter mobile crop is identified for the shell. Before implementation acceptance, UX must approve the mobile navigation/shell state; verify 320, 390, 768, 1024 and 1440 CSS-pixel widths, no unintended horizontal overflow, keyboard and touch operation, and 44px-class targets where applicable."
+        ],
+        "browsers": [
+          "Future browser acceptance covers Chromium, Firefox and WebKit with recorded versions and exact authorized routes/states; missing or unavailable engines are NOT_RUN, not PASS. Use synthetic candidates and consent fixtures only."
+        ],
+        "seo": [
+          "NOT_APPLICABLE: recruiter workspace is authenticated and private; its future routes must be noindex and must not expose recruiter/candidate data in metadata, canonical URLs, previews or sitemaps."
+        ],
+        "observability": [
+          "The shell adds no telemetry or audit events. Future sensitive reads/actions are instrumented by their owning API/domain tickets with correlation IDs and safe outcome categories only; never record candidate identifiers beyond the approved safe form, candidate content, resume/contact details, consent payloads, session material or message bodies."
+        ],
+        "visualRegression": [
+          "DESIGN_PARTIAL / NON_BLOCKING for specification: `design/DESIGN-INDEX.json#recruiter` assigns the FUTURE stage and canonical full board to CS-102, while the 16 individual recruiter screens are assigned to CS-177–CS-192. The index does not identify a separately cropped shell-only state or canonical mobile shell image. This does not block specifying a reusable frame boundary, but visual implementation acceptance must wait for UX to identify the exact shell crop/state and approve mobile navigation and measurable tolerance; do not mask child-screen layout or use sample board values as production data."
+        ],
+        "manualExternalGates": [
+          "MANUAL_PRODUCT / UX: before shell implementation is accepted, approve the exact recruiter-shell/navigation subset of the full board, the mobile shell state and comparison threshold. EXTERNAL/ARCHITECTURE GATE: CS-104 must establish route/role/release/flag and safe denial contracts; child tickets must define recruiter principal, consent semantics, data fields and API authorization before candidate data is visible. These are future implementation gates, not evidence that the capability is configured or active."
+        ],
+        "risksRecovery": [
+          "Primary risk is treating navigation visibility or a client consent bit as authorization and rendering candidate PII to the wrong recruiter. Keep the surface unavailable until server contracts pass; on permission/consent loss, invalidate any local view and return to the approved denial state. Roll back only the shell presentation, never candidate data/consent records; no such records are introduced by CS-102."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: scope limited to reusable FUTURE recruiter frame; route is not invented; CS-177–CS-192 screen ownership is preserved; exact design partial/nonblocking rationale, responsive/mobile UX gate, server-side permission and consent prerequisites, API/data NOT_APPLICABLE, security/privacy, negative states, browser matrix, accessible navigation, exact AC bindings and no-runtime-work boundary are explicit.",
+          "Future implementation DoD: CS-104 authorization contract and approved recruiter/consent data contracts exist; feature remains hidden until explicit release; no candidate content appears without server-authorized current consent; child actions enforce their own server authorization; visual and responsive reviews use approved states and synthetic data; cross-browser, automated accessibility/security, human screen-reader and exact-SHA release evidence pass."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Confirm current absence of recruiter route/API/schema and record the source paths without accessing runtime user data.",
+        "Confirm CS-104 role/route/flag denial semantics and relevant child-ticket consent/data contracts before implementation sequencing.",
+        "Define the reusable frame/navigation boundary from the approved shell-only design subset; do not copy child screen content or board sample data.",
+        "Implement default-unavailable behavior and server-derived permission/consent integration only after the contracts exist.",
+        "Add synthetic component and authorization-denial tests; then visual, responsive, keyboard/axe and manual screen-reader acceptance.",
+        "Document privacy-safe release evidence and keep FUTURE/default-hidden semantics until separately authorized rollout."
+      ]
+    },
+    "CS-101": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-101",
+        "design/DESIGN-INDEX.json#ai-integration",
+        "design/01-IMPLEMENTATION-ORDER/08-ai-integration/README.md",
+        "design/01-IMPLEMENTATION-ORDER/08-ai-integration/01-ai-apply-assistant.png",
+        "docs/PROJECT-STATE.md",
+        "docs/ARCHITECTURE.md",
+        "docs/SECURITY.md",
+        "docs/PRIVACY.md",
+        "apps/web/src/components/preparation-panel.tsx",
+        "apps/api/src/app.ts",
+        "apps/api/src/openapi.ts",
+        "packages/core/src/ai-provider.ts"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "CS-101 is a cross-cutting truthfulness and capability-gating boundary, not the owner of the AI Apply Assistant screen. The design index assigns that screen to CS-130 and records its route UNKNOWN; current runtime supports only the separately scoped, optional preparation-coaching elaboration. The design board is planning context, not proof that its application, resume-tailoring, cover-letter or apply controls exist."
+        ],
+        "value": [
+          "Prevent the candidate UI from promising, exposing or invoking AI behavior that is not implemented, authorized and enabled, while preserving the existing deterministic preparation report and user-controlled decisions."
+        ],
+        "functionalRequirements": [
+          "For the current capability, the authenticated `/preparation` surface may render the per-item `Get AI coaching` control only when the server-derived session reports `aiEnabled: true`; pending, unauthenticated, expired or false capability state renders no active AI control. Do not derive availability from design metadata, local storage or a client-selected identity.",
+          "When the candidate explicitly activates one preparation item, display only the server response for that item with the visible `AI-generated coaching` label. Render response text as escaped text, never HTML. A 503 capability-disabled response renders the explicit unavailable message; other failures remain errors and never substitute a sample answer.",
+          "No AI application assistant route, application submission, resume rewrite, cover-letter generation, arbitrary chat, scoring, ranking, eligibility, matching exclusion, ownership or application-lifecycle action is introduced by CS-101. The candidate remains the sole authority for submitting an application and opening an external destination never marks Applied.",
+          "The AI Apply Assistant reference screen remains owned by CS-130. CS-101 may specify the shared capability/truthfulness boundary only; it does not transfer screen ownership, invent a route, assign admin access or treat design-board sample values as product data. Admin model/billing/flag surfaces remain separate tickets and are not exposed by this candidate boundary."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation boundary over the existing Next.js session and preparation feature; no new API, route, provider, database entity or worker. Reuse the canonical session result and existing `/api/preparation/:checkId/ai-elaborate` contract. The UI control is the existing per-item opt-in component; the AI Apply Assistant page itself belongs to CS-130."
+        ],
+        "apiContract": [
+          "EXISTING_CONTRACT only: `GET /api/session` supplies server-derived `aiEnabled`; `POST /api/preparation/:checkId/ai-elaborate` returns one AI-labelled text result and is owner-scoped, rate-limited, disabled unless `AI_ENABLED` and the validated free-model configuration are present, and may return the documented 400/404/429/502/503/504 failures. It accepts no application-submission, resume, contact or compensation payload. CS-101 adds no endpoint, request field, persistence or token exposure."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: CS-101 creates no AI/application record and persists no prompt, completion, resume content, provider token or client-side capability state. Existing preparation state and API ownership semantics remain unchanged."
+        ],
+        "accessibility": [
+          "For the existing preparation control, the enabled button must have the visible/accessibly named action, be keyboard activatable, expose pending state without duplicate requests, and announce a returned error through the existing alert semantics. A generated result retains the visible AI-generated distinction. Manual NVDA or VoiceOver review is a separate required human gate; axe alone is not a screen-reader pass."
+        ],
+        "responsive": [
+          "Verify the existing preparation item and optional control at 320, 390, 768, 1024 and 1440 CSS pixels; no horizontal overflow or inaccessible off-screen action. Do not infer a new application-assistant mobile layout from the full reference board; CS-130 owns that visual implementation."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHENTICATION / AUTHORIZATION / PRIVACY_PII / EXTERNAL_PROVIDER / ABUSE_RATE_LIMITING. The browser session identifies the candidate; the server derives owner identity and validates the preparation item. Only the existing allowlisted preparation/question text and evidence fields may cross the provider boundary. Never include resume text, contact details, compensation, session/CSRF/provider tokens or raw provider responses in UI diagnostics, logs or screenshots. A disabled/unavailable provider must fail closed without rendering fabricated output or changing deterministic results."
+        ],
+        "observability": [
+          "Use existing request correlation and safe outcome categories only. Never log prompt/response text, resume/profile data, cookies, CSRF values, OpenRouter credentials or raw provider bodies. No new metric, dashboard or successful live provider claim is implied by this specification."
+        ],
+        "visualRegression": [
+          "DESIGN_PARTIAL / NON_BLOCKING for CS-101's cross-cutting boundary: the ordered AI integration reference names the AI Apply Assistant panel, but the canonical index assigns the screen to CS-130 and records route UNKNOWN; current AI UI is the preparation-item control, for which no exact dedicated visual reference is indexed. Do not compare the preparation panel as though it were the AI Apply Assistant screen or implement unsupported board controls. Any future CS-130 screenshot comparison must use the exact approved screen subset and synthetic data, record 1440px desktop and UX-approved mobile viewport, Chromium/Firefox/WebKit, reference hash, dynamic masks and an owner-approved numeric acceptance threshold before execution. This is a disclosed visual gate, not a current pixel-parity claim."
+        ],
+        "manualExternalGates": [
+          "MANUAL_PRODUCT / UX: before any AI Apply Assistant screen is implemented, UX and product owner must confirm the exact candidate panel/state subset that does not imply autonomous apply, resume/cover-letter processing or unsupported provider capability; CS-130 retains screen ownership. MANUAL_ACCESSIBILITY: run and record a real NVDA or VoiceOver smoke test on the implemented preparation control/result/error states. EXTERNAL_PROVIDER: any real provider acceptance is separate from this specification and must use disposable approved data; no provider call or deployment is authorized here."
+        ],
+        "risksRecovery": [
+          "A stale client capability bit, sample design content or provider failure could falsely imply that an application feature is available or could leak sensitive data. Revert only the presentation boundary change, keep `AI_ENABLED` default-off and preserve existing preparation/domain state; do not change matching or application records."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: only the existing candidate preparation-coaching control is named as current capability; server session gating, owner scope, safe error/empty behavior, data exclusions, manual accessibility gate, CS-130 screen ownership, unknown route and non-blocking design limitation are explicit; all four source ACs have reviewed exact bindings; CONDITIONAL/default-off semantics remain unchanged. This specification performs no runtime implementation, provider activation or release action.",
+          "Future release DoD: exact CS-130 visual scope and tolerance receive UX/product approval; automated browser/accessibility/security evidence passes on an exact reviewed SHA; manual screen-reader evidence is recorded; any provider configuration and live acceptance are separately authorized and verified. AI remains unable to submit applications or alter deterministic matching."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Confirm the current real capability contract from `GET /api/session`, `POST /api/preparation/:checkId/ai-elaborate`, the API schema and `AiElaborate`; do not infer behavior from the image board.",
+        "Keep CS-101 limited to truthful capability visibility and current preparation-coaching behavior; preserve CS-130 ownership of the AI Apply Assistant screen and keep its route UNKNOWN.",
+        "Bind all source acceptance criteria to exact rendered, visual, accessibility or release-boundary assertions; mark not-yet-created tests PLANNED and manual screen-reader review MANUAL_REQUIRED.",
+        "Verify no AI control is active while session capability is pending/false, enabled output is escaped and labelled, and disabled/error states never use illustrative content.",
+        "Keep application submission, resume/cover-letter processing, matching influence, admin controls, AI activation and deployment outside this ticket unless separately approved.",
+        "Obtain independent content review; preserve BACKLOG and CONDITIONAL state and do not claim runtime acceptance from specification checks."
+      ]
+    },
     "CS-100": {
     "reviewStatus": "DRAFT",
     "sourceReferences": [".ai/backlog.json#CS-100", "design/canonical/future-integrations/careerscope-connected-accounts-admin-integrations-reference-board.png", "design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/README.md", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/FUTURE-RELEASES-R2-R3-DESIGN-CONTRACT.md", "docs/PROJECT-STATE.md", "docs/API-SURFACE.md", "docs/ARCHITECTURE.md", "docs/SECURITY.md", "docs/PRIVACY.md", "docs/TESTING.md"],
@@ -2982,6 +3304,77 @@
     "RELEASE_TARGET_UNDECIDED": {"disposition":"RECLASSIFIED","rationale":"CS-80 is a repository-baseline/evidence-control process ticket, not a shippable product capability. Its delivery target is this separately scoped Phase 3.25 branch checkpoint; it does not receive an R1/R2 product release assignment. The owner decision explicitly limits the exception to this branch and leaves main integration unauthorized.","sources":[".ai/backlog.json#CS-80","docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"]},
     "RELEASE_STATE_UNSPECIFIED": {"disposition":"RECLASSIFIED","rationale":"A repository-baseline/evidence-control ticket has no product runtime activation state. The explicit Phase 3.25 checkpoint authorization is not release activation, workflow promotion, merge permission or deployment authorization; preserve the canonical BACKLOG state.","sources":[".ai/backlog.json#CS-80","docs/OWNER-DECISIONS-2026-10-02.md#OD-2026-10-07-CS80-AC3-V2"]}
   },
+  "CS-101": {
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "The design index identifies CS-101 as the conditional AI integration boundary but assigns the AI Apply Assistant screen to CS-130 and records its route UNKNOWN. Current runtime exposes only the separate preparation-coaching control. This is accurately DESIGN_PARTIAL, not DESIGN_VERIFIED; it is non-blocking for CS-101's cross-cutting truthfulness/gating specification because the screen is explicitly not owned or implemented by CS-101. AC2 remains a future CS-130 visual acceptance gate with exact scope, viewport, browser, mask and threshold evidence required before screen implementation/acceptance.",
+      "sources": [
+        ".ai/ticket-specification-policy.json#CS-101",
+        "design/DESIGN-INDEX.json#ai-integration",
+        "design/01-IMPLEMENTATION-ORDER/08-ai-integration/README.md",
+        "docs/PROJECT-STATE.md"
+      ]
+    },
+    "SURFACE_SPEC_REFINEMENT": {
+      "disposition": "RESOLVED",
+      "rationale": "The specification now defines CS-101 as the cross-cutting candidate capability/truthfulness boundary, binds only to the existing session and preparation-coaching contracts, excludes application submission and unsupported AI operations, preserves CS-130 screen ownership and UNKNOWN route, and gives exact pending/enabled/error, data, security, responsive, accessibility, manual and release gates.",
+      "sources": [
+        ".ai/ticket-specification-policy.json#CS-101",
+        "docs/PROJECT-STATE.md",
+        "docs/ARCHITECTURE.md",
+        "apps/web/src/components/preparation-panel.tsx",
+        "apps/api/src/app.ts",
+        "apps/api/src/openapi.ts",
+        "design/DESIGN-INDEX.json#ai-integration"
+      ]
+    }
+  },
+    "CS-102": {
+      "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "The design index resolves CS-102 to the FUTURE recruiter stage and canonical full reference board, while assigning the 16 individual screens to CS-177–CS-192. It does not define a shell-only crop, mobile navigation state, recruiter route or authorization contract. This remains DESIGN_PARTIAL rather than DESIGN_VERIFIED; it is non-blocking for the reusable-frame specification because route is intentionally N/A and the exact UX crop/mobile/tolerance is a future implementation-acceptance gate.",
+      "sources": [".ai/backlog.json#CS-102", "design/DESIGN-INDEX.json#recruiter", "design/01-IMPLEMENTATION-ORDER/09-recruiter/README.md", "design/canonical/recruiter/careerscope-recruiter-workspace-reference-board.png"]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All four source acceptance criteria have independent content-bound binding-group receipts. Each procedure is explicitly planned or manual, names the exact pending/empty/error/denial behavior and does not claim execution evidence.",
+      "sources": [".ai/ticket-specification-policy.json#CS-102-AC1", ".ai/ticket-specification-policy.json#CS-102-AC2", ".ai/ticket-specification-policy.json#CS-102-AC3", ".ai/ticket-specification-policy.json#CS-102-AC4", "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]
+    },
+    "SURFACE_SPEC_REFINEMENT": {
+      "disposition": "RESOLVED",
+      "rationale": "The specification limits CS-102 to a reusable FUTURE frame/navigation boundary, keeps the route unassigned, distinguishes child screen ownership, documents absent recruiter APIs/consent/role contracts, defines server-authoritative denial and no-candidate-data behavior, and states precise visual, responsive, accessibility and release gates.",
+      "sources": [".ai/backlog.json#CS-102", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/RECRUITER-WORKSPACE-SPEC.md", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ROUTE-PERMISSION-FEATURE-FLAG-CONTRACT.md", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md", "docs/SECURITY.md", "docs/PRIVACY.md"]
+    }
+  },
+  "CS-104": {
+    "SURFACE_SPEC_REFINEMENT": {
+      "disposition": "RESOLVED",
+      "rationale": "The shared contract is explicitly limited to route/role/release/flag matrices, server authorization, transaction/idempotency/concurrency/audit requirements and safe failure states; it creates no page, endpoint, persistence model or generic admin action and leaves child contracts authoritative.",
+      "sources": [".ai/backlog.json#CS-104", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ROUTE-PERMISSION-FEATURE-FLAG-CONTRACT.md", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/TRANSACTIONAL-UX-CONTRACT.md", "docs/API-SURFACE.md", "docs/SECURITY.md"]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All three source acceptance criteria have independently reviewed exact verification procedures with explicit preconditions, setup, action, assertions, expected results, negative/failure behavior, planned test identifiers, evidence artifacts, reviewers and release gates. Planned checks remain unexecuted.",
+      "sources": [".ai/ticket-specification-policy.json#CS-104-AC1", ".ai/ticket-specification-policy.json#CS-104-AC2", ".ai/ticket-specification-policy.json#CS-104-AC3", "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]
+    }
+  },
+  "CS-103": {
+    "PARTIAL_DESIGN": {
+      "disposition": "RECLASSIFIED",
+      "rationale": "The canonical production-operations board and 16-panel README are assigned to CS-103, but the index does not map a dedicated shell-only state or mobile navigation frame. The design is partial, not verified; this is non-blocking for specifying a future reusable navigation boundary. UX crop/mobile/tolerance approval remains an implementation acceptance gate.",
+      "sources": [".ai/backlog.json#CS-103", "design/DESIGN-INDEX.json#admin-production-operations", "design/canonical/admin/production-operations/careerscope-production-operations-reference-board.png", "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/README.md", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRODUCTION-OPERATIONS-DESIGN-CONTRACT.md"]
+    },
+    "SURFACE_SPEC_REFINEMENT": {
+      "disposition": "RESOLVED",
+      "rationale": "The parent is limited to a future admin production-operations frame; the listed child screens retain their source ownership, route and APIs are not inferred, all illustrated operational values are excluded, and privilege/redaction/telemetry and future acceptance boundaries are explicit.",
+      "sources": [".ai/ticket-specification-policy.json#CS-103", "design/DESIGN-INDEX.json#admin-production-operations", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRODUCTION-OPERATIONS-DESIGN-CONTRACT.md", "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/ADMIN-CONTROL-PLANE-SPEC.md"]
+    },
+    "EXACT_AC_TEST_BINDING": {
+      "disposition": "RESOLVED",
+      "rationale": "All four source acceptance criteria have independently reviewed exact verification procedures with explicit preconditions, setup, action, assertions, expected results, negative/failure behavior, planned or manual test identifiers, evidence artifacts, reviewers and release gates. Planned and manual checks remain unexecuted.",
+      "sources": [".ai/ticket-specification-policy.json#CS-103-AC1", ".ai/ticket-specification-policy.json#CS-103-AC2", ".ai/ticket-specification-policy.json#CS-103-AC3", ".ai/ticket-specification-policy.json#CS-103-AC4", "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]
+    }
+  },
   "CS-100": {
     "PARTIAL_DESIGN": {"disposition":"RECLASSIFIED","rationale":"The approved full-reference board and implementation README support the candidate overview mapping to desktop panel 01 and mobile panel 08. Those screens remain implementation-owned by CS-162 and CS-169, so CS-100 correctly remains DESIGN_PARTIAL. State-specific empty/error/expired designs are future visual-acceptance gates; because this ticket remains BACKLOG/R2-R3/HOLD and specifies no runtime UI, those missing states are non-blocking for specification scope.","sources":[".ai/ticket-specification-policy.json#CS-100.relatedDesignScreenMapping","design/DESIGN-INDEX.json#connected-accounts","design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/README.md","design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/FUTURE-RELEASES-R2-R3-DESIGN-CONTRACT.md"]},
     "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The parent is explicitly limited to the candidate overview; child screen ownership, admin exclusions, unknown route, no current API/persistence, illustrative-content prohibition, future unavailable behavior, accessibility, responsive scope, and independent release gates are now specified against the source board/README and current runtime contracts.","sources":[".ai/ticket-specification-policy.json#CS-100","design/DESIGN-INDEX.json#connected-accounts","design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/README.md","docs/API-SURFACE.md","docs/PROJECT-STATE.md"]}
@@ -3003,10 +3396,439 @@
   }
   },
  "exactVerificationBindings": {
-    "CS-100-AC1": [{"reviewer":"Product, Security and QA reviewers","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_COMPONENT","preconditions":"Current runtime has no connected-account API or route and CS-100 remains BACKLOG/HOLD. Run this planned component test only in a separately authorized future implementation; proposed `stage_7_enabled` metadata is not treated as a runtime flag.","setup":"Inspect current route/API/schema registries to establish the absent baseline; mount the future candidate overview component with two synthetic owner-scoped view-model fixtures: one explicitly unavailable because no approved API contract exists and one whose values are marked as returned by the separately approved API contract.","fixtureOrData":"Synthetic typed view-models with neutral values and explicit provenance labels only; no provider accounts, logos, identities, statuses, timestamps, counts, tokens or real owner data.","action":"Render the unavailable fixture and API-backed fixture independently, then inspect visible text, accessible names and component inputs.","procedure":"Assert the unavailable fixture produces an explicit empty/unavailable state and does not render fabricated provider/account details. Assert the API-backed fixture renders only the exact supplied fields and does not infer connected, consented or synchronized status from provider name or local browser state. Separately inventory current source and assert no CS-100 route, API, provider call or persistence exists at the current HOLD baseline.","assertion":"For an authorized future shell, content is either from the approved server contract or explicitly unavailable; the current implementation remains absent under HOLD.","expectedResult":"No board illustration is used as product data, no new endpoint or route is inferred, and current HOLD produces zero provider side effects.","testName":"Connected accounts overview renders only supplied server state or explicit unavailable state","testFileOrProcedureId":"PLANNED:apps/web/src/features/connected-accounts/connected-accounts-list.test.tsx::Connected accounts overview renders only supplied server state or explicit unavailable state","fixtures":"Two isolated synthetic view models (API-backed and unavailable) plus current route/API/schema inventory.","negativeCase":"Any hard-coded sample identity/status/count, local-state-derived connection claim, unapproved route/API, provider call, persistence write or private-field leak fails.","failureCase":"If no authorized component/API contract exists, record the future rendered test as not yet executable and keep runtime capability absent; do not fabricate an empty account row.","evidenceArtifact":"Future test output and fixture provenance plus current source inventory showing no registered capability; no production screenshot or provider data.","releaseGate":"CONNECTED_ACCOUNTS_SOURCE_STATE_PARITY","repositoryCommand":"Planned component test; current HOLD source inventory is read-only"}],
-    "CS-100-AC2": [{"reviewer":"UX and Visual QA reviewers","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"VISUAL_REGRESSION","preconditions":"CS-100 remains HOLD. Run only after a separately authorized candidate overview implementation and UX has accepted the exact baseline and pass tolerance; no admin surface is in this ticket.","setup":"Use `design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/01-01-connected-accounts-user.png` for the candidate desktop overview and `08-08-mobile-connected-accounts.png` for its mobile list variant; record the canonical board asset SHA-256, 1440px and 390px viewport, browser/tool versions, pre-agreed tolerance and a mask manifest before capture.","fixtureOrData":"Reference crops and neutral unavailable-state fixture only; all names, provider logos, statuses, identities, counts and times visible in design artwork are illustrative and excluded from app data.","action":"Capture the candidate overview in Chromium, Firefox and WebKit at 1440px and 390px, and run the existing repository visual diff tooling without changing baselines or thresholds.","procedure":"For each browser/viewport attach the exact source crop, output image and diff. Record pixelmatch per-pixel threshold, total mismatched-pixel ratio and the UX-approved maximum; mask only unavoidable time/random regions and never layout, text, focus, status or controls. Fail when any comparison exceeds the pre-recorded limit, a browser/viewport is absent, the wrong panel is used, or the image contains sample account data. There is no numeric maximum approved in current source, so a future UX acceptance must supply it before execution; do not report a pass before then.","assertion":"The candidate overview and mobile list are compared to exact source panels on the required engine/viewport matrix under an explicitly approved deterministic tolerance, without treating illustrative content as product truth.","expectedResult":"All required comparisons have reproducible inputs and a recorded accepted tolerance; missing approval or any failed comparison leaves the visual gate open and HOLD unchanged.","testName":"Connected accounts candidate overview matches approved desktop and mobile references across engines","testFileOrProcedureId":"PLANNED:apps/web/tests/connected-accounts-hold.visual.spec.ts::Connected accounts candidate overview matches approved desktop and mobile references across engines","fixtures":"Canonical panel 01/panel 08 assets and neutral synthetic unavailable state.","negativeCase":"Missing UX tolerance, wrong crop, omitted engine/viewport, broad mask, sample data or threshold alteration after capture fails.","failureCase":"If candidate implementation/reference state is not authorized, keep the visual procedure PLANNED; do not capture a synthetic production-like screen or force a baseline update.","evidenceArtifact":"Reference and rendered hashes, browser/version/viewport matrix, raw diff/mismatch ratios, approved tolerance and signed UX disposition.","releaseGate":"CONNECTED_ACCOUNTS_DESIGN_ACCEPTANCE","repositoryCommand":"Planned three-engine visual regression plus manual UX review"}],
-    "CS-100-AC3": [{"reviewer":"Accessibility, Security and QA reviewers","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_ACCESSIBILITY","preconditions":"No connected-account UI currently exists and CS-100 remains BACKLOG/HOLD. Run only for a separately authorized candidate shell with synthetic sessions and no provider credentials.","setup":"Prepare candidate-only pending, empty, API-unavailable, network-error, unauthorized and expired-session fixtures only where their semantics are defined by the approved API/session contract; stale-revision is included only if that contract defines revisions. Initialize axe, keyboard and DOM/network/storage sentinels.","fixtureOrData":"Synthetic state responses and role permissions only; no real identity, provider payload, token or account history. No admin-state fixture is in scope for this parent ticket.","action":"Run axe and keyboard traversal on each supported future state and inspect rendered text, focus order, announcements, browser storage and network requests.","procedure":"Assert empty results are distinct from network/API failure; unauthorized and expired responses reveal no account detail; pending and unavailable states expose meaningful status text; focus remains visible and all implemented controls have accessible names and keyboard operation; status is not color-only; no token/provider payload enters browser storage or logs. Do not test stale-revision behavior absent a real approved revision contract. Confirm current source still has no active CS-100 UI/provider call/write under HOLD.","assertion":"Every implemented future state is accessible and privacy-safe, unsupported states are not fabricated, and this ticket currently activates no capability.","expectedResult":"Future automated accessibility checks are planned, not passed; current HOLD has no user-facing integration action and no private connection state.","testName":"Connected accounts candidate states expose accessible privacy-safe pending empty error and denial behavior","testFileOrProcedureId":"PLANNED:apps/web/tests/connected-accounts-hold.a11y.spec.ts::Connected accounts candidate states expose accessible privacy-safe pending empty error and denial behavior","fixtures":"Synthetic candidate session/state fixtures, axe and browser storage/network sentinels.","negativeCase":"Private detail after unauthorized/expired, missing announcement, color-only status, inaccessible control, unexpected provider request, token persistence, sample status or invented stale state fails.","failureCase":"If no authorized shell or supported API state exists, keep UI absent and defer the future state assertion; do not claim accessibility coverage of absent UI.","evidenceArtifact":"Exact-SHA axe/keyboard output, redacted DOM/network/storage summary and separate human screen-reader checklist.","releaseGate":"CONNECTED_ACCOUNTS_ACCESSIBILITY_PRIVACY","repositoryCommand":"Planned browser axe/keyboard/security test"},{"reviewer":"Manual accessibility reviewer using NVDA on Windows or VoiceOver on macOS","testStatus":"MANUAL_REQUIRED","reviewStatus":"DRAFT","type":"MANUAL_ACCESSIBILITY","preconditions":"A candidate shell has explicit implementation authorization and is rendered in the selected supported desktop browser with a separate mobile verification plan; current production contains no connected-account UI.","setup":"Record OS, screen-reader/browser/version, test build SHA, candidate role, route/component entry, fixture provenance and whether the state is pending, empty, unavailable, error or denied. Use only sanitized synthetic view models; no provider account or real user data.","fixtureOrData":"Synthetic candidate fixtures for a pending list, empty list and unavailable/error/unauthorized states supported by the approved API contract. Never use the illustrative reference-board identity or status values.","action":"Using only the screen reader and keyboard, navigate from the containing Settings context into the Connected Accounts overview, inspect the heading and list/status, traverse each actionable item (if authorized and implemented), and recover from the explicit unavailable/error state.","procedure":"Verify landmark/heading order announces Settings then Connected Accounts without an invented route claim; each account/status item has a unique accessible name and textual state derived from server data; pending/empty/unavailable/error/denied status is announced once and does not disclose account details when unauthorized; focus is visible, ordered and restored after any approved dialog; Tab/Shift+Tab and Escape behave as specified for implemented controls; no disabled/HOLD control is actionable. Record actual speech/keyboard result, defects and exact SHA; mark unsupported states N/A with the contract citation rather than passing them.","assertion":"A human screen-reader reviewer can complete the overview/status and failure-state tasks without inaccessible focus, ambiguous status, private-data disclosure or activation of a held action.","expectedResult":"Dated, revision-bound manual result with pass/fail per task; this procedure is not executed during specification work and absence of UI remains no evidence.","testName":"MANUAL-CS100-AC3-AT-01 Connected Accounts candidate overview AT smoke","testFileOrProcedureId":"MANUAL-CS100-AC3-AT-01","fixtures":"Synthetic candidate state matrix and approved screen reference only.","negativeCase":"Any unannounced state, ambiguous control name, keyboard trap, lost focus, private account detail on denial or actionable held control fails.","failureCase":"If screen-reader/browser environment, approved route or UI is unavailable, record BLOCKED/NOT RUN and preserve HOLD; never substitute axe or source inspection for manual AT evidence.","evidenceArtifact":"Redacted task sheet with tool/browser/OS versions, exact SHA, per-task outcomes and defect references; no speech recordings or PII.","releaseGate":"CONNECTED_ACCOUNTS_MANUAL_ACCESSIBILITY","repositoryCommand":"Human NVDA or VoiceOver procedure; no automated pass claimed"}],
-    "CS-100-AC4": [{"reviewer":"Release QA and Security reviewers","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_SECURITY","preconditions":"Release checker runs only against an isolated synthetic ticket/config fixture; no production credential or deploy action is available.","setup":"Create isolated cases for no registered capability/no authorization, explicit synthetic future authorization with incomplete gates, and complete synthetic future evidence; record canonical backlog/flag hashes.","fixtureOrData":"Temporary synthetic release manifest and config; never alter canonical workflow, feature flag or production environment.","action":"Evaluate the held integration-shell release gate for each isolated evidence case.","procedure":"Assert absent capability or missing provider/product/design, privacy/security, a11y or exact-SHA CI evidence; if an isolated fixture adds privileged admin data/actions, missing CS-40 RBAC authorization keeps the fixture blocked; full synthetic evidence may qualify only the isolated fixture. Assert canonical ticket remains R2/R3 HOLD, proposed flag metadata is not presented as live configuration, BACKLOG status unchanged and no provider call, deployment or tag occurs.","assertion":"Visual design or specification completion alone cannot activate the integration shell; all declared authorization/acceptance gates are required.","expectedResult":"CS-100 remains held until separately approved future implementation and release evidence exists.","testName":"Connected account release gate preserves HOLD until all scoped authorization evidence exists","testFileOrProcedureId":"PLANNED:scripts/check-release-gate.test.mjs::Connected account release gate preserves HOLD until all scoped authorization evidence exists","fixtures":"Isolated ticket/config copies and synthetic evidence manifest.","negativeCase":"Gate passes with missing owner/provider/design/accessibility/exact-SHA evidence, or with missing CS-40 RBAC evidence when the isolated fixture includes privileged admin data/actions, or mutates canonical files -> fail.","failureCase":"Malformed or stale evidence remains blocked; restore only the validated temporary fixture and verify canonical hashes are unchanged.","evidenceArtifact":"Gate result, fixture hashes, canonical source hash equality and proposed default-off metadata assertion.","releaseGate":"CONNECTED_ACCOUNTS_RELEASE_AUTHORIZATION","repositoryCommand":"Planned isolated release-gate test; never a production release"}],
+    "CS-101-AC1": [
+      {
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "A future component test mounts the actual preparation panel with a synthetic session fixture; no provider call or personal data is used.",
+        "setup": "Render the same synthetic preparation-item fixture with pending, aiEnabled=false, and aiEnabled=true session responses. Intercept the component's same-origin API client at `POST /api/preparation/{checkId}/ai-elaborate`; configure one synthetic successful JSON response for the enabled case and record method, path, request count and body. Do not mock or claim a provider invocation.",
+        "procedure": "Assert pending/false session states render no AI action and issue zero `POST /api/preparation/{checkId}/ai-elaborate` requests; the ordinary deterministic `GET /api/preparation` report may still load. In the true state assert one per-item `Get AI coaching` button; activate it and assert exactly one POST targets the rendered item's encoded checkId, contains only the API contract's allowed preparation input, and renders the synthetic response as escaped text with the visible `AI-generated coaching` label. Assert no application, resume-rewrite or second AI-elaboration POST is made.",
+        "assertion": "The preparation UI exposes only the actual server-enabled per-item coaching capability and renders only the response returned by the owned API contract.",
+        "expectedResult": "Disabled/pending capability is absent; enabled capability is explicit user opt-in and the response is labelled and escaped.",
+        "testName": "Preparation panel hides AI coaching until the server session enables it and labels only the returned item result",
+        "testFileOrProcedureId": "PLANNED:apps/web/src/components/preparation-panel.test.tsx::Preparation panel hides AI coaching until the server session enables it and labels only the returned item result",
+        "fixtures": "Synthetic preparation item, pending/false/true session responses and an intercepted same-origin API response; no resume, email, compensation or real provider data.",
+        "negativeCase": "A control rendered before session resolution, when aiEnabled is false, for an application action, or using hard-coded generated text fails.",
+        "evidenceArtifact": "Future component test output, request-count assertion, fixture source and rendered-text/accessibility assertion.",
+        "reviewer": "Frontend QA and Security reviewer",
+        "releaseGate": "AI_CAPABILITY_SOURCE_STATE_PARITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-101-AC2": [
+      {
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "CS-130 has a separately authorized rendered candidate screen and UX has approved the exact panel subset, mobile viewport and numeric comparison tolerance; until then this procedure is NOT RUN and no route is inferred.",
+        "setup": "Use `design/01-IMPLEMENTATION-ORDER/08-ai-integration/01-ai-apply-assistant.png` as the reference only for the CS-130-owned screen. Record its SHA-256, browser and screenshot tool versions, 1440px desktop and approved mobile viewport, permitted dynamic masks and the UX-approved mismatch threshold.",
+        "procedure": "Capture the authorized CS-130 rendered screen with synthetic data in Chromium, Firefox and WebKit; compare each capture with the agreed crop using the repository visual-diff tool. Record measured mismatch percentage, diff image and any correction; do not mask layout, controls, focus, state labels or substantive content, and do not copy illustrative identities, scores or application statuses from the board.",
+        "assertion": "Every required engine and viewport has a reference hash, measured diff, bounded mask list and comparison against the threshold approved before capture; a missing threshold or missing engine is a failed gate, not an implicit pass.",
+        "expectedResult": "Visual evidence is reproducible and scoped to the owner-approved AI assistant screen; the parent CS-101 boundary does not claim screen ownership or pixel parity for absent UI.",
+        "testName": "CS-130 AI assistant screen meets its pre-approved cross-browser visual comparison contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/ai-apply-assistant.visual.spec.ts::CS-130 AI assistant screen meets its pre-approved cross-browser visual comparison contract",
+        "fixtures": "Canonical design crop/hash, deterministic synthetic feature state and a versioned viewport/browser/mask/threshold manifest.",
+        "negativeCase": "A fabricated feature state, unauthorized route, unapproved threshold, unbounded mask or missing required browser/viewport fails and leaves the surface unaccepted.",
+        "evidenceArtifact": "Per-engine screenshots/diffs, source and rendered SHA values, crop/hash, viewport, threshold approval and signed UX disposition.",
+        "reviewer": "UX and Visual QA reviewer",
+        "releaseGate": "AI_ASSISTANT_VISUAL_SCOPE_ACCEPTANCE",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "The source board and its implementation ownership are reviewed before any rendered screenshot is accepted.",
+        "setup": "Present UX/product reviewer the canonical AI integration panel, design-index mapping to CS-130, known UNKNOWN route and the approved AI/no-auto-apply product constraints.",
+        "procedure": "Record the exact accepted panel subset, route disposition, mobile reference, visual threshold and explicit exclusions for autonomous submission, unsupported AI operations, admin controls and illustrative board data. If UX cannot approve the current reference under these constraints, record DESIGN_GAP and keep the screen implementation blocked rather than substituting a new design.",
+        "assertion": "A dated UX/product decision identifies one screen owner and a measurable visual acceptance policy consistent with current product scope.",
+        "expectedResult": "CS-101 remains a boundary owner and CS-130 remains screen owner; no unsupported design behavior is implicitly approved.",
+        "testName": "UX approves the CS-130 visual subset and numeric threshold without expanding AI or application scope",
+        "testFileOrProcedureId": "MANUAL_REQUIRED:MANUAL-UX-CS101-AC2",
+        "fixtures": "Approved design index, canonical panel image, product boundary sources and redacted decision record.",
+        "negativeCase": "An unsigned threshold, ambiguous screen ownership, auto-submit behavior or an illustrative sample presented as live behavior fails.",
+        "evidenceArtifact": "Revision-bound UX/product disposition with approved panel IDs, numeric tolerance, viewport and explicit excluded behavior.",
+        "reviewer": "Product owner and UX reviewer",
+        "releaseGate": "AI_ASSISTANT_VISUAL_SCOPE_ACCEPTANCE",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-101-AC3": [
+      {
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "A future browser/component harness renders the actual preparation coaching control using synthetic session and API fixtures.",
+        "setup": "Exercise pending/false/enabled session, one in-flight request, a successful text response, 503-disabled response and a safe generic provider error; include unauthenticated/expired state only through the canonical session contract.",
+        "procedure": "Run axe and keyboard assertions. Confirm the button has the `Get AI coaching` accessible name, is keyboard operable, becomes disabled while pending, the intercepted `POST /api/preparation/{checkId}/ai-elaborate` count remains one per activation, focus remains usable after response/error, returned text is labelled `AI-generated coaching`, and the 503/generic error is announced once through role=alert. Assert false/pending states expose no active AI control. Stale revision is NOT_APPLICABLE because this endpoint does not mutate versioned candidate data; record the contract basis.",
+        "assertion": "Applicable preparation AI states are keyboard accessible, announced, non-duplicating and truthful; unsupported stale-revision behavior is explicitly N/A rather than fabricated.",
+        "expectedResult": "Automation passes only the rendered states it exercised; it does not claim manual screen-reader acceptance.",
+        "testName": "Preparation AI control exposes accessible enabled pending success and failure states",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/preparation-ai-accessibility.spec.ts::Preparation AI control exposes accessible enabled pending success and failure states",
+        "fixtures": "Synthetic session states, preparation item and intercepted local API success/503/error responses.",
+        "negativeCase": "An unlabelled button, control shown while disabled, duplicate API request for one activation, silent error, exposed private details or active application action fails.",
+        "evidenceArtifact": "Exact-SHA axe/keyboard/browser output, tested state matrix and explicit stale-revision N/A contract citation.",
+        "reviewer": "Accessibility QA and Security reviewer",
+        "releaseGate": "PREPARATION_AI_ACCESSIBLE_STATE_MATRIX",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "MANUAL_ACCESSIBILITY",
+        "preconditions": "The supported preparation screen and AI control are enabled in a synthetic/non-production test build; use NVDA or VoiceOver with a recorded browser/OS version.",
+        "setup": "Prepare one successful synthetic coaching response plus pending, disabled and error states; no real account, resume or provider secret is used.",
+        "procedure": "Using keyboard and screen reader, navigate to the preparation item, hear the action name and AI capability state, activate it, and confirm pending and result/error announcements, visible focus, result label, reading order and absence of an application-submission action. Record actual spoken output and any defect; do not infer success from axe output.",
+        "assertion": "A human can identify and operate the supported coaching action, understand the AI-labelled response and recover from unavailable/error states without accessing hidden capability or private data.",
+        "expectedResult": "Manual assistive-technology judgment is recorded separately from automated accessibility checks.",
+        "testName": "NVDA or VoiceOver smoke test for preparation AI enabled pending result and error states",
+        "testFileOrProcedureId": "MANUAL_REQUIRED:MANUAL-AT-CS101-AC3",
+        "fixtures": "Synthetic preparation record, local mocked responses, non-production build and documented browser/OS/screen-reader versions.",
+        "negativeCase": "Unannounced state, lost focus, inaccessible control, private content leakage or implied auto-apply fails.",
+        "evidenceArtifact": "Human tester, exact build SHA, assistive technology/browser versions, state outcomes and redacted defect record.",
+        "reviewer": "Human accessibility tester",
+        "releaseGate": "PREPARATION_AI_MANUAL_ACCESSIBILITY",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-101-AC4": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Run against isolated source/config fixtures and the canonical release-state model; do not load production secrets or call a live provider.",
+        "setup": "Provide AI_ENABLED unset/false, enabled-but-missing-configuration, configured-disabled and synthetic owner-approved conditional-gate states; include source board metadata without any implementation or provider evidence.",
+        "procedure": "Assert `configuredAiProvider({})` and false return no provider; enabling without required key/model fails startup configuration; design/catalog metadata alone leaves the feature CONDITIONAL and proposed `stage_8_enabled` is not treated as a live runtime control. Inventory the AI preparation UI/API contract and assert it exposes no AI-driven application submission or resume-rewrite operation, while separately confirming existing candidate-owned resume/application APIs are not disabled or redefined by this boundary; assert deterministic scoring inputs are unchanged.",
+        "assertion": "AI capability stays default-off unless actual server configuration enables the existing narrow preparation-coaching use case; release/design metadata cannot activate AI-driven application submission or resume rewriting, and unrelated candidate-owned resume/application operations remain outside this AI boundary.",
+        "expectedResult": "No test or specification action enables AI, an application assistant, or auto-apply; no network/provider call is made by the gate check.",
+        "testName": "Conditional AI boundary remains default-off without removing candidate-owned resume or application operations",
+        "testFileOrProcedureId": "PLANNED:scripts/ticket-specifications.test.mjs::Conditional AI boundary remains default-off without removing candidate-owned resume or application operations",
+        "fixtures": "Synthetic environment maps and isolated ticket copies; use fake provider spies that fail if called.",
+        "negativeCase": "Default-on config, release-state-only activation, undocumented AI endpoint, AI-triggered provider call during gate evaluation, scoring mutation, AI-driven application submission or AI resume rewrite passes the gate -> fail; existing non-AI candidate-owned resume/application routes being absent or altered by this ticket also fails scope parity.",
+        "evidenceArtifact": "Future exact-SHA test output, canonical config/default assertions, source/API inventory and unchanged matching/application contract hashes.",
+        "reviewer": "Security and Release QA reviewer",
+        "releaseGate": "AI_CONDITIONAL_ACTIVATION_BOUNDARY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-104-AC1": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Use a temporary repository fixture with CS-104 remaining BACKLOG/RELEASE; no production session, provider, database or host data is accessed.",
+        "setup": "Construct the route/role/release/flag matrix from synthetic candidate, recruiter and admin principals plus existing and planned contract records. Add positive, unauthenticated, unauthorized, disabled-release and high-risk mutation cases with owner/resource IDs. Apply revision, idempotency, confirmation/reason and lease/fencing assertions only where the owning mutation contract declares those controls.",
+        "procedure": "Validate each matrix entry and run the security checker. Assert server-derived principal/permission is required before protected repository access; assert high-risk mutation fixtures require explicit confirmation/reason and preserve idempotency, revision/lease/fencing and safe audit requirements. Assert no client role, owner ID, UI visibility or flag alone authorizes the operation.",
+        "assertion": "The route/role/release/flag contract is explicit and fail-closed, and high-risk mutation requirements retain confirmation, idempotency, concurrency/fencing and audit invariants.",
+        "expectedResult": "Positive authorized cases map to an owning contract; denial occurs before protected reads/writes; unsupported or missing contracts remain unavailable; no generic admin database operation is introduced.",
+        "testName": "Route permission matrix denies before reads and preserves transactional mutation invariants",
+        "testFileOrProcedureId": "PLANNED:scripts/route-permission-contract.test.mjs::Route permission matrix denies before reads and preserves transactional mutation invariants",
+        "fixtures": "Synthetic route matrix, principals, resources, revisions, idempotency keys and audit events; no secrets or PII.",
+        "negativeCase": "Client-selected owner/role/flag, missing permission, disabled release, absent required confirmation/reason, a second effect for the same idempotency key, same-key/different-input conflict, stale revision, stale lease or unowned mutation passes -> fail; an identical same-key replay may return the original approved result without a second effect when the owning contract permits it.",
+        "failureCase": "Malformed matrix or unavailable authorization dependency fails closed without repository access or mutation/event publication.",
+        "evidenceArtifact": "Exact-SHA checker/test output, matrix schema digest and redacted allow/deny/concurrency/audit fixture summary.",
+        "reviewer": "Security and API QA reviewers",
+        "releaseGate": "ROUTE_PERMISSION_TRANSACTION_CONTRACT",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-104-AC2": [
+      {
+        "type": "AUTOMATED_CONTRACT",
+        "preconditions": "Run against isolated existing route/API contracts and explicit planned-contract placeholders; no new endpoint is inferred from this ticket.",
+        "setup": "Enumerate a nonempty inventory of canonical existing route registrations, API schemas and matrix entries from the authoritative route/API sources, recording per-entry applicability and evidence; keep future contracts in a separate planned set. Prepare synthetic positive, unauthenticated, unauthorized, malformed, duplicate, stale/conflict, timeout, provider-unavailable and queue-failure fixtures for each applicable entry. Instrument protected-read/write, event, retry and audit counters.",
+        "procedure": "For every applicable existing inventory entry, execute its contract-specific request and assert canonical status/error semantics, owner scope, no protected read on denial, no event on validation failure, same-key/same-input replay behavior, same-key/different-input conflict where idempotency exists, conflict preservation and bounded retry/unavailable behavior. Validate future entries separately as PLANNED without inventing endpoints. Render a UI fixture only to confirm visibility does not alter the server result.",
+        "assertion": "Contract fixtures exercise positive and negative behavior independently of UI visibility, with stable ownership, validation, concurrency and failure semantics.",
+        "expectedResult": "Each existing contract has named evidence or remains explicitly planned; malformed/denied/failure cases do not mutate data or fabricate success, and UI hiding never substitutes for authorization.",
+        "testName": "Route and transaction contracts preserve owner scope across positive, denial and failure fixtures",
+        "testFileOrProcedureId": "PLANNED:apps/api/tests/route-permission-contract.integration.test.ts::Route and transaction contracts preserve owner scope across positive, denial and failure fixtures",
+        "fixtures": "Synthetic principals/resources, malformed payloads, stale revisions, duplicate keys, provider/queue failures and redacted API responses.",
+        "negativeCase": "Role inferred from navigation, unauthorized protected read, malformed persistence, duplicate second effect, stale overwrite, retry storm, raw error/PII leakage or UI-only denial passes -> fail.",
+        "failureCase": "An absent child contract is recorded NOT_APPLICABLE/PLANNED with no invented route; unavailable dependencies produce safe typed failure and preserve state.",
+        "evidenceArtifact": "Exact-SHA contract output, request/response status matrix, ownership/read-write counters and redacted failure/retry summary.",
+        "reviewer": "API, QA and Security reviewers",
+        "releaseGate": "CONTRACT_NEGATIVE_CASES",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-104-AC3": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Use an isolated release-gate fixture with CS-104 BACKLOG/RELEASE and no hosted or production credentials.",
+        "setup": "Create evidence variants for missing permission contract, missing child API/data contract, failed security/privacy review, failed accessibility/browser evidence, stale exact-SHA CI, missing rollback and complete authorized release.",
+        "procedure": "Run the release checker and assert every incomplete variant remains ineligible. Assert a complete variant is only eligible when route/permission, owning domain contracts, security/privacy, accessibility, exact-SHA CI, rollback and explicit release approval are present; ticket status, design metadata or client feature flag alone must not change eligibility.",
+        "assertion": "RELEASE semantics remain evidence-gated; no design, specification, UI or flag change activates a route or capability.",
+        "expectedResult": "Current CS-104 remains BACKLOG/RELEASE with no runtime activation, and incomplete or stale evidence fails closed without deployment/tag/production calls.",
+        "testName": "Release eligibility rejects incomplete route permission and transaction evidence",
+        "testFileOrProcedureId": "PLANNED:scripts/check-release-gate.test.mjs::Release eligibility rejects incomplete route permission and transaction evidence",
+        "fixtures": "Synthetic release manifests, contract hashes, gate results and canonical ticket snapshots only.",
+        "negativeCase": "UI visibility, screenshot approval, client flag, historical CI or a partial contract marks release eligible -> fail.",
+        "failureCase": "Malformed, stale or contradictory evidence remains denied and reports the exact missing gate without changing repository state.",
+        "evidenceArtifact": "Exact-SHA release-gate output, evidence manifest/hash comparison and redacted denial reasons.",
+        "reviewer": "Release and Security QA reviewers",
+        "releaseGate": "ROUTE_CONTRACT_RELEASE_ELIGIBILITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-103-AC1": [
+      {
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "CS-103 remains BACKLOG/FUTURE/default-hidden. Run only in an isolated component test after separate shell authorization; no production telemetry or admin session is available.",
+        "setup": "Mount the shell with a synthetic server-derived admin view model in authorized, permission-pending, unavailable and denied variants. Include a redaction sentinel corpus copied from the operations contract, not the board's illustrative rows, counts, names, metrics or secrets.",
+        "procedure": "Render each variant and assert only the server-provided allowlisted navigation and display-safe status labels appear; pending/denied/unavailable variants contain no child destination payload. Assert none of the board's example names, counts, provider values, log lines, host metrics or secret-like tokens appears, and no route/API/data read is issued under current FUTURE configuration.",
+        "assertion": "The future shell renders only explicitly authorized, redacted view-model content or an explicit safe unavailable/denied state, while current configuration activates no operations surface.",
+        "expectedResult": "No illustrative data or privileged payload appears; default configuration has no shell route, API request or side effect.",
+        "testName": "Production operations shell renders only authorized redacted state or explicit unavailable state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/admin-production-operations-shell.test.tsx::Production operations shell renders only authorized redacted state or explicit unavailable state",
+        "fixtures": "Synthetic admin navigation/view models and redaction sentinels only; no live logs, metrics, secrets or personal data.",
+        "negativeCase": "Any sample board value, protected field, hidden-but-requested child payload, active default route, provider/host call or browser-persisted view model fails.",
+        "failureCase": "If a server-authorized allowlisted view model or safe denial contract does not exist, shell stays absent and the future component assertion remains not executable; do not invent a response or sample empty metric.",
+        "evidenceArtifact": "Future component test output, synthetic fixture digest, rendered text allowlist and redacted network/storage assertion summary.",
+        "reviewer": "Frontend, Security and QA reviewers",
+        "releaseGate": "ADMIN_OPS_SHELL_DATA_TRUTH",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-103-AC2": [
+      {
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "No screenshot parity result is run until a separately authorized future shell exists and the UX reviewer identifies the shell-only subset; CS-103 remains FUTURE during specification.",
+        "setup": "Present the canonical production-operations full board, its design index mapping and panel 14 mobile examples. Record the exact shell/navigation crop, excluded child panels, approved desktop/mobile viewport, screenshot/browser versions, dynamic-mask manifest and numeric tolerance accepted by UX before capture.",
+        "procedure": "Have UX sign off the shell-only boundary and mobile navigation state; assert the full board's operational panels, example telemetry, names, provider rows, log records and action controls are not transferred into the parent shell. Record approval or unresolved design item; no visual pass is claimed in this specification phase.",
+        "assertion": "A visual baseline exists for exactly the authorized shell boundary and approved responsive behavior, with child screens excluded and no design sample promoted to production data.",
+        "expectedResult": "UX approval is recorded before any visual diff; absent crop/mobile state/tolerance remains NOT_RUN and blocks visual implementation acceptance, not specification readiness.",
+        "testName": "UX approves production operations shell crop mobile state and visual threshold",
+        "testFileOrProcedureId": "MANUAL-CS103-AC2-UX-DESIGN-APPROVAL",
+        "fixtures": "Canonical full board and panel 14 reference only; no generated design values as runtime fixtures.",
+        "negativeCase": "No approval, unbounded shell/child scope, invented mobile layout, board sample values or threshold selected after seeing output fails acceptance.",
+        "failureCase": "If the shell cannot be isolated from the full board, record the exact design question and keep visual gate open; do not fabricate a crop.",
+        "evidenceArtifact": "Signed shell/child scope, canonical source asset hash, desktop/mobile viewport, browser/tool versions, masks and numeric tolerance.",
+        "reviewer": "UX owner and Visual QA",
+        "releaseGate": "ADMIN_OPS_SHELL_DESIGN_ACCEPTANCE",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Run only after the shell component and UX-approved baseline/tolerance exist; all authorization fixtures are synthetic and the release remains explicitly authorized.",
+        "setup": "Use the approved shell crop/state and mobile navigation reference. Freeze exact image hashes, Chromium/Firefox/WebKit versions, 1440px-class desktop and UX-approved mobile widths, screenshot tool, masks and numeric mismatch threshold before capture.",
+        "procedure": "Capture shell navigation only across all three engines and approved viewports; attach source, output and diff. Compare per-pixel threshold and total mismatch ratio against the pre-recorded maximum. Fail if any required engine/state is absent, masks cover layout/text/status/focus, child pages leak into the shell capture, or illustrative operational data appears.",
+        "assertion": "The implemented shell matches only its approved frame/navigation baseline within the pre-agreed deterministic tolerance on the required browser matrix.",
+        "expectedResult": "Every required engine/viewport has reproducible evidence and remains within the UX-approved tolerance; an absent tolerance or engine is NOT_RUN/failure, never implied PASS.",
+        "testName": "Production operations shell visual comparison matches approved frame across engines",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/admin-production-operations-shell.visual.spec.ts::Production operations shell visual comparison matches approved frame across engines",
+        "fixtures": "UX-approved reference hashes, neutral synthetic authorized shell and safe unavailable state.",
+        "negativeCase": "Missing browser, viewport, baseline hash, tolerance, unauthorized data redaction, broad masks or any mismatch beyond threshold fails.",
+        "failureCase": "On diff failure preserve the last approved baseline; do not update snapshots to make the run green.",
+        "evidenceArtifact": "Exact-SHA source/output/diff images, browser/tool versions, viewport/mask manifest and mismatch metrics.",
+        "reviewer": "Visual QA and UX owner",
+        "releaseGate": "ADMIN_OPS_SHELL_VISUAL_PARITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-103-AC3": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "A future shell/API is separately authorized and CS-104 defines route/role/denial behavior; use an isolated synthetic admin principal and no production infrastructure access.",
+        "setup": "Create unauthenticated, non-admin, insufficient-privilege, expired/revoked-session, permission-resolution-pending, permission-lookup-failed, authorized-redacted-view, empty, child-data-error and stale-view fixtures. Instrument permission checks, child repository reads, response allowlists, cache writes and emitted status announcements.",
+        "procedure": "For unauthorized/expired/revoked and failed authorization cases call the finalized direct route/API and assert its CS-104 denial result, zero protected child reads, zero protected fields in response and no cache write. During permission resolution assert no data request or active destination; on child-data error assert explicit non-sensitive error rather than empty success. For authorized empty state assert empty label distinct from unavailable/error. For stale-view, exercise a revision only if the child contract defines one; otherwise record NOT_APPLICABLE. Assert no mutation/replay/deploy/restore request originates from shell navigation.",
+        "assertion": "Server authorization precedes privileged data access; pending, empty, failed, expired and stale states are distinguishable, and shell visibility grants no capability.",
+        "expectedResult": "Unauthorized and unresolved states disclose no operational payload; authorized reads expose only the child's redacted allowlist; no shell mutation occurs.",
+        "testName": "Admin operations shell denies protected reads before repository access and separates failure states",
+        "testFileOrProcedureId": "PLANNED:apps/api/tests/admin-operations-shell-authorization.integration.test.ts::Admin operations shell denies protected reads before repository access and separates failure states",
+        "fixtures": "Synthetic principal/session/capability matrix and redacted operational view model; repository/cache/request counters.",
+        "negativeCase": "Any protected read before authorization, sensitive field in error/denial, empty-success on lookup error, stale authorization use or shell-originated mutation fails.",
+        "failureCase": "If CS-104 or a child read contract is absent, direct requests remain unavailable and that future API test is PLANNED, not inferred from UI behavior.",
+        "evidenceArtifact": "Exact-SHA test result, synthetic fixture IDs, denial/error categories and zero-read/cache/mutation counters.",
+        "reviewer": "Security and API QA",
+        "releaseGate": "ADMIN_OPS_AUTHORIZATION_REDACTION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "The future authorized shell is rendered with synthetic state; no operational action or real log/metric content is required.",
+        "setup": "Exercise keyboard and touch navigation for authorized, permission-pending, empty, denied, expired, unavailable and load-error states at approved desktop and mobile viewports.",
+        "procedure": "Run axe and keyboard traversal. Assert named navigation landmark, programmatic current page, visible ordered focus, keyboard/touch-openable mobile navigation, textual state announcements, no focusable unavailable/unauthorized destination, and no candidate or secret sentinel in rendered DOM, browser storage or accessible names. Confirm empty is distinct from API/network failure; treat stale-revision as NOT_APPLICABLE unless defined by a child contract.",
+        "assertion": "The shell is keyboard/axe-accessible while authorization and failure states remain distinguishable and privacy-safe.",
+        "expectedResult": "Automated axe/keyboard result is recorded for each supported state; it does not claim human screen-reader acceptance.",
+        "testName": "Production operations shell announces safe states and provides accessible navigation",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/admin-production-operations-shell.a11y.spec.ts::Production operations shell announces safe states and provides accessible navigation",
+        "fixtures": "Synthetic admin authorization matrix, neutral empty/error states, redaction sentinels and axe.",
+        "negativeCase": "Unnamed control, hidden keyboard focus, color-only status, dead enabled route, missing error announcement, sensitive sentinel exposure or horizontal overflow fails.",
+        "evidenceArtifact": "Exact-SHA axe/keyboard output, engine/viewport/state matrix and redacted DOM/storage assertions.",
+        "reviewer": "Accessibility QA",
+        "releaseGate": "ADMIN_OPS_SHELL_AUTOMATED_A11Y",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "MANUAL_ACCESSIBILITY",
+        "preconditions": "A separately authorized non-production shell build and its approved route are available; test uses only synthetic administrative state.",
+        "setup": "Record exact SHA, OS, browser and NVDA or VoiceOver versions; include authorized, pending, empty, unavailable/error, denied and expired states; ensure no real host log or account content is present.",
+        "procedure": "Using keyboard and screen reader, enter the Admin Control Plane and navigate the operations shell. Verify landmark/name, current-page announcement, pending state, distinct empty/error/denied/expired announcements, logical focus and mobile disclosure controls; confirm no protected host, candidate, secret or sample reference content is announced and that unavailable/denied destinations cannot be activated.",
+        "assertion": "A human can understand and operate shell navigation and failure states without ambiguous focus or disclosure of protected operations data.",
+        "expectedResult": "A revision-bound manual result records pass/fail per task; missing UI/tool is BLOCKED or NOT_RUN, never substituted by axe.",
+        "testName": "NVDA or VoiceOver smoke test for production operations shell",
+        "testFileOrProcedureId": "MANUAL_REQUIRED:MANUAL-AT-CS103-AC3",
+        "fixtures": "Synthetic admin shell state matrix and authorized non-production build only.",
+        "negativeCase": "Unannounced state, keyboard trap, inaccessible disclosure, active denied destination or protected-value announcement fails.",
+        "evidenceArtifact": "Human tester, exact SHA, AT/browser/OS versions, state-by-state outcomes and redacted defect reference.",
+        "reviewer": "Human accessibility tester",
+        "releaseGate": "ADMIN_OPS_SHELL_MANUAL_A11Y",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-103-AC4": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Run local gate tests with canonical `BACKLOG/FUTURE`, proposed `stage_11_enabled` metadata false and no production secrets, session or external infrastructure.",
+        "setup": "Inspect canonical route registry, navigation registration, server authorization and release-gate sources; use isolated temporary configuration variants that modify only proposed display metadata or future evidence.",
+        "procedure": "Assert default state has no active operations route, child data request, host access or mutation. Assert changing metadata/client flag alone cannot register a route or authorize a principal. Assert the release gate rejects activation unless CS-104 permission/route contract, relevant child contracts, approved shell design, privacy/security/accessibility, exact-SHA CI and separate authorized release evidence are present. Confirm canonical ticket remains BACKLOG/FUTURE and no deploy/tag/production call occurs.",
+        "assertion": "Design, specification approval, or proposed feature metadata cannot activate production operations without server-enforced authorization and all declared release evidence.",
+        "expectedResult": "The shell remains unavailable under current FUTURE/default-hidden state; only a separate explicit release decision can make it eligible for implementation/activation.",
+        "testName": "Production operations shell remains hidden until authorization and release evidence are complete",
+        "testFileOrProcedureId": "PLANNED:scripts/check-release-gate.test.mjs::Production operations shell remains hidden until authorization and release evidence are complete",
+        "fixtures": "Isolated synthetic route/config/evidence manifests with hash comparison against canonical state.",
+        "negativeCase": "Client flag or screenshot alone activates UI/API, missing one gate still passes, or canonical status/data changes -> fail.",
+        "failureCase": "Malformed, stale or incomplete gate evidence remains denied; no external host/config action is attempted.",
+        "evidenceArtifact": "Exact-SHA gate output, canonical state hashes, zero-route/request assertions and redacted gate reasons.",
+        "reviewer": "Security and Release QA",
+        "releaseGate": "ADMIN_OPS_FUTURE_ACTIVATION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-102-AC1": [
+      {
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "A future recruiter shell component is rendered only after CS-104 defines server-side route/role denial and separately approved child data contracts; test uses synthetic principals and no live candidate data.",
+        "setup": "Mount the reusable shell with a synthetic authorized recruiter view model supplied by the future approved server contract, then a separate explicit unavailable model. Keep every child screen response empty/unavailable; do not create route/API fields in the test fixture that the contract has not defined.",
+        "procedure": "Assert shell navigation labels and frame match only the authorized CS-102 shell subset; data regions render explicit empty/unavailable state when child data is absent and render only fields supplied by the authorized server view model. Compare visible text against a forbidden-illustration sentinel set derived from the recruiter reference; assert zero sample candidate/company/count/status values are rendered.",
+        "assertion": "The shell consumes only the approved server view model, and absent child data remains explicitly unavailable rather than being filled from the board.",
+        "expectedResult": "No recruiter identity, candidate field, count, match score, status or child-route result is fabricated in either supplied view model.",
+        "testName": "Recruiter shell renders only authorized shell state and explicit unavailable child content",
+        "testFileOrProcedureId": "PLANNED:apps/web/src/features/recruiter/recruiter-shell.test.tsx::Recruiter shell renders only authorized shell state and explicit unavailable child content",
+        "fixtures": "Synthetic recruiter shell view model from the future approved contract plus empty/unavailable child states and illustration sentinels; no real personal data.",
+        "negativeCase": "Rendering any reference-board sample identity, match value, company, count or status, or inferring a child route/data value not present in the approved view model fails.",
+        "evidenceArtifact": "Exact-SHA component test output, sanitized fixture schema, rendered-text assertion report and reviewed reference subset/hash.",
+        "reviewer": "Frontend QA and Product reviewer",
+        "releaseGate": "RECRUITER_SHELL_SOURCE_STATE_PARITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-102-AC2": [
+      {
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Recruiter frame is not implemented; perform this procedure before implementation acceptance, not as a claim of current visual parity.",
+        "setup": "Present UX/product with `design/canonical/recruiter/careerscope-recruiter-workspace-reference-board.png`, the design index assigning the FUTURE stage/board to CS-102 and the 16 child screen IDs assigned to CS-177–CS-192.",
+        "procedure": "Record the exact navigation/frame crop owned by CS-102; identify which inner panels are owned by child tickets; approve the mobile navigation state, 1440px-class reference viewport, one mobile viewport, screenshot tool/browser versions, minimal dynamic masks and a numeric image-difference threshold before any screenshot comparison.",
+        "assertion": "A revision-bound UX/product decision names one shell crop, separates child-screen content, defines desktop/mobile viewports and sets a numeric tolerance; no decision is inferred from the uncropped board.",
+        "expectedResult": "CS-102 visual comparison has a reproducible shell-only target and does not absorb CS-177–CS-192 screens.",
+        "testName": "UX approves recruiter shell crop mobile state and visual threshold",
+        "testFileOrProcedureId": "MANUAL_REQUIRED:MANUAL-UX-CS102-AC2",
+        "fixtures": "Canonical board hash, design index mappings and a redacted decision template; no synthetic values copied into production.",
+        "negativeCase": "No approved crop/mobile state/tolerance, mixed child ownership or a screenshot containing hard-coded sample content keeps visual acceptance blocked.",
+        "evidenceArtifact": "Signed/revision-bound panel ownership, viewport, threshold and excluded-content decision.",
+        "reviewer": "Product owner and UX reviewer",
+        "releaseGate": "RECRUITER_SHELL_VISUAL_SCOPE",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "A shell-only design crop/mobile reference and numeric tolerance have been approved under MANUAL-UX-CS102-AC2 and the reusable shell is implemented behind its released authorization gate.",
+        "setup": "Hash the approved shell crop; run the exact desktop and mobile CSS viewports with deterministic synthetic shell state and no candidate-specific or illustrative content.",
+        "procedure": "Capture the shell in Chromium, Firefox and WebKit; compute the registered image-diff percentage against the approved crop, applying only the explicitly approved masks. Record each browser/version/viewport/hash/diff. Assert the measured percentage for each approved capture is less than or equal to the previously approved numeric threshold.",
+        "assertion": "All required engines and viewports pass the pre-approved numeric shell-only tolerance; unavailable engines, missing references or unbounded masks are NOT_RUN/fail, never pass.",
+        "expectedResult": "Visual result is reproducible, bounded to CS-102 chrome/navigation, and does not claim parity for child screens.",
+        "testName": "Recruiter shell cross-browser desktop and mobile screenshots meet approved tolerance",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/recruiter-shell.visual.spec.ts::Recruiter shell cross-browser desktop and mobile screenshots meet approved tolerance",
+        "fixtures": "Approved shell reference/hash, synthetic empty state, browser/version manifest, viewport manifest and approved masks/threshold.",
+        "negativeCase": "Any engine/viewport above tolerance, unauthorized mask, sample content, missing reference or captured child page outside scope fails.",
+        "evidenceArtifact": "Per-engine screenshots/diffs, measured percentages, reference/implementation SHA, viewport and UX threshold receipt.",
+        "reviewer": "Visual QA reviewer",
+        "releaseGate": "RECRUITER_SHELL_VISUAL_REGRESSION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-102-AC3": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Run in an isolated future implementation environment only after CS-104 defines the recruiter route and denial envelope; fixture principals and candidate consent grants are synthetic.",
+        "setup": "Prepare no-session, candidate-role, recruiter-without-current-consent, recruiter-with-revoked-consent, authorized recruiter/current-consent, permission-resolution-pending, permission-lookup-failed, and candidate-data-lookup-failed fixtures; keep all candidate records synthetic and instrument server repository reads, response fields, cache writes, and state announcements.",
+        "procedure": "For no-session, wrong role, absent/revoked/unknown consent and out-of-scope candidate, call the exact route from the finalized CS-104 matrix and assert its specified denial result, zero candidate repository reads, zero candidate fields in HTML/API response and no candidate cache entry. While permission resolution is pending, assert no candidate request/content is exposed and navigation is non-actionable or shows the contract-defined pending state. On permission lookup failure or candidate-data lookup error, assert the contract-defined safe unavailable/error response, no candidate fields or cache write, and an announced non-sensitive state; do not turn an error into an empty success. For the authorized fixture assert only explicitly consented fields are returned. Assert navigation visibility changes alone do not alter the direct-request result.",
+        "assertion": "The server denies absent/stale/revoked/out-of-scope authorization before reading candidate data; authorized reads are limited to consented fields.",
+        "expectedResult": "Unauthorized requests disclose no candidate data; UI visibility is not an authorization control.",
+        "testName": "Recruiter shell authorization and consent denial occur before candidate data reads",
+        "testFileOrProcedureId": "PLANNED:apps/api/tests/recruiter-shell-authorization.integration.test.ts::Recruiter shell authorization and consent denial occur before candidate data reads",
+        "fixtures": "Synthetic session, role, consent-revision and candidate fixtures; repository read counter and cache sentinel.",
+        "negativeCase": "Any candidate row read or field returned before authorization, after consent withdrawal, or due solely to visible navigation fails.",
+        "evidenceArtifact": "Exact-SHA integration output, request/response field allowlist and repository/cache counter results with synthetic identifiers only.",
+        "reviewer": "Security and API reviewer",
+        "releaseGate": "RECRUITER_AUTHORIZATION_CONSENT_ISOLATION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Only the separately authorized shell is rendered with synthetic state; no candidate data or child business actions are required.",
+        "setup": "Exercise expanded/collapsed navigation at approved desktop and mobile viewports, current-page state, pending permission/session resolution, empty authorized child destinations, permission/data lookup errors, unavailable child destinations and permission-denied/expired-session states.",
+        "procedure": "Run axe plus keyboard traversal. Assert navigation landmark and each available link have accessible names, current page is programmatically identified, focus is visible and ordered, mobile disclosure can be opened/closed by keyboard and touch, pending permission resolution is announced without exposing or making candidate destinations actionable, empty state is distinct from permission/data lookup failure, and error/unavailable/denied/expired states are announced without candidate details. No unauthorized child action is focusable. Record stale-revision as NOT_APPLICABLE because this shell introduces no mutation contract.",
+        "assertion": "Every rendered shell navigation control is accessible and only authorized destinations are interactive; absent features do not create dead active controls.",
+        "expectedResult": "Automated results cover rendered navigation only and do not claim human screen-reader acceptance.",
+        "testName": "Recruiter shell navigation exposes accessible authorized and unavailable states",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/recruiter-shell.accessibility.spec.ts::Recruiter shell navigation exposes accessible authorized and unavailable states",
+        "fixtures": "Synthetic authorization matrix, empty child state, approved nav model and viewport set.",
+        "negativeCase": "Unnamed/dead link, hidden focus, color-only status, inaccessible mobile control or unauthorized focusable destination fails.",
+        "evidenceArtifact": "Exact-SHA axe/keyboard output, tested state/viewport list and explicit stale-revision N/A contract reference.",
+        "reviewer": "Accessibility QA reviewer",
+        "releaseGate": "RECRUITER_SHELL_NAV_ACCESSIBILITY",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      },
+      {
+        "type": "MANUAL_ACCESSIBILITY",
+        "preconditions": "The authorized shell and mobile navigation are implemented in a non-production test build and use only synthetic state.",
+        "setup": "Record exact build SHA, OS, browser, NVDA or VoiceOver version; include permission/session pending, authorized-empty, permission/data lookup error, unavailable, unauthorized and expired-session navigation states.",
+        "procedure": "Navigate the shell using keyboard and screen reader. Confirm navigation landmark/name and current-page announcement; pending permission is announced while candidate content/destinations remain unavailable; empty differs from failed lookup; error/unavailable/denied/expired states are announced without candidate details; focus order and disclosure behavior remain operable; no candidate identity/content is exposed without authorization. Record actual spoken output and defects; do not treat axe as human acceptance.",
+        "assertion": "A human can navigate the shell and distinguish authorized destinations from unavailable/denied states without access to unauthorized candidate information.",
+        "expectedResult": "Manual AT judgment is separately recorded for the exact tested build and browser/OS.",
+        "testName": "NVDA or VoiceOver smoke test for recruiter shell navigation and denial states",
+        "testFileOrProcedureId": "MANUAL_REQUIRED:MANUAL-AT-CS102-AC3",
+        "fixtures": "Synthetic shell/auth matrix and a non-production build; no real recruiter or candidate account.",
+        "negativeCase": "Lost focus, ambiguous navigation, unannounced denial or unauthorized candidate content fails.",
+        "evidenceArtifact": "Human tester, exact build SHA, AT/browser/OS versions, state results and redacted defect reference.",
+        "reviewer": "Human accessibility tester",
+        "releaseGate": "RECRUITER_SHELL_MANUAL_ACCESSIBILITY",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-102-AC4": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Current canonical registry is BACKLOG/FUTURE; run a local config/route/feature-policy test with `stage_9_enabled` proposed metadata and no production secrets or infrastructure.",
+        "setup": "Inspect route registry, navigation configuration, default feature settings and API authorization registration; create an isolated test variation that changes only the proposed client-visible metadata, not server authorization.",
+        "procedure": "Assert the current/default state exposes no active recruiter route/navigation/API capability; assert changing a client-side or catalog value named `stage_9_enabled` alone cannot register a route, grant recruiter permission, create a consent decision or return candidate data. Assert the gate checker requires the independently approved CS-104 route/release/role/permission contract plus separate approved candidate-consent/data contracts before accepting any future activation, and fails closed when any evidence is absent.",
+        "assertion": "FUTURE is preserved and neither design nor proposed flag metadata can activate recruiter access without server-enforced authorization and explicit release evidence.",
+        "expectedResult": "No route is created, flag is not treated as live, no candidate data/API call occurs, and CS-102 remains FUTURE absent an independent authorized release.",
+        "testName": "Recruiter shell stays unavailable until server permission consent and release gates are approved",
+        "testFileOrProcedureId": "PLANNED:scripts/recruiter-shell-release-gate.test.mjs::Recruiter shell stays unavailable until server permission consent and release gates are approved",
+        "fixtures": "Synthetic route/config/permission state, policy evidence manifest and test-only candidate data sentinel.",
+        "negativeCase": "Visible recruiter shell, direct-route access, API response or candidate data when only design/metadata/client state changes must fail; absent/expired consent or missing release evidence must remain denied.",
+        "evidenceArtifact": "Exact-SHA positive/negative release-gate output, checked source list, route registry result and zero data-read assertions.",
+        "reviewer": "Security and Release QA reviewer",
+        "releaseGate": "RECRUITER_FUTURE_RELEASE_AUTHORIZATION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-100-AC1": [{"reviewer":"Product, Security and QA reviewers","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_COMPONENT","preconditions":"Current runtime has no connected-account API or route and CS-100 remains BACKLOG/HOLD. Run this planned component test only in a separately authorized future implementation; proposed `stage_7_enabled` metadata is not treated as a runtime flag.","setup":"Inspect current route/API/schema registries to establish the absent baseline; mount the future candidate overview component with two synthetic owner-scoped view-model fixtures: one explicitly unavailable because no approved API contract exists and one whose values are marked as returned by the separately approved API contract.","fixtureOrData":"Synthetic typed view-models with neutral values and explicit provenance labels only; no provider accounts, logos, identities, statuses, timestamps, counts, tokens or real owner data.","action":"Render the unavailable fixture and API-backed fixture independently, then inspect visible text, accessible names and component inputs.","procedure":"Assert the unavailable fixture produces an explicit empty/unavailable state and does not render fabricated provider/account details. Assert the API-backed fixture renders only the exact supplied fields and does not infer connected, consented or synchronized status from provider name or local browser state. Separately inventory current source and assert no CS-100 route, API, provider call or persistence exists at the current HOLD baseline.","assertion":"For an authorized future shell, content is either from the approved server contract or explicitly unavailable; the current implementation remains absent under HOLD.","expectedResult":"No board illustration is used as product data, no new endpoint or route is inferred, and current HOLD produces zero provider side effects.","testName":"Connected accounts overview renders only supplied server state or explicit unavailable state","testFileOrProcedureId":"PLANNED:apps/web/src/features/connected-accounts/connected-accounts-list.test.tsx::Connected accounts overview renders only supplied server state or explicit unavailable state","fixtures":"Two isolated synthetic view models (API-backed and unavailable) plus current route/API/schema inventory.","negativeCase":"Any hard-coded sample identity/status/count, local-state-derived connection claim, unapproved route/API, provider call, persistence write or private-field leak fails.","failureCase":"If no authorized component/API contract exists, record the future rendered test as not yet executable and keep runtime capability absent; do not fabricate an empty account row.","evidenceArtifact":"Future test output and fixture provenance plus current source inventory showing no registered capability; no production screenshot or provider data.","releaseGate":"CONNECTED_ACCOUNTS_SOURCE_STATE_PARITY","repositoryCommand":"Planned component test; current HOLD source inventory is read-only"}],
+    "CS-100-AC2": [{"reviewer":"UX and Visual QA reviewers","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"VISUAL_REGRESSION","preconditions":"CS-100 remains HOLD. Run only after a separately authorized candidate overview implementation and UX has accepted the exact baseline and pass tolerance; no admin surface is in this ticket.","setup":"Use `design/01-IMPLEMENTATION-ORDER/07-connectors-connected-accounts/01-01-connected-accounts-user.png` for the candidate desktop overview and `08-08-mobile-connected-accounts.png` for its mobile list variant; record the canonical board asset SHA-256, 1440px and 390px viewport, browser/tool versions, pre-agreed tolerance and a mask manifest before capture.","fixtureOrData":"Reference crops and neutral unavailable-state fixture only; all names, provider logos, statuses, identities, counts and times visible in design artwork are illustrative and excluded from app data.","action":"Capture the candidate overview in Chromium, Firefox and WebKit at 1440px and 390px, and run the existing repository visual diff tooling without changing baselines or thresholds.","procedure":"For each browser/viewport attach the exact source crop, output image and diff. Record pixelmatch per-pixel threshold, total mismatched-pixel ratio and the UX-approved maximum; mask only unavoidable time/random regions and never layout, text, focus, status or controls. Fail when any comparison exceeds the pre-recorded limit, a browser/viewport is absent, the wrong panel is used, or the image contains sample account data. There is no numeric maximum approved in current source, so a future UX acceptance must supply it before execution; do not report a pass before then.","assertion":"The candidate overview and mobile list are compared to exact source panels on the required engine/viewport matrix under an explicitly approved deterministic tolerance, without treating illustrative content as product truth.","expectedResult":"All required comparisons have reproducible inputs and a recorded accepted tolerance; missing approval or any failed comparison leaves the visual gate open and HOLD unchanged.","testName":"Connected accounts candidate overview matches approved desktop and mobile references across engines","testFileOrProcedureId":"PLANNED:apps/web/tests/connected-accounts-hold.visual.spec.ts::Connected accounts candidate overview matches approved desktop and mobile references across engines","fixtures":"Canonical panel 01/panel 08 assets and neutral synthetic unavailable state.","negativeCase":"Missing UX tolerance, wrong crop, omitted engine/viewport, broad mask, sample data or threshold alteration after capture fails.","failureCase":"If candidate implementation/reference state is not authorized, keep the visual procedure PLANNED; do not capture a synthetic production-like screen or force a baseline update.","evidenceArtifact":"Reference and rendered hashes, browser/version/viewport matrix, raw diff/mismatch ratios, approved tolerance and signed UX disposition.","releaseGate":"CONNECTED_ACCOUNTS_DESIGN_ACCEPTANCE","repositoryCommand":"Planned three-engine visual regression plus manual UX review"}],
+    "CS-100-AC3": [{"reviewer":"Accessibility, Security and QA reviewers","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_ACCESSIBILITY","preconditions":"No connected-account UI currently exists and CS-100 remains BACKLOG/HOLD. Run only for a separately authorized candidate shell with synthetic sessions and no provider credentials.","setup":"Prepare candidate-only pending, empty, API-unavailable, network-error, unauthorized and expired-session fixtures only where their semantics are defined by the approved API/session contract; stale-revision is included only if that contract defines revisions. Initialize axe, keyboard and DOM/network/storage sentinels.","fixtureOrData":"Synthetic state responses and role permissions only; no real identity, provider payload, token or account history. No admin-state fixture is in scope for this parent ticket.","action":"Run axe and keyboard traversal on each supported future state and inspect rendered text, focus order, announcements, browser storage and network requests.","procedure":"Assert empty results are distinct from network/API failure; unauthorized and expired responses reveal no account detail; pending and unavailable states expose meaningful status text; focus remains visible and all implemented controls have accessible names and keyboard operation; status is not color-only; no token/provider payload enters browser storage or logs. Do not test stale-revision behavior absent a real approved revision contract. Confirm current source still has no active CS-100 UI/provider call/write under HOLD.","assertion":"Every implemented future state is accessible and privacy-safe, unsupported states are not fabricated, and this ticket currently activates no capability.","expectedResult":"Future automated accessibility checks are planned, not passed; current HOLD has no user-facing integration action and no private connection state.","testName":"Connected accounts candidate states expose accessible privacy-safe pending empty error and denial behavior","testFileOrProcedureId":"PLANNED:apps/web/tests/connected-accounts-hold.a11y.spec.ts::Connected accounts candidate states expose accessible privacy-safe pending empty error and denial behavior","fixtures":"Synthetic candidate session/state fixtures, axe and browser storage/network sentinels.","negativeCase":"Private detail after unauthorized/expired, missing announcement, color-only status, inaccessible control, unexpected provider request, token persistence, sample status or invented stale state fails.","failureCase":"If no authorized shell or supported API state exists, keep UI absent and defer the future state assertion; do not claim accessibility coverage of absent UI.","evidenceArtifact":"Exact-SHA axe/keyboard output, redacted DOM/network/storage summary and separate human screen-reader checklist.","releaseGate":"CONNECTED_ACCOUNTS_ACCESSIBILITY_PRIVACY","repositoryCommand":"Planned browser axe/keyboard/security test"},{"reviewer":"Manual accessibility reviewer using NVDA on Windows or VoiceOver on macOS","testStatus":"MANUAL_REQUIRED","reviewStatus":"REVIEWED","type":"MANUAL_ACCESSIBILITY","preconditions":"A candidate shell has explicit implementation authorization and is rendered in the selected supported desktop browser with a separate mobile verification plan; current production contains no connected-account UI.","setup":"Record OS, screen-reader/browser/version, test build SHA, candidate role, route/component entry, fixture provenance and whether the state is pending, empty, unavailable, error or denied. Use only sanitized synthetic view models; no provider account or real user data.","fixtureOrData":"Synthetic candidate fixtures for a pending list, empty list and unavailable/error/unauthorized states supported by the approved API contract. Never use the illustrative reference-board identity or status values.","action":"Using only the screen reader and keyboard, navigate from the containing Settings context into the Connected Accounts overview, inspect the heading and list/status, traverse each actionable item (if authorized and implemented), and recover from the explicit unavailable/error state.","procedure":"Verify landmark/heading order announces Settings then Connected Accounts without an invented route claim; each account/status item has a unique accessible name and textual state derived from server data; pending/empty/unavailable/error/denied status is announced once and does not disclose account details when unauthorized; focus is visible, ordered and restored after any approved dialog; Tab/Shift+Tab and Escape behave as specified for implemented controls; no disabled/HOLD control is actionable. Record actual speech/keyboard result, defects and exact SHA; mark unsupported states N/A with the contract citation rather than passing them.","assertion":"A human screen-reader reviewer can complete the overview/status and failure-state tasks without inaccessible focus, ambiguous status, private-data disclosure or activation of a held action.","expectedResult":"Dated, revision-bound manual result with pass/fail per task; this procedure is not executed during specification work and absence of UI remains no evidence.","testName":"MANUAL-CS100-AC3-AT-01 Connected Accounts candidate overview AT smoke","testFileOrProcedureId":"MANUAL-CS100-AC3-AT-01","fixtures":"Synthetic candidate state matrix and approved screen reference only.","negativeCase":"Any unannounced state, ambiguous control name, keyboard trap, lost focus, private account detail on denial or actionable held control fails.","failureCase":"If screen-reader/browser environment, approved route or UI is unavailable, record BLOCKED/NOT RUN and preserve HOLD; never substitute axe or source inspection for manual AT evidence.","evidenceArtifact":"Redacted task sheet with tool/browser/OS versions, exact SHA, per-task outcomes and defect references; no speech recordings or PII.","releaseGate":"CONNECTED_ACCOUNTS_MANUAL_ACCESSIBILITY","repositoryCommand":"Human NVDA or VoiceOver procedure; no automated pass claimed"}],
+    "CS-100-AC4": [{"reviewer":"Release QA and Security reviewers","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_SECURITY","preconditions":"Release checker runs only against an isolated synthetic ticket/config fixture; no production credential or deploy action is available.","setup":"Create isolated cases for no registered capability/no authorization, explicit synthetic future authorization with incomplete gates, and complete synthetic future evidence; record canonical backlog/flag hashes.","fixtureOrData":"Temporary synthetic release manifest and config; never alter canonical workflow, feature flag or production environment.","action":"Evaluate the held integration-shell release gate for each isolated evidence case.","procedure":"Assert absent capability or missing provider/product/design, privacy/security, a11y or exact-SHA CI evidence; if an isolated fixture adds privileged admin data/actions, missing CS-40 RBAC authorization keeps the fixture blocked; full synthetic evidence may qualify only the isolated fixture. Assert canonical ticket remains R2/R3 HOLD, proposed flag metadata is not presented as live configuration, BACKLOG status unchanged and no provider call, deployment or tag occurs.","assertion":"Visual design or specification completion alone cannot activate the integration shell; all declared authorization/acceptance gates are required.","expectedResult":"CS-100 remains held until separately approved future implementation and release evidence exists.","testName":"Connected account release gate preserves HOLD until all scoped authorization evidence exists","testFileOrProcedureId":"PLANNED:scripts/check-release-gate.test.mjs::Connected account release gate preserves HOLD until all scoped authorization evidence exists","fixtures":"Isolated ticket/config copies and synthetic evidence manifest.","negativeCase":"Gate passes with missing owner/provider/design/accessibility/exact-SHA evidence, or with missing CS-40 RBAC evidence when the isolated fixture includes privileged admin data/actions, or mutates canonical files -> fail.","failureCase":"Malformed or stale evidence remains blocked; restore only the validated temporary fixture and verify canonical hashes are unchanged.","evidenceArtifact":"Gate result, fixture hashes, canonical source hash equality and proposed default-off metadata assertion.","releaseGate":"CONNECTED_ACCOUNTS_RELEASE_AUTHORIZATION","repositoryCommand":"Planned isolated release-gate test; never a production release"}],
     "CS-99-AC1": [{"reviewer":"Product owner and Security reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_SECURITY","preconditions":"Default configuration with `stage_6_enabled=false`; no provider credentials or candidate learning data present.","setup":"Inspect Next.js route/navigation, feature-flag config, API registry, provider adapters and database schema for active learning or credential capability.","fixtureOrData":"Source inventory and synthetic test-only principal; no provider account or credential data.","action":"Attempt public navigation/direct route and endpoint access to any candidate learning/certificate surface with the feature disabled.","procedure":"Assert no active course/credential CTA, API, provider call, enrollment/progress/certificate persistence or credential-verification claim is exposed. Any disabled route follows the existing fail-closed permission contract; there are zero provider calls and zero writes. Keep source flag default false and release state HOLD/R2.","assertion":"The currently held capability is not rendered or activated under default configuration.","expectedResult":"Design remains future reference and no learning/certification product behavior is represented as live.","testName":"Learning and credential HOLD prevents route provider and persistence activation by default","testFileOrProcedureId":"PLANNED:apps/web/tests/learning-hold.spec.ts::Learning and credential HOLD prevents route provider and persistence activation by default","fixtures":"Default config, provider-call spy and isolated DB write counter.","negativeCase":"Visible enabled feature, provider request, enrollment write, progress value or verified badge fails.","failureCase":"Direct-route policy unclear remains blocked; do not invent access behavior or substitute a fake page.","evidenceArtifact":"Exact-SHA route/API/schema inventory, rendered assertions and zero-call/write counters.","releaseGate":"LEARNING_HOLD_ENFORCEMENT","repositoryCommand":"Planned API/browser tests with default-off configuration"}],
     "CS-99-AC2": [{"reviewer":"UX and Visual QA reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"VISUAL_REGRESSION","preconditions":"Any future shell has separate implementation authorization; exact R2 reference revision and approved viewport are recorded.","setup":"Identify in-scope panels from the future course/certifications board; use neutral empty/unavailable state and no sample course/provider/certificate content.","fixtureOrData":"Reference hash and neutral shell fixtures only; no invented catalog values, provider marks or credential data.","action":"Compare only authorized shell subset at 1440px-class desktop and approved mobile in Chromium, Firefox and WebKit.","procedure":"Record viewport/browser/tool version, deterministic threshold and minimal masks; assert no illustrative provider logo, certification, course count, rating, completion status or candidate data is rendered. If no approved mobile reference exists, document the gap and do not invent a layout. Require UX approval separate from pixel diff.","assertion":"Visual results cover an approved subset only; future capability imagery does not imply implementation or accreditation.","expectedResult":"Every active screen is backed by approved reference and no unsupported provider/credential claim is visible.","testName":"Learning shell visual review excludes illustrative provider courses and credential claims","testFileOrProcedureId":"PLANNED:apps/web/tests/learning-hold.visual.spec.ts::Learning shell visual review excludes illustrative provider courses and credential claims","fixtures":"Canonical future board reference and neutral shell.","negativeCase":"Unapproved screen, sample certificate/provider data, missing viewport or unbounded mask fails.","failureCase":"Missing approved responsive state remains HOLD, not a reason to design from scratch.","evidenceArtifact":"Panel scope, baseline hashes, per-engine diffs and human approval record.","releaseGate":"LEARNING_DESIGN_SCOPE_ACCEPTANCE","repositoryCommand":"Future visual suite after authorized implementation"}],
     "CS-99-AC3": [{"reviewer":"Accessibility QA and Privacy/Security reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_ACCESSIBILITY","preconditions":"Only separately approved shell UI is rendered with synthetic candidate and provider fixtures; no actual credentials/progress data.","setup":"Exercise flag-off/unavailable state and any authorized future list/card/status interaction at supported viewports.","fixtureOrData":"Synthetic state fixture, no provider token or real candidate records.","action":"Run axe and keyboard traversal; inspect DOM/network/storage for provider, credential and personal data.","procedure":"Assert held/unavailable state has accessible text and no active enrollment action; navigation and any approved controls have labels, visible focus and keyboard operation; provider/credential status is not communicated by color alone; no credential/token or user data appears in logs, storage or metadata. Unauthorized/expired sessions expose no private information; stale revisions apply only to a separately defined contract. Manual screen-reader review remains future requirement.","assertion":"Applicable UI is operable and privacy-safe, while absent states are not fabricated as tested.","expectedResult":"Automated accessibility/security checks cover only implemented approved shell; external provider behavior remains unverified.","testName":"Held learning shell exposes no credential data and accessible disabled state","testFileOrProcedureId":"PLANNED:apps/web/tests/learning-hold.a11y.spec.ts::Held learning shell exposes no credential data and accessible disabled state","fixtures":"Synthetic feature flag, session and privacy sentinels.","negativeCase":"Credential disclosure, misleading verified status, inaccessible control, active action while held or unauthorized data render fails.","failureCase":"No shell yet: record N/A for rendered UI and preserve future manual AT gate.","evidenceArtifact":"Exact-SHA axe/keyboard report and DOM/network/storage sentinel results.","releaseGate":"LEARNING_HOLD_PRIVACY_ACCESSIBILITY","repositoryCommand":"Future component/accessibility/security suite"}],
@@ -4214,9 +5036,9 @@
     "CS-37-AC1": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.","setup":"Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC1 procedure.","fixtureOrData":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","action":"Run npm run test:integration and inspect the named CS-37-AC1 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/web/tests/profile-resume-review.spec.ts::CS-37-AC1","assertion":"O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; only explicit save increments the revision and changes matching inputs","expectedResult":"O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; only explicit save increments the revision and changes matching inputs","testName":"CS-37-AC1 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC1","fixtures":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","negativeCase":"missing fixture, unauthorized owner, or absent dependency must refuse without mutation","evidenceArtifact":"Future CS-37-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-37-AC1-RELEASE-GATE"}],
     "CS-37-AC2": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.","setup":"Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC2 procedure.","fixtureOrData":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","action":"Run npm run test:integration and inspect the named CS-37-AC2 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/web/tests/profile-resume-review.spec.ts::CS-37-AC2","assertion":"stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state","expectedResult":"stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state","testName":"CS-37-AC2 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC2","fixtures":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","negativeCase":"stale, unavailable, malformed, or conflicting input must produce the named safe failure","evidenceArtifact":"Future CS-37-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-37-AC2-RELEASE-GATE"}],
     "CS-37-AC3": [{"reviewer":"QA / ticket owner","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_CONTRACT","preconditions":"Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.","setup":"Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC3 procedure.","fixtureOrData":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","action":"Run npm run test:integration and inspect the named CS-37-AC3 procedure output.","repositoryCommand":"npm run test:integration","procedure":"apps/web/tests/profile-resume-review.spec.ts::CS-37-AC3","assertion":"cancellation remains disabled unless the existing capability is present; keyboard/mobile flow completes for O1 and O2 receives no O1 profile/resume data","expectedResult":"cancellation remains disabled unless the existing capability is present; keyboard/mobile flow completes for O1 and O2 receives no O1 profile/resume data","testName":"CS-37-AC3 exact verification","testFileOrProcedureId":"PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC3","fixtures":"O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2","negativeCase":"duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op","evidenceArtifact":"Future CS-37-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.","releaseGate":"CS-37-AC3-RELEASE-GATE"}],
-"CS-80-AC1": [{"reviewer":"QA / repository-integrity reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"MANUAL_OPERATOR","preconditions":"Use the current local feature branch and inspect it read-only before any staging or commit; preserve unrelated/user work.","setup":"Record branch and HEAD; enumerate tracked modifications and untracked files with git status --short and git diff --name-only; classify every path against the expressly named Phase 3.25 scope.","fixtureOrData":"Current repository metadata and synthetic test fixtures only; no environment files, resumes, database files, credentials, runtime data, or private user content.","action":"Review the complete path manifest and diff, then verify the named review scope has a versioned baseline at the authorized checkpoint without altering the workflow registry.","procedure":"For each in-scope path, compare the proposed content against HEAD and the owner-authorized path manifest; after any separately authorized checkpoint, verify git ls-tree resolves each intended path and git diff --exit-code HEAD reports no unexplained remaining change.","assertion":"Every file claimed as reviewed is present in the authorized baseline; no unrelated path is included, and no workflow status or Phase 3 migration evidence changes.","expectedResult":"A reviewer can reproduce a complete path-level before/after comparison for the named scope; any missing baseline or extra path prevents closure.","testName":"CS-80-AC1 path baseline and scope check","testFileOrProcedureId":"MANUAL-CS80-AC1","fixtures":"No application data; repository paths only.","negativeCase":"An untracked file, unexplained modified file, path outside the named scope, or unresolved diff makes the result FAIL rather than an empty/success result.","failureCase":"A path outside the exact owner-authorized total checkpoint scope, an unexplained untracked/modified path, or a generated-output path outside the rolling manifest fails. Authored policy/scripts/tests/docs within the explicitly named Phase 3.25 task scope are reviewed separately and are not required to belong to generated-output roots/classes.","evidenceArtifact":"Redacted path manifest, starting/final SHA, `git status --short`, `git diff --check` and post-checkpoint tree comparison; never include file contents containing secrets or private data.","repositoryCommand":"git status --short; git diff --name-only; git diff --check","releaseGate":"CS-80-AC1-RELEASE-GATE"}],
-    "CS-80-AC2": [{"reviewer":"Repository owner and independent policy reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"MANUAL_PRODUCT","preconditions":"The current task expressly names the Phase 3.25 branch and checkpoint commit/push scope; confirm no higher-level branch or security prohibition applies.","setup":"Retain the current task authorization and compare its exact branch, actions and path scope with .github/copilot-instructions.md, the CS-80 source criterion and the proposed path manifest.","fixtureOrData":"Owner authorization text and the exact path manifest only; no credentials, user data, generated runtime output, or production state.","action":"Verify the owner decision OD-2026-10-07-CS80-AC3-V2 authorizes only the controlled rolling generated-artifact manifest on phase-3.25/cloud-continuation, and verify the current user instruction separately authorizes only branch-local commit/push after checks; main integration, merge and deployment remain unauthorized.","procedure":"Record the explicitly authorized branch-local actions and exclusions, then compare the complete changed-path set with the exact Phase 3.25 task scope. Partition it into authored source inputs/tooling/tests/docs and generator-owned outputs. Review every authored path for task necessity and inspect its diff; validate only the generated-output subset against OD-2026-10-07-CS80-AC3-V2 roots/classes, source derivation, predecessor/hash chain and added/removed/unchanged manifest. Stop for any unclassified/extra path, prohibited content, or attempted main integration/merge/deploy.","assertion":"The owner explicitly authorizes the named branch-local checkpoint actions; every changed path is within the named task scope, and only generated outputs are constrained by the rolling generated-artifact roots/classes. Main integration and shipping remain unauthorized.","expectedResult":"The exact total checkpoint path set is reviewed and task-scoped; its generated-output subset independently satisfies the rolling manifest policy. No main integration permission is inferred.","testName":"CS-80-AC2 verifies branch-scoped owner authorization and rolling manifest policy","testFileOrProcedureId":"MANUAL-CS80-AC2","fixtures":"Task authorization and repository policy text; no external/production data.","negativeCase":"Missing target branch, implicit authorization, broad scope, disallowed path, or a generated artifact excluded only by assertion fails closed.","failureCase":"Missing or ambiguous branch/action authorization, any unrelated/unclassified total path, invalid generated-output manifest, privacy violation, or attempted main integration/deployment blocks the checkpoint.","evidenceArtifact":"Redacted authorization scope record plus reviewed policy references and disposition; no secrets or unrelated conversation content.","repositoryCommand":"Read-only review of .github/copilot-instructions.md and CS-80 source criterion","releaseGate":"CS-80-AC2-RELEASE-GATE"}],
-    "CS-80-AC3": [{"reviewer":"Security / repository-integrity reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_SECURITY","preconditions":"Before staging, with the current repository state preserved; checks must not print secret values or scan private runtime data into logs.","setup":"Run the repository privacy/publication checks and inspect the exact rolling manifest against immutable base commit and prior manifest hash. Confirm every output is generator-owned, derived from approved source-controlled Phase 3.25 inputs, required for specification/catalog/traceability/review/handoff, and belongs to the existing docs/tickets, .ai catalog or docs/PHASE-3-25 report roots/classes. Classify every added, removed, changed and unchanged path; reject secrets, personal data, runtime/provider/user data, logs, caches, build output and unrelated files.","fixtureOrData":"Synthetic repository fixtures and path names only; no real credentials, resumes, database files, auth sessions, environment files or user data.","action":"Run `npm run privacy:test`, `npm run privacy:check`, and the focused Pages publication guard; regenerate twice and require the second run to make zero changes; inspect the exact branch, manifest delta, full diff and ignore/publication rules without staging until each path is classified.","procedure":"Require all privacy and publication checks to exit zero. Verify the generated manifest's predecessor/hash chain, exact path inventory, class/root ownership and delta; confirm the second generation has zero changes; inspect every changed path and diff for private/secret/runtime content without printing sensitive values; verify excluded classes remain excluded and no main integration/deploy artifact appears. A scanner pass does not replace path/diff review.","assertion":"Only source-derived, deterministic generator outputs within an already represented root/class and required for Phase 3.25 evidence may enter the branch checkpoint; prohibited or unclassified content is absent.","expectedResult":"The rolling manifest is internally consistent and exactly describes eligible generated outputs; all exclusions remain enforced; the branch-local checkpoint is safe to review, while main integration remains unauthorized.","testName":"CS-80-AC3 validates the rolling manifest and rejects sensitive or out-of-scope artifacts","testFileOrProcedureId":"MANUAL-CS80-AC3-ROLLING-MANIFEST","fixtures":"Synthetic path-list cases for ignored secrets, runtime artifacts, and intentionally generated catalogs; never include actual secret values.","negativeCase":"A synthetic `.env`, private resume, database/auth material, runtime/log/cache/build artifact, unrelated source path, unknown root/class or changed regeneration output must fail; an allowed generated projection must not be rejected solely because it is generated.","failureCase":"Any failed privacy/publication check, changed second-generation output, invalid predecessor/hash, unknown path/class/root, prohibited data, or unclassified diff blocks checkpointing; the prior fixed 32-path list is not used.","evidenceArtifact":"Test exit summaries, manifest and predecessor hashes, complete path/class delta, redacted path and diff review record, second-generation zero-diff result and exact checkpoint SHA; never include private content.","repositoryCommand":"npm run privacy:test; npm run privacy:check; node --test scripts/stage-pages.test.mjs","releaseGate":"CS-80-AC3-RELEASE-GATE"}],
+"CS-80-AC1": [{"reviewer":"QA / repository-integrity reviewer","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_OPERATOR","preconditions":"Use the current local feature branch and inspect it read-only before any staging or commit; preserve unrelated/user work.","setup":"Record branch and HEAD; enumerate tracked modifications and untracked files with git status --short and git diff --name-only; classify every path against the expressly named Phase 3.25 scope.","fixtureOrData":"Current repository metadata and synthetic test fixtures only; no environment files, resumes, database files, credentials, runtime data, or private user content.","action":"Review the complete path manifest and diff, then verify the named review scope has a versioned baseline at the authorized checkpoint without altering the workflow registry.","procedure":"For each in-scope path, compare the proposed content against HEAD and the owner-authorized path manifest; after any separately authorized checkpoint, verify git ls-tree resolves each intended path and git diff --exit-code HEAD reports no unexplained remaining change.","assertion":"Every file claimed as reviewed is present in the authorized baseline; no unrelated path is included, and no workflow status or Phase 3 migration evidence changes.","expectedResult":"A reviewer can reproduce a complete path-level before/after comparison for the named scope; any missing baseline or extra path prevents closure.","testName":"CS-80-AC1 path baseline and scope check","testFileOrProcedureId":"MANUAL-CS80-AC1","fixtures":"No application data; repository paths only.","negativeCase":"An untracked file, unexplained modified file, path outside the named scope, or unresolved diff makes the result FAIL rather than an empty/success result.","failureCase":"A path outside the exact owner-authorized total checkpoint scope, an unexplained untracked/modified path, or a generated-output path outside the rolling manifest fails. Authored policy/scripts/tests/docs within the explicitly named Phase 3.25 task scope are reviewed separately and are not required to belong to generated-output roots/classes.","evidenceArtifact":"Redacted path manifest, starting/final SHA, `git status --short`, `git diff --check` and post-checkpoint tree comparison; never include file contents containing secrets or private data.","repositoryCommand":"git status --short; git diff --name-only; git diff --check","releaseGate":"CS-80-AC1-RELEASE-GATE"}],
+    "CS-80-AC2": [{"reviewer":"Repository owner and independent policy reviewer","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"MANUAL_PRODUCT","preconditions":"The current task expressly names the Phase 3.25 branch and checkpoint commit/push scope; confirm no higher-level branch or security prohibition applies.","setup":"Retain the current task authorization and compare its exact branch, actions and path scope with .github/copilot-instructions.md, the CS-80 source criterion and the proposed path manifest.","fixtureOrData":"Owner authorization text and the exact path manifest only; no credentials, user data, generated runtime output, or production state.","action":"Verify the owner decision OD-2026-10-07-CS80-AC3-V2 authorizes only the controlled rolling generated-artifact manifest on phase-3.25/cloud-continuation, and verify the current user instruction separately authorizes only branch-local commit/push after checks; main integration, merge and deployment remain unauthorized.","procedure":"Record the explicitly authorized branch-local actions and exclusions, then compare the complete changed-path set with the exact Phase 3.25 task scope. Partition it into authored source inputs/tooling/tests/docs and generator-owned outputs. Review every authored path for task necessity and inspect its diff; validate only the generated-output subset against OD-2026-10-07-CS80-AC3-V2 roots/classes, source derivation, predecessor/hash chain and added/removed/unchanged manifest. Stop for any unclassified/extra path, prohibited content, or attempted main integration/merge/deploy.","assertion":"The owner explicitly authorizes the named branch-local checkpoint actions; every changed path is within the named task scope, and only generated outputs are constrained by the rolling generated-artifact roots/classes. Main integration and shipping remain unauthorized.","expectedResult":"The exact total checkpoint path set is reviewed and task-scoped; its generated-output subset independently satisfies the rolling manifest policy. No main integration permission is inferred.","testName":"CS-80-AC2 verifies branch-scoped owner authorization and rolling manifest policy","testFileOrProcedureId":"MANUAL-CS80-AC2","fixtures":"Task authorization and repository policy text; no external/production data.","negativeCase":"Missing target branch, implicit authorization, broad scope, disallowed path, or a generated artifact excluded only by assertion fails closed.","failureCase":"Missing or ambiguous branch/action authorization, any unrelated/unclassified total path, invalid generated-output manifest, privacy violation, or attempted main integration/deployment blocks the checkpoint.","evidenceArtifact":"Redacted authorization scope record plus reviewed policy references and disposition; no secrets or unrelated conversation content.","repositoryCommand":"Read-only review of .github/copilot-instructions.md and CS-80 source criterion","releaseGate":"CS-80-AC2-RELEASE-GATE"}],
+    "CS-80-AC3": [{"reviewer":"Security / repository-integrity reviewer","testStatus":"PLANNED","reviewStatus":"REVIEWED","type":"AUTOMATED_SECURITY","preconditions":"Before staging, with the current repository state preserved; checks must not print secret values or scan private runtime data into logs.","setup":"Run the repository privacy/publication checks and inspect the exact rolling manifest against immutable base commit and prior manifest hash. Confirm every output is generator-owned, derived from approved source-controlled Phase 3.25 inputs, required for specification/catalog/traceability/review/handoff, and belongs to the existing docs/tickets, .ai catalog or docs/PHASE-3-25 report roots/classes. Classify every added, removed, changed and unchanged path; reject secrets, personal data, runtime/provider/user data, logs, caches, build output and unrelated files.","fixtureOrData":"Synthetic repository fixtures and path names only; no real credentials, resumes, database files, auth sessions, environment files or user data.","action":"Run `npm run privacy:test`, `npm run privacy:check`, and the focused Pages publication guard; regenerate twice and require the second run to make zero changes; inspect the exact branch, manifest delta, full diff and ignore/publication rules without staging until each path is classified.","procedure":"Require all privacy and publication checks to exit zero. Verify the generated manifest's predecessor/hash chain, exact path inventory, class/root ownership and delta; confirm the second generation has zero changes; inspect every changed path and diff for private/secret/runtime content without printing sensitive values; verify excluded classes remain excluded and no main integration/deploy artifact appears. A scanner pass does not replace path/diff review.","assertion":"Only source-derived, deterministic generator outputs within an already represented root/class and required for Phase 3.25 evidence may enter the branch checkpoint; prohibited or unclassified content is absent.","expectedResult":"The rolling manifest is internally consistent and exactly describes eligible generated outputs; all exclusions remain enforced; the branch-local checkpoint is safe to review, while main integration remains unauthorized.","testName":"CS-80-AC3 validates the rolling manifest and rejects sensitive or out-of-scope artifacts","testFileOrProcedureId":"MANUAL-CS80-AC3-ROLLING-MANIFEST","fixtures":"Synthetic path-list cases for ignored secrets, runtime artifacts, and intentionally generated catalogs; never include actual secret values.","negativeCase":"A synthetic `.env`, private resume, database/auth material, runtime/log/cache/build artifact, unrelated source path, unknown root/class or changed regeneration output must fail; an allowed generated projection must not be rejected solely because it is generated.","failureCase":"Any failed privacy/publication check, changed second-generation output, invalid predecessor/hash, unknown path/class/root, prohibited data, or unclassified diff blocks checkpointing; the prior fixed 32-path list is not used.","evidenceArtifact":"Test exit summaries, manifest and predecessor hashes, complete path/class delta, redacted path and diff review record, second-generation zero-diff result and exact checkpoint SHA; never include private content.","repositoryCommand":"npm run privacy:test; npm run privacy:check; node --test scripts/stage-pages.test.mjs","releaseGate":"CS-80-AC3-RELEASE-GATE"}],
     "CS-81-AC1": [{"reviewer":"Unicode/security and QA reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_UNIT","preconditions":"Use the source-linked pre-policy commit `db31a11fdcb472038ac3e9f46d84cc54191cba55`; no runtime change is made in this phase.","setup":"Use a synthetic string containing Devanagari consonant U+0915, ZWNJ U+200C, and consonant U+0937; record code points explicitly and identify the pre-policy source revision from ticket evidence/history.","fixtureOrData":"Synthetic escaped sequence `\\u0915\\u200c\\u0937` with exactly U+0915 U+200C U+0937 and no virama; no resume or personal data.","action":"In an isolated temporary checkout, apply the planned preservation assertion to the historical implementation at `db31a11fdcb472038ac3e9f46d84cc54191cba55`, then run the same assertion against the current implementation; do not mutate this working tree.","procedure":"At the pre-policy revision, run `expect(constrainEvidenceText(input)).toBe(input)` in the isolated fixture and require this intended-preservation assertion to fail nonzero because the output omits U+200C; then run the same assertion against the current revision and require it to pass. Record the ordinary Devanagari control. A characterization assertion that merely expects old removal to occur is not a red-before proof.","assertion":"The exact U+0915 U+200C U+0937 preservation assertion fails nonzero on the pre-policy source and passes on the current source; ordinary Devanagari without U+200C remains a separate control.","expectedResult":"A source-pinned regression assertion is demonstrably red before the policy change and green on the current source; characterization-only output is insufficient.","testName":"CS-81-AC1 proves Devanagari ZWNJ fixture red on pre-policy source","testFileOrProcedureId":"PLANNED:packages/shared/src/evidence-text.test.ts::CS-81-AC1","fixtures":"Synthetic Unicode code-point fixture only.","negativeCase":"Plain Devanagari without ZWNJ must remain a control and cannot substitute for the required ZWNJ case; inability to resolve pre-policy revision fails the evidence gate.","failureCase":"Missing source revision, a preservation assertion that does not fail nonzero on old code, non-reproducible historical behavior, or changed fixture code points yields NOT_PROVEN.","evidenceArtifact":"Historical commit SHA, isolated command output with code points and predicate/constrainer results, and current-control output; no candidate text.","repositoryCommand":"Read-only historical source probe in an isolated checkout","releaseGate":"CS-81-AC1-RELEASE-GATE"}],
     "CS-81-AC2": [{"reviewer":"Product owner and Unicode/security reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"MANUAL_PRODUCT","preconditions":"Authoritative owner/security decision states the allowed joiner contexts and script policy; no policy is inferred from the current implementation.","setup":"Review U+200C and U+200D separately against the cited spoofing rationale and the approved language/script support decision.","fixtureOrData":"Synthetic code-point table covering allowed orthographic context, decorative placement and script boundary; no personal text.","action":"Approve or reject the exact current same-script letters/marks predicate and document the permitted code-point contexts, supported scripts, and disallowed placements.","procedure":"For each approved context, require a positive fixture and expected preserve result; for decorative and cross-script boundary cases, require a negative fixture and expected refusal. The decision record must cite its normative/security rationale.","assertion":"The policy is context-specific, names exact ZWNJ/ZWJ cases and maintains refusal for decorative/script-boundary usage; it does not widen the entire zero-width range.","expectedResult":"An owner-approved character/context matrix is recorded and can be converted to deterministic shared-predicate tests without ambiguity.","testName":"CS-81-AC2 approves an explicit context-sensitive joiner matrix","testFileOrProcedureId":"MANUAL-CS81-AC2","fixtures":"Synthetic Unicode samples represented as code points and escaped strings.","negativeCase":"A blanket allow, blanket reject, unlisted script assumed allowed, or absent spoofing rationale fails review.","failureCase":"No approved decision means this criterion remains OWNER_DECISION_REQUIRED.","evidenceArtifact":"Owner decision record with context matrix, source citations and independent security review; no claim that code/tests were changed.","repositoryCommand":"Manual review against the owner decision and cited security source","releaseGate":"CS-81-AC2-RELEASE-GATE"}],
     "CS-81-AC3": [{"reviewer":"QA / matching and resume domain reviewer","testStatus":"PLANNED","reviewStatus":"DRAFT","type":"AUTOMATED_INTEGRATION","preconditions":"Owner has approved the character-context policy; run paired consumers with synthetic input and no stored user records.","setup":"Prepare the approved orthographic ZWNJ title, a refused decorative/script-boundary variant, resume derivation input, and matching evidence input.","fixtureOrData":"Synthetic title fixtures only; the test must identify code points and use no real resume/job text.","action":"Exercise the resume title derivation and matching evidence normalization through their existing public package boundaries.","procedure":"Assert the resume consumer rejects a title segment containing a refused joiner; assert the matching consumer neutralizes only the refused code point and reports deterministic evidence; for approved orthographic context assert behavior matches the approved decision and does not claim identity verification.","assertion":"The two consumers keep the specified distinct outcomes (resume rejection versus matching neutralization) and neither silently contradicts the owner-approved contextual predicate.","expectedResult":"Both consumer pathways are tested against the same policy matrix while preserving their independently specified downstream behavior.","testName":"CS-81-AC3 keeps resume rejection and matching neutralization distinct","testFileOrProcedureId":"PLANNED:packages/resume/src/derive.test.ts::CS-81-AC3 and packages/matching/src/dimensions.test.ts::CS-81-AC3","fixtures":"Approved synthetic Unicode context matrix; no candidate data.","negativeCase":"A consumer that silently removes an allowed orthographic joiner, accepts a refused decorative joiner, or changes the other consumer's rejection/neutralization semantics fails.","failureCase":"Policy-dependent expectation without owner decision is unresolved, not pass.","evidenceArtifact":"Targeted test output, source revision, fixture code-point manifest and reviewer result; PLANNED until actually implemented/run.","repositoryCommand":"Targeted shared/resume/matching package tests","releaseGate":"CS-81-AC3-RELEASE-GATE"}],
@@ -4740,12 +5562,70 @@
     "CS-89-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "34ee37cfd51471014150fb9324866ef3dba8aa37c1b02d1ec973c9dc157b8f08"},
     "CS-89-AC4": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "b32e507d9e74a1b38922f829a0da7eb64237875644fcb93e7239399e343e7cd3"},
     "CS-89-AC5": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "114aa1668ed82dd6fa1c7adce21a5f18ddd8df7ec5b0f89d5e0d09d69c18e190"},
+    "CS-80-AC1":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"606756424d533369f44f267d424d1200a5d0da175eecc7068efc5846d5e1e9f2"},
+    "CS-80-AC2":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"bf9631a57feda68a888df1e62c6c32ca4a1fd15652f012af128bf24d85370488"},
+    "CS-80-AC3":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"c51e531e68c527441f24d4092ee9538b5cfaab66adb74caece317c1eaae39b5f"},
+    "CS-100-AC1":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"8429c35d9b23fa1467c763070c472d6e6929c2cff9d85b7339a44266189bfab1"},
+    "CS-100-AC2":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"326f55acd479abbe7c970b3a11cf94ab0158d44541f7aaf1e724f576dc8a1335"},
+    "CS-100-AC3":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"6353cd1fccbf9ab81f921ad87eca037c15ee275b63441707881208e10d12bc8c"},
+    "CS-100-AC4":{"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"1214e2adf9663fca8472969c65f0e10bb77c0d0d0ccae00a295c61baebea213b"},
     "CS-82-AC1": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "a1e99ae78163eb7cad1a729c62c0b6db6880e6c5ac98f163dea412eeeb17a4d4"},
     "CS-82-AC2": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "974106e954b4a709b73efca305fde5e4452796d03b442a0017f2a852822d0453"},
     "CS-82-AC3": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "bdc7519f6a14b2e9549493f1ef2aff4e05d186e4b50d7cbb923b6f6c6a910f8f"},
-    "CS-82-AC4": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "55544293effe94f74128b9dc144f6f4bd4336436ab7378ccba9d3f2a3fae0cfb"}
+    "CS-82-AC4": {"verdict": "APPROVED", "reviewer": "/root/phase325_review", "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md", "contentHash": "55544293effe94f74128b9dc144f6f4bd4336436ab7378ccba9d3f2a3fae0cfb"},
+    "CS-101-AC1": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"e2667373b645cd2b539536d339c9f1bf8170eb54768e419a45467aa991941371"},
+    "CS-101-AC2": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"310f98b0caac10454c3f84d19a586c66c2df990d291e36c228c14300bd0cc440"},
+    "CS-101-AC3": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"7cf8c2939fc18a5b8c9a6142e1521fe38bcd0ba48a7ce68602a1339712260bc1"},
+    "CS-101-AC4": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"cff4e14a386ca8ea9aba1f6a6452024f870f374497953797362e9cd3879cd054"},
+    "CS-102-AC1": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"3d03f63085a4898b401a9a21ee2e31c058e9e62f4c1905d0f1411f85b65dfdfc"},
+    "CS-102-AC2": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"ba43195a2c2635d7335df3b376de781a894cdcb22f7a01fad31751f1df4dcc6b"},
+    "CS-102-AC3": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"4e25fdf940e0e27ea08eb99d5bb010997202fcbaa9b7801513bd8baffc6ff6c9"},
+    "CS-102-AC4": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"131e213d551c90e9a17525957f9e2cb44f0b2d9b9a39120ab7b4945e7a22b66a"},
+    "CS-104-AC1": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"2ef061e0d0f90cca9f81c0394beee5006a280369151b4378ec68dd54683dad1c"},
+    "CS-104-AC2": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"abba3d4a87edc4acbd311b4a1546b846bf0a28869e89cce229332fe93f658efd"},
+    "CS-104-AC3": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"41d9d1f39cfeb388043426ad37cb98fcfeeb0aa866cafe7d71b4b0d2457bdbdc"},
+    "CS-103-AC1": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"3ccb8eb319ae578d1dace3de1efd70487c5bb104a4ebba598b896c3f876700ad"},
+    "CS-103-AC2": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"a144e20d0418cef42fd66323e6a935ebcacfe865abe1fc64dea900eb99be9ae9"},
+    "CS-103-AC3": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"b34f43062fee2031ecfc0edf0353885e92e51d5e40d5c5125dbc403e55f936a3"},
+    "CS-103-AC4": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"a509a1720f927fa4675603d3a9feb950c7d5b16d5a9be148cc427092ce3e3b1a"}
   },
   "specificationReviewReceipts": {
+    "CS-104": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d206cc5a76c002b4571d78f69afc35db3a8d61f7c1b021affa6468c13ef270b9"
+    },
+    "CS-103": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b71cb35ff369af61ee354cf1245756eb0d0bdf344f6dea509bda4bc6a170910e"
+    },
+    "CS-101": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "ca696b3b3e390b2e72f73d6a9f6a48693f8c1e0120b401b9daf4c5b91121b65e"
+    },
+    "CS-100": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "44fb7df5d6a3d702933fda59ae2a5194fe6165c9a3573a25b3e9593ff0fe653a"
+    },
+    "CS-102": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "046c514ae3003b6a44a9bd5694cf9c8005e9bbf63a555581156f279911ece53d"
+    },
+    "CS-80": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a35bbd2c85971f4539ab4cd5a50328c43953a61299a4a09c896a4a750f53e3e3"
+    },
     "CS-3": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",

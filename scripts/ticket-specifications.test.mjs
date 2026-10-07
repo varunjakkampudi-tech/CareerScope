@@ -232,6 +232,7 @@ test('CS2 keeps the unreproduced 768px source defect separate from the historica
   assert.ok(!checklist.some((item) => /check-ui\.mjs green on all three engines/.test(item)));
   assert.equal(ticket.acceptanceCriteria[2], 'check-ui.mjs green on all three engines in CI');
   assert.equal(spec.reviewState, 'DRAFT');
+  assert.equal(spec.readiness, 'INCOMPLETE');
 });
 
 test('CS4 uses injected publication fixtures and requires both stage and commit path assertions', () => {
@@ -418,7 +419,7 @@ test('whole-spec approval is content-bound and invalidates after substantive cha
   assert.equal(approved.reviewState, 'APPROVED');
   assert.equal(approved.readiness, 'IMPLEMENTATION_READY');
   assert.equal(approved.gaps[0].disposition, 'RESOLVED');
-  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 46);
+  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 52);
 
   inputs.policy.ticketRefinements['CS-3'].additionalRequirements.value[0] +=
     ' Substantive mutation invalidates review.';
@@ -482,8 +483,286 @@ test('CS-100 full-reference board maps related candidate screens without transfe
   assert.match(ac3.exactBindings[1].procedure, /expired-session/);
   assert.match(ac3.exactBindings[1].procedure, /contract-defined recovery destination/);
   assert.equal(ac3.exactBindings[1].testStatus, 'MANUAL_REQUIRED');
-  assert.equal(ac3.exactBindings[1].reviewStatus, 'DRAFT');
+  assert.equal(ac3.exactBindings[1].reviewStatus, 'REVIEWED');
   assert.ok(validate(model, inputs).every((error) => !error.includes('board mapping')));
+});
+
+test('CS-101 specifies only the real preparation AI boundary and preserves CS-130 screen ownership', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const ticket = inputs.backlog.items.find((entry) => entry.id === 'CS-101');
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-101');
+  const text = JSON.stringify(spec);
+  const trace = new Map(model.traceability.map((row) => [row.acId, row]));
+
+  assert.equal(ticket.status, 'BACKLOG');
+  assert.equal(ticket.releaseState, 'CONDITIONAL');
+  assert.equal(spec.reviewState, 'APPROVED');
+  assert.equal(
+    model.designTraceability.find((entry) => entry.ticketId === 'CS-101').status,
+    'DESIGN_PARTIAL',
+  );
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-101' && finding.code === 'PARTIAL_DESIGN',
+    ).disposition,
+    'RECLASSIFIED',
+  );
+  assert.match(text, /CS-130/);
+  assert.match(text, /route UNKNOWN/);
+  assert.match(text, /preparation-coaching/);
+  assert.match(text, /No AI application assistant route/);
+  assert.match(text, /never marks Applied/);
+  assert.match(text, /AI_ENABLED/);
+  assert.doesNotMatch(text, /stage_8_enabled is a live runtime flag/);
+
+  for (const id of ['CS-101-AC1', 'CS-101-AC2', 'CS-101-AC3', 'CS-101-AC4']) {
+    const row = trace.get(id);
+    assert.ok(row, `${id} must remain mapped to a source criterion`);
+    assert.ok(row.exactBindings.length > 0, `${id} requires an exact planned or manual binding`);
+    assert.ok(row.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'));
+    assert.ok(
+      row.exactBindings.every((binding) =>
+        ['PLANNED', 'MANUAL_REQUIRED'].includes(binding.testStatus),
+      ),
+      `${id} must not fabricate execution evidence`,
+    );
+  }
+  assert.ok(
+    trace
+      .get('CS-101-AC3')
+      .exactBindings.some((binding) => binding.type === 'MANUAL_ACCESSIBILITY'),
+  );
+  assert.ok(
+    trace.get('CS-101-AC2').exactBindings.some((binding) => binding.type === 'VISUAL_REGRESSION'),
+  );
+  const ac1 = trace.get('CS-101-AC1').exactBindings[0];
+  assert.match(ac1.setup, /POST \/api\/preparation\/\{checkId\}\/ai-elaborate/);
+  assert.match(ac1.setup, /Do not mock or claim a provider invocation/);
+  assert.match(ac1.procedure, /exactly one POST/);
+  assert.match(ac1.procedure, /encoded checkId/);
+  assert.match(ac1.procedure, /zero `POST \/api\/preparation\/\{checkId\}\/ai-elaborate` requests/);
+  assert.match(
+    ac1.procedure,
+    /ordinary deterministic `GET \/api\/preparation` report may still load/,
+  );
+  assert.doesNotMatch(JSON.stringify(ac1), /provider spy|deterministic provider mock/);
+  const ac4 = trace.get('CS-101-AC4').exactBindings[0];
+  assert.match(ac4.procedure, /no AI-driven application submission or resume-rewrite operation/);
+  assert.match(
+    ac4.procedure,
+    /existing candidate-owned resume\/application APIs are not disabled or redefined/,
+  );
+  assert.doesNotMatch(ac4.procedure, /no API\/application operation exists/);
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-101' && finding.code === 'SURFACE_SPEC_REFINEMENT',
+    ).disposition,
+    'RESOLVED',
+  );
+});
+
+test('CS-102 specifies a future recruiter shell without inventing route or consent contracts', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const ticket = inputs.backlog.items.find((entry) => entry.id === 'CS-102');
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-102');
+  const text = JSON.stringify(spec);
+  const trace = new Map(model.traceability.map((row) => [row.acId, row]));
+
+  assert.equal(ticket.status, 'BACKLOG');
+  assert.equal(ticket.releaseState, 'FUTURE');
+  assert.equal(ticket.route.state, 'NOT_APPLICABLE');
+  assert.equal(ticket.featureFlag.default, false);
+  assert.equal(spec.reviewState, 'APPROVED');
+  assert.equal(
+    model.designTraceability.find((entry) => entry.ticketId === 'CS-102').status,
+    'DESIGN_PARTIAL',
+  );
+  assert.match(text, /CS-177–CS-192/);
+  assert.match(text, /server-derived recruiter principal/);
+  assert.match(text, /withdrawn/);
+  assert.match(text, /does not assign a standalone URL/);
+  assert.match(text, /NOT_APPLICABLE for CS-102 itself/);
+  assert.match(text, /stage_9_enabled/);
+  assert.equal(ticket.route.path, null);
+
+  for (let index = 1; index <= 4; index += 1) {
+    const row = trace.get(`CS-102-AC${index}`);
+    assert.ok(row?.exactBindings.length, `CS-102-AC${index} must have an exact binding`);
+    assert.ok(row.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'));
+    assert.ok(
+      row.exactBindings.every((binding) =>
+        ['PLANNED', 'MANUAL_REQUIRED'].includes(binding.testStatus),
+      ),
+    );
+  }
+  assert.ok(
+    trace.get('CS-102-AC2').exactBindings.some((binding) => binding.type === 'VISUAL_REGRESSION'),
+  );
+  assert.ok(
+    trace
+      .get('CS-102-AC3')
+      .exactBindings.some((binding) => binding.type === 'MANUAL_ACCESSIBILITY'),
+  );
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-102' && finding.code === 'PARTIAL_DESIGN',
+    ).disposition,
+    'RECLASSIFIED',
+  );
+});
+
+test('CS-103 specifies only a fail-closed redacted operations shell boundary', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const ticket = inputs.backlog.items.find((entry) => entry.id === 'CS-103');
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-103');
+  const text = JSON.stringify(spec);
+  const trace = new Map(model.traceability.map((row) => [row.acId, row]));
+
+  assert.equal(ticket.status, 'BACKLOG');
+  assert.equal(ticket.releaseState, 'FUTURE');
+  assert.equal(ticket.route.path, null);
+  assert.equal(ticket.featureFlag.default, false);
+  assert.equal(spec.reviewState, 'APPROVED');
+  assert.equal(spec.readiness, 'IMPLEMENTATION_READY');
+  assert.equal(
+    model.designTraceability.find((entry) => entry.ticketId === 'CS-103').status,
+    'DESIGN_PARTIAL',
+  );
+  assert.match(text, /CS-201–CS-212/);
+  assert.match(text, /CS-104/);
+  assert.match(text, /no operations-data read/);
+  assert.match(text, /generic database console/);
+  assert.match(text, /never render design-board names, counts, costs/);
+  assert.match(text, /NOT_APPLICABLE for CS-103 itself/);
+  assert.match(text, /stage_11_enabled/);
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-103' && finding.code === 'PARTIAL_DESIGN',
+    ).disposition,
+    'RECLASSIFIED',
+  );
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-103' && finding.code === 'SURFACE_SPEC_REFINEMENT',
+    ).disposition,
+    'RESOLVED',
+  );
+
+  for (let index = 1; index <= 4; index += 1) {
+    const row = trace.get(`CS-103-AC${index}`);
+    assert.ok(row?.exactBindings.length, `CS-103-AC${index} must have an exact binding`);
+    assert.ok(row.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'));
+    assert.ok(
+      row.exactBindings.every((binding) =>
+        ['PLANNED', 'MANUAL_REQUIRED'].includes(binding.testStatus),
+      ),
+      `CS-103-AC${index} must not claim future verification as executed`,
+    );
+    assert.ok(
+      row.exactBindings.every(
+        (binding) =>
+          binding.setup &&
+          binding.procedure &&
+          binding.assertion &&
+          binding.expectedResult &&
+          binding.testName &&
+          binding.testFileOrProcedureId &&
+          binding.fixtures &&
+          binding.negativeCase &&
+          binding.evidenceArtifact &&
+          binding.reviewer &&
+          binding.releaseGate,
+      ),
+      `CS-103-AC${index} bindings must be actionable and evidence-specific`,
+    );
+  }
+  assert.ok(
+    trace.get('CS-103-AC3').exactBindings.some((binding) => binding.type === 'AUTOMATED_SECURITY'),
+  );
+  assert.ok(
+    trace
+      .get('CS-103-AC3')
+      .exactBindings.some((binding) => binding.type === 'MANUAL_ACCESSIBILITY'),
+  );
+  assert.ok(
+    trace.get('CS-103-AC2').exactBindings.some((binding) => binding.type === 'VISUAL_REGRESSION'),
+  );
+  assert.match(text, /Render no secret, token, cookie, authorization header/);
+  assert.match(text, /raw resume, raw candidate record/);
+  assert.match(text, /generic administrative action/);
+});
+
+test('CS-104 specifies the shared server-authoritative permission and transaction boundary', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const ticket = inputs.backlog.items.find((entry) => entry.id === 'CS-104');
+  const spec = model.specs.find((entry) => entry.ticketId === 'CS-104');
+  const text = JSON.stringify(spec);
+  const trace = new Map(model.traceability.map((row) => [row.acId, row]));
+
+  assert.equal(ticket.status, 'BACKLOG');
+  assert.equal(ticket.releaseState, 'RELEASE');
+  assert.equal(ticket.route.path, null);
+  assert.equal(spec.reviewState, 'APPROVED');
+  assert.equal(spec.readiness, 'IMPLEMENTATION_READY');
+  assert.equal(
+    model.designTraceability.find((entry) => entry.ticketId === 'CS-104').status,
+    'DESIGN_VERIFIED',
+  );
+  assert.equal(
+    model.findings.find(
+      (finding) => finding.ticketId === 'CS-104' && finding.code === 'SURFACE_SPEC_REFINEMENT',
+    ).disposition,
+    'RESOLVED',
+  );
+  assert.match(text, /route\/role\/release\/flag matrix/);
+  assert.match(text, /Server\/API authorization derives the principal/);
+  assert.match(text, /Client-selected owner IDs, roles, permissions/);
+  assert.match(text, /idempotency\/replay protection/);
+  assert.match(text, /generic admin database operation/);
+  assert.match(text, /EXISTING_CONTRACT/);
+  assert.match(text, /PLANNED_CONTRACT/);
+  assert.match(text, /NOT_APPLICABLE for new persistence/);
+  assert.match(text, /no protected read on denial/);
+
+  for (let index = 1; index <= 3; index += 1) {
+    const row = trace.get(`CS-104-AC${index}`);
+    assert.ok(row?.exactBindings.length, `CS-104-AC${index} must have an exact binding`);
+    assert.ok(row.exactBindings.every((binding) => binding.reviewStatus === 'REVIEWED'));
+    assert.ok(
+      row.exactBindings.every((binding) => binding.testStatus === 'PLANNED'),
+      `CS-104-AC${index} must not claim future checks executed`,
+    );
+    assert.ok(
+      row.exactBindings.every(
+        (binding) =>
+          binding.setup &&
+          binding.procedure &&
+          binding.assertion &&
+          binding.expectedResult &&
+          binding.testName &&
+          binding.testFileOrProcedureId &&
+          binding.fixtures &&
+          binding.negativeCase &&
+          binding.failureCase &&
+          binding.evidenceArtifact &&
+          binding.reviewer &&
+          binding.releaseGate,
+      ),
+    );
+  }
+  assert.ok(
+    trace.get('CS-104-AC1').exactBindings.some((binding) => binding.type === 'AUTOMATED_SECURITY'),
+  );
+  assert.ok(
+    trace.get('CS-104-AC2').exactBindings.some((binding) => binding.type === 'AUTOMATED_CONTRACT'),
+  );
+  assert.ok(
+    trace.get('CS-104-AC3').exactBindings.some((binding) => binding.type === 'AUTOMATED_SECURITY'),
+  );
 });
 
 test('CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes', () => {
@@ -523,14 +802,14 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   });
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
-  assert.equal(model.counts.completeSpecificationCount, 46);
-  assert.equal(model.counts.incompleteSpecificationCount, 170);
-  assert.equal(model.counts.approvedSpecificationCount, 46);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 200);
+  assert.equal(model.counts.completeSpecificationCount, 52);
+  assert.equal(model.counts.incompleteSpecificationCount, 164);
+  assert.equal(model.counts.approvedSpecificationCount, 52);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 231);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 197);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 709);
-  assert.equal(model.counts.authoredExactTestBindingCount, 305);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 219);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 687);
+  assert.equal(model.counts.authoredExactTestBindingCount, 328);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -578,7 +857,7 @@ test('existing owner directions retain source provenance without fabricated read
   assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
   assert.match(direction.remainingGate, /lower bound/);
   assert.equal(spec.reviewState, 'DRAFT');
-  assert.equal(model.counts.approvedSpecificationCount, 46);
+  assert.equal(model.counts.approvedSpecificationCount, 52);
   inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>
@@ -1111,7 +1390,7 @@ test('CS-80 checkpoint requires its manifest and remains bound to the immutable 
   assert.equal(checkpoint.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
 });
 
-test('CS-80 V2 manifest admits CS-101 only as an existing generator-owned ticket-spec class', async () => {
+test('CS-80 V2 manifest admits reviewed ticket specs only as generator-owned artifacts', async () => {
   const inputs = fresh();
   const { output } = await artifacts(inputs, root);
   const coverage = JSON.parse(output.get('.ai/ticket-specification-coverage.json'));
@@ -1130,12 +1409,9 @@ test('CS-80 V2 manifest admits CS-101 only as an existing generator-owned ticket
   assert.equal(manifest.baseCommit, '3911a52fb2167707a1b04e258c15c403815286e4');
   assert.equal(
     manifest.previousManifestHash,
-    committedCoverage.artifactManifest.previousManifestHash,
-  );
-  assert.equal(
-    manifest.currentManifestHash,
     committedCoverage.artifactManifest.currentManifestHash,
   );
+  assert.equal(manifest.currentManifestHash, rollingManifestDigest(manifest));
   const previousPathCount = committedCoverage.artifactManifest.currentPathCount;
   const previousPaths = new Set(
     committedCoverage.artifactManifest.paths.map((entry) => entry.path),
@@ -1190,7 +1466,7 @@ test('CS-80 rolling manifest validates strict predecessor schema, deltas and com
       maxBuffer: 20 * 1024 * 1024,
     }).stdout,
   );
-  const approvedPreviousHash = committedCoverage.artifactManifest.previousManifestHash;
+  const approvedPreviousHash = committedCoverage.artifactManifest.currentManifestHash;
   assert.doesNotThrow(() => validatePreviousManifest(manifest, ticketIds, approvedPreviousHash));
 
   const malformedCases = [
