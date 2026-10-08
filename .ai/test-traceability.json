@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "3633faa5faa44aae3636ce3860b866a4334dbeebdd6ff64376f74aa1fe7a1b70",
+    ".ai/ticket-specification-policy.json": "dc13d464f74ed91aa071664bf08f5dcbc52a19ad20341b85fabfb501d646bb43",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -15481,25 +15481,36 @@
       "criterion": "Display backend status and permitted next action; never expose internal reviewer notes; rejected/needs-info communications use approved sender/delivery gates.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-111-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "The rendered state and permitted next action exactly match the owner session's response; reviewer identity, notes, decision reason, raw evidence and unsupported claims are absent; needs-info/rejected messaging is shown only as an approved delivery-gate state.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-111-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "redacted-verification-settings-component-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend",
+          "releaseGate": "R1-PRIVACY-AUTHZ"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use two synthetic candidate sessions, one candidate-owned verification projection in each allowed state, and a CS-110 contract stub that returns only status, revision and permitted nextAction.",
+          "setup": "Render the protected /settings verification section with feature flag enabled and responses for PENDING, NEEDS_INFO, VERIFIED and REJECTED; include a response containing reviewer notes as a negative control.",
+          "procedure": "CS-111-AC1-settings-status-projection",
+          "assertion": "The rendered state and permitted next action exactly match the owner session's response; reviewer identity, notes, decision reason, raw evidence and unsupported claims are absent; needs-info/rejected messaging is shown only as an approved delivery-gate state.",
+          "expectedResult": "The candidate sees only server-derived status/action for their own record, and a cross-owner or private-field response is rejected without rendering protected fields.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "renders owner-scoped verification status without reviewer data",
+          "testFileOrProcedureId": "apps/web/src/app/settings/__tests__/verification-status.test.tsx::projection",
+          "fixtures": "Synthetic owner sessions, status matrix, redacted delivery-gate responses and private-field negative fixture.",
+          "negativeCase": "Return another owner's projection or reviewerNotes and assert safe unavailable/error state with no protected text in the DOM.",
+          "evidenceArtifact": "redacted-verification-settings-component-report.json",
+          "reviewer": "Frontend",
+          "releaseGate": "R1-PRIVACY-AUTHZ"
+        }
+      ]
     },
     {
       "ticketId": "CS-111",
@@ -15507,49 +15518,36 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-111-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Every visible status/action/value comes from the synthetic API response or an explicit unavailable state; no screenshot sample name, count, reviewer note or fabricated verification claim is rendered.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-111-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-111-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-111-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-111-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "redacted-verification-source-state-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "UX",
+          "releaseGate": "R1-DESIGN-TRUTH"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use the exact Phase 0 candidate-verification references and a synthetic API response with no illustrative production values; feature flag is enabled only in an isolated test build.",
+          "setup": "Render /settings using the ordered reference states and compare data-bound labels, empty/unavailable copy and photo controls against the source-backed state contract.",
+          "procedure": "CS-111-AC2-source-state-rendering",
+          "assertion": "Every visible status/action/value comes from the synthetic API response or an explicit unavailable state; no screenshot sample name, count, reviewer note or fabricated verification claim is rendered.",
+          "expectedResult": "The route uses shared components and source-backed state labels only; absent API data produces explicit unavailable/empty treatment rather than placeholder success.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "renders only source-backed verification state and unavailable values",
+          "testFileOrProcedureId": "apps/web/src/app/settings/__tests__/verification-status.test.tsx::source-state",
+          "fixtures": "Phase 0 reference manifest, synthetic status responses, empty/unavailable/error fixtures and redacted visual labels.",
+          "negativeCase": "Inject illustrative count/name or omit a required state field and assert the component fails validation or renders unavailable without fabricated data.",
+          "evidenceArtifact": "redacted-verification-source-state-report.json",
+          "reviewer": "UX",
+          "releaseGate": "R1-DESIGN-TRUTH"
+        }
+      ]
     },
     {
       "ticketId": "CS-111",
@@ -15557,33 +15555,36 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-111-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-111-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-111-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Each available engine compares the exact route/state/reference at the named viewport and records hash, masks and tolerance; missing executable is NOT_RUN and never PASS; no unsupported visual state is invented.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-verification-visual-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use approved Phase 0 candidate-verification reference paths, synthetic deterministic state and the registered browser harness; no live credentials or user data.",
+          "setup": "Capture /settings at 1440 and 390 CSS px in Chromium, Firefox and WebKit, recording engine/version, reference hash, viewport, minimal dynamic masks and numeric tolerance.",
+          "procedure": "CS-111-AC3-verification-visual-browser",
+          "assertion": "Each available engine compares the exact route/state/reference at the named viewport and records hash, masks and tolerance; missing executable is NOT_RUN and never PASS; no unsupported visual state is invented.",
+          "expectedResult": "Available engines produce reproducible comparison evidence within the approved tolerance, while unavailable engines remain explicitly unverified.",
+          "type": "VISUAL_REGRESSION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "compares candidate verification settings against approved references",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-111-AC3-verification-visual-browser",
+          "fixtures": "Phase 0 reference images, deterministic candidate status fixture, viewport matrix and redacted screenshot manifest.",
+          "negativeCase": "Use an altered reference hash, unapproved viewport or missing browser executable and assert explicit failure/NOT_RUN rather than PASS.",
+          "evidenceArtifact": "redacted-verification-visual-report.json",
+          "reviewer": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
+        }
+      ]
     },
     {
       "ticketId": "CS-111",
@@ -15591,33 +15592,36 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-111-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-111-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-111-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Loading/error/empty/unauthorized/expired/conflict states have named status and recovery actions, focus remains visible and operable, Escape/focus restoration works for dialogs, and no protected data renders in denial states.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-verification-a11y-state-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility",
+          "releaseGate": "R1-A11Y-AUTHZ"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use isolated responses for pending, empty/unavailable, 401 expired session, 403 unauthorized, 409 stale revision and keyboard-focus traversal at 320/390/768/1024/1440 CSS px.",
+          "setup": "Render each applicable state through the same /settings route and run axe plus keyboard traversal; do not claim a stale-revision case when the API did not return 409.",
+          "procedure": "CS-111-AC4-verification-state-accessibility",
+          "assertion": "Loading/error/empty/unauthorized/expired/conflict states have named status and recovery actions, focus remains visible and operable, Escape/focus restoration works for dialogs, and no protected data renders in denial states.",
+          "expectedResult": "Automated accessibility/security checks pass for applicable states; manual screen-reader review remains a separately recorded human gate.",
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "covers verification failure states and accessible keyboard behavior",
+          "testFileOrProcedureId": "apps/web/src/app/settings/__tests__/verification-status.a11y.test.tsx::state-matrix",
+          "fixtures": "Synthetic HTTP state responses, axe fixtures, keyboard event sequence and responsive viewport matrix.",
+          "negativeCase": "Omit an accessible error name, allow focus loss, render another owner's data or treat a missing 409 as a passing stale-revision case and assert failure.",
+          "evidenceArtifact": "redacted-verification-a11y-state-report.json",
+          "reviewer": "Accessibility",
+          "releaseGate": "R1-A11Y-AUTHZ"
+        }
+      ]
     },
     {
       "ticketId": "CS-111",
@@ -15625,25 +15629,36 @@
       "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-111-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-111-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The candidate journey remains unavailable until CS-110 contract registration, CS-40 authorization, security/privacy, browser/accessibility and exact-SHA evidence are present; the checker never enables runtime behavior itself.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-candidate-verification-release-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a release fixture with verification_candidate_enabled absent/default false, unregistered CS-110 routes and no provider credentials.",
+          "setup": "Run the conditional activation checker against incomplete and complete future evidence manifests without changing the canonical workflow.",
+          "procedure": "CS-111-AC5-conditional-release-gate",
+          "assertion": "The candidate journey remains unavailable until CS-110 contract registration, CS-40 authorization, security/privacy, browser/accessibility and exact-SHA evidence are present; the checker never enables runtime behavior itself.",
+          "expectedResult": "Missing evidence fails closed, no endpoint is called when disabled, and ticket status/data remain unchanged.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "keeps candidate verification journey disabled without release evidence",
+          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-111-AC5",
+          "fixtures": "Synthetic feature-flag/evidence manifests, unregistered-route control and conditional-release state.",
+          "negativeCase": "Provide only a client flag, screenshot or design reference and assert activation refusal with no network call or workflow mutation.",
+          "evidenceArtifact": "redacted-candidate-verification-release-report.json",
+          "reviewer": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
+        }
+      ]
     },
     {
       "ticketId": "CS-112",
