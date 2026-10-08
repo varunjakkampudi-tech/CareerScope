@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "dc13d464f74ed91aa071664bf08f5dcbc52a19ad20341b85fabfb501d646bb43",
+    ".ai/ticket-specification-policy.json": "e842bddc7e81c32f7356a875daa782ce36e2cfc89eb0975312dcc2b5fab810c4",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -84926,7 +84926,7 @@
           "reason": "RBAC queue/read/decision projections and immutable audit.",
           "owner": "Frontend",
           "requiredEvidence": "Reviewed request/response/error/authorization/data ownership contract with negative tests before implementation.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -84934,7 +84934,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "SURFACE_SPEC_REFINEMENT",
@@ -84942,7 +84942,7 @@
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
           "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -84971,14 +84971,46 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Admin verification queue, review and decision journey: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented."
+            "Admin verification queue, review and decision journey: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented.",
+            {
+              "requirement": "The approved admin verification references do not prove a deployed queue or decision capability. The specification must define a future, redacted and least-privilege review surface without treating illustrative counts, screenshots or UI visibility as authorization.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-112"]
+          "sources": [
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "value": {
           "applicability": "APPLICABLE",
-          "requirements": ["Admin verification queue, review and decision journey"],
-          "sources": [".ai/backlog.json#CS-112"]
+          "requirements": [
+            "Admin verification queue, review and decision journey",
+            {
+              "requirement": "Allow an explicitly provisioned reviewer to inspect only the minimum candidate verification data and record an auditable decision, while ordinary candidates and unprovisioned administrators remain denied.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "currentState": {
           "applicability": "APPLICABLE",
@@ -85034,12 +85066,7 @@
               "id": "CS-112-AC1",
               "sourceText": "Ordinary candidates cannot read queue or submit decisions; approve/request-info/reject require reason and server response; no raw DB editor.",
               "expectedResult": "Ordinary candidates cannot read queue or submit decisions; approve/request-info/reject require reason and server response; no raw DB editor.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_INTEGRATION"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85047,13 +85074,7 @@
               "id": "CS-112-AC2",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85061,7 +85082,7 @@
               "id": "CS-112-AC3",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85069,11 +85090,7 @@
               "id": "CS-112-AC4",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85081,12 +85098,42 @@
               "id": "CS-112-AC5",
               "sourceText": "Preserve FUTURE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve FUTURE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Render only a server-authorized queue projection of candidate verification records; ordinary candidates and users without the CS-40 verification-review capability receive safe denial and never see queue existence or reviewer controls.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Decision controls are approve, request-info or reject only when the server advertises the transition; every decision requires a bounded reason, current revision and server-derived reviewer identity, and no raw database editor exists.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Show only minimized fields required for review; raw resumes, secrets, provider tokens, unrestricted personal data, call recordings and internal notes are excluded unless a separately approved contract explicitly permits a redacted field.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Keep `verification_admin_enabled` default-off and FUTURE. Empty, unavailable, stale, unauthorized and provider/storage failure states are explicit and do not use screenshot sample data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-112"]
+          "sources": [
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -85099,13 +85146,26 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: CROSS_MODULE / AUTHORIZATION / API_CONTRACT. Compose the future admin shell and shared state primitives only after CS-40 defines server-side capability assignment/revocation and CS-110 defines verification transitions. No generic admin role, database console or client-side privilege is introduced.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-112",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "persistence": {
@@ -85116,13 +85176,26 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": ["RBAC queue/read/decision projections and immutable audit."],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "NOT_APPLICABLE to this frontend planning ticket. CS-110 owns verification state and audit persistence; CS-112 adds no schema, queue record, retention or seed data. Any decision history remains server-owned and migration/rollback is a separate implementation gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-112",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "apiContract": {
@@ -85149,12 +85222,28 @@
                   "reason": "RBAC queue/read/decision projections and immutable audit.",
                   "owner": "Frontend",
                   "requiredEvidence": "Reviewed request/response/error/authorization/data ownership contract with negative tests before implementation.",
-                  "disposition": "OPEN"
+                  "disposition": "RESOLVED"
                 }
               ]
+            },
+            {
+              "requirement": "PLANNED_CONTRACT: a future queue projection and decision route must be registered by the canonical Fastify API with session, CSRF/origin, capability and revision checks. It must define safe 401/403/404/409/422/429/5xx behavior, cursor pagination and redacted fields; no route is claimed as existing in Phase 3.25.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-112", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-112",
+            "docs/API-SURFACE.md",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -85283,34 +85372,99 @@
           "requirements": [
             "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors. The required manual NVDA/VoiceOver review must identify browser, assistive-technology version, build/revision, and the ticket's actual supported state inventory, with observed announcement/focus order and exact failure condition. Auth-specific states such as invalid/expired, success and signed-out are required only when the ticket contract supports them; otherwise record them as NOT_APPLICABLE with the contract citation. Automated axe output is not a substitute.",
             "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+            {
+              "requirement": "Use semantic queue/table headings, labelled filters and decision controls, visible focus, keyboard operation, dialog focus restoration/Escape, non-color status and live error/success announcements. Manual screen-reader acceptance remains a future human gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "responsive": {
           "applicability": "APPLICABLE",
           "requirements": [
             "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
-            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
+            {
+              "requirement": "Use approved admin queue/detail references at 320, 390, 768, 1024 and 1440 CSS px with deliberate narrow-table reflow and no accidental horizontal page overflow; do not invent a mobile information architecture.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "browsers": {
           "applicability": "APPLICABLE",
-          "requirements": ["Chromium", "Firefox", "WebKit"],
-          "sources": ["docs/TESTING.md"]
+          "requirements": [
+            "Chromium",
+            "Firefox",
+            "WebKit",
+            {
+              "requirement": "Future implementation evidence must run Chromium, Firefox and WebKit at approved desktop/mobile viewports; unavailable engines are NOT_RUN and cannot be reported as verified.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "seo": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "NOT_APPLICABLE: authenticated admin surfaces remain noindex and expose no candidate/admin data in metadata, sitemap or social previews.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "securityPrivacy": {
           "applicability": "APPLICABLE",
@@ -85321,20 +85475,49 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: ADMIN_PRIVILEGE / AUTHORIZATION / PRIVACY_PII / AUDIT / DATA_RETENTION. The actor must be an explicitly provisioned least-privilege reviewer; deny ordinary candidates and unprovisioned admins; redact PII and private evidence; audit decision type/reason digest/correlation without raw payloads; never expose secrets or generic mutation access.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-112", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-112",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts."
+            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts.",
+            {
+              "requirement": "Record privacy-safe correlation ID, queue read/decision outcome, capability class and typed failure; monitor stale revision, denial, storage and provider failures without logging candidate payloads, notes, photos, tokens or secrets.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-112",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "testStrategy": {
@@ -85346,41 +85529,36 @@
               "criterion": "Ordinary candidates cannot read queue or submit decisions; approve/request-info/reject require reason and server response; no raw DB editor.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-112-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_SECURITY",
+                  "expectedCheck": "Only the server-enforced CS-40 verification-review capability can read the queue or submit a decision; every decision requires a bounded reason and current revision; no raw database/editor operation is exposed.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-112-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-112-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_INTEGRATION",
-                  "expectedCheck": "CS-112-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:integration",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "evidenceRequired": "redacted-verification-admin-authz-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security",
+                  "releaseGate": "FUTURE-AUTHZ-AUDIT"
                 }
               ],
               "releaseGate": "FUTURE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use synthetic candidate, unprovisioned-admin and explicitly provisioned reviewer principals; verification queue and decision routes are planned and default-off.",
+                  "setup": "Request queue/read/detail/approve/request-info/reject operations with each principal, current revision and bounded reason where required.",
+                  "procedure": "CS-112-AC1-admin-capability-negative-matrix",
+                  "assertion": "Only the server-enforced CS-40 verification-review capability can read the queue or submit a decision; every decision requires a bounded reason and current revision; no raw database/editor operation is exposed.",
+                  "expectedResult": "Candidates and unprovisioned admins receive safe 403/404 without queue existence leakage; authorized reviewer receives only the redacted projection and typed transition result.",
+                  "type": "AUTOMATED_SECURITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "enforces verification reviewer capability and reasoned decisions",
+                  "testFileOrProcedureId": "apps/api/tests/verification-admin-authorization.test.ts::capability-matrix",
+                  "fixtures": "Synthetic principals, redacted queue records, revisions, allowed transitions and bounded reason variants.",
+                  "negativeCase": "Call queue/decision as candidate, ordinary admin, stale revision or with an empty/oversized reason and assert 403/404/409/422 with no protected fields or mutation.",
+                  "evidenceArtifact": "redacted-verification-admin-authz-report.json",
+                  "reviewer": "Security",
+                  "releaseGate": "FUTURE-AUTHZ-AUDIT"
+                }
+              ]
             },
             {
               "ticketId": "CS-112",
@@ -85388,49 +85566,36 @@
               "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-112-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "Every rendered value is supplied by the redacted API fixture or explicit unavailable state; illustrative names/counts/costs, raw resumes, secrets, notes and tokens never appear; forbidden actions are absent or disabled.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-112-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-112-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-112-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "LIVE_HOST",
-                  "expectedCheck": "CS-112-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "redacted-verification-admin-render-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "UX",
+                  "releaseGate": "FUTURE-DESIGN-TRUTH"
                 }
               ],
               "releaseGate": "FUTURE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use the exact Phase 0 admin verification queue/detail/rejection references with synthetic state and no production sample data.",
+                  "setup": "Render the future admin surface from redacted API fixtures for pending, empty and unavailable states; inspect all visible fields and actions.",
+                  "procedure": "CS-112-AC2-redacted-state-rendering",
+                  "assertion": "Every rendered value is supplied by the redacted API fixture or explicit unavailable state; illustrative names/counts/costs, raw resumes, secrets, notes and tokens never appear; forbidden actions are absent or disabled.",
+                  "expectedResult": "The surface preserves the approved information architecture while remaining truthful and privacy-minimized.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "renders only redacted source-backed verification queue data",
+                  "testFileOrProcedureId": "apps/web/src/app/admin/verification/__tests__/queue.test.tsx::redacted-state",
+                  "fixtures": "Phase 0 admin reference manifest, redacted queue/detail fixtures, empty/unavailable variants and sensitive-field negative fixture.",
+                  "negativeCase": "Inject screenshot sample data or a raw sensitive field and assert validation/unavailable output with no sensitive DOM text.",
+                  "evidenceArtifact": "redacted-verification-admin-render-report.json",
+                  "reviewer": "UX",
+                  "releaseGate": "FUTURE-DESIGN-TRUTH"
+                }
+              ]
             },
             {
               "ticketId": "CS-112",
@@ -85438,33 +85603,36 @@
               "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-112-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-112-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-112-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Each available engine compares the exact approved reference/state and records viewport/hash/masks/tolerance; missing engine is NOT_RUN and never PASS.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-verification-admin-visual-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "UX",
+                  "releaseGate": "FUTURE-BROWSER-VISUAL"
                 }
               ],
               "releaseGate": "FUTURE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use approved Phase 0 admin reference paths and registered browser harness with deterministic redacted state; no credentials or live admin account.",
+                  "setup": "Capture the future queue/detail/rejection states at 1440 and approved mobile viewport in Chromium, Firefox and WebKit, recording reference hash, engine/version, masks and tolerance.",
+                  "procedure": "CS-112-AC3-admin-visual-browser",
+                  "assertion": "Each available engine compares the exact approved reference/state and records viewport/hash/masks/tolerance; missing engine is NOT_RUN and never PASS.",
+                  "expectedResult": "Available engines produce reproducible visual evidence within the approved tolerance; unapproved or illustrative states fail closed.",
+                  "type": "VISUAL_REGRESSION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "compares future admin verification views against approved references",
+                  "testFileOrProcedureId": "scripts/check-ui.ts::CS-112-AC3-admin-verification",
+                  "fixtures": "Admin reference paths, deterministic redacted queue/detail fixtures, viewport matrix and screenshot manifest.",
+                  "negativeCase": "Use an altered reference, unsupported viewport or missing browser executable and assert explicit failure/NOT_RUN.",
+                  "evidenceArtifact": "redacted-verification-admin-visual-report.json",
+                  "reviewer": "UX",
+                  "releaseGate": "FUTURE-BROWSER-VISUAL"
+                }
+              ]
             },
             {
               "ticketId": "CS-112",
@@ -85472,33 +85640,36 @@
               "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "CS-112-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "AUTOMATED_ACCESSIBILITY",
-                  "expectedCheck": "CS-112-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-112-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Denial, empty, error and conflict states are explicit; controls have accessible names, focus remains operable/restored, status/errors are announced, and no protected data renders for denied actors.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-verification-admin-a11y-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Accessibility",
+                  "releaseGate": "FUTURE-A11Y-PRIVACY"
                 }
               ],
               "releaseGate": "FUTURE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use synthetic pending, empty, unauthorized, expired-session, stale-revision and dependency-failure responses with keyboard traversal at 320/390/768/1024/1440 CSS px.",
+                  "setup": "Render queue/detail/decision dialog states through the future admin route boundary and run axe plus keyboard/focus assertions; no live role is used.",
+                  "procedure": "CS-112-AC4-admin-state-accessibility",
+                  "assertion": "Denial, empty, error and conflict states are explicit; controls have accessible names, focus remains operable/restored, status/errors are announced, and no protected data renders for denied actors.",
+                  "expectedResult": "Automated accessibility/security checks pass for applicable states; manual NVDA/VoiceOver review remains a separate human gate.",
+                  "type": "AUTOMATED_ACCESSIBILITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "covers admin verification failure states and keyboard semantics",
+                  "testFileOrProcedureId": "apps/web/src/app/admin/verification/__tests__/queue.a11y.test.tsx::state-matrix",
+                  "fixtures": "Synthetic response matrix, axe fixture, keyboard/dialog focus sequence and responsive viewport matrix.",
+                  "negativeCase": "Omit an accessible denial/error name, permit focus escape or return another owner's record and assert failure.",
+                  "evidenceArtifact": "redacted-verification-admin-a11y-report.json",
+                  "reviewer": "Accessibility",
+                  "releaseGate": "FUTURE-A11Y-PRIVACY"
+                }
+              ]
             },
             {
               "ticketId": "CS-112",
@@ -85506,25 +85677,36 @@
               "criterion": "Preserve FUTURE release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-112-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-112-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "The admin journey remains disabled until capability, redacted contract, security/privacy, browser/accessibility and exact-SHA evidence are present; the checker never grants a role or enables runtime behavior.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-verification-admin-release-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Release",
+                  "releaseGate": "FUTURE-CONDITIONAL-RELEASE"
                 }
               ],
               "releaseGate": "FUTURE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use a release fixture with verification_admin_enabled absent/default false, CS-40 capability unprovisioned and no hosted credentials.",
+                  "setup": "Run the FUTURE activation checker against incomplete and complete CS-40/CS-110/security/browser/accessibility evidence manifests without changing workflow state.",
+                  "procedure": "CS-112-AC5-future-release-gate",
+                  "assertion": "The admin journey remains disabled until capability, redacted contract, security/privacy, browser/accessibility and exact-SHA evidence are present; the checker never grants a role or enables runtime behavior.",
+                  "expectedResult": "Missing evidence fails closed and no queue/decision request or workflow mutation occurs.",
+                  "type": "AUTOMATED_CONTRACT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "keeps future admin verification disabled without authorization evidence",
+                  "testFileOrProcedureId": "scripts/release-gate.mjs::CS-112-AC5",
+                  "fixtures": "Synthetic feature-flag/evidence manifests, unprovisioned capability and disabled-route controls.",
+                  "negativeCase": "Provide only a UI flag, screenshot or design approval and assert activation refusal with no network call or role mutation.",
+                  "evidenceArtifact": "redacted-verification-admin-release-report.json",
+                  "reviewer": "Release",
+                  "releaseGate": "FUTURE-CONDITIONAL-RELEASE"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-112", "docs/TESTING.md"]
@@ -85565,12 +85747,7 @@
               "id": "CS-112-AC1",
               "sourceText": "Ordinary candidates cannot read queue or submit decisions; approve/request-info/reject require reason and server response; no raw DB editor.",
               "expectedResult": "Ordinary candidates cannot read queue or submit decisions; approve/request-info/reject require reason and server response; no raw DB editor.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_INTEGRATION"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85578,13 +85755,7 @@
               "id": "CS-112-AC2",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85592,7 +85763,7 @@
               "id": "CS-112-AC3",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85600,11 +85771,7 @@
               "id": "CS-112-AC4",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85612,7 +85779,7 @@
               "id": "CS-112-AC5",
               "sourceText": "Preserve FUTURE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve FUTURE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-112",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -85627,9 +85794,30 @@
             "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
             "Independent current-content review resolves specification/implementation findings before promotion.",
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+            {
+              "requirement": "Specification DoD: source-backed admin states, capability dependency, redacted data contract, legal transitions, accessibility/responsive behavior, failure semantics and FUTURE release gate are explicit; no admin implementation is claimed.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Future implementation DoD: CS-40 authorization, CS-110 domain, redacted API, negative ownership tests, audit evidence, browser/accessibility evidence and exact-SHA release review pass before activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            "docs/ai/quality-gates.md",
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
@@ -85650,17 +85838,39 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-112 problem and each criterion with Frontend.",
-            "Resolve only the recorded CS-112 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for Admin verification queue, review and decision journey.",
-            "Implement and verify CS-112-AC1: Ordinary candidates cannot read queue or submit decisions; approve/request-info/reject require reason and server response; no raw DB editor.",
-            "Implement and verify CS-112-AC2: Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-            "Implement and verify CS-112-AC3: Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-            "Implement and verify CS-112-AC4: Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-            "Implement and verify CS-112-AC5: Preserve FUTURE release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-112 documentation, redacted evidence and independent review before workflow promotion."
+            {
+              "requirement": "Map approved admin verification references and identify illustrative data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define CS-40 capability and CS-110 transition dependencies plus the redacted projection/decision contract.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Specify accessible responsive queue/detail/error states and exact future browser evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add authorization/privacy/contract test plans and retain FUTURE/default-off semantics.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-112"]
+          "sources": [
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-112",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -85676,11 +85886,26 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "FUTURE release remains disabled until CS-40 capability/RBAC, CS-88 page/role/redaction matrix, CS-110 verification contract, Security review, exact-SHA browser/accessibility evidence and owner release approval exist. No admin account or hosted setting is changed here.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-112",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "risksRecovery": {
@@ -85693,13 +85918,26 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+            },
+            {
+              "requirement": "A UI-only admin gate or overbroad projection could leak PII or create an unauthorized verification claim. Fail closed on missing capability/stale revision, preserve audit provenance, revoke the feature flag on incident and never mutate data from the UI alone.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-112",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-110",
+            ".ai/backlog.json#CS-88",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/05-admin-verification-queue.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/06-admin-verification-details-call-notes.png",
+            "design/01-IMPLEMENTATION-ORDER/10-admin/11-candidate-verification-admin/08-admin-rejection-flow.png",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "delivery": {
