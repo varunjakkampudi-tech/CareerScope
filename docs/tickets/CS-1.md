@@ -179,7 +179,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "The frozen source wording 'on every push' conflicts with the current main-only push trigger. Preserve the source criterion verbatim, but require an explicit owner/release disposition whether it means every configured event (main push, pull request and manual dispatch) or all branch pushes; do not silently narrow or broaden the trigger contract.",
+      "requirement": "The frozen source wording 'on every push' is preserved as historical provenance. The approved current contract is every configured integration verification event protecting main: pull_request, push to main and explicitly authorized workflow_dispatch; arbitrary feature-branch pushes are not required.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
@@ -383,7 +383,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
+          "expectedCheck": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error for every configured integration verification event protecting main.",
           "candidateCommand": null,
           "evidenceRequired": "Future named contract result and path/event inventory; no hosted execution inferred.",
           "automationStatus": "PLANNED",
@@ -397,14 +397,14 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         {
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
-          "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
-          "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
-          "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
-          "expectedResult": "The unresolved source wording/trigger decision is reported explicitly; no feature-branch exclusion is counted as satisfying the frozen 'every push' criterion before owner disposition.",
-          "testName": "unit-only CI step reaches every registered canonical file on configured events",
-          "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
-          "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
-          "negativeCase": "Removing one required file invocation, bypassing the step on main, or redirecting to a nonexistent v2 script must fail; a valid control succeeds.",
+          "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and pull_request, push-to-main and workflow_dispatch events.",
+          "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for pull_request, push to main and explicitly authorized workflow_dispatch. Treat arbitrary feature-branch pushes as outside the approved integration contract.",
+          "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error for every configured integration verification event protecting main.",
+          "expectedResult": "The historical every-push wording remains preserved as provenance while the approved configured-event contract is verified without requiring arbitrary feature-branch execution.",
+          "testName": "unit-only CI step reaches every registered canonical file on approved integration events",
+          "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs::CS-1-AC1-configured-integration-events",
+          "fixtures": "Copied workflow/package and synthetic pull_request, push-main and workflow_dispatch event contexts; planned new contract file.",
+          "negativeCase": "Removing one required file invocation, bypassing the step on main/PR/manual dispatch, or redirecting to a nonexistent v2 script must fail; a feature-branch-only push is not a required positive case.",
           "evidenceArtifact": "Future named contract result and path/event inventory; no hosted execution inferred.",
           "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
           "releaseGate": "CI_UNIT_EXECUTION",
@@ -651,9 +651,21 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "owner": null,
       "evidence": [],
       "actions": []
+    },
+    {
+      "requirement": "HOSTED_REQUIRED: exact-SHA unit mutation/control evidence remains future implementation/release evidence; it is not a specification-approval blocker once the current trigger contract and exact verification procedure are bound.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
   ],
-  "sources": [".ai/backlog.json#CS-1", ".ai/blocker-classification.json", "hostpending.txt"]
+  "sources": [
+    ".ai/backlog.json#CS-1",
+    ".ai/blocker-classification.json",
+    "hostpending.txt",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "scripts/check-test-registration.ts"
+  ]
 }
 ```
 
@@ -699,10 +711,18 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "size": "M",
       "complexity": 3,
       "releaseTarget": "3.0.1",
-      "releaseState": "UNSPECIFIED",
+      "releaseState": "ACTIVE_R1",
+      "sourceReleaseTarget": "3.0.1",
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "3.0.1",
+        "effectiveReleaseState": "ACTIVE_R1",
+        "deliveryMode": "IMPLEMENT_NOW",
+        "rationale": "Owner decision OD-2026-10-08-CS1 resolves the historical every-push wording as the configured integration events protecting main: pull_request, push to main and explicitly authorized workflow_dispatch. The source releaseTarget 3.0.1 remains unchanged; hosted exact-SHA mutation evidence is future implementation/release evidence.",
+        "sources": [".ai/backlog.json#CS-1", "docs/OWNER-DECISIONS-2026-10-08.md#CS-1"]
+      },
       "sourceDisposition": "ACTIVE_R1",
       "deferredDecision": null,
-      "deliveryMode": "UNDECIDED",
+      "deliveryMode": "IMPLEMENT_NOW",
       "featureFlag": null,
       "holdReason": null,
       "implementationOrder": null,
@@ -716,7 +736,6 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ## Specification gate history
 
-| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                  | Disposition | Original reason                                                                                                          | Owner | Evidence                                                                                                 |
+| --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
+| EXACT_AC_TEST_BINDING | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

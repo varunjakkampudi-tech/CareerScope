@@ -433,7 +433,8 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       );
     if (
       (!ticket.releaseTarget || ticket.releaseTarget === 'backlog') &&
-      blocker?.releaseDisposition !== 'DEFERRED_BY_OWNER'
+      blocker?.releaseDisposition !== 'DEFERRED_BY_OWNER' &&
+      deliveryClassification?.effectiveReleaseState !== 'ACTIVE_R1'
     )
       gap(
         'RELEASE_TARGET_UNDECIDED',
@@ -442,7 +443,11 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         'Product owner',
         'Explicit release assignment or owner-approved future-release disposition.',
       );
-    if (release === 'UNSPECIFIED' || processScope)
+    if (
+      (release === 'UNSPECIFIED' &&
+        deliveryClassification?.effectiveReleaseState !== 'ACTIVE_R1') ||
+      processScope
+    )
       gap(
         'RELEASE_STATE_UNSPECIFIED',
         'delivery',

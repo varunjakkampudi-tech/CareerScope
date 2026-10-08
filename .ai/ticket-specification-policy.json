@@ -765,6 +765,16 @@
     },
     "CS-1": {
       "reviewStatus": "DRAFT",
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "3.0.1",
+        "effectiveReleaseState": "ACTIVE_R1",
+        "deliveryMode": "IMPLEMENT_NOW",
+        "rationale": "Owner decision OD-2026-10-08-CS1 resolves the historical every-push wording as the configured integration events protecting main: pull_request, push to main and explicitly authorized workflow_dispatch. The source releaseTarget 3.0.1 remains unchanged; hosted exact-SHA mutation evidence is future implementation/release evidence.",
+        "sources": [
+          ".ai/backlog.json#CS-1",
+          "docs/OWNER-DECISIONS-2026-10-08.md#CS-1"
+        ]
+      },
       "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "CI workflow/test registration is not an application HTTP contract.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-1",
@@ -778,7 +788,7 @@
         ],
         "functionalRequirements": [
           "Consume the canonical root test:unit command and its current seven explicit test files; do not resurrect v2/ paths or freeze an obsolete test-case total. Verify the named unit-only step in verify executes on push to main, pull_request and workflow_dispatch, matching the actual trigger scope; arbitrary feature-branch pushes are not configured triggers.",
-          "The frozen source wording 'on every push' conflicts with the current main-only push trigger. Preserve the source criterion verbatim, but require an explicit owner/release disposition whether it means every configured event (main push, pull request and manual dispatch) or all branch pushes; do not silently narrow or broaden the trigger contract.",
+          "The frozen source wording 'on every push' is preserved as historical provenance. The approved current contract is every configured integration verification event protecting main: pull_request, push to main and explicitly authorized workflow_dispatch; arbitrary feature-branch pushes are not required.",
           "Keep mocked HTTP/unit coverage distinct from real PostgreSQL, Redis, file-worker/browser and hosted production acceptance. A failed assertion must produce nonzero child, npm and CI-step results; no continue-on-error, condition that suppresses failures, retries or reduced assertions."
         ],
         "technicalApproach": [
@@ -801,6 +811,9 @@
         "definitionOfDone": [
           "Named unit-only CI step executes the canonical registered files, its scope label excludes database/queue/browser coverage, a controlled assertion mutation is observed as failure locally and in authorized non-shipping hosted evidence. Historical run IDs are not current-SHA proof."
         ],
+        "manualExternalGates": [
+          "HOSTED_REQUIRED: exact-SHA unit mutation/control evidence remains future implementation/release evidence; it is not a specification-approval blocker once the current trigger contract and exact verification procedure are bound."
+        ],
         "risksRecovery": [
           "Never mutate canonical source or push failing main to demonstrate refusal. Delete only validated synthetic fixture roots after preserving diagnostic evidence; no runtime rollback or database migration is needed."
         ]
@@ -819,7 +832,7 @@
         "docs/PHASE-3-25-EXECUTION-STATE.md",
         "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
       ],
-      "implementationChecklistOverride": [
+        "implementationChecklistOverride": [
         "Preserve all three frozen source AC strings and historical evidence, but mark AC2's override request superseded by the current manual/main-only no-bypass contract; do not add an override.",
         "Run `npm run deploy:gate:test` and record its current pure-decision/static-wiring scope; do not treat it as transport, moving-main or hosted orchestration evidence.",
         "Plan network-injected request and deadline assertions for exact `ci.yml` `head_sha`, malformed/API errors, bounded WAIT and refusal before downstream effects; register future tests in the root unit/CI quality lane.",
@@ -1084,6 +1097,17 @@
     },
     "CS-5": {
       "reviewStatus": "DRAFT",
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "R1",
+        "effectiveReleaseState": "ACTIVE_R1",
+        "deliveryMode": "IMPLEMENT_NOW",
+        "rationale": "Owner decision OD-2026-10-08-CS5 classifies the canonical single-workspace architecture as foundational Release 1 scope using the existing R1 identifier, corresponding to the prepared but unpublished v1.0.0 release. No feature flag or user-visible activation exists; publication and deployment remain separate evidence gates.",
+        "sources": [
+          ".ai/backlog.json#CS-5",
+          "docs/OWNER-DECISIONS-2026-10-08.md#CS-5",
+          "docs/RELEASE-1.0.0.md"
+        ]
+      },
       "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "Workspace consolidation is repository architecture work, not an application endpoint contract.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-5",
@@ -1137,7 +1161,7 @@
           "Planned CS-5-AC3 evidence: fresh npm ci plus canonical root quality/service/browser/recovery lanes on the exact hosted candidate SHA. The local pages:workspace:test run is a narrower static UI check and cannot substitute for this gate."
         ],
         "manualExternalGates": [
-          "Source backlog releaseTarget is null and releaseState is unspecified; blocker classification ACTIVE_R1 is not a release version or activation decision. Product/release ownership must assign a target and activation for CS-5 or explicitly place it on HOLD/later release. Preserve the null/unspecified source values until that decision; do not infer from package version, historic tags, UAT status or implementation evidence. The combined CS-4/CS-5 decision is recorded in docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md."
+          "OWNER_DECISION_RESOLVED: the owner classifies CS-5 as ACTIVE_R1 foundational architecture using the existing R1 identifier, corresponding to the prepared but unpublished v1.0.0 scope. Preserve the null/unspecified source fields as historical registry metadata; do not claim publication, deployment or user activation."
         ],
         "risksRecovery": [
           "The root architecture is already consolidated; a repeated migration or deletion pass could remove required domain packages or a still-supported static artifact. Make no structural changes unless a current consumer demonstrates a defect. Export regression must use copied module-relative paths and synthetic PostgreSQL, never write canonical mobile-site/jobs.json or publish data. Recovery from any future source edit is a reviewed revert, not data deletion or destructive host action."
@@ -1315,6 +1339,20 @@
         "implementationChecklist": [
           "Bind each CS-25 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
           "Record unsupported environment capabilities as pending rather than PASS."
+        ]
+      }
+    },
+    "CS-108": {
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The reviewed refinement now defines the executable nine-route inventory, deterministic design-only complement, route/state/API ownership, exact session/profile/lead/search/resume/preparation/settings outcomes, privacy-safe fixtures and fail-closed release semantics.",
+        "requiredEvidence": "Future implementation must execute the named visual, browser, accessibility and contract procedures on the exact reviewed SHA; this Phase 3.25 disposition does not claim those runs.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-108",
+          "apps/web/src/app/page.tsx",
+          "apps/api/src/app.ts",
+          "apps/api/src/openapi.ts",
+          "design/DESIGN-INDEX.json"
         ]
       }
     },
@@ -4337,6 +4375,49 @@
         "Run future axe/keyboard checks and the named manual NVDA/VoiceOver procedure; distinguish absent UI, planned automation, human review and provider/live evidence.",
         "Require separate provider/product/security/privacy authorization before integration behavior and CS-40 approval/implementation before any privileged admin operation; keep HOLD until independent release authorization and exact-SHA evidence."
       ]
+    },
+    "CS-108": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-108",
+        "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Treat the visual-parity contract as a QA artifact, not a new route. Define `runtimeRows` from the registered Next.js page source under `apps/web/src/app/**/page.tsx`; the current set is `/`, `/settings`, `/saved`, `/resume`, `/jobs`, `/career-resources`, `/applications`, `/dashboard` and `/preparation`. Compare this executable inventory to `docs/PRODUCT-SURFACE.md` and record the document's stale one-route statement as a source finding; do not use that stale document to omit runtime pages. Define `designOnlyRows` as DESIGN-INDEX entries not present in runtimeRows or whose routeState is PLANNED/UNKNOWN. The matrix must include one executable row for every runtimeRows entry and one explicitly PLANNED_DESIGN_ONLY row for every designOnlyRows entry.",
+          "For each runtime row, map the applicable API/role/state contract from registered Fastify routes, the same-origin client usage and `docs/API-SURFACE.md`; reconcile any documentation omission before execution. For designOnlyRows record NOT_APPLICABLE/unavailable and source route evidence. Denial, malformed and dependency-failure controls use synthetic redacted data and UI visibility never grants a role, owner or capability.",
+          "A release decision remains fail-closed: a screenshot or local comparison cannot activate a feature, mark RELEASE accepted, or replace authorization, accessibility, security or exact-SHA evidence."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE / TESTING_CONTRACT. Consume the canonical Next.js route inventory, shared component tree and existing browser harness; do not create a second renderer or alter runtime behavior."
+        ],
+        "apiContract": [
+          "NOT_APPLICABLE for new endpoints. Fixtures must use existing server contracts or explicit unavailable states; no client-selected owner or synthetic API success is permitted."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Use synthetic owner-scoped fixtures, redact resumes/tokens/PII, assert unauthorized and malformed requests fail through existing server policy, and keep visual artifacts free of secrets and personal data."
+        ],
+        "observability": [
+          "Record only page/state/viewport/browser/build identifiers, fixture class and diff outcome; never log screenshot payloads, request bodies or personal data."
+        ],
+        "manualExternalGates": [
+          "UX must approve each numeric diff tolerance and mask list; QA must confirm all three engines and the exact reviewed SHA. Planned browser/visual evidence is not execution evidence in Phase 3.25."
+        ],
+        "risksRecovery": [
+          "Over-broad masks or unstable fixtures can hide regressions. Keep masks tied to named dynamic regions, fail on missing baselines or changed route inventory, and recover by reverting the matrix artifact without modifying product data."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: every canonical page has a named baseline/viewport/mobile policy/engine/fixture/owner, exact positive and negative assertions, minimal-mask rule, release semantics and privacy-safe evidence requirements; no runtime implementation or executed screenshot result is claimed.",
+          "Future implementation DoD: browser/visual outputs for Chromium, Firefox and WebKit match approved tolerances on the exact SHA, with UX/QA sign-off and no hidden authorization or private-data exposure."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Read the canonical route/page inventory and list one row per page; do not invent absent routes.",
+        "Assign approved reference path, desktop/mobile viewport, dynamic fixture, engine matrix, owner and numeric tolerance for each row; record unresolved design/owner decisions explicitly.",
+        "Define positive, unauthorized, malformed and dependency-failure fixtures with exact visible/asserted outcomes and redacted synthetic data.",
+        "Add planned visual/browser procedures and minimal-mask review; keep all unexecuted work marked PLANNED and require UX/QA review before activation."
+      ]
     }
   },
   "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
@@ -4578,6 +4659,20 @@
           ".ai/ticket-specification-policy.json#CS-107-AC3",
           ".ai/ticket-specification-policy.json#CS-107-AC4",
           "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
+    },
+    "CS-108": {
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The reviewed refinement defines the executable nine-route inventory, deterministic design-only complement, route/state/API ownership, exact session/profile/lead/search/resume/preparation/settings outcomes, privacy-safe fixtures and fail-closed release semantics.",
+        "requiredEvidence": "Future implementation must execute the named visual, browser, accessibility and contract procedures on the exact reviewed SHA; this Phase 3.25 disposition does not claim those runs.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-108",
+          "apps/web/src/app/page.tsx",
+          "apps/api/src/app.ts",
+          "apps/api/src/openapi.ts",
+          "design/DESIGN-INDEX.json"
         ]
       }
     },
@@ -6400,7 +6495,7 @@
         "reviewer": "Accessibility QA reviewer",
         "releaseGate": "CROSS_SURFACE_ACCESSIBILITY",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+        "reviewStatus": "DRAFT"
       },
       {
         "type": "MANUAL_ACCESSIBILITY",
@@ -6436,7 +6531,7 @@
         "reviewer": "Frontend QA reviewer",
         "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+        "reviewStatus": "DRAFT"
       }
     ],
     "CS-107-AC3": [
@@ -6455,7 +6550,7 @@
         "reviewer": "Security and API QA reviewer",
         "releaseGate": "CROSS_SURFACE_AUTHORIZATION",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+        "reviewStatus": "DRAFT"
       },
       {
         "type": "AUTOMATED_BROWSER",
@@ -6490,6 +6585,63 @@
         "evidenceArtifact": "Signed review checklist and exact-SHA gate references.",
         "reviewer": "Release and Security reviewer",
         "releaseGate": "CROSS_SURFACE_RELEASE_GATE",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-108-AC1": [
+      {
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Canonical route inventory and approved visual-parity contract are available; no runtime route or production data is changed.",
+        "setup": "Enumerate `apps/web/src/app/**/page.tsx` and normalize the nine current route paths above; compare the result to docs/PRODUCT-SURFACE.md, then read design/DESIGN-INDEX.json. Build designOnlyRows from the deterministic complement (missing runtime route or routeState PLANNED/UNKNOWN), and join every row to its exact reference path, desktop/mobile viewport, browser engines, synthetic fixture, owner and threshold.",
+        "procedure": "Assert the executable row IDs equal the registered Next.js route inventory exactly and fail if PRODUCT-SURFACE.md omits or adds a route without a reconciled finding. Assert every designOnlyRows entry has one PLANNED_DESIGN_ONLY row and cannot execute. For each executable row assert one baseline, mobile policy, Chromium/Firefox/WebKit coverage, named owner, threshold and named dynamic masks.",
+        "assertion": "The matrix is complete against the deterministic runtime/design-only partition; missing, duplicate, stale or unexpectedly executable design-only rows fail, and dynamic masks are minimal and named rather than whole-widget or whole-page exclusions.",
+        "expectedResult": "A missing baseline, viewport, engine, owner, threshold or over-broad mask fails the matrix check without altering runtime behavior.",
+        "testName": "visual regression matrix covers each canonical page with deterministic baselines",
+        "testFileOrProcedureId": "PLANNED:scripts/visual-regression-matrix.test.mjs::visual regression matrix covers each canonical page with deterministic baselines",
+        "fixtures": "Synthetic route inventory, approved reference manifest, viewport/engine rows and redacted dynamic fixture descriptors.",
+        "negativeCase": "Missing page row, duplicate baseline, unsupported viewport, blanket mask or unstated threshold fails.",
+        "evidenceArtifact": "Machine-readable matrix, reference hashes and UX/QA tolerance approval; no screenshot execution is claimed.",
+        "reviewer": "UX and QA reviewer",
+        "releaseGate": "VISUAL_REGRESSION_MATRIX",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-108-AC2": [
+      {
+        "type": "AUTOMATED_SECURITY",
+        "preconditions": "Synthetic owner, foreign-owner, unauthenticated, malformed and dependency-failure fixtures map to existing server contracts.",
+        "setup": "Join each applicable matrix row to the registered route/API contract in docs/API-SURFACE.md and its server route source; for rows without a contract use a required NOT_APPLICABLE/unavailable fixture. Run positive and denial cases through the existing same-origin client/server boundary with redacted fixture data and no production writes.",
+        "procedure": "Use a frozen expected-contract table checked into the matrix, not the implementation under test. Scope AC2 to operations actually referenced by the nine current page routes (profile, saved/leads, resume, jobs/search, preparation and settings), plus the shared GET /api/session owner/auth boundary; authentication start/callback/logout, scheduled discovery, market/pipeline, admin and other provider/control-plane routes are explicitly out of this visual-acceptance criterion and remain owned by their dedicated tickets. GET /api/session must return HTTP 200 with `{authenticated:false,registrationEnabled:boolean,cognitoEnabled:boolean}` anonymously, or HTTP 200 with `{authenticated:true,csrf,email,phone,owner,aiEnabled}` for a valid local session; owner is exactly a 64-character SHA-256 digest and raw session tokens, provider tokens and raw owner IDs must never appear. GET /api/profile returns HTTP 200 with the owner profile or the documented revision-zero empty record, HTTP 401 when unauthenticated and HTTP 429 after the owner-keyed read budget; PUT /api/profile returns HTTP 200 on a valid owner save, 400 for malformed input, 401 unauthenticated, 403 Origin/CSRF failure, 409 for a stale revision with no row/event change, and 429 after the owner-keyed update budget. GET /api/leads returns HTTP 200 owner rows, 401 unauthenticated and 429 after the owner-keyed read budget; GET /api/leads/:id and /history return HTTP 200 for an owned record, safe HTTP 404 for missing or foreign records, 400 for malformed IDs, 401 unauthenticated and 429 for the read budget; GET /api/leads/by-job/:jobId returns HTTP 200 with `{lead:null}` for an unknown job, HTTP 400 for a malformed UUID, HTTP 401 unauthenticated and HTTP 429 for the read budget, and never returns another owner's lead. POST /api/leads returns HTTP 200 for a valid owner save, 400 for malformed input, 401 unauthenticated, 403 Origin/CSRF failure, 404 when the completed job is absent, and 429 after the owner-keyed update budget; PUT /api/leads/:id returns HTTP 200 for a valid update, 400 malformed input, 401 unauthenticated, 403 Origin/CSRF failure, 404 for missing or foreign leads, 409 for a stale revision where supported, and 429 after the owner-keyed update budget. The frozen table also lists: POST /api/searches (202 success; 400 malformed; 401 unauthenticated; 403 CSRF; 409 idempotency conflict; 429 rate limit; duplicate idempotency key returns the original result), GET /api/searches (200 or 401/429), GET /api/searches/:id (200; 400 malformed ID; 401 unauthenticated; 404 foreign/missing; 429), POST /api/searches/:id/cancel (200; 400/401/403/404/429; no cross-owner effect), GET export (200; 400/401/404/409/429), GET events (SSE 200; 400/401/404/429; owner-scoped replay); GET /api/resumes (200 or 401; no route-specific 429), POST resume (202; 400/401/403/409/413/429/503/507 with no partial publication), GET resume/:id (200; 400/401/404/503), recover/cancel (200; 400/401/403/404/409/429/503/507), DELETE resume (204; 400/401/403/409/429/503); GET /api/preparation (200/401/429), POST preparation/:checkId/ai-elaborate (200; 400/401/403/404/429/502/503/504 and no resume/contact/compensation data); POST /api/account/sessions/revoke-others and POST /api/account/password each return 204 on success, 400 for validation, 401 for unauthenticated, 403 for Origin/CSRF failure and 429 when rate-limited; revoke-others invalidates every other session while preserving the current session, and password change clears the current session after the credential update. Unsupported/disabled routes assert their documented 404/405/503 and no side effect. For NOT_APPLICABLE design-only rows assert no invented API call or success state.",
+        "assertion": "The acceptance matrix uses route/method-specific status, error and before/after side-effect assertions from the frozen full route/client contract table; it fails when implementation diverges, documentation omits a registered route, or a runtime row lacks a table entry. UI visibility never changes authorization.",
+        "expectedResult": "No cross-owner data, fabricated success or unauthorized capability is exposed; all failures remain observable and redacted.",
+        "testName": "visual acceptance fixtures preserve server authorization and failure semantics",
+        "testFileOrProcedureId": "PLANNED:apps/api/tests/visual-acceptance-contract.security.test.ts::visual acceptance fixtures preserve server authorization and failure semantics",
+        "fixtures": "Synthetic owner/resource pairs, malformed payloads and dependency error responses.",
+        "negativeCase": "Client-selected owner, bypassed denial, persisted malformed data or leaked private fixture fails.",
+        "evidenceArtifact": "Redacted contract/security output and fixture manifest.",
+        "reviewer": "Security and API QA reviewer",
+        "releaseGate": "VISUAL_ACCEPTANCE_AUTHORIZATION",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED"
+      }
+    ],
+    "CS-108-AC3": [
+      {
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Release metadata, authorization contract and matrix artifact are available read-only.",
+        "setup": "Review the matrix, gate manifest and exact future evidence owners without enabling any product capability.",
+        "procedure": "Confirm RELEASE remains an acceptance label only; missing visual, authorization, accessibility or exact-SHA evidence keeps activation closed and no screenshot or documentation-only result promotes the ticket.",
+        "assertion": "Release semantics remain fail-closed and separate from specification readiness.",
+        "expectedResult": "No client flag, screenshot or local matrix can claim runtime release acceptance.",
+        "testName": "visual regression acceptance preserves fail-closed release semantics",
+        "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-108-AC3-release-semantics-review",
+        "fixtures": "Redacted matrix, policy and release checklist.",
+        "negativeCase": "Missing owner approval, client-only activation or unverified hosted evidence is a failed release decision.",
+        "evidenceArtifact": "Signed future review checklist and exact-SHA gate references.",
+        "reviewer": "Release and Security reviewer",
+        "releaseGate": "VISUAL_ACCEPTANCE_RELEASE_GATE",
         "testStatus": "MANUAL_REQUIRED",
         "reviewStatus": "REVIEWED"
       }
@@ -9752,14 +9904,14 @@
       {
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
-        "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
-        "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
-        "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
-        "expectedResult": "The unresolved source wording/trigger decision is reported explicitly; no feature-branch exclusion is counted as satisfying the frozen 'every push' criterion before owner disposition.",
-        "testName": "unit-only CI step reaches every registered canonical file on configured events",
-        "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
-        "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
-        "negativeCase": "Removing one required file invocation, bypassing the step on main, or redirecting to a nonexistent v2 script must fail; a valid control succeeds.",
+        "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and pull_request, push-to-main and workflow_dispatch events.",
+        "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for pull_request, push to main and explicitly authorized workflow_dispatch. Treat arbitrary feature-branch pushes as outside the approved integration contract.",
+        "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error for every configured integration verification event protecting main.",
+        "expectedResult": "The historical every-push wording remains preserved as provenance while the approved configured-event contract is verified without requiring arbitrary feature-branch execution.",
+        "testName": "unit-only CI step reaches every registered canonical file on approved integration events",
+        "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs::CS-1-AC1-configured-integration-events",
+        "fixtures": "Copied workflow/package and synthetic pull_request, push-main and workflow_dispatch event contexts; planned new contract file.",
+        "negativeCase": "Removing one required file invocation, bypassing the step on main/PR/manual dispatch, or redirecting to a nonexistent v2 script must fail; a feature-branch-only push is not a required positive case.",
         "evidenceArtifact": "Future named contract result and path/event inventory; no hosted execution inferred.",
         "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
         "releaseGate": "CI_UNIT_EXECUTION",
@@ -10066,7 +10218,8 @@
         "fixtures": "Read-only tracked path/reference inventory, START-HERE/01-SETUP.md and planned contract checker; no MCP server installation.",
         "negativeCase": "Introduce active launcher/import referring to removed SQLite executable: fail; historical changelog citation alone does not fail.",
         "evidenceArtifact": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
-        "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL"
+        "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL",
+        "reviewStatus": "REVIEWED"
       }
     ],
     "CS-5-AC3": [
@@ -13864,6 +14017,24 @@
     }
   },
   "verificationReviewReceipts": {
+    "CS-108-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e79091fae393b8cdd833f0ab6fcdf043ebdff6183efb0e3feb107502e49a1584"
+    },
+    "CS-108-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "cd17188c361c949cee0bd70b7acbea5120183252675c5e67617208253b51e269"
+    },
+    "CS-108-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f36bbeab09d5429b0b8538fd5453eb695dd51c1318a24f349181d65248fb8b8c"
+    },
     "CS-57-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -14438,7 +14609,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "01cd21c7e305c2301b0125bf9c9c3767ae38c2575d7d5a34e1e784a7adfa6ff5"
+      "contentHash": "43cbdea42e4be8791e4dd1a92f2844d65c35d2c97295e2f305dd3f1a08caedbc"
     },
     "CS-1-AC2": {
       "verdict": "APPROVED",
@@ -14528,7 +14699,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "5ea24a787af9008bde3ae2352ea6f3337773dd4bf2fc3e84cb4aa2dbdc44c0e9"
+      "contentHash": "12f5072de46e8776d87b4d80981e54cea090cb2ca31671eb762c40fffce5b29f"
     },
     "CS-5-AC3": {
       "verdict": "APPROVED",
@@ -15533,11 +15704,23 @@
     }
   },
   "specificationReviewReceipts": {
+    "CS-108": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "cc9d4e71999181566b6ae0810ebe7f1826419d06dd01850ba8a248bab71506f4"
+    },
     "CS-4": {
       "verdict": "APPROVED",
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "bad1ab8d6ae0ffc6e59ac804143fbb33866170b57d24f7d0e2b7d2e3a4081ea0"
+    },
+    "CS-5": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1d7d46bacf13cbfcb9f374b8f3352ce438b8a0dc2f872cc57e8fc1522e0336e1"
     },
     "CS-7": {
       "verdict": "APPROVED",
@@ -15640,12 +15823,6 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "d068b76ac1fed99c8bbd1c8044514dec4a7e783479ee5938b0106ef93ec8a35d"
-    },
-    "CS-107": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "d9e3e82f201ceea51307528c73a7f87ee4cf00c5122c131ae136f36011cb3dce"
     },
     "CS-106": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"6feab8b8b3a8fe5c60aaca8c2073e1b4f7db8c15b3e661788a9cd3d448e4bd20"},
     "CS-105": {

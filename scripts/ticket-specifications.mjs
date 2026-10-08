@@ -19,6 +19,7 @@ export const INPUTS = [
   '.prettierrc.json',
   'docs/OWNER-DECISIONS-2026-10-02.md',
   'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md',
+  'docs/OWNER-DECISIONS-2026-10-08.md',
 ];
 export function loadInputs(root) {
   const json = (name) => JSON.parse(fs.readFileSync(path.join(root, name), 'utf8'));

@@ -828,3 +828,51 @@ The review confirmed that CS-17 and CS-46 retain planned contract/data-model
 boundaries, CS-31 and CS-32 have pending re-review after runner corrections,
 and no generated receipt is being used to represent an executed test or live
 acceptance.
+
+## Owner-decision propagation review — 2026-10-08
+
+The read-only independent review by `/root/cs78_review` and `/root/manifest_review`
+approved the authored CS-5 specification after the owner decision classified
+the canonical workspace as foundational R1 scope. The review confirms that its
+three bindings are exact, source-backed and clearly marked planned; no hosted,
+provider, deployment or execution evidence is claimed. The current whole-spec
+digest is `1d7d46bacf13cbfcb9f374b8f3352ce438b8a0dc2f872cc57e8fc1522e0336e1`.
+The CS-5 AC2 binding digest is
+`12f5072de46e8776d87b4d80981e54cea090cb2ca31671eb762c40fffce5b29f`.
+
+The same review returned REVISE for CS-1 AC1 because the historical “every
+push” wording and configured-event interpretation still need to be reconciled
+in the generated criterion and workflow-dispatch authorization assertion. It
+also returned REVISE for CS-107 because its route/state matrix, locale oracle
+and exact security contract cases remain insufficiently enumerated. Those
+bindings remain DRAFT and no approval is claimed for either ticket.
+
+The independent review of CS-108 approved the authored specification and all
+three exact binding groups after the matrix was tied to the tracked
+`DESIGN-INDEX.json`/`PRODUCT-SURFACE.md` inventory and each applicable row was
+required to join the registered `API-SURFACE.md` contract or an explicit
+NOT_APPLICABLE unavailable state. All evidence remains planned/manual; no
+visual, browser, hosted or release execution is claimed. Whole-spec digest:
+`454c9e87e128fafce6d4d7ce07cda0c3d9fa525c44cfd3631eccedff53108410`.
+Binding digests: AC1
+`1db5df9efbc26dc4eb031c89e5e2a84464b6b3c572ec8f20bf074c1d54a11a71`, AC2
+`1d040712622a350170e042a8c6c71f3f874e0a9c5963f63291472ec499ead0a4`, AC3
+`f36bbeab09d5429b0b8538fd5453eb695dd51c1318a24f349181d65248fb8b8c`.
+
+## CS-108 final re-review — 2026-10-08
+
+`/root/cs78_review` re-reviewed the regenerated CS-108 document after the
+route-scoped contract was completed. The review is **PASS**. The final matrix
+now records exact anonymous/authenticated `GET /api/session` bodies and the
+raw-token/raw-owner prohibition, profile and lead 200/400/401/403/404/409/429
+outcomes with owner-keyed budgets and side effects, the existing search and
+resume statuses, and exact account-session/password mutation outcomes. All
+three bindings remain planned/manual evidence rather than executed tests.
+
+Final whole-spec digest: `cc9d4e71999181566b6ae0810ebe7f1826419d06dd01850ba8a248bab71506f4`.
+Final binding digests: AC1
+`e79091fae393b8cdd833f0ab6fcdf043ebdff6183efb0e3feb107502e49a1584`, AC2
+`cd17188c361c949cee0bd70b7acbea5120183252675c5e67617208253b51e269`, AC3
+`f36bbeab09d5429b0b8538fd5453eb695dd51c1318a24f349181d65248fb8b8c`.
+The hashes above supersede the earlier CS-108 draft-review hashes recorded in
+this file.

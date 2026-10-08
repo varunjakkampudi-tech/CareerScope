@@ -9,10 +9,11 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "b508f9e6f0eb4931550dd82b465b2b041189ab3328e5d3c9bdadbd5ce5dafe1a",
+    ".ai/ticket-specification-policy.json": "fd32f1655dd45cff43aeeffbed6833eae715fff476273fc1df67f2cc15ee35c3",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d50970a94c9b45aa11fe1e0d6c4d540b1bd65e0e4a0ee52557f0781a8bbf6f97"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "1b3a6ef9981d802cc9ee720b9fda96caac9609de2fc6f8ee7639acfd4be94539",
+    "docs/OWNER-DECISIONS-2026-10-08.md": "361a5427c752bb1c281ddcdea2ea3f9380246b041fff66f68202bf3a9ab4903e"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -23,14 +24,6 @@
       "readiness": "INCOMPLETE",
       "reviewState": "DRAFT",
       "gaps": [
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
-        },
         {
           "code": "EXACT_AC_TEST_BINDING",
           "section": "testStrategy",
@@ -180,7 +173,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "The frozen source wording 'on every push' conflicts with the current main-only push trigger. Preserve the source criterion verbatim, but require an explicit owner/release disposition whether it means every configured event (main push, pull request and manual dispatch) or all branch pushes; do not silently narrow or broaden the trigger contract.",
+              "requirement": "The frozen source wording 'on every push' is preserved as historical provenance. The approved current contract is every configured integration verification event protecting main: pull_request, push to main and explicitly authorized workflow_dispatch; arbitrary feature-branch pushes are not required.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -319,7 +312,7 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
+                  "expectedCheck": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error for every configured integration verification event protecting main.",
                   "candidateCommand": null,
                   "evidenceRequired": "Future named contract result and path/event inventory; no hosted execution inferred.",
                   "automationStatus": "PLANNED",
@@ -333,14 +326,14 @@
                 {
                   "type": "AUTOMATED_CONTRACT",
                   "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
-                  "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
-                  "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
-                  "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
-                  "expectedResult": "The unresolved source wording/trigger decision is reported explicitly; no feature-branch exclusion is counted as satisfying the frozen 'every push' criterion before owner disposition.",
-                  "testName": "unit-only CI step reaches every registered canonical file on configured events",
-                  "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
-                  "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
-                  "negativeCase": "Removing one required file invocation, bypassing the step on main, or redirecting to a nonexistent v2 script must fail; a valid control succeeds.",
+                  "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and pull_request, push-to-main and workflow_dispatch events.",
+                  "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for pull_request, push to main and explicitly authorized workflow_dispatch. Treat arbitrary feature-branch pushes as outside the approved integration contract.",
+                  "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error for every configured integration verification event protecting main.",
+                  "expectedResult": "The historical every-push wording remains preserved as provenance while the approved configured-event contract is verified without requiring arbitrary feature-branch execution.",
+                  "testName": "unit-only CI step reaches every registered canonical file on approved integration events",
+                  "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs::CS-1-AC1-configured-integration-events",
+                  "fixtures": "Copied workflow/package and synthetic pull_request, push-main and workflow_dispatch event contexts; planned new contract file.",
+                  "negativeCase": "Removing one required file invocation, bypassing the step on main/PR/manual dispatch, or redirecting to a nonexistent v2 script must fail; a feature-branch-only push is not a required positive case.",
                   "evidenceArtifact": "Future named contract result and path/event inventory; no hosted execution inferred.",
                   "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
                   "releaseGate": "CI_UNIT_EXECUTION",
@@ -546,8 +539,22 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
-          "sources": [".ai/backlog.json#CS-1", ".ai/blocker-classification.json", "hostpending.txt"]
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "HOSTED_REQUIRED: exact-SHA unit mutation/control evidence remains future implementation/release evidence; it is not a specification-approval blocker once the current trigger contract and exact verification procedure are bound.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-1",
+            ".ai/blocker-classification.json",
+            "hostpending.txt",
+            "package.json",
+            ".github/workflows/ci.yml",
+            "scripts/check-test-registration.ts"
+          ]
         },
         "risksRecovery": {
           "applicability": "APPLICABLE",
@@ -583,10 +590,18 @@
               "size": "M",
               "complexity": 3,
               "releaseTarget": "3.0.1",
-              "releaseState": "UNSPECIFIED",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": "3.0.1",
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "3.0.1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "Owner decision OD-2026-10-08-CS1 resolves the historical every-push wording as the configured integration events protecting main: pull_request, push to main and explicitly authorized workflow_dispatch. The source releaseTarget 3.0.1 remains unchanged; hosted exact-SHA mutation evidence is future implementation/release evidence.",
+                "sources": [".ai/backlog.json#CS-1", "docs/OWNER-DECISIONS-2026-10-08.md#CS-1"]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -2858,32 +2873,16 @@
     {
       "ticketId": "CS-5",
       "primaryEpicId": "EPIC-PLATFORM",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
-        {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
-        },
         {
           "code": "EXACT_AC_TEST_BINDING",
           "section": "testStrategy",
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -3239,7 +3238,7 @@
                 {
                   "reviewer": "System Designer, Security, Infrastructure and QA",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_CONTRACT",
                   "preconditions": "Tracked repository inventory and canonical API contract available read-only.",
                   "setup": "Enumerate workspace scripts/manifests/imports/editor launchers/workflows for SQLite MCP executable/config references; distinguish historical docs.",
@@ -3474,7 +3473,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "Source backlog releaseTarget is null and releaseState is unspecified; blocker classification ACTIVE_R1 is not a release version or activation decision. Product/release ownership must assign a target and activation for CS-5 or explicitly place it on HOLD/later release. Preserve the null/unspecified source values until that decision; do not infer from package version, historic tags, UAT status or implementation evidence. The combined CS-4/CS-5 decision is recorded in docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md.",
+              "requirement": "OWNER_DECISION_RESOLVED: the owner classifies CS-5 as ACTIVE_R1 foundational architecture using the existing R1 identifier, corresponding to the prepared but unpublished v1.0.0 scope. Preserve the null/unspecified source fields as historical registry metadata; do not claim publication, deployment or user activation.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -3531,11 +3530,23 @@
             {
               "size": "XL",
               "complexity": 5,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "Owner decision OD-2026-10-08-CS5 classifies the canonical single-workspace architecture as foundational Release 1 scope using the existing R1 identifier, corresponding to the prepared but unpublished v1.0.0 release. No feature flag or user-visible activation exists; publication and deployment remain separate evidence gates.",
+                "sources": [
+                  ".ai/backlog.json#CS-5",
+                  "docs/OWNER-DECISIONS-2026-10-08.md#CS-5",
+                  "docs/RELEASE-1.0.0.md"
+                ]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -75019,8 +75030,8 @@
     {
       "ticketId": "CS-107",
       "primaryEpicId": "EPIC-ACCESSIBILITY-RESPONSIVE",
-      "readiness": "IMPLEMENTATION_READY",
-      "reviewState": "APPROVED",
+      "readiness": "INCOMPLETE",
+      "reviewState": "DRAFT",
       "gaps": [
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -78151,7 +78162,7 @@
                   "reviewer": "Accessibility QA reviewer",
                   "releaseGate": "CROSS_SURFACE_ACCESSIBILITY",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED"
+                  "reviewStatus": "DRAFT"
                 },
                 {
                   "type": "MANUAL_ACCESSIBILITY",
@@ -78205,7 +78216,7 @@
                   "reviewer": "Frontend QA reviewer",
                   "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED"
+                  "reviewStatus": "DRAFT"
                 }
               ]
             },
@@ -78251,7 +78262,7 @@
                   "reviewer": "Security and API QA reviewer",
                   "releaseGate": "CROSS_SURFACE_AUTHORIZATION",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED"
+                  "reviewStatus": "DRAFT"
                 },
                 {
                   "type": "AUTOMATED_BROWSER",
@@ -78559,8 +78570,8 @@
     {
       "ticketId": "CS-108",
       "primaryEpicId": "EPIC-VISUAL-REGRESSION",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -78568,15 +78579,15 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "SURFACE_SPEC_REFINEMENT",
           "section": "functionalRequirements",
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
-          "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "requiredEvidence": "Future implementation must execute the named visual, browser, accessibility and contract procedures on the exact reviewed SHA; this Phase 3.25 disposition does not claim those runs.",
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -78664,12 +78675,7 @@
               "id": "CS-108-AC1",
               "sourceText": "Every canonical page has primary baseline, reference viewport, mobile policy, three engines, minimal masks and an owner-approved deterministic threshold; no blanket widget masks.",
               "expectedResult": "Every canonical page has primary baseline, reference viewport, mobile policy, three engines, minimal masks and an owner-approved deterministic threshold; no blanket widget masks.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-108",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -78677,12 +78683,7 @@
               "id": "CS-108-AC2",
               "sourceText": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "expectedResult": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-108",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -78690,12 +78691,31 @@
               "id": "CS-108-AC3",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-108",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Treat the visual-parity contract as a QA artifact, not a new route. Define `runtimeRows` from the registered Next.js page source under `apps/web/src/app/**/page.tsx`; the current set is `/`, `/settings`, `/saved`, `/resume`, `/jobs`, `/career-resources`, `/applications`, `/dashboard` and `/preparation`. Compare this executable inventory to `docs/PRODUCT-SURFACE.md` and record the document's stale one-route statement as a source finding; do not use that stale document to omit runtime pages. Define `designOnlyRows` as DESIGN-INDEX entries not present in runtimeRows or whose routeState is PLANNED/UNKNOWN. The matrix must include one executable row for every runtimeRows entry and one explicitly PLANNED_DESIGN_ONLY row for every designOnlyRows entry.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "For each runtime row, map the applicable API/role/state contract from registered Fastify routes, the same-origin client usage and `docs/API-SURFACE.md`; reconcile any documentation omission before execution. For designOnlyRows record NOT_APPLICABLE/unavailable and source route evidence. Denial, malformed and dependency-failure controls use synthetic redacted data and UI visibility never grants a role, owner or capability.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "A release decision remains fail-closed: a screenshot or local comparison cannot activate a feature, mark RELEASE accepted, or replace authorization, accessibility, security or exact-SHA evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-108"]
+          "sources": [
+            ".ai/backlog.json#CS-108",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md",
+            "docs/TESTING.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -78708,13 +78728,19 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: CROSS_MODULE / TESTING_CONTRACT. Consume the canonical Next.js route inventory, shared component tree and existing browser harness; do not create a second renderer or alter runtime behavior.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-108",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md"
           ]
         },
         "persistence": {
@@ -78750,9 +78776,19 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "NOT_APPLICABLE for new endpoints. Fixtures must use existing server contracts or explicit unavailable states; no client-selected owner or synthetic API success is permitted.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-108", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-108",
+            "docs/API-SURFACE.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md",
+            "docs/TESTING.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -81459,20 +81495,37 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Use synthetic owner-scoped fixtures, redact resumes/tokens/PII, assert unauthorized and malformed requests fail through existing server policy, and keep visual artifacts free of secrets and personal data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-108", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-108",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts."
+            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts.",
+            {
+              "requirement": "Record only page/state/viewport/browser/build identifiers, fixture class and diff outcome; never log screenshot payloads, request bodies or personal data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-108",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md"
           ]
         },
         "testStrategy": {
@@ -81484,41 +81537,36 @@
               "criterion": "Every canonical page has primary baseline, reference viewport, mobile policy, three engines, minimal masks and an owner-approved deterministic threshold; no blanket widget masks.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-108-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-108-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-108-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-108-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "The matrix is complete against the deterministic runtime/design-only partition; missing, duplicate, stale or unexpectedly executable design-only rows fail, and dynamic masks are minimal and named rather than whole-widget or whole-page exclusions.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Machine-readable matrix, reference hashes and UX/QA tolerance approval; no screenshot execution is claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "UX and QA reviewer",
+                  "releaseGate": "VISUAL_REGRESSION_MATRIX"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "VISUAL_REGRESSION",
+                  "preconditions": "Canonical route inventory and approved visual-parity contract are available; no runtime route or production data is changed.",
+                  "setup": "Enumerate `apps/web/src/app/**/page.tsx` and normalize the nine current route paths above; compare the result to docs/PRODUCT-SURFACE.md, then read design/DESIGN-INDEX.json. Build designOnlyRows from the deterministic complement (missing runtime route or routeState PLANNED/UNKNOWN), and join every row to its exact reference path, desktop/mobile viewport, browser engines, synthetic fixture, owner and threshold.",
+                  "procedure": "Assert the executable row IDs equal the registered Next.js route inventory exactly and fail if PRODUCT-SURFACE.md omits or adds a route without a reconciled finding. Assert every designOnlyRows entry has one PLANNED_DESIGN_ONLY row and cannot execute. For each executable row assert one baseline, mobile policy, Chromium/Firefox/WebKit coverage, named owner, threshold and named dynamic masks.",
+                  "assertion": "The matrix is complete against the deterministic runtime/design-only partition; missing, duplicate, stale or unexpectedly executable design-only rows fail, and dynamic masks are minimal and named rather than whole-widget or whole-page exclusions.",
+                  "expectedResult": "A missing baseline, viewport, engine, owner, threshold or over-broad mask fails the matrix check without altering runtime behavior.",
+                  "testName": "visual regression matrix covers each canonical page with deterministic baselines",
+                  "testFileOrProcedureId": "PLANNED:scripts/visual-regression-matrix.test.mjs::visual regression matrix covers each canonical page with deterministic baselines",
+                  "fixtures": "Synthetic route inventory, approved reference manifest, viewport/engine rows and redacted dynamic fixture descriptors.",
+                  "negativeCase": "Missing page row, duplicate baseline, unsupported viewport, blanket mask or unstated threshold fails.",
+                  "evidenceArtifact": "Machine-readable matrix, reference hashes and UX/QA tolerance approval; no screenshot execution is claimed.",
+                  "reviewer": "UX and QA reviewer",
+                  "releaseGate": "VISUAL_REGRESSION_MATRIX",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-108",
@@ -81526,41 +81574,36 @@
               "criterion": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-108-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-108-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-108-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-108-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "The acceptance matrix uses route/method-specific status, error and before/after side-effect assertions from the frozen full route/client contract table; it fails when implementation diverges, documentation omits a registered route, or a runtime row lacks a table entry. UI visibility never changes authorization.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Redacted contract/security output and fixture manifest.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security and API QA reviewer",
+                  "releaseGate": "VISUAL_ACCEPTANCE_AUTHORIZATION"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "AUTOMATED_SECURITY",
+                  "preconditions": "Synthetic owner, foreign-owner, unauthenticated, malformed and dependency-failure fixtures map to existing server contracts.",
+                  "setup": "Join each applicable matrix row to the registered route/API contract in docs/API-SURFACE.md and its server route source; for rows without a contract use a required NOT_APPLICABLE/unavailable fixture. Run positive and denial cases through the existing same-origin client/server boundary with redacted fixture data and no production writes.",
+                  "procedure": "Use a frozen expected-contract table checked into the matrix, not the implementation under test. Scope AC2 to operations actually referenced by the nine current page routes (profile, saved/leads, resume, jobs/search, preparation and settings), plus the shared GET /api/session owner/auth boundary; authentication start/callback/logout, scheduled discovery, market/pipeline, admin and other provider/control-plane routes are explicitly out of this visual-acceptance criterion and remain owned by their dedicated tickets. GET /api/session must return HTTP 200 with `{authenticated:false,registrationEnabled:boolean,cognitoEnabled:boolean}` anonymously, or HTTP 200 with `{authenticated:true,csrf,email,phone,owner,aiEnabled}` for a valid local session; owner is exactly a 64-character SHA-256 digest and raw session tokens, provider tokens and raw owner IDs must never appear. GET /api/profile returns HTTP 200 with the owner profile or the documented revision-zero empty record, HTTP 401 when unauthenticated and HTTP 429 after the owner-keyed read budget; PUT /api/profile returns HTTP 200 on a valid owner save, 400 for malformed input, 401 unauthenticated, 403 Origin/CSRF failure, 409 for a stale revision with no row/event change, and 429 after the owner-keyed update budget. GET /api/leads returns HTTP 200 owner rows, 401 unauthenticated and 429 after the owner-keyed read budget; GET /api/leads/:id and /history return HTTP 200 for an owned record, safe HTTP 404 for missing or foreign records, 400 for malformed IDs, 401 unauthenticated and 429 for the read budget; GET /api/leads/by-job/:jobId returns HTTP 200 with `{lead:null}` for an unknown job, HTTP 400 for a malformed UUID, HTTP 401 unauthenticated and HTTP 429 for the read budget, and never returns another owner's lead. POST /api/leads returns HTTP 200 for a valid owner save, 400 for malformed input, 401 unauthenticated, 403 Origin/CSRF failure, 404 when the completed job is absent, and 429 after the owner-keyed update budget; PUT /api/leads/:id returns HTTP 200 for a valid update, 400 malformed input, 401 unauthenticated, 403 Origin/CSRF failure, 404 for missing or foreign leads, 409 for a stale revision where supported, and 429 after the owner-keyed update budget. The frozen table also lists: POST /api/searches (202 success; 400 malformed; 401 unauthenticated; 403 CSRF; 409 idempotency conflict; 429 rate limit; duplicate idempotency key returns the original result), GET /api/searches (200 or 401/429), GET /api/searches/:id (200; 400 malformed ID; 401 unauthenticated; 404 foreign/missing; 429), POST /api/searches/:id/cancel (200; 400/401/403/404/429; no cross-owner effect), GET export (200; 400/401/404/409/429), GET events (SSE 200; 400/401/404/429; owner-scoped replay); GET /api/resumes (200 or 401; no route-specific 429), POST resume (202; 400/401/403/409/413/429/503/507 with no partial publication), GET resume/:id (200; 400/401/404/503), recover/cancel (200; 400/401/403/404/409/429/503/507), DELETE resume (204; 400/401/403/409/429/503); GET /api/preparation (200/401/429), POST preparation/:checkId/ai-elaborate (200; 400/401/403/404/429/502/503/504 and no resume/contact/compensation data); POST /api/account/sessions/revoke-others and POST /api/account/password each return 204 on success, 400 for validation, 401 for unauthenticated, 403 for Origin/CSRF failure and 429 when rate-limited; revoke-others invalidates every other session while preserving the current session, and password change clears the current session after the credential update. Unsupported/disabled routes assert their documented 404/405/503 and no side effect. For NOT_APPLICABLE design-only rows assert no invented API call or success state.",
+                  "assertion": "The acceptance matrix uses route/method-specific status, error and before/after side-effect assertions from the frozen full route/client contract table; it fails when implementation diverges, documentation omits a registered route, or a runtime row lacks a table entry. UI visibility never changes authorization.",
+                  "expectedResult": "No cross-owner data, fabricated success or unauthorized capability is exposed; all failures remain observable and redacted.",
+                  "testName": "visual acceptance fixtures preserve server authorization and failure semantics",
+                  "testFileOrProcedureId": "PLANNED:apps/api/tests/visual-acceptance-contract.security.test.ts::visual acceptance fixtures preserve server authorization and failure semantics",
+                  "fixtures": "Synthetic owner/resource pairs, malformed payloads and dependency error responses.",
+                  "negativeCase": "Client-selected owner, bypassed denial, persisted malformed data or leaked private fixture fails.",
+                  "evidenceArtifact": "Redacted contract/security output and fixture manifest.",
+                  "reviewer": "Security and API QA reviewer",
+                  "releaseGate": "VISUAL_ACCEPTANCE_AUTHORIZATION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             },
             {
               "ticketId": "CS-108",
@@ -81568,25 +81611,36 @@
               "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-108-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-108-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_PRODUCT",
+                  "expectedCheck": "Release semantics remain fail-closed and separate from specification readiness.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Signed future review checklist and exact-SHA gate references.",
+                  "automationStatus": "MANUAL_REQUIRED",
+                  "owner": "Release and Security reviewer",
+                  "releaseGate": "VISUAL_ACCEPTANCE_RELEASE_GATE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "type": "MANUAL_PRODUCT",
+                  "preconditions": "Release metadata, authorization contract and matrix artifact are available read-only.",
+                  "setup": "Review the matrix, gate manifest and exact future evidence owners without enabling any product capability.",
+                  "procedure": "Confirm RELEASE remains an acceptance label only; missing visual, authorization, accessibility or exact-SHA evidence keeps activation closed and no screenshot or documentation-only result promotes the ticket.",
+                  "assertion": "Release semantics remain fail-closed and separate from specification readiness.",
+                  "expectedResult": "No client flag, screenshot or local matrix can claim runtime release acceptance.",
+                  "testName": "visual regression acceptance preserves fail-closed release semantics",
+                  "testFileOrProcedureId": "MANUAL-PROCEDURE:CS-108-AC3-release-semantics-review",
+                  "fixtures": "Redacted matrix, policy and release checklist.",
+                  "negativeCase": "Missing owner approval, client-only activation or unverified hosted evidence is a failed release decision.",
+                  "evidenceArtifact": "Signed future review checklist and exact-SHA gate references.",
+                  "reviewer": "Release and Security reviewer",
+                  "releaseGate": "VISUAL_ACCEPTANCE_RELEASE_GATE",
+                  "testStatus": "MANUAL_REQUIRED",
+                  "reviewStatus": "REVIEWED"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-108", "docs/TESTING.md"]
@@ -81614,12 +81668,7 @@
               "id": "CS-108-AC1",
               "sourceText": "Every canonical page has primary baseline, reference viewport, mobile policy, three engines, minimal masks and an owner-approved deterministic threshold; no blanket widget masks.",
               "expectedResult": "Every canonical page has primary baseline, reference viewport, mobile policy, three engines, minimal masks and an owner-approved deterministic threshold; no blanket widget masks.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-108",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -81627,12 +81676,7 @@
               "id": "CS-108-AC2",
               "sourceText": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "expectedResult": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-108",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -81640,7 +81684,7 @@
               "id": "CS-108-AC3",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-108",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -81655,9 +81699,24 @@
             "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
             "Independent current-content review resolves specification/implementation findings before promotion.",
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+            {
+              "requirement": "Specification DoD: every canonical page has a named baseline/viewport/mobile policy/engine/fixture/owner, exact positive and negative assertions, minimal-mask rule, release semantics and privacy-safe evidence requirements; no runtime implementation or executed screenshot result is claimed.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Future implementation DoD: browser/visual outputs for Chromium, Firefox and WebKit match approved tolerances on the exact SHA, with UX/QA sign-off and no hidden authorization or private-data exposure.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            "docs/ai/quality-gates.md",
+            ".ai/backlog.json#CS-108",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md",
+            "docs/TESTING.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
@@ -81678,15 +81737,33 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-108 problem and each criterion with QA.",
-            "Resolve only the recorded CS-108 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for Approved-reference visual regression acceptance matrix.",
-            "Implement and verify CS-108-AC1: Every canonical page has primary baseline, reference viewport, mobile policy, three engines, minimal masks and an owner-approved deterministic threshold; no blanket widget masks.",
-            "Implement and verify CS-108-AC2: Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-            "Implement and verify CS-108-AC3: Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-108 documentation, redacted evidence and independent review before workflow promotion."
+            {
+              "requirement": "Read the canonical route/page inventory and list one row per page; do not invent absent routes.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Assign approved reference path, desktop/mobile viewport, dynamic fixture, engine matrix, owner and numeric tolerance for each row; record unresolved design/owner decisions explicitly.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define positive, unauthorized, malformed and dependency-failure fixtures with exact visible/asserted outcomes and redacted synthetic data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add planned visual/browser procedures and minimal-mask review; keep all unexecuted work marked PLANNED and require UX/QA review before activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-108"]
+          "sources": [
+            ".ai/backlog.json#CS-108",
+            ".ai/backlog.json#CS-108",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md",
+            "docs/TESTING.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -81702,11 +81779,20 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "UX must approve each numeric diff tolerance and mask list; QA must confirm all three engines and the exact reviewed SHA. Planned browser/visual evidence is not execution evidence in Phase 3.25.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-108",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -81719,13 +81805,19 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+            },
+            {
+              "requirement": "Over-broad masks or unstable fixtures can hide regressions. Keep masks tied to named dynamic regions, fail on missing baselines or changed route inventory, and recover by reverting the matrix artifact without modifying product data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-108",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/visual-parity-acceptance.md"
           ]
         },
         "delivery": {

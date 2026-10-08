@@ -419,7 +419,7 @@ test('whole-spec approval is content-bound and invalidates after substantive cha
   assert.equal(approved.reviewState, 'APPROVED');
   assert.equal(approved.readiness, 'IMPLEMENTATION_READY');
   assert.equal(approved.gaps[0].disposition, 'RESOLVED');
-  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 73);
+  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 74);
 
   inputs.policy.ticketRefinements['CS-3'].additionalRequirements.value[0] +=
     ' Substantive mutation invalidates review.';
@@ -799,8 +799,8 @@ test('CS-106 shared interaction components keep ownership and accessibility boun
 test('CS-107 cross-surface evidence keeps accessibility, locale and authorization boundaries explicit', () => {
   const model = buildCatalog(fresh());
   const spec = model.specs.find((entry) => entry.ticketId === 'CS-107');
-  assert.equal(spec.reviewState, 'APPROVED');
-  assert.equal(spec.readiness, 'IMPLEMENTATION_READY');
+  assert.equal(spec.reviewState, 'DRAFT');
+  assert.equal(spec.readiness, 'INCOMPLETE');
   assert.match(JSON.stringify(spec.sections.functionalRequirements), /must not claim translations/);
   assert.match(JSON.stringify(spec.sections.securityPrivacy), /client-selected owner/);
   const ac1 = model.traceability.find((row) => row.acId === 'CS-107-AC1');
@@ -811,11 +811,10 @@ test('CS-107 cross-surface evidence keeps accessibility, locale and authorizatio
   assert.ok(ac1.exactBindings.some((binding) => binding.type === 'MANUAL_ACCESSIBILITY'));
   assert.match(ac2.exactBindings[0].procedure, /independently authored expected-output oracle/);
   assert.ok(ac3.exactBindings.some((binding) => binding.type === 'AUTOMATED_BROWSER'));
-  assert.ok(
-    [...ac1.exactBindings, ...ac2.exactBindings, ...ac3.exactBindings].every(
-      (binding) => binding.reviewStatus === 'REVIEWED',
-    ),
-  );
+  assert.ok(ac1.exactBindings.some((binding) => binding.reviewStatus === 'DRAFT'));
+  assert.ok(ac2.exactBindings.every((binding) => binding.reviewStatus === 'DRAFT'));
+  assert.ok(ac3.exactBindings.some((binding) => binding.reviewStatus === 'DRAFT'));
+  assert.ok(ac3.exactBindings.some((binding) => binding.reviewStatus === 'REVIEWED'));
 });
 
 test('CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes', () => {
@@ -855,14 +854,14 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   });
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
-  assert.equal(model.counts.completeSpecificationCount, 73);
-  assert.equal(model.counts.incompleteSpecificationCount, 143);
-  assert.equal(model.counts.approvedSpecificationCount, 73);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 285);
+  assert.equal(model.counts.completeSpecificationCount, 74);
+  assert.equal(model.counts.incompleteSpecificationCount, 142);
+  assert.equal(model.counts.approvedSpecificationCount, 74);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 286);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 263);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 643);
-  assert.equal(model.counts.authoredExactTestBindingCount, 353);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 264);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 642);
+  assert.equal(model.counts.authoredExactTestBindingCount, 356);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
     model.findings.find(
@@ -876,7 +875,7 @@ test('216 source-linked drafts preserve registry and canonical stages without re
     ).disposition,
     'RESOLVED',
   );
-  assert.equal(model.findings.length, 648);
+  assert.equal(model.findings.length, 645);
   for (const id of ['CS-45', 'CS-107', 'CS-108'])
     assert.equal(model.designTraceability.find((entry) => entry.ticketId === id).ui, true);
   assert.ok(
@@ -910,7 +909,7 @@ test('existing owner directions retain source provenance without fabricated read
   assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
   assert.match(direction.remainingGate, /lower bound/);
   assert.equal(spec.reviewState, 'DRAFT');
-  assert.equal(model.counts.approvedSpecificationCount, 73);
+  assert.equal(model.counts.approvedSpecificationCount, 74);
   inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>
@@ -1048,7 +1047,7 @@ test('bindings require complete procedures, canonical AC IDs and valid verificat
 
 test('unknown release assignments do not become implementation authorization', () => {
   const inputs = fresh();
-  const ticket = inputs.backlog.items.find((ticket) => ticket.id === 'CS-1');
+  const ticket = inputs.backlog.items.find((ticket) => ticket.id === 'CS-6');
   delete ticket.releaseState;
   inputs.coverage.tickets = inputs.coverage.tickets.filter((entry) => entry.ticketId !== ticket.id);
   const spec = buildCatalog(inputs).specs.find((entry) => entry.ticketId === ticket.id);

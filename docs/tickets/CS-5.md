@@ -1,6 +1,6 @@
 # CS-5 — Consolidate the application into one canonical workspace
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
+Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
 
 ## 1. identity
 
@@ -457,7 +457,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Tracked repository inventory and canonical API contract available read-only.",
           "setup": "Enumerate workspace scripts/manifests/imports/editor launchers/workflows for SQLite MCP executable/config references; distinguish historical docs.",
@@ -732,7 +732,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "actions": []
     },
     {
-      "requirement": "Source backlog releaseTarget is null and releaseState is unspecified; blocker classification ACTIVE_R1 is not a release version or activation decision. Product/release ownership must assign a target and activation for CS-5 or explicitly place it on HOLD/later release. Preserve the null/unspecified source values until that decision; do not infer from package version, historic tags, UAT status or implementation evidence. The combined CS-4/CS-5 decision is recorded in docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md.",
+      "requirement": "OWNER_DECISION_RESOLVED: the owner classifies CS-5 as ACTIVE_R1 foundational architecture using the existing R1 identifier, corresponding to the prepared but unpublished v1.0.0 scope. Preserve the null/unspecified source fields as historical registry metadata; do not claim publication, deployment or user activation.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -799,11 +799,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     {
       "size": "XL",
       "complexity": 5,
-      "releaseTarget": null,
-      "releaseState": "UNSPECIFIED",
+      "releaseTarget": "R1",
+      "releaseState": "ACTIVE_R1",
+      "sourceReleaseTarget": null,
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "R1",
+        "effectiveReleaseState": "ACTIVE_R1",
+        "deliveryMode": "IMPLEMENT_NOW",
+        "rationale": "Owner decision OD-2026-10-08-CS5 classifies the canonical single-workspace architecture as foundational Release 1 scope using the existing R1 identifier, corresponding to the prepared but unpublished v1.0.0 release. No feature flag or user-visible activation exists; publication and deployment remain separate evidence gates.",
+        "sources": [
+          ".ai/backlog.json#CS-5",
+          "docs/OWNER-DECISIONS-2026-10-08.md#CS-5",
+          "docs/RELEASE-1.0.0.md"
+        ]
+      },
       "sourceDisposition": "ACTIVE_R1",
       "deferredDecision": null,
-      "deliveryMode": "UNDECIDED",
+      "deliveryMode": "IMPLEMENT_NOW",
       "featureFlag": null,
       "holdReason": null,
       "implementationOrder": null,
@@ -817,8 +829,6 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ## Specification gate history
 
-| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_TARGET_UNDECIDED  | OPEN        | Source registry has no approved release assignment.                                                                      | Product owner                    | Explicit release assignment or owner-approved future-release disposition.                                |
-| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                  | Disposition | Original reason                                                                                                          | Owner | Evidence                                                                                                 |
+| --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
+| EXACT_AC_TEST_BINDING | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
