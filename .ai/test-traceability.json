@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "83b80d39e78fc6b69e9be9c38ae402a926964b874293b04db7162eb4127f3468",
+    ".ai/ticket-specification-policy.json": "90d433aeb68cb708c7193b4cccc2c1be51ebe7e464ecdbf65d1c9d3574723f7c",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -16184,49 +16184,36 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-115-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "The palette uses the approved layout, renders only registered owner-scoped API values or explicit unavailable states, preserves focus on open/close and does not create a new search or application endpoint.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-115-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-115-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-115-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-115-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "redacted-command-palette-source-state-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend",
+          "releaseGate": "R1-UI-FOUNDATION"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use an authenticated synthetic candidate session, the approved command-palette reference and `global_search_command_palette_enabled=true` in an isolated build.",
+          "setup": "Open the palette from its invoking control and render registered search responses plus explicit empty/unavailable values; compare visible layout/state labels with the approved reference without using screenshot sample data.",
+          "procedure": "CS-115-AC1-command-palette-source-state",
+          "assertion": "The palette uses the approved layout, renders only registered owner-scoped API values or explicit unavailable states, preserves focus on open/close and does not create a new search or application endpoint.",
+          "expectedResult": "Enter selects an available result, Escape closes/restores focus, and disabled/default-off builds render no palette call or control.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "renders command palette from approved references and registered state",
+          "testFileOrProcedureId": "apps/web/src/components/command-palette/__tests__/command-palette.test.tsx::source-state",
+          "fixtures": "Synthetic session, approved reference manifest, invoking control, registered result/empty/unavailable responses and feature-flag variants.",
+          "negativeCase": "Inject an unregistered result source, illustrative sample value or client-only enablement and assert no request/rendered result; omit dialog name and assert accessibility failure.",
+          "evidenceArtifact": "redacted-command-palette-source-state-report.json",
+          "reviewer": "Frontend",
+          "releaseGate": "R1-UI-FOUNDATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-115",
@@ -16234,33 +16221,36 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-115-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-115-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-115-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Each available engine compares the exact approved state/viewport/reference and records hash, masks and tolerance; unavailable engines are NOT_RUN and never PASS.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-command-palette-visual-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use the approved command-palette references and deterministic synthetic results with the registered browser harness.",
+          "setup": "Capture the palette at the approved 1440 CSS px desktop and mobile viewport in Chromium, Firefox and WebKit, recording reference hash, engine/version, viewport, minimal masks and numeric tolerance.",
+          "procedure": "CS-115-AC2-command-palette-visual-browser",
+          "assertion": "Each available engine compares the exact approved state/viewport/reference and records hash, masks and tolerance; unavailable engines are NOT_RUN and never PASS.",
+          "expectedResult": "Available engines produce reproducible visual evidence within approved tolerance; an altered reference, unsupported viewport or missing engine blocks comparison.",
+          "type": "VISUAL_REGRESSION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "compares command palette against approved desktop and mobile references",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-115-AC2-command-palette",
+          "fixtures": "Approved reference images, deterministic result fixtures, viewport matrix and screenshot manifest.",
+          "negativeCase": "Use altered reference hash, unapproved viewport or missing engine and assert explicit failure/NOT_RUN rather than PASS.",
+          "evidenceArtifact": "redacted-command-palette-visual-report.json",
+          "reviewer": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
+        }
+      ]
     },
     {
       "ticketId": "CS-115",
@@ -16268,33 +16258,36 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-115-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-115-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-115-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Applicable loading/empty/error/denial states have accessible names and recovery actions, focus remains visible/operable, Escape/focus restoration works, stale responses are ignored, and no private result renders after denial.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-command-palette-a11y-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility",
+          "releaseGate": "R1-A11Y-PRIVACY"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use pending, empty, error, unauthorized, expired-session, stale-revision where returned, cancellation and keyboard/focus fixtures at 320/390/768/1024/1440 CSS px.",
+          "setup": "Run axe and keyboard traversal through the palette with registered search responses and stale-query cancellation; record when stale-revision is NOT_APPLICABLE because no revision mutation exists.",
+          "procedure": "CS-115-AC3-command-palette-accessibility-state-matrix",
+          "assertion": "Applicable loading/empty/error/denial states have accessible names and recovery actions, focus remains visible/operable, Escape/focus restoration works, stale responses are ignored, and no private result renders after denial.",
+          "expectedResult": "Automated accessibility/privacy checks pass for applicable states; manual screen-reader review remains separate human evidence and unsupported stale-revision is not misreported as PASS.",
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "covers command palette failure states and keyboard accessibility",
+          "testFileOrProcedureId": "apps/web/src/components/command-palette/__tests__/command-palette.a11y.test.tsx::matrix",
+          "fixtures": "Synthetic HTTP states, axe fixture, keyboard sequence, cancellation token, optional 409 fixture and responsive viewport matrix.",
+          "negativeCase": "Omit dialog label, allow focus loss, apply stale result after cancellation or render denied data and assert failure.",
+          "evidenceArtifact": "redacted-command-palette-a11y-report.json",
+          "reviewer": "Accessibility",
+          "releaseGate": "R1-A11Y-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-115",
@@ -16302,25 +16295,36 @@
       "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-115-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-115-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The command palette remains disabled until the declared component, browser, accessibility, privacy and exact-SHA gates are present; the checker never enables runtime behavior itself.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-command-palette-release-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a release fixture with `global_search_command_palette_enabled` absent/default false and no new endpoint or deployment credentials.",
+          "setup": "Run the conditional activation checker against incomplete and complete component, browser, accessibility, privacy and exact-SHA evidence manifests without changing workflow state.",
+          "procedure": "CS-115-AC4-command-palette-conditional-release",
+          "assertion": "The command palette remains disabled until the declared component, browser, accessibility, privacy and exact-SHA gates are present; the checker never enables runtime behavior itself.",
+          "expectedResult": "Missing evidence fails closed, no palette/search request occurs when disabled, and the canonical workflow remains unchanged.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "keeps command palette disabled without conditional release evidence",
+          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-115-AC4",
+          "fixtures": "Synthetic feature-flag/evidence manifests and disabled-route control.",
+          "negativeCase": "Provide only a screenshot, client flag or design reference and assert refusal with no network call or workflow mutation.",
+          "evidenceArtifact": "redacted-command-palette-release-report.json",
+          "reviewer": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
+        }
+      ]
     },
     {
       "ticketId": "CS-116",
