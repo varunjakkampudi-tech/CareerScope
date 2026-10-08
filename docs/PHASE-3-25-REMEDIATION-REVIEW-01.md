@@ -734,3 +734,20 @@ future state. No provider or browser execution evidence is claimed.
 Owner release/HOLD assignment, Cognito configuration, provider-outage design,
 manual NVDA/VoiceOver review and hosted disposable-session acceptance remain
 future gates.
+
+## CS-94 — Cognito rollout acceptance authored-content approval
+
+The CS-94 specification was reviewed as a release/acceptance plan only. It
+keeps the existing Fastify callback/session boundary, manual main-only deploy,
+redacted telemetry and non-destructive rollback requirements explicit. No live
+Cognito, production, deployment or monitoring evidence is claimed.
+
+- CS-94-AC1 binding digest: `0d5f5f8e33a252ab816d439cb3a087d150857665bb7f7031abd49c1998efe09d`
+- CS-94-AC2 binding digest: `8ec054063b4ae5ec8dd6bc5647c274201c90fdaca81a2960f08ecb4030fb1203`
+- CS-94-AC3 binding digest: `2952845bc039c5641253b904b7b24428a83efcab1b154c0a12499ce5a30c5f44`
+- CS-94-AC4 binding digest: `4ac87ba8b5921006441ba3660c8dabd31c5430d3c7893db35713c6099de8936f`
+
+Owner release assignment, isolated provider acceptance, exact-SHA deployment,
+rollback and live monitoring remain future gates.
+
+- Whole specification digest: `ce02ead055c0a87a116f810284455cb99dd840320cbc1c8ebe5e5ebc187008f7`

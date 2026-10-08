@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "b09a3ddd819f45389e63202974015e28b4e22fa5fd8bc05fb3d40d6c1bfb4c46",
+    ".ai/ticket-specification-policy.json": "25fb818f7ad59e005924f4d3e4de3f131eeb8cf3b65de056033b0d0932c42f2c",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "27d0da30b9719754152616b9483f9ef0d8023a60648bcb950690485473891b6d"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "0f0595d5954613c15f43f15944edf01cc30cdcb9820e9f72723e695ce4a0dbe3"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "rows": [
@@ -12228,7 +12228,7 @@
         {
           "reviewer": "Identity QA and Security reviewer",
           "testStatus": "EXTERNAL_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "EXTERNAL_PROVIDER",
           "preconditions": "Approved isolated Cognito pool, disposable user/mailbox, sender and recovery settings; no owner/candidate account; CS-90..CS-93 release prerequisites accepted.",
           "setup": "Prepare a redacted matrix with one disposable identity and explicit case IDs for signup, OTP valid/invalid/expired/reused, login, logout, recovery, resend limit and provider outage.",
@@ -12269,7 +12269,7 @@
         {
           "reviewer": "SRE and Privacy/Security reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_SECURITY",
           "preconditions": "Auth telemetry sources and redaction config are identified; use isolated synthetic events and captured logs.",
           "setup": "Emit synthetic success/failure, delivery-failure, throttle and rollback-trigger events including secret/PII sentinels in forbidden fields.",
@@ -12310,7 +12310,7 @@
         {
           "reviewer": "Release operator and Infrastructure QA",
           "testStatus": "HOSTED_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "LIVE_HOST",
           "preconditions": "Separate authorized release approval exists; main is clean and exact candidate SHA has green required hosted CI and protected production environment approval.",
           "setup": "Record candidate SHA, CI run, migration/config preflight, current auth revision and established rollback target; do not store secrets in evidence.",
@@ -12351,7 +12351,7 @@
         {
           "reviewer": "Product owner and Independent Release Reviewer",
           "testStatus": "MANUAL_REQUIRED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "MANUAL_PRODUCT",
           "preconditions": "AC1-AC3 evidence bundle exists for one immutable release revision and all critical findings are dispositioned.",
           "setup": "Prepare a review packet containing redacted disposable-flow matrix, signal/alert evidence, exact deployed SHA and observed rollback result; exclude OTPs, addresses, user attributes and credentials.",

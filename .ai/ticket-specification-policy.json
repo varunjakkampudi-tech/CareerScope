@@ -6134,6 +6134,25 @@
           "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
+    },
+    "CS-94": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "OWNER_DECISION_REQUIRED",
+        "rationale": "The source registry does not assign a release for the Cognito rollout acceptance plan. This specification preserves the manual main-only deployment and requires explicit owner go/no-go evidence before any live activation.",
+        "sources": [
+          ".ai/backlog.json#CS-94",
+          ".ai/ticket-specification-policy.json#CS-94",
+          "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-94 AC1–AC4 are reviewed as release-gated procedures with disposable-provider, privacy-safe telemetry, exact-SHA rollback and owner acceptance boundaries. No live/provider evidence is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-94",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
     }
   },
   "exactVerificationBindings": {
@@ -7519,7 +7538,7 @@
       {
         "reviewer": "Identity QA and Security reviewer",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "EXTERNAL_PROVIDER",
         "preconditions": "Approved isolated Cognito pool, disposable user/mailbox, sender and recovery settings; no owner/candidate account; CS-90..CS-93 release prerequisites accepted.",
         "setup": "Prepare a redacted matrix with one disposable identity and explicit case IDs for signup, OTP valid/invalid/expired/reused, login, logout, recovery, resend limit and provider outage.",
@@ -7542,7 +7561,7 @@
       {
         "reviewer": "SRE and Privacy/Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Auth telemetry sources and redaction config are identified; use isolated synthetic events and captured logs.",
         "setup": "Emit synthetic success/failure, delivery-failure, throttle and rollback-trigger events including secret/PII sentinels in forbidden fields.",
@@ -7565,7 +7584,7 @@
       {
         "reviewer": "Release operator and Infrastructure QA",
         "testStatus": "HOSTED_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "LIVE_HOST",
         "preconditions": "Separate authorized release approval exists; main is clean and exact candidate SHA has green required hosted CI and protected production environment approval.",
         "setup": "Record candidate SHA, CI run, migration/config preflight, current auth revision and established rollback target; do not store secrets in evidence.",
@@ -7588,7 +7607,7 @@
       {
         "reviewer": "Product owner and Independent Release Reviewer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "AC1-AC3 evidence bundle exists for one immutable release revision and all critical findings are dispositioned.",
         "setup": "Prepare a review packet containing redacted disposable-flow matrix, signal/alert evidence, exact deployed SHA and observed rollback result; exclude OTPs, addresses, user attributes and credentials.",
@@ -15274,6 +15293,30 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "72908703053095589d4ebb322454ff3cc2aa666e0dfd6c4e38c157723362c9fa"
+    },
+    "CS-94-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "0d5f5f8e33a252ab816d439cb3a087d150857665bb7f7031abd49c1998efe09d"
+    },
+    "CS-94-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8ec054063b4ae5ec8dd6bc5647c274201c90fdaca81a2960f08ecb4030fb1203"
+    },
+    "CS-94-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "2952845bc039c5641253b904b7b24428a83efcab1b154c0a12499ce5a30c5f44"
+    },
+    "CS-94-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4ac87ba8b5921006441ba3660c8dabd31c5430d3c7893db35713c6099de8936f"
     }
   },
   "specificationReviewReceipts": {
@@ -15336,6 +15379,12 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "cc6f15a7437d258bc775ea1954dbb0f624dc4274dc346062ba151f6b464a4ae8"
+    },
+    "CS-94": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "ce02ead055c0a87a116f810284455cb99dd840320cbc1c8ebe5e5ebc187008f7"
     },
     "CS-82": {
       "verdict": "APPROVED",
