@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "8844edde8318637895d9fbd259c7bca11b7f55820a5514306421a4b3abc8fef7",
+    ".ai/ticket-specification-policy.json": "ab4d8e41071059ffeb827aed357f35f1cdb7096d72afd854cc5884e3026e821f",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -16829,49 +16829,36 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-119-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Approved layout renders only registered server-derived consent data or explicit unavailable state; no client-selected owner, invented category, legal claim or second store is used.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-119-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-119-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-119-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-119-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "redacted-consent-privacy-source-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Privacy",
+          "releaseGate": "R1-PRIVACY-FOUNDATION"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Authenticated synthetic candidate with approved Consent Privacy references and isolated consent-domain contract or explicit unavailable response.",
+          "setup": "Render registered consent values or unavailable state without legal/policy sample data.",
+          "procedure": "CS-119-AC1-consent-privacy-source-contract",
+          "assertion": "Approved layout renders only registered server-derived consent data or explicit unavailable state; no client-selected owner, invented category, legal claim or second store is used.",
+          "expectedResult": "Contract-backed values render deterministically; absent contract remains unavailable and default-off makes no request/control.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "renders Consent Privacy only from approved contract or unavailable state",
+          "testFileOrProcedureId": "apps/web/src/components/consent-privacy/__tests__/consent-privacy-center.test.tsx::source-contract",
+          "fixtures": "Synthetic session, contract fixture, unavailable response and feature variants.",
+          "negativeCase": "Sample policy/category, client owner or absent contract yields no fabricated value/request.",
+          "evidenceArtifact": "redacted-consent-privacy-source-report.json",
+          "reviewer": "Privacy",
+          "releaseGate": "R1-PRIVACY-FOUNDATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-119",
@@ -16879,33 +16866,36 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-119-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-119-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-119-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Available engines compare exact reference/state and record evidence; unavailable engines are NOT_RUN and never PASS.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-consent-privacy-visual-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL-PRIVACY"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Deterministic synthetic consent states and approved desktop/mobile references with no real policy/personal data.",
+          "setup": "Capture states in Chromium, Firefox and WebKit with reference hash, viewport, masks and tolerance.",
+          "procedure": "CS-119-AC2-consent-privacy-visual-browser",
+          "assertion": "Available engines compare exact reference/state and record evidence; unavailable engines are NOT_RUN and never PASS.",
+          "expectedResult": "Evidence is reproducible within tolerance; altered reference or unsupported viewport blocks.",
+          "type": "VISUAL_REGRESSION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "compares Consent Privacy against approved references",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-119-AC2-consent-privacy-center",
+          "fixtures": "Approved references, synthetic consent values and viewport matrix.",
+          "negativeCase": "Altered hash, unapproved viewport, missing engine or private data fails/NOT_RUN.",
+          "evidenceArtifact": "redacted-consent-privacy-visual-report.json",
+          "reviewer": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-119",
@@ -16913,33 +16903,36 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-119-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-119-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-119-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Applicable states expose labelled controls/errors/status, preserve focus, reject unauthorized/CSRF/stale mutations without persistence, redact values from logs/browser evidence and do not expose private content after denial.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-consent-privacy-security-a11y-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "R1-SECURITY-PRIVACY-A11Y"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Synthetic pending, unavailable, 400, 401, 403 CSRF/origin/ownership, 409 stale revision and 429 fixtures at responsive viewports.",
+          "setup": "Run axe and keyboard traversal for view, mutation, error and recovery; absent contract is unavailable.",
+          "procedure": "CS-119-AC3-consent-privacy-security-state-matrix",
+          "assertion": "Applicable states expose labelled controls/errors/status, preserve focus, reject unauthorized/CSRF/stale mutations without persistence, redact values from logs/browser evidence and do not expose private content after denial.",
+          "expectedResult": "Automated accessibility/privacy/security checks pass; manual screen-reader evidence remains separate.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "enforces Consent Privacy ownership, CSRF, revision and privacy-safe states",
+          "testFileOrProcedureId": "apps/web/src/components/consent-privacy/__tests__/consent-privacy-center.security.a11y.test.tsx::matrix",
+          "fixtures": "Synthetic sessions/CSRF, revisions, typed errors, redaction sink, axe and keyboard fixtures.",
+          "negativeCase": "Owner mismatch, missing CSRF/origin, stale revision, unknown category or sensitive sentinel fails with no partial write.",
+          "evidenceArtifact": "redacted-consent-privacy-security-a11y-report.json",
+          "reviewer": "Security",
+          "releaseGate": "R1-SECURITY-PRIVACY-A11Y"
+        }
+      ]
     },
     {
       "ticketId": "CS-119",
@@ -16947,25 +16940,36 @@
       "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-119-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-119-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Consent Privacy remains disabled until approved domain contract and evidence gates exist; checker never enables runtime or changes consent data.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-consent-privacy-release-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Release",
+          "releaseGate": "R1-CONDITIONAL-PRIVACY-RELEASE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Consent flag absent/default false; no deployment credentials or legal/provider approval evidence.",
+          "setup": "Run conditional release checker with incomplete/complete-shape synthetic evidence manifests without changing workflow.",
+          "procedure": "CS-119-AC4-consent-privacy-conditional-release",
+          "assertion": "Consent Privacy remains disabled until approved domain contract and evidence gates exist; checker never enables runtime or changes consent data.",
+          "expectedResult": "Missing evidence fails closed, no request occurs when disabled and workflow remains unchanged.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "keeps Consent Privacy disabled without approved contract and release evidence",
+          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-119-AC4",
+          "fixtures": "Feature/evidence manifests, absent-contract control and disabled-route fixture.",
+          "negativeCase": "Screenshot, client flag, fabricated legal copy or incomplete evidence is refused with no network/workflow/data mutation.",
+          "evidenceArtifact": "redacted-consent-privacy-release-report.json",
+          "reviewer": "Release",
+          "releaseGate": "R1-CONDITIONAL-PRIVACY-RELEASE"
+        }
+      ]
     },
     {
       "ticketId": "CS-120",
