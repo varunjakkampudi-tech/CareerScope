@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "e842bddc7e81c32f7356a875daa782ce36e2cfc89eb0975312dcc2b5fab810c4",
+    ".ai/ticket-specification-policy.json": "83b80d39e78fc6b69e9be9c38ae402a926964b874293b04db7162eb4127f3468",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -15999,25 +15999,36 @@
       "criterion": "Explicit identity.read/profile.read/jobs.read/applications.read/messages.read/notifications.read/email.read/email.send/webhooks.receive scopes only when authorized.",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-114-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-114-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Only explicitly authorized capabilities are returned/granted for the owning candidate; unavailable capabilities remain unavailable and no UI visibility or provider name grants access.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-provider-capability-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "HOLD-PROVIDER-AUTHZ"
         }
       ],
       "releaseGate": "HOLD",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a provider-neutral capability registry and synthetic candidate consent for two owners; no real provider credentials or external API.",
+          "setup": "Request each listed capability with granted, missing and revoked consent variants and inspect the server-side allowlist.",
+          "procedure": "CS-114-AC1-capability-consent-matrix",
+          "assertion": "Only explicitly authorized capabilities are returned/granted for the owning candidate; unavailable capabilities remain unavailable and no UI visibility or provider name grants access.",
+          "expectedResult": "Granted scopes are minimal and purpose-specific; missing or revoked consent returns HTTP 403 with `CAPABILITY_NOT_AUTHORIZED` and no provider dispatch; an unknown capability returns HTTP 422 with `CAPABILITY_NOT_ALLOWED` and no provider dispatch.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "enforces provider-neutral capability and consent allowlist",
+          "testFileOrProcedureId": "packages/core/src/provider-capabilities.test.ts::consent-matrix",
+          "fixtures": "Synthetic capability registry, owner sessions, consent revisions and unavailable-provider variants.",
+          "negativeCase": "Request messages.read/email.send without consent and assert HTTP 403/CAPABILITY_NOT_AUTHORIZED; inject a capability not in the allowlist and assert HTTP 422/CAPABILITY_NOT_ALLOWED; both cases produce no outbound call.",
+          "evidenceArtifact": "redacted-provider-capability-report.json",
+          "reviewer": "Security",
+          "releaseGate": "HOLD-PROVIDER-AUTHZ"
+        }
+      ]
     },
     {
       "ticketId": "CS-114",
@@ -16025,25 +16036,36 @@
       "criterion": "Track authorization, consent, scopes, sync, disconnect/revocation, privacy/retention, health, webhook authenticity, audit, rollout/kill switch and masked credentials.",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-114-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Authorization, consent revision, scopes, sync state, revocation, health, webhook authenticity, retention and masked credentials are represented without raw secrets; disconnect stops future sync and emits a redacted audit event.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-114-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "redacted-provider-lifecycle-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Backend",
+          "releaseGate": "HOLD-PRIVACY-AUDIT"
         }
       ],
       "releaseGate": "HOLD",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use synthetic connection records with consent, scopes, sync health, disconnect/revocation, webhook and masked-secret metadata; raw tokens are absent.",
+          "setup": "Apply connect, consent update, sync failure, disconnect and revoke transitions through the planned server boundary and inspect audit/telemetry output.",
+          "procedure": "CS-114-AC2-connection-lifecycle-contract",
+          "assertion": "Authorization, consent revision, scopes, sync state, revocation, health, webhook authenticity, retention and masked credentials are represented without raw secrets; disconnect stops future sync and emits a redacted audit event.",
+          "expectedResult": "Lifecycle state is owner-scoped, revocation is idempotent and audit/metrics contain correlation metadata only.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "tracks consent connection health and revocation without secrets",
+          "testFileOrProcedureId": "packages/core/src/provider-connections.test.ts::lifecycle",
+          "fixtures": "Synthetic connection state machine, consent versions, sync failures, webhook signatures and masked metadata.",
+          "negativeCase": "Return an OAuth token, accept an invalid webhook signature or sync after revocation and assert refusal with no secret/log leakage.",
+          "evidenceArtifact": "redacted-provider-lifecycle-report.json",
+          "reviewer": "Backend",
+          "releaseGate": "HOLD-PRIVACY-AUDIT"
+        }
+      ]
     },
     {
       "ticketId": "CS-114",
@@ -16052,16 +16074,35 @@
       "verification": [
         {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-114-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "No provider is treated as available without current authorization, terms, licensing and scope evidence; scraping, cookie replay, CAPTCHA bypass and credential harvesting are rejected by policy checks.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-provider-authorization-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "EXTERNAL-PROVIDER"
         }
       ],
       "releaseGate": "HOLD",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a provider catalog containing design targets with no authorized API/terms evidence and a separate explicitly approved synthetic provider fixture.",
+          "setup": "Run provider enablement validation against missing terms/scopes, unavailable API and approved capability manifests; do not authenticate to a real site.",
+          "procedure": "CS-114-AC3-provider-authorization-boundary",
+          "assertion": "No provider is treated as available without current authorization, terms, licensing and scope evidence; scraping, cookie replay, CAPTCHA bypass and credential harvesting are rejected by policy checks.",
+          "expectedResult": "Unavailable/unapproved providers remain HOLD and no network or credential action occurs.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "fails closed for unauthorized provider capabilities",
+          "testFileOrProcedureId": "scripts/check-provider-contracts.mjs::authorization-boundary",
+          "fixtures": "Synthetic provider catalog, approval manifests and prohibited-access markers.",
+          "negativeCase": "Supply only a logo, UI toggle or undocumented endpoint and assert HOLD/refusal with no session/cookie use.",
+          "evidenceArtifact": "redacted-provider-authorization-report.json",
+          "reviewer": "Security",
+          "releaseGate": "EXTERNAL-PROVIDER"
+        }
+      ]
     },
     {
       "ticketId": "CS-114",
@@ -16069,41 +16110,36 @@
       "criterion": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-114-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Positive operations require owner/capability authorization. Owner mismatch returns HTTP 403/OWNER_SCOPE_DENIED; stale consent returns HTTP 409/CONSENT_REVISION_CONFLICT; malformed consent returns HTTP 422/CONSENT_INVALID; invalid webhook signature returns HTTP 403/WEBHOOK_UNAUTHENTICATED; duplicate delivery returns the prior idempotent effect with no second mutation; timeout/rate-limit retries only under the declared bounded retry policy and then end in typed retry-exhausted state; poison events are acknowledged to the documented DLQ/failure artifact without applying an effect. No provider payload is logged.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-114-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-114-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-114-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "redacted-provider-negative-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "HOLD-INTEGRATION"
         }
       ],
       "releaseGate": "HOLD",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use owner-scoped synthetic requests with positive capability, denied capability, malformed consent, provider timeout, rate limit and webhook failure fixtures.",
+          "setup": "Exercise connect/sync/disconnect and event handling through the planned contract with retry/idempotency and redacted logs enabled; record the job/event terminal state and DLQ artifact for poison messages.",
+          "procedure": "CS-114-AC4-provider-negative-and-failure-matrix",
+          "assertion": "Positive operations require owner/capability authorization. Owner mismatch returns HTTP 403/OWNER_SCOPE_DENIED; stale consent returns HTTP 409/CONSENT_REVISION_CONFLICT; malformed consent returns HTTP 422/CONSENT_INVALID; invalid webhook signature returns HTTP 403/WEBHOOK_UNAUTHENTICATED; duplicate delivery returns the prior idempotent effect with no second mutation; timeout/rate-limit retries only under the declared bounded retry policy and then end in typed retry-exhausted state; poison events are acknowledged to the documented DLQ/failure artifact without applying an effect. No provider payload is logged.",
+          "expectedResult": "No cross-owner data, fabricated provider event or unauthorized capability is persisted; duplicate delivery has exactly one effect, bounded retries have an observable terminal result, poison events have a redacted DLQ artifact and all negative cases leave protected state unchanged.",
+          "type": "AUTOMATED_INTEGRATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "covers provider consent denial malformed input and failure recovery",
+          "testFileOrProcedureId": "packages/core/src/provider-connections.integration.test.ts::negative-matrix",
+          "fixtures": "Synthetic owners, capabilities, consent revisions, provider errors, duplicate events, timeout/rate-limit retry schedule, poison event/DLQ fixture and redacted audit sink.",
+          "negativeCase": "Use another owner's connection, stale consent, malformed consent, invalid signature, duplicate event, timeout, rate-limit or poison event and assert the exact status/code/terminal artifact above with no protected-state mutation or secret log.",
+          "evidenceArtifact": "redacted-provider-negative-report.json",
+          "reviewer": "QA",
+          "releaseGate": "HOLD-INTEGRATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-114",
@@ -16111,25 +16147,36 @@
       "criterion": "Preserve HOLD release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-114-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-114-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Provider capability remains disabled until approved terms/scopes, secret/webhook/security/privacy, async recovery and exact-SHA evidence exist; the checker never enables a provider or performs external access.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-provider-hold-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Release",
+          "releaseGate": "HOLD-CONDITIONAL-RELEASE"
         }
       ],
       "releaseGate": "HOLD",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a release fixture with provider_contract_enabled absent/default false, no provider credentials and no external approval evidence.",
+          "setup": "Run the HOLD activation checker with incomplete and complete synthetic authorization/privacy/security manifests without changing workflow state.",
+          "procedure": "CS-114-AC5-provider-hold-gate",
+          "assertion": "Provider capability remains disabled until approved terms/scopes, secret/webhook/security/privacy, async recovery and exact-SHA evidence exist; the checker never enables a provider or performs external access.",
+          "expectedResult": "Missing evidence fails closed and no runtime, credential, network or workflow mutation occurs.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "keeps connected-account providers held without authorization evidence",
+          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-114-AC5",
+          "fixtures": "Synthetic feature/evidence manifests, unapproved-provider catalog and disabled-route controls.",
+          "negativeCase": "Provide only provider credentials, UI approval or screenshot and assert HOLD/refusal with no external request.",
+          "evidenceArtifact": "redacted-provider-hold-report.json",
+          "reviewer": "Release",
+          "releaseGate": "HOLD-CONDITIONAL-RELEASE"
+        }
+      ]
     },
     {
       "ticketId": "CS-115",
