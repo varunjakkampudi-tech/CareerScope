@@ -2,43 +2,43 @@
 
 Structural section coverage and generated count are not implementation readiness. Every finding below is retained until source evidence or an approved specification resolves it.
 
-| Measure                                | Count              |
-| -------------------------------------- | ------------------ |
-| ticketCount                            | 216                |
-| specificationCount                     | 216                |
-| completeSpecificationCount             | 86                 |
-| incompleteSpecificationCount           | 130                |
-| epicMappedCount                        | 216                |
-| orphanTicketCount                      | 0                  |
-| duplicateIdCount                       | 0                  |
-| dependencyEdgeCount                    | 276                |
-| invalidDependencyCount                 | 0                  |
-| dependencyCycleCount                   | 0                  |
-| dependencySemanticGapCount             | 0                  |
-| acceptanceCriterionCount               | 906                |
-| suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 296                |
-| unmappedAcceptanceCriterionCount       | 610                |
-| reviewedExactTestBindingCount          | 318                |
-| authoredExactTestBindingCount          | 366                |
-| acceptanceCriteriaWithAuthoredBindings | 343                |
-| draftSpecificationCount                | 130                |
-| reviseSpecificationCount               | 0                  |
-| reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 86                 |
-| ownerDecisionReconciliationCount       | 11                 |
-| uiTicketCount                          | 147                |
-| blockedTicketCount                     | 37                 |
-| hostpendingActionCount                 | 15                 |
-| holdTicketCount                        | 33                 |
-| currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 39.81481481481482  |
-| suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 32.671081677704194 |
-| findingsCount                          | 646                |
-| openFindingCount                       | 358                |
-| resolvedFindingCount                   | 141                |
-| reclassifiedFindingCount               | 28                 |
+| Measure                                | Count             |
+| -------------------------------------- | ----------------- |
+| ticketCount                            | 216               |
+| specificationCount                     | 216               |
+| completeSpecificationCount             | 87                |
+| incompleteSpecificationCount           | 129               |
+| epicMappedCount                        | 216               |
+| orphanTicketCount                      | 0                 |
+| duplicateIdCount                       | 0                 |
+| dependencyEdgeCount                    | 276               |
+| invalidDependencyCount                 | 0                 |
+| dependencyCycleCount                   | 0                 |
+| dependencySemanticGapCount             | 0                 |
+| acceptanceCriterionCount               | 906               |
+| suggestedAcceptanceCriterionCount      | 906               |
+| mappedAcceptanceCriterionCount         | 300               |
+| unmappedAcceptanceCriterionCount       | 606               |
+| reviewedExactTestBindingCount          | 322               |
+| authoredExactTestBindingCount          | 370               |
+| acceptanceCriteriaWithAuthoredBindings | 347               |
+| draftSpecificationCount                | 129               |
+| reviseSpecificationCount               | 0                 |
+| reviewedSpecificationCount             | 0                 |
+| approvedSpecificationCount             | 87                |
+| ownerDecisionReconciliationCount       | 11                |
+| uiTicketCount                          | 147               |
+| blockedTicketCount                     | 37                |
+| hostpendingActionCount                 | 15                |
+| holdTicketCount                        | 33                |
+| currentReleaseTicketCount              | 47                |
+| specificationCoveragePercent           | 40.27777777777778 |
+| suggestedVerificationMappingPercent    | 100               |
+| exactReviewedTraceabilityPercent       | 33.11258278145695 |
+| findingsCount                          | 646               |
+| openFindingCount                       | 356               |
+| resolvedFindingCount                   | 143               |
+| reclassifiedFindingCount               | 28                |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                                                                               |
 | ------ | ------------------------------- | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -420,8 +420,8 @@ Structural section coverage and generated count are not implementation readiness
 | CS-112 | MISSING_DOMAIN_CONTRACT         | OPEN                    | apiContract            | RBAC queue/read/decision projections and immutable audit.                                                                                                                | Frontend                              | Reviewed request/response/error/authorization/data ownership contract with negative tests before implementation.                                                                                |
 | CS-112 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-112 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
-| CS-113 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
-| CS-113 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
+| CS-113 | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
+| CS-113 | SURFACE_SPEC_REFINEMENT         | RESOLVED                | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
 | CS-114 | MISSING_DOMAIN_CONTRACT         | OPEN                    | apiContract            | Authorized provider capability registry, consent, revocation, sync, webhook and audit contracts.                                                                         | Backend                               | Reviewed request/response/error/authorization/data ownership contract with negative tests before implementation.                                                                                |
 | CS-114 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-114 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |

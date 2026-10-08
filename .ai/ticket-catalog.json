@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "7d87f4f2d3087920d7eefe27c01e085052baffe11be8b6af5897b1c4fbfa2699",
+    ".ai/ticket-specification-policy.json": "b81d7efac265aa91a24ccc4a5e36a92013a2301518079ff82eb2516c4c6262ad",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "5bd238aca2cb72c89cf30e0898d901554bbfe744af5d88885e9a6a15831f3093",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "0a60785668851a8ed5af22e11c643ba15629293ecc8f9ce5922cfb8d62d1dc0a",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -85402,8 +85402,8 @@
     {
       "ticketId": "CS-113",
       "primaryEpicId": "EPIC-AI",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -85411,7 +85411,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "SURFACE_SPEC_REFINEMENT",
@@ -85419,7 +85419,7 @@
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
           "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -85448,9 +85448,21 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "AI consent, budgets, failure isolation and kill-switch evidence: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented."
+            "AI consent, budgets, failure isolation and kill-switch evidence: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented.",
+            {
+              "requirement": "AI assistance must remain a bounded, consented preparation capability; provider availability or UI visibility must never grant ranking, ownership, eligibility or application authority.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-113"]
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "value": {
           "applicability": "APPLICABLE",
@@ -85509,7 +85521,7 @@
               "id": "CS-113-AC1",
               "sourceText": "Only current preparation coaching may call the explicitly enabled provider; allowlisted data, redacted logs, budgets/rate limits, typed failures and an off switch.",
               "expectedResult": "Only current preparation coaching may call the explicitly enabled provider; allowlisted data, redacted logs, budgets/rate limits, typed failures and an off switch.",
-              "verificationIds": ["HOSTED_CI"],
+              "verificationIds": ["AUTOMATED_INTEGRATION"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85517,7 +85529,7 @@
               "id": "CS-113-AC2",
               "sourceText": "No AI influence on deterministic ranking, eligibility, matching, ownership or application submission; no arbitrary chat/auto-apply API implied.",
               "expectedResult": "No AI influence on deterministic ranking, eligibility, matching, ownership or application submission; no arbitrary chat/auto-apply API implied.",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_INTEGRATION"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85525,12 +85537,7 @@
               "id": "CS-113-AC3",
               "sourceText": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "expectedResult": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85538,17 +85545,44 @@
               "id": "CS-113-AC4",
               "sourceText": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Only the existing owner-scoped `/api/preparation/:checkId/ai-elaborate` preparation-coaching operation may invoke the provider; its current allowlisted preparation report fields and advisory output are the baseline. The `checkId` selects an item in the requesting owner's generated preparation report; it is not a cross-owner job identifier. Consent, cost budget and kill-switch policy are additional owner-approved gates and are not implied by `GET /api/session.aiEnabled` or UI visibility.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Consent, provider enablement, per-user budget/rate limit and kill-switch checks occur server-side before dispatch; deterministic matching, eligibility, ownership and application submission never consume or depend on AI output.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "The current provider performs one bounded request: response bodies are size-limited, redirects are not followed, secrets remain server-side and logs contain correlation/outcome metadata without prompts, resumes or provider payloads. Retries/idempotency require a separately approved contract and are not claimed here.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Disabled, denied, unavailable and budget-exhausted states are explicit and recoverable; no arbitrary chat, autonomous agent or auto-apply endpoint is implied.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-113"]
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Preserve bounded input, deterministic behavior, cancellation/retry semantics and current performance regression thresholds where applicable; do not claim a production SLO."
+            "Preserve bounded input, deterministic behavior, cancellation semantics and current performance regression thresholds where applicable; this contract is single-attempt and retry/idempotency are NOT_APPLICABLE until separately approved; do not claim a production SLO."
           ],
           "sources": ["docs/ARCHITECTURE.md", "docs/TESTING.md", "docs/KNOWN-LIMITATIONS.md"]
         },
@@ -85556,13 +85590,22 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: LOCAL_MODULE / THIRD_PARTY_INTEGRATION. Reuse the existing AI provider boundary and preparation contract; no new provider, queue or ranking path is introduced.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-113",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md"
           ]
         },
         "persistence": {
@@ -85573,13 +85616,22 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": [],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "NOT_APPLICABLE to the current provider route. Consent/budget/kill-switch state has no current owner-scoped persistence contract; an approved future contract is required before implementation and no provider payload or prompt is retained by this specification.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-113",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md"
           ]
         },
         "apiContract": {
@@ -85598,9 +85650,22 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "EXISTING_CONTRACT: POST `/api/preparation/:checkId/ai-elaborate` is authenticated, owner-scoped and CSRF-protected; `checkId` is resolved only within the requesting owner's generated preparation report. A missing check for that owner returns the existing safe 404 contract; unauthenticated access returns 401. Current provider mappings are 503 when disabled, 429 when rate-limited, 504 on timeout and 502 on provider/malformed failure. PLANNED_GATES: consent source, cost/token budget and administrative kill switch need an owner-approved contract before activation; do not invent a new route or idempotency key.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-113", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "docs/API-SURFACE.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -85611,20 +85676,76 @@
           "reason": "No UI component is introduced by this engineering/domain scope."
         },
         "accessibility": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No user-facing rendered control in this scope; accessible reports remain readable Markdown."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "Preparation UI must expose disabled/pending/error/unavailable states with accessible names and announcements; manual screen-reader review remains a future human gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "responsive": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No viewport-dependent rendered interface in this scope."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "Any future preparation control remains usable at 320, 390, 768, 1024 and 1440 CSS pixels without overflow; this ticket does not define a new visual surface.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "browsers": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No browser behavior is introduced by this task."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "Browser verification belongs to the preparation surface owner; this backend/provider contract requires no new browser route.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "seo": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "Authenticated preparation behavior is private and noindex; no prompt, resume or provider output enters metadata.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "securityPrivacy": {
           "applicability": "APPLICABLE",
@@ -85635,20 +85756,42 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: PRIVACY_PII / SECRETS / ABUSE_RATE_LIMITING. Consent, owner scope, secret isolation, allowlisted payload, budget/rate limits, redaction and kill-switch enforcement are server-authoritative; AI output is untrusted advisory text.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-113", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts."
+            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts.",
+            {
+              "requirement": "Record request ID, owner digest, capability decision, provider outcome and latency without raw prompt/output, resume text, tokens or PII; record no retry count because this contract is single-attempt. Alert on repeated failures and budget exhaustion only after an approved budget/alert contract exists.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-113",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md"
           ]
         },
         "testStrategy": {
@@ -85660,17 +85803,36 @@
               "criterion": "Only current preparation coaching may call the explicitly enabled provider; allowlisted data, redacted logs, budgets/rate limits, typed failures and an off switch.",
               "verification": [
                 {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-113-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_INTEGRATION",
+                  "expectedCheck": "The same checkId may be valid for two owners but each request resolves only the caller's own preparation report; a missing checkId in that owner's report returns the existing safe 404, unauthenticated access returns 401, current disabled provider returns 503, and the existing route limiter returns 429 without provider dispatch. A future consent/budget/kill-switch fixture may dispatch only after its owner-approved source contract exists; UI/session `aiEnabled` alone is insufficient.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "redacted-ai-boundary-integration-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security",
+                  "releaseGate": "R1-AI-PRIVACY"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use the existing owner-scoped preparation integration fixture with two synthetic candidate sessions and generated preparation reports; current `AI_ENABLED` is false by default. Consent, cost budget and kill-switch variants are explicitly PLANNED owner-policy fixtures, not current fields.",
+                  "setup": "Invoke POST `/api/preparation/:checkId/ai-elaborate` through the Fastify app with CSRF/session and an allowlisted synthetic preparation report for each owner. Exercise the exact existing owner-scoped integration test and separately request a checkId absent from the caller's own report.",
+                  "procedure": "CS-113-AC1-consent-provider-boundary",
+                  "assertion": "The same checkId may be valid for two owners but each request resolves only the caller's own preparation report; a missing checkId in that owner's report returns the existing safe 404, unauthenticated access returns 401, current disabled provider returns 503, and the existing route limiter returns 429 without provider dispatch. A future consent/budget/kill-switch fixture may dispatch only after its owner-approved source contract exists; UI/session `aiEnabled` alone is insufficient.",
+                  "expectedResult": "No arbitrary chat, ranking, eligibility, ownership or application endpoint is invoked; missing future policy source remains an explicit owner gate, not a passing assertion.",
+                  "type": "AUTOMATED_INTEGRATION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "enforces preparation check ownership and disabled/rate controls before future AI policy gates",
+                  "testFileOrProcedureId": "packages/core/src/database.test.ts::CS-48 AC10: ai-elaborate is owner-scoped, and a provider failure never reaches the deterministic operation",
+                  "fixtures": "Two synthetic candidate sessions, same checkId in distinct owner reports, CSRF tokens, provider stub, missing-check control and current AI_ENABLED/rate-limit variants.",
+                  "negativeCase": "Use an unauthenticated session or a checkId absent from that caller's report and assert 401/404 with no provider call; flip only a client/UI flag or omit consent source and assert no dispatch and deterministic 503/429 controls.",
+                  "evidenceArtifact": "redacted-ai-boundary-integration-report.json",
+                  "reviewer": "Security",
+                  "releaseGate": "R1-AI-PRIVACY"
+                }
+              ]
             },
             {
               "ticketId": "CS-113",
@@ -85678,17 +85840,36 @@
               "criterion": "No AI influence on deterministic ranking, eligibility, matching, ownership or application submission; no arbitrary chat/auto-apply API implied.",
               "verification": [
                 {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-113-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_INTEGRATION",
+                  "expectedCheck": "AI output is advisory preparation text only; deterministic score, eligibility, ownership and application lifecycle are unchanged and no submission request is emitted.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-ai-isolation-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Backend",
+                  "releaseGate": "R1-DOMAIN-INTEGRITY"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use deterministic matching/application fixtures and a synthetic provider response/error.",
+                  "setup": "Run preparation coaching success, timeout and malformed-response cases while recording matcher/application state before and after.",
+                  "procedure": "CS-113-AC2-no-ranking-or-apply-influence",
+                  "assertion": "AI output is advisory preparation text only; deterministic score, eligibility, ownership and application lifecycle are unchanged and no submission request is emitted.",
+                  "expectedResult": "Provider failure leaves deterministic preparation available and does not block or alter user-controlled application tracking.",
+                  "type": "AUTOMATED_INTEGRATION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "keeps AI preparation output outside ranking and application state",
+                  "testFileOrProcedureId": "packages/core/src/ai-provider.integration.test.ts::CS-113-AC2",
+                  "fixtures": "Synthetic job/profile/application state and provider response/error fixtures.",
+                  "negativeCase": "Return provider payload containing ranking/apply instructions and assert it is treated as advisory text or rejected, with zero matcher/application writes.",
+                  "evidenceArtifact": "redacted-ai-isolation-report.json",
+                  "reviewer": "Backend",
+                  "releaseGate": "R1-DOMAIN-INTEGRITY"
+                }
+              ]
             },
             {
               "ticketId": "CS-113",
@@ -85696,41 +85877,36 @@
               "criterion": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-113-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-113-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-113-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-113-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Redirects are not followed, response size is bounded, malformed/timeout/provider errors are typed, the current request is single-attempt, and logs contain only correlation/outcome metadata. The route response must exclude every private sentinel before browser capture. The browser procedure separately asserts that raw prompt, resume, token and provider-payload sentinels do not persist in browser storage or DOM; only the distinct safe bounded coaching text may appear in the permitted advisory region.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-ai-provider-route-failure-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security",
+                  "releaseGate": "R1-SECURITY-OBSERVABILITY"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use a provider stub with redirect, oversized body, malformed JSON, timeout and status 401/402/429/5xx responses; no real secret. Place prompt, resume, provider-token and raw-provider-JSON sentinels only in private mock-provider/input fields, never in the permitted advisory text.",
+                  "setup": "Exercise the current single provider request boundary and separately assert the Fastify route maps provider failures to 503/429/504/502; no retry or request-key effect is assumed. For the planned browser procedure, run the authenticated preparation page with a distinct safe advisory string plus the private sensitive sentinels; capture the browser network response, localStorage, sessionStorage, IndexedDB and DOM, and allow only the safe bounded advisory text rendered by the existing preparation contract.",
+                  "procedure": "CS-113-AC3-provider-failure-and-redaction",
+                  "assertion": "Redirects are not followed, response size is bounded, malformed/timeout/provider errors are typed, the current request is single-attempt, and logs contain only correlation/outcome metadata. The route response must exclude every private sentinel before browser capture. The browser procedure separately asserts that raw prompt, resume, token and provider-payload sentinels do not persist in browser storage or DOM; only the distinct safe bounded coaching text may appear in the permitted advisory region.",
+                  "expectedResult": "No provider token, prompt, resume or raw response appears in provider logs or route/browser storage; duplicate/retry semantics remain NOT_APPLICABLE until an approved contract exists.",
+                  "type": "AUTOMATED_SECURITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "bounds the current provider request and route error mapping without sensitive logging",
+                  "testFileOrProcedureId": "packages/core/src/ai-provider.test.ts::default-off configuration and provider failure cases; packages/core/src/database.test.ts::CS-48 AC10: ai-elaborate is owner-scoped, and a provider failure never reaches the deterministic operation; planned browser procedure CS-113-AC3-BROWSER-REDACTION",
+                  "fixtures": "Synthetic HTTP responses, timeout and redaction log sink plus Fastify route fixture and browser storage capture fixture.",
+                  "negativeCase": "Return oversized body or redirect and assert refusal without follow-up request; assert 503/429/504/502 mappings and no sensitive log/storage entry. The browser procedure fails if any private prompt/resume/token/raw-provider sentinel appears in response storage or DOM, even inside the advisory region; a safe advisory string alone is the only permitted rendered text.",
+                  "evidenceArtifact": "redacted-ai-provider-route-failure-report.json",
+                  "reviewer": "Security",
+                  "releaseGate": "R1-SECURITY-OBSERVABILITY"
+                }
+              ]
             },
             {
               "ticketId": "CS-113",
@@ -85738,25 +85914,36 @@
               "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-113-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-113-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "Activation remains refused until declared consent, budget, kill-switch, provider, privacy/security and exact-SHA evidence exists; the checker never enables AI, mutates runtime configuration or changes workflow state.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-ai-release-gate-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Release",
+                  "releaseGate": "R1-CONDITIONAL-RELEASE"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use an isolated release fixture with actual `AI_ENABLED` absent/false and no provider credentials; proposed `ai_privacy_enabled` is metadata only and is not a runtime flag.",
+                  "setup": "Run activation checks with missing owner-approved consent/budget/kill-switch/provider evidence and a complete synthetic evidence manifest that remains non-activating.",
+                  "procedure": "CS-113-AC4-conditional-release-gate",
+                  "assertion": "Activation remains refused until declared consent, budget, kill-switch, provider, privacy/security and exact-SHA evidence exists; the checker never enables AI, mutates runtime configuration or changes workflow state.",
+                  "expectedResult": "Incomplete evidence fails closed and current runtime remains provider-disabled; a synthetic complete manifest is recorded as planned evidence only.",
+                  "type": "AUTOMATED_CONTRACT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "keeps AI capability disabled without real conditional evidence",
+                  "testFileOrProcedureId": "scripts/release-gate.mjs::CS-113-AC4",
+                  "fixtures": "Synthetic AI release evidence manifests with incomplete variants and a non-activating complete-shape control.",
+                  "negativeCase": "Provide only a client flag, `ai_privacy_enabled` metadata or screenshot and assert refusal with no provider/network call.",
+                  "evidenceArtifact": "redacted-ai-release-gate-report.json",
+                  "reviewer": "Release",
+                  "releaseGate": "R1-CONDITIONAL-RELEASE"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-113", "docs/TESTING.md"]
@@ -85772,7 +85959,7 @@
               "id": "CS-113-AC1",
               "sourceText": "Only current preparation coaching may call the explicitly enabled provider; allowlisted data, redacted logs, budgets/rate limits, typed failures and an off switch.",
               "expectedResult": "Only current preparation coaching may call the explicitly enabled provider; allowlisted data, redacted logs, budgets/rate limits, typed failures and an off switch.",
-              "verificationIds": ["HOSTED_CI"],
+              "verificationIds": ["AUTOMATED_INTEGRATION"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85780,7 +85967,7 @@
               "id": "CS-113-AC2",
               "sourceText": "No AI influence on deterministic ranking, eligibility, matching, ownership or application submission; no arbitrary chat/auto-apply API implied.",
               "expectedResult": "No AI influence on deterministic ranking, eligibility, matching, ownership or application submission; no arbitrary chat/auto-apply API implied.",
-              "verificationIds": ["AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_INTEGRATION"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85788,12 +85975,7 @@
               "id": "CS-113-AC3",
               "sourceText": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
               "expectedResult": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -85801,7 +85983,7 @@
               "id": "CS-113-AC4",
               "sourceText": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-113",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -85816,9 +85998,27 @@
             "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
             "Independent current-content review resolves specification/implementation findings before promotion.",
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+            {
+              "requirement": "Specification DoD: bounded preparation-only scope, consent/budget/kill-switch checks, provider failure semantics, redaction, no-ranking/no-apply invariant and future evidence gates are explicit; no AI activation or runtime implementation is claimed.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Future implementation DoD: owner-isolation, consent, rate/budget, single-attempt timeout, malformed-response, redaction and kill-switch tests pass with exact-SHA provider and privacy evidence before activation. Retry/idempotency remains out of scope until a separate approved contract exists.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            "docs/ai/quality-gates.md",
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
@@ -85839,16 +86039,36 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-113 problem and each criterion with Backend.",
-            "Resolve only the recorded CS-113 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for AI consent, budgets, failure isolation and kill-switch evidence.",
-            "Implement and verify CS-113-AC1: Only current preparation coaching may call the explicitly enabled provider; allowlisted data, redacted logs, budgets/rate limits, typed failures and an off switch.",
-            "Implement and verify CS-113-AC2: No AI influence on deterministic ranking, eligibility, matching, ownership or application submission; no arbitrary chat/auto-apply API implied.",
-            "Implement and verify CS-113-AC3: Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
-            "Implement and verify CS-113-AC4: Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-113 documentation, redacted evidence and independent review before workflow promotion."
+            {
+              "requirement": "Inventory the existing preparation-to-provider call boundary and document the allowlisted input/output fields.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define server-side consent, enablement, budget/rate-limit, single-attempt timeout and kill-switch decisions with typed failures; do not add retry or idempotency behavior without a separate approved contract.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add security and privacy fixtures for disabled/denied/malformed/timeout/budget/provider-failure paths and assert no ranking/application effect.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Run redaction, provider-isolation and exact-SHA conditional-release reviews; keep provider activation off until external evidence exists.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-113"]
+          "sources": [
+            ".ai/backlog.json#CS-113",
+            ".ai/backlog.json#CS-113",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -85864,11 +86084,28 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "OWNER_DECISION_REQUIRED: approve the consent source, exact cost/token budget, and administrative kill-switch authority before activation; current AI_ENABLED/provider configuration and CS-55's existing 10/minute route limiter are not substitutes for those policies.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Provider catalog/free-model, secret configuration, privacy/security review and exact-SHA hosted validation remain future conditional-release gates; no provider is enabled here.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-113",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -85881,13 +86118,22 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+            },
+            {
+              "requirement": "If provider behavior or configuration violates the boundary, disable the capability/kill switch, preserve deterministic preparation and ranking, revoke the provider secret if exposed and retain only redacted audit evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-113",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "design/01-IMPLEMENTATION-ORDER/13-engineering-contracts/PRIVACY-CONSENT-TRUST-CONTRACT.md",
+            "packages/core/src/ai-provider.ts",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md"
           ]
         },
         "delivery": {

@@ -1031,3 +1031,20 @@ storage, audit and retention boundaries, but reviewer role/grant source,
 revocation/resubmission policy, photo limits/metadata oracle and restricted-data
 retention values are not authoritative in the current repository. Those are
 tracked as owner-decision gates; no receipt or approval hash was created.
+### CS-113 closure-wave review (2026-10-08)
+
+Independent read-only reviewers approved the current authored CS-113 whole
+specification and all four exact binding groups. The review confirms the
+existing `/api/preparation/:checkId/ai-elaborate` contract, per-owner 404 and
+unauthenticated 401 semantics, single-attempt provider behavior, and explicit
+consent/budget/kill-switch owner gates. Browser redaction is specified as a
+planned procedure using private mock-provider sentinels, a distinct safe
+advisory string, and network/localStorage/sessionStorage/IndexedDB/DOM sinks;
+no execution evidence is claimed.
+
+Whole specification digest after recording binding review receipts: `f2e15db29efaf036c5388735bdd13bfa5128ed176d85a3e7553ad99a7f5ff584`.
+
+Binding digests: CS-113 AC1 `89a26e56bf369da05713110917d01e19156e1dc0ba56002a94b9618d4d45fcae`,
+AC2 `4ff023e139dd2ec37d0e3e095355a9b3c2eb7bad3ce2e7852172e5836ac5374d`,
+AC3 `5e579b439fd7222288b0b9630c65b5ee48d56939ef4f786136ba6db4d27b71d2`,
+AC4 `41d4d743c534f68cca06a571548faa70c0ae57e4f6f4b9a347a1f5bdb0517e7c`.
