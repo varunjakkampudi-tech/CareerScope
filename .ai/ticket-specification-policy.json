@@ -723,7 +723,13 @@
           ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
         ],
         "problem": [
-          ["this ticket is where that gets an actual decision instead of staying an accident of activation order.", "the approved owner decision is propagated into an implementation-ready durable exclusion contract rather than remaining an unresolved activation-order accident."]
+          ["This ticket is where that gets an actual decision instead of staying an accident of activation order.", "The approved owner decision is propagated into an implementation-ready durable exclusion contract rather than remaining an unresolved activation-order accident."]
+        ],
+        "value": [
+          ["This ticket is where that gets an actual decision instead of staying an accident of activation order.", "The approved owner decision is propagated into an implementation-ready durable exclusion contract rather than remaining an unresolved activation-order accident."]
+        ],
+        "design": [
+          ["Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability.", "The approved settings/resume reference is the candidate-visible surface associated with CS-213 (docs/DESIGN-IMPLEMENTATION-MAP.md#CS-213 and design/canonical/app/careerscope-settings-resume-management-reference-board.png). The per-fact excluded/restored state is explicitly a future visual-acceptance gate; this ticket retains DESIGN_PARTIAL and does not claim that the reference proves implementation parity."]
         ]
         ,"technicalApproach": [
           ["v2/packages/core/src/profile.ts", "packages/core/src/profile.ts"]
