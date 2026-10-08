@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "7cd326932acb37d8ceec6557fa43d535a4fc9cf7ed65c4a128b5f6984e1d35b7",
+    ".ai/ticket-specification-policy.json": "0ab2c1d22ed5094dd46858ed7775de293e194506896fb25a5f3164c6bbfb073e",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "616d3c676789e3ae85529065a6b200df2e3398c7f98d3685f76d32ea26614b6f",
@@ -16566,9 +16566,9 @@
       "verification": [
         {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "The rendered heading, fields, buttons, pending/status/error states and focus behavior match the named desktop reference state within an explicitly approved tolerance; no credentials or private session data appear in pixels or DOM capture. Mobile comparison remains NOT_RUN until UX names the reference, viewport and tolerance.",
+          "expectedCheck": "The implementation review records the canonical reference path/hash, route, browser/viewport matrix, shared component/token usage, responsive no-overflow behavior, accessible focus/status behavior and any approved global visual tolerance when one exists; absent bespoke micro-state imagery is not treated as a design failure.",
           "candidateCommand": null,
-          "evidenceRequired": "redacted-account-security-visual-report.json",
+          "evidenceRequired": "Future redacted implementation-UX review and visual evidence report; no execution claimed in Phase 3.25.",
           "automationStatus": "PLANNED",
           "owner": "UX",
           "releaseGate": "R1-BROWSER-VISUAL"
@@ -16578,19 +16578,19 @@
       "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
-          "preconditions": "Use the exact mapped Account Security reference files and synthetic account-security content only; the repository does not establish an approved mobile reference, mobile viewport or numeric tolerance for this cropped panel.",
-          "setup": "Capture `/settings` at the reference desktop viewport in Chromium, Firefox and WebKit using synthetic values only. Record the missing mobile reference/viewport/tolerance as a UX approval gate rather than masking it.",
-          "procedure": "CS-118-AC2-account-security-visual-browser",
-          "assertion": "The rendered heading, fields, buttons, pending/status/error states and focus behavior match the named desktop reference state within an explicitly approved tolerance; no credentials or private session data appear in pixels or DOM capture. Mobile comparison remains NOT_RUN until UX names the reference, viewport and tolerance.",
-          "expectedResult": "Each available engine records viewport, reference path/hash and tolerance; missing mobile design evidence is HUMAN_VALIDATION_REQUIRED, and unavailable engines are NOT_RUN rather than PASS.",
+          "preconditions": "Use the Phase 0 Account Security reference files, existing `/settings` shell, shared tokens/primitives and synthetic account-security content only.",
+          "setup": "Plan a future implementation UX review of `/settings` in Chromium, Firefox and WebKit against the canonical desktop reference, then apply the established responsive contract at 320, 390, 768, 1024 and 1440 CSS pixels. Preserve layout and focus for default, pending, success and error states; do not invent bespoke screenshots or a numeric tolerance.",
+          "procedure": "PLANNED:CS-118-AC2-account-security-implementation-ux-review",
+          "assertion": "The implementation review records the canonical reference path/hash, route, browser/viewport matrix, shared component/token usage, responsive no-overflow behavior, accessible focus/status behavior and any approved global visual tolerance when one exists; absent bespoke micro-state imagery is not treated as a design failure.",
+          "expectedResult": "The future UX review can approve or reject implementation fidelity using Phase 0 authority and the responsive/accessibility contracts; unavailable engines or human review remain NOT_RUN/pending rather than PASS.",
           "type": "VISUAL_REGRESSION",
           "testStatus": "PLANNED",
           "reviewStatus": "DRAFT",
-          "testName": "compares Account Security Center desktop reference and records mobile design gate",
-          "testFileOrProcedureId": "scripts/check-ui.ts::CS-118-AC2-account-security-visual-browser",
-          "fixtures": "Exact design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png and foundations reference plus synthetic session fixture.",
-          "negativeCase": "Use an unapproved route/reference, invent a mobile baseline/tolerance, mask a meaningful control, or include a private credential sentinel and assert explicit failure.",
-          "evidenceArtifact": "redacted-account-security-visual-report.json",
+          "testName": "reviews Account Security implementation against Phase 0 settings authority and responsive contract",
+          "testFileOrProcedureId": "PLANNED:CS-118-AC2-account-security-implementation-ux-review",
+          "fixtures": "Phase 0 account-security references, `/settings` shell, shared design tokens/primitives and redacted synthetic security states.",
+          "negativeCase": "An unapproved route/reference, invented screenshot/tolerance, missing responsive state, clipped control, inaccessible focus/status behavior or credential sentinel fails the future review.",
+          "evidenceArtifact": "Future redacted implementation-UX review and visual evidence report; no execution claimed in Phase 3.25.",
           "reviewer": "UX",
           "releaseGate": "R1-BROWSER-VISUAL"
         }
