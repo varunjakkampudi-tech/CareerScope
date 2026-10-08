@@ -1149,3 +1149,49 @@ implementation, legal approval or hosted evidence is claimed.
 These receipts approve authored binding content only; the named matrix,
 implementation, manual approval and runtime/hosted evidence remain future
 gates. No whole-ticket approval or workflow promotion is claimed.
+
+### CS-118 fresh whole-ticket review (2026-10-08)
+
+Independent reviewers re-reviewed the complete current CS-118 specification
+after the Phase 0 design-authority amendment, the AC1 component/service split,
+and the AC4 release-evidence correction. The review approved authored content
+only. The current workflow checker remains responsible for canonical workflow
+invariants; AC4 instead names a future dedicated release-evidence harness.
+All procedures remain explicitly planned and no runtime, hosted, visual,
+screen-reader, or deployment evidence is claimed.
+
+| Item | Content/digest |
+| --- | --- |
+| Whole specification | `a0e6254bcf605b3c6dbeb34ffda6de3024d392535c1b3c57621e683a2df2ad86` |
+| CS-118 AC1 | `ab001352697970886990b5507e709f11a903e528acd01beac97ca6a6634ed964` |
+| CS-118 AC2 | `b76ce8918d4a7c97e5efff1a49a8ecbba823b11c5003822f02d7a1d60f7ae46b` |
+| CS-118 AC3 | `2e1be7a9696358b436825fc6df6d9b41f1769984a6375f7b3a4c30fea98c533a` |
+| CS-118 AC4 | `15daf4eb80204afef11bf2335ae5948a74a5193286c90b1468fbb2aadc763b15` |
+
+Reviewers: `/root/phase325_review` and `/root/cs78_review`.
+
+### CS-41 and CS-48 fresh whole-ticket review (2026-10-09)
+
+`/root/cs78_review` independently re-reviewed the current generated content
+after the final remediation. CS-41 now distinguishes the implemented market
+companies route from the unimplemented canonical entity/table, enumerates the
+actual search and saved-lead routes, treats L1 as a proposed inactive legal
+source allowlist, and scopes integration/browser checks to future runtime/UI
+changes. CS-48 now attributes the AI-deferred wording to its historical
+checkpoint, records the untracked-file and F1/F2 findings as closed historical
+evidence, and labels old CI runs as historical rather than current. No runtime,
+hosted, product, workflow, or deployment evidence is claimed.
+
+| Ticket | Whole specification digest | Reviewer | Verdict |
+| --- | --- | --- | --- |
+| CS-41 | `EF1EDF28E3BE471B67F03D208DF34BF047EE7C75E31692CE66E563FDEFA82BBA` | `/root/cs78_review` | APPROVED |
+| CS-48 | `079C4EE1BD6DCD6AC87D0ECD7EA05F974BC9320D888B9DC1997BBA77E5675B2A` | `/root/cs78_review` | APPROVED |
+
+The prior hashes in this document are retained as historical review attempts;
+the following are the effective content-bound receipts after the final
+historical-evidence and completion-scope corrections:
+
+| Ticket | Effective whole specification digest | Reviewer | Verdict |
+| --- | --- | --- | --- |
+| CS-41 | `709567eafb5da6adbe1bf2cc746c998312be1bd72cc0ddf88e5be57d587cf6aa` | `/root/cs78_review` | APPROVED |
+| CS-48 | `f66f95cd95a28e46e8b6d2aa4f3fe56c337f9585ffa62dac2fa248db434a6683` | `/root/cs78_review` | APPROVED |
