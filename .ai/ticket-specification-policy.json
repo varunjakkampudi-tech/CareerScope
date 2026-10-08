@@ -1412,6 +1412,140 @@
         ]
       }
     },
+    "CS-109": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-109",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/README.md",
+        "apps/web/src/app/page.tsx",
+        "apps/web/src/app/robots.ts",
+        "docs/SECURITY.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The public/private metadata boundary is a release-critical contract: public marketing metadata must be truthful while authenticated, candidate and admin surfaces remain non-indexable. The current source inventory must be reviewed rather than treating a design README as proof of implementation."
+        ],
+        "functionalRequirements": [
+          "Inventory the actual public routes and the authenticated/private route set from the current Next.js app tree; bind each route to title, description, canonical, social, robots and sitemap behavior or an explicit NOT_APPLICABLE reason.",
+          "For public routes, structured data is permitted only when the schema describes data actually rendered by the route; candidate names, resumes, job records, application state, tokens and illustrative counts must never enter public metadata.",
+          "For private/auth routes, assert noindex/no-follow behavior and absence from sitemap output even when a user is authenticated; a client-side visibility change must not change server metadata policy.",
+          "A metadata fixture with unsafe or fabricated values must fail closed, and a missing canonical/robots boundary must be reported as an actionable check failure rather than silently omitted."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE metadata contract. Reuse the canonical Next.js metadata/robots/sitemap boundaries and existing route composition; do not create a second renderer, public API, or client-selected ownership path."
+        ],
+        "apiContract": [
+          "NOT_APPLICABLE: this ticket does not add an HTTP API. Any dynamic public value must come from an existing server-authoritative route contract and must render an explicit unavailable state when that contract is absent."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no schema or migration is implied; browser fixtures use synthetic metadata and must not read or persist candidate records."
+        ],
+        "accessibility": [
+          "Public pages preserve semantic headings, keyboard focus, visible focus and announced errors/statuses. Authenticated/private pages remain operable but non-indexable; manual NVDA/VoiceOver review remains a future human gate."
+        ],
+        "responsive": [
+          "Future browser evidence records 320, 390, 768, 1024 and 1440 CSS-pixel behavior with no ordinary-content horizontal overflow; metadata policy must not vary by viewport."
+        ],
+        "browsers": [
+          "The named browser procedure covers Chromium, Firefox and WebKit with pinned versions; an unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "Public routes require truthful title/description, canonical, OG/Twitter, robots/sitemap and valid structured data only; private/authenticated routes are noindex and excluded from sitemap."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: PRIVACY_PII / INPUT_VALIDATION. Metadata is public output; only approved non-personal content may be exposed. Reject unsafe URLs/markup, redact secrets and never use client-supplied owner identity or private records in crawled output."
+        ],
+        "observability": [
+          "Checks record route, metadata field, policy result and sanitized fixture identifiers only; do not log rendered PII, tokens, resumes or provider credentials."
+        ],
+        "visualRegression": [
+          "Visual comparison is limited to approved public reference states at 1440px-class desktop and the approved mobile viewport; metadata correctness is asserted from rendered head output, not inferred from pixels."
+        ],
+        "manualExternalGates": [
+          "Future UX/SEO review must approve route-specific copy and social previews; exact-SHA browser/axe and production-crawl evidence remain future release gates."
+        ],
+        "risksRecovery": [
+          "A public metadata regression can leak private content or mislead crawlers. Recovery is to revert the metadata change, invalidate affected cache/sitemap output and re-run the route matrix; no data migration or production action is authorized in this phase."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: route inventory, public/private policy, safe-value rules, negative cases, design disposition, accessibility/responsive/browser requirements and exact future evidence are explicit; no runtime implementation or SEO pass is claimed.",
+          "Future implementation DoD: generated head output and sitemap/robots behavior match the approved route matrix, automated/browser/axe evidence passes on the exact SHA, manual accessibility and UX/SEO review are recorded, and no private data appears in public artifacts."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Inventory current Next.js routes and classify each as public, authenticated/private or not applicable with source evidence.",
+        "Define the metadata/robots/sitemap contract and safe dynamic-value boundary without inventing content or endpoints.",
+        "Add deterministic fixture checks for missing canonical, private-route indexing, unsafe values and fabricated structured data.",
+        "Run the named browser/axe/visual procedures with synthetic public content and obtain UX/SEO and manual accessibility evidence before release activation."
+      ]
+    },
+    "CS-110": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-110",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md",
+        "packages/core/src/database.ts",
+        "apps/api/src/app.ts",
+        "docs/SECURITY.md",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The verification domain requires an explicit candidate-owned state machine and separate privileged review boundary. Current runtime does not prove this domain exists, so the specification must define a future contract without presenting it as deployed."
+        ],
+        "functionalRequirements": [
+          "Model only the approved transitions UNVERIFIED -> PENDING -> IN_REVIEW -> VERIFIED, NEEDS_INFO or REJECTED, with controlled resubmission and revocation; reject every other transition server-side.",
+          "Candidate edits may submit evidence but can never assign VERIFIED or reviewer identity. Reviewer identity, decision reason and timestamps are server-derived and every privileged decision produces a redacted audit event.",
+          "Photo input must enforce an allowlisted MIME/type and byte limit, strip metadata before private encrypted publication, reject malformed/oversized files with typed errors and never expose a public URL. Notes and any call material remain restricted with explicit retention/deletion policy; no recording is implied.",
+          "The future API contract must return safe denial for unauthenticated, wrong-owner and non-privileged actors, prevent replay/stale-revision writes, and preserve the candidate's current state on validation or storage failure."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: DATA_MODEL / API_CONTRACT / AUTH_IDENTITY. Add a future domain module behind the existing Fastify/session/database boundaries; do not add a parallel auth system or infer authorization from UI visibility."
+        ],
+        "apiContract": [
+          "PLANNED_CONTRACT (not an existing route): GET /api/verification returns only the authenticated candidate's status/revision/nextAction; POST /api/verification/evidence accepts multipart photo plus client idempotency key and current revision; POST /api/admin/verifications/:verificationId/decision accepts `{decision: VERIFIED|NEEDS_INFO|REJECTED, reason}` for an explicitly approved reviewer role. Candidate routes require session+CSRF and owner-derived identity; reviewer route requires server RBAC. Define deterministic 401 unauthenticated, 403 wrong actor/role, 404 non-disclosing unknown ID, 409 stale revision/duplicate conflict, 413 size, 415 type, 422 validation and 507 capacity errors; success returns the new state/revision and never tokens or raw private evidence. These routes are planned contracts, not current implementation."
+        ],
+        "persistence": [
+          "PLANNED_DATA: verification record belongs to one candidate and stores state, revision, server timestamps, reviewer digest and authorized reason, plus an evidence reference; photo bytes use the existing encrypted private-storage pattern only after its image suitability is verified. Owner-approved policy must define allowlisted MIME types, maximum bytes, metadata stripping oracle and notes/call-metadata retention/deletion before migration. Add legal transition checks, owner indexes, audit retention and reversible migration/rollback; do not claim these tables exist today."
+        ],
+        "accessibility": [
+          "NOT_APPLICABLE to the backend-only contract; downstream UI tickets must expose state, denial and error semantics accessibly."
+        ],
+        "responsive": [
+          "NOT_APPLICABLE to the backend-only contract."
+        ],
+        "browsers": [
+          "NOT_APPLICABLE to the backend-only contract; API contract tests are required before any browser ticket can rely on it."
+        ],
+        "seo": [
+          "Authenticated/private verification data is noindex and must not appear in public metadata."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION / AUDIT / DATA_RETENTION. Candidate data is sensitive; least privilege, server-derived owner/reviewer, encrypted private storage, redacted logs, immutable audit semantics and deletion/retention controls are mandatory. No background, government or employment clearance may be inferred from this state."
+        ],
+        "observability": [
+          "Record correlation ID, verification ID, transition, outcome, actor class and typed failure without raw photos, notes, tokens or PII; monitor storage-capacity, retry and stale-revision failures."
+        ],
+        "manualExternalGates": [
+          "OWNER_DECISION_REQUIRED before implementation: approve the reviewer role/grant source, revocation/resubmission edge policy, photo MIME/byte/metadata policy and notes/call-metadata retention/deletion policy; the current single-owner product and cited verification contract do not supply these values.",
+          "Security/privacy review, RBAC approval, storage encryption configuration, exact-SHA API/integration evidence and any provider/operator review remain future conditional-release gates."
+        ],
+        "risksRecovery": [
+          "An incorrect transition or public photo reference could create a false verification claim or leak sensitive evidence. Recovery must revoke the capability, restore the prior state from audit, invalidate exposed references and apply retention/incident procedures; no live action is performed in Phase 3.25."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: state machine, planned API/data contracts, authorization boundary, file validation/storage, audit/redaction, failure/recovery semantics and explicit non-claims are complete; no runtime schema/API or verification result is claimed.",
+          "Future implementation DoD: migrations, transition/property tests, owner-isolation/security tests, encrypted-storage failure tests, RBAC audit evidence and exact-SHA hosted validation pass before conditional activation."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Define the state machine and legal transition table with server-side rejection cases.",
+        "Write the planned owner-scoped candidate and privileged reviewer contracts with typed errors, revision and idempotency rules.",
+        "Specify encrypted private photo validation/publication, audit, retention and rollback boundaries using existing storage patterns.",
+        "Add unit, contract, authorization, malformed-upload and failure/recovery test plans; obtain security/privacy review before activation."
+      ]
+    },
     "CS-108": {
       "SURFACE_SPEC_REFINEMENT": {
         "disposition": "RESOLVED",
@@ -4663,6 +4797,16 @@
     "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
   },
   "findingDispositions": {
+    "CS-109": {
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"OWNER_DECISION_REQUIRED","rationale":"The current Pages public artifact and Next auth root are enumerated, but the owner must decide whether a future public Next migration is part of this ticket before whole-spec approval.","sources":["docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md","docs/PRODUCT-SURFACE.md","docs/PROJECT-STATE.md","docs/ARCHITECTURE.md"]},
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All five CS-109 acceptance criteria have exact planned procedures with assertions, fixtures, negative cases, evidence artifacts, reviewer and release gate.","sources":[".ai/ticket-specification-policy.json#CS-109-AC1",".ai/ticket-specification-policy.json#CS-109-AC2",".ai/ticket-specification-policy.json#CS-109-AC3",".ai/ticket-specification-policy.json#CS-109-AC4",".ai/ticket-specification-policy.json#CS-109-AC5"]},
+      "PARTIAL_DESIGN": {"disposition":"RECLASSIFIED","rationale":"The marketing implementation-order README is an authoritative shared contract; exact copy/social preview approval remains a future UX/SEO gate and is non-blocking for specification.","sources":["design/01-IMPLEMENTATION-ORDER/01-marketing-public/README.md",".ai/design-ticket-coverage.json"]}
+    },
+    "CS-110": {
+      "MISSING_DOMAIN_CONTRACT": {"disposition":"OWNER_DECISION_REQUIRED","rationale":"The planned route/data shape is explicit, but reviewer role/grant source, legal revocation/resubmission edges, photo policy and restricted-data retention values are not authoritative in current sources and must be approved before implementation-ready closure.","sources":["docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md","design/01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md","docs/SECURITY.md"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The verification state machine, planned contracts, actor boundaries, file/storage rules and recovery behavior are ticket-specific and explicitly future-only.","sources":[".ai/ticket-specification-policy.json#CS-110","design/01-IMPLEMENTATION-ORDER/04-candidate-core/11-candidate-verification/CANDIDATE-TRUST-VERIFICATION-CONTRACT.md","docs/SECURITY.md"]},
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All five CS-110 acceptance criteria have exact planned unit, contract, security, storage and conditional-release procedures with negative cases and evidence artifacts.","sources":[".ai/ticket-specification-policy.json#CS-110-AC1",".ai/ticket-specification-policy.json#CS-110-AC2",".ai/ticket-specification-policy.json#CS-110-AC3",".ai/ticket-specification-policy.json#CS-110-AC4",".ai/ticket-specification-policy.json#CS-110-AC5"]}
+    },
     "CS-1": {
       "EXACT_AC_TEST_BINDING": {
         "disposition": "RESOLVED",
@@ -7722,6 +7866,16 @@
         "repositoryCommand": "Future component/accessibility/security suite"
       }
     ],
+    "CS-109-AC1": [{"preconditions":"Use the current source inventory: Next.js `/` is the signed-out/private auth surface; the static Pages publication is staged from `mobile-site/` by `scripts/stage-pages.mjs` and owns `index.html`, `jobs.json`, `robots.txt` and `sitemap.xml`. Use synthetic content only.","setup":"Run the metadata checker against exactly two rows: `PAGES_PUBLIC_ROOT` for the staged Pages artifact and `NEXT_AUTH_ROOT` for Next `/`; do not invent additional public Next routes or a production host.","procedure":"CS-109-AC1-public-private-metadata-matrix","assertion":"PAGES_PUBLIC_ROOT emits truthful title/description/canonical/social metadata and allowlisted robots/sitemap entries derived from staged public fields; NEXT_AUTH_ROOT is noindex/no-follow and absent from sitemap output.","expectedResult":"The two-row matrix has deterministic policy results; any unlisted host/route is NOT_APPLICABLE pending an owner-approved migration decision, and missing/conflicting metadata fails with row and field.","type":"AUTOMATED_CONTRACT","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"classifies the current Pages public artifact and Next auth root without leakage","testFileOrProcedureId":"scripts/check-public-metadata.mjs::CS-109-AC1","fixtures":"Sanitized `mobile-site/` staging fixture plus Next `/` auth metadata fixture; no real user/provider data.","negativeCase":"Mark NEXT_AUTH_ROOT indexable, add it to sitemap, or add a fabricated public Next route and assert the checker fails closed without emitting private data.","evidenceArtifact":"redacted-public-private-metadata-matrix.json","reviewer":"QA","releaseGate":"R1-SEO-PRIVACY"}],
+    "CS-109-AC2": [{"preconditions":"Use synthetic public content containing an unsafe URL, script-like text and fabricated-count sentinel.","setup":"Render the actual public route content and its head through the approved marketing README contract; compare visible text/links with emitted structured and social metadata.","procedure":"CS-109-AC2-safe-public-metadata-values","assertion":"Only values present in the rendered public view and approved marketing reference are emitted; unsafe schemes/markup and candidate/private fields are rejected or omitted deterministically.","expectedResult":"Rendered content and metadata agree for the tested fields; no token, resume, owner identifier, private job/application state or fabricated count appears in head output or JSON-LD.","type":"AUTOMATED_SECURITY","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"rejects unsafe private metadata and content-reference drift","testFileOrProcedureId":"scripts/check-public-metadata.mjs::CS-109-AC2","fixtures":"Synthetic metadata values with safe/malicious variants and a redacted public-content fixture derived from design/01-IMPLEMENTATION-ORDER/01-marketing-public/README.md.","negativeCase":"Inject javascript: URL, private field, or a metadata value absent from rendered public content and assert nonzero validation with no emitted unsafe value.","evidenceArtifact":"sanitized-head-and-content-output.json","reviewer":"Security","releaseGate":"R1-SECURITY-PRIVACY"}],
+    "CS-109-AC3": [{"preconditions":"UX/SEO reviewer has approved the exact current Pages references `scripts/pages-baseline/chromium-public-light-1440.png`, `scripts/pages-baseline/chromium-public-light-390.png`, `scripts/pages-baseline/firefox-public-light-1440.png` and `scripts/pages-baseline/webkit-public-light-1440.png`, plus the staged `mobile-site/index.html` state; no baseline is inferred from prose.","setup":"Capture the staged Pages public artifact in Chromium, Firefox and WebKit at 1440px and 390px using synthetic content and record each reference path/hash, viewport, masks and numeric tolerance.","procedure":"CS-109-AC3-public-metadata-visual-browser","assertion":"Every available engine records the named reference path/state, route artifact, viewport, hash, masks and tolerance; metadata/head assertions run alongside capture; unavailable engines are NOT_RUN.","expectedResult":"Available engines produce reproducible screenshots and content/head output within the explicitly approved tolerance; an unapproved or missing reference blocks comparison.","type":"VISUAL_REGRESSION","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"compares the approved Pages public reference states across browser engines","testFileOrProcedureId":"scripts/check-pages-ui.mjs::CS-109-AC3-public-metadata","fixtures":"Staged `mobile-site/` fixture and the four exact baseline files listed in preconditions.","negativeCase":"Use a mismatched reference hash/path, unapproved viewport or unsupported engine and assert explicit failure/NOT_RUN rather than PASS.","evidenceArtifact":"redacted-public-pages-visual-content-report.json","reviewer":"UX","releaseGate":"R1-BROWSER-VISUAL"}],
+    "CS-109-AC4": [{"preconditions":"Run route fixtures for empty, unavailable, error, unauthorized, expired-session and stale-revision states where the underlying contract supports them.","setup":"Use synthetic server responses and keyboard traversal only; no live session or data.","procedure":"CS-109-AC4-metadata-state-accessibility","assertion":"Each applicable state is explicit and non-sensitive, keyboard focus remains operable, and error/status semantics have accessible names; unsupported states are NOT_APPLICABLE.","expectedResult":"No failure state becomes an empty success and no private content is exposed during auth/session errors.","type":"AUTOMATED_ACCESSIBILITY","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"covers public/private metadata failure and accessibility states","testFileOrProcedureId":"scripts/check-ui.ts::CS-109-AC4-state-matrix","fixtures":"Synthetic state responses and route metadata fixtures.","negativeCase":"Return an unauthorized response with candidate data or omit an error announcement and assert the check fails.","evidenceArtifact":"axe-keyboard-state-report.json","reviewer":"Accessibility","releaseGate":"R1-A11Y-PRIVACY"}],
+    "CS-109-AC5": [{"preconditions":"Use an isolated release-gate fixture with CS-109 BACKLOG/RELEASE and no deployment credentials.","setup":"Run the release checker against complete, incomplete and stale metadata evidence without mutating the canonical backlog.","procedure":"CS-109-AC5-release-gate","assertion":"The gate accepts only declared metadata, browser, accessibility, privacy and exact-SHA evidence; it never deploys or changes ticket state. Normal workflow progression remains BACKLOG→TODO→IN_PROGRESS→QA→UAT→PROD and is not exercised by this specification check.","expectedResult":"Incomplete or stale evidence fails closed; the isolated fixture remains BACKLOG/RELEASE and no canonical workflow file changes.","type":"AUTOMATED_CONTRACT","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"fails closed when metadata release evidence is incomplete","testFileOrProcedureId":"scripts/release-gate.mjs::CS-109-AC5","fixtures":"Synthetic release evidence manifests with complete and incomplete variants plus an isolated backlog copy.","negativeCase":"Remove exact-SHA browser result and assert refusal without network/deployment calls or workflow mutation.","evidenceArtifact":"redacted-release-gate-output.json","reviewer":"Release","releaseGate":"R1-RELEASE-GATE"}],
+    "CS-110-AC1": [{"preconditions":"Use an isolated domain fixture with a candidate record and fixed revision in each allowed source state.","setup":"Apply the explicit actor/transition table: candidate may submit UNVERIFIED→PENDING and NEEDS_INFO→PENDING; authorized reviewer may move PENDING→IN_REVIEW, IN_REVIEW→VERIFIED/NEEDS_INFO/REJECTED and revoke VERIFIED→NEEDS_INFO; only a candidate may resubmit NEEDS_INFO and no actor may revive REJECTED without a separately authorized resubmission policy.","procedure":"CS-110-AC1-verification-state-machine","assertion":"Only the listed actor/transition pairs succeed; all other pairs return the canonical 409 transition error or 403 actor error, with unchanged state/revision.","expectedResult":"State and revision change exactly once for a legal transition and remain unchanged for an illegal one.","type":"AUTOMATED_UNIT","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"enforces verification state transitions and actor authority","testFileOrProcedureId":"packages/core/src/verification.test.ts::state-machine","fixtures":"Synthetic candidate/reviewer principals, records, revisions and transition table.","negativeCase":"Attempt reviewer decision as candidate, REJECTED→VERIFIED, or stale revision and assert deterministic 403/409 with no persistence change.","evidenceArtifact":"verification-transition-test-report.json","reviewer":"Backend","releaseGate":"R1-DOMAIN-INTEGRITY"}],
+    "CS-110-AC2": [{"preconditions":"Use synthetic candidate and reviewer principals with server clocks fixed; no real PII.","setup":"Submit candidate evidence and an authorized reviewer decision containing a bounded reason through the planned contract boundary; server derives reviewer identity/time, validates and persists the supplied reason.","procedure":"CS-110-AC2-reviewer-audit-boundary","assertion":"Reviewer identity and timestamps are server-derived; the authorized reviewer reason is validated/persisted without server fabrication; candidate input cannot set VERIFIED or reviewer fields; each privileged decision emits one redacted audit event.","expectedResult":"Unauthorized or client-forged reviewer fields return 403/422 and audit output contains actor class, transition, validated reason digest and correlation ID but no raw evidence.","type":"AUTOMATED_SECURITY","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"prevents candidate-forged verification and records redacted audit","testFileOrProcedureId":"apps/api/tests/verification-authorization.test.ts::reviewer-audit","fixtures":"Synthetic candidate/reviewer sessions, bounded reason values and audit sink.","negativeCase":"Use candidate session with VERIFIED/reviewer payload or an empty/oversized reason and assert deterministic 403/422, unchanged state and no privileged audit event.","evidenceArtifact":"redacted-verification-audit-report.json","reviewer":"Security","releaseGate":"R1-AUTHZ-AUDIT"}],
+    "CS-110-AC3": [{"preconditions":"Use synthetic files only and the existing encrypted private-storage test harness; owner-approved MIME allowlist and byte limit must be supplied as configuration before implementation.","setup":"Submit valid, malformed, oversized, unsupported and metadata-bearing photo fixtures and exercise notes/call-metadata retention/deletion policy fixtures.","procedure":"CS-110-AC3-private-photo-contract","assertion":"The configured allowlist/limit is enforced, metadata is stripped before encrypted private publication, invalid files return deterministic 413/415 errors, no public URL is created, and retention/deletion removes restricted notes/call metadata according to the approved policy.","expectedResult":"Storage/full-disk/permission failures preserve prior verification state and leave no orphan published object; missing owner-approved policy fails the contract check before implementation.","type":"AUTOMATED_INTEGRATION","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"validates private verification photos and restricted-data retention","testFileOrProcedureId":"packages/core/src/verification-storage.test.ts::photo-contract","fixtures":"Synthetic JPEG/PNG, malformed bytes, oversized file, storage-failure and retention-expiry fixtures.","negativeCase":"Submit unsupported MIME, exceed configured byte limit, or delete before retention expiry and assert deterministic refusal with no database/object mutation.","evidenceArtifact":"redacted-photo-storage-retention-report.json","reviewer":"Backend","releaseGate":"R1-STORAGE-PRIVACY"}],
+    "CS-110-AC4": [{"preconditions":"Use isolated candidate/admin principals, malformed transition payloads and service-failure fixtures.","setup":"Exercise candidate, reviewer and ordinary-user requests against the planned contract.","procedure":"CS-110-AC4-verification-negative-matrix","assertion":"Positive operations succeed only for the authorized actor; unauthenticated, wrong-owner, non-admin, malformed and dependency-failure cases return typed safe errors with no role inference from UI visibility.","expectedResult":"No cross-owner existence leakage, privilege escalation or fabricated verified state occurs.","type":"AUTOMATED_CONTRACT","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"rejects unauthorized and malformed verification operations","testFileOrProcedureId":"apps/api/tests/verification-contract.test.ts::negative-matrix","fixtures":"Synthetic principals, records, malformed JSON and unavailable storage/audit fixtures.","negativeCase":"Request another owner's record or reviewer action as ordinary user and assert safe denial with zero protected fields.","evidenceArtifact":"verification-contract-negative-report.json","reviewer":"QA","releaseGate":"R1-AUTHZ-CONTRACT"}],
+    "CS-110-AC5": [{"preconditions":"Use a release fixture with verification_domain_enabled absent/default false and no provider credentials.","setup":"Run the activation checker with incomplete and complete future evidence manifests.","procedure":"CS-110-AC5-conditional-release-gate","assertion":"Conditional capability remains disabled until state, storage, RBAC, security, privacy and exact-SHA evidence are present; the checker never enables runtime behavior itself.","expectedResult":"Missing evidence fails closed and current repository state remains unchanged.","type":"AUTOMATED_CONTRACT","testStatus":"PLANNED","reviewStatus":"DRAFT","testName":"keeps verification capability disabled without conditional evidence","testFileOrProcedureId":"scripts/release-gate.mjs::CS-110-AC5","fixtures":"Synthetic flag/evidence manifests with missing and complete variants.","negativeCase":"Provide only a client flag or screenshot and assert the gate refuses activation.","evidenceArtifact":"redacted-verification-release-report.json","reviewer":"Release","releaseGate":"R1-CONDITIONAL-RELEASE"}],
     "CS-99-AC4": [
       {
         "reviewer": "Release QA and Security reviewer",

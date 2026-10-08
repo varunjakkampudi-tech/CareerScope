@@ -200,5 +200,23 @@ gates.
 - **Blocked:** Final allowed-context assertions, whole-spec approval, and any
   runtime policy modification.
 
-`OWNER_DECISIONS_REMAINING: 6` (CS-80's narrow checkpoint conflict is resolved;
+## CS-109 — choose the public metadata ownership boundary
+
+- **Question:** Should CS-109 certify only the existing static Pages artifact plus private Next `/`, or should a future public Next.js route migration be included before this ticket can be accepted?
+- **Why required:** Current source proves `mobile-site/` is staged for Pages and Next `/` is the signed-out/private auth surface; `docs/PRODUCT-SURFACE.md` says no marketing site and `docs/ARCHITECTURE.md` says public Next SEO is not migrated.
+- **Recommended neutral framing:** Specify and test the two current rows only (`PAGES_PUBLIC_ROOT`, `NEXT_AUTH_ROOT`); keep any future public Next migration as a separately authorized scope decision.
+- **Affected specification sections:** scope, route/host matrix, design/visual references, AC1/AC3 and release evidence.
+- **Can proceed without this decision:** Current Pages/private route inventory, safe metadata rules and deterministic planned checks.
+- **Blocked:** Any claim that an unimplemented public Next route or production host is covered by CS-109.
+
+## CS-110 — approve verification-domain contract policy
+
+- **Question:** What reviewer role/grant source, revocation/resubmission edges, photo MIME/byte/metadata policy and notes/call-metadata retention/deletion policy are authoritative for the future verification domain?
+- **Why required:** The cited contract requires explicit resubmission/revocation and retention but does not define these values; current product has no deployed admin/RBAC verification API or image-storage contract.
+- **Recommended neutral framing:** Keep the planned route/data contracts and fail closed until the owner/security decision supplies these policy values; do not infer them from UI visibility or resume storage.
+- **Affected specification sections:** state machine, API/data contract, security/privacy, storage, AC1–AC3 and conditional release evidence.
+- **Can proceed without this decision:** Contract shape, negative-case fixtures, redaction, audit and rollback planning.
+- **Blocked:** Whole-spec approval and any runtime/API/storage implementation claim.
+
+`OWNER_DECISIONS_REMAINING: 8` (CS-80's narrow checkpoint conflict is resolved;
 its whole-ticket readiness remains incomplete.)

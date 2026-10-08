@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "b19ba891933eb705f3bbb614f2aa51477b21c5f5064ee35f529dd79395c6a45e",
+    ".ai/ticket-specification-policy.json": "7d87f4f2d3087920d7eefe27c01e085052baffe11be8b6af5897b1c4fbfa2699",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "525052733100ad98f63776fd292165d66d3b14b745e5b7cb6a527e6f56183ba6",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "5bd238aca2cb72c89cf30e0898d901554bbfe744af5d88885e9a6a15831f3093",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -15084,17 +15084,36 @@
       "criterion": "Public pages have truthful titles/descriptions, canonical/OG/Twitter, robots/sitemap and valid structured data only; candidate/admin/auth pages are noindex.",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-109-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "PAGES_PUBLIC_ROOT emits truthful title/description/canonical/social metadata and allowlisted robots/sitemap entries derived from staged public fields; NEXT_AUTH_ROOT is noindex/no-follow and absent from sitemap output.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-public-private-metadata-matrix.json",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "R1-SEO-PRIVACY"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use the current source inventory: Next.js `/` is the signed-out/private auth surface; the static Pages publication is staged from `mobile-site/` by `scripts/stage-pages.mjs` and owns `index.html`, `jobs.json`, `robots.txt` and `sitemap.xml`. Use synthetic content only.",
+          "setup": "Run the metadata checker against exactly two rows: `PAGES_PUBLIC_ROOT` for the staged Pages artifact and `NEXT_AUTH_ROOT` for Next `/`; do not invent additional public Next routes or a production host.",
+          "procedure": "CS-109-AC1-public-private-metadata-matrix",
+          "assertion": "PAGES_PUBLIC_ROOT emits truthful title/description/canonical/social metadata and allowlisted robots/sitemap entries derived from staged public fields; NEXT_AUTH_ROOT is noindex/no-follow and absent from sitemap output.",
+          "expectedResult": "The two-row matrix has deterministic policy results; any unlisted host/route is NOT_APPLICABLE pending an owner-approved migration decision, and missing/conflicting metadata fails with row and field.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "classifies the current Pages public artifact and Next auth root without leakage",
+          "testFileOrProcedureId": "scripts/check-public-metadata.mjs::CS-109-AC1",
+          "fixtures": "Sanitized `mobile-site/` staging fixture plus Next `/` auth metadata fixture; no real user/provider data.",
+          "negativeCase": "Mark NEXT_AUTH_ROOT indexable, add it to sitemap, or add a fabricated public Next route and assert the checker fails closed without emitting private data.",
+          "evidenceArtifact": "redacted-public-private-metadata-matrix.json",
+          "reviewer": "QA",
+          "releaseGate": "R1-SEO-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-109",
@@ -15102,49 +15121,36 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-109-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_SECURITY",
+          "expectedCheck": "Only values present in the rendered public view and approved marketing reference are emitted; unsafe schemes/markup and candidate/private fields are rejected or omitted deterministically.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-109-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-109-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-109-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-109-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "sanitized-head-and-content-output.json",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "R1-SECURITY-PRIVACY"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use synthetic public content containing an unsafe URL, script-like text and fabricated-count sentinel.",
+          "setup": "Render the actual public route content and its head through the approved marketing README contract; compare visible text/links with emitted structured and social metadata.",
+          "procedure": "CS-109-AC2-safe-public-metadata-values",
+          "assertion": "Only values present in the rendered public view and approved marketing reference are emitted; unsafe schemes/markup and candidate/private fields are rejected or omitted deterministically.",
+          "expectedResult": "Rendered content and metadata agree for the tested fields; no token, resume, owner identifier, private job/application state or fabricated count appears in head output or JSON-LD.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "rejects unsafe private metadata and content-reference drift",
+          "testFileOrProcedureId": "scripts/check-public-metadata.mjs::CS-109-AC2",
+          "fixtures": "Synthetic metadata values with safe/malicious variants and a redacted public-content fixture derived from design/01-IMPLEMENTATION-ORDER/01-marketing-public/README.md.",
+          "negativeCase": "Inject javascript: URL, private field, or a metadata value absent from rendered public content and assert nonzero validation with no emitted unsafe value.",
+          "evidenceArtifact": "sanitized-head-and-content-output.json",
+          "reviewer": "Security",
+          "releaseGate": "R1-SECURITY-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-109",
@@ -15152,33 +15158,36 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-109-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-109-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-109-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Every available engine records the named reference path/state, route artifact, viewport, hash, masks and tolerance; metadata/head assertions run alongside capture; unavailable engines are NOT_RUN.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-public-pages-visual-content-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "UX/SEO reviewer has approved the exact current Pages references `scripts/pages-baseline/chromium-public-light-1440.png`, `scripts/pages-baseline/chromium-public-light-390.png`, `scripts/pages-baseline/firefox-public-light-1440.png` and `scripts/pages-baseline/webkit-public-light-1440.png`, plus the staged `mobile-site/index.html` state; no baseline is inferred from prose.",
+          "setup": "Capture the staged Pages public artifact in Chromium, Firefox and WebKit at 1440px and 390px using synthetic content and record each reference path/hash, viewport, masks and numeric tolerance.",
+          "procedure": "CS-109-AC3-public-metadata-visual-browser",
+          "assertion": "Every available engine records the named reference path/state, route artifact, viewport, hash, masks and tolerance; metadata/head assertions run alongside capture; unavailable engines are NOT_RUN.",
+          "expectedResult": "Available engines produce reproducible screenshots and content/head output within the explicitly approved tolerance; an unapproved or missing reference blocks comparison.",
+          "type": "VISUAL_REGRESSION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "compares the approved Pages public reference states across browser engines",
+          "testFileOrProcedureId": "scripts/check-pages-ui.mjs::CS-109-AC3-public-metadata",
+          "fixtures": "Staged `mobile-site/` fixture and the four exact baseline files listed in preconditions.",
+          "negativeCase": "Use a mismatched reference hash/path, unapproved viewport or unsupported engine and assert explicit failure/NOT_RUN rather than PASS.",
+          "evidenceArtifact": "redacted-public-pages-visual-content-report.json",
+          "reviewer": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
+        }
+      ]
     },
     {
       "ticketId": "CS-109",
@@ -15186,33 +15195,36 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-109-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-109-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-109-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Each applicable state is explicit and non-sensitive, keyboard focus remains operable, and error/status semantics have accessible names; unsupported states are NOT_APPLICABLE.",
+          "candidateCommand": null,
+          "evidenceRequired": "axe-keyboard-state-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility",
+          "releaseGate": "R1-A11Y-PRIVACY"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Run route fixtures for empty, unavailable, error, unauthorized, expired-session and stale-revision states where the underlying contract supports them.",
+          "setup": "Use synthetic server responses and keyboard traversal only; no live session or data.",
+          "procedure": "CS-109-AC4-metadata-state-accessibility",
+          "assertion": "Each applicable state is explicit and non-sensitive, keyboard focus remains operable, and error/status semantics have accessible names; unsupported states are NOT_APPLICABLE.",
+          "expectedResult": "No failure state becomes an empty success and no private content is exposed during auth/session errors.",
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "covers public/private metadata failure and accessibility states",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-109-AC4-state-matrix",
+          "fixtures": "Synthetic state responses and route metadata fixtures.",
+          "negativeCase": "Return an unauthorized response with candidate data or omit an error announcement and assert the check fails.",
+          "evidenceArtifact": "axe-keyboard-state-report.json",
+          "reviewer": "Accessibility",
+          "releaseGate": "R1-A11Y-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-109",
@@ -15220,25 +15232,36 @@
       "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-109-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-109-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The gate accepts only declared metadata, browser, accessibility, privacy and exact-SHA evidence; it never deploys or changes ticket state. Normal workflow progression remains BACKLOG→TODO→IN_PROGRESS→QA→UAT→PROD and is not exercised by this specification check.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-release-gate-output.json",
+          "automationStatus": "PLANNED",
+          "owner": "Release",
+          "releaseGate": "R1-RELEASE-GATE"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use an isolated release-gate fixture with CS-109 BACKLOG/RELEASE and no deployment credentials.",
+          "setup": "Run the release checker against complete, incomplete and stale metadata evidence without mutating the canonical backlog.",
+          "procedure": "CS-109-AC5-release-gate",
+          "assertion": "The gate accepts only declared metadata, browser, accessibility, privacy and exact-SHA evidence; it never deploys or changes ticket state. Normal workflow progression remains BACKLOG→TODO→IN_PROGRESS→QA→UAT→PROD and is not exercised by this specification check.",
+          "expectedResult": "Incomplete or stale evidence fails closed; the isolated fixture remains BACKLOG/RELEASE and no canonical workflow file changes.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "fails closed when metadata release evidence is incomplete",
+          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-109-AC5",
+          "fixtures": "Synthetic release evidence manifests with complete and incomplete variants plus an isolated backlog copy.",
+          "negativeCase": "Remove exact-SHA browser result and assert refusal without network/deployment calls or workflow mutation.",
+          "evidenceArtifact": "redacted-release-gate-output.json",
+          "reviewer": "Release",
+          "releaseGate": "R1-RELEASE-GATE"
+        }
+      ]
     },
     {
       "ticketId": "CS-110",
@@ -15246,17 +15269,36 @@
       "criterion": "Enforce UNVERIFIED → PENDING → IN_REVIEW → VERIFIED / NEEDS_INFO / REJECTED; controlled resubmission and revocation.",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-110-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "Only the listed actor/transition pairs succeed; all other pairs return the canonical 409 transition error or 403 actor error, with unchanged state/revision.",
+          "candidateCommand": null,
+          "evidenceRequired": "verification-transition-test-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Backend",
+          "releaseGate": "R1-DOMAIN-INTEGRITY"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use an isolated domain fixture with a candidate record and fixed revision in each allowed source state.",
+          "setup": "Apply the explicit actor/transition table: candidate may submit UNVERIFIED→PENDING and NEEDS_INFO→PENDING; authorized reviewer may move PENDING→IN_REVIEW, IN_REVIEW→VERIFIED/NEEDS_INFO/REJECTED and revoke VERIFIED→NEEDS_INFO; only a candidate may resubmit NEEDS_INFO and no actor may revive REJECTED without a separately authorized resubmission policy.",
+          "procedure": "CS-110-AC1-verification-state-machine",
+          "assertion": "Only the listed actor/transition pairs succeed; all other pairs return the canonical 409 transition error or 403 actor error, with unchanged state/revision.",
+          "expectedResult": "State and revision change exactly once for a legal transition and remain unchanged for an illegal one.",
+          "type": "AUTOMATED_UNIT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "enforces verification state transitions and actor authority",
+          "testFileOrProcedureId": "packages/core/src/verification.test.ts::state-machine",
+          "fixtures": "Synthetic candidate/reviewer principals, records, revisions and transition table.",
+          "negativeCase": "Attempt reviewer decision as candidate, REJECTED→VERIFIED, or stale revision and assert deterministic 403/409 with no persistence change.",
+          "evidenceArtifact": "verification-transition-test-report.json",
+          "reviewer": "Backend",
+          "releaseGate": "R1-DOMAIN-INTEGRITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-110",
@@ -15264,17 +15306,36 @@
       "criterion": "Server-derived reviewer identity, timestamps, reason and audit events; candidate edits never grant verified status; no implied background/government/employment clearance.",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-110-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_SECURITY",
+          "expectedCheck": "Reviewer identity and timestamps are server-derived; the authorized reviewer reason is validated/persisted without server fabrication; candidate input cannot set VERIFIED or reviewer fields; each privileged decision emits one redacted audit event.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-verification-audit-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "R1-AUTHZ-AUDIT"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use synthetic candidate and reviewer principals with server clocks fixed; no real PII.",
+          "setup": "Submit candidate evidence and an authorized reviewer decision containing a bounded reason through the planned contract boundary; server derives reviewer identity/time, validates and persists the supplied reason.",
+          "procedure": "CS-110-AC2-reviewer-audit-boundary",
+          "assertion": "Reviewer identity and timestamps are server-derived; the authorized reviewer reason is validated/persisted without server fabrication; candidate input cannot set VERIFIED or reviewer fields; each privileged decision emits one redacted audit event.",
+          "expectedResult": "Unauthorized or client-forged reviewer fields return 403/422 and audit output contains actor class, transition, validated reason digest and correlation ID but no raw evidence.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "prevents candidate-forged verification and records redacted audit",
+          "testFileOrProcedureId": "apps/api/tests/verification-authorization.test.ts::reviewer-audit",
+          "fixtures": "Synthetic candidate/reviewer sessions, bounded reason values and audit sink.",
+          "negativeCase": "Use candidate session with VERIFIED/reviewer payload or an empty/oversized reason and assert deterministic 403/422, unchanged state and no privileged audit event.",
+          "evidenceArtifact": "redacted-verification-audit-report.json",
+          "reviewer": "Security",
+          "releaseGate": "R1-AUTHZ-AUDIT"
+        }
+      ]
     },
     {
       "ticketId": "CS-110",
@@ -15282,25 +15343,36 @@
       "criterion": "Photo upload validates size/type, metadata stripping and private access; no default call recording; notes restricted and retention explicit.",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-110-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "The configured allowlist/limit is enforced, metadata is stripped before encrypted private publication, invalid files return deterministic 413/415 errors, no public URL is created, and retention/deletion removes restricted notes/call metadata according to the approved policy.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-110-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "redacted-photo-storage-retention-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Backend",
+          "releaseGate": "R1-STORAGE-PRIVACY"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use synthetic files only and the existing encrypted private-storage test harness; owner-approved MIME allowlist and byte limit must be supplied as configuration before implementation.",
+          "setup": "Submit valid, malformed, oversized, unsupported and metadata-bearing photo fixtures and exercise notes/call-metadata retention/deletion policy fixtures.",
+          "procedure": "CS-110-AC3-private-photo-contract",
+          "assertion": "The configured allowlist/limit is enforced, metadata is stripped before encrypted private publication, invalid files return deterministic 413/415 errors, no public URL is created, and retention/deletion removes restricted notes/call metadata according to the approved policy.",
+          "expectedResult": "Storage/full-disk/permission failures preserve prior verification state and leave no orphan published object; missing owner-approved policy fails the contract check before implementation.",
+          "type": "AUTOMATED_INTEGRATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "validates private verification photos and restricted-data retention",
+          "testFileOrProcedureId": "packages/core/src/verification-storage.test.ts::photo-contract",
+          "fixtures": "Synthetic JPEG/PNG, malformed bytes, oversized file, storage-failure and retention-expiry fixtures.",
+          "negativeCase": "Submit unsupported MIME, exceed configured byte limit, or delete before retention expiry and assert deterministic refusal with no database/object mutation.",
+          "evidenceArtifact": "redacted-photo-storage-retention-report.json",
+          "reviewer": "Backend",
+          "releaseGate": "R1-STORAGE-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-110",
@@ -15308,41 +15380,36 @@
       "criterion": "Positive, denial, malformed and failure fixtures exercise the approved contract; no role or capability is inferred from UI visibility.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-110-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Positive operations succeed only for the authorized actor; unauthenticated, wrong-owner, non-admin, malformed and dependency-failure cases return typed safe errors with no role inference from UI visibility.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-110-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-110-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-110-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "verification-contract-negative-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "R1-AUTHZ-CONTRACT"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use isolated candidate/admin principals, malformed transition payloads and service-failure fixtures.",
+          "setup": "Exercise candidate, reviewer and ordinary-user requests against the planned contract.",
+          "procedure": "CS-110-AC4-verification-negative-matrix",
+          "assertion": "Positive operations succeed only for the authorized actor; unauthenticated, wrong-owner, non-admin, malformed and dependency-failure cases return typed safe errors with no role inference from UI visibility.",
+          "expectedResult": "No cross-owner existence leakage, privilege escalation or fabricated verified state occurs.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "rejects unauthorized and malformed verification operations",
+          "testFileOrProcedureId": "apps/api/tests/verification-contract.test.ts::negative-matrix",
+          "fixtures": "Synthetic principals, records, malformed JSON and unavailable storage/audit fixtures.",
+          "negativeCase": "Request another owner's record or reviewer action as ordinary user and assert safe denial with zero protected fields.",
+          "evidenceArtifact": "verification-contract-negative-report.json",
+          "reviewer": "QA",
+          "releaseGate": "R1-AUTHZ-CONTRACT"
+        }
+      ]
     },
     {
       "ticketId": "CS-110",
@@ -15350,25 +15417,36 @@
       "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-110-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-110-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "Conditional capability remains disabled until state, storage, RBAC, security, privacy and exact-SHA evidence are present; the checker never enables runtime behavior itself.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-verification-release-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a release fixture with verification_domain_enabled absent/default false and no provider credentials.",
+          "setup": "Run the activation checker with incomplete and complete future evidence manifests.",
+          "procedure": "CS-110-AC5-conditional-release-gate",
+          "assertion": "Conditional capability remains disabled until state, storage, RBAC, security, privacy and exact-SHA evidence are present; the checker never enables runtime behavior itself.",
+          "expectedResult": "Missing evidence fails closed and current repository state remains unchanged.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "keeps verification capability disabled without conditional evidence",
+          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-110-AC5",
+          "fixtures": "Synthetic flag/evidence manifests with missing and complete variants.",
+          "negativeCase": "Provide only a client flag or screenshot and assert the gate refuses activation.",
+          "evidenceArtifact": "redacted-verification-release-report.json",
+          "reviewer": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
+        }
+      ]
     },
     {
       "ticketId": "CS-111",

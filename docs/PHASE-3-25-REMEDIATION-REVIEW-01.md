@@ -1019,3 +1019,15 @@ CS-99 AC1 `3f672a05fdacd906652403ef28936ebbc9cdfb3d0f154f302c4f36e35aaafebf`,
 AC2 `6a258a3b5477d398d19455ff84d46ac0047eb3b6eecde3af9389b13e8e454386`,
 AC3 `8648a94edcdd80a92a53e68c52f4ed9db31ee203f33baf5354aefc929d8bb606`,
 AC4 `ac9ed0aa14d1c54b5e2f7711ebe491346a6ccb7eb6cc9bcd5be784864aaa20c7`.
+
+### CS-109 / CS-110 closure-wave review (2026-10-08)
+
+Independent read-only review returned `REVISE` for both tickets. CS-109 now
+records the current two-row ownership boundary (static Pages public artifact
+and private Next auth root), but whole-spec approval remains gated on the owner
+decision about any future public Next migration and exact route/host acceptance.
+CS-110 records planned candidate/reviewer contracts and explicit transition,
+storage, audit and retention boundaries, but reviewer role/grant source,
+revocation/resubmission policy, photo limits/metadata oracle and restricted-data
+retention values are not authoritative in the current repository. Those are
+tracked as owner-decision gates; no receipt or approval hash was created.
