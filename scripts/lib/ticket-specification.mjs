@@ -578,7 +578,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           ? [...new Set(row.exactBindings.map((binding) => binding.type))]
           : row.verification.map((entry) => entry.type),
       authority: source,
-      reviewStatus: 'UNREVIEWED_SPECIFICATION',
+      reviewStatus: refinement?.criteriaReviewStatus ?? 'UNREVIEWED_SPECIFICATION',
     }));
     const sections = {
       identity: present(
@@ -1368,7 +1368,8 @@ export function validateCatalog(model, inputs, resolvePath) {
                 'reviewStatus',
               ].includes(field) ||
               typeof value !== 'string' ||
-              !value.trim(),
+              !value.trim() ||
+              (field === 'reviewStatus' && !['DRAFT', 'REVIEWED'].includes(value)),
           )
         )
           errors.push(`invalid binding amendment fields ${acId}.${index}`);

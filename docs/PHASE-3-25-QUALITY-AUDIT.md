@@ -17,9 +17,9 @@ Structural section coverage and generated count are not implementation readiness
 | dependencySemanticGapCount             | 0                  |
 | acceptanceCriterionCount               | 906                |
 | suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 314                |
-| unmappedAcceptanceCriterionCount       | 592                |
-| reviewedExactTestBindingCount          | 340                |
+| mappedAcceptanceCriterionCount         | 317                |
+| unmappedAcceptanceCriterionCount       | 589                |
+| reviewedExactTestBindingCount          | 343                |
 | authoredExactTestBindingCount          | 377                |
 | acceptanceCriteriaWithAuthoredBindings | 351                |
 | draftSpecificationCount                | 126                |
@@ -34,7 +34,7 @@ Structural section coverage and generated count are not implementation readiness
 | currentReleaseTicketCount              | 47                 |
 | specificationCoveragePercent           | 41.666666666666664 |
 | suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 34.65783664459161  |
+| exactReviewedTraceabilityPercent       | 34.98896247240618  |
 | findingsCount                          | 644                |
 | openFindingCount                       | 351                |
 | resolvedFindingCount                   | 146                |

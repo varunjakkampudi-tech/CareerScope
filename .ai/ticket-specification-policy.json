@@ -2485,6 +2485,7 @@
     },
     "CS-41": {
       "reviewStatus": "DRAFT",
+      "criteriaReviewStatus": "REVIEWED",
       "sourceReferences": [
         ".ai/backlog.json#CS-41",
         "docs/tickets/CS-41.md",
@@ -12387,7 +12388,7 @@
       {
         "reviewer": "Architecture owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_OPERATOR",
         "preconditions": "Architecture proposal review is active; no production writes are permitted; the canonical source inventory is available.",
         "setup": "Prepare a proposal-only matrix using job fingerprint job-001 (J1), normalized company key acme-inc (C1), skill key typescript (K1), provider-a HTTPS provenance with discoveredAt and lastVerifiedAt (P1), nullable salary/location (Fnull), L1 as a proposed legal-source/provider allowlist that is not configured or active, owner-scoped observations only with no public corpus (COV1), and an additive nullable backfill plan preserving owner/job identity with rollback (M1).",
@@ -12409,7 +12410,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_OPERATOR",
         "preconditions": "Canonical checkout with API-SURFACE.md, ARCHITECTURE.md and packages/core/src/database.ts available; no production data.",
         "setup": "Record the current owner-scoped market routes GET /api/market/postings (limit default 50), GET /api/market/postings/:fingerprint (1–256 chars), GET /api/market/companies (limit default 25); enumerate POST/GET /api/searches, GET /api/searches/:id, POST /api/searches/:id/cancel, GET /api/searches/:id/export, GET /api/searches/:id/events, GET /api/leads, POST /api/leads, GET /api/leads/by-job/:jobId, GET /api/leads/:id, GET /api/leads/:id/history and PUT /api/leads/:id; and record current tables search_runs, search_jobs, job_sightings, saved_leads and lead_history. Distinguish the existing companies route from the unimplemented canonical companies entity/table, mark enrichment_runs as planned, and record that no public corpus or skills aggregate exists.",
@@ -13325,7 +13326,7 @@
       {
         "reviewer": "Security owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_OPERATOR",
         "preconditions": "A proposal-only authorization/collection review is active; no collection, schema or UI expansion may execute before manual approval.",
         "setup": "Prepare O1/O2 sessions, ambiguous job-002/company-002 identity (J2/C2), malformed source Sbad, unknown field U1, and a bounded query matrix B1 that records the documented current defaults (postings 50, companies 25) separately from a proposed stricter rejection policy; prepare planned approval artifact AR-41 with decisionId, reviewers, legal source allowlist, ownership, query limits, retention, rollback and status.",
@@ -14729,6 +14730,24 @@
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a624d0a7d14be9e2c494c87abb5268873ec28771456b8f5d6bba717a02308a04"
+    },
+    "CS-41-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "08282cd449a06ca97e441a3deb17d4766cbd6837e38d835282d2cd932f034494"
+    },
+    "CS-41-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4ee8ec1e71ecff06f9be9890c1850f535b4847f6e2d21ac565ac2ee1bc77f47e"
+    },
+    "CS-41-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce"
     },
     "CS-32-AC1": {
       "verdict": "APPROVED",
@@ -16540,7 +16559,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "709567eafb5da6adbe1bf2cc746c998312be1bd72cc0ddf88e5be57d587cf6aa"
+      "contentHash": "580e8d21e859159ce7834c31a4b26cf0e37c5228b71ba1fb31bd49a51029a7f8"
     },
     "CS-48": {
       "verdict": "APPROVED",

@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "1b8f0f334af5f93a5d2d49b79d83f11438f9df0fb285672bd09b48eeec35a74b",
+    ".ai/ticket-specification-policy.json": "41a21c04e8d6ec774b90f33f78c90013f1e6f9dfca46f21826887288feb9b215",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "0c0e1ee5755b8bcf7a97743c43ab887ece22a217c62807d7eef8883537beafd7",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "b3c010e62a53e05c84ebb2224a6ffecef5acdd433e33cc71c437923be98e28d2",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -26793,7 +26793,7 @@
               "expectedResult": "Inventory current posting, company and market APIs/schema before declaring entities absent; distinguish owner-retained observations from any proposed global corpus",
               "verificationIds": ["MANUAL_OPERATOR"],
               "authority": ".ai/backlog.json#CS-41",
-              "reviewStatus": "UNREVIEWED_SPECIFICATION"
+              "reviewStatus": "REVIEWED"
             },
             {
               "id": "CS-41-AC2",
@@ -26801,7 +26801,7 @@
               "expectedResult": "Propose stable job/company/skill identity, provenance, nullable facts and compatible migration/backfill behavior with explicit legal collection and coverage limits",
               "verificationIds": ["MANUAL_OPERATOR"],
               "authority": ".ai/backlog.json#CS-41",
-              "reviewStatus": "UNREVIEWED_SPECIFICATION"
+              "reviewStatus": "REVIEWED"
             },
             {
               "id": "CS-41-AC3",
@@ -26809,7 +26809,7 @@
               "expectedResult": "Define foreign-owner, ambiguous identity, malformed source and unknown-field fixtures plus bounded query/pagination budgets; obtain architecture/security approval before collection, schema or UI expansion",
               "verificationIds": ["MANUAL_OPERATOR"],
               "authority": ".ai/backlog.json#CS-41",
-              "reviewStatus": "UNREVIEWED_SPECIFICATION"
+              "reviewStatus": "REVIEWED"
             },
             {
               "requirement": "AC1 inventory must name the existing read-only routes GET /api/market/postings (default limit 50), GET /api/market/postings/:fingerprint (fingerprint 1–256 characters) and GET /api/market/companies (default limit 25), plus POST/GET /api/searches, GET /api/searches/:id, POST /api/searches/:id/cancel, GET /api/searches/:id/export, GET /api/searches/:id/events, GET /api/leads, POST /api/leads, GET /api/leads/by-job/:jobId, GET /api/leads/:id, GET /api/leads/:id/history and PUT /api/leads/:id, and tables search_runs, search_jobs, job_sightings, saved_leads and lead_history. The existing companies route is a read-only route; a canonical companies entity/table, enrichment_runs, public corpus and skills aggregate remain explicitly NOT_IMPLEMENTED.",
@@ -26992,7 +26992,7 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_OPERATOR",
                   "preconditions": "Canonical checkout with API-SURFACE.md, ARCHITECTURE.md and packages/core/src/database.ts available; no production data.",
                   "setup": "Record the current owner-scoped market routes GET /api/market/postings (limit default 50), GET /api/market/postings/:fingerprint (1–256 chars), GET /api/market/companies (limit default 25); enumerate POST/GET /api/searches, GET /api/searches/:id, POST /api/searches/:id/cancel, GET /api/searches/:id/export, GET /api/searches/:id/events, GET /api/leads, POST /api/leads, GET /api/leads/by-job/:jobId, GET /api/leads/:id, GET /api/leads/:id/history and PUT /api/leads/:id; and record current tables search_runs, search_jobs, job_sightings, saved_leads and lead_history. Distinguish the existing companies route from the unimplemented canonical companies entity/table, mark enrichment_runs as planned, and record that no public corpus or skills aggregate exists.",
@@ -27032,7 +27032,7 @@
                 {
                   "reviewer": "Architecture owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_OPERATOR",
                   "preconditions": "Architecture proposal review is active; no production writes are permitted; the canonical source inventory is available.",
                   "setup": "Prepare a proposal-only matrix using job fingerprint job-001 (J1), normalized company key acme-inc (C1), skill key typescript (K1), provider-a HTTPS provenance with discoveredAt and lastVerifiedAt (P1), nullable salary/location (Fnull), L1 as a proposed legal-source/provider allowlist that is not configured or active, owner-scoped observations only with no public corpus (COV1), and an additive nullable backfill plan preserving owner/job identity with rollback (M1).",
@@ -27072,7 +27072,7 @@
                 {
                   "reviewer": "Security owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_OPERATOR",
                   "preconditions": "A proposal-only authorization/collection review is active; no collection, schema or UI expansion may execute before manual approval.",
                   "setup": "Prepare O1/O2 sessions, ambiguous job-002/company-002 identity (J2/C2), malformed source Sbad, unknown field U1, and a bounded query matrix B1 that records the documented current defaults (postings 50, companies 25) separately from a proposed stricter rejection policy; prepare planned approval artifact AR-41 with decisionId, reviewers, legal source allowlist, ownership, query limits, retention, rollback and status.",
@@ -27107,7 +27107,7 @@
               "expectedResult": "Inventory current posting, company and market APIs/schema before declaring entities absent; distinguish owner-retained observations from any proposed global corpus",
               "verificationIds": ["MANUAL_OPERATOR"],
               "authority": ".ai/backlog.json#CS-41",
-              "reviewStatus": "UNREVIEWED_SPECIFICATION"
+              "reviewStatus": "REVIEWED"
             },
             {
               "id": "CS-41-AC2",
@@ -27115,7 +27115,7 @@
               "expectedResult": "Propose stable job/company/skill identity, provenance, nullable facts and compatible migration/backfill behavior with explicit legal collection and coverage limits",
               "verificationIds": ["MANUAL_OPERATOR"],
               "authority": ".ai/backlog.json#CS-41",
-              "reviewStatus": "UNREVIEWED_SPECIFICATION"
+              "reviewStatus": "REVIEWED"
             },
             {
               "id": "CS-41-AC3",
@@ -27123,7 +27123,7 @@
               "expectedResult": "Define foreign-owner, ambiguous identity, malformed source and unknown-field fixtures plus bounded query/pagination budgets; obtain architecture/security approval before collection, schema or UI expansion",
               "verificationIds": ["MANUAL_OPERATOR"],
               "authority": ".ai/backlog.json#CS-41",
-              "reviewStatus": "UNREVIEWED_SPECIFICATION"
+              "reviewStatus": "REVIEWED"
             }
           ],
           "sources": [".ai/backlog.json#CS-41"]
