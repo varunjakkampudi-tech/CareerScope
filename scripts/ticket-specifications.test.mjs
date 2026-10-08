@@ -858,7 +858,7 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
   assert.equal(model.counts.completeSpecificationCount, 90);
-  assert.equal(model.counts.incompleteSpecificationCount, 140);
+  assert.equal(model.counts.incompleteSpecificationCount, 126);
   assert.equal(model.counts.approvedSpecificationCount, 90);
   assert.equal(model.counts.reviewedExactTestBindingCount, 343);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
