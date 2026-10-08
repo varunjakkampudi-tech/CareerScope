@@ -55,26 +55,3 @@ Remediation starting checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14. Initi
 Continuation checkpoint: 2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111. The bounded CS-62–CS-71 remediation ledger records individually reviewed CS-67/CS-70/CS-71 bindings, corrected verification-design findings and unimplemented SaveJob defects. See PHASE-3-25-REMEDIATION-LEDGER.md and PHASE-3-25-REMEDIATION-REVIEW-01.md. Scoped binding approval does not resolve whole-spec release classification or approve the entire phase. The final local artifact commit is resolvable through git log for this report; no self-referential SHA is invented.
 
 PHASE_3_25_COMPLETION: 37.50% reviewed implementation-ready specifications (81/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.
-
-## Continuation from 65d08f2 — CS-46 closure and test-hang isolation
-
-CS-46 is now an independently reviewed, implementation-ready specification
-with the approved durable exclusion decision propagated into its requirements,
-design references, planned contracts, evidence requirements and exact AC
-bindings. Its design disposition remains partial/non-blocking because the
-repository reference shows the resume-management surface but not the complete
-interactive exclusion flow. No runtime implementation or product decision was
-invented.
-
-The suspected `tickets:spec:test` hang was isolated rather than masked. The
-filtered CS-80 run completed all nine matching history/manifest tests with zero
-failures, skips or todos in 238.5405924 seconds. These are slow git-history
-tests, not a reproduced failure. No retries, skips, timeout widening or weaker
-assertions were added. A full-suite result must still be captured separately.
-
-The resulting local commit is `d4b071b817fb6c047ee1125527cb5cc42932e61f`.
-The branch's fetched remote remains `65d08f2e5bd6aeb9033a013a14eba43ec235c170`.
-A normal push was attempted after an ancestor check and was rejected by GitHub
-with `Repository not found`; this is an external repository/authentication
-blocker, not evidence of a code or history conflict. No force-push, merge or
-deployment occurred. The local working tree is clean.
