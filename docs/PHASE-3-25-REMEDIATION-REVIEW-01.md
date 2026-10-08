@@ -981,3 +981,41 @@ Binding digests: AC1 `3ac33d4a4041fb16630ca3833120416701361a3e93e324bf3b73c8fe85
 AC2 `bdd27f8050fb4e664d33c88ac7c9574355bb2d00a12196393b283d2bfe46e51b`,
 AC3 `0671b30650bf210523f7a81bf5bb623d627fa447637c5bfa1eb39ef46e80e230`,
 AC4 `ff52672baa73261f56058386ff193ec0c650d286addaa3c78623aba7b831d6ad`.
+
+## CS-96 through CS-99 final independent review — 2026-10-08
+
+`/root/cs78_review` independently approved the four authored specifications
+after the route, design, HOLD and verification corrections. CS-96 carries an
+explicit public-route/auth-route ownership gate and never permits `/` to be
+both indexable marketing and private sign-in. CS-97 discloses the missing
+approved mobile shell reference as a non-blocking UX gate and preserves the
+canonical workflow. CS-98 and CS-99 prove the current absence of their routes
+and runtime flags with deterministic HTTP 404/no-payload/no-side-effect
+expectations; hypothetical future flags and implementation tests remain
+synthetic/planned R2 evidence only. No runtime, provider, hosted or release
+evidence is claimed.
+
+| Ticket | Whole-spec digest | Binding digest |
+| ------ | ----------------- | -------------- |
+| CS-96 | `e7b3b06c2cffd107786ad08097d7f323a8a088421bd2a92467d1e9f47ff7351a` | `745915414c8146725ecc9d7b49fde0a64be35ba95822abb3e4834901cb27012e` |
+| CS-97 | `c247b8442de6a4b793ca67b2d7be0f4f3e5af2c646ee064572712252fa59161e` | `dd8b8fef9dc681738e7e251d3ee9269f74b40bde6f7c6e47288b8df29e2333ce` |
+| CS-98 | `6c91520428eec9f6cff91824d95bc7cd705b3ec751a36cd54eb310a63c241552` | `b89fb7b4e2a59239c3f0564c5302719c9f0ae6380bae7f67fdc45ca5fea32353` |
+| CS-99 | `6cb8b3b01286ee39ea7c8ad3145d335335603e270bc4f1229735b79212e545e5` | `8a76c6940e3ecf7b8eaa170551858178b372b789949e80949ceec82d4e465c7f` |
+
+Individual binding digests: CS-96 AC1 `b369bfea8e94415862e2afff1d63d2db719f76e144935c30e94a5162011231b8`,
+AC2 `8f33f8dcc25a053d61eef0eda2bdb7a9ec3f2190301983480138aafd33fdfee2`,
+AC3 `a7d0f802331f003f08ed23900c6414c40b2f635e24809a3763b16b17f6b5bc02`,
+AC4 `10710be6a4d8c05ea00aa9eff5fbf41611beabb153c748eaa8781b94e32433fc`;
+CS-97 AC1 `ca07d2fd3418c683f383b22fa847fac4af6345189e21f46e4cab2bfed4cf1270`,
+AC2 `23f8724c35757e80be9d404e931fc17784c0ff97fda43d7f57002cb44ab82972`,
+AC3 `669be785381592001ced1a005367460536fba6b088e724b15311394d77fc27da`,
+AC4 `a75b953596eddb13030226d1a05d00ded330512e347b031afdc1dcd1a2480dd9`,
+AC5 `3196e3a0a1a74ce18be8c64e90bd2f15bf7f5fdb2c146aa7b7a880ca8412c3c7`;
+CS-98 AC1 `23678b54f87b41f3fe71cb5381ec1d05430da54e16935968531c43252fe94935`,
+AC2 `19d8ee935084b45b734dbb833e9d19e8c12a13fb16d9963fea7a62afe19670e9`,
+AC3 `058643278b81b49a9da77093b4a16acae9398c7fd0a4a08162503256337f25b0`,
+AC4 `29853e9d33e62620ea46c8ab3a94afeab4664b078cd2f99e829b83ef7f327189`;
+CS-99 AC1 `3f672a05fdacd906652403ef28936ebbc9cdfb3d0f154f302c4f36e35aaafebf`,
+AC2 `6a258a3b5477d398d19455ff84d46ac0047eb3b6eecde3af9389b13e8e454386`,
+AC3 `8648a94edcdd80a92a53e68c52f4ed9db31ee203f33baf5354aefc929d8bb606`,
+AC4 `ac9ed0aa14d1c54b5e2f7711ebe491346a6ccb7eb6cc9bcd5be784864aaa20c7`.

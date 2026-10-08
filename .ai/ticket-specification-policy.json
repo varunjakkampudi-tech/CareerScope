@@ -3099,6 +3099,12 @@
     },
     "CS-99": {
       "reviewStatus": "DRAFT",
+      "implementationChecklistOverride": [
+        "Phase 3.25 scope: inventory current source and confirm no learning/certification route, API, navigation entry or runtime feature flag exists; do not implement learning behavior.",
+        "Future R2 gate: obtain approved learning scope, issuer/provider, consent, provenance, retention, accessibility and design contracts before any implementation ticket is started.",
+        "Future R2 gate: define the exact absent-route/404 and default-off flag contract in the authorized implementation ticket, then add browser, accessibility, privacy and provider tests against synthetic fixtures.",
+        "Future R2 gate: independently review and authorize activation only after exact-SHA CI and release evidence; retain HOLD/R2 in this ticket."
+      ],
       "sourceReferences": [
         ".ai/backlog.json#CS-99",
         "design/future-releases/release-2-3/careerscope-courses-certifications-future-reference-board.png",
@@ -3119,9 +3125,10 @@
           "Record the future learning/certification design boundary without exposing fictitious courses, provider integrations or credential claims before separate authorization and evidence."
         ],
         "functionalRequirements": [
-          "Actor is an authenticated candidate only in a future explicitly released implementation. `stage_6_enabled` remains proposed/default false and release remains HOLD. This specification activates no route/navigation, course catalog, learning enrollment, progress tracking, credential verification, certificate issuance, external provider account or recommendation.",
-          "Use `design/future-releases/release-2-3/careerscope-courses-certifications-future-reference-board.png` only as a future visual reference. Course names/counts, provider logos, completion percentages, certificate claims, ratings, recommendations and sample candidate records are illustrative; they must not be production data or evidence.",
-          "If a later authorized ticket implements only a shell, display an explicit neutral unavailable/disabled state while the flag is false; never imply enrollment, progress, accreditation or a verified certification. Direct access remains fail-closed under approved route/feature-flag contracts.",
+          "Actor is an authenticated candidate only in a future explicitly released implementation. The current source has no registered `stage_6_enabled` flag, learning route, navigation entry or active capability in apps/packages/infra/scripts; this ticket records that absence and remains HOLD/R2. A future flag name is only proposed metadata, not an existing runtime contract. This specification activates no route/navigation, course catalog, learning enrollment, progress tracking, credential verification, certificate issuance, external provider account or recommendation.",
+           "Use `design/future-releases/release-2-3/careerscope-courses-certifications-future-reference-board.png` only as a future visual reference. Course names/counts, provider logos, completion percentages, certificate claims, ratings, recommendations and sample candidate records are illustrative; they must not be production data or evidence.",
+           "DESIGN_PARTIAL (NON_BLOCKING FOR HOLD SPECIFICATION): the future board is illustrative and contains no approved neutral unavailable/held-state screen. The missing held-state reference must be resolved before any future shell visual acceptance, but does not block this no-runtime R2 specification.",
+          "If a later authorized ticket implements only a shell, display an explicit neutral unavailable/disabled state while an approved future flag is false; never imply enrollment, progress, accreditation or a verified certification. For the current source, direct access has no learning route/API and must remain absent/fail closed (HTTP 404 or the repository's existing unknown-route response, with no learning HTML/API payload); any future route/feature-flag denial contract must be separately approved.",
           "No provider API, credential issuer, verification badge, learning recommendation algorithm, progress data model, completion event, certificate storage, retention policy or external account authorization is defined by this ticket. Any future capability needs a separate source-backed contract and must distinguish provider-issued credentials from CareerScope-generated records."
         ],
         "technicalApproach": [
@@ -3155,12 +3162,12 @@
           "HOLD/R2: separate owner decision on actual learning scope, provider permissions, issuer verification, data retention and claims; approved UI/interaction matrix; Security/Privacy review; accessibility review; contract and implementation tickets; explicit R2 release authorization. No provider/credential evidence exists by virtue of the visual board."
         ],
         "implementationChecklist": [
-          "Keep `stage_6_enabled` default false and verify no active route, nav item or provider call is registered.",
+          "Verify from current source that no `stage_6_enabled` flag, learning route, navigation entry or provider call is registered; retain HOLD/R2. Do not create or claim a runtime flag in this specification.",
           "Map only the board's future screen concepts and mark all sample provider/course/credential data as illustrative.",
           "Before an implementation ticket, obtain an owner-approved capability list and issuer/provider verification policy with consent, scopes, provenance and retention.",
           "Define candidate-owned API/data contracts and unauthorized/empty/unavailable behavior for each accepted capability.",
-          "If approved, implement a neutral shell behind default-off gate using shared primitives, with no fictitious content.",
-          "Add provider/authz/privacy/accessibility/browser/visual tests and ensure verified badges require real issuer evidence.",
+          "If approved in a future R2 ticket, implement a neutral shell behind an explicitly registered default-off gate using shared primitives, with no fictitious content; this Phase 3.25 ticket performs no runtime implementation.",
+          "Add provider/authz/privacy/accessibility/browser/visual tests in the future implementation ticket and ensure verified badges require real issuer evidence.",
           "Keep HOLD until independent review and explicit R2 activation decision."
         ],
         "risksRecovery": [
@@ -3173,6 +3180,12 @@
     },
     "CS-98": {
       "reviewStatus": "DRAFT",
+      "implementationChecklistOverride": [
+        "Phase 3.25 scope: inventory current source and confirm no interview route, API, navigation entry or runtime feature flag exists; do not implement interview behavior.",
+        "Future R2 gate: obtain approved capability, consent, data, provider, accessibility and design contracts before any implementation ticket is started.",
+        "Future R2 gate: define the exact absent-route/404 and default-off flag contract in the authorized implementation ticket, then add browser, accessibility, privacy and security tests against synthetic fixtures.",
+        "Future R2 gate: independently review and authorize activation only after exact-SHA CI and release evidence; retain HOLD/R2 in this ticket."
+      ],
       "sourceReferences": [
         ".ai/backlog.json#CS-98",
         "design/canonical/interview/careerscope-ai-interview-practice-reference-board.png",
@@ -3194,9 +3207,10 @@
           "Preserve a traceable future design boundary without exposing or implying an interview capability before its R2 contracts, safety and release acceptance exist."
         ],
         "functionalRequirements": [
-          "Actor is an authenticated candidate only if a future authorized implementation is released. For the current ticket, feature flag `stage_5_enabled` remains proposed/default false and release state remains HOLD; no route/nav entry, session, question bank, AI request, audio capture, code execution, scoring, history or persistence is enabled by this specification.",
-          "Canonical reference is `design/canonical/interview/careerscope-ai-interview-practice-reference-board.png`; use it only to document future visual states. Its illustrative interview counts, question text, time remaining, score, rank, company, candidate identity, audio waveforms, success feedback and leaderboard are never fixtures or production facts.",
-          "If a later authorized phase implements a shell, it may display only a neutral explicitly unavailable/disabled state while HOLD remains; no control may start a mock interview or claim completed practice. Direct route access must follow the established route/feature-flag fail-closed contract and must not leak a future page through navigation or metadata.",
+          "Actor is an authenticated candidate only if a future authorized implementation is released. The current source has no registered `stage_5_enabled` flag, interview route, navigation entry or active capability in apps/packages/infra/scripts; this ticket records that absence and remains HOLD/R2. A future flag name is only proposed metadata, not an existing runtime contract, and no route/nav entry, session, question bank, AI request, audio capture, code execution, scoring, history or persistence is enabled by this specification.",
+           "Canonical reference is `design/canonical/interview/careerscope-ai-interview-practice-reference-board.png`; use it only to document future visual states. Its illustrative interview counts, question text, time remaining, score, rank, company, candidate identity, audio waveforms, success feedback and leaderboard are never fixtures or production facts.",
+           "DESIGN_PARTIAL (NON_BLOCKING FOR HOLD SPECIFICATION): the full board is an illustrative future capability reference and contains no approved neutral unavailable/held-state screen. That missing state is a future UX gate only; this ticket authorizes no shell, route or visual implementation while HOLD remains.",
+          "If a later authorized phase implements a shell, it may display only a neutral explicitly unavailable/disabled state while HOLD remains; no control may start a mock interview or claim completed practice. For the current source, direct access has no interview route and therefore must remain absent/fail closed (HTTP 404 or the repository's existing unknown-route response, with no interview HTML/API payload); a future route/flag denial contract must be specified separately and must not be inferred here.",
           "No interview endpoint, AI provider capability, prompt/model, recording/transcription, code runner, score/ranking, cross-user leaderboard, retention period or data model is defined by this ticket. Each capability needs separately accepted product/security/data contracts before implementation; deterministic CareerScope job matching remains unrelated and authoritative."
         ],
         "technicalApproach": [
@@ -3230,12 +3244,12 @@
           "HOLD: R2 functionality cannot be activated during R1/Phase 3.25. A future product/security owner decision, feature-specific API/data contracts, accessibility/design acceptance, provider authorization (if any), consent/retention policy, implementation and separate release approval are all required. No owner decision or external provider evidence is implied by the design board."
         ],
         "implementationChecklist": [
-          "Keep `stage_5_enabled` default false and ticket HOLD/R2; verify route/navigation does not expose an active capability.",
+          "Verify from current source that no `stage_5_enabled` flag, interview route, navigation entry or provider call is registered; retain HOLD/R2. Do not create or claim a runtime flag in this specification.",
           "Record exact design reference and illustrative-content exclusions; map the board only as future visual scope.",
           "Before a future implementation ticket, obtain approved capability list and separately scoped question/answer/audio/code/AI decisions; do not bundle them into this shell ticket.",
           "Define owner-scoped data contracts, consent, retention/deletion, provider permissions, sandbox and abuse boundaries for each approved future capability.",
-          "Implement a future neutral disabled/unavailable shell only in an authorized ticket with CS-95 primitives and permission guards.",
-          "Run future browser/accessibility/security/privacy tests and prove feature flag remains off in default production config.",
+          "Specify and implement a future neutral disabled/unavailable shell only in a separately authorized R2 ticket with CS-95 primitives and permission guards; this Phase 3.25 ticket performs no runtime implementation.",
+          "Run future browser/accessibility/security/privacy tests and prove any separately approved feature flag remains off in default production config; do not treat the absent current flag as executed evidence.",
           "Only after independent review and R2 release acceptance can activation be considered."
         ],
         "risksRecovery": [
@@ -3289,7 +3303,8 @@
           "Sidebar control has an accessible name and `aria-expanded` reflecting actual state; nav is a labelled landmark; active destination uses current-page semantics; menu/links work with keyboard, visible focus, logical order and escape/close behavior for mobile drawer. Session loading/error/expiry announcements are perceivable; preserve focus on redirects and avoid background focus into hidden content."
         ],
         "responsive": [
-          "Use approved expanded/collapsed desktop references, then reflow to the approved mobile navigation without horizontal page overflow at 320/390/768/1024/1280/1440px. Sidebar collapse is not the sole mobile interaction; touch targets and focus order remain usable."
+           "Use approved expanded/collapsed desktop references, then reflow to the approved mobile navigation without horizontal page overflow at 320/390/768/1024/1280/1440px. Sidebar collapse is not the sole mobile interaction; touch targets and focus order remain usable.",
+           "DESIGN_PARTIAL (NON_BLOCKING FOR SPECIFICATION): the repository maps exact expanded/collapsed desktop dashboard/jobs references but no approved mobile shell reference or exact mobile geometry. Visual parity cannot be accepted until UX names that mobile reference/state; engineering may still specify and test session isolation, keyboard behavior and reflow mechanics without inventing a mobile screenshot baseline."
         ],
         "browsers": [
           "Chromium, Firefox and WebKit checks for cold-session gate, expanded/collapsed navigation, keyboard and viewport reflow; no private-content flash across engines."
@@ -3313,7 +3328,7 @@
           "Add rendered component/API tests for cold, authenticated, expired, network-error and unauthorized states plus sidebar toggle semantics.",
           "Add browser keyboard/responsive/screenshot checks for three engines and deterministic fixtures; assert no overflow and no transient private content.",
           "Run axe and manual assistive-technology/design review; verify all authenticated paths remain noindex.",
-          "Record exact-SHA test evidence and ensure ticket remains BACKLOG until its declared release gates are met."
+          "Record exact-SHA test evidence. During Phase 3.25, isolated fixtures must leave the canonical source workflow unchanged; later engineering transitions may proceed through TODO, IN_PROGRESS, QA and UAT under their evidence gates, while PROD/activation additionally requires production release acceptance."
         ],
         "risksRecovery": [
           "A shell guard regression can flash candidate data or lock out all workspace routes; keep one shared boundary, test cold-session behavior, and revert shell changes if unauthorized render or route navigation regresses. Do not fix by weakening API authorization or caching authenticated pages publicly."
@@ -3340,19 +3355,20 @@
         "docs/PRIVACY.md",
         "docs/TESTING.md"
       ],
-      "additionalRequirements": {
+    "additionalRequirements": {
         "problem": [
           "The approved public marketing board defines an outer template/navigation, but its illustrative feature claims and metrics are not evidence that those capabilities or public pages exist in the current runtime. The active Next.js app currently has a signed-out root/auth surface and private workspace; this ticket must establish only the approved public-shell/navigation implementation boundary."
         ],
         "value": [
           "Provide a consistent, crawlable public entry point that explains only verified CareerScope capabilities and routes visitors safely into existing sign-in/start flow."
         ],
-        "functionalRequirements": [
+      "functionalRequirements": [
           "Actor is an anonymous visitor. Implement the shared public header, responsive navigation, footer and page-template composition against `design/canonical/marketing/careerscope-public-marketing-pages-reference-board.png` and the landing reference; navigation links must resolve only to separately approved/implemented public routes or remain clearly noninteractive until those routes exist.",
           "The board's Features, How It Works, About, Resources, Contact, Privacy and Terms panels are references, not permission to fabricate route content. This ticket owns shell/navigation only; child tickets own page-specific content and legal text. The root `/` must never disclose candidate workspace data and must route an authenticated user according to the existing session contract.",
           "Public claims may describe verified source-based job discovery, deterministic resume/job matching and candidate-controlled application tracking only to the extent supported by current `docs/PROJECT-STATE.md` and runtime. Do not publish sample user/job counts, ratings, success rates, recruiter activity, AI assistant, course or other future capability claims from design artwork.",
           "Set semantic title/description, canonical and Open Graph metadata only for approved public indexable routes; workspace/auth/private user data remains `noindex`. `robots.ts` must not accidentally expose private routes, and sitemap includes only actually implemented public pages. Structured data is omitted unless content qualifies and the fields are factually verified.",
-          "Preserve registration/sign-in call to action to existing `/` auth surface or an approved route; do not add a new API, account flow or provider capability. No marketing CTA silently creates an account or authenticates the visitor."
+      "Preserve registration/sign-in call to action to an explicitly approved public-to-auth destination; do not assume the current `/` auth route can simultaneously serve as an indexable marketing landing page. If the product keeps `/` as the noindex auth surface, the public landing template must use a separate approved route; if `/` is reassigned, record that route/SEO ownership decision before implementation. Do not add a new API, account flow or provider capability. No marketing CTA silently creates an account or authenticates the visitor.",
+      "Current source evidence does not prove a separate public landing route or an active public feature flag. The implementation-ready contract therefore treats route split/relocation and final public-route ownership as a product/design gate, not as an existing runtime fact; no implementation may make `/` both public-indexable and private-authenticated without an explicit decision."
         ],
         "technicalApproach": [
           "Use Next.js App Router public route/layout composition, shared primitives from CS-95 and existing metadata/robots conventions. Do not introduce a second static frontend or duplicate app shell. Page-specific public routes are separate owned tickets; same-origin navigation remains accessible and server/data boundaries are unchanged."
@@ -3382,7 +3398,7 @@
           "No visitor analytics or tracking is added by this shell. Existing request logs must not introduce user data or query secrets. Route-level availability is covered by existing health and browser/release gates; no fabricated product metrics."
         ],
         "manualExternalGates": [
-          "HUMAN PRODUCT/DESIGN: accept final public copy and visual parity against canonical board. OWNER/DOMAIN: canonical metadata URL uses careerscope.tech only after approved/live domain cutover; until then retain explicit nonproduction canonical policy and do not claim live SEO. Legal/privacy pages and individual marketing content require their separate source tickets/review."
+          "HUMAN PRODUCT/DESIGN: accept final public copy and visual parity against canonical board, and resolve the public-route owner decision: the current `/` is the noindex sign-in surface, so the marketing shell must use a separately approved public route unless an explicit root reassignment is approved. The CTA destination must be the approved auth route and must not imply that `/` can serve both roles. OWNER/DOMAIN: canonical metadata URL uses careerscope.tech only after approved/live domain cutover; until then retain explicit nonproduction canonical policy and do not claim live SEO. Legal/privacy pages and individual marketing content require their separate source tickets/review."
         ],
         "implementationChecklist": [
           "Inventory current root route, auth CTA and metadata/robots behavior; identify which public routes actually exist and their owner tickets.",
@@ -6586,6 +6602,26 @@
           "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
+    },
+    "CS-96": {
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"Independent review approved all four ticket-specific bindings; the public/auth root decision is a required gate and is not represented as completed evidence.","sources":[".ai/ticket-specification-policy.json#CS-96","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]},
+      "PARTIAL_DESIGN": {"disposition":"RECLASSIFIED","rationale":"Marketing references are identified, while route ownership and final public/auth split remain an explicit non-blocking product/design gate; no unsupported route is claimed.","sources":[".ai/ticket-specification-policy.json#CS-96","design/canonical/marketing/careerscope-public-marketing-pages-reference-board.png"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The reviewed specification now constrains claims, metadata, privacy, route ownership and CTA behavior to source-backed public/auth contracts.","sources":[".ai/ticket-specification-policy.json#CS-96","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}
+    },
+    "CS-97": {
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"Independent review approved all five session/shell binding groups with planned evidence clearly separated from execution.","sources":[".ai/ticket-specification-policy.json#CS-97","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]},
+      "PARTIAL_DESIGN": {"disposition":"RECLASSIFIED","rationale":"Desktop references are exact; the missing approved mobile shell reference is disclosed as a non-blocking UX gate rather than invented coverage.","sources":[".ai/ticket-specification-policy.json#CS-97","design/canonical/app/careerscope-dashboard-desktop-expanded.png"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The reviewed contract names the shared session boundary, private-render suppression, responsive mechanics and workflow-preserving review semantics.","sources":[".ai/ticket-specification-policy.json#CS-97","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}
+    },
+    "CS-98": {
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"Independent review approved four HOLD/R2 bindings with deterministic absent-route HTTP 404/no-side-effect assertions and synthetic-only future flag checks.","sources":[".ai/ticket-specification-policy.json#CS-98","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]},
+      "PARTIAL_DESIGN": {"disposition":"RECLASSIFIED","rationale":"The future board is illustrative and the missing neutral held-state reference is a non-blocking future UX gate; no interview shell is authorized here.","sources":[".ai/ticket-specification-policy.json#CS-98","design/canonical/interview/careerscope-ai-interview-practice-reference-board.png"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The reviewed contract separates current absence from future R2 implementation, provider/data boundaries and HOLD activation evidence.","sources":[".ai/ticket-specification-policy.json#CS-98","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}
+    },
+    "CS-99": {
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"Independent review approved four HOLD/R2 bindings with deterministic absent-route HTTP 404/no-side-effect assertions and synthetic-only future flag checks.","sources":[".ai/ticket-specification-policy.json#CS-99","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]},
+      "PARTIAL_DESIGN": {"disposition":"RECLASSIFIED","rationale":"The future courses/certifications board is illustrative and the missing neutral held-state reference is a non-blocking future UX gate; no learning shell is authorized here.","sources":[".ai/ticket-specification-policy.json#CS-99","design/future-releases/release-2-3/careerscope-courses-certifications-future-reference-board.png"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The reviewed contract separates current absence from future R2 issuer/provider, privacy, data and HOLD activation evidence.","sources":[".ai/ticket-specification-policy.json#CS-99","docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]}
     }
   },
   "exactVerificationBindings": {
@@ -7621,20 +7657,20 @@
       {
         "reviewer": "Product owner and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
-        "preconditions": "Default configuration with `stage_6_enabled=false`; no provider credentials or candidate learning data present.",
+        "preconditions": "Current source checkout with no registered learning route/endpoint or `stage_6_enabled` flag; no provider credentials or candidate learning data present. Any future flag check is isolated synthetic metadata only.",
         "setup": "Inspect Next.js route/navigation, feature-flag config, API registry, provider adapters and database schema for active learning or credential capability.",
         "fixtureOrData": "Source inventory and synthetic test-only principal; no provider account or credential data.",
         "action": "Attempt public navigation/direct route and endpoint access to any candidate learning/certificate surface with the feature disabled.",
-        "procedure": "Assert no active course/credential CTA, API, provider call, enrollment/progress/certificate persistence or credential-verification claim is exposed. Any disabled route follows the existing fail-closed permission contract; there are zero provider calls and zero writes. Keep source flag default false and release state HOLD/R2.",
+        "procedure": "Assert the current route/API inventory contains no learning/certificate route or endpoint, no active CTA, provider call, enrollment/progress/certificate persistence or credential-verification claim; a direct request to the absent learning route/API returns HTTP 404 with no learning HTML/JSON payload and no side effect. Record that no `stage_6_enabled` flag exists. Any future default-off flag check is labeled synthetic planned evidence only; release remains HOLD/R2.",
         "assertion": "The currently held capability is not rendered or activated under default configuration.",
         "expectedResult": "Design remains future reference and no learning/certification product behavior is represented as live.",
         "testName": "Learning and credential HOLD prevents route provider and persistence activation by default",
         "testFileOrProcedureId": "PLANNED:apps/web/tests/learning-hold.spec.ts::Learning and credential HOLD prevents route provider and persistence activation by default",
         "fixtures": "Default config, provider-call spy and isolated DB write counter.",
         "negativeCase": "Visible enabled feature, provider request, enrollment write, progress value or verified badge fails.",
-        "failureCase": "Direct-route policy unclear remains blocked; do not invent access behavior or substitute a fake page.",
+        "failureCase": "Any non-404 direct response, learning payload, provider call or persistence side effect fails; do not substitute a fake page.",
         "evidenceArtifact": "Exact-SHA route/API/schema inventory, rendered assertions and zero-call/write counters.",
         "releaseGate": "LEARNING_HOLD_ENFORCEMENT",
         "repositoryCommand": "Planned API/browser tests with default-off configuration"
@@ -7644,7 +7680,7 @@
       {
         "reviewer": "UX and Visual QA reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Any future shell has separate implementation authorization; exact R2 reference revision and approved viewport are recorded.",
         "setup": "Identify in-scope panels from the future course/certifications board; use neutral empty/unavailable state and no sample course/provider/certificate content.",
@@ -7667,7 +7703,7 @@
       {
         "reviewer": "Accessibility QA and Privacy/Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_ACCESSIBILITY",
         "preconditions": "Only separately approved shell UI is rendered with synthetic candidate and provider fixtures; no actual credentials/progress data.",
         "setup": "Exercise flag-off/unavailable state and any authorized future list/card/status interaction at supported viewports.",
@@ -7690,13 +7726,13 @@
       {
         "reviewer": "Release QA and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
-        "preconditions": "Release checker runs against isolated ticket copy and default-off flag; production deployment is unavailable to this test.",
+         "preconditions": "Release checker runs against an isolated ticket copy; current source has no registered `stage_6_enabled` flag or learning route, and production deployment is unavailable to this test.",
         "setup": "Provide cases with missing owner authorization and with complete synthetic R2 acceptance evidence.",
         "fixtureOrData": "Isolated ticket/flag/release manifest only.",
         "action": "Run fail-closed release gate and compare canonical CS-99 records before/after.",
-        "procedure": "Assert missing product scope, provider authorization, privacy/retention, accessibility, exact-SHA CI or release owner acceptance keeps gate blocked. Complete synthetic evidence may qualify only the isolated fixture; canonical CS-99 stays HOLD/R2, flag default false, status unchanged and no deploy/tag/provider call occurs.",
+         "procedure": "Assert missing product scope, provider authorization, privacy/retention, accessibility, exact-SHA CI or release owner acceptance keeps gate blocked. Record current absence of any `stage_6_enabled` flag or learning route; any future default-off flag check is isolated synthetic metadata only. Complete synthetic evidence may qualify only the isolated fixture; canonical CS-99 stays HOLD/R2, status unchanged and no deploy/tag/provider call occurs.",
         "assertion": "Hold semantics require declared acceptance and authorization; test cannot activate or promote.",
         "expectedResult": "No feature activation until separate explicit future release decision.",
         "testName": "Learning and credential release gate preserves HOLD until explicit authorization",
@@ -7713,20 +7749,20 @@
       {
         "reviewer": "Product owner and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
-        "preconditions": "Canonical candidate workspace is running with default feature flag configuration and no interview provider credentials; test uses only synthetic data.",
+        "preconditions": "Canonical candidate workspace source is inspected with no registered interview route/endpoint or `stage_5_enabled` flag and no interview provider credentials; test uses only synthetic data.",
         "setup": "Inspect route registry, navigation, feature-flag defaults, API registrations and storage schema for an active interview capability.",
         "fixtureOrData": "Source paths, flag defaults and synthetic candidate fixture; no real account or provider secret.",
-        "action": "Attempt to find/start interview functionality through navigation and direct route/API requests while `stage_5_enabled` remains false.",
-        "procedure": "Assert no interview route/nav action is exposed as active; direct request returns the existing fail-closed unsupported/not-found/disabled contract without rendering prototype data; no request writes interview/answer/recording/score data or calls AI provider. Assert generated assets are not imported as production content and feature flag default remains false.",
+        "action": "Attempt to find/start interview functionality through navigation and direct route/API requests; record the absence of any registered `stage_5_enabled` flag or interview route.",
+        "procedure": "Assert no interview route/nav action is exposed as active; a direct request to the absent interview route/API returns HTTP 404 with no interview HTML/JSON payload and no side effect; no request writes interview/answer/recording/score data or calls an AI provider. Record that no `stage_5_enabled` flag exists; any future default-off flag assertion is synthetic planned evidence only. Assert generated assets are not imported as production content.",
         "assertion": "HOLD means no user-facing interview capability or data processing is active under default configuration.",
         "expectedResult": "Design remains a reference only and no simulated interview success is possible.",
         "testName": "Interview HOLD flag prevents route API and data activation by default",
         "testFileOrProcedureId": "PLANNED:apps/web/tests/interview-hold.spec.ts::Interview HOLD flag prevents route API and data activation by default",
         "fixtures": "Isolated default config and fake provider spy that fails if invoked.",
         "negativeCase": "Visible active CTA, interview API request/write, provider call or sample score renders -> fail.",
-        "failureCase": "Unknown direct-route behavior remains blocked until the route permission contract is approved; do not choose a success state.",
+        "failureCase": "Any non-404 direct response, interview payload, provider call or persistence side effect fails; do not choose a success state.",
         "evidenceArtifact": "Exact-SHA route/flag/API inventory, rendered DOM assertions and zero provider-call/write counters.",
         "releaseGate": "INTERVIEW_HOLD_ENFORCEMENT",
         "repositoryCommand": "Planned browser/API test against default-off configuration"
@@ -7736,7 +7772,7 @@
       {
         "reviewer": "UX and Visual QA reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Future implementation is separately authorized; baseline uses only canonical interview image and neutral unavailable/disabled state, not sample data.",
         "setup": "Identify exact `design/canonical/interview/careerscope-ai-interview-practice-reference-board.png` panels and approved mobile viewport; document which future panel states are in separately authorized scope.",
@@ -7759,7 +7795,7 @@
       {
         "reviewer": "Accessibility QA and Privacy/Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_ACCESSIBILITY",
         "preconditions": "Only an authorized future shell is rendered; use synthetic session and no audio/code/provider data.",
         "setup": "Exercise feature flag default-off, explicit unavailable shell, unauthorized/expired session and any approved keyboard control.",
@@ -7782,13 +7818,13 @@
       {
         "reviewer": "Release QA and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Ticket/release checker is run with isolated fixture; no production environment is selected.",
         "setup": "Load canonical source and test cases for HOLD with missing or synthetic acceptance/authorization evidence.",
         "fixtureOrData": "Isolated ticket copy, flag state and synthetic evidence record.",
         "action": "Run readiness checker against default HOLD and attempt to qualify synthetic evidence in isolated copy.",
-        "procedure": "Assert canonical CS-98 remains HOLD, releaseTarget R2 and `stage_5_enabled` default false; missing explicit product/security/authorization/acceptance gates blocks release; even a complete synthetic case only changes isolated eligibility result, never canonical source or deployment. No tag/API enablement side effect is allowed.",
+        "procedure": "Assert canonical CS-98 remains HOLD with releaseTarget R2; current source has no registered `stage_5_enabled` flag or interview route, and missing explicit product/security/authorization/acceptance gates blocks release. Any future default-off flag check is isolated synthetic metadata only. Even a complete synthetic case only changes isolated eligibility result, never canonical source or deployment. No tag/API enablement side effect is allowed.",
         "assertion": "HOLD release semantics fail closed and checker does not activate, promote or deploy the capability.",
         "expectedResult": "Default remains disabled; activation waits for separate approved R2 gates.",
         "testName": "Interview release gate preserves HOLD and default-off flag until explicit approval",
@@ -7805,7 +7841,7 @@
       {
         "reviewer": "Frontend Security QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Fresh browser context has no app session or cached private query data; test build uses synthetic account fixtures.",
         "setup": "Open a deep `(app)` route directly, delay GET `/api/session`, then resolve separately as authenticated, unauthenticated, 401 and network error.",
@@ -7828,7 +7864,7 @@
       {
         "reviewer": "Frontend QA and Product reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_COMPONENT",
         "preconditions": "Canonical dashboard/jobs/applications routes and their approved reference assets are present; use deterministic synthetic feature data.",
         "setup": "Render shared shell with expanded and collapsed desktop state and mobile navigation; compare candidate-facing content to source API fixtures or explicit empty/unavailable states.",
@@ -7851,7 +7887,7 @@
       {
         "reviewer": "Visual QA and UX reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Reference hashes, approved mobile viewport and deterministic browser/font fixtures are recorded.",
         "setup": "Capture expanded and collapsed sidebar shell against the canonical dashboard/jobs references at 1440px-class desktop and approved mobile viewport in Chromium, Firefox and WebKit.",
@@ -7874,7 +7910,7 @@
       {
         "reviewer": "Accessibility QA and Privacy reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_ACCESSIBILITY",
         "preconditions": "Synthetic session cases and route shell are rendered; no production identity is used.",
         "setup": "Exercise pending, empty, network-error, unauthorized, expired session and stale-revision feature response where applicable; keyboard-only traverse sidebar/drawer.",
@@ -7897,7 +7933,7 @@
       {
         "reviewer": "Release QA and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Canonical ticket and release gate are read-only; no deployment/promotion command is executed.",
         "setup": "Evaluate missing and complete synthetic release evidence in an isolated checker fixture.",
@@ -7920,13 +7956,13 @@
       {
         "reviewer": "Frontend QA, Product and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Only approved public routes and source-verified copy are enabled; use synthetic or static content without any user session data.",
         "setup": "Start canonical Next.js app with deterministic fixtures and inspect landing/public-shell reference; capture route list and public claims against PROJECT-STATE.",
         "fixtureOrData": "Public approved copy, canonical design assets and route registry; no fake metrics, candidate PII or production data.",
         "action": "Render public header, navigation, CTA and footer on each implemented route; follow every visible nav item and CTA.",
-        "procedure": "Assert navigation landmarks/labels and active destination; each href returns an implemented route or is not exposed as a link. CTA reaches existing same-origin auth entry. Assert no candidate/session data or unsupported feature/count/claim appears in rendered HTML. Compare shell to canonical public reference and verify unknown routes are not silently presented as valid marketing pages.",
+        "procedure": "Assert navigation landmarks/labels and active destination; each href returns an implemented route or is not exposed as a link. Before accepting the CTA, assert the approved public-route decision is recorded: if `/` remains the current noindex sign-in surface, the marketing shell is on a separate approved public route and the CTA targets `/` only as the auth destination; if root reassignment is approved, assert the auth surface has an explicitly approved separate route. Never accept a state where `/` is both indexable marketing and private auth. Assert no candidate/session data or unsupported feature/count/claim appears in rendered HTML. Compare shell to canonical public reference and verify unknown routes are not silently presented as valid marketing pages.",
         "assertion": "Only implemented approved public paths and supported claims are rendered; no illustrative data leaks into copy.",
         "expectedResult": "Visitors can navigate the available public surface and reach sign-in without fabricated product capability.",
         "testName": "Public shell links resolve to approved routes and render only source-verified CareerScope claims",
@@ -7943,7 +7979,7 @@
       {
         "reviewer": "Visual QA and UX reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Canonical marketing reference revision and mobile target viewport are accepted; fixed fixture content/font/browser versions available.",
         "setup": "Capture `design/canonical/marketing/careerscope-public-marketing-pages-reference-board.png` and landing page reference at 1440px-class desktop and approved mobile width; run Chromium, Firefox and WebKit.",
@@ -7966,7 +8002,7 @@
       {
         "reviewer": "Accessibility QA and Privacy/Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_ACCESSIBILITY",
         "preconditions": "Public route shell is rendered unauthenticated and private route-group behavior can be tested with synthetic session states.",
         "setup": "Create anonymous, authenticated, expired-session and unauthorized fixture requests; load public landing and representative private workspace route.",
@@ -7989,7 +8025,7 @@
       {
         "reviewer": "Release QA and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Canonical ticket/refinement and release gate are loaded read-only; no release authority is granted by the test.",
         "setup": "Run isolated release-gate cases for missing visual, security, authorization, hosted-CI or owner acceptance evidence and for a complete synthetic fixture.",
@@ -15953,7 +15989,24 @@
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "ff52672baa73261f56058386ff193ec0c650d286addaa3c78623aba7b831d6ad"
-    }
+    },
+    "CS-96-AC1": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"b369bfea8e94415862e2afff1d63d2db719f76e144935c30e94a5162011231b8"},
+    "CS-96-AC2": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"8f33f8dcc25a053d61eef0eda2bdb7a9ec3f2190301983480138aafd33fdfee2"},
+    "CS-96-AC3": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"a7d0f802331f003f08ed23900c6414c40b2f635e24809a3763b16b17f6b5bc02"},
+    "CS-96-AC4": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"10710be6a4d8c05ea00aa9eff5fbf41611beabb153c748eaa8781b94e32433fc"},
+    "CS-97-AC1": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"ca07d2fd3418c683f383b22fa847fac4af6345189e21f46e4cab2bfed4cf1270"},
+    "CS-97-AC2": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"23f8724c35757e80be9d404e931fc17784c0ff97fda43d7f57002cb44ab82972"},
+    "CS-97-AC3": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"669be785381592001ced1a005367460536fba6b088e724b15311394d77fc27da"},
+    "CS-97-AC4": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"a75b953596eddb13030226d1a05d00ded330512e347b031afdc1dcd1a2480dd9"},
+    "CS-97-AC5": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"3196e3a0a1a74ce18be8c64e90bd2f15bf7f5fdb2c146aa7b7a880ca8412c3c7"},
+    "CS-98-AC1": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"23678b54f87b41f3fe71cb5381ec1d05430da54e16935968531c43252fe94935"},
+    "CS-98-AC2": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"19d8ee935084b45b734dbb833e9d19e8c12a13fb16d9963fea7a62afe19670e9"},
+    "CS-98-AC3": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"058643278b81b49a9da77093b4a16acae9398c7fd0a4a08162503256337f25b0"},
+    "CS-98-AC4": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"29853e9d33e62620ea46c8ab3a94afeab4664b078cd2f99e829b83ef7f327189"},
+    "CS-99-AC1": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"3f672a05fdacd906652403ef28936ebbc9cdfb3d0f154f302c4f36e35aaafebf"},
+    "CS-99-AC2": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"6a258a3b5477d398d19455ff84d46ac0047eb3b6eecde3af9389b13e8e454386"},
+    "CS-99-AC3": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"8648a94edcdd80a92a53e68c52f4ed9db31ee203f33baf5354aefc929d8bb606"},
+    "CS-99-AC4": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"ac9ed0aa14d1c54b5e2f7711ebe491346a6ccb7eb6cc9bcd5be784864aaa20c7"}
   },
   "specificationReviewReceipts": {
     "CS-1": {
@@ -16442,7 +16495,11 @@
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "6e4b7a8b7928ba00b706ee16d68905cbb191141e5c382cfba92cfd4261589e22"
-    }
+    },
+    "CS-96": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"e7b3b06c2cffd107786ad08097d7f323a8a088421bd2a92467d1e9f47ff7351a"},
+    "CS-97": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"c247b8442de6a4b793ca67b2d7be0f4f3e5af2c646ee064572712252fa59161e"},
+    "CS-98": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"6c91520428eec9f6cff91824d95bc7cd705b3ec751a36cd54eb310a63c241552"},
+    "CS-99": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"6cb8b3b01286ee39ea7c8ad3145d335335603e270bc4f1229735b79212e545e5"}
   },
   "generatedArtifactCheckpoint": {
     "decisionId": "OD-2026-10-07-CS80-AC3",
