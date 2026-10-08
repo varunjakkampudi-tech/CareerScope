@@ -33,11 +33,32 @@ Current post-CS-46 structural metrics are recorded by
 275/906 reviewed exact AC mappings, 378 open findings, and unchanged workflow
 distribution (BACKLOG 141, TODO 0, IN_PROGRESS 0, QA 5, UAT 70, PROD 0).
 
-The local checkpoint is `d4b071b817fb6c047ee1125527cb5cc42932e61f`. A normal
-push was attempted after confirming the remote was an ancestor, but GitHub
-returned `Repository not found` for the configured origin. This is an external
-repository/authentication blocker; no force-push, merge or deployment was
+The local checkpoint is `d4b071b817fb6c047ee1125527cb5cc42932e61f`. The
+historical deleted-host remote was removed after confirming a clean local
+repository. No replacement remote was added; no push, merge or deployment was
 performed. The local working tree is clean.
+
+## Local-only authority transition (2026-10-08)
+
+The repository is now authoritative locally by explicit owner decision. The
+full verified bundle is outside the repository at
+`..\careerscope-full-backup.bundle`; `git bundle verify` passed and reported a
+complete history. This path is local operational evidence, not a public-facing
+repository dependency.
+
+`LOCAL_HEAD`: `ac4b8536eec6ea25112fd22a8f2f9ed29468de95`
+
+`ACTIVE_BRANCH`: `phase-3.25/cloud-continuation`
+
+`WORKTREE_CLEAN`: YES
+
+`LOCAL_CHECKPOINT_CREATED`: YES
+
+`BACKUP_VERIFIED`: YES
+
+All remote-head, remote-match and cloud-resume values in earlier sections are
+historical checkpoint records only and are not current authority or release
+evidence.
 
 ## Remediation checkpoint validation
 
