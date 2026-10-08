@@ -1009,3 +1009,32 @@ VALIDATION_STATE: PASS (Node 24.19.0; details above)
 WORKTREE_STATE: clean at the content checkpoint
 LOCAL_REMOTE_MATCH: YES at checkpoint SHA above
 CLOUD_RESUME_READY: YES at `phase-3.25/cloud-continuation`
+
+## Local-only authority transition and CS-46 checkpoint (2026-10-08)
+
+The historical hosting repository was deleted by owner decision. The local
+repository is now the sole authority for Phase 3.25. The configured deleted
+origin was removed; no replacement remote exists and no publication is
+authorized during this phase.
+
+`LOCAL_HEAD`: `d675fe699f9ea4446e01af5281f2e0f1577bbc98`
+
+`ACTIVE_BRANCH`: `phase-3.25/cloud-continuation`
+
+`WORKTREE_CLEAN`: YES
+
+`LOCAL_CHECKPOINT_CREATED`: YES
+
+`BACKUP_VERIFIED`: YES (`..\careerscope-checkpoint-d675fe6.bundle`)
+
+Current recomputed state: 81/216 approved specifications, 135 incomplete,
+275/906 mapped ACs, 631 unmapped ACs, 378 open findings, and 37 blockers with
+15 host-pending actions. Workflow distribution remains BACKLOG 141, TODO 0,
+IN_PROGRESS 0, QA 5, UAT 70, PROD 0. CS-46 remains approved with current
+content-bound receipts. The CS-80 filtered test diagnosis passed all nine slow
+history/manifest cases; the full suite remains a separately required final
+validation gate and is not inferred from that filtered result.
+
+The earlier `LOCAL_REMOTE_MATCH`, `CLOUD_RESUME_READY`, remote-head and push
+fields above are historical checkpoint evidence only. They are not current
+authority, publication status or release evidence.
