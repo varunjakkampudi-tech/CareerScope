@@ -702,3 +702,16 @@ Independent reviewer `/root/phase325_review` approved the current CS-91 specific
 - CS-91-AC4 binding digest: `af639b529dc6dc90996068f2e1907bad031ba07f18257f276f96d304207db84f`
 
 Provider OTP, hosted configuration and release assignment remain external/owner gates; no provider evidence is claimed.
+
+## CS-92 — Cognito email template authored-content approval
+
+Independent reviewer `/root/phase325_review` approved the current CS-92 specification and all authored AC binding groups after the provider-contract corrections for verification-code validity, single `EmailMessage` semantics, unresolved sender/copy decisions and separate disposable negative flows.
+
+- Whole specification digest: `1485add83bb9c09da5acb89d6372ddf6c977ddee6d9afc2fec6110319b90a6c9`
+- Final regenerated whole-specification digest after recording the approved owner-pending release disposition: `8164bda07d6706f0c6b105d10d70d3706d053835c4c2f13a455ea285a6969a5d`
+- CS-92-AC1 binding digest: `0d10270fe9f5b7fbc3fd58b930804e05251effce86f5d216976f9f0ed84cf6dc`
+- CS-92-AC2 binding digest: `74679fa8c01611744de2982c1fc415d385df7f86caddbee8866d143c24c5516e`
+- CS-92-AC3 binding digest: `08cc41694d4cdf66bccd1a967c0ad8cf8f1b6d95cf0b26b1b4ef050c9d9fb8b9`
+- CS-92-AC4 binding digest: `a08b626c36bb198c5263b1960a2e34682abae57ba9a2be5d2d239a0e6a80b908`
+
+Sender/copy approval, AWS/DNS configuration and disposable delivery/negative acceptance remain owner/external gates; no provider evidence is claimed.
