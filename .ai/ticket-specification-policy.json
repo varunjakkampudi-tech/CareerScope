@@ -2270,7 +2270,7 @@
         ]
       }
       ,"globalSectionOverrides":{"apiContract":"NOT_APPLICABLE","apiContractReason":"Skip-link accessibility verification does not add or change an application HTTP route.","securityPrivacy":"NOT_APPLICABLE","securityPrivacyReason":"The ticket verifies keyboard/focus behavior with synthetic fixtures; authentication, ownership, CSRF and admin authorization are outside its scope."},
-      "bindingAmendments":{"CS-31-AC1":{"0":{"setup":"Use a sanitized fixture environment with synthetic configuration only; do not load a real .env or provider credentials. Render the current authenticated shell at 1440px and 320px with #main-content.","negativeCase":"Remove #main-content from the synthetic shell and assert the named deterministic missing-landmark failure; do not test owner mismatch, mutation or API denial."}},"CS-31-AC2":{"0":{"setup":"Use the sanitized synthetic shell fixture at 1440px and 320px with keyboard focus; no saved-job/API dependency is required.","negativeCase":"Keep the target landmark present but omit the skip-link focus style or focus transfer and assert the exact keyboard/focus failure; do not substitute stale-data or authorization cases."}},"CS-31-AC3":{"0":{"setup":"Use the sanitized synthetic shell fixture and run the named UI check for Chromium, Firefox and WebKit at 1440px and 320px; unavailable engines are NOT_RUN.","negativeCase":"An unavailable browser engine must be recorded as NOT_RUN rather than PASS, and a duplicate/unsupported runner invocation must not create evidence."}}}
+      "bindingAmendments":{"CS-31-AC1":{"0":{"setup":"Use the actual `scripts/check-ui.ts` service-backed harness prerequisites in a disposable environment, or record the missing PostgreSQL/API/browser prerequisite as NOT_RUN; do not substitute a successful current check for reproduction of the saved failure.","action":"Run npm run test:ui / node --import tsx scripts/check-ui.ts with the pinned browser matrix and retain historical-failure reproduction output, current result, exact SHA and root-cause evidence.","negativeCase":"Remove #main-content from the current fixture and assert the named deterministic missing-landmark failure; do not test owner mismatch, mutation or API denial."}} ,"CS-31-AC2":{"0":{"setup":"Use the actual scripts/check-ui.ts service-backed harness with disposable PostgreSQL/API prerequisites, synthetic data and keyboard focus at 1440px and 320px; if unavailable, record NOT_RUN rather than claim a pass.","negativeCase":"Keep the target landmark present but omit skip-link focus style or focus transfer and assert the exact keyboard/focus failure; do not substitute stale-data or authorization cases."}} ,"CS-31-AC3":{"0":{"setup":"Use the actual scripts/check-ui.ts service-backed harness with disposable PostgreSQL/API prerequisites and run Chromium, Firefox and WebKit at 1440px and 320px; unavailable engines are NOT_RUN.","negativeCase":"An unavailable browser engine must be recorded as NOT_RUN rather than PASS, and a duplicate/unsupported runner invocation must not create evidence."}}}
     },
     "CS-32": {
       "reviewStatus": "DRAFT",
@@ -5080,6 +5080,16 @@
         "rationale": "Imported design references and implementation-order stage are authoritative; exact visual parity remains a future UX/manual gate and is non-blocking for specification approval because required states and evidence are explicit.",
         "sources": [
           ".ai/design-ticket-coverage.json"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-17 AC1-AC3 are approved authored bindings; AC4 is explicitly owner-decision-gated and no representation-specific persistence is claimed before the dismissal contract exists.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-17-AC1",
+          ".ai/ticket-specification-policy.json#CS-17-AC2",
+          ".ai/ticket-specification-policy.json#CS-17-AC3",
+          ".ai/ticket-specification-policy.json#CS-17-AC4"
         ]
       },
       "RELEASE_TARGET_UNDECIDED": {
@@ -11305,13 +11315,13 @@
       {
         "reviewer": "QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
-        "preconditions": "Authenticated candidate owns a synthetic canonical job and its current discovery disposition; application lifecycle is independent.",
+        "preconditions": "Authenticated candidate owns a synthetic canonical job; application lifecycle is independent and no dismissal representation is assumed before the owner decision.",
         "setup": "Open detail at 320px and keyboard-navigate Save, Dismiss/Restore and Apply controls. Stub the registered owner-scoped disposition contract and external navigation boundary; persistence and audit proof is delegated to the service-backed integration binding below.",
         "procedure": "Invoke Save and assert the existing owner-scoped saved request. Invoke Dismiss and Restore and assert the UI sends the distinct owner-plus-canonical-job operations with the current revision. Invoke Apply and assert only the validated external destination opens; no Application lifecycle mutation request is issued.",
-        "assertion": "Detail actions are named and operable; the browser sends separate reversible-disposition and restore requests with revision context, and opening an external application destination never marks Applied or changes another lifecycle state.",
-        "expectedResult": "The browser presents separate Save, dismiss/restore and apply controls and emits the correct server-owned requests; persistence, ownership, audit and revision outcomes are proven by the integration binding.",
+        "assertion": "Supported detail actions are named and operable; Save uses its existing owner-scoped contract, dismissal is not asserted before the owner decision, and opening an external application destination never marks Applied or changes another lifecycle state.",
+        "expectedResult": "The browser presents Save and Apply with the supported contracts; any dismissal affordance remains explicitly owner-gated, while persistence, ownership, audit and revision outcomes are not claimed before the owner decision.",
         "testName": "CS-17 detail actions operable",
         "testFileOrProcedureId": "CS-17-DETAIL-ACTIONS",
         "fixtures": "Synthetic posting and owner.",
@@ -11324,13 +11334,13 @@
         "testStatus": "PLANNED",
         "reviewStatus": "DRAFT",
         "type": "AUTOMATED_INTEGRATION",
-        "preconditions": "Authenticated owner O1, canonical job J1 owned by the discovery source, isolated PostgreSQL test database, and a persisted disposition revision are available.",
+        "preconditions": "After the owner selects the dismissal representation and registers its route/schema, authenticated owner O1, canonical job J1, isolated PostgreSQL test database and a persisted revision are available.",
         "setup": "Create O1/J1 with an active discovery disposition and revision R1; create a second owner O2 and retain a foreign-owner control. Use the registered disposition repository/API contract only.",
         "procedure": "Submit the owner-scoped dismiss operation for O1/J1 with R1, read the disposition as O1 after a fresh service/database boundary, restore it with the returned revision, then repeat with O2 and a stale revision.",
-        "assertion": "Dismissal is persisted against O1/J1, survives a fresh read, produces an auditable reversible change, restore clears only the discovery disposition without changing application lifecycle, O2 receives the canonical ownership error, and the stale revision receives the canonical conflict without overwriting data.",
-        "expectedResult": "The service-backed contract proves ownership, persistence, auditability, reversibility and revision safety independently of browser interception; external navigation never creates Applied state.",
+        "assertion": "Until the owner selects dismissal representation and the route/schema contract is registered, no representation-specific persistence, restore or audit result is asserted; after that decision, the selected operation must persist against O1/J1, survive a fresh read, restore only that disposition without changing application lifecycle, deny O2 and reject stale revisions without overwriting data.",
+        "expectedResult": "The binding remains explicitly owner-decision gated before the contract exists; once approved, the service-backed procedure proves ownership, persistence, auditability, reversibility and revision safety independently of browser interception, while external navigation never creates Applied state.",
         "testName": "CS-17 AC4 persists reversible owner disposition with revision and ownership protection",
-        "testFileOrProcedureId": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4",
+        "testFileOrProcedureId": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4-after-owner-decision",
         "fixtures": "Isolated PostgreSQL owner/job/disposition fixtures O1/J1/O2 with revision R1; no production data.",
         "negativeCase": "Missing canonical job, non-owner mutation, stale revision, duplicate dismiss, implicit restore, lifecycle mutation or external URL navigation marking Applied must fail with no unauthorized persistence.",
         "evidenceArtifact": "Future integration test output containing status/error codes, persisted revision/audit assertions and redacted correlation identifiers only.",
@@ -13487,16 +13497,16 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
-        "type": "MANUAL_ACCESSIBILITY",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
         "setup": "Render the current authenticated shell with an isolated synthetic owner at 1440px and 320px; identify #main-content as the authenticated target and retain #workspace-content only for the unauthenticated sign-in fixture.",
         "fixtureOrData": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
         "action": "Run node --import tsx scripts/check-ui.ts with the sanitized fixture environment and execute the current authenticated-shell skip-link procedure; record the historical failure only as diagnosis input.",
         "repositoryCommand": "node --import tsx scripts/check-ui.ts",
         "procedure": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC1",
-        "assertion": "the current authenticated-shell fixture targets #main-content and records a deterministic pass/failure with exact SHA and viewport; a missing target landmark is a negative-control failure, not a selector fallback",
-        "expectedResult": "the current shell contract is evaluated against #main-content without treating the historical hiddenSkip report as current execution evidence",
+        "assertion": "the procedure first reproduces the saved hiddenSkip fixture/result and records the failing selector/assertion and runner output, then evaluates the current authenticated-shell fixture against #main-content; the evidence must identify whether the failure is in the implementation, harness or environment, and a missing target landmark is a deterministic negative-control failure rather than a selector fallback",
+        "expectedResult": "the evidence contains either a reproducible historical failure with a supported implementation-versus-harness root-cause classification plus the current #main-content result, or an explicit NOT_RUN record naming the unavailable prerequisite; the historical report is never treated as current execution evidence",
         "testName": "CS-31-AC1 exact verification",
         "testFileOrProcedureId": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC1",
         "fixtures": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
@@ -13509,8 +13519,8 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
-        "type": "MANUAL_ACCESSIBILITY",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
         "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC2 procedure.",
         "fixtureOrData": "saved route at affected and narrow-mobile viewports with keyboard focus",
@@ -13531,8 +13541,8 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
-        "type": "MANUAL_ACCESSIBILITY",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
         "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC3 procedure.",
         "fixtureOrData": "saved route at affected and narrow-mobile viewports with keyboard focus",
@@ -14490,6 +14500,30 @@
     }
   },
   "verificationReviewReceipts": {
+    "CS-17-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "77d2c801173b197ef8f4360a0f615de49d8da9fa329e7e24e45e88efd1d7d32e"
+    },
+    "CS-31-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f659c0a6dd79a901068b037682dc10e43af31ac2a4c50e2c9a7ad36648f8f568"
+    },
+    "CS-31-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "83bb02d83cd9446e5c3742b95ef6257e7819b76b9d12305b6e5da1112b97ef05"
+    },
+    "CS-31-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a624d0a7d14be9e2c494c87abb5268873ec28771456b8f5d6bba717a02308a04"
+    },
     "CS-113-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -15365,12 +15399,6 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "84f444bcbf76d43693804cfa2c8e70df06860c22c62d86a4b426d2a3ff3a0646"
-    },
-    "CS-17-AC4": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "cb69c62c50c51b5febe412c0e9366daeef51bb6792ab88eb1990834ced81b45c"
     },
     "CS-18-AC1": {
       "verdict": "APPROVED",

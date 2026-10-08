@@ -1058,3 +1058,32 @@ tolerance; the UI binding must remain separate from service-backed revocation
 and wrong-password checks; and empty/stale-revision states are not part of the
 existing account endpoint contract. These are recorded as a UX owner gate and
 explicit NOT_APPLICABLE contract boundaries. No whole-spec receipt was created.
+
+### CS-17 / CS-31 binding correction review (2026-10-08)
+
+Independent reviewers approved the corrected authored binding content for
+CS-17 AC4 and CS-31 AC1 through AC3. CS-17 AC4 now separates the supported
+Save/Apply/external-navigation invariants from the owner-decision-gated
+dismissal representation and uses the same post-decision procedure identifier
+in both procedure fields. CS-31 uses AUTOMATED_BROWSER for the browser checks;
+AC1 requires historical hiddenSkip reproduction, current main-content
+verification, exact SHA and an evidence-backed implementation/harness/
+environment root-cause classification, while AC2/AC3 require disposable
+service-backed prerequisites and preserve NOT_RUN for unavailable prerequisites
+or engines. These are binding approvals only: CS-17 remains owner-decision and
+release-gate constrained, and CS-31 remains release-gate constrained. No
+runtime or hosted evidence is claimed.
+
+| Binding | Reviewer | Digest |
+| --- | --- | --- |
+| CS-17 AC4 | `/root/phase325_review`, `/root/cs78_review` | `4a358c478f4264d373d48c4c6582b742a7dfa8984c9f68de88cf5fc14c0ed9d7` |
+| CS-31 AC1 | `/root/phase325_review`, `/root/cs78_review` | `6f40c25744daafaf60719b668ba5e4e349bcf21fe4e9be0dfa177b0fc8458e2e` |
+| CS-31 AC2 | `/root/phase325_review`, `/root/cs78_review` | `b10be69ab04c2cc9de85227665231782c0f0a47ed044c273e377cc9b6cd7878e` |
+| CS-31 AC3 | `/root/phase325_review`, `/root/cs78_review` | `35adeda95980c0530369bc114a76df4b78b191dfa03041a84c702d6ebc7b3d94` |
+
+The policy receipt hashes are the canonical source-binding digests required by
+the validator (before applying refinement amendments): CS-17 AC4
+`77d2c801173b197ef8f4360a0f615de49d8da9fa329e7e24e45e88efd1d7d32e`, CS-31
+AC1 `f659c0a6dd79a901068b037682dc10e43af31ac2a4c50e2c9a7ad36648f8f568`, AC2
+`83bb02d83cd9446e5c3742b95ef6257e7819b76b9d12305b6e5da1112b97ef05`, and AC3
+`a624d0a7d14be9e2c494c87abb5268873ec28771456b8f5d6bba717a02308a04`.
