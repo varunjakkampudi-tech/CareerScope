@@ -1324,7 +1324,7 @@
         "functionalRequirements": [
           "Enumerate every authenticated route and the public Pages surface, then run the named WCAG 2.2 AA audit against that exact route list; do not replace route coverage with a single aggregate score.",
           "Record each finding with rule/criterion, route, element, severity, evidence and disposition. Blocking findings require a reproducible fix or an explicit owner decision; non-blocking findings remain tracked with rationale.",
-          "The regression check must fail on a newly introduced blocking accessibility finding and must distinguish tool-unavailable or hosted-only evidence from PASS."
+          "The regression check must fail on a newly introduced blocking accessibility finding and must distinguish tool-unavailable or hosted-only evidence from PASS. Authenticated route coverage is run by scripts/check-ui.ts via npm run test:ui; the static Pages surface is run by scripts/check-pages-ui.mjs via npm run pages:visual and npm run pages:workspace:test. Route coverage and axe output must be recorded per surface, not inferred from an aggregate score."
         ],
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: VALIDATION. Use the registered accessibility tooling and current routes; no runtime product redesign or tool bypass is authorized."
@@ -1336,7 +1336,7 @@
           "NOT_APPLICABLE: findings are repository evidence; no product schema change."
         ],
         "securityPrivacy": [
-          "Audit fixtures must use synthetic accounts and must not capture tokens, private profile data or external provider credentials."
+          "Audit fixtures must use synthetic accounts and must not capture tokens, private profile data or external provider credentials. The Pages audit must use the static synthetic publication fixture only."
         ],
         "accessibility": [
           "Name keyboard order, focus visibility, labels, status announcements and contrast checks as separate assertions; a score alone cannot satisfy this ticket."
@@ -1362,7 +1362,7 @@
       "additionalRequirements": {
         "functionalRequirements": [
           "For a representative result, assert role, company, location, recency, salary when known and why-it-matched are rendered from the existing result contract; unknown salary must be labelled unknown, never invented.",
-          "Enumerate filters exposed by the API and assert each supported filter is reachable in the UI, with a negative case proving an unsupported or malformed filter is rejected or absent rather than silently applied.",
+          "Enumerate only the filters present in the authoritative jobs/search response and request schemas, map each supported filter to its exact control and parameter, and assert a malformed or unsupported parameter is rejected or absent rather than silently applied; do not invent an API filter registry.",
           "Expose ranking order and deterministic explanation from matching output; the UI must not duplicate weights or display an unexplained score."
         ],
         "technicalApproach": [
@@ -1439,12 +1439,12 @@
       ],
       "additionalRequirements": {
         "functionalRequirements": [
-          "Render every matching dimension contribution, including negative/zero contributions, directly from the matching output and preserve the dimension identifier used by the scorer.",
+          "Render every canonical scorer dimension contribution (including positive, zero and low-but-nonnegative scores) directly from matching output, preserve its dimension identifier, and render the canonical reason for an omitted or excluded dimension; negative contribution values are not part of the current scorer contract.",
           "When a hard exclusion applies, name the actual rule and distinguish exclusion from a low score. When confidence is low, label it explicitly rather than presenting a confident-looking number.",
-          "A mutation that changes matching weights or omits a dimension in the scorer output must fail the presentation contract; the UI must not carry a second copy of weights."
+          "The presentation must continue to render any legitimate update to the canonical scorer weight table from the returned explanation, while a stale/duplicated UI weight table or an omitted dimension must fail the presentation contract; the UI must not reinterpret low scores as negative contributions."
         ],
         "technicalApproach": [
-          "ARCHITECTURE_IMPACT: LOCAL_MODULE. Consume the deterministic matching result/explanation contract; no AI or UI-side ranking calculation."
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE. Consume the deterministic matching result/explanation contract and its current 0..1 clamped dimensions; no AI or UI-side ranking calculation."
         ],
         "apiContract": [
           "Bind explanation fields to the canonical matching result schema and assert malformed/missing explanation data fails closed with a named state."
@@ -1475,7 +1475,7 @@
       ],
       "additionalRequirements": {
         "functionalRequirements": [
-          "Saving from both list and detail must show immediate confirmation with an undo action; a failed save must identify the operation and leave the source row recoverable.",
+          "Saving from both list and detail must show immediate confirmation with an undo action. The existing undo operation is PUT /api/leads/:id with status=archived and the current revision: it is an owner-scoped reversal of the just-created saved-record mutation, guarded by the record revision; it must not silently delete or overwrite a pre-existing saved record. A failed save must identify the operation and leave the source row recoverable.",
           "Status changes must persist through reload and preserve owner/revision conflict behavior. A duplicate posting with the same canonical identity must be recognized and must not create a second saved record.",
           "The shortlist must distinguish waiting-on-user states from completed or externally opened actions without fabricating Applied, interview or offer events."
         ],
@@ -1483,7 +1483,7 @@
           "ARCHITECTURE_IMPACT: LOCAL_MODULE plus existing lead persistence contract. Reuse canonical identity, revision and status APIs; no new deduplication heuristic is inferred."
         ],
         "apiContract": [
-          "Bind save/status/undo actions to existing request and conflict responses, with explicit unauthorized, duplicate and stale-revision negatives."
+          "Bind save/status/undo actions to POST /api/leads and PUT /api/leads/:id using the existing revision and status=archived contract, with explicit unauthorized, duplicate, pre-existing-record and stale-revision negatives; no delete endpoint is inferred."
         ],
         "persistence": [
           "Use existing owner-scoped lead/status records and append-only revision semantics; no migration is authorized by this specification."
@@ -2009,9 +2009,9 @@
       ],
       "additionalRequirements": {
         "functionalRequirements": [
-          "Verify login, private deep-link entry, logout, expiry and reauthentication without transient protected rendering; keep registration disabled unless separately authorized. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
-          "Define and test a shared reset policy across search SSE, preparation, leads, profile and resumes so old requests or caches cannot restore prior-session data; explicitly define unsaved-edit handling. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
-          "Exercise existing authenticated password-change and session-revocation journeys with failure/retry states, preserved CSRF/origin/rate limits and server owner-isolation tests; do not add self-service recovery. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+          "Verify the session-reset contract actually supported by the current authenticated shell: login, private deep-link entry, logout, expiry and reauthentication without transient protected rendering; keep registration disabled unless separately authorized. Auth states outside this contract are NOT_APPLICABLE. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Define and test a shared reset policy across the currently integrated search SSE, preparation, leads, profile and resume clients: an explicit logout/session-expiry reset discards unsaved in-memory edits after announcing the reset, aborts or ignores in-flight work and clears owner-scoped caches; old requests or caches must not restore prior-session data. Unsupported clients/states are NOT_APPLICABLE. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Exercise the existing authenticated password-change and session-revocation journeys with their documented failure/retry states, preserved CSRF/origin/rate limits and server owner-isolation tests; do not add self-service recovery or unrelated provider flows. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
         ],
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: security boundary for CS-36; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
@@ -2306,12 +2306,12 @@
       ],
       "additionalRequirements": {
         "functionalRequirements": [
-          "Support establishing a profile with or without a resume, then upload, parse, review, edit and explicitly save proposed fields; unapproved parsed data never changes matching inputs. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Support establishing a profile with or without a resume, then upload, parse, review, edit and explicitly save proposed fields. Record the current backend contract: packages/core/src/database.ts reads the latest parsed resume derived fields into the matching profile snapshot while a resume is present and packages/matching/src/context.ts unions those derived skills/titles. The implementation-ready contract therefore requires the review surface to disclose that derived fields affect matching until an explicit owner-approved exclusion mechanism is implemented; do not claim frontend review alone suppresses derived matching inputs. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
           "Preserve edits on revision conflicts and show actionable invalid-file, parse-failure, pending and capacity-refusal states using existing storage and API contracts. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
           "Respect advertised cancellation capabilities without activating disabled paths; test synthetic owner isolation, keyboard/mobile flows and the resulting approved profile revision. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
         ],
         "technicalApproach": [
-          "ARCHITECTURE_IMPACT: frontend boundary for CS-37; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
+          "ARCHITECTURE_IMPACT: CROSS_MODULE plus DATA_MODEL/API_CONTRACT. The frontend review surface depends on the resume parser output, packages/core/src/database.ts profile snapshot construction and packages/matching/src/context.ts derived-skill/title union. Document that dependency and the approval/exclusion decision boundary before implementation; no product implementation is authorized by this specification."
         ],
         "securityPrivacy": [
           "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
@@ -4351,7 +4351,7 @@
       "docs/TESTING.md"
     ],
     "accessibility": [
-          "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors. The required manual NVDA/VoiceOver review must identify browser, assistive-technology version, build/revision, tested state (idle, pending, invalid/expired, unavailable, success and signed-out), observed announcement/focus order, and exact failure condition; it is not satisfied by automated axe output.",
+      "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors. The required manual NVDA/VoiceOver review must identify browser, assistive-technology version, build/revision, and the ticket's actual supported state inventory, with observed announcement/focus order and exact failure condition. Auth-specific states such as invalid/expired, success and signed-out are required only when the ticket contract supports them; otherwise record them as NOT_APPLICABLE with the contract citation. Automated axe output is not a substitute.",
       "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
       "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
     ],
@@ -10262,11 +10262,11 @@
         "type": "MANUAL_OPERATOR",
         "preconditions": "Complete signed-in route inventory plus public Pages surface and supported audit engine.",
         "setup": "Audit every authenticated route and the public Pages surface as separate inventory entries.",
-        "procedure": "Run named WCAG 2.2 AA audit per route/surface and retain raw reports.",
+        "procedure": "Run npm run test:ui for the authenticated route inventory and npm run pages:visual plus npm run pages:workspace:test for the static Pages surface; retain raw per-surface reports.",
         "assertion": "Every signed-in route and the public Pages surface has an individual audit result; missing either scope fails completeness.",
         "expectedResult": "No required route or public surface is represented only by an aggregate score.",
         "testName": "CS-15 route-complete WCAG audit",
-        "testFileOrProcedureId": "CS-15-WCAG-ROUTE-AUDIT",
+        "testFileOrProcedureId": "scripts/check-ui.ts + scripts/check-pages-ui.mjs",
         "fixtures": "Synthetic authenticated account and public Pages fixture.",
         "negativeCase": "Omit one signed-in route or Pages surface; completeness check fails.",
         "evidenceArtifact": "Versioned per-route and public-surface audit reports.",
@@ -10317,13 +10317,13 @@
         "testStatus": "PLANNED",
         "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
-        "preconditions": "Baseline rules and route inventory committed.",
-        "setup": "Run the registered accessibility regression check against a known clean fixture.",
-        "procedure": "Introduce a synthetic blocking violation and run the check.",
+        "preconditions": "Baseline rules and route inventory committed; authenticated route runner and Pages visual/workspace runners are available.",
+        "setup": "Run npm run test:ui, npm run pages:visual and npm run pages:workspace:test against known clean fixtures, then inject one synthetic blocking violation into the relevant fixture.",
+        "procedure": "Re-run the exact affected runner and inspect its nonzero exit plus route/rule output; re-run clean fixtures and require zero exit.",
         "assertion": "The check exits nonzero and identifies route/rule; clean fixture exits zero.",
         "expectedResult": "Accessibility regressions cannot pass silently.",
         "testName": "CS-15 accessibility regression gate",
-        "testFileOrProcedureId": "CS-15-REGRESSION-GATE",
+        "testFileOrProcedureId": "package.json#test:ui + package.json#pages:visual + package.json#pages:workspace:test",
         "fixtures": "Clean baseline plus injected contrast/label violation.",
         "negativeCase": "Injected blocking violation must fail.",
         "evidenceArtifact": "CI/local command output and exact SHA.",
@@ -10355,14 +10355,14 @@
         "testStatus": "PLANNED",
         "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
-        "preconditions": "API filter registry and UI filter inventory available.",
-        "setup": "Enumerate supported filters and render /jobs.",
-        "procedure": "Apply each supported filter and send an unsupported filter fixture.",
-        "assertion": "Every supported filter is reachable; unsupported/malformed filter is rejected or absent.",
+        "preconditions": "Authoritative current search contract exposes query and sources on POST /api/searches; no separate filter registry is assumed.",
+        "setup": "Render /jobs, map the query input and each source option (remoteok, himalayas, greenhouse, lever and workable) to the POST /api/searches request schema, and prepare malformed/unknown source fixtures.",
+        "procedure": "Apply query and each supported source filter, inspect the exact request payload/result, then submit an unknown source and malformed query fixture.",
+        "assertion": "Query and every schema-supported source are reachable with the documented request shape; unknown source or malformed query is rejected or absent and cannot silently change results.",
         "expectedResult": "UI/API filter surface is one-to-one and fail-closed.",
         "testName": "CS-16 filter reachability contract",
         "testFileOrProcedureId": "CS-16-FILTER-REACHABILITY",
-        "fixtures": "Registry-derived filter list and malformed control.",
+        "fixtures": "Synthetic result set plus the current POST /api/searches schema and supported source enum; malformed query and unknown-source controls.",
         "negativeCase": "Unsupported filter silently changing results fails.",
         "evidenceArtifact": "Registry snapshot and command output.",
         "releaseGate": "CS-16-FILTERS"
@@ -10506,14 +10506,14 @@
         "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Matching output includes all dimension contributions.",
-        "setup": "Render a result with positive, zero and negative dimensions.",
-        "procedure": "Compare each displayed contribution to scorer output.",
-        "assertion": "Every dimension, including low/negative contribution, is displayed with its canonical identifier.",
-        "expectedResult": "No dimension is hidden to make score appear better.",
+        "setup": "Render a result containing each canonical scorer dimension with positive, zero and low-but-nonnegative scores; include an excluded dimension only through its canonical exclusion output.",
+        "procedure": "Compare each displayed contribution and reason to the packages/matching/src/score.ts output and canonical dimension identifiers.",
+        "assertion": "Every canonical dimension is displayed with its identifier and exact nonnegative contribution or exclusion reason; unsupported negative contribution values are rejected rather than fabricated.",
+        "expectedResult": "No canonical dimension is hidden or sign-inverted to make the score appear better, and the UI does not duplicate scorer weights.",
         "testName": "CS-18 complete dimension explanation",
         "testFileOrProcedureId": "CS-18-DIMENSIONS",
         "fixtures": "Synthetic profile/posting with mixed contributions.",
-        "negativeCase": "Omitted negative dimension fails.",
+        "negativeCase": "Omitted canonical dimension, sign-inverted value, or invented negative contribution fails.",
         "evidenceArtifact": "Scorer/UI mapping and output.",
         "releaseGate": "CS-18-DIMENSIONS"
       }
@@ -10582,14 +10582,14 @@
         "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Authenticated owner and unsaved synthetic posting.",
-        "setup": "Save from list and detail; observe toast/undo.",
-        "procedure": "Invoke save, undo and failure control paths.",
-        "assertion": "Both origins show immediate confirmation and undo; failed save names operation and preserves recoverability.",
-        "expectedResult": "Save flow is coherent from both surfaces.",
+        "setup": "Save a synthetic posting from list and detail, capture the newly-created record revision, invoke undo before another owner mutation, then repeat against a pre-existing saved record and an injected save failure.",
+        "procedure": "Invoke save, revision-guarded undo, pre-existing-record and failure control paths; inspect API response, persisted owner record and rendered status.",
+        "assertion": "Both origins show immediate confirmation and undo; undo reverses only the just-created revision, never deletes or overwrites a pre-existing saved record; failed save names the operation and preserves recoverability.",
+        "expectedResult": "Save/undo flow is coherent from both surfaces and remains owner/revision safe.",
         "testName": "CS-19 list/detail save and undo",
         "testFileOrProcedureId": "CS-19-SAVE-UNDO",
         "fixtures": "Synthetic posting with success and API failure controls.",
-        "negativeCase": "Duplicate click or failed request must not create phantom saved record.",
+        "negativeCase": "Duplicate click, stale revision, pre-existing saved record or failed request must not create a phantom record or erase the prior record.",
         "evidenceArtifact": "DOM and API response log.",
         "releaseGate": "CS-19-SAVE-FLOW"
       }
@@ -12984,13 +12984,13 @@
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-36; no production or destructive host action.",
         "setup": "Prepare O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change and execute only the CS-36-AC1 procedure.",
         "fixtureOrData": "O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change",
-        "action": "Run npm run test:ui and inspect the named CS-36-AC1 procedure output.",
-        "repositoryCommand": "npm run test:ui",
-        "procedure": "apps/web/tests/session-reset.spec.ts::CS-36-AC1",
+        "action": "Run the registered browser harness npm run test:ui (scripts/check-ui.ts) for the session-reset assertions; if a dedicated procedure is added, register it in that runner before evidence collection.",
+        "repositoryCommand": "npm run test:ui (scripts/check-ui.ts)",
+        "procedure": "PLANNED:registered scripts/check-ui.ts session reset section::CS-36-AC1",
         "assertion": "private deep-link unauthenticated response redirects/denies before protected content renders; logout and expiry clear session state and reauthentication restores only the new owner's data",
         "expectedResult": "private deep-link unauthenticated response redirects/denies before protected content renders; logout and expiry clear session state and reauthentication restores only the new owner's data",
         "testName": "CS-36-AC1 exact verification",
-        "testFileOrProcedureId": "PLANNED:apps/web/tests/session-reset.spec.ts::CS-36-AC1",
+        "testFileOrProcedureId": "PLANNED:scripts/check-ui.ts::CS-36-AC1",
         "fixtures": "O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change",
         "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
         "evidenceArtifact": "Future CS-36-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -13006,13 +13006,13 @@
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-36; no production or destructive host action.",
         "setup": "Prepare O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change and execute only the CS-36-AC2 procedure.",
         "fixtureOrData": "O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change",
-        "action": "Run npm run test:ui and inspect the named CS-36-AC2 procedure output.",
-        "repositoryCommand": "npm run test:ui",
-        "procedure": "apps/web/tests/session-reset.spec.ts::CS-36-AC2",
-        "assertion": "after O1 logout/session reset, in-flight SSE, preparation, leads, profile and resume requests are aborted or ignored and caches contain no O1 data; unsaved-edit policy is shown",
-        "expectedResult": "after O1 logout/session reset, in-flight SSE, preparation, leads, profile and resume requests are aborted or ignored and caches contain no O1 data; unsaved-edit policy is shown",
+        "action": "Run the registered browser harness npm run test:ui (scripts/check-ui.ts) with delayed search/SSE responses: start the O1 request, mutate an unsaved edit, trigger logout/session reset, complete the delayed O1 response, sign in as O2 and assert no O1 data or edit is restored; register any dedicated procedure in that runner before evidence collection.",
+        "repositoryCommand": "npm run test:ui (scripts/check-ui.ts)",
+        "procedure": "PLANNED:registered scripts/check-ui.ts reset and unsaved-edit section::CS-36-AC2",
+        "assertion": "after O1 logout/session reset, delayed in-flight SSE/search, preparation, leads, profile and resume responses are aborted or ignored, caches contain no O1 data, and the documented discard-and-announce unsaved-edit policy is observed",
+        "expectedResult": "after O1 logout/session reset, delayed old-owner responses cannot repopulate any surface and unsaved edits are discarded with an accessible reset announcement",
         "testName": "CS-36-AC2 exact verification",
-        "testFileOrProcedureId": "PLANNED:apps/web/tests/session-reset.spec.ts::CS-36-AC2",
+        "testFileOrProcedureId": "PLANNED:scripts/check-ui.ts::CS-36-AC2",
         "fixtures": "O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change",
         "negativeCase": "stale, unavailable, malformed, or conflicting input must produce the named safe failure",
         "evidenceArtifact": "Future CS-36-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -13028,13 +13028,13 @@
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-36; no production or destructive host action.",
         "setup": "Prepare O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change and execute only the CS-36-AC3 procedure.",
         "fixtureOrData": "O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change",
-        "action": "Run npm run test:ui and inspect the named CS-36-AC3 procedure output.",
-        "repositoryCommand": "npm run test:ui",
-        "procedure": "apps/web/tests/session-reset.spec.ts::CS-36-AC3",
+        "action": "Run the registered browser harness npm run test:ui (scripts/check-ui.ts) for password-change and revocation assertions; if a dedicated procedure is added, register it in that runner before evidence collection.",
+        "repositoryCommand": "npm run test:ui (scripts/check-ui.ts)",
+        "procedure": "PLANNED:registered scripts/check-ui.ts password-change/revocation section::CS-36-AC3",
         "assertion": "password change/session revocation preserve CSRF/origin/rate-limit checks, return the documented success/failure state, and O2 cannot read O1 data",
         "expectedResult": "password change/session revocation preserve CSRF/origin/rate-limit checks, return the documented success/failure state, and O2 cannot read O1 data",
         "testName": "CS-36-AC3 exact verification",
-        "testFileOrProcedureId": "PLANNED:apps/web/tests/session-reset.spec.ts::CS-36-AC3",
+        "testFileOrProcedureId": "PLANNED:scripts/check-ui.ts::CS-36-AC3",
         "fixtures": "O1/O2 sessions, private deep link, logout/expiry, SSE/cache and password change",
         "negativeCase": "duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op",
         "evidenceArtifact": "Future CS-36-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -13050,13 +13050,13 @@
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.",
         "setup": "Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC1 procedure.",
         "fixtureOrData": "O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2",
-        "action": "Run npm run test:integration and inspect the named CS-37-AC1 procedure output.",
-        "repositoryCommand": "npm run test:integration",
-        "procedure": "apps/web/tests/profile-resume-review.spec.ts::CS-37-AC1",
-        "assertion": "O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; only explicit save increments the revision and changes matching inputs",
-        "expectedResult": "O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; only explicit save increments the revision and changes matching inputs",
+        "action": "Run the service-backed profile/resume contract procedure for the database/matching assertions, then run the separately registered browser procedure; npm run test:integration alone does not execute the web spec.",
+        "repositoryCommand": "npm run test:integration; npm run test:ui (scripts/check-ui.ts)",
+        "procedure": "PLANNED:packages/core/src/database.test.ts::CS-37-AC1-profile-resume-derived-context + PLANNED:scripts/check-ui.ts::CS-37-AC1-review-disclosure",
+        "assertion": "O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; explicit profile save increments the revision, while the current backend also includes parsed derived skills/titles in the matching snapshot whenever a resume is present; the UI must disclose this dependency rather than claim approval suppresses it",
+        "expectedResult": "Profile edits and resume-review state are revision-safe, and matching-input provenance truthfully reflects the current derived-field dependency until an approved exclusion contract exists",
         "testName": "CS-37-AC1 exact verification",
-        "testFileOrProcedureId": "PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC1",
+        "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-37-AC1-profile-resume-derived-context + PLANNED:scripts/check-ui.ts::CS-37-AC1-review-disclosure",
         "fixtures": "O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2",
         "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
         "evidenceArtifact": "Future CS-37-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -13072,13 +13072,13 @@
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.",
         "setup": "Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC2 procedure.",
         "fixtureOrData": "O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2",
-        "action": "Run npm run test:integration and inspect the named CS-37-AC2 procedure output.",
-        "repositoryCommand": "npm run test:integration",
-        "procedure": "apps/web/tests/profile-resume-review.spec.ts::CS-37-AC2",
-        "assertion": "stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state",
+        "action": "Run the service-backed stale-revision/storage contract procedure and the separately registered browser procedure; npm run test:integration alone does not execute the web spec.",
+        "repositoryCommand": "npm run test:integration; npm run test:ui (scripts/check-ui.ts)",
+        "procedure": "PLANNED:packages/core/src/database.test.ts::CS-37-AC2-resume-errors + PLANNED:scripts/check-ui.ts::CS-37-AC2-error-states",
+        "assertion": "stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state, and none claims that pending approval removes already-derived matching inputs",
         "expectedResult": "stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state",
         "testName": "CS-37-AC2 exact verification",
-        "testFileOrProcedureId": "PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC2",
+        "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-37-AC2-resume-errors + PLANNED:scripts/check-ui.ts::CS-37-AC2-error-states",
         "fixtures": "O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2",
         "negativeCase": "stale, unavailable, malformed, or conflicting input must produce the named safe failure",
         "evidenceArtifact": "Future CS-37-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -13094,13 +13094,13 @@
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-37; no production or destructive host action.",
         "setup": "Prepare O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2 and execute only the CS-37-AC3 procedure.",
         "fixtureOrData": "O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2",
-        "action": "Run npm run test:integration and inspect the named CS-37-AC3 procedure output.",
-        "repositoryCommand": "npm run test:integration",
-        "procedure": "apps/web/tests/profile-resume-review.spec.ts::CS-37-AC3",
+        "action": "Run the service-backed ownership/capability contract procedure and the separately registered keyboard/mobile browser procedure; npm run test:integration alone does not execute the web spec.",
+        "repositoryCommand": "npm run test:integration; npm run test:ui (scripts/check-ui.ts)",
+        "procedure": "PLANNED:packages/core/src/database.test.ts::CS-37-AC3-owner-isolation + PLANNED:scripts/check-ui.ts::CS-37-AC3-keyboard-mobile",
         "assertion": "cancellation remains disabled unless the existing capability is present; keyboard/mobile flow completes for O1 and O2 receives no O1 profile/resume data",
         "expectedResult": "cancellation remains disabled unless the existing capability is present; keyboard/mobile flow completes for O1 and O2 receives no O1 profile/resume data",
         "testName": "CS-37-AC3 exact verification",
-        "testFileOrProcedureId": "PLANNED:apps/web/tests/profile-resume-review.spec.ts::CS-37-AC3",
+        "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-37-AC3-owner-isolation + PLANNED:scripts/check-ui.ts::CS-37-AC3-keyboard-mobile",
         "fixtures": "O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2",
         "negativeCase": "duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op",
         "evidenceArtifact": "Future CS-37-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -15433,44 +15433,44 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "049fc2b87fa2dc98fc22bb65ed5bc776c7eb421ba186feebeb47bd4796fa0ce5"
+      "contentHash": "d9e3e82f201ceea51307528c73a7f87ee4cf00c5122c131ae136f36011cb3dce"
     },
-    "CS-106": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"71c25d01855d385a835944e836aabf0751f1eb0fe878f85fca8d4e37f9f09d88"},
+    "CS-106": {"verdict":"APPROVED","reviewer":"/root/phase325_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"6feab8b8b3a8fe5c60aaca8c2073e1b4f7db8c15b3e661788a9cd3d448e4bd20"},
     "CS-105": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "654b232485faace16ae85446280febdfa196fcb1245e15fe0d7494bec333baec"
+      "contentHash": "a4f7bd3b9dcc0adb3e84d6ac6252b55e379077de06802bea15856950f910e566"
     },
     "CS-104": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "d206cc5a76c002b4571d78f69afc35db3a8d61f7c1b021affa6468c13ef270b9"
+      "contentHash": "43c1e0d70eec62b0cc734a687e2c92b38f9b0a05cee810a1b4531c0affdc0e72"
     },
     "CS-103": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "b71cb35ff369af61ee354cf1245756eb0d0bdf344f6dea509bda4bc6a170910e"
+      "contentHash": "6ab559054c2c362a3eaa087eab1d89b032f1d161a9978660c1cbedc6173d1449"
     },
     "CS-101": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "ca696b3b3e390b2e72f73d6a9f6a48693f8c1e0120b401b9daf4c5b91121b65e"
+      "contentHash": "0ceffca2cfd26e29176d5d020a2f2444564346b572deab62c1f2b388bccb0420"
     },
     "CS-100": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "44fb7df5d6a3d702933fda59ae2a5194fe6165c9a3573a25b3e9593ff0fe653a"
+      "contentHash": "48573fabf8fd1bf1eee549ba3523507cacddc9a088d6d7f3474b31aba24c787e"
     },
     "CS-102": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "046c514ae3003b6a44a9bd5694cf9c8005e9bbf63a555581156f279911ece53d"
+      "contentHash": "b4db8d621a02b4d3524f742b9b2b2751e8008c72fa1b1d814b3b3b7702d7a5bc"
     },
     "CS-80": {
       "verdict": "APPROVED",
@@ -15488,7 +15488,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "04d865c65f2c0c378d38d3405dcfe604c823d29a93eff035955017fc69875248"
+      "contentHash": "3f259f459431658d34a78eddc115ee23c45e759f2f5c293eb31576daf830b6fb"
     },
     "CS-15": {
       "verdict": "APPROVED",
