@@ -751,3 +751,22 @@ Owner release assignment, isolated provider acceptance, exact-SHA deployment,
 rollback and live monitoring remain future gates.
 
 - Whole specification digest: `ce02ead055c0a87a116f810284455cb99dd840320cbc1c8ebe5e5ebc187008f7`
+## Independent review — CS-93 and CS-94
+
+The independent reviewer `/root/phase325_review` returned `APPROVE_AUTHORED_CONTENT`
+for both whole specifications after the remediation pass. This is content
+approval only; provider, live-host, manual accessibility and owner acceptance
+remain future evidence gates.
+
+| Ticket | Whole-spec hash | AC hashes |
+|---|---|---|
+| CS-93 | `1012c3723f2d9d8d6988f353716873b5d569f1795e557b2658e0e3c93fecfce1` | AC1 `9273ec54dd71c9678c27a36a9a4040de4beac46abfac0abb23ad91c540e2e519`; AC2 `925b2283cb570c8d6e831cd119d8216837729e2d47c64cdf44eb806d5aee269a`; AC3 `2df5c31aaa49b765ed4893e2afe3c50f98dcb9de7e90ccc1ffd40f95d3c91d88`; AC4 `72908703053095589d4ebb322454ff3cc2aa666e0dfd6c4e38c157723362c9fa` |
+| CS-94 | `bd1763aa3ac64562230550c82fd69bd034aa297935d39089b90b259f795a25f1` | AC1 `f33c2ccee4238236665eb0c68e0a2d41fe9a9a30e51d19ff92c10d65796a261b`; AC2 `8ec054063b4ae5ec8dd6bc5647c274201c90fdaca81a2960f08ecb4030fb1203`; AC3 `c36b5d9b80304a5658029bce9b16d7a4cb7a090f614100bba05af8ce0341e09a`; AC4 `4ac87ba8b5921006441ba3660c8dabd31c5430d3c7893db35713c6099de8936f` |
+
+The review specifically verified the exact privacy-procedure cross-references,
+the manual NVDA/VoiceOver procedure, the verification-link versus OTP boundary,
+separate disposable identities for rejected versus confirmed/replay cases, the
+protected-main/break-glass rollback distinction, and machine-readable
+`OWNER_PENDING`/`CONDITIONAL`/`MANUAL_GATE` delivery classifications while
+preserving the historical `backlog` source value. No execution evidence was
+created.

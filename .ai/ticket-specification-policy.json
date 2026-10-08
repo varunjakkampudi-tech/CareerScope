@@ -3279,6 +3279,17 @@
     },
     "CS-94": {
       "reviewStatus": "DRAFT",
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "OWNER_PENDING",
+        "effectiveReleaseState": "CONDITIONAL",
+        "deliveryMode": "MANUAL_GATE",
+        "rationale": "The source backlog value `backlog` is historical registry metadata, not an activation decision. Cognito rollout acceptance remains owner-pending and conditional on isolated provider evidence, protected main-only deployment and rollback approval.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-94",
+          ".ai/backlog.json#CS-94",
+          "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
+        ]
+      },
       "sourceReferences": [
         ".ai/backlog.json#CS-94",
         ".ai/backlog.json#CS-90..CS-93",
@@ -3302,7 +3313,8 @@
           "AC1 runs only against an isolated disposable user/pool/mailbox after CS-90..CS-93 prerequisites are accepted; never use the owner or candidate account. Matrix must cover email signup, OTP success, wrong/expired/replayed OTP, login, logout/revocation, recovery, resend throttling and provider outage. Mark provider-unavailable or unsupported cases unverified rather than simulating observed behavior.",
           "AC2 defines observable counters/outcome categories for authentication success/failure, OTP delivery failure, throttling and rollback trigger from actual configured signals. Labels/time window/thresholds require a documented operator policy; no unsupported metric or numeric SLO is invented. Logs contain request/correlation ID and bounded category only, never credentials, OTP, auth code, token, recipient address or provider payload.",
           "AC3 requires a protected manual deployment of an exact reviewed commit with green exact-SHA CI, migration/config checks, deployment provenance and health smoke. Rollback must restore the previous authentication behavior/config without deleting identity or user data, and verify the prior login path; no automatic deployment or branch other than main is implied.",
-          "AC4 is a human release acceptance after owner reviews the same immutable live evidence bundle: disposable flow results, monitoring, exact deployed SHA, rollback result and unresolved risks. Owner acceptance is not inferred from code review or hosted CI alone."
+          "AC4 is a human release acceptance after owner reviews the same immutable live evidence bundle: disposable flow results, monitoring, exact deployed SHA, rollback result and unresolved risks. Owner acceptance is not inferred from code review or hosted CI alone.",
+          "The source releaseTarget value `backlog` is preserved as historical registry metadata only; it is not an activation decision. Until an explicit approved release assignment exists, delivery remains owner-pending/manual-gated and this specification must not imply current-release activation."
         ],
         "technicalApproach": [
           "This is a release/acceptance plan around the existing Fastify server-side Cognito callback/session boundary, PostgreSQL session ownership, manual main-only deployment and documented rollback. Do not add a new auth service, change auth runtime, or enable Cognito in this specification phase."
@@ -3340,6 +3352,17 @@
     },
     "CS-93": {
       "reviewStatus": "DRAFT",
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "OWNER_PENDING",
+        "effectiveReleaseState": "CONDITIONAL",
+        "deliveryMode": "MANUAL_GATE",
+        "rationale": "The source backlog value `backlog` is historical registry metadata, not an activation decision. Cognito UI work remains owner-pending and conditional on approved provider/session contract, design states and external evidence.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-93",
+          ".ai/backlog.json#CS-93",
+          "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
+        ]
+      },
       "sourceReferences": [
         ".ai/backlog.json#CS-93",
         "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94",
@@ -3361,15 +3384,16 @@
         "functionalRequirements": [
           "Actor is an unauthenticated candidate. Signup/verification is email-first per `docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94`; phone OTP is not included. A successful provider verification must still pass through the server callback and create only the existing opaque CareerScope session; browser UI never handles/persists provider access or refresh tokens.",
           "The approved composite reference `design/canonical/auth/careerscope-auth-account-recovery-verification-system.png` depicts desktop/mobile create-account, email verification, success, expired-link/error, forgot-password and reset-password states. For this ticket, implement only approved provider-supported email signup/verification states after CS-90/91 contract and owner configuration are accepted; do not treat password-reset artwork as proof the provider flow is configured.",
-          "Existing application routes are GET `/api/auth/cognito/start` and GET `/api/auth/cognito/callback`; provider-hosted OTP/resend is not a CareerScope-owned endpoint in the current API. Do not invent a resend API, simulate OTP acceptance, or claim signup/verification UI is implemented. Callback errors must produce bounded non-sensitive state; no token, code, OTP or provider response body is rendered.",
-          "Use explicit idle, submitting, verification-pending, resend-wait (only if a provider-supported action actually returns a retry window), invalid/expired, unavailable, success and signed-out states. Provider outage remains a DESIGN_GAP until an approved state/reference specifies copy and recovery action; never imply resend/lockout/recovery behavior unsupported by the actual provider contract.",
+          "Existing application routes are GET `/api/auth/cognito/start` and GET `/api/auth/cognito/callback`; provider-hosted OTP/resend is not a CareerScope-owned endpoint in the current API. Do not invent a resend API, simulate OTP acceptance, or claim signup/verification UI is implemented. Callback errors must produce bounded non-sensitive state; no token, code, OTP or provider response body is rendered. The referenced verification artwork includes verification-link instructions and a sample resend countdown; that artwork is not evidence of the approved OTP-entry contract. Keep link semantics/countdown out of implementation unless the provider contract and a dedicated approved state authorize them.",
+          "Use explicit idle, submitting, verification-pending, resend-wait (only if a provider-supported action actually returns a retry window), invalid/expired, unavailable, success and signed-out states. Provider outage remains a DESIGN_GAP until an approved state/reference specifies copy and recovery action; never imply resend/lockout/recovery behavior unsupported by the actual provider contract. The verification-link instructions and illustrative resend countdown in the composite board are reference-only and must not be treated as OTP entry or a provider capability.",
           "AC4 reaches the current authenticated workspace only after the server callback establishes the opaque application cookie and session endpoint confirms it; external/provider redirects alone never count as authenticated success."
+          ,"The source releaseTarget value `backlog` is preserved as historical registry metadata only; it is not an activation decision. Until an explicit approved release assignment exists, delivery remains owner-pending/manual-gated and this specification must not imply current-release activation."
         ],
         "technicalApproach": [
           "Route composition remains in Next.js App Router using the existing account/auth surface and API client. Fastify `/api/auth/cognito/start` and `/api/auth/cognito/callback` remain the authorization-code boundary. Cognito-hosted UI owns provider OTP entry and resend; CareerScope renders only states returned by its server redirect/session contract. No runtime change is made in Phase 3.25."
         ],
         "apiContract": [
-          "EXISTING_CONTRACT: GET `/api/auth/cognito/start` initiates the configured server-side authorization-code flow; GET `/api/auth/cognito/callback` validates callback state/exchanges provider response and redirects to the application; GET `/api/session` reports application session state. Exact enablement and issuer/client/callback configuration are external gates. There is no current CareerScope resend endpoint; resend is available only if the actual hosted provider page exposes it under approved policy. Never accept client-provided owner identity or provider tokens as app session."
+          "EXISTING_CONTRACT: GET `/api/auth/cognito/start` initiates the configured server-side authorization-code flow; GET `/api/auth/cognito/callback` validates callback state/exchanges provider response and redirects to the application; GET `/api/session` reports application session state. Exact enablement and issuer/client/callback configuration are external gates. There is no current CareerScope resend endpoint; resend is available only if the actual hosted provider page exposes it under approved policy. Never accept client-provided owner identity or provider tokens as app session. The composite verification-link/countdown artwork is not an API contract for OTP entry or resend."
         ],
         "persistence": [
           "No frontend persistence of OTPs, provider access/refresh tokens, authorization codes or session identifiers in localStorage/sessionStorage. Application auth remains an opaque HttpOnly cookie; provider exchange/session persistence is server-side. Do not add auth-state database schema in this ticket without a separate approved contract."
@@ -4327,7 +4351,7 @@
       "docs/TESTING.md"
     ],
     "accessibility": [
-      "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors.",
+          "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors. The required manual NVDA/VoiceOver review must identify browser, assistive-technology version, build/revision, tested state (idle, pending, invalid/expired, unavailable, success and signed-out), observed announcement/focus order, and exact failure condition; it is not satisfied by automated axe output.",
       "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
       "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
     ],
@@ -6108,14 +6132,6 @@
           "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
         ]
       },
-      "RELEASE_STATE_UNSPECIFIED": {
-        "disposition": "OWNER_DECISION_REQUIRED",
-        "rationale": "No activation/HOLD classification is present in the source ticket. Provider configuration, UI implementation and future external acceptance remain gated until the owner assigns release semantics.",
-        "sources": [
-          ".ai/backlog.json#CS-93",
-          ".ai/ticket-specification-policy.json#CS-93"
-        ]
-      },
       "PARTIAL_DESIGN": {
         "disposition": "RECLASSIFIED",
         "rationale": "The two cited auth references provide concrete desktop/mobile signup, verification, success, expired/error and signed-out compositions. Provider-outage/retry presentation is explicitly retained as a non-blocking design gap limited to that unsupported future state; it does not justify inventing provider UI or blocking specification of the supported server-session boundary.",
@@ -6124,6 +6140,14 @@
           ".ai/ticket-specification-policy.json#CS-93",
           "design/canonical/auth/careerscope-auth-account-recovery-verification-system.png",
           "design/canonical/auth/careerscope-auth-sign-in.png"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all CS-93 authored binding groups after clarifying component versus browser/API privacy sinks, adding an exact NVDA/VoiceOver procedure, and separating verification-link artwork from the OTP contract. Planned/manual/provider evidence remains unexecuted.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-93",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
     },
@@ -6135,6 +6159,14 @@
           ".ai/backlog.json#CS-94",
           ".ai/ticket-specification-policy.json#CS-94",
           "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all CS-94 authored binding groups after separating unconfirmed rejection identities from the confirmed replay case and clarifying protected-main versus separately approved break-glass rollback. External/live/owner evidence remains unexecuted.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-94",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
     }
@@ -7522,19 +7554,19 @@
       {
         "reviewer": "Identity QA and Security reviewer",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "EXTERNAL_PROVIDER",
         "preconditions": "Approved isolated Cognito pool, disposable user/mailbox, sender and recovery settings; no owner/candidate account; CS-90..CS-93 release prerequisites accepted.",
-        "setup": "Prepare a redacted matrix with one disposable identity and explicit case IDs for signup, OTP valid/invalid/expired/reused, login, logout, recovery, resend limit and provider outage.",
+        "setup": "Prepare a redacted matrix with separate disposable identities/case IDs: an unconfirmed identity for signup, wrong-code, expired-code, resend-limit and outage cases; and a separately confirmed identity for successful verification, login, logout/revocation, recovery and consumed-code replay. Do not reuse the confirmed identity for rejection cases.",
         "fixtureOrData": "Disposable synthetic account/mailbox and ephemeral OTP used privately; no retained OTP, email address, message or token.",
         "action": "Execute each documented positive/negative flow against the isolated provider and app callback; revoke/delete the disposable user afterward if safe under provider rules.",
-        "procedure": "Assert valid verification/login creates exactly one opaque app session; logout/revocation invalidates it; invalid/expired/replayed OTP and unverified users create no session; resend past configured limit is throttled; recovery changes access only through verified provider flow; provider outage fails closed. Record unsupported/unobservable cases as NOT_VERIFIED, never pass from a mock alone.",
+        "procedure": "For the unconfirmed identity, assert wrong/expired code, resend-limit and provider-outage outcomes leave it unconfirmed and create no app session. Separately, for the confirmed identity, assert valid verification/login creates exactly one opaque app session, logout/revocation invalidates it, recovery changes access only through the verified provider flow, and a consumed code cannot be reused. Record unsupported/unobservable cases as NOT_VERIFIED, never pass from a mock alone.",
         "assertion": "Every matrix row has observed result and redacted evidence; no owner/candidate account or production identity is touched.",
         "expectedResult": "Disposable end-to-end coverage proves only provider behaviors actually observed in the isolated environment.",
         "testName": "CS-94-AC1 disposable Cognito matrix covers email verification session lifecycle and failures",
         "testFileOrProcedureId": "MANUAL-CS94-AC1-DISPOSABLE-COGNITO-E2E-MATRIX",
         "fixtures": "Isolated Cognito pool and disposable mailbox.",
-        "negativeCase": "Any session after rejected/unverified OTP, replay accepted, missing configured throttle, recovery bypass or owner-account touch fails and aborts acceptance.",
+        "negativeCase": "Any session after a rejected/unverified OTP, replay accepted on the separately confirmed identity, missing configured throttle, recovery bypass, cross-case identity contamination or owner-account touch fails and aborts acceptance.",
         "failureCase": "Provider outage unavailable or unsupported case remains explicitly incomplete.",
         "evidenceArtifact": "Redacted case matrix keyed to pool/config revision, date and outcome; no identity, OTP, message, token or credentials.",
         "releaseGate": "COGNITO_DISPOSABLE_E2E_ACCEPTANCE",
@@ -7545,7 +7577,7 @@
       {
         "reviewer": "SRE and Privacy/Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Auth telemetry sources and redaction config are identified; use isolated synthetic events and captured logs.",
         "setup": "Emit synthetic success/failure, delivery-failure, throttle and rollback-trigger events including secret/PII sentinels in forbidden fields.",
@@ -7568,19 +7600,19 @@
       {
         "reviewer": "Release operator and Infrastructure QA",
         "testStatus": "HOSTED_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "LIVE_HOST",
         "preconditions": "Separate authorized release approval exists; main is clean and exact candidate SHA has green required hosted CI and protected production environment approval.",
         "setup": "Record candidate SHA, CI run, migration/config preflight, current auth revision and established rollback target; do not store secrets in evidence.",
         "fixtureOrData": "Commit SHA, hosted workflow IDs/conclusions, redacted deployment provenance and sanitized health/session results only.",
         "action": "Use the manual main-only production deployment for the exact reviewed SHA, then run the approved auth smoke and documented rollback procedure in the authorized window.",
-        "procedure": "Assert deploy provenance/runtime revision equals candidate SHA; migrations/config validation and health/readiness pass; disposable auth smoke succeeds; rollback to the recorded previous revision/config restores old login and health/session checks without deleting user/identity data. Preserve exact hosted workflow result and recovery output with secrets redacted.",
+        "procedure": "Assert deploy provenance/runtime revision equals candidate SHA; migrations/config validation and health/readiness pass; disposable auth smoke succeeds. Prove rollback through one explicitly authorized path: (a) a reviewed revert/config change merged through the protected green main-only workflow, or (b) a separately approved break-glass recovery procedure with exact provenance, operator and approval recorded. The normal deployment dispatch must not be described as selecting an arbitrary older ref. The selected path must restore the recorded previous authentication behavior/config and health/session checks without deleting user/identity data. Preserve exact hosted workflow result and recovery output with secrets redacted.",
         "assertion": "The exact candidate commit is deployed through the protected manual gate and a non-destructive rollback is observed to restore prior authentication behavior.",
         "expectedResult": "Revision, auth smoke and rollback all correspond to the same release record; any mismatch blocks promotion.",
         "testName": "Manual protected auth rollout deploys exact SHA and rollback restores previous auth path",
         "testFileOrProcedureId": "HOSTED:deploy.yml::manual exact-SHA deployment plus MANUAL-CS94-AC3-AUTH-ROLLBACK",
         "fixtures": "Approved main candidate and documented previous auth revision/config; no synthetic production user data.",
-        "negativeCase": "Different runtime SHA, missing green CI/environment approval, migration failure, unhealthy auth or rollback data loss fails and aborts release.",
+        "negativeCase": "Different runtime SHA, missing green CI/environment approval, migration failure, unhealthy auth, arbitrary-ref rollback, missing break-glass approval/provenance or rollback data loss fails and aborts release.",
         "failureCase": "If rollback does not restore auth, invoke existing incident/recovery procedure and keep release blocked; no data reset.",
         "evidenceArtifact": "Exact SHA/workflow/provenance, redacted migration/health/session smoke and rollback record with UTC time/operator.",
         "releaseGate": "PROTECTED_AUTH_DEPLOYMENT_AND_ROLLBACK",
@@ -7591,7 +7623,7 @@
       {
         "reviewer": "Product owner and Independent Release Reviewer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "AC1-AC3 evidence bundle exists for one immutable release revision and all critical findings are dispositioned.",
         "setup": "Prepare a review packet containing redacted disposable-flow matrix, signal/alert evidence, exact deployed SHA and observed rollback result; exclude OTPs, addresses, user attributes and credentials.",
@@ -7706,7 +7738,7 @@
       {
         "reviewer": "Product owner, UX and Independent Reviewer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "Read-only inspection of canonical auth design and current auth API; no AWS setup or UI implementation during specification phase.",
         "setup": "Open the exact desktop/mobile composite `design/canonical/auth/careerscope-auth-account-recovery-verification-system.png` and companion `design/canonical/auth/careerscope-auth-sign-in.png`; list each AC1 state and viewport represented.",
@@ -7729,13 +7761,13 @@
       {
         "reviewer": "Frontend Security QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Mocked callback/session responses with synthetic OTP, authorization-code and provider-token sentinels; browser storage and captured logs available.",
-        "setup": "Exercise pending, error, provider unavailable and callback-success UI branches; inspect rendered DOM, URL, local/session storage, cookies visible to script and application logs.",
+        "setup": "Exercise pending, error, provider unavailable and callback-success UI branches in the component harness; separately use the existing privacy/browser procedure for callback URL cleanup, browser storage, JS-readable cookies and application-log capture.",
         "fixtureOrData": "Synthetic sentinels and mocked status categories only.",
-        "action": "Render states, submit supported form, follow callback redirect and fetch GET `/api/session` using the same-origin client.",
-        "procedure": "Assert no OTP/code/token sentinel appears in DOM, URL after callback cleanup, browser storage, JS-readable cookie, logs or error copy; require application session to be represented only by server-owned HttpOnly cookie. Assert each status has associated label/error or live announcement and focus remains on a meaningful heading/control after state transition. Invalid and unavailable states expose generic copy, retain no credential input, and provide only contract-supported recovery actions.",
+        "action": "Render each supported state in the component harness and assert DOM/accessible status behavior; then execute the existing callback/privacy browser procedure and fetch GET `/api/session` using the same-origin client for redirect, storage, cookie and log sinks.",
+        "procedure": "Component assertions cover only rendered DOM, field/error association, live announcements, focus and bounded copy. Bind callback URL/browser-storage/script-cookie checks explicitly to `CS-91-AC2` procedure `PLANNED:apps/web/tests/cognito-privacy.spec.ts::Cognito browser flow scrubs callback values and never persists auth secrets`; bind server-log/provider-token checks explicitly to `CS-91-AC2` procedure `PLANNED:apps/api/tests/cognito-privacy.integration.test.ts::Cognito server auth flow redacts secrets and scrubs callback query after exchange`. Those procedures separately assert no OTP/code/token sentinel appears after cleanup and that the application session is represented only by the server-owned HttpOnly cookie. Invalid and unavailable states expose generic copy, retain no credential input, and provide only contract-supported recovery actions. Do not claim a component test proves redirect-chain, browser-cookie/storage or application-log sinks.",
         "assertion": "The browser reveals no authentication material and the state/error semantics remain accessible and bounded.",
         "expectedResult": "Only public-safe state is rendered; secrets remain server-side and assistive technology receives useful status changes.",
         "testName": "Cognito UI renders accessible auth states without OTP code or token disclosure",
@@ -7752,7 +7784,7 @@
       {
         "reviewer": "Browser QA and Accessibility reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Local mocked web/API auth fixtures; Playwright browsers Chromium, Firefox and WebKit installed and version recorded.",
         "setup": "Run signed-out page at 320x, 390x, 768x, 1024x and 1440px; use valid and invalid mock responses without real identity data.",
@@ -7769,13 +7801,34 @@
         "evidenceArtifact": "Exact-SHA browser matrix report, engine versions, viewport results and axe output.",
         "releaseGate": "AUTH_UI_CROSS_BROWSER_ACCESSIBILITY",
         "repositoryCommand": "Planned Playwright and axe browser suite"
+      },
+      {
+        "reviewer": "Accessibility specialist",
+        "testStatus": "MANUAL_REQUIRED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_ACCESSIBILITY",
+        "preconditions": "A reviewed build containing the in-app auth states is available; provider-hosted pages are either separately authorized or explicitly excluded from the local build review.",
+        "setup": "Record browser name/version, NVDA or VoiceOver version, OS, build/revision and viewport. Prepare idle, verification-pending, invalid/expired, unavailable, success and signed-out states with synthetic data only.",
+        "fixtureOrData": "Synthetic auth-state fixtures; no real account, OTP, token, address or provider payload.",
+        "action": "Navigate each state using keyboard and screen reader only, submit an invalid form, move through focusable controls, trigger each supported status transition and return to the signed-out state.",
+        "procedure": "For every state record the spoken heading/label/status announcement, focus target and order, error association, recovery action and whether any OTP/token/value is announced. Verify no keyboard trap, silent transition, ambiguous control, or unsupported resend/link action. If the provider-hosted UI is in scope, record it as a separate external-provider procedure; otherwise mark it outside this in-app procedure.",
+        "assertion": "NVDA/VoiceOver users receive the same actionable state information and focus progression without authentication-material disclosure.",
+        "expectedResult": "All named states have recorded announcements/focus observations and no unresolved accessibility failure; provider-hosted coverage is explicitly separate.",
+        "testName": "Manual NVDA/VoiceOver auth-state smoke records announcements focus and failure conditions",
+        "testFileOrProcedureId": "MANUAL-CS93-AC3-NVDA-VOICEOVER-AUTH-STATE-SMOKE",
+        "fixtures": "Synthetic state matrix and build metadata.",
+        "negativeCase": "Missing announcement, wrong focus, keyboard trap, unassociated error, spoken OTP/token, or unclassified provider page fails acceptance.",
+        "failureCase": "Any unresolved manual finding keeps the accessibility gate open; automated axe cannot substitute for this judgment.",
+        "evidenceArtifact": "Dated redacted observation sheet with browser/AT/build versions, state IDs, announcements, focus targets and disposition.",
+        "releaseGate": "AUTH_UI_MANUAL_ACCESSIBILITY",
+        "repositoryCommand": "Manual NVDA or VoiceOver review; no automated substitute"
       }
     ],
     "CS-93-AC4": [
       {
         "reviewer": "API Integration QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Actual Fastify Cognito callback/session/logout handlers run against disposable PostgreSQL with a local mock issuer; no route is stubbed and no hosted AWS account is used.",
         "setup": "Configure synthetic verified subject/email, callback allowlist, state/verifier cookies and mock issuer token/userInfo responses. Start unauthenticated, obtain real `/api/auth/cognito/start` response, then submit its callback to the Fastify server.",
@@ -7796,7 +7849,7 @@
       {
         "reviewer": "Browser QA and Accessibility reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Local Next.js and actual Fastify web/API harness with disposable PostgreSQL and mock issuer; no callback/session endpoint stub.",
         "setup": "Run Playwright against the real web and API servers; capture Set-Cookie attributes through browser context and query authenticated state only through `/api/session`.",
@@ -15253,6 +15306,54 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a08b626c36bb198c5263b1960a2e34682abae57ba9a2be5d2d239a0e6a80b908"
+    },
+    "CS-93-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9273ec54dd71c9678c27a36a9a4040de4beac46abfac0abb23ad91c540e2e519"
+    },
+    "CS-93-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "925b2283cb570c8d6e831cd119d8216837729e2d47c64cdf44eb806d5aee269a"
+    },
+    "CS-93-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "2df5c31aaa49b765ed4893e2afe3c50f98dcb9de7e90ccc1ffd40f95d3c91d88"
+    },
+    "CS-93-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "72908703053095589d4ebb322454ff3cc2aa666e0dfd6c4e38c157723362c9fa"
+    },
+    "CS-94-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f33c2ccee4238236665eb0c68e0a2d41fe9a9a30e51d19ff92c10d65796a261b"
+    },
+    "CS-94-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8ec054063b4ae5ec8dd6bc5647c274201c90fdaca81a2960f08ecb4030fb1203"
+    },
+    "CS-94-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c36b5d9b80304a5658029bce9b16d7a4cb7a090f614100bba05af8ce0341e09a"
+    },
+    "CS-94-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4ac87ba8b5921006441ba3660c8dabd31c5430d3c7893db35713c6099de8936f"
     }
   },
   "specificationReviewReceipts": {
@@ -15309,6 +15410,18 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "8164bda07d6706f0c6b105d10d70d3706d053835c4c2f13a455ea285a6969a5d"
+    },
+    "CS-93": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1012c3723f2d9d8d6988f353716873b5d569f1795e557b2658e0e3c93fecfce1"
+    },
+    "CS-94": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "bd1763aa3ac64562230550c82fd69bd034aa297935d39089b90b259f795a25f1"
     },
     "CS-82": {
       "verdict": "APPROVED",
