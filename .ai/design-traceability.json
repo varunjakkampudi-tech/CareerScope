@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "f04c4b77bd9650a04ff18b758b417ab8da7ef82fb975fd4b276683ca17890dad",
+    ".ai/ticket-specification-policy.json": "c5445f7e9492fd311b5120a28466f89b71788c652d4216832d5519838d484c38",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "1c9436b9d316a7cd50e0dce97807ae2278de8ae8723c4a3f8f07266ce592b8ed",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "a6af4a89fc148d327b2f5f65800c93922e88439d16b2eca37d6fb612ba458157",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -585,9 +585,12 @@
       "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
       "references": [
         "design/01-IMPLEMENTATION-ORDER/04-candidate-core",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png",
         "design/canonical/app/careerscope-applications-desktop.png",
         "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
-        "design/canonical/app/careerscope-jobs-desktop-final.png"
+        "design/canonical/app/careerscope-jobs-desktop-final.png",
+        "design/canonical/app/careerscope-settings-resume-management-reference-board.png",
+        "docs/DESIGN-IMPLEMENTATION-MAP.md"
       ],
       "screens": [],
       "reason": "Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability."

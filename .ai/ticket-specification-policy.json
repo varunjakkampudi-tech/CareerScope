@@ -703,6 +703,20 @@
           "The approved owner decision in docs/OWNER-DECISIONS-2026-10-02.md#CS-46 supersedes the historical option-1/option-2 blocker text in the frozen backlog. Phase 3.25 records the durable per-fact exclusion contract; implementation, migration, accessibility and release evidence remain future gates."
         ]
       },
+      "designReferenceAdditions": [
+        "design/canonical/app/careerscope-settings-resume-management-reference-board.png",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png",
+        "docs/DESIGN-IMPLEMENTATION-MAP.md"
+      ],
+      "apiContractSourceMappingOverride": {
+        "missingRequirements": [
+          "Planned candidate-owned resume-fact operations are required for persisted accepted/excluded state; no route is claimed as existing in Phase 3.25. Implementation must register the reviewed Fastify route group and schema before runtime acceptance."
+        ],
+        "authorization": "Authenticated session-derived owner only; client-provided owner IDs are ignored. Cross-owner reads and writes return owner-safe 403/404 behavior.",
+        "readWrite": "PLANNED_CONTRACT (not an existing route): GET /api/profile/resume-facts returns HTTP 200 with a redacted owner-scoped fact projection and current revision; PATCH /api/profile/resume-facts/:factId with {decision: accepted|excluded, sourceResumeRevision, revision, idempotencyKey} returns HTTP 200 with the updated redacted fact/provenance projection and revision; POST /api/profile/resume-facts/:factId/restore with {sourceResumeRevision, revision, idempotencyKey} returns HTTP 200 with the restored projection. Mutations require session-derived ownership, normalized fact identity, source resume revision and current revision; repeated idempotencyKey plus identical payload returns the canonical prior result, while a conflicting reuse fails 409. Return 400 malformed input, 401 absent session, owner-safe 403/404 denial and 409 stale revision/conflict. These are planned contract names only and are not claimed as implemented/runtime evidence.",
+        "uiOnly": false,
+        "plannedPersistenceBoundary": "The planned API writes the owner-scoped fact decision record defined in the persistence section; reparse reconciliation preserves prior exclusion and new proposals require explicit review."
+      },
       "sectionTextReplacements": {
         "identity": [
           ["The matching behavior is deliberately not reinterpreted; the owner must choose always-on supplementary evidence or a per-fact exclusion gate.", "The historical owner-choice blocker is superseded by docs/OWNER-DECISIONS-2026-10-02.md#CS-46, which selects a durable per-fact exclusion gate; implementation and release evidence remain future gates."],
@@ -713,10 +727,12 @@
           ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
         ],
         "desiredOutcome": [
-          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
+          ["A documented, owner-confirmed product decision on whether resume-derived skills/titles are always-on supplementary evidence (current CS-22 behavior, now accurately documented rather than silently shipped) or must be gated behind an explicit per-fact approval/exclusion step before reaching matching", "The approved direction is an explicit durable per-fact exclusion gate. Accepted facts and explicit preferences participate deterministically; excluded facts contribute zero, persist across searches and reparse, and require explicit reversible restore. Implementation and release evidence remain future gates."],
+          ["If exclusion is required: a per-skill/title exclude mechanism that survives across searches until the resume is re-parsed, distinct from the existing profile-editor proposal-review flow (which edits preferences.techStack directly and already works), and that composes without conflict with the always-on union in packages/matching/src/context.ts", "The chosen exclusion mechanism is candidate-owned, provenance-preserving and deterministic; reparse creates reviewable proposals without clearing prior intent, and no AI/LLM path may silently reintroduce an excluded fact."]
         ],
         "inScope": [
-          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
+          ["A documented, owner-confirmed product decision on whether resume-derived skills/titles are always-on supplementary evidence (current CS-22 behavior, now accurately documented rather than silently shipped) or must be gated behind an explicit per-fact approval/exclusion step before reaching matching", "Historical AC wording is preserved for traceability; OD-2026-10-02-CS-46 resolves it to an explicit durable per-fact exclusion gate. Accepted facts and explicit preferences participate deterministically; excluded facts contribute zero and persist across search and reparse."],
+          ["If exclusion is required: a per-skill/title exclude mechanism that survives across searches until the resume is re-parsed, distinct from the existing profile-editor proposal-review flow (which edits preferences.techStack directly and already works), and that composes without conflict with the always-on union in packages/matching/src/context.ts", "Implement the chosen durable exclusion mechanism with reviewable new proposals, explicit reversible restore, visible provenance and deterministic matching without silent reintroduction."]
         ],
         "manualExternalGates": [
           ["B1_PRODUCT_OR_OWNER_DECISION", "HISTORICAL BLOCKER RESOLVED BY OD-2026-10-02-CS-46; implementation, accessibility and release evidence remain future gates."],
@@ -730,6 +746,14 @@
         ],
         "design": [
           ["Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability.", "The approved settings/resume reference is the candidate-visible surface associated with CS-213 (docs/DESIGN-IMPLEMENTATION-MAP.md#CS-213 and design/canonical/app/careerscope-settings-resume-management-reference-board.png). The per-fact excluded/restored state is explicitly a future visual-acceptance gate; this ticket retains DESIGN_PARTIAL and does not claim that the reference proves implementation parity."]
+        ],
+        "completionEvidence": [
+          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Future implementation and release evidence for the approved durable per-fact exclusion contract: accepted facts contribute deterministically; excluded facts contribute zero; exclusions persist across searches and reparse; new parse facts appear as reviewable proposals; restore is explicit, reversible and auditable; provenance, years precedence, owner isolation, stale-revision failure and deterministic matching are verified. Phase 3.25 claims specification readiness only, not execution or runtime completion."]
+        ],
+        "implementationChecklist": [
+          ["Implement and verify CS-46-AC1: A documented, owner-confirmed product decision on whether resume-derived skills/titles are always-on supplementary evidence (current CS-22 behavior, now accurately documented rather than silently shipped) or must be gated behind an explicit per-fact approval/exclusion step before reaching matching", "Implement and verify the already-approved durable per-fact exclusion contract; the frozen AC wording remains historical source text and is not an unresolved choice."],
+          ["Implement and verify CS-46-AC2: If exclusion is required: a per-skill/title exclude mechanism that survives across searches until the resume is re-parsed, distinct from the existing profile-editor proposal-review flow (which edits preferences.techStack directly and already works), and that composes without conflict with the always-on union in packages/matching/src/context.ts", "Implement and verify exclusion persistence across searches and reparse, reviewable new proposals, explicit restore, owner isolation, stale revision behavior and zero contribution from excluded facts without changing canonical scorer weights."],
+          ["Implement and verify CS-46-AC3: v2/ARCHITECTURE.md's resume-integration row and packages/matching/src/context.ts's docstring stay accurate to whatever is decided - this ticket exists specifically so that reconciliation is deliberate, not accidental", "Reconcile canonical architecture and matching-context documentation with the approved durable exclusion contract; historical v2 wording remains provenance only."]
         ]
         ,"technicalApproach": [
           ["v2/packages/core/src/profile.ts", "packages/core/src/profile.ts"]
@@ -14659,19 +14683,19 @@
     },
     "CS-46-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a1ba8cb20456ef3f35c91ba6c162292983962624f612ac005d304faf14c16426"
     },
     "CS-46-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "71b34d30ae33ac7ff0d980e4377c65239fa3d890fe1389fec3950da139c5ce75"
     },
     "CS-46-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "8fa935d141981632d77a53d85609a5116eb22d8e456ced80e73734d5b12a5d2b"
     },
@@ -16362,6 +16386,12 @@
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "1ba5800589bba5bf4bbed95675f8845173f45bebbe8781090081bfa9d8d962b0"
+    },
+    "CS-46": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f878cbd791bb232addeccf654bf4bb5043a865fcd0c5c0e042b739f2ebf80a3c"
     }
   },
   "generatedArtifactCheckpoint": {

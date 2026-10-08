@@ -948,3 +948,18 @@ release evidence is claimed.
 | ------ | ----------------- | --------------- |
 | CS-81 | `d67027eb27d5d5fbcae548d1b67b855dba760bda01f0f607f829623a72b22213` | Existing AC1–AC4 digests above |
 | CS-84 | `1ba5800589bba5bf4bbed95675f8845173f45bebbe8781090081bfa9d8d962b0` | AC1 `1648ecd3b3a5516abe7dd63b0da744bd5cb1d7041e7c1d8e68cbdf8cb46d043f`; AC2 `64ddb067f3dc34f3bf3dd8a8aed1950c048fc3e530d55459a72449bdf634cd75`; AC3 `9593c471a3200c9131fa9c47a556f942b8b05ab995aeb399bb5f590369c959b0` |
+
+## CS-46 final independent review — 2026-10-08
+
+`/root/cs78_review` approved the current CS-46 specification content. The
+approved durable per-fact exclusion direction is propagated through scope,
+completion evidence and implementation checklist; the exact CS-213 settings /
+resume references remain DESIGN_PARTIAL because the per-fact interaction is
+not shown; and the planned API/data contract is concrete while explicitly not
+claiming existing runtime routes or implementation. No runtime or release
+evidence is claimed.
+
+Whole-spec digest: `f878cbd791bb232addeccf654bf4bb5043a865fcd0c5c0e042b739f2ebf80a3c`.
+Binding digests: AC1 `a1ba8cb20456ef3f35c91ba6c162292983962624f612ac005d304faf14c16426`,
+AC2 `71b34d30ae33ac7ff0d980e4377c65239fa3d890fe1389fec3950da139c5ce75`,
+AC3 `8fa935d141981632d77a53d85609a5116eb22d8e456ced80e73734d5b12a5d2b`.

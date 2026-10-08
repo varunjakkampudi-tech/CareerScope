@@ -308,7 +308,12 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         (screen) => !ownedScreens.some((owned) => owned.designId === screen.designId),
       ),
     ];
-    const refs = [...new Set(designModel?.designRefs ?? ticket.designRefs ?? [])].sort();
+    const refs = [
+      ...new Set([
+        ...(designModel?.designRefs ?? ticket.designRefs ?? []),
+        ...(refinement?.designReferenceAdditions ?? []),
+      ]),
+    ].sort();
     const ui =
       ticket.area === 'frontend' ||
       screens.length > 0 ||
@@ -893,6 +898,15 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
             refinement.globalSectionOverrides[`${section}Reason`] ??
               'This section is not applicable to the ticket-specific scope.',
           );
+        }
+      }
+      if (refinement.apiContractSourceMappingOverride) {
+        const first = sections.apiContract?.requirements?.[0];
+        if (first?.sourceMapping) {
+          first.sourceMapping = {
+            ...first.sourceMapping,
+            ...refinement.apiContractSourceMappingOverride,
+          };
         }
       }
       for (const [section, replacements] of Object.entries(
