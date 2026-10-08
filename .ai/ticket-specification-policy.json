@@ -1414,6 +1414,7 @@
     },
     "CS-118": {
       "reviewStatus": "DRAFT",
+      "designDisposition": "DESIGN_PARTIAL_NON_BLOCKING",
       "sourceReferences": [
         ".ai/backlog.json#CS-118",
         "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png",
@@ -1440,7 +1441,7 @@
         "responsive": ["Verify 320, 390, 768, 1024 and 1440 CSS-pixel layouts without horizontal overflow; controls remain touch and keyboard operable."],
         "securityPrivacy": ["SECURITY_IMPACT: AUTHENTICATION / PRIVACY_PII / INPUT_VALIDATION. Passwords and CSRF values stay in secure transport/server handling, never logs, screenshots, metadata or browser storage; server remains authoritative for session ownership, revocation and password policy."],
         "observability": ["Record only request ID and redacted outcome category/latency for password or session-revocation calls; never log passwords, CSRF tokens, session tokens, email or raw error payloads."],
-        "manualExternalGates": ["Manual screen-reader review, approved visual comparison and exact-SHA hosted/browser evidence remain future gates; no production credential or session is used for specification evidence."],
+        "manualExternalGates": ["DESIGN_PARTIAL_NON_BLOCKING: Phase 0 canonical `/settings` Account Security reference, shared tokens/primitives, accessibility contract and responsive contract are authoritative; bespoke password/mobile/pending/error screenshots are not required for specification approval. Manual screen-reader review, implementation UX review, visual comparison and exact-SHA hosted/browser evidence remain future gates; no production credential or session is used for specification evidence."],
         "risksRecovery": ["If a mutation fails, preserve the current session/security state and display a typed retry-safe error; after successful password change clear local auth cache and route to signed-out `/`; never retry a password mutation automatically."],
         "definitionOfDone": ["Specification DoD: current `/settings` route/component/API boundaries, authz, validation, error/status, responsive/accessibility and visual evidence requirements are explicit; no runtime implementation or execution evidence is claimed.","Future implementation DoD: component/browser/axe tests, owner/session negative cases, visual comparison and manual screen-reader review pass without credential leakage before release."]
       },
