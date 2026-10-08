@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "365e5741c1fd78b236f093f080fcf1c4eda8f48d7e8f13c06d829148162ad0dc",
+    ".ai/ticket-specification-policy.json": "a3402a74467e1918276c1468a51505efac9ae770757bb2d4ba97808c1971ac18",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "21a199bc0d580b05dc4f4996d0e495519b5875861b13b17da1c26494bf214e8a",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "f52fdef16ec8c0b90c0ffc161776d222032664935bb1329cc8498cd867a19207",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -8729,7 +8729,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -9170,7 +9170,7 @@
               "verification": [
                 {
                   "type": "AUTOMATED_COMPONENT",
-                  "expectedCheck": "Every current signed-in async-bearing route/consumer has the shared component for each page-level state it renders, and no applicable state is left unexplained.",
+                  "expectedCheck": "Every current signed-in async-bearing route/consumer has a verified call-site/component boundary invoking the shared component for each page-level state it uses, and the rendered branch has the expected accessible identity/behavior; import presence or DOM similarity alone cannot satisfy the assertion.",
                   "candidateCommand": null,
                   "evidenceRequired": "Redacted route/component census, exact commit SHA and component assertion output.",
                   "automationStatus": "PLANNED",
@@ -9185,18 +9185,18 @@
                   "type": "AUTOMATED_COMPONENT",
                   "preconditions": "The canonical signed-in route manifest and async-bearing component census are available from the current source tree; the sign-in route and account form are explicitly outside the signed-in scope.",
                   "setup": "Build a synthetic owner session and enumerate every current authenticated route and component that renders page-level loading, empty or error state. Inspect imports and rendered state components without using production data.",
-                  "procedure": "Build a route-to-consumer matrix from the authenticated route manifest and async-bearing source census. For every consumer that renders a page-level loading state, assert LoadingState is imported from the shared ui-states module; for every consumer that renders a page-level empty state, assert EmptyState is imported; for every consumer that renders a page-level error state, assert ErrorState is imported. Assert each signed-in route has all applicable states or an explicit unavailable-state rationale, and assert the unauthenticated sign-in surface is not counted.",
-                  "assertion": "Every current signed-in async-bearing route/consumer has the shared component for each page-level state it renders, and no applicable state is left unexplained.",
-                  "expectedResult": "The census produces a complete route/component list with no unexplained signed-in consumer using an ad hoc page-level state.",
+                  "procedure": "Build a route-to-consumer matrix from the authenticated route manifest and async-bearing source census. For each consumer, perform an AST/source-boundary assertion that the rendered branch actually invokes the imported shared LoadingState, EmptyState or ErrorState component, then render deterministic loading, empty and error fixtures and assert the resulting accessible behavior. Mutate one consumer to retain the shared import while replacing its rendered branch with ad hoc markup and require both the source-boundary and rendered checks to fail. Assert each signed-in route has all applicable states or an explicit unavailable-state rationale, and assert the unauthenticated sign-in surface is not counted.",
+                  "assertion": "Every current signed-in async-bearing route/consumer has a verified call-site/component boundary invoking the shared component for each page-level state it uses, and the rendered branch has the expected accessible identity/behavior; import presence or DOM similarity alone cannot satisfy the assertion.",
+                  "expectedResult": "The source-boundary census and rendered assertions produce a complete route/component list with no unexplained signed-in consumer using ad hoc state markup; the import-retained/ad hoc-render mutation is rejected by the call-site oracle and rendered checks.",
                   "testName": "CS-13 shared state census covers every signed-in route and applicable state",
                   "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-ui-states.component.test.ts::CS-13-AC1 route-consumer-state matrix",
                   "fixtures": "Synthetic authenticated route manifest, component import graph and redacted state fixtures.",
-                  "negativeCase": "A signed-in async-bearing component without a shared state import, or an unauthenticated route incorrectly counted as signed-in, fails the census.",
+                  "negativeCase": "A signed-in async-bearing component without a shared state import, one that retains the import but renders ad hoc state markup, or an unauthenticated route incorrectly counted as signed-in fails the census.",
                   "evidenceArtifact": "Redacted route/component census, exact commit SHA and component assertion output.",
                   "reviewer": "Frontend QA reviewer",
                   "releaseGate": "CS-13-AC1-SHARED-STATE-CENSUS",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT"
+                  "reviewStatus": "REVIEWED"
                 }
               ]
             },
@@ -9233,7 +9233,7 @@
                   "reviewer": "Accessibility QA reviewer",
                   "releaseGate": "CS-13-AC2-ERROR-STATE-CONTRACT",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT"
+                  "reviewStatus": "REVIEWED"
                 }
               ]
             },
@@ -9244,7 +9244,7 @@
               "verification": [
                 {
                   "type": "AUTOMATED_COMPONENT",
-                  "expectedCheck": "Nothing-yet and nothing-matches-filter states remain distinct and match the exact current component contract without fabricated records or counts.",
+                  "expectedCheck": "With active status `saved` and populated sibling `archived`, nothing-yet and nothing-matches-filter states remain distinct and match the literal current component strings and existing surrounding controls without fabricated records or counts.",
                   "candidateCommand": null,
                   "evidenceRequired": "Rendered text/action assertions and redacted component snapshots for both branches.",
                   "automationStatus": "PLANNED",
@@ -9258,19 +9258,19 @@
                 {
                   "type": "AUTOMATED_COMPONENT",
                   "preconditions": "Synthetic fixtures provide both zero records and records excluded by an active status/filter while a sibling filter contains records.",
-                  "setup": "Render the saved/jobs empty-state component once with no records and once with records present outside the active filter; keep all fixture records synthetic and owner-scoped.",
-                  "procedure": "Assert the zero-record branch uses the exact current contract `No leads with status X yet. Save a job from Search to add one here.` and exposes the Search discovery action. Assert the filtered-empty branch uses the exact current contract `No leads with status X. That is this status filter only - Y has leads; choose it above to see them.` and preserves the sibling-filter action. Assert the two branches have distinct expected copy and actions.",
-                  "assertion": "Nothing-yet and nothing-matches-filter states remain distinct and match the exact current component contract without fabricated records or counts.",
+                  "setup": "Use deterministic synthetic owner-scoped fixtures with active status `saved` (rendered label `Saved`) and sibling status `archived` (rendered label `Archived`). Render the saved/jobs empty-state component once with no records and once with an archived record excluded by the active Saved filter; keep all records synthetic and owner-scoped.",
+                  "procedure": "For the zero-record branch assert the literal rendered string `No leads with status “Saved” yet. Save a job from Search to add one here.` and verify the surrounding Search discovery control is present. For the filtered-empty branch assert the literal rendered string `No leads with status “Saved”. That is this status filter only — “Archived” has leads; choose it above to see them.` and verify the existing sibling-filter control is present. Assert the two branches have distinct copy and actions without treating the inline EmptyState component as providing an unsupported action prop.",
+                  "assertion": "With active status `saved` and populated sibling `archived`, nothing-yet and nothing-matches-filter states remain distinct and match the literal current component strings and existing surrounding controls without fabricated records or counts.",
                   "expectedResult": "The component renders the correct branch for each fixture without fabricating counts, records or filter options.",
                   "testName": "CS-13 empty states distinguish no records from filtered results",
                   "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-ui-states.component.test.ts::CS-13-AC3 empty branch distinction",
                   "fixtures": "Synthetic owner-scoped records, active status filter and sibling filter with records.",
-                  "negativeCase": "Using the same generic empty message for both branches, inventing records/counts or hiding the active filter fails the assertion.",
+                  "negativeCase": "Using placeholder status values, ASCII hyphen normalization instead of the literal em dash/curly quotes, the same generic empty message for both branches, inventing records/counts, claiming an unsupported inline action prop, or hiding the active filter fails the assertion.",
                   "evidenceArtifact": "Rendered text/action assertions and redacted component snapshots for both branches.",
                   "reviewer": "Product QA reviewer",
                   "releaseGate": "CS-13-AC3-EMPTY-STATE-SEMANTICS",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT"
+                  "reviewStatus": "REVIEWED"
                 }
               ]
             },
@@ -9307,7 +9307,7 @@
                   "reviewer": "Browser QA reviewer",
                   "releaseGate": "CS-13-AC4-BROWSER-RESPONSIVE-MATRIX",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT"
+                  "reviewStatus": "REVIEWED"
                 }
               ]
             }

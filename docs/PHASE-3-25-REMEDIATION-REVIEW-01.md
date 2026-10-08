@@ -1087,3 +1087,22 @@ the validator (before applying refinement amendments): CS-17 AC4
 AC1 `f659c0a6dd79a901068b037682dc10e43af31ac2a4c50e2c9a7ad36648f8f568`, AC2
 `83bb02d83cd9446e5c3742b95ef6257e7819b76b9d12305b6e5da1112b97ef05`, and AC3
 `a624d0a7d14be9e2c494c87abb5268873ec28771456b8f5d6bba717a02308a04`.
+
+### CS-2 / CS-13 binding review (2026-10-08)
+
+Independent reviewers approved all authored bindings for CS-2 and CS-13 as
+planned procedures. CS-2 remains gated on an approved current 768px target and
+future exact-SHA hosted browser evidence; historical 390px observations cannot
+substitute for that proof. CS-13 AC1 now combines a source-level AST/call-site
+component-boundary oracle with rendered behavior and an import-retained
+ad-hoc-render mutation. AC3 uses deterministic Saved/Archived fixtures and
+literal curly-quote/em-dash strings while distinguishing existing surrounding
+controls from the inline EmptyState component. No execution evidence or
+whole-ticket readiness is claimed.
+
+| Binding | Digest |
+| --- | --- |
+| CS-13 AC1 | `b41d1da82e0a04845761707e1da0a4a0129ead1161196fb72f2ecf7901f5185a` |
+| CS-13 AC2 | `8458021052a51243260c7ca0b52238a5e2d6752a3f67112e3f6f6074b6db6114` |
+| CS-13 AC3 | `f847bbafe8096c6a0c6b15a965051acdb67bc4763cf66a6cec81482c4c3e2f6f` |
+| CS-13 AC4 | `26f1fcfe50daa1429f1d84141c40bcf2849a08b7d81d8652b79d6df285821d99` |
