@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "90d433aeb68cb708c7193b4cccc2c1be51ebe7e464ecdbf65d1c9d3574723f7c",
+    ".ai/ticket-specification-policy.json": "7c520225861fa0d30f145be9c725ee6111dcc3068d42876bfad81587a0f3d2c8",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -88491,7 +88491,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "SURFACE_SPEC_REFINEMENT",
@@ -88499,7 +88499,7 @@
           "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
           "owner": "Product Architect / UX / domain owner",
           "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -88528,16 +88528,40 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Notification Center: approved layout and state integration: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented."
+            "Notification Center: approved layout and state integration: the approved reference requires a traceable, independently testable implementation slice; current runtime or historical evidence does not prove this handoff is implemented.",
+            {
+              "requirement": "The approved Notification Center reference lacks an implementation-ready state and ownership contract; this ticket defines only the shared surface handoff, not an invented notification backend.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-116"]
+          "sources": [
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "value": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Owns approved handoff geometry/state integration. Existing domain/journey tickets remain dependencies with unchanged evidence; this slice does not duplicate their backend or operational implementation."
+            "Owns approved handoff geometry/state integration. Existing domain/journey tickets remain dependencies with unchanged evidence; this slice does not duplicate their backend or operational implementation.",
+            {
+              "requirement": "Provide a truthful, keyboard-operable notification surface that renders authorized API data or explicit unavailable states without fabricating alerts or counts.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-116"]
+          "sources": [
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "currentState": {
           "applicability": "APPLICABLE",
@@ -88591,13 +88615,7 @@
               "id": "CS-116-AC1",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -88605,7 +88623,7 @@
               "id": "CS-116-AC2",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -88613,11 +88631,7 @@
               "id": "CS-116-AC3",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -88625,12 +88639,39 @@
               "id": "CS-116-AC4",
               "sourceText": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Render the approved notification layout only when `notification_center_enabled` is explicitly enabled; default-off behavior renders no notification request or control.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Consume only an existing registered API/client contract, preserve session-derived ownership, and render real notifications or explicit empty/unavailable/error states; sample design values never become production data.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Use stable read state and cancellation semantics so stale responses cannot overwrite newer session/error state; no notification action may mutate application lifecycle without its owning contract.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Keep activation conditional on component, browser, accessibility, privacy and exact-SHA evidence; Phase 3.25 does not enable the flag.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-116"]
+          "sources": [
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -88643,13 +88684,21 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract."
+            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            {
+              "requirement": "ARCHITECTURE_IMPACT: LOCAL_MODULE / SHARED_UI. Compose existing panel, list, badge, dialog, loading and error primitives with the single API client; CS-106 supplies shared interaction behavior and no new endpoint is invented.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-116",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png"
           ]
         },
         "persistence": {
@@ -88662,13 +88711,21 @@
                 "Define bounded consent-scoped data/actions before capability exposure; no corresponding general endpoint is implied."
               ],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "NOT_APPLICABLE: this slice has no durable state; isolated fixtures are synthetic and cannot write profiles, jobs, applications or sessions.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-116",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png"
           ]
         },
         "apiContract": {
@@ -88698,9 +88755,22 @@
                   "disposition": "OPEN"
                 }
               ]
+            },
+            {
+              "requirement": "NOT_APPLICABLE to this handoff ticket: consume the registered notification contract if one exists and preserve its auth, validation and error semantics. A new notification endpoint requires a separate approved ticket.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-116", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-116",
+            "docs/API-SURFACE.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -88754,34 +88824,84 @@
           "requirements": [
             "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors. The required manual NVDA/VoiceOver review must identify browser, assistive-technology version, build/revision, and the ticket's actual supported state inventory, with observed announcement/focus order and exact failure condition. Auth-specific states such as invalid/expired, success and signed-out are required only when the ticket contract supports them; otherwise record them as NOT_APPLICABLE with the contract citation. Automated axe output is not a substitute.",
             "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
-            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION."
+            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+            {
+              "requirement": "Use semantic region/list semantics, an accessible notification label, keyboard navigation, visible focus, Escape/focus restoration for any dialog, live announcements for new/error states, and reduced-motion behavior; manual screen-reader evidence remains a future gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md"
           ]
         },
         "responsive": {
           "applicability": "APPLICABLE",
           "requirements": [
             "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
-            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs.",
+            {
+              "requirement": "Apply the approved information hierarchy at 320, 390, 768, 1024 and 1440 CSS px; long messages wrap, controls remain operable, and ordinary page content has no horizontal overflow.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
             "docs/FRONTEND-ARCHITECTURE.md",
-            "docs/TESTING.md"
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md"
           ]
         },
         "browsers": {
           "applicability": "APPLICABLE",
-          "requirements": ["Chromium", "Firefox", "WebKit"],
-          "sources": ["docs/TESTING.md"]
+          "requirements": [
+            "Chromium",
+            "Firefox",
+            "WebKit",
+            {
+              "requirement": "Future evidence must cover Chromium, Firefox and WebKit at approved mobile and desktop viewports; unavailable engines are NOT_RUN, never PASS.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md"
+          ]
         },
         "seo": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "NOT_APPLICABLE: authenticated/private notifications must be noindex and must not expose user data in metadata.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "securityPrivacy": {
           "applicability": "APPLICABLE",
@@ -88792,20 +88912,42 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Server-derived ownership is authoritative; render untrusted text safely, reject unsafe destinations, avoid tokens/PII in telemetry and never infer permission from a client badge/count.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-116", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-116",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts."
+            "Use real redacted events or explicit unavailable states; no private payloads, tokens, resumes or fabricated counts.",
+            {
+              "requirement": "Record only privacy-safe open/load/error outcome and latency with correlation IDs; never log notification bodies, tokens, resumes or private identifiers.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
           "sources": [
             ".ai/backlog.json#CS-116",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png"
           ]
         },
         "testStrategy": {
@@ -88817,49 +88959,36 @@
               "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "The surface uses the approved layout, renders only registered owner-scoped values or explicit unavailable states, and does not invent a notification endpoint, count or lifecycle mutation.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "LIVE_HOST",
-                  "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "redacted-notification-center-source-state-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend",
+                  "releaseGate": "R1-UI-FOUNDATION"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use an authenticated synthetic candidate session, the approved Notification Center references and `notification_center_enabled=true` in an isolated build.",
+                  "setup": "Open the owning authenticated surface and render registered notification responses plus explicit empty/unavailable values; compare labels and hierarchy with the approved reference without using sample screenshot data.",
+                  "procedure": "CS-116-AC1-notification-center-source-state",
+                  "assertion": "The surface uses the approved layout, renders only registered owner-scoped values or explicit unavailable states, and does not invent a notification endpoint, count or lifecycle mutation.",
+                  "expectedResult": "Available data renders deterministically; empty/unavailable states are explicit; default-off builds make no notification request or control.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "renders Notification Center from approved references and registered state",
+                  "testFileOrProcedureId": "apps/web/src/components/notifications/__tests__/notification-center.test.tsx::source-state",
+                  "fixtures": "Synthetic session, approved reference manifest, registered data/empty/unavailable responses and feature-flag variants.",
+                  "negativeCase": "Inject sample-only notification data, an unregistered source or client-only enablement and assert no rendered production value or request; omit the accessible region name and assert failure.",
+                  "evidenceArtifact": "redacted-notification-center-source-state-report.json",
+                  "reviewer": "Frontend",
+                  "releaseGate": "R1-UI-FOUNDATION"
+                }
+              ]
             },
             {
               "ticketId": "CS-116",
@@ -88867,33 +88996,36 @@
               "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-116-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-116-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-116-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Each available engine compares the exact approved state/viewport/reference and records hash, masks and tolerance; unavailable engines are NOT_RUN and never PASS.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-notification-center-visual-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "UX",
+                  "releaseGate": "R1-BROWSER-VISUAL"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use deterministic synthetic notifications and approved desktop/mobile reference images with the registered browser harness.",
+                  "setup": "Capture the available notification state at the approved 1440 CSS px desktop and approved mobile viewport in Chromium, Firefox and WebKit; record reference hash, engine/version, viewport, masks and numeric tolerance.",
+                  "procedure": "CS-116-AC2-notification-center-visual-browser",
+                  "assertion": "Each available engine compares the exact approved state/viewport/reference and records hash, masks and tolerance; unavailable engines are NOT_RUN and never PASS.",
+                  "expectedResult": "Available engines produce reproducible evidence within approved tolerance; altered references, unsupported viewports or missing engines block comparison.",
+                  "type": "VISUAL_REGRESSION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "compares Notification Center against approved desktop and mobile references",
+                  "testFileOrProcedureId": "scripts/check-ui.ts::CS-116-AC2-notification-center",
+                  "fixtures": "Approved reference images, deterministic notification fixtures, viewport matrix and screenshot manifest.",
+                  "negativeCase": "Use an altered reference hash, unapproved viewport or missing engine and assert explicit failure/NOT_RUN rather than PASS.",
+                  "evidenceArtifact": "redacted-notification-center-visual-report.json",
+                  "reviewer": "UX",
+                  "releaseGate": "R1-BROWSER-VISUAL"
+                }
+              ]
             },
             {
               "ticketId": "CS-116",
@@ -88901,33 +89033,36 @@
               "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "CS-116-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "AUTOMATED_ACCESSIBILITY",
-                  "expectedCheck": "CS-116-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-116-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Applicable states have accessible names and recovery actions, focus remains visible/operable, keyboard dismissal/restoration works, stale responses are ignored, and denied/private data never renders.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-notification-center-a11y-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Accessibility",
+                  "releaseGate": "R1-A11Y-PRIVACY"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use pending, empty, error, unauthorized, expired-session and stale-revision where returned, cancellation and keyboard/focus fixtures at 320/390/768/1024/1440 CSS px.",
+                  "setup": "Run axe and keyboard traversal through the notification surface with registered responses and stale-request cancellation; record stale-revision NOT_APPLICABLE when no revision mutation exists.",
+                  "procedure": "CS-116-AC3-notification-center-accessibility-state-matrix",
+                  "assertion": "Applicable states have accessible names and recovery actions, focus remains visible/operable, keyboard dismissal/restoration works, stale responses are ignored, and denied/private data never renders.",
+                  "expectedResult": "Automated accessibility/privacy checks pass for applicable states; manual screen-reader review remains separate human evidence and unsupported stale-revision is not misreported as PASS.",
+                  "type": "AUTOMATED_ACCESSIBILITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "covers Notification Center failure states and keyboard accessibility",
+                  "testFileOrProcedureId": "apps/web/src/components/notifications/__tests__/notification-center.a11y.test.tsx::matrix",
+                  "fixtures": "Synthetic HTTP states, axe fixture, keyboard sequence, cancellation token, optional 409 fixture and responsive viewport matrix.",
+                  "negativeCase": "Omit the region label, allow focus loss, apply stale data after cancellation or render denied data and assert failure.",
+                  "evidenceArtifact": "redacted-notification-center-a11y-report.json",
+                  "reviewer": "Accessibility",
+                  "releaseGate": "R1-A11Y-PRIVACY"
+                }
+              ]
             },
             {
               "ticketId": "CS-116",
@@ -88935,25 +89070,36 @@
               "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-116-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-116-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "The Notification Center remains disabled until the declared evidence gates are present; the checker never enables runtime behavior itself.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-notification-center-release-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Release",
+                  "releaseGate": "R1-CONDITIONAL-RELEASE"
                 }
               ],
               "releaseGate": "CONDITIONAL",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use a release fixture with `notification_center_enabled` absent/default false and no new endpoint or deployment credentials.",
+                  "setup": "Run the conditional activation checker against incomplete and complete component, browser, accessibility, privacy and exact-SHA evidence manifests without changing workflow state.",
+                  "procedure": "CS-116-AC4-notification-center-conditional-release",
+                  "assertion": "The Notification Center remains disabled until the declared evidence gates are present; the checker never enables runtime behavior itself.",
+                  "expectedResult": "Missing evidence fails closed, no notification request occurs when disabled, and canonical ticket workflow is unchanged.",
+                  "type": "AUTOMATED_CONTRACT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "keeps Notification Center disabled without conditional release evidence",
+                  "testFileOrProcedureId": "scripts/release-gate.mjs::CS-116-AC4",
+                  "fixtures": "Synthetic feature-flag/evidence manifests and disabled-route control.",
+                  "negativeCase": "Provide only a screenshot, client flag or design reference and assert refusal with no network call or workflow mutation.",
+                  "evidenceArtifact": "redacted-notification-center-release-report.json",
+                  "reviewer": "Release",
+                  "releaseGate": "R1-CONDITIONAL-RELEASE"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-116", "docs/TESTING.md"]
@@ -88982,13 +89128,7 @@
               "id": "CS-116-AC1",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -88996,7 +89136,7 @@
               "id": "CS-116-AC2",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -89004,11 +89144,7 @@
               "id": "CS-116-AC3",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -89016,7 +89152,7 @@
               "id": "CS-116-AC4",
               "sourceText": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-116",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -89031,9 +89167,27 @@
             "Documentation and contract agree with implementation; historical evidence is not presented as a new run.",
             "Independent current-content review resolves specification/implementation findings before promotion.",
             "Manual/provider/live gates remain explicit and unexecuted until observed; PROD requires exact reviewed deployed revision acceptance.",
-            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification."
+            "Rollback/recovery plan preserves data and encryption material; no irreversible shipping action is authorized by completing a specification.",
+            {
+              "requirement": "Specification DoD: source-backed design, ownership, states, accessibility, responsive/privacy rules, dependencies and conditional release evidence are explicit; no runtime implementation or executed evidence is claimed.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Future implementation DoD: registered contract, component/browser/accessibility/privacy tests and exact-SHA review pass before activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/ai/quality-gates.md"]
+          "sources": [
+            "docs/ai/quality-gates.md",
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "completionEvidence": {
           "applicability": "APPLICABLE",
@@ -89054,16 +89208,36 @@
         "implementationChecklist": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Review CS-116 problem and each criterion with Frontend.",
-            "Resolve only the recorded CS-116 specification/activation gaps before claiming readiness.",
-            "Inspect and change only modules permitted by the technical approach for Notification Center: approved layout and state integration.",
-            "Implement and verify CS-116-AC1: Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-            "Implement and verify CS-116-AC2: Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-            "Implement and verify CS-116-AC3: Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-            "Implement and verify CS-116-AC4: Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
-            "Reconcile CS-116 documentation, redacted evidence and independent review before workflow promotion."
+            {
+              "requirement": "Map the approved Notification Center reference and shared primitives.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Define registered data/state integration and stale-response handling.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Specify keyboard, responsive, privacy and browser evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "Add component/security/a11y test plans and retain conditional default-off activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-116"]
+          "sources": [
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-116",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -89079,11 +89253,23 @@
         },
         "manualExternalGates": {
           "applicability": "APPLICABLE",
-          "requirements": [{ "blockerClass": null, "owner": null, "evidence": [], "actions": [] }],
+          "requirements": [
+            { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
+            {
+              "requirement": "Conditional activation requires the real notification contract, CS-106 shared primitives, security/privacy, browser/accessibility and exact-SHA evidence; no provider or production configuration is changed here.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
+          ],
           "sources": [
             ".ai/backlog.json#CS-116",
             ".ai/blocker-classification.json",
-            "hostpending.txt"
+            "hostpending.txt",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png",
+            "docs/ARCHITECTURE.md",
+            "docs/TESTING.md"
           ]
         },
         "risksRecovery": {
@@ -89096,13 +89282,21 @@
                 "Invalid input, concurrency conflict, unavailable dependency, disabled capability and cancellation where applicable."
               ],
               "recovery": "Restore the prior reviewed code/configuration; preserve stored data and validate migrations separately. Host execution is a later authorized step."
+            },
+            {
+              "requirement": "Stale or unsafe notification content could expose private data or mislead the user. Clear state on session boundaries, fail closed on unsafe content and disable the feature flag without mutating domain records.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-116",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            ".ai/backlog.json#CS-106",
+            "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/02-02-notification-center.png",
+            "design/page-references/foundations/02-notification-center.png"
           ]
         },
         "delivery": {

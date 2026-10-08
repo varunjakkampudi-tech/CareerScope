@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "90d433aeb68cb708c7193b4cccc2c1be51ebe7e464ecdbf65d1c9d3574723f7c",
+    ".ai/ticket-specification-policy.json": "7c520225861fa0d30f145be9c725ee6111dcc3068d42876bfad81587a0f3d2c8",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -16332,49 +16332,36 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "The surface uses the approved layout, renders only registered owner-scoped values or explicit unavailable states, and does not invent a notification endpoint, count or lifecycle mutation.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-116-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "redacted-notification-center-source-state-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend",
+          "releaseGate": "R1-UI-FOUNDATION"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use an authenticated synthetic candidate session, the approved Notification Center references and `notification_center_enabled=true` in an isolated build.",
+          "setup": "Open the owning authenticated surface and render registered notification responses plus explicit empty/unavailable values; compare labels and hierarchy with the approved reference without using sample screenshot data.",
+          "procedure": "CS-116-AC1-notification-center-source-state",
+          "assertion": "The surface uses the approved layout, renders only registered owner-scoped values or explicit unavailable states, and does not invent a notification endpoint, count or lifecycle mutation.",
+          "expectedResult": "Available data renders deterministically; empty/unavailable states are explicit; default-off builds make no notification request or control.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "renders Notification Center from approved references and registered state",
+          "testFileOrProcedureId": "apps/web/src/components/notifications/__tests__/notification-center.test.tsx::source-state",
+          "fixtures": "Synthetic session, approved reference manifest, registered data/empty/unavailable responses and feature-flag variants.",
+          "negativeCase": "Inject sample-only notification data, an unregistered source or client-only enablement and assert no rendered production value or request; omit the accessible region name and assert failure.",
+          "evidenceArtifact": "redacted-notification-center-source-state-report.json",
+          "reviewer": "Frontend",
+          "releaseGate": "R1-UI-FOUNDATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-116",
@@ -16382,33 +16369,36 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-116-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-116-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-116-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Each available engine compares the exact approved state/viewport/reference and records hash, masks and tolerance; unavailable engines are NOT_RUN and never PASS.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-notification-center-visual-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use deterministic synthetic notifications and approved desktop/mobile reference images with the registered browser harness.",
+          "setup": "Capture the available notification state at the approved 1440 CSS px desktop and approved mobile viewport in Chromium, Firefox and WebKit; record reference hash, engine/version, viewport, masks and numeric tolerance.",
+          "procedure": "CS-116-AC2-notification-center-visual-browser",
+          "assertion": "Each available engine compares the exact approved state/viewport/reference and records hash, masks and tolerance; unavailable engines are NOT_RUN and never PASS.",
+          "expectedResult": "Available engines produce reproducible evidence within approved tolerance; altered references, unsupported viewports or missing engines block comparison.",
+          "type": "VISUAL_REGRESSION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "compares Notification Center against approved desktop and mobile references",
+          "testFileOrProcedureId": "scripts/check-ui.ts::CS-116-AC2-notification-center",
+          "fixtures": "Approved reference images, deterministic notification fixtures, viewport matrix and screenshot manifest.",
+          "negativeCase": "Use an altered reference hash, unapproved viewport or missing engine and assert explicit failure/NOT_RUN rather than PASS.",
+          "evidenceArtifact": "redacted-notification-center-visual-report.json",
+          "reviewer": "UX",
+          "releaseGate": "R1-BROWSER-VISUAL"
+        }
+      ]
     },
     {
       "ticketId": "CS-116",
@@ -16416,33 +16406,36 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-116-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-116-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-116-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Applicable states have accessible names and recovery actions, focus remains visible/operable, keyboard dismissal/restoration works, stale responses are ignored, and denied/private data never renders.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-notification-center-a11y-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility",
+          "releaseGate": "R1-A11Y-PRIVACY"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use pending, empty, error, unauthorized, expired-session and stale-revision where returned, cancellation and keyboard/focus fixtures at 320/390/768/1024/1440 CSS px.",
+          "setup": "Run axe and keyboard traversal through the notification surface with registered responses and stale-request cancellation; record stale-revision NOT_APPLICABLE when no revision mutation exists.",
+          "procedure": "CS-116-AC3-notification-center-accessibility-state-matrix",
+          "assertion": "Applicable states have accessible names and recovery actions, focus remains visible/operable, keyboard dismissal/restoration works, stale responses are ignored, and denied/private data never renders.",
+          "expectedResult": "Automated accessibility/privacy checks pass for applicable states; manual screen-reader review remains separate human evidence and unsupported stale-revision is not misreported as PASS.",
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "covers Notification Center failure states and keyboard accessibility",
+          "testFileOrProcedureId": "apps/web/src/components/notifications/__tests__/notification-center.a11y.test.tsx::matrix",
+          "fixtures": "Synthetic HTTP states, axe fixture, keyboard sequence, cancellation token, optional 409 fixture and responsive viewport matrix.",
+          "negativeCase": "Omit the region label, allow focus loss, apply stale data after cancellation or render denied data and assert failure.",
+          "evidenceArtifact": "redacted-notification-center-a11y-report.json",
+          "reviewer": "Accessibility",
+          "releaseGate": "R1-A11Y-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-116",
@@ -16450,25 +16443,36 @@
       "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-116-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-116-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The Notification Center remains disabled until the declared evidence gates are present; the checker never enables runtime behavior itself.",
+          "candidateCommand": null,
+          "evidenceRequired": "redacted-notification-center-release-report.json",
+          "automationStatus": "PLANNED",
+          "owner": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a release fixture with `notification_center_enabled` absent/default false and no new endpoint or deployment credentials.",
+          "setup": "Run the conditional activation checker against incomplete and complete component, browser, accessibility, privacy and exact-SHA evidence manifests without changing workflow state.",
+          "procedure": "CS-116-AC4-notification-center-conditional-release",
+          "assertion": "The Notification Center remains disabled until the declared evidence gates are present; the checker never enables runtime behavior itself.",
+          "expectedResult": "Missing evidence fails closed, no notification request occurs when disabled, and canonical ticket workflow is unchanged.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "keeps Notification Center disabled without conditional release evidence",
+          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-116-AC4",
+          "fixtures": "Synthetic feature-flag/evidence manifests and disabled-route control.",
+          "negativeCase": "Provide only a screenshot, client flag or design reference and assert refusal with no network call or workflow mutation.",
+          "evidenceArtifact": "redacted-notification-center-release-report.json",
+          "reviewer": "Release",
+          "releaseGate": "R1-CONDITIONAL-RELEASE"
+        }
+      ]
     },
     {
       "ticketId": "CS-117",
