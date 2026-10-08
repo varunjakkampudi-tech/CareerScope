@@ -200,14 +200,15 @@ gates.
 - **Blocked:** Final allowed-context assertions, whole-spec approval, and any
   runtime policy modification.
 
-## CS-109 — choose the public metadata ownership boundary
+## CS-109 — public metadata ownership boundary — RESOLVED BY EXISTING ARCHITECTURE
 
-- **Question:** Should CS-109 certify only the existing static Pages artifact plus private Next `/`, or should a future public Next.js route migration be included before this ticket can be accepted?
-- **Why required:** Current source proves `mobile-site/` is staged for Pages and Next `/` is the signed-out/private auth surface; `docs/PRODUCT-SURFACE.md` says no marketing site and `docs/ARCHITECTURE.md` says public Next SEO is not migrated.
-- **Recommended neutral framing:** Specify and test the two current rows only (`PAGES_PUBLIC_ROOT`, `NEXT_AUTH_ROOT`); keep any future public Next migration as a separately authorized scope decision.
-- **Affected specification sections:** scope, route/host matrix, design/visual references, AC1/AC3 and release evidence.
-- **Can proceed without this decision:** Current Pages/private route inventory, safe metadata rules and deterministic planned checks.
-- **Blocked:** Any claim that an unimplemented public Next route or production host is covered by CS-109.
+The current product and architecture sources already decide this boundary:
+`mobile-site/` is the staged public Pages artifact and Next `/` is the private
+signed-out/auth root. Public Next marketing migration is explicitly not
+implemented and is out of scope for this ticket. CS-109 therefore specifies
+only `PAGES_PUBLIC_ROOT` and `NEXT_AUTH_ROOT`; any future public Next migration
+requires a separately authorized ticket and decision. This is an
+architecture/product-surface reconciliation, not a new SEO or runtime claim.
 
 ## CS-110 — approve verification-domain contract policy
 
@@ -218,5 +219,6 @@ gates.
 - **Can proceed without this decision:** Contract shape, negative-case fixtures, redaction, audit and rollback planning.
 - **Blocked:** Whole-spec approval and any runtime/API/storage implementation claim.
 
-`OWNER_DECISIONS_REMAINING: 8` (CS-80's narrow checkpoint conflict is resolved;
-its whole-ticket readiness remains incomplete.)
+`OWNER_DECISIONS_REMAINING: 7` (CS-80's narrow checkpoint conflict is resolved;
+its whole-ticket readiness remains incomplete; CS-109 is resolved by the
+existing product-surface and architecture contract.)

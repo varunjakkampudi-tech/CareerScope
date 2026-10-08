@@ -1323,20 +1323,32 @@ specification content and exact planned/manual bindings only.
 
 ### CS-109 / CS-110 closure-cost review (2026-10-09)
 
-The post-suite closure review did not promote either ticket. CS-109 now
-explicitly limits the current metadata contract to the staged Pages public
-artifact and the private Next auth root; its AC4 state matrix distinguishes
-applicable public and auth states and records stale-revision as
-`NOT_APPLICABLE`. Its Phase 0 design disposition is
-`DESIGN_PARTIAL_NON_BLOCKING`. An owner decision is still required before
-adopting that two-row scope as the authoritative product boundary, so the
-ticket remains `DRAFT` / `OWNER_DECISION_REQUIRED`.
+Existing product-surface and architecture records resolve CS-109's scope: the
+ticket covers only `PAGES_PUBLIC_ROOT` and `NEXT_AUTH_ROOT`; a future public
+Next migration is separately authorized scope. The Phase 0 design disposition
+is `DESIGN_PARTIAL_NON_BLOCKING`. The independent read-only reviewer
+`/root/cs109_review` re-reviewed the current source-aligned content and the
+five current AC procedures. All five are planned checks, not executed runtime
+or hosted evidence. The repository receipt registry still requires an
+authorized receipt writer before the approval can be counted.
 
-The independent CS-109 review returned `REVISE` for the previous bytes and
-identified the exact corrections above; no runtime metadata checker exists in
-the repository, so its planned procedure remains `PLANNED`, not executed
-evidence. CS-110 remains `DRAFT` / `OWNER_DECISION_REQUIRED` because the
-reviewer role and grant source, revocation/resubmission policy, photo policy,
-and restricted-data retention values are not settled by authoritative sources.
-No approval receipt or implementation evidence was fabricated for either
-ticket.
+| Item       | Current binding digest                                             | Verdict |
+| ---------- | ------------------------------------------------------------------ | ------- |
+| CS-109-AC1 | `ff54f179d60a67fabd8b3f6b3ae2c815fca40f6d2932144d0981f6ead339e3dc` | PASS    |
+| CS-109-AC2 | `06fd4afe95e8aef797f3a02d14cedcd09e14ae0addb7e538a769be4eddeb82c2` | PASS    |
+| CS-109-AC3 | `686c5af710cd0a273282d099a4421f98f647681bf3c0f41502ff7e83b3138b7e` | PASS    |
+| CS-109-AC4 | `30bad500e80c3e5cd592770e9954d5ac1d73471ed80596b7ad20cb220f8e9dfe` | PASS    |
+| CS-109-AC5 | `64a90e57bb4b26c1cb2ba14c84995c4fe7d73c166f979feac17994b82b323514` | PASS    |
+
+The current generated specification digest is
+`1d4e6b929c329d68f1eac5749f88a1477a3d727e8b3e2b26e982b84c568732f9`, and the
+the whole-ticket review applies to these current bytes. The review scope is the
+source-backed specification and exact planned/manual procedures only; no
+metadata checker, browser run, SEO approval, hosted evidence or production
+change is claimed. A current content-bound approval receipt has not been
+fabricated while the authorized receipt reviewer is unavailable.
+
+CS-110 remains `DRAFT` / `OWNER_DECISION_REQUIRED` because the reviewer role
+and grant source, revocation/resubmission policy, photo policy, and
+restricted-data retention values are not settled by authoritative sources. No
+approval receipt or implementation evidence was fabricated for CS-110.
