@@ -1342,13 +1342,32 @@ authorized receipt writer before the approval can be counted.
 
 The current generated specification digest is
 `1d4e6b929c329d68f1eac5749f88a1477a3d727e8b3e2b26e982b84c568732f9`, and the
-the whole-ticket review applies to these current bytes. The review scope is the
+whole-ticket review applies to these current bytes. The review scope is the
 source-backed specification and exact planned/manual procedures only; no
 metadata checker, browser run, SEO approval, hosted evidence or production
 change is claimed. A current content-bound approval receipt has not been
 fabricated while the authorized receipt reviewer is unavailable.
 
-CS-110 remains `DRAFT` / `OWNER_DECISION_REQUIRED` because the reviewer role
-and grant source, revocation/resubmission policy, photo policy, and
-restricted-data retention values are not settled by authoritative sources. No
-approval receipt or implementation evidence was fabricated for CS-110.
+Before this resolution, CS-110 was `DRAFT` / `OWNER_DECISION_REQUIRED` because
+the reviewer role and grant source, revocation/resubmission policy, photo
+policy, and restricted-data retention values were not settled. No approval
+receipt or implementation evidence was fabricated for that earlier state.
+
+### CS-110 internal policy resolution (2026-10-09)
+
+The current contract and security principles now resolve the internal policy
+questions without inventing external or legal facts. Review authority is the
+existing CS-40 server-enforced verification-review capability; the ticket adds
+no generic admin role. Resubmission is only `NEEDS_INFO -> PENDING`, explicit
+reviewer revocation is `VERIFIED -> NEEDS_INFO`, and `REJECTED` is not silently
+revived. Profile photos remain optional outside verification; a supplied
+verification photo is private JPEG/PNG, bounded by the existing 5 MiB storage
+limit, metadata-stripped and never public. Raw photos, notes and call metadata
+follow purpose-based deletion, with minimal non-sensitive audit provenance only;
+no numeric retention period is fabricated.
+
+CS-110 is therefore no longer blocked by an internal product decision. Its
+planned contracts and five AC bindings still require a fresh authorized
+independent review and current receipts before approval. Runtime RBAC
+provisioning, storage implementation, security review and exact-SHA evidence
+remain future implementation/release gates.

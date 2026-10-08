@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "6a3d05a18bc5ea1f96736ba552e41b5a78cec37936985d8bfe0593499f97f00a",
+    ".ai/ticket-specification-policy.json": "57006e7efb9d397197d70a39653d9dd32f5285162a1eeb910e0382bb7debfea3",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "5a1903e48be952660cc78b8fb01048f91f54bf29a72b2fc94cd73676e42362a3",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -82923,7 +82923,7 @@
           "reason": "Photo validation/encrypted private storage and protected verification state/audit endpoints; none currently exist.",
           "owner": "Backend",
           "requiredEvidence": "Reviewed request/response/error/authorization/data ownership contract with negative tests before implementation.",
-          "disposition": "OWNER_DECISION_REQUIRED"
+          "disposition": "RESOLVED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -83090,7 +83090,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Photo input must enforce an allowlisted MIME/type and byte limit, strip metadata before private encrypted publication, reject malformed/oversized files with typed errors and never expose a public URL. Notes and any call material remain restricted with explicit retention/deletion policy; no recording is implied.",
+              "requirement": "Profile photo remains optional for ordinary candidate profile use; when a candidate supplies one as verification evidence, accept only JPEG or PNG up to the existing 5 MiB storage bound, strip metadata before private encrypted publication, reject malformed/oversized files with typed errors and never expose a public URL. Notes and call metadata remain restricted, no call recording is collected by default, raw content follows purpose-based deletion and only minimal audit provenance may remain.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -83122,7 +83122,7 @@
             "Planning only; routes compose shared primitives and the single API client. Cross-tier domain gaps are explicit dependencies, not parallel application stacks.",
             "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
             {
-              "requirement": "ARCHITECTURE_IMPACT: DATA_MODEL / API_CONTRACT / AUTH_IDENTITY. Add a future domain module behind the existing Fastify/session/database boundaries; do not add a parallel auth system or infer authorization from UI visibility.",
+              "requirement": "ARCHITECTURE_IMPACT: DATA_MODEL / API_CONTRACT / AUTH_IDENTITY. Add a future domain module behind the existing Fastify/session/database boundaries; use the existing CS-40 server-enforced RBAC capability boundary for verification review and do not add a parallel auth system or infer authorization from UI visibility.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -83150,7 +83150,7 @@
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
             },
             {
-              "requirement": "PLANNED_DATA: verification record belongs to one candidate and stores state, revision, server timestamps, reviewer digest and authorized reason, plus an evidence reference; photo bytes use the existing encrypted private-storage pattern only after its image suitability is verified. Owner-approved policy must define allowlisted MIME types, maximum bytes, metadata stripping oracle and notes/call-metadata retention/deletion before migration. Add legal transition checks, owner indexes, audit retention and reversible migration/rollback; do not claim these tables exist today.",
+              "requirement": "PLANNED_DATA: verification record belongs to one candidate and stores state, revision, server timestamps, reviewer digest and authorized reason, plus an evidence reference; supplied photo bytes use the existing encrypted private-storage pattern, JPEG/PNG allowlist, 5 MiB bound and metadata stripping. Raw photo/notes/call metadata are deleted when no longer required by the candidate-owned verification purpose; minimal non-sensitive transition provenance may remain for audit integrity. No numeric retention period is invented; any statutory/product duration remains a later explicit legal/product decision. Add legal transition checks, owner indexes and reversible migration/rollback; do not claim these tables exist today.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -83190,12 +83190,12 @@
                   "reason": "Photo validation/encrypted private storage and protected verification state/audit endpoints; none currently exist.",
                   "owner": "Backend",
                   "requiredEvidence": "Reviewed request/response/error/authorization/data ownership contract with negative tests before implementation.",
-                  "disposition": "OWNER_DECISION_REQUIRED"
+                  "disposition": "RESOLVED"
                 }
               ]
             },
             {
-              "requirement": "PLANNED_CONTRACT (not an existing route): GET /api/verification returns only the authenticated candidate's status/revision/nextAction; POST /api/verification/evidence accepts multipart photo plus client idempotency key and current revision; POST /api/admin/verifications/:verificationId/decision accepts `{decision: VERIFIED|NEEDS_INFO|REJECTED, reason}` for an explicitly approved reviewer role. Candidate routes require session+CSRF and owner-derived identity; reviewer route requires server RBAC. Define deterministic 401 unauthenticated, 403 wrong actor/role, 404 non-disclosing unknown ID, 409 stale revision/duplicate conflict, 413 size, 415 type, 422 validation and 507 capacity errors; success returns the new state/revision and never tokens or raw private evidence. These routes are planned contracts, not current implementation.",
+              "requirement": "PLANNED_CONTRACT (not an existing route): GET /api/verification returns only the authenticated candidate's status/revision/nextAction; POST /api/verification/evidence accepts multipart photo plus client idempotency key and current revision; POST /api/admin/verifications/:verificationId/decision accepts `{decision: VERIFIED|NEEDS_INFO|REJECTED, reason}` only for the existing CS-40 server-enforced verification-review capability. Candidate routes require session+CSRF and owner-derived identity; reviewer route requires server RBAC and never grants generic database access. Define deterministic 401 unauthenticated, 403 wrong actor/role, 404 non-disclosing unknown ID, 409 stale revision/duplicate conflict, 413 size, 415 type, 422 validation and 507 capacity errors; success returns the new state/revision and never tokens or raw private evidence. These routes are planned contracts, not current implementation.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -83675,12 +83675,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "OWNER_DECISION_REQUIRED before implementation: approve the reviewer role/grant source, revocation/resubmission edge policy, photo MIME/byte/metadata policy and notes/call-metadata retention/deletion policy; the current single-owner product and cited verification contract do not supply these values.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            },
-            {
-              "requirement": "Security/privacy review, RBAC approval, storage encryption configuration, exact-SHA API/integration evidence and any provider/operator review remain future conditional-release gates.",
+              "requirement": "Security/privacy review, confirmation that the CS-40 RBAC capability is provisioned for verification review, storage encryption configuration, exact-SHA API/integration evidence and any provider/operator review remain future conditional-release gates. Numeric statutory retention, if later required, is an explicit legal/product decision and is not claimed here.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }

@@ -37,7 +37,7 @@ Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc
 | exactReviewedTraceabilityPercent       | 34.98896247240618  |
 | findingsCount                          | 643                |
 | openFindingCount                       | 351                |
-| resolvedFindingCount                   | 147                |
+| resolvedFindingCount                   | 148                |
 | reclassifiedFindingCount               | 27                 |
 
 Workflow before/after: {"BACKLOG":141,"TODO":0,"IN_PROGRESS":0,"QA":5,"UAT":70,"PROD":0}. Status changes: 0. All six frozen Phase 3 inputs, including migration/design/blocker evidence and hostpending, are compared against the source commit.

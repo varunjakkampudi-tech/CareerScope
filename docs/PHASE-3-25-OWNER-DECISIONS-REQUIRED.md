@@ -210,15 +210,28 @@ only `PAGES_PUBLIC_ROOT` and `NEXT_AUTH_ROOT`; any future public Next migration
 requires a separately authorized ticket and decision. This is an
 architecture/product-surface reconciliation, not a new SEO or runtime claim.
 
-## CS-110 — approve verification-domain contract policy
+## CS-110 — verification-domain contract policy — RESOLVED BY EXISTING PRINCIPLES
 
-- **Question:** What reviewer role/grant source, revocation/resubmission edges, photo MIME/byte/metadata policy and notes/call-metadata retention/deletion policy are authoritative for the future verification domain?
-- **Why required:** The cited contract requires explicit resubmission/revocation and retention but does not define these values; current product has no deployed admin/RBAC verification API or image-storage contract.
-- **Recommended neutral framing:** Keep the planned route/data contracts and fail closed until the owner/security decision supplies these policy values; do not infer them from UI visibility or resume storage.
-- **Affected specification sections:** state machine, API/data contract, security/privacy, storage, AC1–AC3 and conditional release evidence.
-- **Can proceed without this decision:** Contract shape, negative-case fixtures, redaction, audit and rollback planning.
-- **Blocked:** Whole-spec approval and any runtime/API/storage implementation claim.
+The specification adopts the least-privilege, privacy-minimizing contract
+already required by the approved verification design and CS-40 boundary:
 
-`OWNER_DECISIONS_REMAINING: 7` (CS-80's narrow checkpoint conflict is resolved;
-its whole-ticket readiness remains incomplete; CS-109 is resolved by the
-existing product-surface and architecture contract.)
+- only the server-enforced verification-review capability may decide or revoke;
+  no generic admin/database access is created;
+- candidates may submit or resubmit only through the explicit
+  `NEEDS_INFO -> PENDING` path; reviewers may explicitly revoke
+  `VERIFIED -> NEEDS_INFO`; `REJECTED` is not silently revived;
+- profile photos remain optional for ordinary profile use; a supplied
+  verification photo is private JPEG/PNG, bounded by the existing 5 MiB
+  storage limit, metadata-stripped and never public;
+- raw photos, notes and call metadata follow purpose-based deletion, while
+  only minimal non-sensitive audit provenance may remain. No numeric retention
+  period is invented; any statutory/product duration remains a later explicit
+  legal/product decision.
+
+These are specification decisions only. Runtime RBAC provisioning, storage,
+encryption, migration, security review and exact-SHA evidence remain future
+implementation/release gates.
+
+`OWNER_DECISIONS_REMAINING: 6` (CS-80's narrow checkpoint conflict is
+resolved; its whole-ticket readiness remains incomplete; CS-109 and CS-110
+internal specification decisions are resolved.)
