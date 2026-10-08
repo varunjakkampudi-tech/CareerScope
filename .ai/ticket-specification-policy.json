@@ -6125,14 +6125,6 @@
           "design/canonical/auth/careerscope-auth-account-recovery-verification-system.png",
           "design/canonical/auth/careerscope-auth-sign-in.png"
         ]
-      },
-      "EXACT_AC_TEST_BINDING": {
-        "disposition": "RESOLVED",
-        "rationale": "All CS-93 binding groups were reviewed with explicit state-matrix, privacy, keyboard/browser and server-session procedures. Hosted Cognito and manual accessibility remain future evidence states rather than fabricated execution results.",
-        "sources": [
-          ".ai/ticket-specification-policy.json#CS-93",
-          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
-        ]
       }
     },
     "CS-94": {
@@ -6143,14 +6135,6 @@
           ".ai/backlog.json#CS-94",
           ".ai/ticket-specification-policy.json#CS-94",
           "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
-        ]
-      },
-      "EXACT_AC_TEST_BINDING": {
-        "disposition": "RESOLVED",
-        "rationale": "CS-94 AC1–AC4 are reviewed as release-gated procedures with disposable-provider, privacy-safe telemetry, exact-SHA rollback and owner acceptance boundaries. No live/provider evidence is claimed.",
-        "sources": [
-          ".ai/ticket-specification-policy.json#CS-94",
-          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
     }
@@ -7538,7 +7522,7 @@
       {
         "reviewer": "Identity QA and Security reviewer",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "EXTERNAL_PROVIDER",
         "preconditions": "Approved isolated Cognito pool, disposable user/mailbox, sender and recovery settings; no owner/candidate account; CS-90..CS-93 release prerequisites accepted.",
         "setup": "Prepare a redacted matrix with one disposable identity and explicit case IDs for signup, OTP valid/invalid/expired/reused, login, logout, recovery, resend limit and provider outage.",
@@ -7561,7 +7545,7 @@
       {
         "reviewer": "SRE and Privacy/Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Auth telemetry sources and redaction config are identified; use isolated synthetic events and captured logs.",
         "setup": "Emit synthetic success/failure, delivery-failure, throttle and rollback-trigger events including secret/PII sentinels in forbidden fields.",
@@ -7584,7 +7568,7 @@
       {
         "reviewer": "Release operator and Infrastructure QA",
         "testStatus": "HOSTED_REQUIRED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "LIVE_HOST",
         "preconditions": "Separate authorized release approval exists; main is clean and exact candidate SHA has green required hosted CI and protected production environment approval.",
         "setup": "Record candidate SHA, CI run, migration/config preflight, current auth revision and established rollback target; do not store secrets in evidence.",
@@ -7607,7 +7591,7 @@
       {
         "reviewer": "Product owner and Independent Release Reviewer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "MANUAL_PRODUCT",
         "preconditions": "AC1-AC3 evidence bundle exists for one immutable release revision and all critical findings are dispositioned.",
         "setup": "Prepare a review packet containing redacted disposable-flow matrix, signal/alert evidence, exact deployed SHA and observed rollback result; exclude OTPs, addresses, user attributes and credentials.",
@@ -7722,7 +7706,7 @@
       {
         "reviewer": "Product owner, UX and Independent Reviewer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "MANUAL_PRODUCT",
         "preconditions": "Read-only inspection of canonical auth design and current auth API; no AWS setup or UI implementation during specification phase.",
         "setup": "Open the exact desktop/mobile composite `design/canonical/auth/careerscope-auth-account-recovery-verification-system.png` and companion `design/canonical/auth/careerscope-auth-sign-in.png`; list each AC1 state and viewport represented.",
@@ -7745,7 +7729,7 @@
       {
         "reviewer": "Frontend Security QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Mocked callback/session responses with synthetic OTP, authorization-code and provider-token sentinels; browser storage and captured logs available.",
         "setup": "Exercise pending, error, provider unavailable and callback-success UI branches; inspect rendered DOM, URL, local/session storage, cookies visible to script and application logs.",
@@ -7768,7 +7752,7 @@
       {
         "reviewer": "Browser QA and Accessibility reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Local mocked web/API auth fixtures; Playwright browsers Chromium, Firefox and WebKit installed and version recorded.",
         "setup": "Run signed-out page at 320x, 390x, 768x, 1024x and 1440px; use valid and invalid mock responses without real identity data.",
@@ -7791,7 +7775,7 @@
       {
         "reviewer": "API Integration QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Actual Fastify Cognito callback/session/logout handlers run against disposable PostgreSQL with a local mock issuer; no route is stubbed and no hosted AWS account is used.",
         "setup": "Configure synthetic verified subject/email, callback allowlist, state/verifier cookies and mock issuer token/userInfo responses. Start unauthenticated, obtain real `/api/auth/cognito/start` response, then submit its callback to the Fastify server.",
@@ -7812,7 +7796,7 @@
       {
         "reviewer": "Browser QA and Accessibility reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Local Next.js and actual Fastify web/API harness with disposable PostgreSQL and mock issuer; no callback/session endpoint stub.",
         "setup": "Run Playwright against the real web and API servers; capture Set-Cookie attributes through browser context and query authenticated state only through `/api/session`.",
@@ -15269,54 +15253,6 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a08b626c36bb198c5263b1960a2e34682abae57ba9a2be5d2d239a0e6a80b908"
-    },
-    "CS-93-AC1": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "9273ec54dd71c9678c27a36a9a4040de4beac46abfac0abb23ad91c540e2e519"
-    },
-    "CS-93-AC2": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "1be29ef8a82f71439c300b3bc8bb9dda52e8058b30002e8eb2293b1c720e2f29"
-    },
-    "CS-93-AC3": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "5c993021688e26ba4f440f0e57eaaacd669879657b9bd00a1b54f302e10cb4fe"
-    },
-    "CS-93-AC4": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "72908703053095589d4ebb322454ff3cc2aa666e0dfd6c4e38c157723362c9fa"
-    },
-    "CS-94-AC1": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "0d5f5f8e33a252ab816d439cb3a087d150857665bb7f7031abd49c1998efe09d"
-    },
-    "CS-94-AC2": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "8ec054063b4ae5ec8dd6bc5647c274201c90fdaca81a2960f08ecb4030fb1203"
-    },
-    "CS-94-AC3": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "2952845bc039c5641253b904b7b24428a83efcab1b154c0a12499ce5a30c5f44"
-    },
-    "CS-94-AC4": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "4ac87ba8b5921006441ba3660c8dabd31c5430d3c7893db35713c6099de8936f"
     }
   },
   "specificationReviewReceipts": {
@@ -15373,18 +15309,6 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "8164bda07d6706f0c6b105d10d70d3706d053835c4c2f13a455ea285a6969a5d"
-    },
-    "CS-93": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "cc6f15a7437d258bc775ea1954dbb0f624dc4274dc346062ba151f6b464a4ae8"
-    },
-    "CS-94": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "ce02ead055c0a87a116f810284455cb99dd840320cbc1c8ebe5e5ebc187008f7"
     },
     "CS-82": {
       "verdict": "APPROVED",

@@ -4,23 +4,23 @@
 
 This is an evidence-backed snapshot of the current local repository. It does
 not certify Phase 3.25 completion. The authoritative generator and checker
-report 216 tickets, 67 approved specifications and 149 incomplete
+report 216 tickets, 65 approved specifications and 151 incomplete
 specifications. No runtime product implementation, workflow promotion, merge,
 deployment or production change was performed.
 
 | Metric                                |              Value |
 | ------------------------------------- | -----------------: |
 | Starting approved (reported baseline) |             46/216 |
-| Final approved                        |             67/216 |
-| Newly approved in this continuation   |                 21 |
-| Phase 3.25 percentage                 | 31.01851851851852% |
+| Final approved                        |             65/216 |
+| Newly approved in this continuation   |                 19 |
+| Phase 3.25 percentage                 | 30.09259259259259% |
 | Total acceptance criteria             |                906 |
-| Mapped acceptance criteria            |                271 |
-| Unmapped acceptance criteria          |                635 |
+| Mapped acceptance criteria            |                263 |
+| Unmapped acceptance criteria          |                643 |
 | Authored exact bindings               |                348 |
-| Reviewed exact bindings               |                292 |
+| Reviewed exact bindings               |                283 |
 | Findings                              |                649 |
-| Open findings                         |                402 |
+| Open findings                         |                404 |
 | Dependency edges / invalid / cycles   |        276 / 0 / 0 |
 | Design exact / partial / gap / N/A    |  110 / 27 / 9 / 70 |
 | Blocked tickets / hostpending actions |            37 / 15 |
@@ -46,10 +46,9 @@ CS-25, CS-26, CS-27, CS-28, CS-29, CS-30, CS-33, CS-34, CS-35, CS-36, CS-37,
 CS-41, CS-48, CS-52, CS-53, CS-54, CS-55, CS-56, CS-57, CS-58, CS-59, CS-60,
 CS-63, CS-65, CS-66, CS-67, CS-68, CS-69, CS-70, CS-71, CS-72, CS-73, CS-74,
 CS-76, CS-77, CS-80, CS-100, CS-101, CS-102, CS-103, CS-104, CS-105, CS-106,
-CS-107, CS-89, CS-78, CS-79, CS-83, CS-85, CS-86, CS-87, CS-91, CS-92, CS-93,
-CS-94`.
+CS-107, CS-89, CS-78, CS-79, CS-83, CS-85, CS-86, CS-87, CS-91, CS-92`.
 
-The 149 incomplete tickets are every canonical ticket in `.ai/backlog.json`
+The 151 incomplete tickets are every canonical ticket in `.ai/backlog.json`
 not in that list. Their generated specifications remain in `docs/tickets/`;
 the machine-readable status and exact gaps are authoritative in
 `.ai/ticket-catalog.json` and `.ai/ticket-specification-coverage.json`.
@@ -57,7 +56,7 @@ the machine-readable status and exact gaps are authoritative in
 ## 4. Acceptance-Criteria Traceability
 
 `npm run tickets:spec:check` passes structural validation, but exact reviewed
-traceability is not complete: 635 of 906 source criteria remain unmapped.
+traceability is not complete: 643 of 906 source criteria remain unmapped.
 Planned procedures are not execution evidence. The current CS-17 AC4 browser
 binding is intentionally limited to UI/request behavior, while the separate
 service-backed persistence binding is explicitly planned. CS-82 AC2 includes
@@ -76,7 +75,7 @@ source metadata.
 
 ## 6. Findings Audit
 
-The checker reports 402 open findings, 124 resolved and 21 reclassified. The
+The checker reports 404 open findings, 122 resolved and 21 reclassified. The
 remaining open findings include exact AC bindings and other ticket-specific
 content work; they are not all external execution gates. Therefore the phase
 cannot be declared complete.
@@ -158,7 +157,7 @@ IN_PROGRESS 0, QA 5, UAT 70, PROD 0. Status changes during Phase 3.25 remain 0.
 
 ## 17. Remaining Work
 
-The shortest path to completion is to finish the 635 unmapped AC bindings,
+The shortest path to completion is to finish the 643 unmapped AC bindings,
 resolve the 421 open findings, complete the remaining ticket-specific review
 receipts, and then rerun the full validation matrix. CS-17 still requires an
 authoritative release classification; no safe classification is inferred here.
@@ -167,8 +166,8 @@ authoritative release classification; no safe classification is inferred here.
 
 **PHASE_3_25_COMPLETE: NO**
 
-The strict gate fails because approved specifications are 67/216, 635 ACs are
-unmapped, and 402 findings are open. The full specification test suite passes
+The strict gate fails because approved specifications are 65/216, 643 ACs are
+unmapped, and 404 findings are open. The full specification test suite passes
 72/72; this is not release or production evidence.
 
 ## 19. Phase 3.5 Readiness

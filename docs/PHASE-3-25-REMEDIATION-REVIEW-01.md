@@ -716,9 +716,9 @@ Independent reviewer `/root/phase325_review` approved the current CS-92 specific
 
 Sender/copy approval, AWS/DNS configuration and disposable delivery/negative acceptance remain owner/external gates; no provider evidence is claimed.
 
-## CS-93 — Cognito frontend authentication states authored-content approval
+## CS-93 — Cognito frontend authentication states authored content (second review pending)
 
-The CS-93 specification was reviewed against the approved email-first Cognito
+The CS-93 specification was locally reviewed against the approved email-first Cognito
 decision and the current server callback/session contract. The review keeps
 provider-hosted OTP/resend outside the CareerScope-owned API, requires the
 opaque server session before workspace access, and treats the missing
@@ -735,9 +735,9 @@ Owner release/HOLD assignment, Cognito configuration, provider-outage design,
 manual NVDA/VoiceOver review and hosted disposable-session acceptance remain
 future gates.
 
-## CS-94 — Cognito rollout acceptance authored-content approval
+## CS-94 — Cognito rollout acceptance authored content (second review pending)
 
-The CS-94 specification was reviewed as a release/acceptance plan only. It
+The CS-94 specification was locally reviewed as a release/acceptance plan only. It
 keeps the existing Fastify callback/session boundary, manual main-only deploy,
 redacted telemetry and non-destructive rollback requirements explicit. No live
 Cognito, production, deployment or monitoring evidence is claimed.

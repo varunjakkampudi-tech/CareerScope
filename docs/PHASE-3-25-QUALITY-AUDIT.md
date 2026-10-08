@@ -6,8 +6,8 @@ Structural section coverage and generated count are not implementation readiness
 | -------------------------------------- | ----------------- |
 | ticketCount                            | 216               |
 | specificationCount                     | 216               |
-| completeSpecificationCount             | 67                |
-| incompleteSpecificationCount           | 149               |
+| completeSpecificationCount             | 65                |
+| incompleteSpecificationCount           | 151               |
 | epicMappedCount                        | 216               |
 | orphanTicketCount                      | 0                 |
 | duplicateIdCount                       | 0                 |
@@ -17,27 +17,27 @@ Structural section coverage and generated count are not implementation readiness
 | dependencySemanticGapCount             | 0                 |
 | acceptanceCriterionCount               | 906               |
 | suggestedAcceptanceCriterionCount      | 906               |
-| mappedAcceptanceCriterionCount         | 271               |
-| unmappedAcceptanceCriterionCount       | 635               |
-| reviewedExactTestBindingCount          | 292               |
+| mappedAcceptanceCriterionCount         | 263               |
+| unmappedAcceptanceCriterionCount       | 643               |
+| reviewedExactTestBindingCount          | 283               |
 | authoredExactTestBindingCount          | 348               |
 | acceptanceCriteriaWithAuthoredBindings | 326               |
-| draftSpecificationCount                | 149               |
+| draftSpecificationCount                | 151               |
 | reviseSpecificationCount               | 0                 |
 | reviewedSpecificationCount             | 0                 |
-| approvedSpecificationCount             | 67                |
+| approvedSpecificationCount             | 65                |
 | ownerDecisionReconciliationCount       | 11                |
 | uiTicketCount                          | 146               |
 | blockedTicketCount                     | 37                |
 | hostpendingActionCount                 | 15                |
 | holdTicketCount                        | 33                |
 | currentReleaseTicketCount              | 47                |
-| specificationCoveragePercent           | 31.01851851851852 |
+| specificationCoveragePercent           | 30.09259259259259 |
 | suggestedVerificationMappingPercent    | 100               |
-| exactReviewedTraceabilityPercent       | 29.91169977924945 |
+| exactReviewedTraceabilityPercent       | 29.02869757174393 |
 | findingsCount                          | 649               |
-| openFindingCount                       | 402               |
-| resolvedFindingCount                   | 124               |
+| openFindingCount                       | 404               |
+| resolvedFindingCount                   | 122               |
 | reclassifiedFindingCount               | 21                |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                       |
@@ -371,9 +371,9 @@ Structural section coverage and generated count are not implementation readiness
 | CS-93  | PARTIAL_DESIGN                  | RECLASSIFIED            | design                 | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.                                                            | UX                                    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.                                              |
 | CS-93  | RELEASE_TARGET_UNDECIDED        | OWNER_DECISION_REQUIRED | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-93  | RELEASE_STATE_UNSPECIFIED       | OWNER_DECISION_REQUIRED | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-93  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-93  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-94  | RELEASE_TARGET_UNDECIDED        | OWNER_DECISION_REQUIRED | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
-| CS-94  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-94  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-95  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-95  | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels. |
 | CS-96  | PARTIAL_DESIGN                  | OPEN                    | design                 | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.                                                            | UX                                    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.                                              |
