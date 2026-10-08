@@ -2,147 +2,147 @@
 
 This is the single machine-generated triage snapshot for the 140 specifications that were incomplete at checkpoint e1c26aaffe91e871f9d43c008c21fc3a86c7139d. It is a planning census, not approval evidence. BLOCKED_OR_REMEDIATE means there is a source-backed owner, design, contract, architecture or surface-authoring finding; LOCAL_AUTHORING means the remaining gap can be worked locally without claiming external evidence.
 
-| Ticket | Workflow | ACs | Reviewed exact ACs | Open findings | Classification |
-| --- | --- | ---: | ---: | --- | --- |
-| CS-2 | UAT | 3 | 0 | MISSING_EXACT_DESIGN, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-6 | UAT | 3 | 3 | none | LOCAL_AUTHORING |
-| CS-11 | QA | 5 | 5 | none | LOCAL_AUTHORING |
-| CS-13 | UAT | 4 | 0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-17 | UAT | 4 | 3 | EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-31 | UAT | 3 | 0 | MISSING_EXACT_DESIGN | BLOCKED_OR_REMEDIATE |
-| CS-32 | UAT | 3 | 0 | MISSING_EXACT_DESIGN | BLOCKED_OR_REMEDIATE |
-| CS-38 | UAT | 3 | 0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-39 | UAT | 3 | 0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-40 | BACKLOG | 3 | 0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-42 | BACKLOG | 3 | 0 | OWNER_DECISION, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-43 | BACKLOG | 3 | 0 | OWNER_DECISION, PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-44 | BACKLOG | 3 | 0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-45 | QA | 5 | 0 | MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-46 | BACKLOG | 3 | 3 | PARTIAL_DESIGN | LOCAL_AUTHORING |
-| CS-47 | BACKLOG | 4 | 0 | OWNER_DECISION, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-49 | UAT | 6 | 0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-50 | UAT | 4 | 0 | OWNER_DECISION, PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-51 | UAT | 4 | 0 | MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-61 | UAT | 3 | 0 | MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-62 | UAT | 3 | 0 | MISSING_ARCHITECTURE_ASSESSMENT, MISSING_SECURITY_ASSESSMENT, OWNER_DECISION, MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-64 | BACKLOG | 3 | 0 | MISSING_ARCHITECTURE_ASSESSMENT, MISSING_SECURITY_ASSESSMENT, OWNER_DECISION, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-75 | UAT | 3 | 0 | MISSING_ARCHITECTURE_ASSESSMENT, MISSING_SECURITY_ASSESSMENT, MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
-| CS-81 | UAT | 4 | 0 | EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-84 | UAT | 3 | 0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-88 | BACKLOG | 4 | 0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-90 | BACKLOG | 4 | 0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | LOCAL_AUTHORING |
-| CS-95 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-96 | BACKLOG | 4 | 0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-97 | BACKLOG | 5 | 0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-98 | BACKLOG | 4 | 0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-99 | BACKLOG | 4 | 0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-109 | BACKLOG | 5 | 0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-110 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-111 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-112 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-113 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-114 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-115 | BACKLOG | 4 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-116 | BACKLOG | 4 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-117 | BACKLOG | 4 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-118 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-119 | BACKLOG | 4 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-120 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-121 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-122 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-123 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-124 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-125 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-126 | BACKLOG | 4 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-127 | BACKLOG | 4 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-128 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-129 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-130 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-131 | BACKLOG | 4 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-132 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-133 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-134 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-135 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-136 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-137 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-138 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-139 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-140 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-141 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-142 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-143 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-144 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-145 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-146 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-147 | BACKLOG | 4 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-148 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-149 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-150 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-151 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-152 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-153 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-154 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-155 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-156 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-157 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-158 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-159 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-160 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-161 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-162 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-163 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-164 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-165 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-166 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-167 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-168 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-169 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-170 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-171 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-172 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-173 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-174 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-175 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-176 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-177 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-178 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-179 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-180 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-181 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-182 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-183 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-184 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-185 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-186 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-187 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-188 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-189 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-190 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-191 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-192 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-193 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-194 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-195 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-196 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-197 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-198 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-199 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-200 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-201 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-202 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-203 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-204 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-205 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-206 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-207 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-208 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-209 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-210 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-211 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-212 | BACKLOG | 5 | 0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-213 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-214 | BACKLOG | 5 | 0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-215 | BACKLOG | 5 | 0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT | BLOCKED_OR_REMEDIATE |
-| CS-216 | BACKLOG | 5 | 0 | MISSING_EXACT_DESIGN, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
+| Ticket | Workflow | ACs | Reviewed exact ACs | Open findings                                                                                                                                                                  | Classification       |
+| ------ | -------- | --: | -----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- |
+| CS-2   | UAT      |   3 |                  0 | MISSING_EXACT_DESIGN, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                                         | BLOCKED_OR_REMEDIATE |
+| CS-6   | UAT      |   3 |                  3 | none                                                                                                                                                                           | LOCAL_AUTHORING      |
+| CS-11  | QA       |   5 |                  5 | none                                                                                                                                                                           | LOCAL_AUTHORING      |
+| CS-13  | UAT      |   4 |                  0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                     | LOCAL_AUTHORING      |
+| CS-17  | UAT      |   4 |                  3 | EXACT_AC_TEST_BINDING                                                                                                                                                          | LOCAL_AUTHORING      |
+| CS-31  | UAT      |   3 |                  0 | MISSING_EXACT_DESIGN                                                                                                                                                           | BLOCKED_OR_REMEDIATE |
+| CS-32  | UAT      |   3 |                  0 | MISSING_EXACT_DESIGN                                                                                                                                                           | BLOCKED_OR_REMEDIATE |
+| CS-38  | UAT      |   3 |                  0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                     | LOCAL_AUTHORING      |
+| CS-39  | UAT      |   3 |                  0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                     | LOCAL_AUTHORING      |
+| CS-40  | BACKLOG  |   3 |                  0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                                     | LOCAL_AUTHORING      |
+| CS-42  | BACKLOG  |   3 |                  0 | OWNER_DECISION, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                     | BLOCKED_OR_REMEDIATE |
+| CS-43  | BACKLOG  |   3 |                  0 | OWNER_DECISION, PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                     | BLOCKED_OR_REMEDIATE |
+| CS-44  | BACKLOG  |   3 |                  0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                                     | LOCAL_AUTHORING      |
+| CS-45  | QA       |   5 |                  0 | MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                               | BLOCKED_OR_REMEDIATE |
+| CS-46  | BACKLOG  |   3 |                  3 | PARTIAL_DESIGN                                                                                                                                                                 | LOCAL_AUTHORING      |
+| CS-47  | BACKLOG  |   4 |                  0 | OWNER_DECISION, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                     | BLOCKED_OR_REMEDIATE |
+| CS-49  | UAT      |   6 |                  0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                     | LOCAL_AUTHORING      |
+| CS-50  | UAT      |   4 |                  0 | OWNER_DECISION, PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                     | BLOCKED_OR_REMEDIATE |
+| CS-51  | UAT      |   4 |                  0 | MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                               | BLOCKED_OR_REMEDIATE |
+| CS-61  | UAT      |   3 |                  0 | MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                               | BLOCKED_OR_REMEDIATE |
+| CS-62  | UAT      |   3 |                  0 | MISSING_ARCHITECTURE_ASSESSMENT, MISSING_SECURITY_ASSESSMENT, OWNER_DECISION, MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING | BLOCKED_OR_REMEDIATE |
+| CS-64  | BACKLOG  |   3 |                  0 | MISSING_ARCHITECTURE_ASSESSMENT, MISSING_SECURITY_ASSESSMENT, OWNER_DECISION, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                       | BLOCKED_OR_REMEDIATE |
+| CS-75  | UAT      |   3 |                  0 | MISSING_ARCHITECTURE_ASSESSMENT, MISSING_SECURITY_ASSESSMENT, MISSING_EXACT_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                 | BLOCKED_OR_REMEDIATE |
+| CS-81  | UAT      |   4 |                  0 | EXACT_AC_TEST_BINDING                                                                                                                                                          | LOCAL_AUTHORING      |
+| CS-84  | UAT      |   3 |                  0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                                     | LOCAL_AUTHORING      |
+| CS-88  | BACKLOG  |   4 |                  0 | PARTIAL_DESIGN, RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                     | LOCAL_AUTHORING      |
+| CS-90  | BACKLOG  |   4 |                  0 | RELEASE_TARGET_UNDECIDED, RELEASE_STATE_UNSPECIFIED, EXACT_AC_TEST_BINDING                                                                                                     | LOCAL_AUTHORING      |
+| CS-95  | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-96  | BACKLOG  |   4 |                  0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-97  | BACKLOG  |   5 |                  0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-98  | BACKLOG  |   4 |                  0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-99  | BACKLOG  |   4 |                  0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-109 | BACKLOG  |   5 |                  0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-110 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-111 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-112 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-113 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-114 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-115 | BACKLOG  |   4 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-116 | BACKLOG  |   4 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-117 | BACKLOG  |   4 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-118 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-119 | BACKLOG  |   4 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-120 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-121 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-122 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-123 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-124 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-125 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-126 | BACKLOG  |   4 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-127 | BACKLOG  |   4 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-128 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-129 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-130 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-131 | BACKLOG  |   4 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-132 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-133 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-134 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-135 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-136 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-137 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-138 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-139 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-140 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-141 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-142 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-143 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-144 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-145 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-146 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-147 | BACKLOG  |   4 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-148 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-149 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-150 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-151 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-152 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-153 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-154 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-155 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-156 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-157 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-158 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-159 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-160 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-161 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-162 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-163 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-164 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-165 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-166 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-167 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-168 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-169 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-170 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-171 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-172 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-173 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-174 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-175 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-176 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-177 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-178 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-179 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-180 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-181 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-182 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-183 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-184 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-185 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-186 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-187 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-188 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-189 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-190 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-191 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-192 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-193 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-194 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-195 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-196 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-197 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-198 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-199 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-200 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-201 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-202 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-203 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-204 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-205 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-206 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-207 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-208 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-209 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-210 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-211 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-212 | BACKLOG  |   5 |                  0 | MISSING_DOMAIN_CONTRACT, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                        | BLOCKED_OR_REMEDIATE |
+| CS-213 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-214 | BACKLOG  |   5 |                  0 | EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-215 | BACKLOG  |   5 |                  0 | PARTIAL_DESIGN, EXACT_AC_TEST_BINDING, SURFACE_SPEC_REFINEMENT                                                                                                                 | BLOCKED_OR_REMEDIATE |
+| CS-216 | BACKLOG  |   5 |                  0 | MISSING_EXACT_DESIGN, EXACT_AC_TEST_BINDING                                                                                                                                    | BLOCKED_OR_REMEDIATE |
 
 The snapshot was produced once with the Node 24 command importing loadInputs and buildCatalog from scripts/ticket-specifications.mjs and scripts/lib/ticket-specification.mjs. The source snapshot remains the canonical .ai/backlog.json plus policy and design inputs; no workflow status or ticket census was changed.

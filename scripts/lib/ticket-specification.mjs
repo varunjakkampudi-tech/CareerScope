@@ -370,17 +370,16 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     );
     for (const row of rows) {
       const amendments = refinement?.bindingAmendments?.[row.acId] ?? {};
-     row.exactBindings = (policy.exactVerificationBindings?.[row.acId] ?? []).map(
-       (binding, index) => ({ ...binding, ...(amendments[String(index)] ?? {}) }),
-     );
+      row.exactBindings = (policy.exactVerificationBindings?.[row.acId] ?? []).map(
+        (binding, index) => ({ ...binding, ...(amendments[String(index)] ?? {}) }),
+      );
       const corrections = refinement?.bindingCorrections?.[row.acId] ?? {};
       row.exactBindings = row.exactBindings.map((binding, index) => ({
         ...binding,
         ...(corrections[String(index)] ?? {}),
       }));
       const additions = refinement?.bindingAdditions?.[row.acId] ?? [];
-      if (Array.isArray(additions) && additions.length)
-        row.exactBindings.push(...additions);
+      if (Array.isArray(additions) && additions.length) row.exactBindings.push(...additions);
       if (row.exactBindings.length) {
         row.verification = row.exactBindings.map((binding) => ({
           type: binding.type,
@@ -941,7 +940,9 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
             );
           if (Array.isArray(value)) return value.map(replace);
           if (value && typeof value === 'object')
-            return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, replace(item)]));
+            return Object.fromEntries(
+              Object.entries(value).map(([key, item]) => [key, replace(item)]),
+            );
           return value;
         };
         sections[section].requirements = sections[section].requirements.map(replace);
@@ -1164,8 +1165,9 @@ export function validateCatalog(model, inputs, resolvePath) {
       errors.push(`empty exact binding ${acId}`);
       continue;
     }
-    const ticketId = acId.split("-AC")[0];
-    const corrections = inputs.policy.ticketRefinements?.[ticketId]?.bindingCorrections?.[acId] ?? {};
+    const ticketId = acId.split('-AC')[0];
+    const corrections =
+      inputs.policy.ticketRefinements?.[ticketId]?.bindingCorrections?.[acId] ?? {};
     const reviewedBindings = Object.keys(corrections).length
       ? bindings.map((binding, index) => ({ ...binding, ...(corrections[String(index)] ?? {}) }))
       : bindings;
@@ -1289,15 +1291,18 @@ export function validateCatalog(model, inputs, resolvePath) {
           !board?.componentScreenIds.includes(screenId) ||
           !inputs.backlog.items.some((ticket) => ticket.id === screen.primaryTicketId)
         )
-        errors.push(`unresolved related design screen mapping ${id}.${screenId}`);
+          errors.push(`unresolved related design screen mapping ${id}.${screenId}`);
       }
     }
     if (refinement.designDisposition !== undefined) {
       const disposition = refinement.designDisposition;
       if (
-        !['DESIGN_EXACT', 'DESIGN_PARTIAL', 'DESIGN_PARTIAL_NON_BLOCKING', 'DESIGN_NOT_APPLICABLE'].includes(
-          disposition.status,
-        ) ||
+        ![
+          'DESIGN_EXACT',
+          'DESIGN_PARTIAL',
+          'DESIGN_PARTIAL_NON_BLOCKING',
+          'DESIGN_NOT_APPLICABLE',
+        ].includes(disposition.status) ||
         typeof disposition.reason !== 'string' ||
         !disposition.reason.trim()
       )

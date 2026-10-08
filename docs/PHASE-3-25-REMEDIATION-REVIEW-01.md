@@ -914,11 +914,11 @@ release evidence is claimed.
 
 Current specification digests after those corrections:
 
-| Ticket | Whole-spec digest | Independent disposition |
-| ------ | ----------------- | ----------------------- |
-| CS-6 | `c82a85a46daee1517d2019d74c7d321ff9b5f806b0bcb9d2d049c72e7b82c0fa` | PASS — current-state wording reconciled |
-| CS-11 | `f18fa02adf9a3a20b6875984b2f2d164d1e67b09e1c5a4801a550ad0b4a2682f` | PASS |
-| CS-46 | `e9e6ed9f6d6ba56305d4ff0f26566ad1f2f8499bd2259f85a9f6773c7a0d4a21` | REVISE — stale owner blocker and UI/a11y mapping corrected |
+| Ticket | Whole-spec digest                                                  | Independent disposition                                    |
+| ------ | ------------------------------------------------------------------ | ---------------------------------------------------------- |
+| CS-6   | `c82a85a46daee1517d2019d74c7d321ff9b5f806b0bcb9d2d049c72e7b82c0fa` | PASS — current-state wording reconciled                    |
+| CS-11  | `f18fa02adf9a3a20b6875984b2f2d164d1e67b09e1c5a4801a550ad0b4a2682f` | PASS                                                       |
+| CS-46  | `e9e6ed9f6d6ba56305d4ff0f26566ad1f2f8499bd2259f85a9f6773c7a0d4a21` | REVISE — stale owner blocker and UI/a11y mapping corrected |
 
 CS-46 AC2 current binding digest: `71b34d30ae33ac7ff0d980e4377c65239fa3d890fe1389fec3950da139c5ce75`.
 
@@ -944,10 +944,10 @@ uses ecosystem-plus-member overlap identity and requires full-tree dependency
 audit coverage with local-versus-hosted evidence distinguished. No runtime or
 release evidence is claimed.
 
-| Ticket | Whole-spec digest | Binding digests |
-| ------ | ----------------- | --------------- |
-| CS-81 | `d67027eb27d5d5fbcae548d1b67b855dba760bda01f0f607f829623a72b22213` | Existing AC1–AC4 digests above |
-| CS-84 | `1ba5800589bba5bf4bbed95675f8845173f45bebbe8781090081bfa9d8d962b0` | AC1 `1648ecd3b3a5516abe7dd63b0da744bd5cb1d7041e7c1d8e68cbdf8cb46d043f`; AC2 `64ddb067f3dc34f3bf3dd8a8aed1950c048fc3e530d55459a72449bdf634cd75`; AC3 `9593c471a3200c9131fa9c47a556f942b8b05ab995aeb399bb5f590369c959b0` |
+| Ticket | Whole-spec digest                                                  | Binding digests                                                                                                                                                                                                        |
+| ------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CS-81  | `d67027eb27d5d5fbcae548d1b67b855dba760bda01f0f607f829623a72b22213` | Existing AC1–AC4 digests above                                                                                                                                                                                         |
+| CS-84  | `1ba5800589bba5bf4bbed95675f8845173f45bebbe8781090081bfa9d8d962b0` | AC1 `1648ecd3b3a5516abe7dd63b0da744bd5cb1d7041e7c1d8e68cbdf8cb46d043f`; AC2 `64ddb067f3dc34f3bf3dd8a8aed1950c048fc3e530d55459a72449bdf634cd75`; AC3 `9593c471a3200c9131fa9c47a556f942b8b05ab995aeb399bb5f590369c959b0` |
 
 ## CS-46 final independent review — 2026-10-08
 
@@ -995,12 +995,12 @@ expectations; hypothetical future flags and implementation tests remain
 synthetic/planned R2 evidence only. No runtime, provider, hosted or release
 evidence is claimed.
 
-| Ticket | Whole-spec digest | Binding digest |
-| ------ | ----------------- | -------------- |
-| CS-96 | `e7b3b06c2cffd107786ad08097d7f323a8a088421bd2a92467d1e9f47ff7351a` | `745915414c8146725ecc9d7b49fde0a64be35ba95822abb3e4834901cb27012e` |
-| CS-97 | `c247b8442de6a4b793ca67b2d7be0f4f3e5af2c646ee064572712252fa59161e` | `dd8b8fef9dc681738e7e251d3ee9269f74b40bde6f7c6e47288b8df29e2333ce` |
-| CS-98 | `6c91520428eec9f6cff91824d95bc7cd705b3ec751a36cd54eb310a63c241552` | `b89fb7b4e2a59239c3f0564c5302719c9f0ae6380bae7f67fdc45ca5fea32353` |
-| CS-99 | `6cb8b3b01286ee39ea7c8ad3145d335335603e270bc4f1229735b79212e545e5` | `8a76c6940e3ecf7b8eaa170551858178b372b789949e80949ceec82d4e465c7f` |
+| Ticket | Whole-spec digest                                                  | Binding digest                                                     |
+| ------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| CS-96  | `e7b3b06c2cffd107786ad08097d7f323a8a088421bd2a92467d1e9f47ff7351a` | `745915414c8146725ecc9d7b49fde0a64be35ba95822abb3e4834901cb27012e` |
+| CS-97  | `c247b8442de6a4b793ca67b2d7be0f4f3e5af2c646ee064572712252fa59161e` | `dd8b8fef9dc681738e7e251d3ee9269f74b40bde6f7c6e47288b8df29e2333ce` |
+| CS-98  | `6c91520428eec9f6cff91824d95bc7cd705b3ec751a36cd54eb310a63c241552` | `b89fb7b4e2a59239c3f0564c5302719c9f0ae6380bae7f67fdc45ca5fea32353` |
+| CS-99  | `6cb8b3b01286ee39ea7c8ad3145d335335603e270bc4f1229735b79212e545e5` | `8a76c6940e3ecf7b8eaa170551858178b372b789949e80949ceec82d4e465c7f` |
 
 Individual binding digests: CS-96 AC1 `b369bfea8e94415862e2afff1d63d2db719f76e144935c30e94a5162011231b8`,
 AC2 `8f33f8dcc25a053d61eef0eda2bdb7a9ec3f2190301983480138aafd33fdfee2`,
@@ -1031,6 +1031,7 @@ storage, audit and retention boundaries, but reviewer role/grant source,
 revocation/resubmission policy, photo limits/metadata oracle and restricted-data
 retention values are not authoritative in the current repository. Those are
 tracked as owner-decision gates; no receipt or approval hash was created.
+
 ### CS-113 closure-wave review (2026-10-08)
 
 Independent read-only reviewers approved the current authored CS-113 whole
@@ -1048,6 +1049,7 @@ Binding digests: CS-113 AC1 `89a26e56bf369da05713110917d01e19156e1dc0ba56002a94b
 AC2 `4ff023e139dd2ec37d0e3e095355a9b3c2eb7bad3ce2e7852172e5836ac5374d`,
 AC3 `5e579b439fd7222288b0b9630c65b5ee48d56939ef4f786136ba6db4d27b71d2`,
 AC4 `41d4d743c534f68cca06a571548faa70c0ae57e4f6f4b9a347a1f5bdb0517e7c`.
+
 ### CS-118 closure-wave review (2026-10-08)
 
 Independent read-only review returned `REVISE`. The four exact bindings are
@@ -1074,8 +1076,8 @@ or engines. These are binding approvals only: CS-17 remains owner-decision and
 release-gate constrained, and CS-31 remains release-gate constrained. No
 runtime or hosted evidence is claimed.
 
-| Binding | Reviewer | Digest |
-| --- | --- | --- |
+| Binding   | Reviewer                                     | Digest                                                             |
+| --------- | -------------------------------------------- | ------------------------------------------------------------------ |
 | CS-17 AC4 | `/root/phase325_review`, `/root/cs78_review` | `4a358c478f4264d373d48c4c6582b742a7dfa8984c9f68de88cf5fc14c0ed9d7` |
 | CS-31 AC1 | `/root/phase325_review`, `/root/cs78_review` | `6f40c25744daafaf60719b668ba5e4e349bcf21fe4e9be0dfa177b0fc8458e2e` |
 | CS-31 AC2 | `/root/phase325_review`, `/root/cs78_review` | `b10be69ab04c2cc9de85227665231782c0f0a47ed044c273e377cc9b6cd7878e` |
@@ -1100,8 +1102,8 @@ literal curly-quote/em-dash strings while distinguishing existing surrounding
 controls from the inline EmptyState component. No execution evidence or
 whole-ticket readiness is claimed.
 
-| Binding | Digest |
-| --- | --- |
+| Binding   | Digest                                                             |
+| --------- | ------------------------------------------------------------------ |
 | CS-13 AC1 | `b41d1da82e0a04845761707e1da0a4a0129ead1161196fb72f2ecf7901f5185a` |
 | CS-13 AC2 | `8458021052a51243260c7ca0b52238a5e2d6752a3f67112e3f6f6074b6db6114` |
 | CS-13 AC3 | `f847bbafe8096c6a0c6b15a965051acdb67bc4763cf66a6cec81482c4c3e2f6f` |
@@ -1118,8 +1120,8 @@ requires all three engines, and treats unavailable engines as a blocking
 unavailable/NOT_RUN result rather than pass evidence. No visual or hosted
 execution evidence is claimed.
 
-| Binding | Digest |
-| --- | --- |
+| Binding   | Digest                                                             |
+| --------- | ------------------------------------------------------------------ |
 | CS-32 AC1 | `fc8629fcf20c90a631f39f1c34e082e41f24038f5bfc29941eef94cf83f1076e` |
 | CS-32 AC2 | `172053f6d3e5e45568f89a07b0d5abad225b2e0a7e39e4f5a77b77d70cea2ab4` |
 | CS-32 AC3 | `2358b1e55f91a8a85271f1552cb9e67818d632061b6b3b3c6faf50f864c2e11a` |
@@ -1140,8 +1142,8 @@ reviews negative-case coverage and the AR-41 architecture/security gate while
 separating documented defaults from proposed limits; no runtime rejection,
 implementation, legal approval or hosted evidence is claimed.
 
-| Binding | Effective digest | Validator receipt hash |
-| --- | --- | --- |
+| Binding   | Effective digest                                                   | Validator receipt hash                                             |
+| --------- | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | CS-41 AC1 | `ff2fbfe66097f84f65ce2d2c8b78ea474b60d0857c77443f24157681c5046726` | `ff2fbfe66097f84f65ce2d2c8b78ea474b60d0857c77443f24157681c5046726` |
 | CS-41 AC2 | `b7a8446b8ac0ff3cc4bb955c62d8db84842c13110dcea94e4c35412768387d0a` | `b7a8446b8ac0ff3cc4bb955c62d8db84842c13110dcea94e4c35412768387d0a` |
 | CS-41 AC3 | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` |
@@ -1160,13 +1162,13 @@ invariants; AC4 instead names a future dedicated release-evidence harness.
 All procedures remain explicitly planned and no runtime, hosted, visual,
 screen-reader, or deployment evidence is claimed.
 
-| Item | Content/digest |
-| --- | --- |
+| Item                | Content/digest                                                     |
+| ------------------- | ------------------------------------------------------------------ |
 | Whole specification | `a0e6254bcf605b3c6dbeb34ffda6de3024d392535c1b3c57621e683a2df2ad86` |
-| CS-118 AC1 | `ab001352697970886990b5507e709f11a903e528acd01beac97ca6a6634ed964` |
-| CS-118 AC2 | `b76ce8918d4a7c97e5efff1a49a8ecbba823b11c5003822f02d7a1d60f7ae46b` |
-| CS-118 AC3 | `2e1be7a9696358b436825fc6df6d9b41f1769984a6375f7b3a4c30fea98c533a` |
-| CS-118 AC4 | `15daf4eb80204afef11bf2335ae5948a74a5193286c90b1468fbb2aadc763b15` |
+| CS-118 AC1          | `ab001352697970886990b5507e709f11a903e528acd01beac97ca6a6634ed964` |
+| CS-118 AC2          | `b76ce8918d4a7c97e5efff1a49a8ecbba823b11c5003822f02d7a1d60f7ae46b` |
+| CS-118 AC3          | `2e1be7a9696358b436825fc6df6d9b41f1769984a6375f7b3a4c30fea98c533a` |
+| CS-118 AC4          | `15daf4eb80204afef11bf2335ae5948a74a5193286c90b1468fbb2aadc763b15` |
 
 Reviewers: `/root/phase325_review` and `/root/cs78_review`.
 
@@ -1181,14 +1183,14 @@ implementation-ready specification content only; all planned and manual
 procedures remain future evidence gates and no runtime, hosted, visual,
 screen-reader or deployment execution is claimed.
 
-| Item | Current content/digest |
-| --- | --- |
+| Item                    | Current content/digest                                             |
+| ----------------------- | ------------------------------------------------------------------ |
 | Generated specification | `8E9A078BA26ABA497286DFC4CB99B597640992213F7A1B7F1B0EF60B72AE79A4` |
-| Whole specification | `09740501bd55a41338c554eb25543fa83309694caed32d8a4b5d1ad678f9aa35` |
+| Whole specification     | `09740501bd55a41338c554eb25543fa83309694caed32d8a4b5d1ad678f9aa35` |
 | CS-118 AC1 (2 bindings) | `ab001352697970886990b5507e709f11a903e528acd01beac97ca6a6634ed964` |
-| CS-118 AC2 | `b76ce8918d4a7c97e5efff1a49a8ecbba823b11c5003822f02d7a1d60f7ae46b` |
+| CS-118 AC2              | `b76ce8918d4a7c97e5efff1a49a8ecbba823b11c5003822f02d7a1d60f7ae46b` |
 | CS-118 AC3 (2 bindings) | `3a5f994d6b38b722a8e4c6378dd958315d12d305e624fb6a1666db934dd08b1e` |
-| CS-118 AC4 | `15daf4eb80204afef11bf2335ae5948a74a5193286c90b1468fbb2aadc763b15` |
+| CS-118 AC4              | `15daf4eb80204afef11bf2335ae5948a74a5193286c90b1468fbb2aadc763b15` |
 
 Reviewer: `/root/cs78_review`. Approval scope: current bytes and all listed
 binding content; no ticket promotion and no execution evidence.
@@ -1202,13 +1204,13 @@ review passed all three exact planned bindings, confirms the registered
 release target/state as explicit EXTERNAL_GATE metadata. No browser execution,
 hosted evidence or ticket promotion is claimed.
 
-| Item | Current content/digest |
-| --- | --- |
+| Item                    | Current content/digest                                             |
+| ----------------------- | ------------------------------------------------------------------ |
 | Generated specification | `5F7D3C1BD2AEB69F70CDC797612437563C1DD9D8780F8F8378052805769644BD` |
-| Whole specification | `a4e2562c8a77d36cb67987e78a2c6280961aaa11bdb9e9bdfe1d8f46791dd281` |
-| CS-31 AC1 | `6f40c25744daafaf60719b668ba5e4e349bcf21fe4e9be0dfa177b0fc8458e2e` |
-| CS-31 AC2 | `b10be69ab04c2cc9de85227665231782c0f0a47ed044c273e377cc9b6cd7878e` |
-| CS-31 AC3 | `35adeda95980c0530369bc114a76df4b78b191dfa03041a84c702d6ebc7b3d94` |
+| Whole specification     | `a4e2562c8a77d36cb67987e78a2c6280961aaa11bdb9e9bdfe1d8f46791dd281` |
+| CS-31 AC1               | `6f40c25744daafaf60719b668ba5e4e349bcf21fe4e9be0dfa177b0fc8458e2e` |
+| CS-31 AC2               | `b10be69ab04c2cc9de85227665231782c0f0a47ed044c273e377cc9b6cd7878e` |
+| CS-31 AC3               | `35adeda95980c0530369bc114a76df4b78b191dfa03041a84c702d6ebc7b3d94` |
 
 Reviewer: `/root/cs78_review`. Approval scope is authored specification
 content and planned verification bindings only.
@@ -1225,19 +1227,19 @@ checkpoint, records the untracked-file and F1/F2 findings as closed historical
 evidence, and labels old CI runs as historical rather than current. No runtime,
 hosted, product, workflow, or deployment evidence is claimed.
 
-| Ticket | Whole specification digest | Reviewer | Verdict |
-| --- | --- | --- | --- |
-| CS-41 | `EF1EDF28E3BE471B67F03D208DF34BF047EE7C75E31692CE66E563FDEFA82BBA` | `/root/cs78_review` | APPROVED |
-| CS-48 | `079C4EE1BD6DCD6AC87D0ECD7EA05F974BC9320D888B9DC1997BBA77E5675B2A` | `/root/cs78_review` | APPROVED |
+| Ticket | Whole specification digest                                         | Reviewer            | Verdict  |
+| ------ | ------------------------------------------------------------------ | ------------------- | -------- |
+| CS-41  | `EF1EDF28E3BE471B67F03D208DF34BF047EE7C75E31692CE66E563FDEFA82BBA` | `/root/cs78_review` | APPROVED |
+| CS-48  | `079C4EE1BD6DCD6AC87D0ECD7EA05F974BC9320D888B9DC1997BBA77E5675B2A` | `/root/cs78_review` | APPROVED |
 
 The prior hashes in this document are retained as historical review attempts;
 the following are the effective content-bound receipts after the final
 historical-evidence and completion-scope corrections:
 
-| Ticket | Effective whole specification digest | Reviewer | Verdict |
-| --- | --- | --- | --- |
-| CS-41 | `709567eafb5da6adbe1bf2cc746c998312be1bd72cc0ddf88e5be57d587cf6aa` | `/root/cs78_review` | APPROVED |
-| CS-48 | `f66f95cd95a28e46e8b6d2aa4f3fe56c337f9585ffa62dac2fa248db434a6683` | `/root/cs78_review` | APPROVED |
+| Ticket | Effective whole specification digest                               | Reviewer            | Verdict  |
+| ------ | ------------------------------------------------------------------ | ------------------- | -------- |
+| CS-41  | `709567eafb5da6adbe1bf2cc746c998312be1bd72cc0ddf88e5be57d587cf6aa` | `/root/cs78_review` | APPROVED |
+| CS-48  | `f66f95cd95a28e46e8b6d2aa4f3fe56c337f9585ffa62dac2fa248db434a6683` | `/root/cs78_review` | APPROVED |
 
 ### AC-mapping counter reconciliation (2026-10-09)
 
@@ -1247,11 +1249,11 @@ deliberately invalidated when the final source corrections changed their
 content. The bindings still exist as authored rows, but are DRAFT until a
 fresh exact-binding review is completed.
 
-| Ticket | AC | Previous binding receipt hash | Current status | Why invalidated | Should remain removed? |
-| --- | --- | --- | --- | --- | --- |
-| CS-41 | AC1 | `ff2fbfe66097f84f65ce2d2c8b78ea474b60d0857c77443f24157681c5046726` | DRAFT | Final inventory correction distinguished the implemented `/api/market/companies` route from the unimplemented companies entity/table and enumerated exact search/saved-lead routes. | Yes, until the corrected binding is independently reviewed. |
-| CS-41 | AC2 | `b7a8446b8ac0ff3cc4bb955c62d8db84842c13110dcea94e4c35412768387d0a` | DRAFT | Final proposal correction changed L1 from an implied configured allowlist to a proposed inactive legal-source/provider allowlist. | Yes, until the corrected binding is independently reviewed. |
-| CS-41 | AC3 | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` | DRAFT | Final completion-scope correction made integration/UI suites conditional because CS-41 is inventory/proposal-only and prohibits runtime/UI implementation. | Yes, until the corrected binding is independently reviewed. |
+| Ticket | AC  | Previous binding receipt hash                                      | Current status | Why invalidated                                                                                                                                                                     | Should remain removed?                                      |
+| ------ | --- | ------------------------------------------------------------------ | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| CS-41  | AC1 | `ff2fbfe66097f84f65ce2d2c8b78ea474b60d0857c77443f24157681c5046726` | DRAFT          | Final inventory correction distinguished the implemented `/api/market/companies` route from the unimplemented companies entity/table and enumerated exact search/saved-lead routes. | Yes, until the corrected binding is independently reviewed. |
+| CS-41  | AC2 | `b7a8446b8ac0ff3cc4bb955c62d8db84842c13110dcea94e4c35412768387d0a` | DRAFT          | Final proposal correction changed L1 from an implied configured allowlist to a proposed inactive legal-source/provider allowlist.                                                   | Yes, until the corrected binding is independently reviewed. |
+| CS-41  | AC3 | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` | DRAFT          | Final completion-scope correction made integration/UI suites conditional because CS-41 is inventory/proposal-only and prohibits runtime/UI implementation.                          | Yes, until the corrected binding is independently reviewed. |
 
 `REMOVED_OR_INVALIDATED_MAPPING_COUNT: 3`. This is not a generator defect and
 the mappings were not recreated merely to restore the previous number.
@@ -1266,11 +1268,11 @@ numerator. The current target digest after regeneration is
 binding rows have already received fresh independent binding review and current
 receipts.
 
-| AC | Current binding digest | Review |
-| --- | --- | --- |
-| CS-41-AC1 | `08282cd449a06ca97e441a3deb17d4766cbd6837e38d835282d2cd932f034494` | PASS |
-| CS-41-AC2 | `4ee8ec1e71ecff06f9be9890c1850f535b4847f6e2d21ac565ac2ee1bc77f47e` | PASS |
-| CS-41-AC3 | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` | PASS |
+| AC        | Current binding digest                                             | Review |
+| --------- | ------------------------------------------------------------------ | ------ |
+| CS-41-AC1 | `08282cd449a06ca97e441a3deb17d4766cbd6837e38d835282d2cd932f034494` | PASS   |
+| CS-41-AC2 | `4ee8ec1e71ecff06f9be9890c1850f535b4847f6e2d21ac565ac2ee1bc77f47e` | PASS   |
+| CS-41-AC3 | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` | PASS   |
 
 The raw current ticket-document SHA after regeneration is
 `8003CF985470906F489A5C0483C30CF47D63FDDB26487FD6B1058E438D53CAD2`.
@@ -1283,14 +1285,14 @@ claimed.
 The bounded full-suite run completed with six failures. No failure was skipped
 or retried away.
 
-| Test | Source | Classification | Evidence / disposition |
-| --- | --- | --- | --- |
-| whole-spec approval is content-bound and invalidates after substantive changes | `scripts/ticket-specifications.test.mjs:422` | A_STALE_EXPECTATION | Expected approved count `76`; current receipt-backed catalog is `90`. Test expectation updated to current generated metrics. |
-| CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes | `scripts/ticket-specifications.test.mjs:823` | C_GENERATOR_DEFECT | Amendment validation accepted `reviewStatus: APPROVED`; validator now permits only `DRAFT` or `REVIEWED`. Isolated test passes. |
-| 216 source-linked drafts preserve registry and canonical stages without readiness fabrication | `scripts/ticket-specifications.test.mjs:904` | A_STALE_EXPECTATION | Frozen counts referenced the earlier 76/268/356 checkpoint. Expectations updated to current 90/317/377 metrics. |
-| existing owner directions retain source provenance without fabricated readiness | `scripts/ticket-specifications.test.mjs:914` | A_STALE_EXPECTATION | CS-46 has a current source-backed approval receipt; expected state updated from DRAFT to APPROVED. |
-| agile fixture scenarios preserve canonical state byte-for-byte | `scripts/ticket-specifications.test.mjs:1009` | D_HARNESS_DEFECT_RESOLVED | The copied sandbox inherited a committed corrupt `.ai/progress.json` (`{ not json`), so the restored-agent and scheduler-disabled baseline correctly failed `check-agents`. Restoring the last valid source-backed progress matrix in the working tree repaired the fixture baseline; `node scripts/check-agile-gates.mjs` now passes all scenarios and the test confirms canonical files remain byte-for-byte unchanged. |
-| CS-80 rolling manifest validation scenarios | `scripts/ticket-specifications.test.mjs:1515,1724` | A_STALE_RECEIPT_RESOLVED | Both scenarios initially failed because generated fixtures still referenced the stale pre-CS-41 whole-spec receipt. After the current CS-41 binding and whole-ticket receipts were regenerated, both rolling-manifest scenarios pass; no manifest or receipt was fabricated. |
+| Test                                                                                          | Source                                             | Classification            | Evidence / disposition                                                                                                                                                                                                                                                                                                                                                                                                    |
+| --------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| whole-spec approval is content-bound and invalidates after substantive changes                | `scripts/ticket-specifications.test.mjs:422`       | A_STALE_EXPECTATION       | Expected approved count `76`; current receipt-backed catalog is `90`. Test expectation updated to current generated metrics.                                                                                                                                                                                                                                                                                              |
+| CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes               | `scripts/ticket-specifications.test.mjs:823`       | C_GENERATOR_DEFECT        | Amendment validation accepted `reviewStatus: APPROVED`; validator now permits only `DRAFT` or `REVIEWED`. Isolated test passes.                                                                                                                                                                                                                                                                                           |
+| 216 source-linked drafts preserve registry and canonical stages without readiness fabrication | `scripts/ticket-specifications.test.mjs:904`       | A_STALE_EXPECTATION       | Frozen counts referenced the earlier 76/268/356 checkpoint. Expectations updated to current 90/317/377 metrics.                                                                                                                                                                                                                                                                                                           |
+| existing owner directions retain source provenance without fabricated readiness               | `scripts/ticket-specifications.test.mjs:914`       | A_STALE_EXPECTATION       | CS-46 has a current source-backed approval receipt; expected state updated from DRAFT to APPROVED.                                                                                                                                                                                                                                                                                                                        |
+| agile fixture scenarios preserve canonical state byte-for-byte                                | `scripts/ticket-specifications.test.mjs:1009`      | D_HARNESS_DEFECT_RESOLVED | The copied sandbox inherited a committed corrupt `.ai/progress.json` (`{ not json`), so the restored-agent and scheduler-disabled baseline correctly failed `check-agents`. Restoring the last valid source-backed progress matrix in the working tree repaired the fixture baseline; `node scripts/check-agile-gates.mjs` now passes all scenarios and the test confirms canonical files remain byte-for-byte unchanged. |
+| CS-80 rolling manifest validation scenarios                                                   | `scripts/ticket-specifications.test.mjs:1515,1724` | A_STALE_RECEIPT_RESOLVED  | Both scenarios initially failed because generated fixtures still referenced the stale pre-CS-41 whole-spec receipt. After the current CS-41 binding and whole-ticket receipts were regenerated, both rolling-manifest scenarios pass; no manifest or receipt was fabricated.                                                                                                                                              |
 
 The corrected fixture and receipt provenance now allow the complete suite to
 pass: `node --test scripts/ticket-specifications.test.mjs` reports 72/72
@@ -1308,13 +1310,13 @@ cause/baseline gate, and the two named Pages procedures for AC3. Planned and
 manual procedures remain future evidence; no Pages execution, visual approval,
 hosted evidence or ticket promotion is claimed.
 
-| Item | Current content/digest |
-| --- | --- |
-| Generated specification | `3E0CFC6002881364D2C2ED913CA148E59BDEC0EA828E2B1A79002CF968DFD281` |
-| Whole specification | `4e14e17b0a25fea4677a1f3b0c0ca483884d9677df48018e6fd191e6eb10c3a6` |
-| CS-32 AC1 | `cffa1c2f5730fa5f9990e8520b2d47935d51e71d9a8dd766c6c6ce698df98fa7` |
+| Item                           | Current content/digest                                             |
+| ------------------------------ | ------------------------------------------------------------------ |
+| Generated specification        | `3E0CFC6002881364D2C2ED913CA148E59BDEC0EA828E2B1A79002CF968DFD281` |
+| Whole specification            | `4e14e17b0a25fea4677a1f3b0c0ca483884d9677df48018e6fd191e6eb10c3a6` |
+| CS-32 AC1                      | `cffa1c2f5730fa5f9990e8520b2d47935d51e71d9a8dd766c6c6ce698df98fa7` |
 | CS-32 AC2 (automated + manual) | `369e7bdf252fbfbd403bf20c488bfb1a22a2e1f5e8130bcb60938288afa3a344` |
-| CS-32 AC3 | `2c4b1f4950d9aed76a0b5120888bff78ed6a0faa8415e016c9b2d2066293a9b8` |
+| CS-32 AC3                      | `2c4b1f4950d9aed76a0b5120888bff78ed6a0faa8415e016c9b2d2066293a9b8` |
 
 Reviewer: `/root/cs78_review`. Approval scope is current authored
 specification content and exact planned/manual bindings only.
