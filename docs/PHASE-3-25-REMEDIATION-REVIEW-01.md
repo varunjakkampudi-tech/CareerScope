@@ -1128,3 +1128,24 @@ Validator source-binding receipt hashes for the amended groups are: CS-32 AC1
 `207539ac0d83f6a1f407187877184a153f94827cd82c4e1f4919ed66f60970ed`, AC2
 `78a85f4dc9e889ab9b2b753596b125dd3c6cc3447f4b55a907cb95b507d60fd2`, and AC3
 `d8e7702365bf4f7e63402c9fa3bc7ef8d2250f0225e47b6db98aa1eeabe4ba11`.
+
+### CS-41 binding review (2026-10-08)
+
+Independent review approved the three CS-41 authored bindings as planned
+manual proposal/inventory procedures. AC1 is source-backed against the actual
+market routes and schema inventory and names future owner-isolation execution
+without claiming it ran. AC2 is proposal-only with explicit synthetic identity,
+provenance, nullable-fact, legal-source, coverage and rollback semantics. AC3
+reviews negative-case coverage and the AR-41 architecture/security gate while
+separating documented defaults from proposed limits; no runtime rejection,
+implementation, legal approval or hosted evidence is claimed.
+
+| Binding | Effective digest | Validator receipt hash |
+| --- | --- | --- |
+| CS-41 AC1 | `ff2fbfe66097f84f65ce2d2c8b78ea474b60d0857c77443f24157681c5046726` | `ff2fbfe66097f84f65ce2d2c8b78ea474b60d0857c77443f24157681c5046726` |
+| CS-41 AC2 | `b7a8446b8ac0ff3cc4bb955c62d8db84842c13110dcea94e4c35412768387d0a` | `b7a8446b8ac0ff3cc4bb955c62d8db84842c13110dcea94e4c35412768387d0a` |
+| CS-41 AC3 | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` | `97c0b32f898b5550e97d4a88ae02f933035fcd9184bdb558776eab325c5eb2ce` |
+
+These receipts approve authored binding content only; the named matrix,
+implementation, manual approval and runtime/hosted evidence remain future
+gates. No whole-ticket approval or workflow promotion is claimed.
