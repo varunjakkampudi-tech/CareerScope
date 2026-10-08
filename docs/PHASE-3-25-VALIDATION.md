@@ -7,6 +7,38 @@ subsequent local checkpoint; obtain its exact SHA from Git and the final respons
 
 This is local evidence, not hosted CI or readiness approval.
 
+## Continuation checkpoint: CS-46 and serialized specification-test diagnosis
+
+Observed on 2026-10-08 with bundled Node 24.19.0. The CS-46 contract
+specification was independently reviewed and approved as implementation-ready;
+its three acceptance-criteria bindings remain planned verification, not runtime
+evidence. The generated artifacts were regenerated and checked deterministically
+with zero changed files.
+
+The apparent specification-test hang was isolated with the serialized command:
+
+`node --test --test-name-pattern='CS-80' scripts/ticket-specifications.test.mjs`
+
+The command completed successfully (9 passed, 0 failed, 0 skipped, exit 0) in
+238.5405924 seconds. The nine slow cases are the CS-80 git-history/rolling
+manifest and checkpoint tests. They exercise immutable-source, predecessor,
+delta and fail-closed manifest behavior; no test failure, teardown defect or
+deterministic deadlock was observed, and no retry, skip or assertion weakening
+was introduced. The full specification suite has not been reclassified as a
+fresh full-suite result from this filtered run; it remains a separate required
+validation command.
+
+Current post-CS-46 structural metrics are recorded by
+`.ai/ticket-specification-coverage.json`: 81/216 approved specifications,
+275/906 reviewed exact AC mappings, 378 open findings, and unchanged workflow
+distribution (BACKLOG 141, TODO 0, IN_PROGRESS 0, QA 5, UAT 70, PROD 0).
+
+The local checkpoint is `d4b071b817fb6c047ee1125527cb5cc42932e61f`. A normal
+push was attempted after confirming the remote was an ancestor, but GitHub
+returned `Repository not found` for the configured origin. This is an external
+repository/authentication blocker; no force-push, merge or deployment was
+performed. The local working tree is clean.
+
 ## Remediation checkpoint validation
 
 Starting SHA: `3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14`. Node 24.19.0.
