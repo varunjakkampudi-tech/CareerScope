@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "41a21c04e8d6ec774b90f33f78c90013f1e6f9dfca46f21826887288feb9b215",
+    ".ai/ticket-specification-policy.json": "0a85f7cbac7f3d164bee85d979616dc0a5fd468e5a44ef98baaa55663f0f763b",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "8f89b853800160826ad7340c3e80b499ca5cd3aabf0dd0aa756a0310af6888e0",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "ad7eb4809f8dba882550fbe5a7f272a040567e02750b8a971fe4fea428d3f1b2",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -15223,7 +15223,7 @@
       "verification": [
         {
           "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "Each applicable state is explicit and non-sensitive, keyboard focus remains operable, and error/status semantics have accessible names; unsupported states are NOT_APPLICABLE.",
+          "expectedCheck": "Each applicable state is explicit and non-sensitive, keyboard focus remains operable, and error/status semantics have accessible names; stale-revision is recorded NOT_APPLICABLE and unsupported combinations are not treated as PASS.",
           "candidateCommand": null,
           "evidenceRequired": "axe-keyboard-state-report.json",
           "automationStatus": "PLANNED",
@@ -15235,10 +15235,10 @@
       "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
       "exactBindings": [
         {
-          "preconditions": "Run route fixtures for empty, unavailable, error, unauthorized, expired-session and stale-revision states where the underlying contract supports them.",
+          "preconditions": "Run the explicit current-surface matrix: public/empty/error states for PAGES_PUBLIC_ROOT; pending/loading/error and signed-out/expired-session states for NEXT_AUTH_ROOT. Stale-revision is NOT_APPLICABLE because neither current metadata surface has a revision mutation contract.",
           "setup": "Use synthetic server responses and keyboard traversal only; no live session or data.",
           "procedure": "CS-109-AC4-metadata-state-accessibility",
-          "assertion": "Each applicable state is explicit and non-sensitive, keyboard focus remains operable, and error/status semantics have accessible names; unsupported states are NOT_APPLICABLE.",
+          "assertion": "Each applicable state is explicit and non-sensitive, keyboard focus remains operable, and error/status semantics have accessible names; stale-revision is recorded NOT_APPLICABLE and unsupported combinations are not treated as PASS.",
           "expectedResult": "No failure state becomes an empty success and no private content is exposed during auth/session errors.",
           "type": "AUTOMATED_ACCESSIBILITY",
           "testStatus": "PLANNED",

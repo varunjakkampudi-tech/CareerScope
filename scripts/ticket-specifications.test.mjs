@@ -878,7 +878,10 @@ test('216 source-linked drafts preserve registry and canonical stages without re
     ).disposition,
     'RESOLVED',
   );
-  assert.equal(model.findings.length, 644);
+  // CS-109's Phase 0 design disposition is now explicitly
+  // DESIGN_PARTIAL_NON_BLOCKING, so its former PARTIAL_DESIGN finding is
+  // reclassified rather than retained as an open finding.
+  assert.equal(model.findings.length, 643);
   for (const id of ['CS-45', 'CS-107', 'CS-108'])
     assert.equal(model.designTraceability.find((entry) => entry.ticketId === id).ui, true);
   assert.ok(

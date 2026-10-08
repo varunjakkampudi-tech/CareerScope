@@ -1320,3 +1320,23 @@ hosted evidence or ticket promotion is claimed.
 
 Reviewer: `/root/cs78_review`. Approval scope is current authored
 specification content and exact planned/manual bindings only.
+
+### CS-109 / CS-110 closure-cost review (2026-10-09)
+
+The post-suite closure review did not promote either ticket. CS-109 now
+explicitly limits the current metadata contract to the staged Pages public
+artifact and the private Next auth root; its AC4 state matrix distinguishes
+applicable public and auth states and records stale-revision as
+`NOT_APPLICABLE`. Its Phase 0 design disposition is
+`DESIGN_PARTIAL_NON_BLOCKING`. An owner decision is still required before
+adopting that two-row scope as the authoritative product boundary, so the
+ticket remains `DRAFT` / `OWNER_DECISION_REQUIRED`.
+
+The independent CS-109 review returned `REVISE` for the previous bytes and
+identified the exact corrections above; no runtime metadata checker exists in
+the repository, so its planned procedure remains `PLANNED`, not executed
+evidence. CS-110 remains `DRAFT` / `OWNER_DECISION_REQUIRED` because the
+reviewer role and grant source, revocation/resubmission policy, photo policy,
+and restricted-data retention values are not settled by authoritative sources.
+No approval receipt or implementation evidence was fabricated for either
+ticket.
