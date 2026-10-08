@@ -491,11 +491,16 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       const disposition =
         item.code === 'EXACT_AC_TEST_BINDING' && exactBound
           ? 'RESOLVED'
-          : item.code === 'OWNER_DECISION' && decision
+          : item.code === 'OWNER_DECISION' &&
+              decision &&
+              !policy.findingDispositions?.[ticket.id]?.[item.code]
             ? 'RECLASSIFIED'
             : (policy.findingDispositions?.[ticket.id]?.[item.code]?.disposition ?? 'OPEN');
       const dispositionOverride = policy.findingDispositions?.[ticket.id]?.[item.code];
       item.disposition = disposition;
+      if (dispositionOverride?.reason) item.reason = dispositionOverride.reason;
+      if (dispositionOverride?.requiredEvidence)
+        item.requiredEvidence = dispositionOverride.requiredEvidence;
       findings.push({
         ticketId: ticket.id,
         ...item,
@@ -846,6 +851,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     }
     if (refinement) {
       for (const [section, requirements] of Object.entries(refinement.additionalRequirements)) {
+        if (section === 'sectionTextReplacements') continue;
         sections[section] = present(
           [
             ...(sections[section].requirements ?? []),
@@ -883,6 +889,25 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
               'This section is not applicable to the ticket-specific scope.',
           );
         }
+      }
+      for (const [section, replacements] of Object.entries(
+        refinement.sectionTextReplacements ??
+          refinement.additionalRequirements?.sectionTextReplacements ??
+          {},
+      )) {
+        if (
+          !Array.isArray(replacements) ||
+          !sections[section] ||
+          !Array.isArray(sections[section].requirements)
+        )
+          continue;
+        sections[section].requirements = sections[section].requirements.map((requirement) => {
+          if (typeof requirement !== 'string') return requirement;
+          return replacements.reduce(
+            (value, [from, to]) => (value.includes(from) ? value.replaceAll(from, to) : value),
+            requirement,
+          );
+        });
       }
     }
     if (processScope) {

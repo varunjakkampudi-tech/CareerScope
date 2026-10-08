@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "493373dc3ff33865bc03b1b2f9ec01b95cfb699c9f16ae1f4d83db8a706c0dab",
+    ".ai/ticket-specification-policy.json": "fc8e1e5ff8a56b997acf8324eb1fa9e55f66490981590b81744ef4de247251c5",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d50970a94c9b45aa11fe1e0d6c4d540b1bd65e0e4a0ee52557f0781a8bbf6f97"
@@ -1469,17 +1469,36 @@
       "criterion": "One shared set of loading, empty and error components used by every signed-in route",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-13-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Every current signed-in async-bearing route/consumer has the shared component for each page-level state it renders, and no applicable state is left unexplained.",
+          "candidateCommand": null,
+          "evidenceRequired": "Redacted route/component census, exact commit SHA and component assertion output.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA reviewer",
+          "releaseGate": "CS-13-AC1-SHARED-STATE-CENSUS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "The canonical signed-in route manifest and async-bearing component census are available from the current source tree; the sign-in route and account form are explicitly outside the signed-in scope.",
+          "setup": "Build a synthetic owner session and enumerate every current authenticated route and component that renders page-level loading, empty or error state. Inspect imports and rendered state components without using production data.",
+          "procedure": "Build a route-to-consumer matrix from the authenticated route manifest and async-bearing source census. For every consumer that renders a page-level loading state, assert LoadingState is imported from the shared ui-states module; for every consumer that renders a page-level empty state, assert EmptyState is imported; for every consumer that renders a page-level error state, assert ErrorState is imported. Assert each signed-in route has all applicable states or an explicit unavailable-state rationale, and assert the unauthenticated sign-in surface is not counted.",
+          "assertion": "Every current signed-in async-bearing route/consumer has the shared component for each page-level state it renders, and no applicable state is left unexplained.",
+          "expectedResult": "The census produces a complete route/component list with no unexplained signed-in consumer using an ad hoc page-level state.",
+          "testName": "CS-13 shared state census covers every signed-in route and applicable state",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-ui-states.component.test.ts::CS-13-AC1 route-consumer-state matrix",
+          "fixtures": "Synthetic authenticated route manifest, component import graph and redacted state fixtures.",
+          "negativeCase": "A signed-in async-bearing component without a shared state import, or an unauthenticated route incorrectly counted as signed-in, fails the census.",
+          "evidenceArtifact": "Redacted route/component census, exact commit SHA and component assertion output.",
+          "reviewer": "Frontend QA reviewer",
+          "releaseGate": "CS-13-AC1-SHARED-STATE-CENSUS",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT"
+        }
+      ]
     },
     {
       "ticketId": "CS-13",
@@ -1487,17 +1506,36 @@
       "criterion": "Every error state says what failed and offers the next action, never a bare message",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-13-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "No page-level error state renders only a raw transport message, unnamed default title or unnamed retry action.",
+          "candidateCommand": null,
+          "evidenceRequired": "Component assertion output with accessible names and redacted rendered state snapshots.",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility QA reviewer",
+          "releaseGate": "CS-13-AC2-ERROR-STATE-CONTRACT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "Synthetic error fixtures cover representative inline and block ErrorState variants for signed-in routes.",
+          "setup": "Render every in-scope page-level error consumer from the AC1 route/consumer matrix with a synthetic transport error and a retry-capable action where recovery is supported; terminal errors must declare why no action exists.",
+          "procedure": "For each matrix row assert the rendered accessible error state contains the failed operation name, safe recovery detail and a named next action when retry/clear is available. Mutate one row to remove the operation name and assert the test fails.",
+          "assertion": "No page-level error state renders only a raw transport message, unnamed default title or unnamed retry action.",
+          "expectedResult": "Each representative signed-in error exposes an operation-specific accessible name/detail and the correct recovery action without leaking transport secrets.",
+          "testName": "CS-13 every page-level error state identifies operation and recovery",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-ui-states.component.test.ts::CS-13-AC2 route-consumer error matrix",
+          "fixtures": "Synthetic request failures, retry callbacks and redacted operation labels.",
+          "negativeCase": "A bare error message, omitted operation title or silent retry control fails the assertion.",
+          "evidenceArtifact": "Component assertion output with accessible names and redacted rendered state snapshots.",
+          "reviewer": "Accessibility QA reviewer",
+          "releaseGate": "CS-13-AC2-ERROR-STATE-CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT"
+        }
+      ]
     },
     {
       "ticketId": "CS-13",
@@ -1505,17 +1543,36 @@
       "criterion": "Empty states distinguish \"nothing yet\" from \"nothing matches your filters\"",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-13-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Nothing-yet and nothing-matches-filter states remain distinct and truthful.",
+          "candidateCommand": null,
+          "evidenceRequired": "Rendered text/action assertions and redacted component snapshots for both branches.",
+          "automationStatus": "PLANNED",
+          "owner": "Product QA reviewer",
+          "releaseGate": "CS-13-AC3-EMPTY-STATE-SEMANTICS"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "Synthetic fixtures provide both zero records and records excluded by an active status/filter while a sibling filter contains records.",
+          "setup": "Render the saved/jobs empty-state component once with no records and once with records present outside the active filter; keep all fixture records synthetic and owner-scoped.",
+          "procedure": "Assert the zero-record branch says the user has not added a record yet and exposes the appropriate discovery action. Assert the filtered-empty branch names the active filter and indicates that another filter contains records; assert the two branches have distinct expected copy and actions.",
+          "assertion": "Nothing-yet and nothing-matches-filter states remain distinct and truthful.",
+          "expectedResult": "The component renders the correct branch for each fixture without fabricating counts, records or filter options.",
+          "testName": "CS-13 empty states distinguish no records from filtered results",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-ui-states.component.test.ts::CS-13-AC3 empty branch distinction",
+          "fixtures": "Synthetic owner-scoped records, active status filter and sibling filter with records.",
+          "negativeCase": "Using the same generic empty message for both branches, inventing records/counts or hiding the active filter fails the assertion.",
+          "evidenceArtifact": "Rendered text/action assertions and redacted component snapshots for both branches.",
+          "reviewer": "Product QA reviewer",
+          "releaseGate": "CS-13-AC3-EMPTY-STATE-SEMANTICS",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT"
+        }
+      ]
     },
     {
       "ticketId": "CS-13",
@@ -1524,16 +1581,35 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-13-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "All supported engines and required widths render the shared state contract deterministically without overflow or inaccessible recovery controls.",
+          "candidateCommand": null,
+          "evidenceRequired": "Per-engine/version/viewport browser output, axe/keyboard results where registered, exact SHA and redacted screenshots.",
+          "automationStatus": "PLANNED",
+          "owner": "Browser QA reviewer",
+          "releaseGate": "CS-13-AC4-BROWSER-RESPONSIVE-MATRIX"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "The current browser harness, supported Chromium/Firefox/WebKit engines and isolated synthetic authenticated fixtures are available.",
+          "setup": "Run the current UI harness against the signed-in state matrix at CSS widths 320, 768 and 1440 for Chromium, Firefox and WebKit. For each route/consumer in the AC1 matrix, configure a deterministic delayed synthetic response that keeps the request pending long enough to observe LoadingState before resolving to empty or error. Record engine/version and viewport for every result.",
+          "procedure": "At each engine/viewport pair, assert LoadingState appears during the delayed response, then exercise nothing-yet, filtered-empty and error/retry states; assert no ordinary-content horizontal overflow, accessible operation names and expected recovery controls. Treat an unavailable engine as NOT_RUN rather than PASS.",
+          "assertion": "All supported engines and required widths render the shared state contract deterministically without overflow or inaccessible recovery controls.",
+          "expectedResult": "Nine engine/viewport combinations produce explicit pass results, or any unavailable combination is explicitly recorded as NOT_RUN with the runner error and remains a release gate.",
+          "testName": "CS-13 shared states pass three-engine responsive matrix including loading",
+          "testFileOrProcedureId": "PLANNED:scripts/check-ui.ts::CS-13-AC4 shared-state-responsive-matrix",
+          "fixtures": "Synthetic authenticated state fixtures, responsive viewport matrix and redacted browser logs.",
+          "negativeCase": "A missing engine, unsupported viewport, overflow, unnamed state or silent error is not converted into a pass.",
+          "evidenceArtifact": "Per-engine/version/viewport browser output, axe/keyboard results where registered, exact SHA and redacted screenshots.",
+          "reviewer": "Browser QA reviewer",
+          "releaseGate": "CS-13-AC4-BROWSER-RESPONSIVE-MATRIX",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT"
+        }
+      ]
     },
     {
       "ticketId": "CS-14",
@@ -2123,16 +2199,18 @@
           "reviewStatus": "DRAFT",
           "type": "AUTOMATED_BROWSER",
           "preconditions": "Authenticated candidate owns a synthetic canonical job and its current discovery disposition; application lifecycle is independent.",
-          "setup": "Open detail at 320px and keyboard-navigate Save, Dismiss/Restore and Apply controls. Stub the registered owner-scoped disposition contract and external navigation boundary; persistence and audit proof is delegated to the service-backed integration binding below.",
-          "procedure": "Invoke Save and assert the existing owner-scoped saved request. Invoke Dismiss and Restore and assert the UI sends the distinct owner-plus-canonical-job operations with the current revision. Invoke Apply and assert only the validated external destination opens; no Application lifecycle mutation request is issued.",
+          "setup": "Until the owner selects lead status versus separate discovery disposition, verify only that Save and Apply are distinct controls, external navigation never mutates application lifecycle, and any dismissal control is visibly gated as unavailable rather than invoking an invented route.",
+          "procedure": "CS-17 detail-actions common-invariants procedure",
           "assertion": "Detail actions are named and operable; the browser sends separate reversible-disposition and restore requests with revision context, and opening an external application destination never marks Applied or changes another lifecycle state.",
           "expectedResult": "The browser presents separate Save, dismiss/restore and apply controls and emits the correct server-owned requests; persistence, ownership, audit and revision outcomes are proven by the integration binding.",
           "testName": "CS-17 detail actions operable",
           "testFileOrProcedureId": "CS-17-DETAIL-ACTIONS",
           "fixtures": "Synthetic posting and owner.",
-          "negativeCase": "Missing/unnamed action, non-owner mutation, irreversible dismissal, implicit restore, lifecycle mutation from dismissal or Applied transition from external navigation fails.",
+          "negativeCase": "No owner decision, unknown representation, or unavailable contract must remain DRAFT/OWNER_DECISION_REQUIRED; it must not be converted into a passing persistence assertion.",
           "evidenceArtifact": "DOM/action response log.",
-          "releaseGate": "CS-17-ACTIONS"
+          "releaseGate": "CS-17-ACTIONS",
+          "action": "Run the browser fixture with both representation options recorded as pending; do not stub or assert a representation-specific dismiss/restore endpoint before the owner decision.",
+          "failureCase": "A browser result that assumes one representation, silently marks Applied, or mutates lifecycle from external navigation is a specification failure."
         },
         {
           "reviewer": "QA and data-integrity reviewer",
@@ -2140,16 +2218,18 @@
           "reviewStatus": "DRAFT",
           "type": "AUTOMATED_INTEGRATION",
           "preconditions": "Authenticated owner O1, canonical job J1 owned by the discovery source, isolated PostgreSQL test database, and a persisted disposition revision are available.",
-          "setup": "Create O1/J1 with an active discovery disposition and revision R1; create a second owner O2 and retain a foreign-owner control. Use the registered disposition repository/API contract only.",
-          "procedure": "Submit the owner-scoped dismiss operation for O1/J1 with R1, read the disposition as O1 after a fresh service/database boundary, restore it with the returned revision, then repeat with O2 and a stale revision.",
+          "setup": "Do not execute the service-backed disposition fixture until the owner selects the representation and the corresponding route/schema contract is registered.",
+          "procedure": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4-after-owner-decision",
           "assertion": "Dismissal is persisted against O1/J1, survives a fresh read, produces an auditable reversible change, restore clears only the discovery disposition without changing application lifecycle, O2 receives the canonical ownership error, and the stale revision receives the canonical conflict without overwriting data.",
           "expectedResult": "The service-backed contract proves ownership, persistence, auditability, reversibility and revision safety independently of browser interception; external navigation never creates Applied state.",
           "testName": "CS-17 AC4 persists reversible owner disposition with revision and ownership protection",
           "testFileOrProcedureId": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4",
           "fixtures": "Isolated PostgreSQL owner/job/disposition fixtures O1/J1/O2 with revision R1; no production data.",
-          "negativeCase": "Missing canonical job, non-owner mutation, stale revision, duplicate dismiss, implicit restore, lifecycle mutation or external URL navigation marking Applied must fail with no unauthorized persistence.",
+          "negativeCase": "No representation-specific persistence, restore or audit assertion may be labeled verified before the decision and contract exist.",
           "evidenceArtifact": "Future integration test output containing status/error codes, persisted revision/audit assertions and redacted correlation identifiers only.",
-          "releaseGate": "CS-17-DISPOSITION-INTEGRITY"
+          "releaseGate": "CS-17-DISPOSITION-INTEGRITY",
+          "action": "After that decision only, instantiate the selected owner/job/revision fixture and run the representation-specific integration procedure.",
+          "failureCase": "A missing owner decision or unregistered route/schema is an explicit owner-decision gate, not a database test failure."
         }
       ]
     },
@@ -3771,17 +3851,17 @@
           "reviewStatus": "DRAFT",
           "type": "MANUAL_ACCESSIBILITY",
           "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
-          "setup": "Render the current authenticated shell with an isolated synthetic owner at 1440px and 320px; identify #main-content as the authenticated target and retain #workspace-content only for the unauthenticated sign-in fixture.",
+          "setup": "Use a sanitized fixture environment with synthetic configuration only; do not load a real .env or provider credentials. Render the current authenticated shell at 1440px and 320px with #main-content.",
           "fixtureOrData": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
-          "action": "Run npm run test:ui through scripts/check-ui.ts and execute the current-shell hiddenSkip procedure; record the historical failure only as diagnosis input.",
-          "repositoryCommand": "npm run test:ui",
-          "procedure": "scripts/check-ui.ts::authenticated-shell-hiddenSkip::CS-31-AC1",
+          "action": "Run node --import tsx scripts/check-ui.ts with the sanitized fixture environment and execute the current authenticated-shell skip-link procedure; record the historical failure only as diagnosis input.",
+          "repositoryCommand": "node --import tsx scripts/check-ui.ts",
+          "procedure": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC1",
           "assertion": "the current authenticated-shell fixture targets #main-content and records a deterministic pass/failure with exact SHA and viewport; a missing target landmark is a negative-control failure, not a selector fallback",
           "expectedResult": "the current shell contract is evaluated against #main-content without treating the historical hiddenSkip report as current execution evidence",
           "testName": "CS-31-AC1 exact verification",
-          "testFileOrProcedureId": "scripts/check-ui.ts::authenticated-shell-hiddenSkip::CS-31-AC1",
+          "testFileOrProcedureId": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC1",
           "fixtures": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
-          "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
+          "negativeCase": "Remove #main-content from the synthetic shell and assert the named deterministic missing-landmark failure; do not test owner mismatch, mutation or API denial.",
           "evidenceArtifact": "Future CS-31-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-31-AC1-RELEASE-GATE"
         }
@@ -3811,17 +3891,17 @@
           "reviewStatus": "DRAFT",
           "type": "MANUAL_ACCESSIBILITY",
           "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
-          "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC2 procedure.",
+          "setup": "Use the sanitized synthetic shell fixture at 1440px and 320px with keyboard focus; no saved-job/API dependency is required.",
           "fixtureOrData": "saved route at affected and narrow-mobile viewports with keyboard focus",
-          "action": "Run npm run test:ui and inspect the named CS-31-AC2 procedure output.",
-          "repositoryCommand": "npm run test:ui",
-          "procedure": "scripts/check-ui.ts::hiddenSkip::CS-31-AC2",
+          "action": "Run node --import tsx scripts/check-ui.ts with the sanitized fixture environment and inspect the authenticated-shell focus procedure output.",
+          "repositoryCommand": "node --import tsx scripts/check-ui.ts",
+          "procedure": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC2",
           "assertion": "when unfocused the skip link is not visible to the visual viewport; on keyboard focus it is visible and document.activeElement is the skip link; activation focuses the main landmark",
           "expectedResult": "when unfocused the skip link is not visible to the visual viewport; on keyboard focus it is visible and document.activeElement is the skip link; activation focuses the main landmark",
           "testName": "CS-31-AC2 exact verification",
-          "testFileOrProcedureId": "scripts/check-ui.ts::hiddenSkip::CS-31-AC2",
+          "testFileOrProcedureId": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC2",
           "fixtures": "saved route at affected and narrow-mobile viewports with keyboard focus",
-          "negativeCase": "stale, unavailable, malformed, or conflicting input must produce the named safe failure",
+          "negativeCase": "Keep the target landmark present but omit the skip-link focus style or focus transfer and assert the exact keyboard/focus failure; do not substitute stale-data or authorization cases.",
           "evidenceArtifact": "Future CS-31-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-31-AC2-RELEASE-GATE"
         }
@@ -3851,17 +3931,17 @@
           "reviewStatus": "DRAFT",
           "type": "MANUAL_ACCESSIBILITY",
           "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
-          "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC3 procedure.",
+          "setup": "Use the sanitized synthetic shell fixture and run the named UI check for Chromium, Firefox and WebKit at 1440px and 320px; unavailable engines are NOT_RUN.",
           "fixtureOrData": "saved route at affected and narrow-mobile viewports with keyboard focus",
-          "action": "Run npm run test:ui and inspect the named CS-31-AC3 procedure output.",
-          "repositoryCommand": "npm run test:ui",
-          "procedure": "scripts/check-ui.ts::hiddenSkip::CS-31-AC3",
+          "action": "Run node --import tsx scripts/check-ui.ts with the sanitized fixture environment and inspect the authenticated-shell browser matrix output.",
+          "repositoryCommand": "node --import tsx scripts/check-ui.ts",
+          "procedure": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC3",
           "assertion": "the focused procedure records separate Chromium, Firefox and WebKit results at the affected and narrow-mobile viewports, using NOT_RUN for unavailable engines",
           "expectedResult": "the focused procedure records separate Chromium, Firefox and WebKit results at the affected and narrow-mobile viewports, using NOT_RUN for unavailable engines",
           "testName": "CS-31-AC3 exact verification",
-          "testFileOrProcedureId": "scripts/check-ui.ts::hiddenSkip::CS-31-AC3",
+          "testFileOrProcedureId": "scripts/check-ui.ts::authenticated-shell-main-content::CS-31-AC3",
           "fixtures": "saved route at affected and narrow-mobile viewports with keyboard focus",
-          "negativeCase": "duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op",
+          "negativeCase": "An unavailable browser engine must be recorded as NOT_RUN rather than PASS, and a duplicate/unsupported runner invocation must not create evidence.",
           "evidenceArtifact": "Future CS-31-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-31-AC3-RELEASE-GATE"
         }
@@ -3874,7 +3954,7 @@
       "verification": [
         {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
+          "expectedCheck": "the procedure captures the actual screenshot, reads the committed expected baseline for chromium-search-light-320, and returns the comparator result; a diff artifact is produced only when the comparison mismatches",
           "candidateCommand": null,
           "evidenceRequired": "Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "automationStatus": "PLANNED",
@@ -3891,17 +3971,17 @@
           "reviewStatus": "DRAFT",
           "type": "VISUAL_REGRESSION",
           "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
-          "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC1 procedure.",
+          "setup": "Use the pinned chromium-search-light-320 publication fixture and comparator-owned expected baseline; store only synthetic expected/actual/diff artifacts.",
           "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
           "action": "Run npm run pages:visual and inspect the named CS-32-AC1 pixel/diff output.",
           "repositoryCommand": "npm run pages:visual",
           "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
-          "assertion": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
-          "expectedResult": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
+          "assertion": "the procedure captures the actual screenshot, reads the committed expected baseline for chromium-search-light-320, and returns the comparator result; a diff artifact is produced only when the comparison mismatches",
+          "expectedResult": "the comparator result is recorded with the exact command, commit SHA and viewport metadata by the surrounding evidence procedure; do not claim that the runner itself emits a diff on passing comparisons",
           "testName": "CS-32-AC1 exact verification",
           "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
           "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-          "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
+          "negativeCase": "Change one fixture pixel and assert scripts/check-pages-ui.mjs fails the comparator without updating the baseline.",
           "evidenceArtifact": "Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-32-AC1-RELEASE-GATE"
         }
@@ -3914,7 +3994,7 @@
       "verification": [
         {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
+          "expectedCheck": "a mismatch is rejected according to the comparator's configured threshold and the committed baseline; any baseline change requires separate visual-review evidence and is not silently accepted by the runner",
           "candidateCommand": null,
           "evidenceRequired": "Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "automationStatus": "PLANNED",
@@ -3931,17 +4011,17 @@
           "reviewStatus": "DRAFT",
           "type": "VISUAL_REGRESSION",
           "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
-          "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC2 procedure.",
+          "setup": "Use the same pinned comparator fixture and record baseline identity, renderer, viewport and threshold metadata.",
           "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
           "action": "Run npm run pages:visual and inspect the named CS-32-AC2 pixel/diff output.",
           "repositoryCommand": "npm run pages:visual",
           "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
-          "assertion": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
-          "expectedResult": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
+          "assertion": "a mismatch is rejected according to the comparator's configured threshold and the committed baseline; any baseline change requires separate visual-review evidence and is not silently accepted by the runner",
+          "expectedResult": "the runner reports pass or mismatch using its actual comparator behavior, while baseline identity, viewport and SHA are recorded by the surrounding evidence procedure",
           "testName": "CS-32-AC2 exact verification",
           "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
           "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-          "negativeCase": "stale, unavailable, malformed, or conflicting input must produce the named safe failure",
+          "negativeCase": "Use a stale/mismatched baseline or unsupported comparator metadata and assert a named comparator error; do not use owner/replay/API cases.",
           "evidenceArtifact": "Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-32-AC2-RELEASE-GATE"
         }
@@ -3971,17 +4051,17 @@
           "reviewStatus": "DRAFT",
           "type": "AUTOMATED_BROWSER",
           "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
-          "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC3 procedure.",
+          "setup": "Use the actual synthetic jobs and browser state created by scripts/check-public-workspace.mjs, invoked through npm run pages:workspace:test; do not provide image fixtures for this interaction check.",
           "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
           "action": "Run npm run pages:workspace:test and inspect the registered workspace interaction output; keep manual WCAG review separate.",
           "repositoryCommand": "npm run pages:workspace:test",
-          "procedure": "scripts/check-pages-ui.mjs::workspace-interaction::CS-32-AC3",
+          "procedure": "scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
           "assertion": "workspace interaction checks rerun with unchanged publication boundaries and each supported engine result separately recorded; this procedure does not claim axe or manual WCAG evidence.",
           "expectedResult": "Both named procedures complete or explicitly report NOT_RUN for an unavailable engine; no snapshot allowlist or publication boundary changes.",
           "testName": "CS-32-AC3 exact verification",
-          "testFileOrProcedureId": "scripts/check-pages-ui.mjs::workspace-interaction::CS-32-AC3",
-          "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-          "negativeCase": "duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op",
+          "testFileOrProcedureId": "scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
+          "fixtures": "Synthetic public workspace job fixtures and browser state registered by scripts/check-public-workspace.mjs.",
+          "negativeCase": "If the registered workspace fixture or browser engine is unavailable, record NOT_RUN with the runner error; do not classify missing API ownership or replay handling as a visual failure.",
           "evidenceArtifact": "Future CS-32-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-32-AC3-RELEASE-GATE"
         }

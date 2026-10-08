@@ -330,7 +330,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "unknownContracts": []
     },
     {
-      "requirement": "EXISTING_CONTRACT: GET /api/session returns authenticated boolean and optional opaque owner digest/CSRF/session identity. This is the existing endpoint consumed by the shell, not a new endpoint; the source design map's empty existingEndpoints list means no endpoint is introduced by CS-6, not that /api/session is absent. Private API routes independently enforce server session ownership. Do not expose provider tokens or accept client-supplied owner for route data.",
+      "requirement": "EXISTING_CONTRACT: GET /api/session is the existing endpoint consumed by the shell. Authenticated responses include authenticated, csrf, a stable hashed owner digest, email/phone and aiEnabled where configured; anonymous responses may include registrationEnabled and cognitoEnabled. It does not return a session identity field. The source design map's empty existingEndpoints list means no endpoint is introduced by CS-6. Private API routes independently enforce server session ownership. Do not expose provider tokens or accept client-supplied owner for route data.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
