@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "fc8e1e5ff8a56b997acf8324eb1fa9e55f66490981590b81744ef4de247251c5",
+    ".ai/ticket-specification-policy.json": "b508f9e6f0eb4931550dd82b465b2b041189ab3328e5d3c9bdadbd5ce5dafe1a",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d50970a94c9b45aa11fe1e0d6c4d540b1bd65e0e4a0ee52557f0781a8bbf6f97"
@@ -1507,7 +1507,7 @@
       "verification": [
         {
           "type": "AUTOMATED_COMPONENT",
-          "expectedCheck": "No page-level error state renders only a raw transport message, unnamed default title or unnamed retry action.",
+          "expectedCheck": "No page-level error state renders only a raw transport message, unnamed default title or unnamed retry action; each row matches its exact operation-specific expected text.",
           "candidateCommand": null,
           "evidenceRequired": "Component assertion output with accessible names and redacted rendered state snapshots.",
           "automationStatus": "PLANNED",
@@ -1522,8 +1522,8 @@
           "type": "AUTOMATED_COMPONENT",
           "preconditions": "Synthetic error fixtures cover representative inline and block ErrorState variants for signed-in routes.",
           "setup": "Render every in-scope page-level error consumer from the AC1 route/consumer matrix with a synthetic transport error and a retry-capable action where recovery is supported; terminal errors must declare why no action exists.",
-          "procedure": "For each matrix row assert the rendered accessible error state contains the failed operation name, safe recovery detail and a named next action when retry/clear is available. Mutate one row to remove the operation name and assert the test fails.",
-          "assertion": "No page-level error state renders only a raw transport message, unnamed default title or unnamed retry action.",
+          "procedure": "For each matrix row assert the rendered accessible error state contains the exact operation label from the fixture contract (for example `Could not load your saved leads.`, `Could not load these results`, `Could not cancel that search` or `Could not load your search history`), a safe recovery detail and the named next action when retry/clear is available. Mutate one row to remove the operation name and assert the test fails.",
+          "assertion": "No page-level error state renders only a raw transport message, unnamed default title or unnamed retry action; each row matches its exact operation-specific expected text.",
           "expectedResult": "Each representative signed-in error exposes an operation-specific accessible name/detail and the correct recovery action without leaking transport secrets.",
           "testName": "CS-13 every page-level error state identifies operation and recovery",
           "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-ui-states.component.test.ts::CS-13-AC2 route-consumer error matrix",
@@ -1544,7 +1544,7 @@
       "verification": [
         {
           "type": "AUTOMATED_COMPONENT",
-          "expectedCheck": "Nothing-yet and nothing-matches-filter states remain distinct and truthful.",
+          "expectedCheck": "Nothing-yet and nothing-matches-filter states remain distinct and match the exact current component contract without fabricated records or counts.",
           "candidateCommand": null,
           "evidenceRequired": "Rendered text/action assertions and redacted component snapshots for both branches.",
           "automationStatus": "PLANNED",
@@ -1559,8 +1559,8 @@
           "type": "AUTOMATED_COMPONENT",
           "preconditions": "Synthetic fixtures provide both zero records and records excluded by an active status/filter while a sibling filter contains records.",
           "setup": "Render the saved/jobs empty-state component once with no records and once with records present outside the active filter; keep all fixture records synthetic and owner-scoped.",
-          "procedure": "Assert the zero-record branch says the user has not added a record yet and exposes the appropriate discovery action. Assert the filtered-empty branch names the active filter and indicates that another filter contains records; assert the two branches have distinct expected copy and actions.",
-          "assertion": "Nothing-yet and nothing-matches-filter states remain distinct and truthful.",
+          "procedure": "Assert the zero-record branch uses the exact current contract `No leads with status X yet. Save a job from Search to add one here.` and exposes the Search discovery action. Assert the filtered-empty branch uses the exact current contract `No leads with status X. That is this status filter only - Y has leads; choose it above to see them.` and preserves the sibling-filter action. Assert the two branches have distinct expected copy and actions.",
+          "assertion": "Nothing-yet and nothing-matches-filter states remain distinct and match the exact current component contract without fabricated records or counts.",
           "expectedResult": "The component renders the correct branch for each fixture without fabricating counts, records or filter options.",
           "testName": "CS-13 empty states distinguish no records from filtered results",
           "testFileOrProcedureId": "PLANNED:apps/web/tests/shared-ui-states.component.test.ts::CS-13-AC3 empty branch distinction",
@@ -1581,7 +1581,7 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "All supported engines and required widths render the shared state contract deterministically without overflow or inaccessible recovery controls.",
+          "expectedCheck": "All supported engines and required widths render the shared state contract deterministically, with exact loading text and settled request cleanup, without overflow or inaccessible recovery controls.",
           "candidateCommand": null,
           "evidenceRequired": "Per-engine/version/viewport browser output, axe/keyboard results where registered, exact SHA and redacted screenshots.",
           "automationStatus": "PLANNED",
@@ -1595,9 +1595,9 @@
         {
           "type": "AUTOMATED_BROWSER",
           "preconditions": "The current browser harness, supported Chromium/Firefox/WebKit engines and isolated synthetic authenticated fixtures are available.",
-          "setup": "Run the current UI harness against the signed-in state matrix at CSS widths 320, 768 and 1440 for Chromium, Firefox and WebKit. For each route/consumer in the AC1 matrix, configure a deterministic delayed synthetic response that keeps the request pending long enough to observe LoadingState before resolving to empty or error. Record engine/version and viewport for every result.",
-          "procedure": "At each engine/viewport pair, assert LoadingState appears during the delayed response, then exercise nothing-yet, filtered-empty and error/retry states; assert no ordinary-content horizontal overflow, accessible operation names and expected recovery controls. Treat an unavailable engine as NOT_RUN rather than PASS.",
-          "assertion": "All supported engines and required widths render the shared state contract deterministically without overflow or inaccessible recovery controls.",
+          "setup": "Run the current UI harness against the signed-in state matrix at CSS widths 320, 768 and 1440 for Chromium, Firefox and WebKit. For each route/consumer in the AC1 matrix, configure a deterministic delayed synthetic response that remains pending until the test observes the live `role=status` element containing that fixture's exact LoadingState message (for example `Loading leads...`, `Loading results…` or `Loading workspace…`), then resolve the response and await request cleanup before the next route. Record engine/version and viewport for every result.",
+          "procedure": "At each engine/viewport pair, assert the live `role=status` loading element is visible during the delayed response and disappears or is replaced after resolution; then exercise nothing-yet, filtered-empty and error/retry states. Assert no ordinary-content horizontal overflow, accessible operation names and expected recovery controls. Treat an unavailable engine as NOT_RUN rather than PASS.",
+          "assertion": "All supported engines and required widths render the shared state contract deterministically, with exact loading text and settled request cleanup, without overflow or inaccessible recovery controls.",
           "expectedResult": "Nine engine/viewport combinations produce explicit pass results, or any unavailable combination is explicitly recorded as NOT_RUN with the runner error and remains a release gate.",
           "testName": "CS-13 shared states pass three-engine responsive matrix including loading",
           "testFileOrProcedureId": "PLANNED:scripts/check-ui.ts::CS-13-AC4 shared-state-responsive-matrix",
