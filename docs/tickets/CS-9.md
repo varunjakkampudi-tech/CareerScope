@@ -1,6 +1,6 @@
 # CS-9 — V2 tests in CI cover no database, queue or browser path
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
+Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
 
 ## 1. identity
 
@@ -140,9 +140,23 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
     "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
     "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
-    "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+    "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot.",
+    {
+      "requirement": "Do not modify resume parsing, child-process permissions or application domain behavior under CS-9; any parser defect remains a separately sourced/runtime ticket and is not acceptance evidence for CI registration.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    }
   ],
-  "sources": ["docs/PROJECT-STATE.md", "docs/ARCHITECTURE.md", ".ai/backlog.json#CS-9"]
+  "sources": [
+    "docs/PROJECT-STATE.md",
+    "docs/ARCHITECTURE.md",
+    ".ai/backlog.json#CS-9",
+    "package.json",
+    ".github/workflows/ci.yml",
+    "packages/core/src/database.test.ts",
+    "packages/core/src/bull-queue.test.ts",
+    "scripts/engineering-runner.mjs"
+  ]
 }
 ```
 
@@ -284,30 +298,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ```json
 {
-  "applicability": "APPLICABLE",
-  "requirements": [
-    {
-      "sourceMapping": null,
-      "registrationAuthority": "apps/api/src/app.ts",
-      "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-      "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-      "unknownContracts": []
-    },
-    {
-      "requirement": "NOT_APPLICABLE to new product API: CI service readiness, test process outcomes and report classification are the contracts; preserve application APIs under test.",
-      "reviewStatus": "DRAFT",
-      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-    }
-  ],
-  "sources": [
-    ".ai/backlog.json#CS-9",
-    "docs/API-SURFACE.md",
-    "package.json",
-    ".github/workflows/ci.yml",
-    "packages/core/src/database.test.ts",
-    "packages/core/src/bull-queue.test.ts",
-    "scripts/engineering-runner.mjs"
-  ]
+  "applicability": "NOT_APPLICABLE",
+  "reason": "CI service-backed test orchestration is not a new application endpoint contract."
 }
 ```
 
@@ -371,13 +363,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 {
   "applicability": "APPLICABLE",
   "requirements": [
-    "none directly; the resume-parser fix REMOVES a permanently-broken safety self-check rather than weakening a working one — network isolation for that child was never actually enforced by it and must come from the OS/container, which this change documents rather than hides",
-    "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-    "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-    "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-    "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-    "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+    "SECURITY_IMPACT: AUDIT. CI credentials, service fixtures and test artifacts are synthetic and disposable; record only safe case names, exit/signal, service versions and counts. Do not inspect or log resume payloads, database rows, provider tokens or environment contents.",
     {
       "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. CI credentials are synthetic throwaway values. Collect safe case names, exit/signal, service versions and counts, never environment contents, database rows, resume payloads or provider tokens.",
       "reviewStatus": "DRAFT",
@@ -797,7 +783,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ## Specification gate history
 
-| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                      | Disposition   | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
+| ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| RELEASE_STATE_UNSPECIFIED | EXTERNAL_GATE | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
+| EXACT_AC_TEST_BINDING     | RESOLVED      | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

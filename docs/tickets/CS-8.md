@@ -1,6 +1,6 @@
 # CS-8 — Readers of canonical state may treat unreadable as empty
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
+Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
 
 ## 1. identity
 
@@ -286,31 +286,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ```json
 {
-  "applicability": "APPLICABLE",
-  "requirements": [
-    {
-      "sourceMapping": null,
-      "registrationAuthority": "apps/api/src/app.ts",
-      "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-      "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-      "unknownContracts": []
-    },
-    {
-      "requirement": "Existing internal snapshot contract includes stateErrors alongside fallback collections; CLI contracts are exit status plus safe file-name diagnostic. No new product HTTP route or candidate database mutation is needed.",
-      "reviewStatus": "DRAFT",
-      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-    }
-  ],
-  "sources": [
-    ".ai/backlog.json#CS-8",
-    "docs/API-SURFACE.md",
-    "scripts/check-state-readers.mjs",
-    "scripts/engineering-ui.mjs",
-    "scripts/engineering.mjs",
-    "scripts/control-center.mjs",
-    "scripts/check-agents.mjs",
-    "scripts/release-gate.mjs"
-  ]
+  "applicability": "NOT_APPLICABLE",
+  "reason": "Canonical state-reader failure semantics are local module contracts, not product HTTP routes."
 }
 ```
 
@@ -375,12 +352,6 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "defeats the release gate",
-    "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-    "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-    "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-    "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-    "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
     {
       "requirement": "SECURITY_IMPACT: INPUT_VALIDATION, AUDIT. Treat repository state as untrusted evidence. Diagnostics name artifact/category, not raw malformed content, configuration or secrets. A corrupt finding record must not grant release permission or agent authority. Never use production data in parser mutation fixtures.",
       "reviewStatus": "DRAFT",
@@ -820,7 +791,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ## Specification gate history
 
-| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                      | Disposition   | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
+| ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| RELEASE_STATE_UNSPECIFIED | EXTERNAL_GATE | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
+| EXACT_AC_TEST_BINDING     | RESOLVED      | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

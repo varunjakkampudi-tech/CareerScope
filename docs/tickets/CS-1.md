@@ -179,6 +179,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
+      "requirement": "The frozen source wording 'on every push' conflicts with the current main-only push trigger. Preserve the source criterion verbatim, but require an explicit owner/release disposition whether it means every configured event (main push, pull request and manual dispatch) or all branch pushes; do not silently narrow or broaden the trigger contract.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
       "requirement": "Keep mocked HTTP/unit coverage distinct from real PostgreSQL, Redis, file-worker/browser and hosted production acceptance. A failed assertion must produce nonzero child, npm and CI-step results; no continue-on-error, condition that suppresses failures, retries or reduced assertions.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -265,28 +270,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ```json
 {
-  "applicability": "APPLICABLE",
-  "requirements": [
-    {
-      "sourceMapping": null,
-      "registrationAuthority": "apps/api/src/app.ts",
-      "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-      "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-      "unknownContracts": []
-    },
-    {
-      "requirement": "NOT_APPLICABLE: no new application endpoint. Process exit status and exact workflow SHA/step conclusion are the verification contracts.",
-      "reviewStatus": "DRAFT",
-      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-    }
-  ],
-  "sources": [
-    ".ai/backlog.json#CS-1",
-    "docs/API-SURFACE.md",
-    "package.json",
-    ".github/workflows/ci.yml",
-    "scripts/check-test-registration.ts"
-  ]
+  "applicability": "NOT_APPLICABLE",
+  "reason": "CI workflow/test registration is not an application HTTP contract."
 }
 ```
 
@@ -351,12 +336,6 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "none directly; removes a blind spot in the release path",
-    "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-    "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-    "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-    "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-    "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
     {
       "requirement": "SECURITY_IMPACT: AUDIT. Mutation evidence uses only isolated source fixtures and synthetic identifiers; no production secrets, live requests or deployment credentials. Hosted negative proof must be separately authorized and non-shipping.",
       "reviewStatus": "DRAFT",
@@ -404,7 +383,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
+          "expectedCheck": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
           "candidateCommand": null,
           "evidenceRequired": "Future named contract result and path/event inventory; no hosted execution inferred.",
           "automationStatus": "PLANNED",
@@ -420,8 +399,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
           "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
           "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
-          "assertion": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
-          "expectedResult": "Canonical unit coverage is wired to configured CI changes, not an obsolete version directory or all-branches claim.",
+          "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
+          "expectedResult": "The unresolved source wording/trigger decision is reported explicitly; no feature-branch exclusion is counted as satisfying the frozen 'every push' criterion before owner disposition.",
           "testName": "unit-only CI step reaches every registered canonical file on configured events",
           "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
           "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
@@ -430,7 +409,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
           "releaseGate": "CI_UNIT_EXECUTION",
           "testStatus": "PLANNED",
-          "reviewStatus": "REVIEWED"
+          "reviewStatus": "DRAFT"
         }
       ]
     },
@@ -740,4 +719,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

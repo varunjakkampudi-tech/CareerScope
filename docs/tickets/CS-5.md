@@ -48,6 +48,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -171,6 +172,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
+      "requirement": "Reconcile active onboarding documentation as part of the single-workspace contract: audit START-HERE/01-SETUP.md for claims about .vscode/mcp.json, ignored data paths and Windows-specific Node setup, classify each claim as current/optional/historical, and update or explicitly disposition stale instructions. The clean-checkout acceptance must not leave an active setup path pointing at deleted or ignored runtime assets.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
       "requirement": "Optional public export selects only explicitly configured owner's non-archived PostgreSQL saved_leads via parameterized owner_id. Project exactly title/company/location/source/postedAt/url; never notes/resumes/scores/email/identity/session fields. URL sanitization accepts allowlisted HTTPS public destinations and drops credentials/tracking/private paths.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -192,6 +198,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -234,6 +241,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -268,6 +276,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -279,32 +288,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ```json
 {
-  "applicability": "APPLICABLE",
-  "requirements": [
-    {
-      "sourceMapping": null,
-      "registrationAuthority": "apps/api/src/app.ts",
-      "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-      "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-      "unknownContracts": []
-    },
-    {
-      "requirement": "NOT_APPLICABLE: export is optional operator tooling using PostgreSQL; canonical Fastify API remains sole product contract. Absence of MCP runtime does not authorize inventing MCP routes.",
-      "reviewStatus": "DRAFT",
-      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-    }
-  ],
-  "sources": [
-    ".ai/backlog.json#CS-5",
-    "docs/API-SURFACE.md",
-    "package.json",
-    "scripts/export-mobile.mjs",
-    "scripts/export-mobile.test.mjs",
-    "scripts/stage-pages.mjs",
-    "docs/architecture/README.md",
-    "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
-    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
-  ]
+  "applicability": "NOT_APPLICABLE",
+  "reason": "Workspace consolidation is repository architecture work, not an application endpoint contract."
 }
 ```
 
@@ -369,12 +354,6 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "smaller surface once removed",
-    "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-    "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-    "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-    "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-    "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
     {
       "requirement": "SECURITY_IMPACT: AUTHORIZATION, PRIVACY_PII. Public export requires explicit authorized owner selection, parameterized query and field/URL allowlist. Synthetic fixtures only; DB credentials never printed or committed. Missing owner refuses before query.",
       "reviewStatus": "DRAFT",
@@ -389,6 +368,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -463,7 +443,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
+          "expectedCheck": "Active executable MCP launcher/config no longer points to removed SQLite runtime; START-HERE/01-SETUP.md contains no stale active setup instruction for .vscode/mcp.json, ignored data or an unavailable Windows Node path; canonical product routes remain Fastify contract with no MCP addition.",
           "candidateCommand": null,
           "evidenceRequired": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
           "automationStatus": "PLANNED",
@@ -477,16 +457,16 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         {
           "reviewer": "System Designer, Security, Infrastructure and QA",
           "testStatus": "PLANNED",
-          "reviewStatus": "REVIEWED",
+          "reviewStatus": "DRAFT",
           "type": "AUTOMATED_CONTRACT",
           "preconditions": "Tracked repository inventory and canonical API contract available read-only.",
           "setup": "Enumerate workspace scripts/manifests/imports/editor launchers/workflows for SQLite MCP executable/config references; distinguish historical docs.",
-          "procedure": "Resolve every active launcher/config reference and API route inventory; assert no obsolete SQLite MCP launch/runtime path and no new generic MCP endpoint.",
-          "assertion": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
-          "expectedResult": "Removed obsolete launcher cannot be invoked through active configuration.",
+          "procedure": "Resolve every active launcher/config reference and API route inventory, then inspect START-HERE/01-SETUP.md for .vscode/mcp.json, ignored-data and Windows-node claims; assert each is current, optional with a valid path, or explicitly classified as historical.",
+          "assertion": "Active executable MCP launcher/config no longer points to removed SQLite runtime; START-HERE/01-SETUP.md contains no stale active setup instruction for .vscode/mcp.json, ignored data or an unavailable Windows Node path; canonical product routes remain Fastify contract with no MCP addition.",
+          "expectedResult": "Removed obsolete launcher and stale setup instruction cannot be invoked or followed from active onboarding documentation.",
           "testName": "canonical workspace has no active obsolete SQLite MCP launcher",
           "testFileOrProcedureId": "scripts/check-single-workspace-contract.test.mjs",
-          "fixtures": "Read-only tracked path/reference inventory and planned contract checker; no MCP server installation.",
+          "fixtures": "Read-only tracked path/reference inventory, START-HERE/01-SETUP.md and planned contract checker; no MCP server installation.",
           "negativeCase": "Introduce active launcher/import referring to removed SQLite executable: fail; historical changelog citation alone does not fail.",
           "evidenceArtifact": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
           "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL"
@@ -558,6 +538,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -634,6 +615,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -686,6 +668,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
+      "requirement": "Review START-HERE/01-SETUP.md and its linked setup artifacts; remove or correct stale .vscode/mcp.json and ignored-data claims before the clean-checkout evidence is considered complete.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
       "requirement": "For any remaining AC1 gap, add the planned disposable-PostgreSQL integration test using an isolated copied module/root and synthetic owner rows; assert owner, archive, exact-field and unchanged canonical-output invariants.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -707,6 +694,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -757,6 +745,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -793,6 +782,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "scripts/export-mobile.mjs",
     "scripts/export-mobile.test.mjs",
     "scripts/stage-pages.mjs",
+    "START-HERE/01-SETUP.md",
     "docs/architecture/README.md",
     "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
     "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -831,4 +821,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | RELEASE_TARGET_UNDECIDED  | OPEN        | Source registry has no approved release assignment.                                                                      | Product owner                    | Explicit release assignment or owner-approved future-release disposition.                                |
 | RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

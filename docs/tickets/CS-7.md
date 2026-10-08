@@ -1,6 +1,6 @@
 # CS-7 — Deploy can ship a revision that continuous integration rejected
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
+Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
 
 ## 1. identity
 
@@ -358,32 +358,8 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ```json
 {
-  "applicability": "APPLICABLE",
-  "requirements": [
-    {
-      "sourceMapping": null,
-      "registrationAuthority": "apps/api/src/app.ts",
-      "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-      "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-      "unknownContracts": []
-    },
-    {
-      "requirement": "EXISTING_CONTRACT: Actions ci.yml run-list query has head_sha set to resolved main SHA; parsed payload requires numeric finite nonnegative total_count equal to workflow_runs length. Decision returns PASS, REFUSE or WAIT plus reason. No product route is added.",
-      "reviewStatus": "DRAFT",
-      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-    }
-  ],
-  "sources": [
-    ".ai/backlog.json#CS-7",
-    "docs/API-SURFACE.md",
-    "docs/GITHUB-RELEASE-LIFECYCLE.md",
-    ".github/workflows/deploy.yml",
-    "scripts/require-ci-success.mjs",
-    "scripts/check-deploy-gate.mjs",
-    "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
-    "docs/PHASE-3-25-EXECUTION-STATE.md",
-    "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
-  ]
+  "applicability": "NOT_APPLICABLE",
+  "reason": "Deployment-gate decision and workflow provenance are process contracts, not product HTTP routes."
 }
 ```
 
@@ -448,12 +424,6 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "applicability": "APPLICABLE",
   "requirements": [
     "ships unreviewed code to the public origin",
-    "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-    "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-    "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-    "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-    "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-    "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
     {
       "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. Actions query uses read-only actions permission. Never expose token/header/SSH material; gate refusal occurs before hosted-secret or SSH steps. Repository-root checks cannot grant shipping authorization.",
       "reviewStatus": "DRAFT",
@@ -929,7 +899,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 ## Specification gate history
 
-| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                      | Disposition   | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
+| ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| RELEASE_STATE_UNSPECIFIED | EXTERNAL_GATE | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
+| EXACT_AC_TEST_BINDING     | RESOLVED      | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

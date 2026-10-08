@@ -132,6 +132,7 @@
     },
     "CS-8": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "Canonical state-reader failure semantics are local module contracts, not product HTTP routes.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-8",
         "scripts/check-state-readers.mjs",
@@ -660,6 +661,22 @@
           "Explicit durable per-fact exclusion gate. Accepted resume facts plus explicit preferences only. Excluded facts contribute zero; reparse creates reviewable proposals without silently clearing candidate intent. Restoration explicit/reversible; provenance visible; explicit user years wins; no LLM reintroduction.",
           "Approved scope, not completed code. Freeze candidate/profile and accepted/excluded fact snapshots for deterministic matching. Define normalized fact identity and provenance mapping before implementation; a new parse revision never implies consent."
         ],
+        "apiContract": [
+          "PLANNED_CONTRACT: candidate-owned resume-fact review/exclusion operations require authenticated owner context, normalized fact identity, source resume revision and current revision. Return 401 when unauthenticated, 403/404 without cross-owner existence leakage, 409 for stale revision, and a redacted fact/provenance projection with updated revision on success. No existing endpoint is claimed until the planned route is registered and tested."
+        ],
+        "persistence": [
+          "PLANNED_DATA_CONTRACT: persist owner-scoped resume fact identity (normalized type/value plus source resume revision/provenance) and explicit exclusion decision with revision and timestamps. Enforce uniqueness for one owner/fact/source identity, retain accepted versus excluded state separately, and define reparse reconciliation so a new parse cannot clear an exclusion. Add migration, rollback and delete/retention behavior before implementation; current schema is not being represented as complete."
+        ],
+        "securityPrivacy": [
+          "The candidate is the sole writer of their own fact decisions; parsed resume facts are private PII. Authorization derives from the session owner, raw resume text and provider tokens are never returned or logged, audit records use redacted fact identifiers, and cross-owner, stale-revision or unrestricted bulk mutations are denied."
+        ],
+        "implementationChecklist": [
+          "Define and review normalized fact identity/provenance and the owner-scoped schema before coding.",
+          "Specify the candidate-owned read/write contract, revision conflict behavior and reparse reconciliation.",
+          "Implement deterministic exclusion projection into matching snapshots without changing canonical scorer weights.",
+          "Add owner-isolation, stale-revision, reparse-preservation and explicit-restore tests with redacted audit evidence.",
+          "Document retention/deletion and rollback for the new data contract before release."
+        ],
         "testStrategy": [
           "Plan rejected skill/title, repeated search, changed resume revision, normalization-equivalent facts, explicit restore, foreign-owner denial and deterministic-score provenance assertions. Reparse preserves suppression until explicit candidate restoration."
         ]
@@ -667,6 +684,7 @@
     },
     "CS-4": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "Static publication version-file/module behavior has no application HTTP contract.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-4",
         "scripts/sync-version.mjs",
@@ -730,6 +748,7 @@
     },
     "CS-1": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "CI workflow/test registration is not an application HTTP contract.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-1",
         "package.json",
@@ -742,6 +761,7 @@
         ],
         "functionalRequirements": [
           "Consume the canonical root test:unit command and its current seven explicit test files; do not resurrect v2/ paths or freeze an obsolete test-case total. Verify the named unit-only step in verify executes on push to main, pull_request and workflow_dispatch, matching the actual trigger scope; arbitrary feature-branch pushes are not configured triggers.",
+          "The frozen source wording 'on every push' conflicts with the current main-only push trigger. Preserve the source criterion verbatim, but require an explicit owner/release disposition whether it means every configured event (main push, pull request and manual dispatch) or all branch pushes; do not silently narrow or broaden the trigger contract.",
           "Keep mocked HTTP/unit coverage distinct from real PostgreSQL, Redis, file-worker/browser and hosted production acceptance. A failed assertion must produce nonzero child, npm and CI-step results; no continue-on-error, condition that suppresses failures, retries or reduced assertions."
         ],
         "technicalApproach": [
@@ -771,6 +791,7 @@
     },
     "CS-7": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "Deployment-gate decision and workflow provenance are process contracts, not product HTTP routes.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-7",
         "docs/GITHUB-RELEASE-LIFECYCLE.md",
@@ -855,6 +876,8 @@
     },
     "CS-9": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "CI service-backed test orchestration is not a new application endpoint contract.", "securityPrivacy": "TICKET_SCOPED" },
+      "securityPrivacyBase": "SECURITY_IMPACT: AUDIT. CI credentials, service fixtures and test artifacts are synthetic and disposable; record only safe case names, exit/signal, service versions and counts. Do not inspect or log resume payloads, database rows, provider tokens or environment contents.",
       "sourceReferences": [
         ".ai/backlog.json#CS-9",
         "package.json",
@@ -864,6 +887,9 @@
         "scripts/engineering-runner.mjs"
       ],
       "additionalRequirements": {
+        "outOfScope": [
+          "Do not modify resume parsing, child-process permissions or application domain behavior under CS-9; any parser defect remains a separately sourced/runtime ticket and is not acceptance evidence for CI registration."
+        ],
         "problem": [
           "Unit-only success cannot prove persistence, durable queue, encrypted file storage or browser behavior; missing services must fail rather than report skipped integration as passing."
         ],
@@ -1041,12 +1067,14 @@
     },
     "CS-5": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "Workspace consolidation is repository architecture work, not an application endpoint contract.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-5",
         "package.json",
         "scripts/export-mobile.mjs",
         "scripts/export-mobile.test.mjs",
         "scripts/stage-pages.mjs",
+        "START-HERE/01-SETUP.md",
         "docs/architecture/README.md",
         "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
         "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -1057,6 +1085,7 @@
         ],
         "functionalRequirements": [
           "Root install/build/test/typecheck/lint commands operate the surviving canonical apps/packages. Preserve consumed providers/matching/resume/shared packages and their regression tests; do not delete domain dependencies just to remove historical names.",
+          "Reconcile active onboarding documentation as part of the single-workspace contract: audit START-HERE/01-SETUP.md for claims about .vscode/mcp.json, ignored data paths and Windows-specific Node setup, classify each claim as current/optional/historical, and update or explicitly disposition stale instructions. The clean-checkout acceptance must not leave an active setup path pointing at deleted or ignored runtime assets.",
           "Optional public export selects only explicitly configured owner's non-archived PostgreSQL saved_leads via parameterized owner_id. Project exactly title/company/location/source/postedAt/url; never notes/resumes/scores/email/identity/session fields. URL sanitization accepts allowlisted HTTPS public destinations and drops credentials/tracking/private paths.",
           "Remove obsolete SQLite MCP launcher/config only after consumer inventory proves canonical API has no MCP contract. Do not create a replacement endpoint or keep an obsolete executable merely as archive.",
           "No active v2 application wrapper or duplicate SQLite/Vite private runtime remains. Historical evidence may retain old paths; optional static mobile-site is classified as publication rather than a second product backend."
@@ -1076,6 +1105,7 @@
         "implementationChecklist": [
           "First verify the current root workspace, package manifests, imports, CI and deployment paths; the application is already consolidated, so do not repeat a migration or delete current static publication without a newly proven defect.",
           "Confirm the remaining consumer inventory with a scoped tracked-file search; distinguish historical documentation/ticket evidence from active executable/config references. Preserve the supported static Pages publication path.",
+          "Review START-HERE/01-SETUP.md and its linked setup artifacts; remove or correct stale .vscode/mcp.json and ignored-data claims before the clean-checkout evidence is considered complete.",
           "For any remaining AC1 gap, add the planned disposable-PostgreSQL integration test using an isolated copied module/root and synthetic owner rows; assert owner, archive, exact-field and unchanged canonical-output invariants.",
           "For any remaining AC2 gap, add the planned read-only repository-contract fixture and register it in the explicit root test:unit file list so test-registration and CI checks execute it.",
           "Run root checks from a fresh checkout without stale dist/node_modules reliance; obtain exact-SHA hosted service, browser and recovery lane evidence for AC3 rather than treating registration or local checks as hosted proof."
@@ -1408,10 +1438,11 @@
           "ARCHITECTURE_IMPACT: LOCAL_MODULE plus provider normalization boundary. Reuse existing sanitized posting fields and action contracts; no provider bypass."
         ],
         "apiContract": [
-          "Bind detail fields to the canonical posting response and assert authorization/owner behavior for selected records; malformed or missing records produce a named not-found/error state."
+          "EXISTING_CONTRACT: bind detail fields to the canonical posting response and assert authorization/owner behavior for selected records; malformed or missing records produce a named not-found/error state.",
+          "PLANNED_CONTRACT: dismissal is not an existing endpoint in the current source map. Before implementation, define a candidate-owned disposition route with canonical job id, authenticated owner, current revision and explicit disposition value. Return 401 when unauthenticated, 403/404 without cross-owner existence leakage, 409 on stale revision, and a canonical disposition plus revision on success. Register the final route in the API contract and integration test before implementation begins."
         ],
         "persistence": [
-          "Dismissal persistence must be an explicit candidate-owner plus canonical-job disposition with reversible restore, audit history and revision/conflict protection; it must not reuse or mutate Applied, Interviewing, Offer, Rejected or Withdrawn lifecycle state."
+          "Dismissal persistence must be an explicit candidate-owner plus canonical-job disposition with reversible restore, audit history and revision/conflict protection; it must not reuse or mutate Applied, Interviewing, Offer, Rejected or Withdrawn lifecycle state. The entity, uniqueness key (ownerId, canonicalJobId), revision field, restore semantics and migration/rollback plan are a PLANNED data contract, not an existing schema claim."
         ],
         "securityPrivacy": [
           "Treat all provider description/title/link fields as untrusted; reject unsafe schemes and never inject raw HTML. Fixtures contain no secrets or real postings."
@@ -1555,6 +1586,7 @@
     },
     "CS-12": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "Agent invocation documentation and attribution are internal process contracts, not product HTTP routes.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-12",
         ".github/copilot-instructions.md",
@@ -1602,6 +1634,7 @@
     },
     "CS-10": {
       "reviewStatus": "DRAFT",
+      "globalSectionOverrides": { "apiContract": "NOT_APPLICABLE", "apiContractReason": "Agent roster/activation policy is an internal process contract, not an application HTTP route.", "securityPrivacy": "TICKET_SCOPED" },
       "sourceReferences": [
         ".ai/backlog.json#CS-10",
         ".ai/AGENT-SETUP.md",
@@ -1859,9 +1892,9 @@
       ],
       "additionalRequirements": {
         "functionalRequirements": [
-          "Reproduce the saved v2/scripts/check-ui.ts hiddenSkip failure on current bytes and identify the implementation or harness cause without weakening the intended contract. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
-          "Verify the unfocused hidden state, visible keyboard-focus state and activation moving focus to main content. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
-          "Run the focused check in Chromium, Firefox and WebKit at the affected viewport and a narrow mobile viewport; report unavailable engines rather than implying a pass. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+          "Treat the historical hiddenSkip failure as a diagnosis input, not current proof. The current authenticated shell target is #main-content; the unauthenticated sign-in target is #workspace-content. A future regression fixture must render the current shell route and assert the applicable target only, while recording the historical runner/result separately.",
+          "For the authenticated shell fixture, assert that the skip link is visually hidden when unfocused, becomes visibly focusable after keyboard Tab, and moves focus to #main-content on Enter/activation. The negative control must remove the target landmark and demonstrate a deterministic failure rather than broadening the selector.",
+          "Run the focused current check through npm run test:ui (scripts/check-ui.ts) in Chromium, Firefox and WebKit at 1440px and 320px widths; report unavailable engines as unavailable and keep any manual screen-reader review separate from automated evidence."
         ],
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: accessibility boundary for CS-31; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
@@ -1874,7 +1907,7 @@
         ],
         "implementationChecklist": [
           "Bind each CS-31 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
-          "Run npm run test:ui only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Use npm run test:ui / scripts/check-ui.ts for the authenticated-shell keyboard regression; do not route the assertion through the removed legacy v2/scripts/check-ui.ts harness.",
           "Record unsupported environment capabilities as pending rather than PASS."
         ]
       }
@@ -1889,9 +1922,9 @@
       ],
       "additionalRequirements": {
         "functionalRequirements": [
-          "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
-          "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
-          "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
+          "Reproduce chromium-search-light-320 with the current Pages visual comparator scripts/check-pages-ui.mjs (npm run pages:visual), recording expected, actual and diff images from the pinned fixture; scripts/check-ui.ts is not the snapshot/pixelmatch owner. The negative control must alter a fixture pixel and fail the comparator.",
+          "Classify the diff from the actual current fixture and approved design baseline before changing code or baselines. A baseline update requires explicit visual-review evidence and must not be used to make an unexplained failure green.",
+          "Run npm run pages:visual for publication visual evidence, then run npm run pages:workspace:test / scripts/check-pages-ui.mjs only for the registered workspace interaction checks; keep manual WCAG/keyboard review separate and do not label these Pages commands as axe evidence."
         ],
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: frontend boundary for CS-32; inspect the registered implementation and test entry point before any future change. No product implementation is authorized by this specification."
@@ -1904,7 +1937,7 @@
         ],
         "implementationChecklist": [
           "Bind each CS-32 acceptance criterion to a named procedure with fixture, action, assertion, negative case, evidence artifact, owner and release gate.",
-          "Run npm run test:ui only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+          "Use scripts/check-pages-ui.mjs with npm run pages:visual for pixel/diff assertions and npm run pages:workspace:test for Pages interaction checks; do not route snapshot claims through scripts/check-ui.ts.",
           "Record unsupported environment capabilities as pending rather than PASS."
         ]
       }
@@ -4400,6 +4433,58 @@
     "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
   },
   "findingDispositions": {
+    "CS-4": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "The implementation-ready specification preserves the source registry's missing release assignment and names the product/release owner gate; package versions and workflow state are not treated as release authorization.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      },
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation remains a release-owner decision outside specification authoring. The reviewed contract records the required owner evidence without claiming activation or promotion.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      }
+    },
+    "CS-7": {
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation remains a release-owner decision outside specification authoring. The reviewed contract records the required owner evidence without claiming activation or promotion.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      }
+    },
+    "CS-8": {
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation remains a release-owner decision outside specification authoring. The reviewed contract records the required owner evidence without claiming activation or promotion.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      }
+    },
+    "CS-9": {
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation remains a release-owner decision outside specification authoring. The reviewed contract records the required owner evidence without claiming activation or promotion.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      }
+    },
+    "CS-10": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "The implementation-ready specification preserves the source registry's missing release assignment and names the product/release owner gate; package versions and workflow state are not treated as release authorization.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      },
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation remains a release-owner decision outside specification authoring. The reviewed contract records the required owner evidence without claiming activation or promotion.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      }
+    },
+    "CS-12": {
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation remains a release-owner decision outside specification authoring. The reviewed contract records the required owner evidence without claiming activation or promotion.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      }
+    },
     "CS-106": {
       "SURFACE_SPEC_REFINEMENT": {
         "disposition": "RESOLVED",
@@ -9542,8 +9627,8 @@
         "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
         "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
         "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
-        "assertion": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
-        "expectedResult": "Canonical unit coverage is wired to configured CI changes, not an obsolete version directory or all-branches claim.",
+        "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
+        "expectedResult": "The unresolved source wording/trigger decision is reported explicitly; no feature-branch exclusion is counted as satisfying the frozen 'every push' criterion before owner disposition.",
         "testName": "unit-only CI step reaches every registered canonical file on configured events",
         "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
         "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
@@ -9552,7 +9637,7 @@
         "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
         "releaseGate": "CI_UNIT_EXECUTION",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED"
+        "reviewStatus": "DRAFT"
       }
     ],
     "CS-1-AC2": [
@@ -9842,16 +9927,16 @@
       {
         "reviewer": "System Designer, Security, Infrastructure and QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Tracked repository inventory and canonical API contract available read-only.",
         "setup": "Enumerate workspace scripts/manifests/imports/editor launchers/workflows for SQLite MCP executable/config references; distinguish historical docs.",
-        "procedure": "Resolve every active launcher/config reference and API route inventory; assert no obsolete SQLite MCP launch/runtime path and no new generic MCP endpoint.",
-        "assertion": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
-        "expectedResult": "Removed obsolete launcher cannot be invoked through active configuration.",
+        "procedure": "Resolve every active launcher/config reference and API route inventory, then inspect START-HERE/01-SETUP.md for .vscode/mcp.json, ignored-data and Windows-node claims; assert each is current, optional with a valid path, or explicitly classified as historical.",
+        "assertion": "Active executable MCP launcher/config no longer points to removed SQLite runtime; START-HERE/01-SETUP.md contains no stale active setup instruction for .vscode/mcp.json, ignored data or an unavailable Windows Node path; canonical product routes remain Fastify contract with no MCP addition.",
+        "expectedResult": "Removed obsolete launcher and stale setup instruction cannot be invoked or followed from active onboarding documentation.",
         "testName": "canonical workspace has no active obsolete SQLite MCP launcher",
         "testFileOrProcedureId": "scripts/check-single-workspace-contract.test.mjs",
-        "fixtures": "Read-only tracked path/reference inventory and planned contract checker; no MCP server installation.",
+        "fixtures": "Read-only tracked path/reference inventory, START-HERE/01-SETUP.md and planned contract checker; no MCP server installation.",
         "negativeCase": "Introduce active launcher/import referring to removed SQLite executable: fail; historical changelog citation alone does not fail.",
         "evidenceArtifact": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
         "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL"
@@ -12649,19 +12734,19 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "MANUAL_ACCESSIBILITY",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
-        "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC1 procedure.",
-        "fixtureOrData": "saved route at affected and narrow-mobile viewports with keyboard focus",
-        "action": "Run npm run test:ui and inspect the named CS-31-AC1 procedure output.",
+        "setup": "Render the current authenticated shell with an isolated synthetic owner at 1440px and 320px; identify #main-content as the authenticated target and retain #workspace-content only for the unauthenticated sign-in fixture.",
+        "fixtureOrData": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
+        "action": "Run npm run test:ui through scripts/check-ui.ts and execute the current-shell hiddenSkip procedure; record the historical failure only as diagnosis input.",
         "repositoryCommand": "npm run test:ui",
-        "procedure": "scripts/check-ui.ts::hiddenSkip::CS-31-AC1",
-        "assertion": "the current check-ui run records hiddenSkip failure with exact SHA/viewport and identifies the selector or harness cause; the assertion is not weakened",
-        "expectedResult": "the current check-ui run records hiddenSkip failure with exact SHA/viewport and identifies the selector or harness cause; the assertion is not weakened",
+        "procedure": "scripts/check-ui.ts::authenticated-shell-hiddenSkip::CS-31-AC1",
+        "assertion": "the current authenticated-shell fixture targets #main-content and records a deterministic pass/failure with exact SHA and viewport; a missing target landmark is a negative-control failure, not a selector fallback",
+        "expectedResult": "the current shell contract is evaluated against #main-content without treating the historical hiddenSkip report as current execution evidence",
         "testName": "CS-31-AC1 exact verification",
-        "testFileOrProcedureId": "scripts/check-ui.ts::hiddenSkip::CS-31-AC1",
-        "fixtures": "saved route at affected and narrow-mobile viewports with keyboard focus",
+        "testFileOrProcedureId": "scripts/check-ui.ts::authenticated-shell-hiddenSkip::CS-31-AC1",
+        "fixtures": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
         "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
         "evidenceArtifact": "Future CS-31-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
         "releaseGate": "CS-31-AC1-RELEASE-GATE"
@@ -12671,7 +12756,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "MANUAL_ACCESSIBILITY",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
         "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC2 procedure.",
@@ -12693,7 +12778,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
+        "reviewStatus": "DRAFT",
         "type": "MANUAL_ACCESSIBILITY",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
         "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC3 procedure.",
@@ -12715,18 +12800,18 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
-        "type": "MANUAL_ACCESSIBILITY",
+        "reviewStatus": "DRAFT",
+        "type": "VISUAL_REGRESSION",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
         "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC1 procedure.",
         "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-        "action": "Run npm run test:ui and inspect the named CS-32-AC1 procedure output.",
-        "repositoryCommand": "npm run test:ui",
-        "procedure": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC1",
+        "action": "Run npm run pages:visual and inspect the named CS-32-AC1 pixel/diff output.",
+        "repositoryCommand": "npm run pages:visual",
+        "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
         "assertion": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
         "expectedResult": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
         "testName": "CS-32-AC1 exact verification",
-        "testFileOrProcedureId": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC1",
+        "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
         "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
         "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
         "evidenceArtifact": "Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -12737,18 +12822,18 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
-        "type": "MANUAL_ACCESSIBILITY",
+        "reviewStatus": "DRAFT",
+        "type": "VISUAL_REGRESSION",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
         "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC2 procedure.",
         "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-        "action": "Run npm run test:ui and inspect the named CS-32-AC2 procedure output.",
-        "repositoryCommand": "npm run test:ui",
-        "procedure": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC2",
+        "action": "Run npm run pages:visual and inspect the named CS-32-AC2 pixel/diff output.",
+        "repositoryCommand": "npm run pages:visual",
+        "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
         "assertion": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
         "expectedResult": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
         "testName": "CS-32-AC2 exact verification",
-        "testFileOrProcedureId": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC2",
+        "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
         "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
         "negativeCase": "stale, unavailable, malformed, or conflicting input must produce the named safe failure",
         "evidenceArtifact": "Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -12759,18 +12844,18 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "REVIEWED",
-        "type": "MANUAL_ACCESSIBILITY",
+        "reviewStatus": "DRAFT",
+        "type": "AUTOMATED_BROWSER",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
         "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC3 procedure.",
         "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-        "action": "Run npm run pages:workspace:test for the Pages visual check, then npm run test:ui for the focused three-engine mobile workspace checks, and inspect each engine result.",
-        "repositoryCommand": "npm run pages:workspace:test && npm run test:ui",
-        "procedure": "scripts/check-public-workspace.mjs::CS-32-AC3 Pages visual procedure; scripts/check-ui.ts::CS-32-AC3 three-engine workspace procedure",
-        "assertion": "Pages visual checks and focused three-engine mobile checks rerun with unchanged snapshot allowlists and publication boundaries; Pages output comes from check-public-workspace.mjs and application/browser output comes from check-ui.ts, with each engine result separately recorded.",
+        "action": "Run npm run pages:workspace:test and inspect the registered workspace interaction output; keep manual WCAG review separate.",
+        "repositoryCommand": "npm run pages:workspace:test",
+        "procedure": "scripts/check-pages-ui.mjs::workspace-interaction::CS-32-AC3",
+        "assertion": "workspace interaction checks rerun with unchanged publication boundaries and each supported engine result separately recorded; this procedure does not claim axe or manual WCAG evidence.",
         "expectedResult": "Both named procedures complete or explicitly report NOT_RUN for an unavailable engine; no snapshot allowlist or publication boundary changes.",
         "testName": "CS-32-AC3 exact verification",
-        "testFileOrProcedureId": "scripts/check-public-workspace.mjs::CS-32-AC3; scripts/check-ui.ts::CS-32-AC3",
+        "testFileOrProcedureId": "scripts/check-pages-ui.mjs::workspace-interaction::CS-32-AC3",
         "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
         "negativeCase": "duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op",
         "evidenceArtifact": "Future CS-32-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -14738,42 +14823,6 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "8e2ac59fb2f7d6b728c306b7de15425020dad4bc01096467bac4d83f3d567aa5"
     },
-    "CS-31-AC1": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "5e68d226775686af80e3d2f8d494703f21933130baf391012f6a6e656e6b91db"
-    },
-    "CS-31-AC2": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "684f62ce3ab7f3860b575e42c17501ae2f9304adc74c914480bf790b6dcc2565"
-    },
-    "CS-31-AC3": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "9898849095eb8e61e82faff728c6bb55705a9119cb7ab26adca5e16a8640c6a0"
-    },
-    "CS-32-AC1": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "6b658d5973d8a08fdf7969c39499b59fc6d9825c8414d22a0059fb653ed54e1f"
-    },
-    "CS-32-AC2": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "e560216eb5004e2486b8bfb9640e2733c80e5c284c380a9b43f70e92ba332e7d"
-    },
-    "CS-32-AC3": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "2fd80f4e4e4d4dc84bb4accbd09fc8cd0f798054eebf1480bdfd7fbc19f2f350"
-    },
     "CS-33-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -15357,6 +15406,42 @@
     }
   },
   "specificationReviewReceipts": {
+    "CS-4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "bad1ab8d6ae0ffc6e59ac804143fbb33866170b57d24f7d0e2b7d2e3a4081ea0"
+    },
+    "CS-7": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b8bea454f473b9f105e50ee8ede07de0a5d87ac020944bf1447f8b09c3acf95f"
+    },
+    "CS-8": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "074c612b29397b80bfd934c6f5384185024b21f7f61bc4cefd9120dc1c0f67ad"
+    },
+    "CS-9": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "bc6c28be940ed54447054525065521315b9248aaeed9af072660e52b176556b1"
+    },
+    "CS-10": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "0fc455509210b139b0fb1a6bfc33669170b263eb4e569db813467a4ab5743693"
+    },
+    "CS-12": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c283d8a9e04809d7cd4d535d8ea1a0766bc6ca9f7cf874d3cc9fefeabab0d525"
+    },
     "CS-89": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",

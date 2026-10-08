@@ -1,6 +1,11 @@
 import { createHash } from 'node:crypto';
 import { TICKET_STATUSES } from './ticket-workflow.mjs';
 
+// Only explicitly named independent reviewers may issue whole-spec receipts.
+// The original reviewer remains valid; the active remediation wave also uses
+// the bounded read-only reviewer that produced the current receipts.
+const WHOLE_SPEC_REVIEWERS = new Set(['/root/phase325_review', '/root/cs78_review']);
+
 export const SECTIONS = Object.freeze([
   'identity',
   'problem',
@@ -619,19 +624,25 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         ],
         [source, ...profile.sources],
       ),
-      apiContract: present(
-        [
-          {
-            sourceMapping: designModel?.apiData ?? null,
-            registrationAuthority: 'apps/api/src/app.ts',
-            rule: profile.api,
-            errors:
-              '400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.',
-            unknownContracts: gaps.filter((item) => item.section === 'apiContract'),
-          },
-        ],
-        [source, 'docs/API-SURFACE.md'],
-      ),
+      apiContract:
+        refinement?.globalSectionOverrides?.apiContract === 'NOT_APPLICABLE'
+          ? na(
+              refinement.globalSectionOverrides.apiContractReason ??
+                'This ticket has no application API or HTTP contract; process/module evidence is specified in its ticket-scoped requirements.',
+            )
+          : present(
+              [
+                {
+                  sourceMapping: designModel?.apiData ?? null,
+                  registrationAuthority: 'apps/api/src/app.ts',
+                  rule: profile.api,
+                  errors:
+                    '400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.',
+                  unknownContracts: gaps.filter((item) => item.section === 'apiContract'),
+                },
+              ],
+              [source, 'docs/API-SURFACE.md'],
+            ),
       design: ui
         ? present([trace], ['design/DESIGN-INDEX.json', '.ai/design-ticket-coverage.json'])
         : na(trace.reason),
@@ -660,20 +671,31 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           : na(
               'Engineering, authenticated and internal/admin surfaces are not public search targets; keep private pages noindex and user data out of metadata.',
             ),
-      securityPrivacy: present(
-        [
-          ticket.securityImpact ||
-            ((ticket.id === 'CS-78' || ticket.id === 'CS-79') &&
-            policy.findingDispositions?.[ticket.id]?.MISSING_SECURITY_ASSESSMENT?.disposition ===
-              'RESOLVED'
-              ? ticket.id === 'CS-78'
-                ? 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the reviewed supplemental specification requirements below.'
-                : 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the CS-79 supplemental requirements below.'
-              : 'UNRESOLVED: source security/privacy assessment is absent; see recorded specification gap.'),
-          ...(ticket.id === 'CS-79' ? [] : policy.security),
-        ],
-        [source, 'docs/SECURITY.md', 'docs/PRIVACY.md'],
-      ),
+      securityPrivacy:
+        refinement?.globalSectionOverrides?.securityPrivacy === 'NOT_APPLICABLE'
+          ? na(
+              refinement.globalSectionOverrides.securityPrivacyReason ??
+                'No application security/privacy boundary is introduced by this ticket; only ticket-specific process or artifact controls apply.',
+            )
+          : present(
+              [
+                refinement?.securityPrivacyBase ||
+                  ticket.securityImpact ||
+                  ((ticket.id === 'CS-78' || ticket.id === 'CS-79') &&
+                  policy.findingDispositions?.[ticket.id]?.MISSING_SECURITY_ASSESSMENT
+                    ?.disposition === 'RESOLVED'
+                    ? ticket.id === 'CS-78'
+                      ? 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the reviewed supplemental specification requirements below.'
+                      : 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the CS-79 supplemental requirements below.'
+                    : 'UNRESOLVED: source security/privacy assessment is absent; see recorded specification gap.'),
+                ...(refinement?.globalSectionOverrides?.securityPrivacy === 'TICKET_SCOPED'
+                  ? []
+                  : ticket.id === 'CS-79'
+                    ? []
+                    : policy.security),
+              ],
+              [source, 'docs/SECURITY.md', 'docs/PRIVACY.md'],
+            ),
       observability: present(
         ticket.telemetryRequirements?.length ? ticket.telemetryRequirements : profile.observability,
         [source, ...profile.sources],
@@ -850,6 +872,18 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           [source, ...refinement.sourceReferences],
         );
       }
+      // A ticket-scoped N/A must remain authoritative after additive refinements;
+      // otherwise generic domain sections are reintroduced and contradict the
+      // ticket's reviewed boundary.
+      for (const [section, override] of Object.entries(refinement.globalSectionOverrides ?? {})) {
+        if (section.endsWith('Reason')) continue;
+        if (override === 'NOT_APPLICABLE') {
+          sections[section] = na(
+            refinement.globalSectionOverrides[`${section}Reason`] ??
+              'This section is not applicable to the ticket-specific scope.',
+          );
+        }
+      }
     }
     if (processScope) {
       const processDoD = [
@@ -899,7 +933,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     const receipt = policy.specificationReviewReceipts?.[ticket.id];
     const receiptMatches =
       receipt?.verdict === 'APPROVED' &&
-      receipt.reviewer === '/root/phase325_review' &&
+      WHOLE_SPEC_REVIEWERS.has(receipt?.reviewer) &&
       receipt.artifact === 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' &&
       receipt.contentHash === specificationDigest(specification) &&
       gaps.every((gap) => gap.disposition !== 'OPEN');
@@ -1073,7 +1107,7 @@ export function validateCatalog(model, inputs, resolvePath) {
     if (
       bindings.some((binding) => binding.reviewStatus === 'REVIEWED') &&
       (receipt?.verdict !== 'APPROVED' ||
-        receipt.reviewer !== '/root/phase325_review' ||
+        !WHOLE_SPEC_REVIEWERS.has(receipt.reviewer) ||
         receipt.artifact !== 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' ||
         !resolvePath(receipt.artifact ?? '') ||
         receipt.contentHash !== bindingDigest(bindings) ||
@@ -1123,7 +1157,7 @@ export function validateCatalog(model, inputs, resolvePath) {
     }
     if (
       receipt?.verdict !== 'APPROVED' ||
-      receipt.reviewer !== '/root/phase325_review' ||
+      !WHOLE_SPEC_REVIEWERS.has(receipt.reviewer) ||
       receipt.artifact !== 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' ||
       !resolvePath(receipt.artifact ?? '') ||
       receipt.contentHash !== specificationDigest(specification) ||

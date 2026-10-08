@@ -796,12 +796,35 @@ and CS-93 after the remaining runner, exclusion-contract and stale-assertion
 findings were corrected. Their ordered binding-group digests are recorded
 below; planned/manual evidence remains unexecuted.
 
-| Ticket | Whole-spec digest | Binding-group digests |
-|---|---|---|
-| CS-15 | `b1fefbadf058365120b47fa80d0dbe2b381ead7a80374f8f042b172a50575a41` | AC1 `d4021cc227a8ddc58c586cc05a83476194e0dc5833e080211d31da39e7ce7d3c`; AC2 `1496f72e93639a87e99f6ebc4dc0439205a18dde331138cb100ad1218d6d4dee`; AC3 `48659397bb634c8573095cb6a54083319640d6380874ddfac6bb376b59f2692f`; AC4 `4fc03e5bd5c6b04324610ed5cf75b7ccb2b0c227a9a59d68188e1addbc01c5f1` |
-| CS-16 | `0c8ef26cef4eeceda208014a02bb49d5289463988f40eb95baec81f7319d6799` | AC1 `618ca3cec93d3d1e8770cb77d7b7664a4f15caf9856843df6be7aed9e3932971`; AC2 `2aee12e31f6098660142bf30bc1ab933be617e2541179c4331001e95e36f76d8`; AC3 `6c04a19400f2db46157d64165ac841f365ba42842f92e267bcfe188d84eb7914`; AC4 `d25fe8036716a4936c60d2cf733d47fa7d7bfad51e24210f6fb6b53dfb10129c` |
-| CS-18 | `fa9ee289de4c3ce836548e68251715642e53a19a3f0bcb89f2f848f6c2102e8b` | AC1 `9a21d2e9c747917821f2aaf39ccc8ec0713682741f068ce000e43c0940a1ed41`; AC2 `298aa39e720783ed6daf2798662bce655f9d1ea3414b6fc5819847886239cdf6`; AC3 `cef4a75c097366b78d85c85691925127a11dd9aeb24c7903d31fdba2fb440b06`; AC4 `7efd2808a3fda9270e81b7b80cd4015aadf095031c8ab252a5c77284f2c394b4` |
-| CS-19 | `7388a96b3d7b72bd7a2eb1017d75fb05ca2154779ac50525703ee66ca87d4a0e` | AC1 `07f2a9c970554a79593174bb0bb19e214576cf6d067eb7d0435fa15f70d2016c`; AC2 `961fc69fa9760fb3051e39119845bcf6a49bdc7b3e8b8d63d86e8612693777fd`; AC3 `a5ec07884d266c820e166aaa5e0e181b73e18f5e80d425be7409703246abd8c0`; AC4 `6dc76481c5e2398e2150ad63d5a57087e4b3c605fb639ba6e75d7ff058e41d80` |
-| CS-36 | `7ea81ad63c438eac00d4123201effb2f7e9975c5716294cea2a24847b4008151` | AC1 `02e25dc95cdd8632b918f29f15a4564d3f8056f8da0af9ab9f7d2b18cc0487ef`; AC2 `5dc89afdf2f43af65d27f26964e9a11bebbd14730b09e66f4973f89c018db9c1`; AC3 `4a0c569232e3be254bac4d4d0f5c5aeb8ab8ad734cfb0a50b72fc824d0187fdb` |
-| CS-37 | `9dca35e3a6769c0caa81393d53c70d1317d35a772a04bc2ab5d47df55a648341` | AC1 `fc30b6d3c5985e959dce1929da6b20c5e9f02a39f44aaa44c5addd4ad58c1b3f`; AC2 `114c9296004c4ee7aad410a3fb43eff1e38a162fde3d969f623c1c1e86d7a9f0`; AC3 `0fb3bbdff6fb147dcac62352756bf17c8daaf8b742938ab0f896be3f8127caea` |
-| CS-93 | `852333696354ad49786b2645376ff29c48aac286dba825da209862c989952443` | AC1 `9273ec54dd71c9678c27a36a9a4040de4beac46abfac0abb23ad91c540e2e519`; AC2 `925b2283cb570c8d6e831cd119d8216837729e2d47c64cdf44eb806d5aee269a`; AC3 `2df5c31aaa49b765ed4893e2afe3c50f98dcb9de7e90ccc1ffd40f95d3c91d88`; AC4 `72908703053095589d4ebb322454ff3cc2aa666e0dfd6c4e38c157723362c9fa` |
+| Ticket | Whole-spec digest                                                  | Binding-group digests                                                                                                                                                                                                                                                                          |
+| ------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CS-15  | `b1fefbadf058365120b47fa80d0dbe2b381ead7a80374f8f042b172a50575a41` | AC1 `d4021cc227a8ddc58c586cc05a83476194e0dc5833e080211d31da39e7ce7d3c`; AC2 `1496f72e93639a87e99f6ebc4dc0439205a18dde331138cb100ad1218d6d4dee`; AC3 `48659397bb634c8573095cb6a54083319640d6380874ddfac6bb376b59f2692f`; AC4 `4fc03e5bd5c6b04324610ed5cf75b7ccb2b0c227a9a59d68188e1addbc01c5f1` |
+| CS-16  | `0c8ef26cef4eeceda208014a02bb49d5289463988f40eb95baec81f7319d6799` | AC1 `618ca3cec93d3d1e8770cb77d7b7664a4f15caf9856843df6be7aed9e3932971`; AC2 `2aee12e31f6098660142bf30bc1ab933be617e2541179c4331001e95e36f76d8`; AC3 `6c04a19400f2db46157d64165ac841f365ba42842f92e267bcfe188d84eb7914`; AC4 `d25fe8036716a4936c60d2cf733d47fa7d7bfad51e24210f6fb6b53dfb10129c` |
+| CS-18  | `fa9ee289de4c3ce836548e68251715642e53a19a3f0bcb89f2f848f6c2102e8b` | AC1 `9a21d2e9c747917821f2aaf39ccc8ec0713682741f068ce000e43c0940a1ed41`; AC2 `298aa39e720783ed6daf2798662bce655f9d1ea3414b6fc5819847886239cdf6`; AC3 `cef4a75c097366b78d85c85691925127a11dd9aeb24c7903d31fdba2fb440b06`; AC4 `7efd2808a3fda9270e81b7b80cd4015aadf095031c8ab252a5c77284f2c394b4` |
+| CS-19  | `7388a96b3d7b72bd7a2eb1017d75fb05ca2154779ac50525703ee66ca87d4a0e` | AC1 `07f2a9c970554a79593174bb0bb19e214576cf6d067eb7d0435fa15f70d2016c`; AC2 `961fc69fa9760fb3051e39119845bcf6a49bdc7b3e8b8d63d86e8612693777fd`; AC3 `a5ec07884d266c820e166aaa5e0e181b73e18f5e80d425be7409703246abd8c0`; AC4 `6dc76481c5e2398e2150ad63d5a57087e4b3c605fb639ba6e75d7ff058e41d80` |
+| CS-36  | `7ea81ad63c438eac00d4123201effb2f7e9975c5716294cea2a24847b4008151` | AC1 `02e25dc95cdd8632b918f29f15a4564d3f8056f8da0af9ab9f7d2b18cc0487ef`; AC2 `5dc89afdf2f43af65d27f26964e9a11bebbd14730b09e66f4973f89c018db9c1`; AC3 `4a0c569232e3be254bac4d4d0f5c5aeb8ab8ad734cfb0a50b72fc824d0187fdb`                                                                         |
+| CS-37  | `9dca35e3a6769c0caa81393d53c70d1317d35a772a04bc2ab5d47df55a648341` | AC1 `fc30b6d3c5985e959dce1929da6b20c5e9f02a39f44aaa44c5addd4ad58c1b3f`; AC2 `114c9296004c4ee7aad410a3fb43eff1e38a162fde3d969f623c1c1e86d7a9f0`; AC3 `0fb3bbdff6fb147dcac62352756bf17c8daaf8b742938ab0f896be3f8127caea`                                                                         |
+| CS-93  | `852333696354ad49786b2645376ff29c48aac286dba825da209862c989952443` | AC1 `9273ec54dd71c9678c27a36a9a4040de4beac46abfac0abb23ad91c540e2e519`; AC2 `925b2283cb570c8d6e831cd119d8216837729e2d47c64cdf44eb806d5aee269a`; AC3 `2df5c31aaa49b765ed4893e2afe3c50f98dcb9de7e90ccc1ffd40f95d3c91d88`; AC4 `72908703053095589d4ebb322454ff3cc2aa666e0dfd6c4e38c157723362c9fa` |
+
+## Independent review — scoped foundation wave
+
+The independent reviewer `/root/cs78_review` approved the authored content for
+CS-1, CS-4, CS-5, CS-7, CS-8, CS-9, CS-10 and CS-12. Whole-spec receipts are
+recorded only for CS-4, CS-7, CS-8, CS-9, CS-10 and CS-12 because CS-1 AC1 and
+CS-5 AC2 remain `DRAFT` pending their explicitly identified owner/release
+interpretation. No runtime, hosted, deployment or production evidence is
+claimed by this review.
+
+| Ticket | Whole-spec digest                                                  |
+| ------ | ------------------------------------------------------------------ |
+| CS-4   | `bad1ab8d6ae0ffc6e59ac804143fbb33866170b57d24f7d0e2b7d2e3a4081ea0` |
+| CS-7   | `b8bea454f473b9f105e50ee8ede07de0a5d87ac020944bf1447f8b09c3acf95f` |
+| CS-8   | `074c612b29397b80bfd934c6f5384185024b21f7f61bc4cefd9120dc1c0f67ad` |
+| CS-9   | `bc6c28be940ed54447054525065521315b9248aaeed9af072660e52b176556b1` |
+| CS-10  | `0fc455509210b139b0fb1a6bfc33669170b263eb4e569db813467a4ab5743693` |
+| CS-12  | `c283d8a9e04809d7cd4d535d8ea1a0766bc6ca9f7cf874d3cc9fefeabab0d525` |
+
+The review confirmed that CS-17 and CS-46 retain planned contract/data-model
+boundaries, CS-31 and CS-32 have pending re-review after runner corrections,
+and no generated receipt is being used to represent an executed test or live
+acceptance.

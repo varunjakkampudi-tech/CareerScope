@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "1535c4a25c3796605faa2b67b1a5f63c8d4038489bb6cdb1191f2720b88cbb19",
+    ".ai/ticket-specification-policy.json": "493373dc3ff33865bc03b1b2f9ec01b95cfb699c9f16ae1f4d83db8a706c0dab",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "b73c913cbcc7b19f5c3e80d3191b2bb298f896b0a4de6d0d036db1d1eb0a2dc9"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "d50970a94c9b45aa11fe1e0d6c4d540b1bd65e0e4a0ee52557f0781a8bbf6f97"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -37,7 +37,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "RESOLVED"
+          "disposition": "OPEN"
         }
       ],
       "sections": {
@@ -180,6 +180,11 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
+              "requirement": "The frozen source wording 'on every push' conflicts with the current main-only push trigger. Preserve the source criterion verbatim, but require an explicit owner/release disposition whether it means every configured event (main push, pull request and manual dispatch) or all branch pushes; do not silently narrow or broaden the trigger contract.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
               "requirement": "Keep mocked HTTP/unit coverage distinct from real PostgreSQL, Redis, file-worker/browser and hosted production acceptance. A failed assertion must produce nonzero child, npm and CI-step results; no continue-on-error, condition that suppresses failures, retries or reduced assertions.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -246,28 +251,8 @@
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "NOT_APPLICABLE: no new application endpoint. Process exit status and exact workflow SHA/step conclusion are the verification contracts.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-1",
-            "docs/API-SURFACE.md",
-            "package.json",
-            ".github/workflows/ci.yml",
-            "scripts/check-test-registration.ts"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "CI workflow/test registration is not an application HTTP contract."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -297,12 +282,6 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "none directly; removes a blind spot in the release path",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: AUDIT. Mutation evidence uses only isolated source fixtures and synthetic identifiers; no production secrets, live requests or deployment credentials. Hosted negative proof must be separately authorized and non-shipping.",
               "reviewStatus": "DRAFT",
@@ -340,7 +319,7 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
+                  "expectedCheck": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
                   "candidateCommand": null,
                   "evidenceRequired": "Future named contract result and path/event inventory; no hosted execution inferred.",
                   "automationStatus": "PLANNED",
@@ -356,8 +335,8 @@
                   "preconditions": "A copied CI/package fixture contains the actual canonical workflow and root scripts; no workflow is dispatched.",
                   "setup": "Parse actual workflow and package scripts; enumerate seven test:unit file arguments and push-main/PR/manual events.",
                   "procedure": "Resolve the named unit-only verify step to test:unit; assert all registered files exist and the step is reachable for each configured event.",
-                  "assertion": "The seven current file paths resolve; the unit-only step invokes npm run test:unit without continue-on-error or a condition excluding configured events. main push, PR and manual dispatch are covered; feature-branch push is explicitly outside the current trigger.",
-                  "expectedResult": "Canonical unit coverage is wired to configured CI changes, not an obsolete version directory or all-branches claim.",
+                  "assertion": "The seven current file paths resolve and the unit-only step invokes npm run test:unit without continue-on-error. The trigger assertion remains conditional: if the owner accepts configured-event scope, main push, pull_request and workflow_dispatch must be covered; if the owner requires literal every-branch-push scope, the fixture must fail until the workflow trigger is changed by an authorized implementation.",
+                  "expectedResult": "The unresolved source wording/trigger decision is reported explicitly; no feature-branch exclusion is counted as satisfying the frozen 'every push' criterion before owner disposition.",
                   "testName": "unit-only CI step reaches every registered canonical file on configured events",
                   "testFileOrProcedureId": "scripts/check-ci-unit-contract.test.mjs",
                   "fixtures": "Copied workflow/package and synthetic event contexts; planned new contract file.",
@@ -366,7 +345,7 @@
                   "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
                   "releaseGate": "CI_UNIT_EXECUTION",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED"
+                  "reviewStatus": "DRAFT"
                 }
               ]
             },
@@ -2243,8 +2222,8 @@
     {
       "ticketId": "CS-4",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -2252,7 +2231,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -2260,7 +2239,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -2485,30 +2464,8 @@
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "NOT_APPLICABLE to HTTP: existing module contract versionFiles(semver) returns path-to-content map and publishPages accepts getVersionFiles dependency. No application endpoint or protocol-version change. The generated general Fastify error catalogue is a workspace-wide template and does not apply to this non-HTTP ticket; do not invent or modify an API error contract here.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-4",
-            "docs/API-SURFACE.md",
-            "scripts/sync-version.mjs",
-            "scripts/publish-pages.mjs",
-            "scripts/publish-pages.test.mjs",
-            "docs/GITHUB-RELEASE-LIFECYCLE.md",
-            "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "Static publication version-file/module behavior has no application HTTP contract."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -2538,12 +2495,6 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "none",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. Trust boundary is the authorized local release operator and the repository publication helper. ADMIN_SNAPSHOT_PASSPHRASE is read from the operator's local environment file and passed only to the export subprocess environment; never expose it in command arguments, logs, fixture reports or generated artifacts. Fixtures use synthetic configured-passphrase text and stub all processes. Do not inspect, decrypt, or report the encrypted snapshot plaintext.",
               "reviewStatus": "DRAFT",
@@ -2932,7 +2883,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "RESOLVED"
+          "disposition": "OPEN"
         }
       ],
       "sections": {
@@ -2974,6 +2925,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3067,6 +3019,11 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
+              "requirement": "Reconcile active onboarding documentation as part of the single-workspace contract: audit START-HERE/01-SETUP.md for claims about .vscode/mcp.json, ignored data paths and Windows-specific Node setup, classify each claim as current/optional/historical, and update or explicitly disposition stale instructions. The clean-checkout acceptance must not leave an active setup path pointing at deleted or ignored runtime assets.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
               "requirement": "Optional public export selects only explicitly configured owner's non-archived PostgreSQL saved_leads via parameterized owner_id. Project exactly title/company/location/source/postedAt/url; never notes/resumes/scores/email/identity/session fields. URL sanitization accepts allowlisted HTTPS public destinations and drops credentials/tracking/private paths.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -3088,6 +3045,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3120,6 +3078,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3149,38 +3108,15 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "NOT_APPLICABLE: export is optional operator tooling using PostgreSQL; canonical Fastify API remains sole product contract. Absence of MCP runtime does not authorize inventing MCP routes.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-5",
-            "docs/API-SURFACE.md",
-            "package.json",
-            "scripts/export-mobile.mjs",
-            "scripts/export-mobile.test.mjs",
-            "scripts/stage-pages.mjs",
-            "docs/architecture/README.md",
-            "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
-            "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "Workspace consolidation is repository architecture work, not an application endpoint contract."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -3210,12 +3146,6 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "smaller surface once removed",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: AUTHORIZATION, PRIVACY_PII. Public export requires explicit authorized owner selection, parameterized query and field/URL allowlist. Synthetic fixtures only; DB credentials never printed or committed. Missing owner refuses before query.",
               "reviewStatus": "DRAFT",
@@ -3230,6 +3160,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3294,7 +3225,7 @@
               "verification": [
                 {
                   "type": "AUTOMATED_CONTRACT",
-                  "expectedCheck": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
+                  "expectedCheck": "Active executable MCP launcher/config no longer points to removed SQLite runtime; START-HERE/01-SETUP.md contains no stale active setup instruction for .vscode/mcp.json, ignored data or an unavailable Windows Node path; canonical product routes remain Fastify contract with no MCP addition.",
                   "candidateCommand": null,
                   "evidenceRequired": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
                   "automationStatus": "PLANNED",
@@ -3308,16 +3239,16 @@
                 {
                   "reviewer": "System Designer, Security, Infrastructure and QA",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
+                  "reviewStatus": "DRAFT",
                   "type": "AUTOMATED_CONTRACT",
                   "preconditions": "Tracked repository inventory and canonical API contract available read-only.",
                   "setup": "Enumerate workspace scripts/manifests/imports/editor launchers/workflows for SQLite MCP executable/config references; distinguish historical docs.",
-                  "procedure": "Resolve every active launcher/config reference and API route inventory; assert no obsolete SQLite MCP launch/runtime path and no new generic MCP endpoint.",
-                  "assertion": "Active executable MCP launcher/config no longer points to removed SQLite runtime; canonical product routes remain Fastify contract with no MCP addition. Historical quoted evidence is explicitly classified, not a runtime dependency.",
-                  "expectedResult": "Removed obsolete launcher cannot be invoked through active configuration.",
+                  "procedure": "Resolve every active launcher/config reference and API route inventory, then inspect START-HERE/01-SETUP.md for .vscode/mcp.json, ignored-data and Windows-node claims; assert each is current, optional with a valid path, or explicitly classified as historical.",
+                  "assertion": "Active executable MCP launcher/config no longer points to removed SQLite runtime; START-HERE/01-SETUP.md contains no stale active setup instruction for .vscode/mcp.json, ignored data or an unavailable Windows Node path; canonical product routes remain Fastify contract with no MCP addition.",
+                  "expectedResult": "Removed obsolete launcher and stale setup instruction cannot be invoked or followed from active onboarding documentation.",
                   "testName": "canonical workspace has no active obsolete SQLite MCP launcher",
                   "testFileOrProcedureId": "scripts/check-single-workspace-contract.test.mjs",
-                  "fixtures": "Read-only tracked path/reference inventory and planned contract checker; no MCP server installation.",
+                  "fixtures": "Read-only tracked path/reference inventory, START-HERE/01-SETUP.md and planned contract checker; no MCP server installation.",
                   "negativeCase": "Introduce active launcher/import referring to removed SQLite executable: fail; historical changelog citation alone does not fail.",
                   "evidenceArtifact": "Future resolved consumer inventory and negative fixture result; no production DB scan.",
                   "releaseGate": "OBSOLETE_RUNTIME_CONSUMER_REMOVAL"
@@ -3389,6 +3320,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3450,6 +3382,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3492,6 +3425,11 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
+              "requirement": "Review START-HERE/01-SETUP.md and its linked setup artifacts; remove or correct stale .vscode/mcp.json and ignored-data claims before the clean-checkout evidence is considered complete.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
               "requirement": "For any remaining AC1 gap, add the planned disposable-PostgreSQL integration test using an isolated copied module/root and synthetic owner rows; assert owner, archive, exact-field and unchanged canonical-output invariants.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -3513,6 +3451,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3548,6 +3487,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -3579,6 +3519,7 @@
             "scripts/export-mobile.mjs",
             "scripts/export-mobile.test.mjs",
             "scripts/stage-pages.mjs",
+            "START-HERE/01-SETUP.md",
             "docs/architecture/README.md",
             "docs/PHASE-3-25-OWNER-DECISIONS-REQUIRED.md",
             "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
@@ -4450,8 +4391,8 @@
     {
       "ticketId": "CS-7",
       "primaryEpicId": "EPIC-PLATFORM",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -4459,7 +4400,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -4769,32 +4710,8 @@
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "EXISTING_CONTRACT: Actions ci.yml run-list query has head_sha set to resolved main SHA; parsed payload requires numeric finite nonnegative total_count equal to workflow_runs length. Decision returns PASS, REFUSE or WAIT plus reason. No product route is added.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-7",
-            "docs/API-SURFACE.md",
-            "docs/GITHUB-RELEASE-LIFECYCLE.md",
-            ".github/workflows/deploy.yml",
-            "scripts/require-ci-success.mjs",
-            "scripts/check-deploy-gate.mjs",
-            "docs/PHASE-3-25-REMEDIATION-LEDGER.md",
-            "docs/PHASE-3-25-EXECUTION-STATE.md",
-            "docs/PHASE-3-25-LOCAL-VALIDATION-2026-10-06.md"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "Deployment-gate decision and workflow provenance are process contracts, not product HTTP routes."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -4824,12 +4741,6 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "ships unreviewed code to the public origin",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. Actions query uses read-only actions permission. Never expose token/header/SSH material; gate refusal occurs before hosted-secret or SSH steps. Repository-root checks cannot grant shipping authorization.",
               "reviewStatus": "DRAFT",
@@ -5251,8 +5162,8 @@
     {
       "ticketId": "CS-8",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -5260,7 +5171,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -5498,31 +5409,8 @@
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "Existing internal snapshot contract includes stateErrors alongside fallback collections; CLI contracts are exit status plus safe file-name diagnostic. No new product HTTP route or candidate database mutation is needed.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-8",
-            "docs/API-SURFACE.md",
-            "scripts/check-state-readers.mjs",
-            "scripts/engineering-ui.mjs",
-            "scripts/engineering.mjs",
-            "scripts/control-center.mjs",
-            "scripts/check-agents.mjs",
-            "scripts/release-gate.mjs"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "Canonical state-reader failure semantics are local module contracts, not product HTTP routes."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -5552,12 +5440,6 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "defeats the release gate",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: INPUT_VALIDATION, AUDIT. Treat repository state as untrusted evidence. Diagnostics name artifact/category, not raw malformed content, configuration or secrets. A corrupt finding record must not grant release permission or agent authority. Never use production data in parser mutation fixtures.",
               "reviewStatus": "DRAFT",
@@ -5936,8 +5818,8 @@
     {
       "ticketId": "CS-9",
       "primaryEpicId": "EPIC-VALIDATION",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -5945,7 +5827,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -6062,9 +5944,23 @@
             "Matching remains deterministic; AI cannot silently replace scores, ranking or exclusions.",
             "No autonomous auto-apply, credential/cookie/session theft, CAPTCHA bypass or provider terms/rate-limit bypass.",
             "HOLD/FUTURE features and unapproved provider capabilities stay disabled; design approval is not activation authority.",
-            "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot."
+            "No new service, technology, schema or endpoint is prescribed merely to reproduce a screenshot.",
+            {
+              "requirement": "Do not modify resume parsing, child-process permissions or application domain behavior under CS-9; any parser defect remains a separately sourced/runtime ticket and is not acceptance evidence for CI registration.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            }
           ],
-          "sources": ["docs/PROJECT-STATE.md", "docs/ARCHITECTURE.md", ".ai/backlog.json#CS-9"]
+          "sources": [
+            "docs/PROJECT-STATE.md",
+            "docs/ARCHITECTURE.md",
+            ".ai/backlog.json#CS-9",
+            "package.json",
+            ".github/workflows/ci.yml",
+            "packages/core/src/database.test.ts",
+            "packages/core/src/bull-queue.test.ts",
+            "scripts/engineering-runner.mjs"
+          ]
         },
         "functionalRequirements": {
           "applicability": "APPLICABLE",
@@ -6181,30 +6077,8 @@
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "NOT_APPLICABLE to new product API: CI service readiness, test process outcomes and report classification are the contracts; preserve application APIs under test.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-9",
-            "docs/API-SURFACE.md",
-            "package.json",
-            ".github/workflows/ci.yml",
-            "packages/core/src/database.test.ts",
-            "packages/core/src/bull-queue.test.ts",
-            "scripts/engineering-runner.mjs"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "CI service-backed test orchestration is not a new application endpoint contract."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -6233,13 +6107,7 @@
         "securityPrivacy": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "none directly; the resume-parser fix REMOVES a permanently-broken safety self-check rather than weakening a working one — network isolation for that child was never actually enforced by it and must come from the OS/container, which this change documents rather than hides",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            "SECURITY_IMPACT: AUDIT. CI credentials, service fixtures and test artifacts are synthetic and disposable; record only safe case names, exit/signal, service versions and counts. Do not inspect or log resume payloads, database rows, provider tokens or environment contents.",
             {
               "requirement": "SECURITY_IMPACT: SECRETS, AUDIT. CI credentials are synthetic throwaway values. Collect safe case names, exit/signal, service versions and counts, never environment contents, database rows, resume payloads or provider tokens.",
               "reviewStatus": "DRAFT",
@@ -6598,8 +6466,8 @@
     {
       "ticketId": "CS-10",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -6607,7 +6475,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -6615,7 +6483,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -6850,29 +6718,8 @@
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "NOT_APPLICABLE: no candidate API or platform permission expansion. Activation plans consume actual native capability and do not grant it.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-10",
-            "docs/API-SURFACE.md",
-            ".ai/AGENT-SETUP.md",
-            "docs/ai/agent-matrix.md",
-            ".github/copilot-instructions.md",
-            "scripts/check-agents.mjs"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "Agent roster/activation policy is an internal process contract, not an application HTTP route."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -6902,12 +6749,6 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "none",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: AUDIT, ADMIN_PRIVILEGE. Enforce least privilege per role; read-only review excludes edit/general execution in applicable platform definition. Actual invocation grant enforcement is separate CS-12 proof. No specialist receives production secrets to justify retention.",
               "reviewStatus": "DRAFT",
@@ -8166,8 +8007,8 @@
     {
       "ticketId": "CS-12",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -8175,7 +8016,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -8422,31 +8263,8 @@
           ]
         },
         "apiContract": {
-          "applicability": "APPLICABLE",
-          "requirements": [
-            {
-              "sourceMapping": null,
-              "registrationAuthority": "apps/api/src/app.ts",
-              "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
-              "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
-              "unknownContracts": []
-            },
-            {
-              "requirement": "NOT_APPLICABLE: no product endpoint or paid provider API. Native agent invocation availability and granted capability manifest are platform evidence, not claimed repository runtime.",
-              "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
-            }
-          ],
-          "sources": [
-            ".ai/backlog.json#CS-12",
-            "docs/API-SURFACE.md",
-            ".github/copilot-instructions.md",
-            ".github/agents/careerscope-independent-reviewer.agent.md",
-            ".github/prompts/update-tickets.prompt.md",
-            "docs/ai/README.md",
-            "docs/ai/agent-matrix.md",
-            "scripts/check-agents.mjs"
-          ]
+          "applicability": "NOT_APPLICABLE",
+          "reason": "Agent invocation documentation and attribution are internal process contracts, not product HTTP routes."
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -8476,12 +8294,6 @@
           "applicability": "APPLICABLE",
           "requirements": [
             "none directly; removes assumed review assurance",
-            "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
-            "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
-            "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
-            "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: AUDIT, SECRETS. Reviewer receives only minimal source context, no .env or real user data. Tool permissions must be proven in actual selected environment; no permission escalation, installations, external CLI workaround or capability-faking.",
               "reviewStatus": "DRAFT",
@@ -12090,7 +11902,7 @@
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
             },
             {
-              "requirement": "Dismissal persistence must be an explicit candidate-owner plus canonical-job disposition with reversible restore, audit history and revision/conflict protection; it must not reuse or mutate Applied, Interviewing, Offer, Rejected or Withdrawn lifecycle state.",
+              "requirement": "Dismissal persistence must be an explicit candidate-owner plus canonical-job disposition with reversible restore, audit history and revision/conflict protection; it must not reuse or mutate Applied, Interviewing, Offer, Rejected or Withdrawn lifecycle state. The entity, uniqueness key (ownerId, canonicalJobId), revision field, restore semantics and migration/rollback plan are a PLANNED data contract, not an existing schema claim.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -12125,7 +11937,12 @@
               "unknownContracts": []
             },
             {
-              "requirement": "Bind detail fields to the canonical posting response and assert authorization/owner behavior for selected records; malformed or missing records produce a named not-found/error state.",
+              "requirement": "EXISTING_CONTRACT: bind detail fields to the canonical posting response and assert authorization/owner behavior for selected records; malformed or missing records produce a named not-found/error state.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "PLANNED_CONTRACT: dismissal is not an existing endpoint in the current source map. Before implementation, define a candidate-owned disposition route with canonical job id, authenticated owner, current revision and explicit disposition value. Return 401 when unauthenticated, 403/404 without cross-owner existence leakage, 409 on stale revision, and a canonical disposition plus revision on success. Register the final route in the API contract and integration test before implementation begins.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -20824,17 +20641,17 @@
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
             {
-              "requirement": "Reproduce the saved v2/scripts/check-ui.ts hiddenSkip failure on current bytes and identify the implementation or harness cause without weakening the intended contract. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+              "requirement": "Treat the historical hiddenSkip failure as a diagnosis input, not current proof. The current authenticated shell target is #main-content; the unauthenticated sign-in target is #workspace-content. A future regression fixture must render the current shell route and assert the applicable target only, while recording the historical runner/result separately.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Verify the unfocused hidden state, visible keyboard-focus state and activation moving focus to main content. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+              "requirement": "For the authenticated shell fixture, assert that the skip link is visually hidden when unfocused, becomes visibly focusable after keyboard Tab, and moves focus to #main-content on Enter/activation. The negative control must remove the target landmark and demonstrate a deterministic failure rather than broadening the selector.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Run the focused check in Chromium, Firefox and WebKit at the affected viewport and a narrow mobile viewport; report unavailable engines rather than implying a pass. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+              "requirement": "Run the focused current check through npm run test:ui (scripts/check-ui.ts) in Chromium, Firefox and WebKit at 1440px and 320px widths; report unavailable engines as unavailable and keep any manual screen-reader review separate from automated evidence.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -21005,7 +20822,7 @@
               "verification": [
                 {
                   "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "the current check-ui run records hiddenSkip failure with exact SHA/viewport and identifies the selector or harness cause; the assertion is not weakened",
+                  "expectedCheck": "the current authenticated-shell fixture targets #main-content and records a deterministic pass/failure with exact SHA and viewport; a missing target landmark is a negative-control failure, not a selector fallback",
                   "candidateCommand": null,
                   "evidenceRequired": "Future CS-31-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
                   "automationStatus": "PLANNED",
@@ -21019,19 +20836,19 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
+                  "reviewStatus": "DRAFT",
                   "type": "MANUAL_ACCESSIBILITY",
                   "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
-                  "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC1 procedure.",
-                  "fixtureOrData": "saved route at affected and narrow-mobile viewports with keyboard focus",
-                  "action": "Run npm run test:ui and inspect the named CS-31-AC1 procedure output.",
+                  "setup": "Render the current authenticated shell with an isolated synthetic owner at 1440px and 320px; identify #main-content as the authenticated target and retain #workspace-content only for the unauthenticated sign-in fixture.",
+                  "fixtureOrData": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
+                  "action": "Run npm run test:ui through scripts/check-ui.ts and execute the current-shell hiddenSkip procedure; record the historical failure only as diagnosis input.",
                   "repositoryCommand": "npm run test:ui",
-                  "procedure": "scripts/check-ui.ts::hiddenSkip::CS-31-AC1",
-                  "assertion": "the current check-ui run records hiddenSkip failure with exact SHA/viewport and identifies the selector or harness cause; the assertion is not weakened",
-                  "expectedResult": "the current check-ui run records hiddenSkip failure with exact SHA/viewport and identifies the selector or harness cause; the assertion is not weakened",
+                  "procedure": "scripts/check-ui.ts::authenticated-shell-hiddenSkip::CS-31-AC1",
+                  "assertion": "the current authenticated-shell fixture targets #main-content and records a deterministic pass/failure with exact SHA and viewport; a missing target landmark is a negative-control failure, not a selector fallback",
+                  "expectedResult": "the current shell contract is evaluated against #main-content without treating the historical hiddenSkip report as current execution evidence",
                   "testName": "CS-31-AC1 exact verification",
-                  "testFileOrProcedureId": "scripts/check-ui.ts::hiddenSkip::CS-31-AC1",
-                  "fixtures": "saved route at affected and narrow-mobile viewports with keyboard focus",
+                  "testFileOrProcedureId": "scripts/check-ui.ts::authenticated-shell-hiddenSkip::CS-31-AC1",
+                  "fixtures": "current authenticated shell, synthetic owner, #main-content target, 1440px and 320px viewports",
                   "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
                   "evidenceArtifact": "Future CS-31-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
                   "releaseGate": "CS-31-AC1-RELEASE-GATE"
@@ -21059,7 +20876,7 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
+                  "reviewStatus": "DRAFT",
                   "type": "MANUAL_ACCESSIBILITY",
                   "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
                   "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC2 procedure.",
@@ -21099,7 +20916,7 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
+                  "reviewStatus": "DRAFT",
                   "type": "MANUAL_ACCESSIBILITY",
                   "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-31; no production or destructive host action.",
                   "setup": "Prepare saved route at affected and narrow-mobile viewports with keyboard focus and execute only the CS-31-AC3 procedure.",
@@ -21209,7 +21026,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Run npm run test:ui only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+              "requirement": "Use npm run test:ui / scripts/check-ui.ts for the authenticated-shell keyboard regression; do not route the assertion through the removed legacy v2/scripts/check-ui.ts harness.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -21458,7 +21275,7 @@
               "id": "CS-32-AC1",
               "sourceText": "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment",
               "expectedResult": "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment",
-              "verificationIds": ["MANUAL_ACCESSIBILITY"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-32",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -21466,7 +21283,7 @@
               "id": "CS-32-AC2",
               "sourceText": "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green",
               "expectedResult": "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green",
-              "verificationIds": ["MANUAL_ACCESSIBILITY"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-32",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -21474,22 +21291,22 @@
               "id": "CS-32-AC3",
               "sourceText": "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries",
               "expectedResult": "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries",
-              "verificationIds": ["MANUAL_ACCESSIBILITY"],
+              "verificationIds": ["AUTOMATED_BROWSER"],
               "authority": ".ai/backlog.json#CS-32",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
             {
-              "requirement": "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+              "requirement": "Reproduce chromium-search-light-320 with the current Pages visual comparator scripts/check-pages-ui.mjs (npm run pages:visual), recording expected, actual and diff images from the pinned fixture; scripts/check-ui.ts is not the snapshot/pixelmatch owner. The negative control must alter a fixture pixel and fail the comparator.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+              "requirement": "Classify the diff from the actual current fixture and approved design baseline before changing code or baselines. A baseline update requires explicit visual-review evidence and must not be used to make an unexplained failure green.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+              "requirement": "Run npm run pages:visual for publication visual evidence, then run npm run pages:workspace:test / scripts/check-pages-ui.mjs only for the registered workspace interaction checks; keep manual WCAG/keyboard review separate and do not label these Pages commands as axe evidence.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -21659,7 +21476,7 @@
               "criterion": "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
+                  "type": "VISUAL_REGRESSION",
                   "expectedCheck": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
                   "candidateCommand": null,
                   "evidenceRequired": "Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -21674,18 +21491,18 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
-                  "type": "MANUAL_ACCESSIBILITY",
+                  "reviewStatus": "DRAFT",
+                  "type": "VISUAL_REGRESSION",
                   "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
                   "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC1 procedure.",
                   "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-                  "action": "Run npm run test:ui and inspect the named CS-32-AC1 procedure output.",
-                  "repositoryCommand": "npm run test:ui",
-                  "procedure": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC1",
+                  "action": "Run npm run pages:visual and inspect the named CS-32-AC1 pixel/diff output.",
+                  "repositoryCommand": "npm run pages:visual",
+                  "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
                   "assertion": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
                   "expectedResult": "the procedure stores expected, actual and diff images at the documented paths for chromium-search-light-320 and records renderer/viewport/SHA plus the harness-approved diff result",
                   "testName": "CS-32-AC1 exact verification",
-                  "testFileOrProcedureId": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC1",
+                  "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
                   "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
                   "negativeCase": "missing fixture, unauthorized owner, or absent dependency must refuse without mutation",
                   "evidenceArtifact": "Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -21699,7 +21516,7 @@
               "criterion": "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
+                  "type": "VISUAL_REGRESSION",
                   "expectedCheck": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
                   "candidateCommand": null,
                   "evidenceRequired": "Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -21714,18 +21531,18 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
-                  "type": "MANUAL_ACCESSIBILITY",
+                  "reviewStatus": "DRAFT",
+                  "type": "VISUAL_REGRESSION",
                   "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
                   "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC2 procedure.",
                   "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-                  "action": "Run npm run test:ui and inspect the named CS-32-AC2 procedure output.",
-                  "repositoryCommand": "npm run test:ui",
-                  "procedure": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC2",
+                  "action": "Run npm run pages:visual and inspect the named CS-32-AC2 pixel/diff output.",
+                  "repositoryCommand": "npm run pages:visual",
+                  "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
                   "assertion": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
                   "expectedResult": "the diff is accepted only when the documented existing threshold and reviewed baseline identity match; otherwise the output names the implementation cause or records intentional-baseline review",
                   "testName": "CS-32-AC2 exact verification",
-                  "testFileOrProcedureId": "scripts/check-ui.ts::chromium-search-light-320::CS-32-AC2",
+                  "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
                   "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
                   "negativeCase": "stale, unavailable, malformed, or conflicting input must produce the named safe failure",
                   "evidenceArtifact": "Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -21739,8 +21556,8 @@
               "criterion": "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "Pages visual checks and focused three-engine mobile checks rerun with unchanged snapshot allowlists and publication boundaries; Pages output comes from check-public-workspace.mjs and application/browser output comes from check-ui.ts, with each engine result separately recorded.",
+                  "type": "AUTOMATED_BROWSER",
+                  "expectedCheck": "workspace interaction checks rerun with unchanged publication boundaries and each supported engine result separately recorded; this procedure does not claim axe or manual WCAG evidence.",
                   "candidateCommand": null,
                   "evidenceRequired": "Future CS-32-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
                   "automationStatus": "PLANNED",
@@ -21754,18 +21571,18 @@
                 {
                   "reviewer": "QA / ticket owner",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "REVIEWED",
-                  "type": "MANUAL_ACCESSIBILITY",
+                  "reviewStatus": "DRAFT",
+                  "type": "AUTOMATED_BROWSER",
                   "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
                   "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC3 procedure.",
                   "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-                  "action": "Run npm run pages:workspace:test for the Pages visual check, then npm run test:ui for the focused three-engine mobile workspace checks, and inspect each engine result.",
-                  "repositoryCommand": "npm run pages:workspace:test && npm run test:ui",
-                  "procedure": "scripts/check-public-workspace.mjs::CS-32-AC3 Pages visual procedure; scripts/check-ui.ts::CS-32-AC3 three-engine workspace procedure",
-                  "assertion": "Pages visual checks and focused three-engine mobile checks rerun with unchanged snapshot allowlists and publication boundaries; Pages output comes from check-public-workspace.mjs and application/browser output comes from check-ui.ts, with each engine result separately recorded.",
+                  "action": "Run npm run pages:workspace:test and inspect the registered workspace interaction output; keep manual WCAG review separate.",
+                  "repositoryCommand": "npm run pages:workspace:test",
+                  "procedure": "scripts/check-pages-ui.mjs::workspace-interaction::CS-32-AC3",
+                  "assertion": "workspace interaction checks rerun with unchanged publication boundaries and each supported engine result separately recorded; this procedure does not claim axe or manual WCAG evidence.",
                   "expectedResult": "Both named procedures complete or explicitly report NOT_RUN for an unavailable engine; no snapshot allowlist or publication boundary changes.",
                   "testName": "CS-32-AC3 exact verification",
-                  "testFileOrProcedureId": "scripts/check-public-workspace.mjs::CS-32-AC3; scripts/check-ui.ts::CS-32-AC3",
+                  "testFileOrProcedureId": "scripts/check-pages-ui.mjs::workspace-interaction::CS-32-AC3",
                   "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
                   "negativeCase": "duplicate, replay, unsupported, or unsafe input must be rejected or remain a no-op",
                   "evidenceArtifact": "Future CS-32-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
@@ -21797,7 +21614,7 @@
               "id": "CS-32-AC1",
               "sourceText": "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment",
               "expectedResult": "Reproduce and inspect expected, actual and difference images for chromium-search-light-320 using the documented rendering environment",
-              "verificationIds": ["MANUAL_ACCESSIBILITY"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-32",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -21805,7 +21622,7 @@
               "id": "CS-32-AC2",
               "sourceText": "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green",
               "expectedResult": "Name the cause and correct implementation or explicitly review an intentional baseline change; never approve a snapshot merely to turn the check green",
-              "verificationIds": ["MANUAL_ACCESSIBILITY"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-32",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -21813,7 +21630,7 @@
               "id": "CS-32-AC3",
               "sourceText": "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries",
               "expectedResult": "Rerun Pages visual checks and focused three-engine mobile workspace checks without changing snapshot allowlists or publication boundaries",
-              "verificationIds": ["MANUAL_ACCESSIBILITY"],
+              "verificationIds": ["AUTOMATED_BROWSER"],
               "authority": ".ai/backlog.json#CS-32",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -21864,7 +21681,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Run npm run test:ui only when the planned procedure exists; retain PLANNED status until evidence is collected.",
+              "requirement": "Use scripts/check-pages-ui.mjs with npm run pages:visual for pixel/diff assertions and npm run pages:workspace:test for Pages interaction checks; do not route snapshot claims through scripts/check-ui.ts.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -29954,13 +29771,19 @@
               "rule": "Preserve owner-scoped PostgreSQL constraints, revisions and append-only migrations; no new database change is inferred from this spec.",
               "proposedChanges": [],
               "approval": "No new schema, index or retention policy is implied by a screenshot; approve before implementing."
+            },
+            {
+              "requirement": "PLANNED_DATA_CONTRACT: persist owner-scoped resume fact identity (normalized type/value plus source resume revision/provenance) and explicit exclusion decision with revision and timestamps. Enforce uniqueness for one owner/fact/source identity, retain accepted versus excluded state separately, and define reparse reconciliation so a new parse cannot clear an exclusion. Add migration, rollback and delete/retention behavior before implementation; current schema is not being represented as complete.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-46",
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
-            "docs/KNOWN-LIMITATIONS.md"
+            "docs/KNOWN-LIMITATIONS.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md"
           ]
         },
         "apiContract": {
@@ -29979,9 +29802,18 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "PLANNED_CONTRACT: candidate-owned resume-fact review/exclusion operations require authenticated owner context, normalized fact identity, source resume revision and current revision. Return 401 when unauthenticated, 403/404 without cross-owner existence leakage, 409 for stale revision, and a redacted fact/provenance projection with updated revision on success. No existing endpoint is claimed until the planned route is registered and tested.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
             }
           ],
-          "sources": [".ai/backlog.json#CS-46", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-46",
+            "docs/API-SURFACE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md"
+          ]
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
@@ -30016,9 +29848,19 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "The candidate is the sole writer of their own fact decisions; parsed resume facts are private PII. Authorization derives from the session owner, raw resume text and provider tokens are never returned or logged, audit records use redacted fact identifiers, and cross-owner, stale-revision or unrestricted bulk mutations are denied.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-46", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-46",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
@@ -30231,9 +30073,34 @@
             "Implement and verify CS-46-AC1: A documented, owner-confirmed product decision on whether resume-derived skills/titles are always-on supplementary evidence (current CS-22 behavior, now accurately documented rather than silently shipped) or must be gated behind an explicit per-fact approval/exclusion step before reaching matching",
             "Implement and verify CS-46-AC2: If exclusion is required: a per-skill/title exclude mechanism that survives across searches until the resume is re-parsed, distinct from the existing profile-editor proposal-review flow (which edits preferences.techStack directly and already works), and that composes without conflict with the always-on union in packages/matching/src/context.ts",
             "Implement and verify CS-46-AC3: v2/ARCHITECTURE.md's resume-integration row and packages/matching/src/context.ts's docstring stay accurate to whatever is decided - this ticket exists specifically so that reconciliation is deliberate, not accidental",
-            "Reconcile CS-46 documentation, redacted evidence and independent review before workflow promotion."
+            "Reconcile CS-46 documentation, redacted evidence and independent review before workflow promotion.",
+            {
+              "requirement": "Define and review normalized fact identity/provenance and the owner-scoped schema before coding.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Specify the candidate-owned read/write contract, revision conflict behavior and reparse reconciliation.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Implement deterministic exclusion projection into matching snapshots without changing canonical scorer weights.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Add owner-isolation, stale-revision, reparse-preservation and explicit-restore tests with redacted audit evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Document retention/deletion and rollback for the new data contract before release.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-46"]
+          "sources": [".ai/backlog.json#CS-46", "docs/OWNER-DECISIONS-2026-10-02.md"]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
