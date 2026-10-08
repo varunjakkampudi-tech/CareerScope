@@ -1,7 +1,8 @@
 {
   "schemaVersion": 1,
   "uiTicketIds": [
-    "CS-45"
+    "CS-45",
+    "CS-46"
   ],
   "sequencingEdges": [
     {
@@ -682,6 +683,12 @@
         "securityPrivacy": [
           "The candidate is the sole writer of their own fact decisions; parsed resume facts are private PII. Authorization derives from the session owner, raw resume text and provider tokens are never returned or logged, audit records use redacted fact identifiers, and cross-owner, stale-revision or unrestricted bulk mutations are denied."
         ],
+        "accessibility": [
+          "The approved exclusion decision is candidate-visible in the existing profile-review flow: each parsed skill/title proposal has an accessible name, explicit accepted/excluded state, keyboard-operable control, visible focus and an associated status announcement. Reparse presents proposed changes without silently changing the saved decision; restore is an explicit reversible action. Verify WCAG 2.2 AA semantics, error association, zoom/reflow at 320/390/768/1440 and a future NVDA/VoiceOver review without exposing raw resume text in evidence."
+        ],
+        "visualRegression": [
+          "Use the existing profile-review/settings reference already mapped to CS-213 and CS-46's canonical dashboard/settings references for the candidate-visible exclusion/restoration state. Do not invent a new route or visual surface. If the existing reference lacks the per-fact state, retain DESIGN_PARTIAL and record the exact missing state as a future UX approval gate."
+        ],
         "implementationChecklist": [
           "Define and review normalized fact identity/provenance and the owner-scoped schema before coding.",
           "Specify the candidate-owned read/write contract, revision conflict behavior and reparse reconciliation.",
@@ -691,10 +698,34 @@
         ],
         "testStrategy": [
           "Plan rejected skill/title, repeated search, changed resume revision, normalization-equivalent facts, explicit restore, foreign-owner denial and deterministic-score provenance assertions. Reparse preserves suppression until explicit candidate restoration."
+        ],
+        "manualExternalGates": [
+          "The approved owner decision in docs/OWNER-DECISIONS-2026-10-02.md#CS-46 supersedes the historical option-1/option-2 blocker text in the frozen backlog. Phase 3.25 records the durable per-fact exclusion contract; implementation, migration, accessibility and release evidence remain future gates."
         ]
       },
       "sectionTextReplacements": {
-        "technicalApproach": [
+        "identity": [
+          ["The matching behavior is deliberately not reinterpreted; the owner must choose always-on supplementary evidence or a per-fact exclusion gate.", "The historical owner-choice blocker is superseded by docs/OWNER-DECISIONS-2026-10-02.md#CS-46, which selects a durable per-fact exclusion gate; implementation and release evidence remain future gates."],
+          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
+        ],
+        "currentState": [
+          ["BLOCKED on an owner product decision. AC1 explicitly requires an OWNER-CONFIRMED choice between always-on supplementary evidence and an explicit per-fact exclusion gate; an agent cannot confirm on the owner behalf. AC3 (documentation accuracy) is now verified satisfied. AC2 applies only if option 2 is chosen.", "The historical owner-decision blocker is resolved by docs/OWNER-DECISIONS-2026-10-02.md#CS-46. The remaining gap is implementation of the durable exclusion contract, migration, accessible profile-review controls and future release evidence; no runtime completion is claimed in this specification phase."],
+          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
+        ],
+        "desiredOutcome": [
+          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
+        ],
+        "inScope": [
+          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
+        ],
+        "manualExternalGates": [
+          ["B1_PRODUCT_OR_OWNER_DECISION", "HISTORICAL BLOCKER RESOLVED BY OD-2026-10-02-CS-46; implementation, accessibility and release evidence remain future gates."],
+          ["Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision.", "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."]
+        ],
+        "problem": [
+          ["this ticket is where that gets an actual decision instead of staying an accident of activation order.", "the approved owner decision is propagated into an implementation-ready durable exclusion contract rather than remaining an unresolved activation-order accident."]
+        ]
+        ,"technicalApproach": [
           ["v2/packages/core/src/profile.ts", "packages/core/src/profile.ts"]
         ]
       }
@@ -1093,6 +1124,14 @@
         ],
         "risksRecovery": [
           "A DOM-only no-flash test can miss private RSC payload or queries; inspect response and mount/request sentinels. Removing route wrapper or rendering children while lookup is pending must be detected. Route rollback restores reviewed prior composition without changing sessions, user records or database."
+        ]
+      },
+      "sectionTextReplacements": {
+        "problem": [
+          ["No deep links, no per-page loading or error states, no auth boundary. One 830-line page.tsx fakes navigation with a view variable.", "Historical intake evidence from the source ticket describes the pre-route-boundary state. Current route composition and shared session boundary exist; the remaining specification gap is the unexecuted delayed/error/anonymous rendered-harness verification and privacy/cache evidence described below."]
+        ],
+        "currentState": [
+          ["No deep links, no per-page loading or error states, no auth boundary. One 830-line page.tsx fakes navigation with a view variable.", "Historical intake evidence from the source ticket describes the pre-route-boundary state. Current route composition and shared session boundary exist; the remaining specification gap is the unexecuted delayed/error/anonymous rendered-harness verification and privacy/cache evidence described below."]
         ]
       }
     },
@@ -2525,6 +2564,9 @@
         "desiredOutcome": [
           "Specify a centrally shared context decision and preserve separate consumer behavior: resume extraction rejects a title segment when a joiner is refused; matching evidence neutralizes refused joiners without claiming that raw resume or candidate text is otherwise verified. The exact set of scripts/contexts remains owner-approved policy, not an agent inference."
         ],
+        "functionalRequirements": [
+          "Source-criterion reconciliation: the frozen AC3 wording uses the historical shorthand ‘containing these’ for the ZWNJ/ZWJ cases described by the ticket. In this specification, ‘these’ is explicitly interpreted as a joiner refused by the owner-approved context-sensitive policy; AC2-approved orthographic contexts remain allowed. The source text is preserved for traceability, while implementation and tests use the resolved/refused distinction and must not silently narrow the owner decision."
+        ],
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: CROSS_MODULE, LOCAL_MODULE. `packages/shared/src/evidence-text.ts` owns the shared code-point/context predicate; `packages/resume/src/derive.ts` rejects affected title segments; matching title evidence calls the shared constraint and neutralizes refused code points. Keep the policy centralized and preserve distinct reject-versus-neutralize behavior. No API, database or provider change is specified. DESIGN_NOT_APPLICABLE because this domain text-processing ticket has no dedicated rendered UI surface."
         ],
@@ -2559,7 +2601,20 @@
         "Use exact synthetic Unicode sequences for U+0915 U+200C U+0937 and U+0915 U+200D U+0937, plus punctuation, script-boundary and decorative negative cases.",
         "Preserve the isolated historical-source comparison as a planned negative control; require the expected-preservation assertion to fail on the historical source and pass on an owner-approved implementation.",
         "Obtain explicit Product/Security approval for allowed scripts and contexts and a named implementation owner before modifying the policy."
-      ]
+      ],
+      "sectionTextReplacements": {
+        "technicalApproach": [
+          ["UNRESOLVED: source architecture assessment is absent; see recorded specification gap.", "Reviewed architecture assessment: the shared text predicate in packages/shared/src/evidence-text.ts is the only policy boundary; packages/resume/src/derive.ts and packages/matching/src/dimensions.ts are existing consumers with intentionally different reject-versus-neutralize effects. No API, persistence, provider or deployment boundary changes are in scope."],
+          ["EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR", "REVIEWED_TICKET_ASSESSMENT"]
+        ],
+        "securityPrivacy": [
+          ["UNRESOLVED: source security/privacy assessment is absent; see recorded specification gap.", "Reviewed security assessment: candidate-controlled resume-derived text crosses an input-validation and privacy boundary; use synthetic Unicode fixtures, never log raw resume text, preserve hostile-context refusal, and keep authorization/session boundaries unchanged. This is not an identity or verification claim."],
+          ["EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR", "REVIEWED_TICKET_ASSESSMENT"]
+        ],
+        "testStrategy": [
+          ["the normative Unicode/security citation selected by the reviewer", "Unicode Standard, Chapter 23.2 (Layout Controls), together with docs/SECURITY.md#input-validation-and-privacy as the repository security boundary; the final owner decision must cite the exact adopted subsection and retain the hostile-context negative case"]
+        ]
+      }
     },
     "CS-84": {
       "reviewStatus": "DRAFT",
@@ -4583,6 +4638,50 @@
           "docs/OWNER-DECISIONS-2026-10-02.md#CS-46",
           ".ai/ticket-specification-policy.json#decisionReconciliations.CS-46"
         ]
+      },
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "The source registry intentionally has no version assignment. The reviewed product decision and technical contract are complete, but release targeting remains an owner/release gate and is not inferred from workflow state or package versions.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      },
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation and promotion remain release-owner decisions. The specification records the required evidence without claiming that the planned exclusion capability is implemented or activated.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json", "docs/OWNER-DECISIONS-2026-10-02.md#CS-46"]
+      },
+      "PARTIAL_DESIGN": {
+        "disposition": "RECLASSIFIED",
+        "rationale": "The existing CS-213 settings/profile reference is the canonical candidate-visible surface; the per-fact excluded/restored state is explicitly named as a future visual-acceptance gate. The gap is non-blocking for approving the written contract and remains blocking for visual implementation acceptance.",
+        "sources": [".ai/design-ticket-coverage.json#CS-46", "docs/DESIGN-IMPLEMENTATION-MAP.md#CS-213", "design/canonical/app/careerscope-settings-resume-management-reference-board.png"]
+      }
+    },
+    "CS-6": {
+      "PARTIAL_DESIGN": {
+        "disposition": "RECLASSIFIED",
+        "rationale": "CS-6 is a route-composition and session-rendering boundary. The specification names its pending visual baseline and exact future state evidence; missing visual approval is a non-blocking implementation acceptance gate, not a gap in the technical specification.",
+        "sources": [".ai/design-ticket-coverage.json", "docs/DESIGN-IMPLEMENTATION-MAP.md", ".ai/ticket-specification-policy.json#ticketRefinements.CS-6"]
+      },
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "The source ticket has no approved release assignment. Preserve that value and require product/release ownership to assign it before promotion; specification approval does not authorize release.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      },
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "Activation remains a release-owner decision outside specification authoring. No workflow or package metadata is treated as activation evidence.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
+      }
+    },
+    "CS-11": {
+      "PARTIAL_DESIGN": {
+        "disposition": "RECLASSIFIED",
+        "rationale": "The exact static-public visual mapping and named accesslint review remain future acceptance evidence, and the specification explicitly preserves those gates. They do not prevent approving the implementation-ready contract because no visual parity or accessibility result is claimed here.",
+        "sources": [".ai/design-ticket-coverage.json", "design/canonical/marketing/careerscope-public-home.png", ".ai/ticket-specification-policy.json#ticketRefinements.CS-11"]
+      },
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "The source registry has no approved release assignment. Preserve the missing value and require explicit release ownership before promotion.",
+        "sources": [".ai/backlog.json", ".ai/blocker-classification.json"]
       }
     },
     "CS-4": {
@@ -6261,6 +6360,23 @@
           ".ai/backlog.json#CS-81",
           ".ai/ticket-specification-policy.json#CS-81"
         ]
+      }
+    },
+    "CS-84": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "OWNER_DECISION_REQUIRED",
+        "rationale": "The canonical backlog has no numbered release target; preserve the dependency-maintenance scope without inferring release assignment from historical package versions or workflow stage.",
+        "sources": [".ai/backlog.json#CS-84"]
+      },
+      "RELEASE_STATE_UNSPECIFIED": {
+        "disposition": "OWNER_DECISION_REQUIRED",
+        "rationale": "The source has no activation/HOLD classification. Dependency review remains specification-only and cannot authorize a release or merge.",
+        "sources": [".ai/backlog.json#CS-84", ".ai/ticket-specification-policy.json#CS-84"]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all three CS-84 binding groups after correcting overlap identity and full-tree dependency-audit coverage.",
+        "sources": [".ai/ticket-specification-policy.json#CS-84", "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"]
       }
     },
     "CS-83": {
@@ -8687,14 +8803,14 @@
       {
         "reviewer": "Dependency Maintainer and Independent Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_OPERATOR",
         "preconditions": "Authorized dependency-maintenance task with recorded main SHA; do not merge/close PRs or dispatch release workflows.",
         "setup": "Read root package manifest/lockfile and Dependabot config at baseline SHA; obtain current PR metadata via authorized GitHub access without secrets.",
         "fixtureOrData": "Package/action IDs, target versions, PR identifiers, group labels and base SHA only; no token values.",
-        "action": "Compare proposed updates and active groups with baseline manifests and current PR inventory.",
-        "procedure": "Normalize each update to ecosystem, package/action and target version; assert each key occurs in at most one active group and groups target baseline SHA. Confirm the current root manifest/lockfile is canonical; list any historical V2 evidence separately.",
-        "assertion": "A sanitized inventory lists every update once across non-overlapping groups and binds it to baseline SHA; no missing second workspace is claimed.",
+        "action": "Compare proposed updates and active groups with baseline manifests and current PR inventory; treat ecosystem plus package/action as the membership identity and reject or explicitly disposition the same member appearing at different target versions.",
+        "procedure": "Normalize each update to ecosystem, package/action and target version; assert membership is unique by ecosystem plus package/action (target-version differences are conflicts, not distinct keys), and groups target baseline SHA. Confirm the current root manifest/lockfile is canonical; list any historical V2 evidence separately.",
+        "assertion": "A sanitized inventory lists every package/action member once across non-overlapping groups; any same member with different target versions is rejected or explicitly dispositioned, and every group binds to baseline SHA without claiming a second workspace.",
         "expectedResult": "Dependency group scope is reproducible and has no overlap or obsolete split-workspace assumption.",
         "testName": "CS-84-AC1 current dependency groups are non-overlapping against recorded main",
         "testFileOrProcedureId": "MANUAL-CS84-AC1-DEPENDENCY-GROUP-INVENTORY",
@@ -8710,14 +8826,14 @@
       {
         "reviewer": "Dependency QA and Independent Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "HOSTED_CI",
         "preconditions": "Candidate isolated on review branch; normal CI runs for immutable SHA; no production workflow dispatch.",
         "setup": "Clean checkout with Node >=24 and root lockfile; do not reuse node_modules.",
         "fixtureOrData": "Candidate SHA and disposable CI fixtures only.",
-        "action": "Run clean install, engine check, production audit, typecheck, build, unit and service-backed integration checks on one SHA.",
-        "procedure": "Require npm ci, npm run node:check, npm run security:check, npm run typecheck, npm run build, npm run test:unit and npm run test:integration to pass where registered; hosted CI for same SHA must pass required lanes.",
-        "assertion": "Reproducible install, supported engine, acceptable audit and required typecheck/build/unit/integration gates pass on same SHA.",
+        "action": "Run clean install, engine check, full-tree production-plus-development dependency audit, typecheck, build, unit and service-backed integration checks on one SHA.",
+        "procedure": "Require npm ci, npm run node:check, a full-tree npm audit covering production and development dependencies (or an explicitly equivalent production-plus-development audit matrix), npm run typecheck, npm run build, npm run test:unit and npm run test:integration to pass where registered. Record this audit as a local exact-SHA check unless a hosted lane explicitly runs the same full-tree matrix; hosted CI for the same SHA must pass its declared required lanes and must not be described as running this audit when it does not.",
+        "assertion": "Reproducible install, supported engine, complete dependency audit coverage for every updated ecosystem/package class, and required typecheck/build/unit/integration gates pass on the same SHA; production-only npm audit is insufficient evidence for dev/action updates.",
         "expectedResult": "No dependency accepted on lockfile regeneration alone; local and hosted evidence are distinguished.",
         "testName": "CS-84-AC2 lockfile audit and product validation pass on one SHA",
         "testFileOrProcedureId": "HOSTED: exact-SHA GitHub CI plus canonical package command set",
@@ -8726,14 +8842,14 @@
         "failureCase": "Registry/service unavailable or evidence not bound to candidate SHA leaves acceptance open.",
         "evidenceArtifact": "Sanitized command summaries, Node version, audit summary, SHA and hosted run/lane results.",
         "releaseGate": "EXACT_SHA_DEPENDENCY_CI",
-        "repositoryCommand": "npm ci; npm run node:check; npm run security:check; npm run typecheck; npm run build; npm run test:unit; npm run test:integration"
+        "repositoryCommand": "npm ci; npm run node:check; npm audit --audit-level=high; npm run typecheck; npm run build; npm run test:unit; npm run test:integration"
       }
     ],
     "CS-84-AC3": [
       {
         "reviewer": "Security / Dependency Reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "List each proposed major update; no upgrade is accepted solely for this review.",
         "setup": "Collect official upstream migration/release notes for each major delta and inspect repository callers.",
@@ -9850,7 +9966,7 @@
         "preconditions": "Future exclusion contract implemented; isolated database migrated; candidate A and candidate B each have synthetic resume and preferences.",
         "setup": "A has resume-derived skill 'TypeScript' and title 'Engineer'; neither is in explicit preferences. A declines both, then performs two searches and reparses a changed resume with equivalent normalized facts. B retains accepted facts.",
         "procedure": "Read A's matching context and frozen match evidence after rejection, repeated search and reparse; explicitly restore one fact and search again. Attempt to mutate A's exclusions using B's session.",
-        "assertion": "Rejected normalized facts contribute zero through all three stages; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
+        "assertion": "Rejected normalized facts contribute zero during profile snapshot construction, matching-context assembly and deterministic scoring; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
         "expectedResult": "Candidate intent persists across searches and changed parse revisions with ownership isolation; restoration is explicit and independently scoped.",
         "testName": "persists declined resume facts across searches and reparsing until explicit restoration",
         "testFileOrProcedureId": "packages/core/src/resume-fact-exclusions.integration.test.ts",
@@ -13565,7 +13681,7 @@
       {
         "reviewer": "Unicode/security and QA reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_UNIT",
         "preconditions": "Use the source-linked pre-policy commit `db31a11fdcb472038ac3e9f46d84cc54191cba55`; no runtime change is made in this phase.",
         "setup": "Use a synthetic string containing Devanagari consonant U+0915, ZWNJ U+200C, and consonant U+0937; record code points explicitly and identify the pre-policy source revision from ticket evidence/history.",
@@ -13588,7 +13704,7 @@
       {
         "reviewer": "Product owner and Unicode/security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "Authoritative owner/security decision states the allowed joiner contexts and script policy; no policy is inferred from the current implementation.",
         "setup": "Review U+200C and U+200D separately against the cited spoofing rationale and the approved language/script support decision.",
@@ -13611,7 +13727,7 @@
       {
         "reviewer": "QA / matching and resume domain reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Owner has approved the character-context policy; run paired consumers with synthetic input and no stored user records.",
         "setup": "Prepare the approved orthographic ZWNJ title, a refused decorative/script-boundary variant, resume derivation input, and matching evidence input.",
@@ -13634,7 +13750,7 @@
       {
         "reviewer": "Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "The security rationale is traceable to an authoritative reference and the adopted context policy has not removed the anti-spoofing control wholesale.",
         "setup": "Inspect the existing shared evidence-text source comments, security documentation, original CS-81 evidence and the normative Unicode/security citation selected by the reviewer.",
@@ -14545,7 +14661,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "12d9e4bacc25b562d01052b4164423f197956955d99078ecb0e7e755ac012d2b"
+      "contentHash": "71b34d30ae33ac7ff0d980e4377c65239fa3d890fe1389fec3950da139c5ce75"
     },
     "CS-46-AC3": {
       "verdict": "APPROVED",
@@ -15314,6 +15430,48 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a1e99ae78163eb7cad1a729c62c0b6db6880e6c5ac98f163dea412eeeb17a4d4"
+    },
+    "CS-81-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "873dbee5e8d78c4061861a52bbf0444999db66661574904d57bfbac8b0d56abc"
+    },
+    "CS-81-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "507b6d17588d545b4a28ef9f0fe257f2d3c84592c1d4b54815232ba828294c80"
+    },
+    "CS-81-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1d49e58320a264894463f074c196b04dbff3778964457d85bcb7cb7ca1797b2b"
+    },
+    "CS-81-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c59dc35b5cf8428786e0277ff1aaffccd5af5d81d31512c9aab721b84d7338af"
+    },
+    "CS-84-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1648ecd3b3a5516abe7dd63b0da744bd5cb1d7041e7c1d8e68cbdf8cb46d043f"
+    },
+    "CS-84-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "64ddb067f3dc34f3bf3dd8a8aed1950c048fc3e530d55459a72449bdf634cd75"
+    },
+    "CS-84-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9593c471a3200c9131fa9c47a556f942b8b05ab995aeb399bb5f590369c959b0"
     },
     "CS-82-AC2": {
       "verdict": "APPROVED",
@@ -16174,6 +16332,30 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "1d3fea6449d98699874808639fe187ad866e96e5eb66a7f496598b480929f59e"
+    },
+    "CS-6": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c82a85a46daee1517d2019d74c7d321ff9b5f806b0bcb9d2d049c72e7b82c0fa"
+    },
+    "CS-11": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f18fa02adf9a3a20b6875984b2f2d164d1e67b09e1c5a4801a550ad0b4a2682f"
+    },
+    "CS-81": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d67027eb27d5d5fbcae548d1b67b855dba760bda01f0f607f829623a72b22213"
+    },
+    "CS-84": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1ba5800589bba5bf4bbed95675f8845173f45bebbe8781090081bfa9d8d962b0"
     }
   },
   "generatedArtifactCheckpoint": {

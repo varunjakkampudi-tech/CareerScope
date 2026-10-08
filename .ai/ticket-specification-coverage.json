@@ -9,18 +9,18 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "88c3b7b702900f1416d2499c13a63e6919a80098f9d4882261d72579b6130dd8",
+    ".ai/ticket-specification-policy.json": "0c0b50510cb72d1941eb698a56649edc5ee1fe7601429837dbbe2f38de7bc1b2",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "23394a10d88ac95cc3c61b882a147674c904be478370cadbb3cc6797f4298195",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "1c9436b9d316a7cd50e0dce97807ae2278de8ae8723c4a3f8f07266ce592b8ed",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "counts": {
     "ticketCount": 216,
     "specificationCount": 216,
-    "completeSpecificationCount": 76,
-    "incompleteSpecificationCount": 140,
+    "completeSpecificationCount": 80,
+    "incompleteSpecificationCount": 136,
     "epicMappedCount": 216,
     "orphanTicketCount": 0,
     "duplicateIdCount": 0,
@@ -30,21 +30,21 @@
     "dependencySemanticGapCount": 0,
     "acceptanceCriterionCount": 906,
     "suggestedAcceptanceCriterionCount": 906,
-    "mappedAcceptanceCriterionCount": 268,
-    "unmappedAcceptanceCriterionCount": 638,
-    "reviewedExactTestBindingCount": 290,
+    "mappedAcceptanceCriterionCount": 275,
+    "unmappedAcceptanceCriterionCount": 631,
+    "reviewedExactTestBindingCount": 297,
     "authoredExactTestBindingCount": 356,
     "acceptanceCriteriaWithAuthoredBindings": 333,
-    "draftSpecificationCount": 140,
+    "draftSpecificationCount": 136,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
-    "approvedSpecificationCount": 76,
+    "approvedSpecificationCount": 80,
     "ownerDecisionReconciliationCount": 11,
-    "uiTicketCount": 146,
+    "uiTicketCount": 147,
     "designCounts": {
-      "DESIGN_NOT_APPLICABLE": 70,
+      "DESIGN_NOT_APPLICABLE": 69,
       "DESIGN_GAP": 9,
-      "DESIGN_PARTIAL": 27,
+      "DESIGN_PARTIAL": 28,
       "DESIGN_VERIFIED": 110
     },
     "blockedTicketCount": 37,
@@ -63,13 +63,13 @@
     "currentReleaseTicketCount": 47,
     "workflow": { "BACKLOG": 141, "TODO": 0, "IN_PROGRESS": 0, "QA": 5, "UAT": 70, "PROD": 0 },
     "sourceBacklogHash": "ca68f42d84b850254a82d71df3416eb9d56f750d7467712a870d0b37bf954552",
-    "specificationCoveragePercent": 35.18518518518518,
+    "specificationCoveragePercent": 37.03703703703704,
     "suggestedVerificationMappingPercent": 100,
-    "exactReviewedTraceabilityPercent": 29.58057395143488,
-    "findingsCount": 645,
-    "openFindingCount": 389,
-    "resolvedFindingCount": 126,
-    "reclassifiedFindingCount": 20
+    "exactReviewedTraceabilityPercent": 30.353200883002206,
+    "findingsCount": 646,
+    "openFindingCount": 378,
+    "resolvedFindingCount": 128,
+    "reclassifiedFindingCount": 23
   },
   "findings": [
     {
@@ -170,7 +170,13 @@
       "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
       "owner": "UX",
       "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-      "disposition": "OPEN"
+      "disposition": "RECLASSIFIED",
+      "dispositionRationale": "CS-6 is a route-composition and session-rendering boundary. The specification names its pending visual baseline and exact future state evidence; missing visual approval is a non-blocking implementation acceptance gate, not a gap in the technical specification.",
+      "dispositionSources": [
+        ".ai/design-ticket-coverage.json",
+        "docs/DESIGN-IMPLEMENTATION-MAP.md",
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-6"
+      ]
     },
     {
       "ticketId": "CS-6",
@@ -179,7 +185,9 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "The source ticket has no approved release assignment. Preserve that value and require product/release ownership to assign it before promotion; specification approval does not authorize release.",
+      "dispositionSources": [".ai/backlog.json", ".ai/blocker-classification.json"]
     },
     {
       "ticketId": "CS-6",
@@ -188,7 +196,9 @@
       "reason": "Source ticket has no release/HOLD activation classification.",
       "owner": "Product owner / release reviewer",
       "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "Activation remains a release-owner decision outside specification authoring. No workflow or package metadata is treated as activation evidence.",
+      "dispositionSources": [".ai/backlog.json", ".ai/blocker-classification.json"]
     },
     {
       "ticketId": "CS-6",
@@ -297,7 +307,13 @@
       "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
       "owner": "UX",
       "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-      "disposition": "OPEN"
+      "disposition": "RECLASSIFIED",
+      "dispositionRationale": "The exact static-public visual mapping and named accesslint review remain future acceptance evidence, and the specification explicitly preserves those gates. They do not prevent approving the implementation-ready contract because no visual parity or accessibility result is claimed here.",
+      "dispositionSources": [
+        ".ai/design-ticket-coverage.json",
+        "design/canonical/marketing/careerscope-public-home.png",
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-11"
+      ]
     },
     {
       "ticketId": "CS-11",
@@ -306,7 +322,9 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "The source registry has no approved release assignment. Preserve the missing value and require explicit release ownership before promotion.",
+      "dispositionSources": [".ai/backlog.json", ".ai/blocker-classification.json"]
     },
     {
       "ticketId": "CS-11",
@@ -1566,12 +1584,29 @@
     },
     {
       "ticketId": "CS-46",
+      "code": "PARTIAL_DESIGN",
+      "section": "design",
+      "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
+      "owner": "UX",
+      "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
+      "disposition": "RECLASSIFIED",
+      "dispositionRationale": "The existing CS-213 settings/profile reference is the canonical candidate-visible surface; the per-fact excluded/restored state is explicitly named as a future visual-acceptance gate. The gap is non-blocking for approving the written contract and remains blocking for visual implementation acceptance.",
+      "dispositionSources": [
+        ".ai/design-ticket-coverage.json#CS-46",
+        "docs/DESIGN-IMPLEMENTATION-MAP.md#CS-213",
+        "design/canonical/app/careerscope-settings-resume-management-reference-board.png"
+      ]
+    },
+    {
+      "ticketId": "CS-46",
       "code": "RELEASE_TARGET_UNDECIDED",
       "section": "delivery",
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "The source registry intentionally has no version assignment. The reviewed product decision and technical contract are complete, but release targeting remains an owner/release gate and is not inferred from workflow state or package versions.",
+      "dispositionSources": [".ai/backlog.json", ".ai/blocker-classification.json"]
     },
     {
       "ticketId": "CS-46",
@@ -1580,7 +1615,13 @@
       "reason": "Source ticket has no release/HOLD activation classification.",
       "owner": "Product owner / release reviewer",
       "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "EXTERNAL_GATE",
+      "dispositionRationale": "Activation and promotion remain release-owner decisions. The specification records the required evidence without claiming that the planned exclusion capability is implemented or activated.",
+      "dispositionSources": [
+        ".ai/backlog.json",
+        ".ai/blocker-classification.json",
+        "docs/OWNER-DECISIONS-2026-10-02.md#CS-46"
+      ]
     },
     {
       "ticketId": "CS-46",
@@ -3266,7 +3307,7 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED"
     },
     {
       "ticketId": "CS-82",
@@ -3315,7 +3356,9 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
+      "disposition": "OWNER_DECISION_REQUIRED",
+      "dispositionRationale": "The canonical backlog has no numbered release target; preserve the dependency-maintenance scope without inferring release assignment from historical package versions or workflow stage.",
+      "dispositionSources": [".ai/backlog.json#CS-84"]
     },
     {
       "ticketId": "CS-84",
@@ -3324,7 +3367,9 @@
       "reason": "Source ticket has no release/HOLD activation classification.",
       "owner": "Product owner / release reviewer",
       "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "OWNER_DECISION_REQUIRED",
+      "dispositionRationale": "The source has no activation/HOLD classification. Dependency review remains specification-only and cannot authorize a release or merge.",
+      "dispositionSources": [".ai/backlog.json#CS-84", ".ai/ticket-specification-policy.json#CS-84"]
     },
     {
       "ticketId": "CS-84",
@@ -3333,7 +3378,12 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The independent reviewer approved all three CS-84 binding groups after correcting overlap identity and full-tree dependency-audit coverage.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-84",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
     },
     {
       "ticketId": "CS-85",

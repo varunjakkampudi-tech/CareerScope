@@ -900,3 +900,51 @@ CS-5 and CS-108 (+2), while a stale CS-107 whole-spec receipt was removed when
 its specification content changed (-1). The resulting net increase was +1;
 this closure adds the newly content-bound CS-1 and CS-107 approvals without
 restoring the invalid receipt.
+
+## Large closure wave — CS-6, CS-11 and CS-46 — 2026-10-08
+
+The bounded independent review accepted CS-11 and identified corrections for
+CS-6 and CS-46. CS-6's historical single-page wording was reconciled as intake
+history versus the current route-boundary gap. CS-46's approved durable
+per-fact exclusion decision supersedes the old option-choice blocker; the
+specification now names the profile-review accessibility and visual state and
+the three deterministic stages (profile snapshot construction, matching
+context assembly and scoring). No runtime, migration, provider, hosted or
+release evidence is claimed.
+
+Current specification digests after those corrections:
+
+| Ticket | Whole-spec digest | Independent disposition |
+| ------ | ----------------- | ----------------------- |
+| CS-6 | `c82a85a46daee1517d2019d74c7d321ff9b5f806b0bcb9d2d049c72e7b82c0fa` | PASS — current-state wording reconciled |
+| CS-11 | `f18fa02adf9a3a20b6875984b2f2d164d1e67b09e1c5a4801a550ad0b4a2682f` | PASS |
+| CS-46 | `e9e6ed9f6d6ba56305d4ff0f26566ad1f2f8499bd2259f85a9f6773c7a0d4a21` | REVISE — stale owner blocker and UI/a11y mapping corrected |
+
+CS-46 AC2 current binding digest: `71b34d30ae33ac7ff0d980e4377c65239fa3d890fe1389fec3950da139c5ce75`.
+
+## CS-81 Unicode joiner binding review — 2026-10-08
+
+`/root/cs78_review` independently reviewed the four source-backed CS-81
+bindings. The resume-derive and matching-dimensions fixtures are synthetic and
+named against existing test files; the cross-path and security rationale
+checks remain explicitly planned/manual. No runtime change or Unicode policy
+execution is claimed.
+
+Binding digests: AC1 `873dbee5e8d78c4061861a52bbf0444999db66661574904d57bfbac8b0d56abc`,
+AC2 `507b6d17588d545b4a28ef9f0fe257f2d3c84592c1d4b54815232ba828294c80`,
+AC3 `1d49e58320a264894463f074c196b04dbff3778964457d85bcb7cb7ca1797b2b`,
+AC4 `c59dc35b5cf8428786e0277ff1aaffccd5af5d81d31512c9aab721b84d7338af`.
+
+## CS-81 / CS-84 final independent review — 2026-10-08
+
+`/root/cs78_review` re-reviewed the regenerated specifications. Both passed:
+CS-81 explicitly reconciles the frozen AC3 shorthand with the refused-joiner
+policy while preserving the source text and AC2 orthographic allowance; CS-84
+uses ecosystem-plus-member overlap identity and requires full-tree dependency
+audit coverage with local-versus-hosted evidence distinguished. No runtime or
+release evidence is claimed.
+
+| Ticket | Whole-spec digest | Binding digests |
+| ------ | ----------------- | --------------- |
+| CS-81 | `d67027eb27d5d5fbcae548d1b67b855dba760bda01f0f607f829623a72b22213` | Existing AC1–AC4 digests above |
+| CS-84 | `1ba5800589bba5bf4bbed95675f8845173f45bebbe8781090081bfa9d8d962b0` | AC1 `1648ecd3b3a5516abe7dd63b0da744bd5cb1d7041e7c1d8e68cbdf8cb46d043f`; AC2 `64ddb067f3dc34f3bf3dd8a8aed1950c048fc3e530d55459a72449bdf634cd75`; AC3 `9593c471a3200c9131fa9c47a556f942b8b05ab995aeb399bb5f590369c959b0` |

@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "88c3b7b702900f1416d2499c13a63e6919a80098f9d4882261d72579b6130dd8",
+    ".ai/ticket-specification-policy.json": "0c0b50510cb72d1941eb698a56649edc5ee1fe7601429837dbbe2f38de7bc1b2",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "23394a10d88ac95cc3c61b882a147674c904be478370cadbb3cc6797f4298195",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "1c9436b9d316a7cd50e0dce97807ae2278de8ae8723c4a3f8f07266ce592b8ed",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -3566,8 +3566,8 @@
     {
       "ticketId": "CS-6",
       "primaryEpicId": "EPIC-CANDIDATE-CORE",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "PARTIAL_DESIGN",
@@ -3575,7 +3575,7 @@
           "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
           "owner": "UX",
           "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-          "disposition": "OPEN"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -3583,7 +3583,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -3591,7 +3591,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -3628,7 +3628,7 @@
         "problem": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "No deep links, no per-page loading or error states, no auth boundary. One 830-line page.tsx fakes navigation with a view variable.",
+            "Historical intake evidence from the source ticket describes the pre-route-boundary state. Current route composition and shared session boundary exist; the remaining specification gap is the unexecuted delayed/error/anonymous rendered-harness verification and privacy/cache evidence described below.",
             {
               "requirement": "Candidate deep links and route navigation must share one session-rendering boundary so delayed, failed or unauthenticated session lookup never mounts private feature content or leaks a previous owner's cached data.",
               "reviewStatus": "DRAFT",
@@ -7108,8 +7108,8 @@
     {
       "ticketId": "CS-11",
       "primaryEpicId": "EPIC-MARKETING",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "PARTIAL_DESIGN",
@@ -7117,7 +7117,7 @@
           "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
           "owner": "UX",
           "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-          "disposition": "OPEN"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -7125,7 +7125,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -29609,12 +29609,20 @@
           "disposition": "RESOLVED"
         },
         {
+          "code": "PARTIAL_DESIGN",
+          "section": "design",
+          "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
+          "owner": "UX",
+          "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
+          "disposition": "RECLASSIFIED"
+        },
+        {
           "code": "RELEASE_TARGET_UNDECIDED",
           "section": "delivery",
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -29622,7 +29630,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -29648,11 +29656,11 @@
               "reviewers": ["Product Architect", "UX", "Independent Reviewer"],
               "releaseTarget": null,
               "blocked": true,
-              "blockedReason": "The matching behavior is deliberately not reinterpreted; the owner must choose always-on supplementary evidence or a per-fact exclusion gate.",
+              "blockedReason": "The historical owner-choice blocker is superseded by docs/OWNER-DECISIONS-2026-10-02.md#CS-46, which selects a durable per-fact exclusion gate; implementation and release evidence remain future gates.",
               "blockedOwner": "Product owner",
               "blockedSince": null,
               "unblockEvidenceRequired": [
-                "Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision."
+                "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."
               ]
             }
           ],
@@ -29687,7 +29695,7 @@
                 "COST TO CLEAR MEASURED 2026-09-25, and it is the cheapest ticket on the board: AC3 IS ALREADY SATISFIED AGAINST CURRENT BYTES (the docstring at packages/matching/src/context.ts:19-24), and AC2 applies ONLY IF OPTION 2 IS CHOSEN. So the whole ticket reduces to one binary owner choice, and OPTION 1 MEANS ZERO CODE CHANGE AND IMMEDIATE CLOSURE. What is outstanding is about sixty seconds of owner attention, not engineering.",
                 "REVIEW WINDOW CAVEAT: three sessions were writing concurrently; re-check if a cited file moved between roughly 15:05 and 16:10 IST on 2026-09-25."
               ],
-              "currentStep": "BLOCKED on an owner product decision. AC1 explicitly requires an OWNER-CONFIRMED choice between always-on supplementary evidence and an explicit per-fact exclusion gate; an agent cannot confirm on the owner behalf. AC3 (documentation accuracy) is now verified satisfied. AC2 applies only if option 2 is chosen.",
+              "currentStep": "The historical owner-decision blocker is resolved by docs/OWNER-DECISIONS-2026-10-02.md#CS-46. The remaining gap is implementation of the durable exclusion contract, migration, accessible profile-review controls and future release evidence; no runtime completion is claimed in this specification phase.",
               "evidenceClassification": "HISTORICAL_SOURCE_RECORDS_NOT_CURRENT_PROOF",
               "completedSteps": [],
               "limitations": "docs/KNOWN-LIMITATIONS.md"
@@ -29852,24 +29860,68 @@
           ]
         },
         "design": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "Non-UI engineering/domain task; no page rendering is required by its scope."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "ticketId": "CS-46",
+              "ui": true,
+              "status": "DESIGN_PARTIAL",
+              "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
+              "references": [
+                "design/01-IMPLEMENTATION-ORDER/04-candidate-core",
+                "design/canonical/app/careerscope-applications-desktop.png",
+                "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
+                "design/canonical/app/careerscope-jobs-desktop-final.png"
+              ],
+              "screens": [],
+              "reason": "Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability."
+            }
+          ],
+          "sources": ["design/DESIGN-INDEX.json", ".ai/design-ticket-coverage.json"]
         },
         "sharedComponents": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No UI component is introduced by this engineering/domain scope."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            "Reuse tokens, atoms and composites through CS-95, CS-105 and CS-106; routes compose feature components and the canonical API client."
+          ],
+          "sources": ["design/foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md"]
         },
         "accessibility": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No user-facing rendered control in this scope; accessible reports remain readable Markdown."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            "WCAG 2.2 AA target: semantic headings/landmarks, accessible names, labels/instructions and associated validation errors. The required manual NVDA/VoiceOver review must identify browser, assistive-technology version, build/revision, and the ticket's actual supported state inventory, with observed announcement/focus order and exact failure condition. Auth-specific states such as invalid/expired, success and signed-out are required only when the ticket contract supports them; otherwise record them as NOT_APPLICABLE with the contract citation. Automated axe output is not a substitute.",
+            "Keyboard-only navigation with visible focus, logical order, Escape/focus trap/restoration for dialogs, and status/error announcements for async operations.",
+            "Non-color status indicators, contrast review, reduced motion and zoom/reflow; NVDA/VoiceOver judgment remains future HUMAN VALIDATION.",
+            {
+              "requirement": "The approved exclusion decision is candidate-visible in the existing profile-review flow: each parsed skill/title proposal has an accessible name, explicit accepted/excluded state, keyboard-operable control, visible focus and an associated status announcement. Reparse presents proposed changes without silently changing the saved decision; restore is an explicit reversible action. Verify WCAG 2.2 AA semantics, error association, zoom/reflow at 320/390/768/1440 and a future NVDA/VoiceOver review without exposing raw resume text in evidence.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
+          ],
+          "sources": [
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/FRONTEND-ARCHITECTURE.md",
+            "docs/TESTING.md",
+            ".ai/backlog.json#CS-46",
+            "docs/OWNER-DECISIONS-2026-10-02.md"
+          ]
         },
         "responsive": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No viewport-dependent rendered interface in this scope."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            "Verify 320, 390, 768, 1024 and 1440px; ordinary content does not cause horizontal overflow; tables have deliberate narrow-screen behavior.",
+            "Use mapped approved reference geometry; touch targets and long localized text remain usable; do not invent unsupported mobile designs."
+          ],
+          "sources": [
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+            "docs/FRONTEND-ARCHITECTURE.md",
+            "docs/TESTING.md"
+          ]
         },
         "browsers": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No browser behavior is introduced by this task."
+          "applicability": "APPLICABLE",
+          "requirements": ["Chromium", "Firefox", "WebKit"],
+          "sources": ["docs/TESTING.md"]
         },
         "seo": {
           "applicability": "NOT_APPLICABLE",
@@ -29957,7 +30009,7 @@
               "verification": [
                 {
                   "type": "AUTOMATED_INTEGRATION",
-                  "expectedCheck": "Rejected normalized facts contribute zero through all three stages; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
+                  "expectedCheck": "Rejected normalized facts contribute zero during profile snapshot construction, matching-context assembly and deterministic scoring; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
                   "candidateCommand": null,
                   "evidenceRequired": "Future exact-content integration run with named test, Node version, database version, exit code and nonzero pass count; sanitized assertions only.",
                   "automationStatus": "PLANNED",
@@ -29973,7 +30025,7 @@
                   "preconditions": "Future exclusion contract implemented; isolated database migrated; candidate A and candidate B each have synthetic resume and preferences.",
                   "setup": "A has resume-derived skill 'TypeScript' and title 'Engineer'; neither is in explicit preferences. A declines both, then performs two searches and reparses a changed resume with equivalent normalized facts. B retains accepted facts.",
                   "procedure": "Read A's matching context and frozen match evidence after rejection, repeated search and reparse; explicitly restore one fact and search again. Attempt to mutate A's exclusions using B's session.",
-                  "assertion": "Rejected normalized facts contribute zero through all three stages; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
+                  "assertion": "Rejected normalized facts contribute zero during profile snapshot construction, matching-context assembly and deterministic scoring; reparse proposes review without clearing exclusions. Explicit restoration returns only the restored fact. B cannot change A's exclusion state; B's accepted facts remain unaffected. Frozen evidence differentiates accepted/profile/excluded provenance.",
                   "expectedResult": "Candidate intent persists across searches and changed parse revisions with ownership isolation; restoration is explicit and independently scoped.",
                   "testName": "persists declined resume facts across searches and reparsing until explicit restoration",
                   "testFileOrProcedureId": "packages/core/src/resume-fact-exclusions.integration.test.ts",
@@ -30037,8 +30089,30 @@
           ]
         },
         "visualRegression": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No visual surface is changed by this scope."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "exactReferences": [
+                "design/01-IMPLEMENTATION-ORDER/04-candidate-core",
+                "design/canonical/app/careerscope-applications-desktop.png",
+                "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
+                "design/canonical/app/careerscope-jobs-desktop-final.png"
+              ],
+              "masks": "Only unavoidable dynamic regions; no blanket widget masks.",
+              "tolerance": "Owner-approved deterministic threshold is required; not invented in planning.",
+              "evidence": "Future reference/render capture, dimensions, state, browser and independent approval."
+            },
+            {
+              "requirement": "Use the existing profile-review/settings reference already mapped to CS-213 and CS-46's canonical dashboard/settings references for the candidate-visible exclusion/restoration state. Do not invent a new route or visual surface. If the existing reference lacks the per-fact state, retain DESIGN_PARTIAL and record the exact missing state as a future UX approval gate.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
+          ],
+          "sources": [
+            "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
+            ".ai/backlog.json#CS-46",
+            "docs/OWNER-DECISIONS-2026-10-02.md"
+          ]
         },
         "acceptanceCriteria": {
           "applicability": "APPLICABLE",
@@ -30154,10 +30228,10 @@
           "applicability": "APPLICABLE",
           "requirements": [
             {
-              "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
+              "blockerClass": "HISTORICAL BLOCKER RESOLVED BY OD-2026-10-02-CS-46; implementation, accessibility and release evidence remain future gates.",
               "owner": "Product owner",
               "evidence": [
-                "Owner-confirmed option 1 or option 2, with the matching contract updated only after that decision."
+                "Approved owner decision OD-2026-10-02-CS-46 with the matching contract updated to the durable per-fact exclusion direction; implementation and migration evidence remain required before release."
               ],
               "actions": []
             },
@@ -30173,6 +30247,11 @@
               "approvedDirection": "Explicit durable per-fact exclusion gate. Accepted resume facts plus explicit preferences only. Excluded facts contribute zero; reparse creates reviewable proposals without silently clearing candidate intent. Restoration explicit/reversible; provenance visible; explicit user years wins; no LLM reintroduction.",
               "remainingGate": "Implementation/data contract and tests remain unproven. Historical AC2 'until re-parsed' is a lower bound, not permission to clear exclusions on reparse; later owner direction governs.",
               "evidenceSemantics": "Owner direction only; not implementation, review approval or live evidence."
+            },
+            {
+              "requirement": "The approved owner decision in docs/OWNER-DECISIONS-2026-10-02.md#CS-46 supersedes the historical option-1/option-2 blocker text in the frozen backlog. Phase 3.25 records the durable per-fact exclusion contract; implementation, migration, accessibility and release evidence remain future gates.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
             }
           ],
           "sources": [
@@ -51454,8 +51533,8 @@
     {
       "ticketId": "CS-81",
       "primaryEpicId": "EPIC-DOMAIN",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "MISSING_ARCHITECTURE_ASSESSMENT",
@@ -51494,7 +51573,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -51660,9 +51739,23 @@
               "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-81",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
+            },
+            {
+              "requirement": "Source-criterion reconciliation: the frozen AC3 wording uses the historical shorthand ‘containing these’ for the ZWNJ/ZWJ cases described by the ticket. In this specification, ‘these’ is explicitly interpreted as a joiner refused by the owner-approved context-sensitive policy; AC2-approved orthographic contexts remain allowed. The source text is preserved for traceability, while implementation and tests use the resolved/refused distinction and must not silently narrow the owner decision.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
           ],
-          "sources": [".ai/backlog.json#CS-81"]
+          "sources": [
+            ".ai/backlog.json#CS-81",
+            "packages/shared/src/evidence-text.ts",
+            "packages/resume/src/derive.ts",
+            "packages/resume/src/derive.test.ts",
+            "packages/matching/src/dimensions.ts",
+            "packages/matching/src/dimensions.test.ts",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md"
+          ]
         },
         "nonFunctionalRequirements": {
           "applicability": "APPLICABLE",
@@ -51674,12 +51767,12 @@
         "technicalApproach": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "UNRESOLVED: source architecture assessment is absent; see recorded specification gap.",
+            "Reviewed architecture assessment: the shared text predicate in packages/shared/src/evidence-text.ts is the only policy boundary; packages/resume/src/derive.ts and packages/matching/src/dimensions.ts are existing consumers with intentionally different reject-versus-neutralize effects. No API, persistence, provider or deployment boundary changes are in scope.",
             "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
             {
               "requirement": "ARCHITECTURE_IMPACT: CROSS_MODULE, LOCAL_MODULE. `packages/shared/src/evidence-text.ts` owns the shared code-point/context predicate; `packages/resume/src/derive.ts` rejects affected title segments; matching title evidence calls the shared constraint and neutralizes refused code points. Keep the policy centralized and preserve distinct reject-versus-neutralize behavior. No API, database or provider change is specified. DESIGN_NOT_APPLICABLE because this domain text-processing ticket has no dedicated rendered UI surface.",
               "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+              "authority": "REVIEWED_TICKET_ASSESSMENT"
             }
           ],
           "sources": [
@@ -51796,7 +51889,7 @@
         "securityPrivacy": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "UNRESOLVED: source security/privacy assessment is absent; see recorded specification gap.",
+            "Reviewed security assessment: candidate-controlled resume-derived text crosses an input-validation and privacy boundary; use synthetic Unicode fixtures, never log raw resume text, preserve hostile-context refusal, and keep authorization/session boundaries unchanged. This is not an identity or verification claim.",
             "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
             "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
@@ -51806,7 +51899,7 @@
             {
               "requirement": "SECURITY_IMPACT: INPUT_VALIDATION, PRIVACY_PII. Actor input can include private resume-derived titles and job/profile text. The shared rule is a text-integrity/anti-spoofing boundary, not identity or authorization. Use synthetic Unicode fixtures only; never log raw resume text. Tests must cover legitimate orthographic controls and hostile/script-boundary controls so permissive and over-restrictive regressions both fail.",
               "reviewStatus": "DRAFT",
-              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+              "authority": "REVIEWED_TICKET_ASSESSMENT"
             }
           ],
           "sources": [
@@ -51856,7 +51949,7 @@
                 {
                   "reviewer": "Unicode/security and QA reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_UNIT",
                   "preconditions": "Use the source-linked pre-policy commit `db31a11fdcb472038ac3e9f46d84cc54191cba55`; no runtime change is made in this phase.",
                   "setup": "Use a synthetic string containing Devanagari consonant U+0915, ZWNJ U+200C, and consonant U+0937; record code points explicitly and identify the pre-policy source revision from ticket evidence/history.",
@@ -51897,7 +51990,7 @@
                 {
                   "reviewer": "Product owner and Unicode/security reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "Authoritative owner/security decision states the allowed joiner contexts and script policy; no policy is inferred from the current implementation.",
                   "setup": "Review U+200C and U+200D separately against the cited spoofing rationale and the approved language/script support decision.",
@@ -51938,7 +52031,7 @@
                 {
                   "reviewer": "QA / matching and resume domain reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_INTEGRATION",
                   "preconditions": "Owner has approved the character-context policy; run paired consumers with synthetic input and no stored user records.",
                   "setup": "Prepare the approved orthographic ZWNJ title, a refused decorative/script-boundary variant, resume derivation input, and matching evidence input.",
@@ -51979,10 +52072,10 @@
                 {
                   "reviewer": "Security reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "The security rationale is traceable to an authoritative reference and the adopted context policy has not removed the anti-spoofing control wholesale.",
-                  "setup": "Inspect the existing shared evidence-text source comments, security documentation, original CS-81 evidence and the normative Unicode/security citation selected by the reviewer.",
+                  "setup": "Inspect the existing shared evidence-text source comments, security documentation, original CS-81 evidence and Unicode Standard, Chapter 23.2 (Layout Controls), together with docs/SECURITY.md#input-validation-and-privacy as the repository security boundary; the final owner decision must cite the exact adopted subsection and retain the hostile-context negative case.",
                   "fixtureOrData": "Public security/design rationale and synthetic Unicode examples only.",
                   "action": "Check that the final decision/specification cites why joiners were restricted and distinguishes a narrowly contextual allowance from removal of the spoofing safeguard.",
                   "procedure": "Verify the citation resolves to the authoritative source, supports the stated restriction/context claim, and is preserved in the decision/spec; verify corresponding hostile placement remains a negative test case.",
@@ -53635,8 +53728,8 @@
     {
       "ticketId": "CS-84",
       "primaryEpicId": "EPIC-PLATFORM",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "RELEASE_TARGET_UNDECIDED",
@@ -53644,7 +53737,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
+          "disposition": "OWNER_DECISION_REQUIRED"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -53652,7 +53745,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "OWNER_DECISION_REQUIRED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -53660,7 +53753,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -54004,7 +54097,7 @@
               "verification": [
                 {
                   "type": "MANUAL_OPERATOR",
-                  "expectedCheck": "A sanitized inventory lists every update once across non-overlapping groups and binds it to baseline SHA; no missing second workspace is claimed.",
+                  "expectedCheck": "A sanitized inventory lists every package/action member once across non-overlapping groups; any same member with different target versions is rejected or explicitly dispositioned, and every group binds to baseline SHA without claiming a second workspace.",
                   "candidateCommand": null,
                   "evidenceRequired": "Sanitized ecosystem/package/action/version/group/base-SHA/PR inventory; no tokens.",
                   "automationStatus": "PLANNED",
@@ -54018,14 +54111,14 @@
                 {
                   "reviewer": "Dependency Maintainer and Independent Reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_OPERATOR",
                   "preconditions": "Authorized dependency-maintenance task with recorded main SHA; do not merge/close PRs or dispatch release workflows.",
                   "setup": "Read root package manifest/lockfile and Dependabot config at baseline SHA; obtain current PR metadata via authorized GitHub access without secrets.",
                   "fixtureOrData": "Package/action IDs, target versions, PR identifiers, group labels and base SHA only; no token values.",
-                  "action": "Compare proposed updates and active groups with baseline manifests and current PR inventory.",
-                  "procedure": "Normalize each update to ecosystem, package/action and target version; assert each key occurs in at most one active group and groups target baseline SHA. Confirm the current root manifest/lockfile is canonical; list any historical V2 evidence separately.",
-                  "assertion": "A sanitized inventory lists every update once across non-overlapping groups and binds it to baseline SHA; no missing second workspace is claimed.",
+                  "action": "Compare proposed updates and active groups with baseline manifests and current PR inventory; treat ecosystem plus package/action as the membership identity and reject or explicitly disposition the same member appearing at different target versions.",
+                  "procedure": "Normalize each update to ecosystem, package/action and target version; assert membership is unique by ecosystem plus package/action (target-version differences are conflicts, not distinct keys), and groups target baseline SHA. Confirm the current root manifest/lockfile is canonical; list any historical V2 evidence separately.",
+                  "assertion": "A sanitized inventory lists every package/action member once across non-overlapping groups; any same member with different target versions is rejected or explicitly dispositioned, and every group binds to baseline SHA without claiming a second workspace.",
                   "expectedResult": "Dependency group scope is reproducible and has no overlap or obsolete split-workspace assumption.",
                   "testName": "CS-84-AC1 current dependency groups are non-overlapping against recorded main",
                   "testFileOrProcedureId": "MANUAL-CS84-AC1-DEPENDENCY-GROUP-INVENTORY",
@@ -54045,7 +54138,7 @@
               "verification": [
                 {
                   "type": "HOSTED_CI",
-                  "expectedCheck": "Reproducible install, supported engine, acceptable audit and required typecheck/build/unit/integration gates pass on same SHA.",
+                  "expectedCheck": "Reproducible install, supported engine, complete dependency audit coverage for every updated ecosystem/package class, and required typecheck/build/unit/integration gates pass on the same SHA; production-only npm audit is insufficient evidence for dev/action updates.",
                   "candidateCommand": null,
                   "evidenceRequired": "Sanitized command summaries, Node version, audit summary, SHA and hosted run/lane results.",
                   "automationStatus": "PLANNED",
@@ -54059,14 +54152,14 @@
                 {
                   "reviewer": "Dependency QA and Independent Reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
                   "preconditions": "Candidate isolated on review branch; normal CI runs for immutable SHA; no production workflow dispatch.",
                   "setup": "Clean checkout with Node >=24 and root lockfile; do not reuse node_modules.",
                   "fixtureOrData": "Candidate SHA and disposable CI fixtures only.",
-                  "action": "Run clean install, engine check, production audit, typecheck, build, unit and service-backed integration checks on one SHA.",
-                  "procedure": "Require npm ci, npm run node:check, npm run security:check, npm run typecheck, npm run build, npm run test:unit and npm run test:integration to pass where registered; hosted CI for same SHA must pass required lanes.",
-                  "assertion": "Reproducible install, supported engine, acceptable audit and required typecheck/build/unit/integration gates pass on same SHA.",
+                  "action": "Run clean install, engine check, full-tree production-plus-development dependency audit, typecheck, build, unit and service-backed integration checks on one SHA.",
+                  "procedure": "Require npm ci, npm run node:check, a full-tree npm audit covering production and development dependencies (or an explicitly equivalent production-plus-development audit matrix), npm run typecheck, npm run build, npm run test:unit and npm run test:integration to pass where registered. Record this audit as a local exact-SHA check unless a hosted lane explicitly runs the same full-tree matrix; hosted CI for the same SHA must pass its declared required lanes and must not be described as running this audit when it does not.",
+                  "assertion": "Reproducible install, supported engine, complete dependency audit coverage for every updated ecosystem/package class, and required typecheck/build/unit/integration gates pass on the same SHA; production-only npm audit is insufficient evidence for dev/action updates.",
                   "expectedResult": "No dependency accepted on lockfile regeneration alone; local and hosted evidence are distinguished.",
                   "testName": "CS-84-AC2 lockfile audit and product validation pass on one SHA",
                   "testFileOrProcedureId": "HOSTED: exact-SHA GitHub CI plus canonical package command set",
@@ -54075,7 +54168,7 @@
                   "failureCase": "Registry/service unavailable or evidence not bound to candidate SHA leaves acceptance open.",
                   "evidenceArtifact": "Sanitized command summaries, Node version, audit summary, SHA and hosted run/lane results.",
                   "releaseGate": "EXACT_SHA_DEPENDENCY_CI",
-                  "repositoryCommand": "npm ci; npm run node:check; npm run security:check; npm run typecheck; npm run build; npm run test:unit; npm run test:integration"
+                  "repositoryCommand": "npm ci; npm run node:check; npm audit --audit-level=high; npm run typecheck; npm run build; npm run test:unit; npm run test:integration"
                 }
               ]
             },
@@ -54100,7 +54193,7 @@
                 {
                   "reviewer": "Security / Dependency Reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "List each proposed major update; no upgrade is accepted solely for this review.",
                   "setup": "Collect official upstream migration/release notes for each major delta and inspect repository callers.",

@@ -906,13 +906,19 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           !Array.isArray(sections[section].requirements)
         )
           continue;
-        sections[section].requirements = sections[section].requirements.map((requirement) => {
-          if (typeof requirement !== 'string') return requirement;
-          return replacements.reduce(
-            (value, [from, to]) => (value.includes(from) ? value.replaceAll(from, to) : value),
-            requirement,
-          );
-        });
+        const replace = (value) => {
+          if (typeof value === 'string')
+            return replacements.reduce(
+              (current, [from, to]) =>
+                current.includes(from) ? current.replaceAll(from, to) : current,
+              value,
+            );
+          if (Array.isArray(value)) return value.map(replace);
+          if (value && typeof value === 'object')
+            return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, replace(item)]));
+          return value;
+        };
+        sections[section].requirements = sections[section].requirements.map(replace);
       }
     }
     if (processScope) {
