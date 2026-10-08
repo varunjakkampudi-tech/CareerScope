@@ -963,3 +963,21 @@ Whole-spec digest: `f878cbd791bb232addeccf654bf4bb5043a865fcd0c5c0e042b739f2ebf8
 Binding digests: AC1 `a1ba8cb20456ef3f35c91ba6c162292983962624f612ac005d304faf14c16426`,
 AC2 `71b34d30ae33ac7ff0d980e4377c65239fa3d890fe1389fec3950da139c5ce75`,
 AC3 `8fa935d141981632d77a53d85609a5116eb22d8e456ced80e73734d5b12a5d2b`.
+
+## CS-95 final independent review — 2026-10-08
+
+`/root/cs78_review` independently approved the current CS-95 authored
+specification content. The review confirmed that the canonical foundation
+board, token contract and atomic hierarchy are the source of truth; primitive
+state behavior is separated from route/domain behavior; API and persistence
+are explicitly not applicable; and the four AC procedures identify planned
+visual, accessibility and release-gate evidence without claiming execution.
+Synthetic-only fixtures, deterministic viewport/browser requirements,
+privacy boundaries and no-promotion semantics are explicit. No runtime or
+release evidence is claimed.
+
+Whole-spec digest: `6e4b7a8b7928ba00b706ee16d68905cbb191141e5c382cfba92cfd4261589e22`.
+Binding digests: AC1 `3ac33d4a4041fb16630ca3833120416701361a3e93e324bf3b73c8fe8501c034`,
+AC2 `bdd27f8050fb4e664d33c88ac7c9574355bb2d00a12196393b283d2bfe46e51b`,
+AC3 `0671b30650bf210523f7a81bf5bb623d627fa447637c5bfa1eb39ef46e80e230`,
+AC4 `ff52672baa73261f56058386ff193ec0c650d286addaa3c78623aba7b831d6ad`.

@@ -6566,6 +6566,26 @@
           "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
+    },
+    "CS-95": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved all four CS-95 authored binding groups. Each procedure is ticket-specific, distinguishes planned visual/accessibility/security evidence from execution, uses synthetic-only fixtures, and preserves no-promotion semantics.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-95",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The reviewed CS-95 contract names the canonical token sources, primitive state inventory, consumer boundary, data/empty-state rules, viewport/browser matrix, deterministic visual tolerances, accessibility applicability and release no-promotion behavior. It does not infer route-specific product behavior from reference imagery.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-95",
+          "design/01-IMPLEMENTATION-ORDER/00-foundations-first/DESIGN-TOKENS.md",
+          "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
     }
   },
   "exactVerificationBindings": {
@@ -7992,7 +8012,7 @@
       {
         "reviewer": "Frontend QA and UX reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Approved reference revision and relevant component route are identified; tests use synthetic fixtures and no production account data.",
         "setup": "Use canonical foundation board, token contract, and component stories/routes; capture deterministic 1440px desktop and owner-approved mobile states with real API fixtures or explicit empty/unavailable results.",
@@ -8015,7 +8035,7 @@
       {
         "reviewer": "Visual QA and UX reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Reference and target viewport are approved; deterministic test data, font availability and browser versions are fixed.",
         "setup": "Capture 1440px-class desktop plus the specific approved mobile viewport; separately run the same page in Chromium, Firefox and WebKit.",
@@ -8038,7 +8058,7 @@
       {
         "reviewer": "Accessibility QA and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_ACCESSIBILITY",
         "preconditions": "Rendered component consumers expose applicable pending, empty, error, forbidden, expired-session and stale-revision variants through real contracts or explicit test adapters.",
         "setup": "Use tests for each genuinely supported state and keyboard/screen-reader semantics; avoid manufacturing a state for a component without such a contract.",
@@ -8061,7 +8081,7 @@
       {
         "reviewer": "Release QA and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Ticket's existing workflow/release metadata and ticket-spec policy are loaded read-only; no release action is authorized.",
         "setup": "Evaluate the canonical ticket and release-gate checker against its RELEASE state with/without required acceptance and authorization evidence.",
@@ -15909,6 +15929,30 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "4ac87ba8b5921006441ba3660c8dabd31c5430d3c7893db35713c6099de8936f"
+    },
+    "CS-95-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "3ac33d4a4041fb16630ca3833120416701361a3e93e324bf3b73c8fe8501c034"
+    },
+    "CS-95-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "bdd27f8050fb4e664d33c88ac7c9574355bb2d00a12196393b283d2bfe46e51b"
+    },
+    "CS-95-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "0671b30650bf210523f7a81bf5bb623d627fa447637c5bfa1eb39ef46e80e230"
+    },
+    "CS-95-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "ff52672baa73261f56058386ff193ec0c650d286addaa3c78623aba7b831d6ad"
     }
   },
   "specificationReviewReceipts": {
@@ -16392,6 +16436,12 @@
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "f878cbd791bb232addeccf654bf4bb5043a865fcd0c5c0e042b739f2ebf80a3c"
+    },
+    "CS-95": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "6e4b7a8b7928ba00b706ee16d68905cbb191141e5c382cfba92cfd4261589e22"
     }
   },
   "generatedArtifactCheckpoint": {
