@@ -1289,11 +1289,14 @@ or retried away.
 | CS-100 binding refinement fails closed for unsupported ACs, fields, and indexes | `scripts/ticket-specifications.test.mjs:823` | C_GENERATOR_DEFECT | Amendment validation accepted `reviewStatus: APPROVED`; validator now permits only `DRAFT` or `REVIEWED`. Isolated test passes. |
 | 216 source-linked drafts preserve registry and canonical stages without readiness fabrication | `scripts/ticket-specifications.test.mjs:904` | A_STALE_EXPECTATION | Frozen counts referenced the earlier 76/268/356 checkpoint. Expectations updated to current 90/317/377 metrics. |
 | existing owner directions retain source provenance without fabricated readiness | `scripts/ticket-specifications.test.mjs:914` | A_STALE_EXPECTATION | CS-46 has a current source-backed approval receipt; expected state updated from DRAFT to APPROVED. |
-| agile fixture scenarios preserve canonical state byte-for-byte | `scripts/ticket-specifications.test.mjs:1009` | D_HARNESS_DEFECT | Fixture invokes the live-date agile gate and receives one missing-review failure despite byte-preservation; no production state changed. Requires isolated dated review fixtures. |
-| CS-80 rolling manifest validation scenarios | `scripts/ticket-specifications.test.mjs:1515,1724` | F_UNKNOWN_NEEDS_INVESTIGATION | Temporary manifest fixtures still report CS-41 whole-receipt proof failure after current receipt changes. Preserve failure until fixture provenance is isolated; no receipt is fabricated. |
+| agile fixture scenarios preserve canonical state byte-for-byte | `scripts/ticket-specifications.test.mjs:1009` | D_HARNESS_DEFECT_RESOLVED | The copied sandbox inherited a committed corrupt `.ai/progress.json` (`{ not json`), so the restored-agent and scheduler-disabled baseline correctly failed `check-agents`. Restoring the last valid source-backed progress matrix in the working tree repaired the fixture baseline; `node scripts/check-agile-gates.mjs` now passes all scenarios and the test confirms canonical files remain byte-for-byte unchanged. |
+| CS-80 rolling manifest validation scenarios | `scripts/ticket-specifications.test.mjs:1515,1724` | A_STALE_RECEIPT_RESOLVED | Both scenarios initially failed because generated fixtures still referenced the stale pre-CS-41 whole-spec receipt. After the current CS-41 binding and whole-ticket receipts were regenerated, both rolling-manifest scenarios pass; no manifest or receipt was fabricated. |
 
-The full suite is therefore NOT yet PASS. The ledger distinguishes corrected
-stale expectations from remaining harness/fixture work.
+The corrected fixture and receipt provenance now allow the complete suite to
+pass: `node --test scripts/ticket-specifications.test.mjs` reports 72/72
+passing, with zero failures, skips, cancellations, or todos. The ledger
+distinguishes stale expectations and fixture defects from actual specification
+content; none were suppressed or retried away.
 
 ### CS-32 fresh whole-ticket review (2026-10-09)
 
