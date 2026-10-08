@@ -355,13 +355,16 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
                     ? 'MANUAL_GATE'
                     : 'EXTERNAL_DEPENDENCY'
                   : 'IMPLEMENT_NOW';
-    const designStatus = !ui
-      ? 'DESIGN_NOT_APPLICABLE'
-      : ticket.id === 'CS-216' || !refs.length
-        ? 'DESIGN_GAP'
-        : ownedScreens.length
-          ? 'DESIGN_VERIFIED'
-          : 'DESIGN_PARTIAL';
+    const designOverride = refinement?.designDisposition;
+    const designStatus = designOverride?.status
+      ? designOverride.status
+      : !ui
+        ? 'DESIGN_NOT_APPLICABLE'
+        : ticket.id === 'CS-216' || !refs.length
+          ? 'DESIGN_GAP'
+          : ownedScreens.length
+            ? 'DESIGN_VERIFIED'
+            : 'DESIGN_PARTIAL';
     const rows = ticket.acceptanceCriteria.map((criterion, index) =>
       verification(ticket, criterion, index, profile.commands),
     );
@@ -370,6 +373,9 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       row.exactBindings = (policy.exactVerificationBindings?.[row.acId] ?? []).map(
         (binding, index) => ({ ...binding, ...(amendments[String(index)] ?? {}) }),
       );
+      const additions = refinement?.bindingAdditions?.[row.acId] ?? [];
+      if (Array.isArray(additions) && additions.length)
+        row.exactBindings.push(...additions);
       if (row.exactBindings.length) {
         row.verification = row.exactBindings.map((binding) => ({
           type: binding.type,
@@ -550,11 +556,12 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         testRequirements: screen.acceptanceEvidenceRequirements,
       })),
       reason:
-        designStatus === 'DESIGN_NOT_APPLICABLE'
+        designOverride?.reason ??
+        (designStatus === 'DESIGN_NOT_APPLICABLE'
           ? 'Non-UI engineering/domain task; no page rendering is required by its scope.'
           : designStatus === 'DESIGN_PARTIAL' && relatedScreens.length > 0
             ? 'The canonical full-reference board maps this ticket to related screens, but those screens remain owned by their named child tickets; parent-level state designs are incomplete, so this remains partial.'
-            : 'Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability.',
+            : 'Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability.'),
     };
     designTraceability.push(trace);
     const criteria = rows.map((row) => ({
@@ -1272,8 +1279,19 @@ export function validateCatalog(model, inputs, resolvePath) {
           !board?.componentScreenIds.includes(screenId) ||
           !inputs.backlog.items.some((ticket) => ticket.id === screen.primaryTicketId)
         )
-          errors.push(`unresolved related design screen mapping ${id}.${screenId}`);
+        errors.push(`unresolved related design screen mapping ${id}.${screenId}`);
       }
+    }
+    if (refinement.designDisposition !== undefined) {
+      const disposition = refinement.designDisposition;
+      if (
+        !['DESIGN_EXACT', 'DESIGN_PARTIAL', 'DESIGN_PARTIAL_NON_BLOCKING', 'DESIGN_NOT_APPLICABLE'].includes(
+          disposition.status,
+        ) ||
+        typeof disposition.reason !== 'string' ||
+        !disposition.reason.trim()
+      )
+        errors.push('invalid design disposition ' + id);
     }
     if (
       !refinement.sourceReferences?.length ||
@@ -1337,6 +1355,7 @@ export function validateCatalog(model, inputs, resolvePath) {
                 'procedure',
                 'failureCase',
                 'negativeCase',
+                'reviewStatus',
               ].includes(field) ||
               typeof value !== 'string' ||
               !value.trim(),

@@ -1414,7 +1414,7 @@
     },
     "CS-118": {
       "reviewStatus": "DRAFT",
-      "designDisposition": "DESIGN_PARTIAL_NON_BLOCKING",
+      "designDisposition": {"status":"DESIGN_PARTIAL_NON_BLOCKING","reason":"Phase 0 Account Security and Settings references, shared primitives, responsive contract and accessibility contract are authoritative; missing bespoke micro-state screenshots are non-blocking implementation-time evidence."},
       "sourceReferences": [
         ".ai/backlog.json#CS-118",
         "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png",
@@ -1451,6 +1451,13 @@
         "Add planned component/browser/axe fixtures for validation, pending, success, unauthorized, expired-session and mutation-error states with redacted synthetic data.",
         "Capture approved viewport/browser evidence and record manual screen-reader review as a separate future gate."
       ],
+      "bindingAmendments": {
+        "CS-118-AC1": {"0": {"reviewStatus": "REVIEWED"}, "1": {"reviewStatus": "REVIEWED"}},
+        "CS-118-AC2": {"0": {"reviewStatus": "REVIEWED"}},
+        "CS-118-AC3": {"0": {"reviewStatus": "REVIEWED"}},
+        "CS-118-AC4": {"0": {"reviewStatus": "REVIEWED"}}
+      },
+      "bindingAdditions": {"CS-118-AC3": [{"preconditions":"Use a synthetic authenticated candidate on the canonical `/settings` route with no real credentials; run the supported screen-reader/browser matrix only after the implementation exists.","setup":"Prepare NVDA/Chromium and VoiceOver/WebKit or the repository-approved equivalent with keyboard focus, pending, validation-error, success, unauthenticated and expired-session states; keep passwords, CSRF values and session identifiers redacted.","action":"Execute the manual accessibility smoke procedure for Account Security controls, traversing labels, password fields, mutation buttons, busy/disabled states, alerts/status messages and focus restoration after 400/401/403/429 responses.","procedure":"MANUAL:CS-118-AC3-SCREEN-READER-ACCOUNT-SECURITY","assertion":"The screen reader announces each control by an accurate accessible name and role; pending state is announced without duplicate submission; validation/error text is associated with the relevant field; success/status is announced; focus moves to the confirmation field on mismatch and to the safe signed-out boundary after password change; no private child content or secret sentinel is exposed in unauthenticated/expired states.","expectedResult":"NVDA/VoiceOver review records PASS or NOT_RUN for each named browser/AT/state combination with exact announcements, focus result and redacted evidence; manual judgment remains separate from automated axe output.","type":"MANUAL_ACCESSIBILITY","testStatus":"MANUAL_REQUIRED","reviewStatus":"REVIEWED","testName":"CS-118-AC3 manual screen-reader Account Security smoke","testFileOrProcedureId":"MANUAL:CS-118-AC3-SCREEN-READER-ACCOUNT-SECURITY","fixtures":"Synthetic settings security states, keyboard sequence, NVDA/VoiceOver supported browser matrix and redacted announcement/focus worksheet.","negativeCase":"Missing label/role, unannounced error/status, focus loss, second submit while busy or private content rendered after 401/expired session fails the manual gate and cannot be represented as PASS.","evidenceArtifact":"Future redacted manual screen-reader worksheet with browser/AT versions, state IDs, announcements, focus outcomes, owner and timestamp; no execution claimed in Phase 3.25.","reviewer":"Accessibility reviewer","releaseGate":"R1-MANUAL-ACCESSIBILITY"}]},
       "sectionTextReplacements": {"nonFunctionalRequirements": [["Preserve bounded input, deterministic behavior, cancellation/retry semantics and current performance regression thresholds where applicable; do not claim a production SLO.","Preserve bounded input, deterministic behavior, safe mutation failure semantics and current performance regression thresholds where applicable; password and session mutations are not automatically retried; do not claim a production SLO."]]}
     },
     "CS-113": {
@@ -2243,6 +2250,7 @@
     },
     "CS-31": {
       "reviewStatus": "DRAFT",
+      "designDisposition": {"status":"DESIGN_NOT_APPLICABLE","reason":"CS-31 verifies the authenticated shell skip-link test contract and browser runner behavior; it does not introduce or change a candidate-facing visual surface. The shared shell approved Phase 0 accessibility and responsive contracts remain the implementation authority."},
       "sourceReferences": [
         ".ai/backlog.json#CS-31",
         "docs/tickets/CS-31.md",
@@ -2275,6 +2283,7 @@
     },
     "CS-32": {
       "reviewStatus": "DRAFT",
+      "designDisposition": {"status":"DESIGN_NOT_APPLICABLE","reason":"CS-32 verifies Pages visual-comparator and workspace-interaction tooling; it does not introduce or change a candidate-facing visual surface. Existing publication fixtures and the approved responsive/accessibility contracts are the verification authority."},
       "sourceReferences": [
         ".ai/backlog.json#CS-32",
         "docs/tickets/CS-32.md",
@@ -4975,6 +4984,12 @@
     "CS-118": {
       "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"Phase 0 Account Security and Settings references, shared design-system primitives, responsive contract and accessibility contract are authoritative. Missing bespoke mobile/password/pending/error screenshots are implementation-time UX evidence and do not block an implementation-ready specification; no new UX is invented.","sources":["design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png","design/page-references/foundations/04-account-security-center.png","apps/web/src/components/account-security.tsx",".ai/ticket-specification-policy.json#CS-118"]},
       "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All four CS-118 criteria have exact planned component/service, desktop visual/mobile-gate, accessibility-state and conditional-release procedures with negative cases and evidence artifacts.","sources":[".ai/ticket-specification-policy.json#CS-118-AC1",".ai/ticket-specification-policy.json#CS-118-AC2",".ai/ticket-specification-policy.json#CS-118-AC3",".ai/ticket-specification-policy.json#CS-118-AC4"]}
+    },
+    "CS-31": {
+      "MISSING_EXACT_DESIGN": {"disposition":"RECLASSIFIED","reason":"Design is not applicable: this ticket verifies an existing authenticated-shell accessibility contract and its registered browser procedure; it does not introduce a candidate-facing visual surface.","requiredEvidence":"Current shell accessibility/responsive contract and exact future browser procedure remain recorded in the ticket; no new visual design asset is required.","rationale":"Phase 0 design authority is consumed through the shared shell accessibility and responsive contracts. A new screenshot for a test-only regression would invent a product surface.","sources":[".ai/ticket-specification-policy.json#CS-31","docs/ACCESSIBILITY.md","docs/RESPONSIVE-DESIGN.md"]}
+    },
+    "CS-32": {
+      "MISSING_EXACT_DESIGN": {"disposition":"RECLASSIFIED","reason":"Design is not applicable: this ticket verifies existing Pages visual-comparator and workspace-interaction tooling; it does not introduce a candidate-facing visual surface.","requiredEvidence":"Pinned publication fixture, comparator baseline and exact future browser procedure remain recorded in the ticket; no new product design asset is required.","rationale":"Phase 0 design authority is consumed through the existing publication fixture and shared responsive/accessibility contracts. A test-tooling ticket does not require a separate screen design.","sources":[".ai/ticket-specification-policy.json#CS-32","docs/ACCESSIBILITY.md","docs/RESPONSIVE-DESIGN.md"]}
     },
     "CS-113": {
       "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"Preparation-only AI scope, consent/budget/kill-switch boundary, failure semantics and no-ranking/no-apply invariant are ticket-specific and source-bound.","sources":[".ai/ticket-specification-policy.json#CS-113","packages/core/src/ai-provider.ts","docs/OWNER-DECISIONS-2026-10-02.md"]},
@@ -14596,25 +14611,25 @@
   "verificationReviewReceipts": {
     "CS-118-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "ab001352697970886990b5507e709f11a903e528acd01beac97ca6a6634ed964"
     },
     "CS-118-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "b76ce8918d4a7c97e5efff1a49a8ecbba823b11c5003822f02d7a1d60f7ae46b"
     },
     "CS-118-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "2e1be7a9696358b436825fc6df6d9b41f1769984a6375f7b3a4c30fea98c533a"
+      "contentHash": "3a5f994d6b38b722a8e4c6378dd958315d12d305e624fb6a1666db934dd08b1e"
     },
     "CS-118-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "15daf4eb80204afef11bf2335ae5948a74a5193286c90b1468fbb2aadc763b15"
     },
@@ -16454,6 +16469,12 @@
     "CS-99-AC4": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"ac9ed0aa14d1c54b5e2f7711ebe491346a6ccb7eb6cc9bcd5be784864aaa20c7"}
   },
   "specificationReviewReceipts": {
+    "CS-118": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "09740501bd55a41338c554eb25543fa83309694caed32d8a4b5d1ad678f9aa35"
+    },
     "CS-41": {
       "verdict": "APPROVED",
       "reviewer": "/root/cs78_review",
@@ -16940,12 +16961,6 @@
       "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "f878cbd791bb232addeccf654bf4bb5043a865fcd0c5c0e042b739f2ebf80a3c"
-    },
-    "CS-118": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "a0e6254bcf605b3c6dbeb34ffda6de3024d392535c1b3c57621e683a2df2ad86"
     },
     "CS-95": {
       "verdict": "APPROVED",

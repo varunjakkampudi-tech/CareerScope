@@ -2,43 +2,43 @@
 
 Structural section coverage and generated count are not implementation readiness. Every finding below is retained until source evidence or an approved specification resolves it.
 
-| Measure                                | Count              |
-| -------------------------------------- | ------------------ |
-| ticketCount                            | 216                |
-| specificationCount                     | 216                |
-| completeSpecificationCount             | 88                 |
-| incompleteSpecificationCount           | 128                |
-| epicMappedCount                        | 216                |
-| orphanTicketCount                      | 0                  |
-| duplicateIdCount                       | 0                  |
-| dependencyEdgeCount                    | 276                |
-| invalidDependencyCount                 | 0                  |
-| dependencyCycleCount                   | 0                  |
-| dependencySemanticGapCount             | 0                  |
-| acceptanceCriterionCount               | 906                |
-| suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 310                |
-| unmappedAcceptanceCriterionCount       | 596                |
-| reviewedExactTestBindingCount          | 333                |
-| authoredExactTestBindingCount          | 375                |
-| acceptanceCriteriaWithAuthoredBindings | 351                |
-| draftSpecificationCount                | 128                |
-| reviseSpecificationCount               | 0                  |
-| reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 88                 |
-| ownerDecisionReconciliationCount       | 11                 |
-| uiTicketCount                          | 147                |
-| blockedTicketCount                     | 37                 |
-| hostpendingActionCount                 | 15                 |
-| holdTicketCount                        | 33                 |
-| currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 40.74074074074074  |
-| suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 34.216335540838855 |
-| findingsCount                          | 646                |
-| openFindingCount                       | 353                |
-| resolvedFindingCount                   | 146                |
-| reclassifiedFindingCount               | 28                 |
+| Measure                                | Count             |
+| -------------------------------------- | ----------------- |
+| ticketCount                            | 216               |
+| specificationCount                     | 216               |
+| completeSpecificationCount             | 88                |
+| incompleteSpecificationCount           | 128               |
+| epicMappedCount                        | 216               |
+| orphanTicketCount                      | 0                 |
+| duplicateIdCount                       | 0                 |
+| dependencyEdgeCount                    | 276               |
+| invalidDependencyCount                 | 0                 |
+| dependencyCycleCount                   | 0                 |
+| dependencySemanticGapCount             | 0                 |
+| acceptanceCriterionCount               | 906               |
+| suggestedAcceptanceCriterionCount      | 906               |
+| mappedAcceptanceCriterionCount         | 314               |
+| unmappedAcceptanceCriterionCount       | 592               |
+| reviewedExactTestBindingCount          | 339               |
+| authoredExactTestBindingCount          | 376               |
+| acceptanceCriteriaWithAuthoredBindings | 351               |
+| draftSpecificationCount                | 128               |
+| reviseSpecificationCount               | 0                 |
+| reviewedSpecificationCount             | 0                 |
+| approvedSpecificationCount             | 88                |
+| ownerDecisionReconciliationCount       | 11                |
+| uiTicketCount                          | 147               |
+| blockedTicketCount                     | 37                |
+| hostpendingActionCount                 | 15                |
+| holdTicketCount                        | 33                |
+| currentReleaseTicketCount              | 47                |
+| specificationCoveragePercent           | 40.74074074074074 |
+| suggestedVerificationMappingPercent    | 100               |
+| exactReviewedTraceabilityPercent       | 34.65783664459161 |
+| findingsCount                          | 644               |
+| openFindingCount                       | 351               |
+| resolvedFindingCount                   | 146               |
+| reclassifiedFindingCount               | 28                |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                                                                               |
 | ------ | ------------------------------- | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -123,11 +123,9 @@ Structural section coverage and generated count are not implementation readiness
 | CS-29  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-30  | RELEASE_TARGET_UNDECIDED        | EXTERNAL_GATE           | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                                                                                       |
 | CS-30  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
-| CS-31  | MISSING_EXACT_DESIGN            | OPEN                    | design                 | No exact approved screen reference is mapped; a README or generic board does not verify this surface.                                                                    | UX / Product owner                    | Exact design asset, route/role/state/viewport mapping and approval.                                                                                                                             |
 | CS-31  | RELEASE_TARGET_UNDECIDED        | EXTERNAL_GATE           | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                                                                                       |
 | CS-31  | RELEASE_STATE_UNSPECIFIED       | EXTERNAL_GATE           | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                                                                                  |
 | CS-31  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
-| CS-32  | MISSING_EXACT_DESIGN            | OPEN                    | design                 | No exact approved screen reference is mapped; a README or generic board does not verify this surface.                                                                    | UX / Product owner                    | Exact design asset, route/role/state/viewport mapping and approval.                                                                                                                             |
 | CS-32  | RELEASE_TARGET_UNDECIDED        | EXTERNAL_GATE           | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                                                                                       |
 | CS-32  | RELEASE_STATE_UNSPECIFIED       | EXTERNAL_GATE           | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                                                                                  |
 | CS-32  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |

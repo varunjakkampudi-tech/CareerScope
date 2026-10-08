@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "df71a220817c81e5645d6e46b35d09b5e23fb132ae46a2ae167922cf8a5aafc4",
+    ".ai/ticket-specification-policy.json": "d9a20376e49429393d24bb4b29eae31fbe321119e2452e17d372dbc2357a09e1",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "c2802eac07a8b93863649ba9f1b964b302fd227c17e070493ddab3674ccf95dc",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "6f13988fa85b30f26f4161dedb1243dd1945620318b8e8af5f471357298e2faf",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -344,20 +344,20 @@
     {
       "ticketId": "CS-31",
       "ui": true,
-      "status": "DESIGN_GAP",
+      "status": "DESIGN_NOT_APPLICABLE",
       "primaryRef": null,
       "references": [],
       "screens": [],
-      "reason": "Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability."
+      "reason": "CS-31 verifies the authenticated shell skip-link test contract and browser runner behavior; it does not introduce or change a candidate-facing visual surface. The shared shell approved Phase 0 accessibility and responsive contracts remain the implementation authority."
     },
     {
       "ticketId": "CS-32",
       "ui": true,
-      "status": "DESIGN_GAP",
+      "status": "DESIGN_NOT_APPLICABLE",
       "primaryRef": null,
       "references": [],
       "screens": [],
-      "reason": "Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability."
+      "reason": "CS-32 verifies Pages visual-comparator and workspace-interaction tooling; it does not introduce or change a candidate-facing visual surface. Existing publication fixtures and the approved responsive/accessibility contracts are the verification authority."
     },
     {
       "ticketId": "CS-33",
@@ -7191,7 +7191,7 @@
     {
       "ticketId": "CS-118",
       "ui": true,
-      "status": "DESIGN_VERIFIED",
+      "status": "DESIGN_PARTIAL_NON_BLOCKING",
       "primaryRef": "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png",
       "references": [
         "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/04-04-account-security-center.png",
@@ -7220,7 +7220,7 @@
           ]
         }
       ],
-      "reason": "Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability."
+      "reason": "Phase 0 Account Security and Settings references, shared primitives, responsive contract and accessibility contract are authoritative; missing bespoke micro-state screenshots are non-blocking implementation-time evidence."
     },
     {
       "ticketId": "CS-119",
