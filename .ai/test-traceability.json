@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "0ab2c1d22ed5094dd46858ed7775de293e194506896fb25a5f3164c6bbfb073e",
+    ".ai/ticket-specification-policy.json": "38c0f3d5f6baaeecf7e353d105e80509f943e0d0fc1f793c0a58899070686ed2",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "616d3c676789e3ae85529065a6b200df2e3398c7f98d3685f76d32ea26614b6f",
@@ -16529,12 +16529,21 @@
       "verification": [
         {
           "type": "AUTOMATED_COMPONENT",
-          "expectedCheck": "The UI sends POST `/api/account/password` and POST `/api/account/sessions/revoke-others` with CSRF; client validation prevents mismatched/unchanged passwords; 204 password success clears auth cache and redirects signed-out; 204 revoke-others success reports that this session remains signed in. A separate service-backed test must verify other sessions are revoked and wrong-current-password returns 400.",
+          "expectedCheck": "The UI sends both existing POST mutations with CSRF; client validation prevents mismatched/unchanged passwords; 204 password success clears auth cache and redirects signed-out; 204 revoke-others success reports that this session remains signed in.",
           "candidateCommand": null,
-          "evidenceRequired": "redacted-account-security-component-report.json",
+          "evidenceRequired": "Future redacted account-security component report; no execution claimed.",
           "automationStatus": "PLANNED",
           "owner": "Frontend",
           "releaseGate": "R1-AUTH-UI"
+        },
+        {
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Wrong-current-password returns 400 with no mutation; successful password change invalidates S1/S2 as the existing contract requires; successful revoke-others retains S1 and invalidates S2; denied operations leave session rows unchanged.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted database/session integration report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "R1-AUTH-SERVICE"
         }
       ],
       "releaseGate": "RELEASE",
@@ -16542,20 +16551,37 @@
       "exactBindings": [
         {
           "preconditions": "Use an authenticated synthetic candidate session with server-derived CSRF and no real credential values; render the existing `/settings` route and `AccountSecurity` component.",
-          "setup": "Exercise password fields, revoke-others action, current-password mismatch validation, loading, safe error and success states using the existing API client boundary. Mock the API only for UI request/cache/navigation assertions; separately plan service-backed checks for persisted revocation effects.",
-          "procedure": "CS-118-AC1-settings-security-contract",
-          "assertion": "The UI sends POST `/api/account/password` and POST `/api/account/sessions/revoke-others` with CSRF; client validation prevents mismatched/unchanged passwords; 204 password success clears auth cache and redirects signed-out; 204 revoke-others success reports that this session remains signed in. A separate service-backed test must verify other sessions are revoked and wrong-current-password returns 400.",
-          "expectedResult": "No password, CSRF token, session token or owner identifier is shown or logged; unauthorized/expired sessions render the safe signed-out state and service-backed denial preserves state.",
+          "setup": "Exercise password fields, revoke-others action, current-password mismatch validation, loading, safe error and success states using the existing API client boundary.",
+          "procedure": "PLANNED:apps/web/tests/account-security.test.tsx::CS-118-AC1-settings-security-contract",
+          "assertion": "The UI sends both existing POST mutations with CSRF; client validation prevents mismatched/unchanged passwords; 204 password success clears auth cache and redirects signed-out; 204 revoke-others success reports that this session remains signed in.",
+          "expectedResult": "No password, CSRF token, session token or owner identifier is shown or logged; unauthorized/expired sessions render the safe signed-out state.",
           "type": "AUTOMATED_COMPONENT",
           "testStatus": "PLANNED",
           "reviewStatus": "DRAFT",
-          "testName": "renders account security actions and preserves session mutation contract",
-          "testFileOrProcedureId": "apps/web/tests/account-security.test.tsx::CS-118-AC1-settings-security-contract; planned service procedure CS-118-AC1-SERVICE-REVOCATION",
-          "fixtures": "Synthetic session/CSRF, API 204/400/401/403/429 responses, wrong-password control and redacted mutation spies.",
-          "negativeCase": "Submit mismatched or unchanged passwords, return 400/401/403, remove CSRF/session, or simulate a second session and assert no unauthorized mutation, no session leakage and no secret logging.",
-          "evidenceArtifact": "redacted-account-security-component-report.json",
+          "testName": "renders account security actions and preserves client mutation contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/account-security.test.tsx::CS-118-AC1-settings-security-contract",
+          "fixtures": "Synthetic session/CSRF, API 204/400/401/403/429 responses and redacted mutation spies.",
+          "negativeCase": "Submit mismatched or unchanged passwords, return 400/401/403, or remove CSRF/session and assert no unauthorized mutation, session leakage or secret logging.",
+          "evidenceArtifact": "Future redacted account-security component report; no execution claimed.",
           "reviewer": "Frontend",
           "releaseGate": "R1-AUTH-UI"
+        },
+        {
+          "preconditions": "Use disposable owner O1 with current session S1 and other session S2; no production credentials.",
+          "setup": "Exercise the existing account mutation contract through the planned database integration procedure with wrong-password and successful password/revoke controls.",
+          "procedure": "PLANNED:packages/core/src/database.test.ts::CS-118-AC1-SERVICE-REVOCATION",
+          "assertion": "Wrong-current-password returns 400 with no mutation; successful password change invalidates S1/S2 as the existing contract requires; successful revoke-others retains S1 and invalidates S2; denied operations leave session rows unchanged.",
+          "expectedResult": "Service-backed revocation semantics are verified separately from component mocks; no browser appearance is treated as proof of server invalidation.",
+          "type": "AUTOMATED_INTEGRATION",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "verifies account password and revoke-others session effects",
+          "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-118-AC1-SERVICE-REVOCATION",
+          "fixtures": "O1/S1/S2 synthetic sessions, wrong-password 400 and CSRF/owner controls.",
+          "negativeCase": "Cross-owner session, stale/expired session or failed password attempt mutates another owner's session or reports success.",
+          "evidenceArtifact": "Future redacted database/session integration report; no execution claimed.",
+          "reviewer": "Security",
+          "releaseGate": "R1-AUTH-SERVICE"
         }
       ]
     },
@@ -16640,9 +16666,9 @@
       "verification": [
         {
           "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "The checker accepts only declared evidence, never enables runtime behavior, never deploys and never changes workflow state; manual screen-reader and hosted evidence remain explicitly pending.",
+          "expectedCheck": "The planned harness accepts only declared evidence, never enables runtime behavior, never deploys and never changes workflow state; manual screen-reader and hosted evidence remain explicitly pending while CS-118 stays BACKLOG/RELEASE.",
           "candidateCommand": null,
-          "evidenceRequired": "redacted-account-security-release-report.json",
+          "evidenceRequired": "Future redacted account-security release-evidence report; no execution claimed.",
           "automationStatus": "PLANNED",
           "owner": "Release",
           "releaseGate": "R1-RELEASE-GATE"
@@ -16653,18 +16679,18 @@
       "exactBindings": [
         {
           "preconditions": "Use an isolated release fixture with CS-118 remaining BACKLOG/RELEASE and no deployment credentials.",
-          "setup": "Run the release checker with missing visual, browser, accessibility, authz and exact-SHA evidence plus a complete synthetic manifest.",
-          "procedure": "CS-118-AC4-account-security-release-gate",
-          "assertion": "The checker accepts only declared evidence, never enables runtime behavior, never deploys and never changes workflow state; manual screen-reader and hosted evidence remain explicitly pending.",
-          "expectedResult": "Incomplete evidence fails closed and the isolated ticket remains BACKLOG/RELEASE.",
+          "setup": "Plan a dedicated release-evidence harness that reads CS-118 workflow metadata and evaluates missing visual, browser, accessibility, authorization and exact-SHA evidence without invoking deployment; keep scripts/check-ticket-workflow.mjs as the separate canonical workflow-invariant checker.",
+          "procedure": "PLANNED:scripts/cs118-release-gate.test.mjs::CS-118-AC4-release-evidence-invariant",
+          "assertion": "The planned harness accepts only declared evidence, never enables runtime behavior, never deploys and never changes workflow state; manual screen-reader and hosted evidence remain explicitly pending while CS-118 stays BACKLOG/RELEASE.",
+          "expectedResult": "Incomplete evidence fails closed in the planned release-evidence harness and the isolated ticket metadata remains BACKLOG/RELEASE; the current workflow checker is not represented as evaluating release evidence.",
           "type": "AUTOMATED_CONTRACT",
           "testStatus": "PLANNED",
           "reviewStatus": "DRAFT",
           "testName": "keeps Account Security Center release gated without evidence",
-          "testFileOrProcedureId": "scripts/release-gate.mjs::CS-118-AC4",
-          "fixtures": "Synthetic release manifests with missing and complete-shape controls.",
-          "negativeCase": "Provide only a screenshot or client flag and assert refusal with no network/deployment/workflow mutation.",
-          "evidenceArtifact": "redacted-account-security-release-report.json",
+          "testFileOrProcedureId": "PLANNED:scripts/cs118-release-gate.test.mjs::CS-118-AC4-release-evidence-invariant",
+          "fixtures": "Synthetic CS-118 release metadata and missing/complete-shape evidence manifests.",
+          "negativeCase": "Provide only a screenshot or client flag, or invoke the workflow checker as a release-evidence substitute, and assert refusal with no network/deployment/workflow mutation.",
+          "evidenceArtifact": "Future redacted account-security release-evidence report; no execution claimed.",
           "reviewer": "Release",
           "releaseGate": "R1-RELEASE-GATE"
         }
