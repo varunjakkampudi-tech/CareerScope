@@ -1324,7 +1324,7 @@
         "functionalRequirements": [
           "Enumerate every authenticated route and the public Pages surface, then run the named WCAG 2.2 AA audit against that exact route list; do not replace route coverage with a single aggregate score.",
           "Record each finding with rule/criterion, route, element, severity, evidence and disposition. Blocking findings require a reproducible fix or an explicit owner decision; non-blocking findings remain tracked with rationale.",
-          "The regression check must fail on a newly introduced blocking accessibility finding and must distinguish tool-unavailable or hosted-only evidence from PASS. Authenticated route coverage is run by scripts/check-ui.ts via npm run test:ui; the static Pages surface is run by scripts/check-pages-ui.mjs via npm run pages:visual and npm run pages:workspace:test. Route coverage and axe output must be recorded per surface, not inferred from an aggregate score."
+          "The regression check must fail on a newly introduced blocking accessibility finding and must distinguish tool-unavailable or hosted-only evidence from PASS. Authenticated route axe coverage is run by scripts/check-ui.ts via npm run test:ui. The static Pages runners (scripts/check-pages-ui.mjs via npm run pages:visual and npm run pages:workspace:test) provide visual/interaction coverage only; any Pages WCAG/axe result requires a separately named supported audit procedure and must not be inferred from visual output."
         ],
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: VALIDATION. Use the registered accessibility tooling and current routes; no runtime product redesign or tool bypass is authorized."
@@ -2306,12 +2306,12 @@
       ],
       "additionalRequirements": {
         "functionalRequirements": [
-          "Support establishing a profile with or without a resume, then upload, parse, review, edit and explicitly save proposed fields. Record the current backend contract: packages/core/src/database.ts reads the latest parsed resume derived fields into the matching profile snapshot while a resume is present and packages/matching/src/context.ts unions those derived skills/titles. The implementation-ready contract therefore requires the review surface to disclose that derived fields affect matching until an explicit owner-approved exclusion mechanism is implemented; do not claim frontend review alone suppresses derived matching inputs. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
+          "Support establishing a profile with or without a resume, then upload, parse, review, edit and explicitly save proposed fields. Apply the approved CS-46 decision: durable candidate-scoped exclusions must be persisted for declined resume-derived skills/titles and respected by packages/core/src/database.ts snapshot construction and packages/matching/src/context.ts before matching; accepted facts may contribute, declined facts must not silently return after reparse. The current always-on union is the documented pre-implementation gap, not evidence of completion. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
           "Preserve edits on revision conflicts and show actionable invalid-file, parse-failure, pending and capacity-refusal states using existing storage and API contracts. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution.",
           "Respect advertised cancellation capabilities without activating disabled paths; test synthetic owner isolation, keyboard/mobile flows and the resulting approved profile revision. Define the precondition, synthetic fixture, exact assertion and negative control for this criterion; do not infer execution."
         ],
         "technicalApproach": [
-          "ARCHITECTURE_IMPACT: CROSS_MODULE plus DATA_MODEL/API_CONTRACT. The frontend review surface depends on the resume parser output, packages/core/src/database.ts profile snapshot construction and packages/matching/src/context.ts derived-skill/title union. Document that dependency and the approval/exclusion decision boundary before implementation; no product implementation is authorized by this specification."
+          "ARCHITECTURE_IMPACT: CROSS_MODULE plus DATA_MODEL/API_CONTRACT. The frontend review surface depends on resume parser output, a planned candidate-scoped durable exclusion contract, packages/core/src/database.ts profile snapshot construction and packages/matching/src/context.ts context assembly. The approved CS-46 decision is the governing product contract; no product implementation is authorized by this specification."
         ],
         "securityPrivacy": [
           "Use synthetic owners, postings, sessions and provider responses; never use production credentials, real user data or destructive host actions."
@@ -10262,11 +10262,11 @@
         "type": "MANUAL_OPERATOR",
         "preconditions": "Complete signed-in route inventory plus public Pages surface and supported audit engine.",
         "setup": "Audit every authenticated route and the public Pages surface as separate inventory entries.",
-        "procedure": "Run npm run test:ui for the authenticated route inventory and npm run pages:visual plus npm run pages:workspace:test for the static Pages surface; retain raw per-surface reports.",
+        "procedure": "Run npm run test:ui for authenticated route axe inventory. For the static Pages surface, execute the named manual procedure CS-15-PAGES-WCAG-01 against the staged publication fixture: keyboard traversal at 320/768/1440, visible focus, labels and status announcements, semantic headings/landmarks, contrast/non-color indicators and reduced-motion/reflow; retain the browser/assistive-technology report. Pages visual/workspace commands remain separate visual/interaction controls.",
         "assertion": "Every signed-in route and the public Pages surface has an individual audit result; missing either scope fails completeness.",
         "expectedResult": "No required route or public surface is represented only by an aggregate score.",
         "testName": "CS-15 route-complete WCAG audit",
-        "testFileOrProcedureId": "scripts/check-ui.ts + scripts/check-pages-ui.mjs",
+        "testFileOrProcedureId": "scripts/check-ui.ts + CS-15-PAGES-WCAG-01 (manual Pages WCAG procedure) + scripts/check-pages-ui.mjs (visual only)",
         "fixtures": "Synthetic authenticated account and public Pages fixture.",
         "negativeCase": "Omit one signed-in route or Pages surface; completeness check fails.",
         "evidenceArtifact": "Versioned per-route and public-surface audit reports.",
@@ -10318,12 +10318,12 @@
         "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Baseline rules and route inventory committed; authenticated route runner and Pages visual/workspace runners are available.",
-        "setup": "Run npm run test:ui, npm run pages:visual and npm run pages:workspace:test against known clean fixtures, then inject one synthetic blocking violation into the relevant fixture.",
-        "procedure": "Re-run the exact affected runner and inspect its nonzero exit plus route/rule output; re-run clean fixtures and require zero exit.",
+        "setup": "Run npm run test:ui against a known clean authenticated fixture, then inject one synthetic blocking violation into that fixture. Run Pages visual/workspace commands only as separate non-axe controls.",
+        "procedure": "Re-run npm run test:ui and inspect its nonzero exit plus route/rule output; re-run the clean fixture and require zero exit. Record Pages visual/workspace results separately and do not classify them as axe evidence.",
         "assertion": "The check exits nonzero and identifies route/rule; clean fixture exits zero.",
         "expectedResult": "Accessibility regressions cannot pass silently.",
         "testName": "CS-15 accessibility regression gate",
-        "testFileOrProcedureId": "package.json#test:ui + package.json#pages:visual + package.json#pages:workspace:test",
+        "testFileOrProcedureId": "package.json#test:ui (axe) + package.json#pages:visual (visual control) + package.json#pages:workspace:test (interaction control)",
         "fixtures": "Clean baseline plus injected contrast/label violation.",
         "negativeCase": "Injected blocking violation must fail.",
         "evidenceArtifact": "CI/local command output and exact SHA.",
@@ -13053,8 +13053,8 @@
         "action": "Run the service-backed profile/resume contract procedure for the database/matching assertions, then run the separately registered browser procedure; npm run test:integration alone does not execute the web spec.",
         "repositoryCommand": "npm run test:integration; npm run test:ui (scripts/check-ui.ts)",
         "procedure": "PLANNED:packages/core/src/database.test.ts::CS-37-AC1-profile-resume-derived-context + PLANNED:scripts/check-ui.ts::CS-37-AC1-review-disclosure",
-        "assertion": "O1's profile revision remains unchanged while parsed resume proposal is pending/reviewed; explicit profile save increments the revision, while the current backend also includes parsed derived skills/titles in the matching snapshot whenever a resume is present; the UI must disclose this dependency rather than claim approval suppresses it",
-        "expectedResult": "Profile edits and resume-review state are revision-safe, and matching-input provenance truthfully reflects the current derived-field dependency until an approved exclusion contract exists",
+        "assertion": "O1's profile revision remains unchanged while a parsed proposal is pending; explicit save records accepted facts and candidate-scoped exclusions, increments the revision, and subsequent matching snapshots include accepted derived skills/titles but exclude declined facts even after reparse",
+        "expectedResult": "Profile and resume review are revision-safe and the approved CS-46 exclusion contract prevents declined derived facts from re-entering matching",
         "testName": "CS-37-AC1 exact verification",
         "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-37-AC1-profile-resume-derived-context + PLANNED:scripts/check-ui.ts::CS-37-AC1-review-disclosure",
         "fixtures": "O1 profile/resume proposal, stale revision, invalid/parse/capacity fixtures and O2",
@@ -13075,7 +13075,7 @@
         "action": "Run the service-backed stale-revision/storage contract procedure and the separately registered browser procedure; npm run test:integration alone does not execute the web spec.",
         "repositoryCommand": "npm run test:integration; npm run test:ui (scripts/check-ui.ts)",
         "procedure": "PLANNED:packages/core/src/database.test.ts::CS-37-AC2-resume-errors + PLANNED:scripts/check-ui.ts::CS-37-AC2-error-states",
-        "assertion": "stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state, and none claims that pending approval removes already-derived matching inputs",
+        "assertion": "stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state, and the approved CS-46 exclusion contract is reflected once explicit save completes",
         "expectedResult": "stale revision returns the documented conflict without overwriting O1 edits; invalid file/parse failure/pending/capacity refusal each render its named actionable state",
         "testName": "CS-37-AC2 exact verification",
         "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-37-AC2-resume-errors + PLANNED:scripts/check-ui.ts::CS-37-AC2-error-states",
@@ -14424,7 +14424,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "c98cdbeba7c86c98d87dd97b3b52c28c9dd673c0e9de8d8cf2e343615638859f"
+      "contentHash": "d4021cc227a8ddc58c586cc05a83476194e0dc5833e080211d31da39e7ce7d3c"
     },
     "CS-15-AC2": {
       "verdict": "APPROVED",
@@ -14442,7 +14442,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "0fa55808155fd73e9b7c7cfd7fef0a1519c25b6b40ae269baa9eb7bd508a1fc5"
+      "contentHash": "4fc03e5bd5c6b04324610ed5cf75b7ccb2b0c227a9a59d68188e1addbc01c5f1"
     },
     "CS-16-AC1": {
       "verdict": "APPROVED",
@@ -14454,7 +14454,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "e2080dfa9e0b42cdf982a1afa47cc01ec47f1beb8af257bedc5d433fc8b71072"
+      "contentHash": "2aee12e31f6098660142bf30bc1ab933be617e2541179c4331001e95e36f76d8"
     },
     "CS-16-AC3": {
       "verdict": "APPROVED",
@@ -14496,7 +14496,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "0bd2422f42aed107162242ae8d02d8495a1bc7bff2cf41a1fe969a3d6dd7034c"
+      "contentHash": "9a21d2e9c747917821f2aaf39ccc8ec0713682741f068ce000e43c0940a1ed41"
     },
     "CS-18-AC2": {
       "verdict": "APPROVED",
@@ -14520,7 +14520,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "53e401c9b3315babdecd535011bf70986f895b5557a649d869b153df6405511a"
+      "contentHash": "07f2a9c970554a79593174bb0bb19e214576cf6d067eb7d0435fa15f70d2016c"
     },
     "CS-19-AC2": {
       "verdict": "APPROVED",
@@ -14832,37 +14832,37 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "68a2ec8ad2040973a8ff6643bbb1092be09bb653d36af870590af0c930dff2ca"
+      "contentHash": "02e25dc95cdd8632b918f29f15a4564d3f8056f8da0af9ab9f7d2b18cc0487ef"
     },
     "CS-36-AC2": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "41ebc23e255fcb5fc51cdb9d21d4471c1d9780542566c8edbf7b384bbba980a5"
+      "contentHash": "5dc89afdf2f43af65d27f26964e9a11bebbd14730b09e66f4973f89c018db9c1"
     },
     "CS-36-AC3": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "84e4fce1097ba2125b8aebd9e2ab9fd914c67cbd58bff0716cdcfc8e857f12b7"
+      "contentHash": "4a0c569232e3be254bac4d4d0f5c5aeb8ab8ad734cfb0a50b72fc824d0187fdb"
     },
     "CS-37-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "7e5696de5c71a1c3068511d6179d1babc584ee1df97c126ec6d87da9aca8d3dc"
+      "contentHash": "fc30b6d3c5985e959dce1929da6b20c5e9f02a39f44aaa44c5addd4ad58c1b3f"
     },
     "CS-37-AC2": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "8712e2a697faff2e72f6e2ff4efb74e66f0913a5acbd3bd3de36057797ffd97c"
+      "contentHash": "114c9296004c4ee7aad410a3fb43eff1e38a162fde3d969f623c1c1e86d7a9f0"
     },
     "CS-37-AC3": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "872aaa09b6a00db28892d70d1940231e2e32cfa37704c72b07592f6f013ab37c"
+      "contentHash": "0fb3bbdff6fb147dcac62352756bf17c8daaf8b742938ab0f896be3f8127caea"
     },
     "CS-87-AC3": {
       "verdict": "APPROVED",
@@ -15415,7 +15415,7 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "1012c3723f2d9d8d6988f353716873b5d569f1795e557b2658e0e3c93fecfce1"
+      "contentHash": "852333696354ad49786b2645376ff29c48aac286dba825da209862c989952443"
     },
     "CS-94": {
       "verdict": "APPROVED",
@@ -15494,25 +15494,25 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "2186576554b3f833181157a7d94d526a8afd07433474f16208acc9c4401e8180"
+      "contentHash": "b1fefbadf058365120b47fa80d0dbe2b381ead7a80374f8f042b172a50575a41"
     },
     "CS-16": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "ec19acaa9d8ba4504c5dc5217022a58b75898e1c04576231052f4e5a3967b8b7"
+      "contentHash": "0c8ef26cef4eeceda208014a02bb49d5289463988f40eb95baec81f7319d6799"
     },
     "CS-18": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "cd1bdbd182656bfeb14361109cc928f528bf9326ab0d108f4eb384897391ba23"
+      "contentHash": "fa9ee289de4c3ce836548e68251715642e53a19a3f0bcb89f2f848f6c2102e8b"
     },
     "CS-19": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "8a2875109e81e6973ef880e7d82296cf7a5b62c6f5754e5c60871b8e4206eeb9"
+      "contentHash": "7388a96b3d7b72bd7a2eb1017d75fb05ca2154779ac50525703ee66ca87d4a0e"
     },
     "CS-20": {
       "verdict": "APPROVED",
@@ -15602,13 +15602,13 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "7a4945502aad99f20ea9b591a4994a7ec3101f4aa8fed503a80cc721061f681d"
+      "contentHash": "7ea81ad63c438eac00d4123201effb2f7e9975c5716294cea2a24847b4008151"
     },
     "CS-37": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "9ad7bc397fe4a2512ab59ffe5191e7c2194daa46d250fea2a7a2174a0cfba129"
+      "contentHash": "9dca35e3a6769c0caa81393d53c70d1317d35a772a04bc2ab5d47df55a648341"
     },
     "CS-52": {
       "verdict": "APPROVED",
