@@ -689,3 +689,16 @@ AC2 `6c85d5a6631b834bd376739c1add4aa64217591f46628c12be99aaee46be13bd`, AC3
 `7e2dcc7855fece1a22ce2cb2b08819c36ecaf88c236fe2b6112a960461e59030`.
 CS-86 final regenerated whole-specification digest after policy normalization:
 `23f093ac5e3369f5cdac731bc85c53ce265dd959e025b0cfbaa95c33e2cba703`.
+
+## CS-91 — Cognito authored-content approval (final)
+
+Independent reviewer `/root/phase325_review` approved the current CS-91 specification and all authored AC binding groups after clarifying repeat/concurrent identity resolution versus callback replay, Chromium/Firefox/WebKit privacy coverage with explicit `NOT_RUN` handling, and owner-pending conditional delivery classification.
+
+- Whole specification digest: `4fe45bd9147c2fd7747ce1948e24fb0dfb315423ec96f67028f3e14638046b68`
+- Final regenerated whole-specification digest after recording the approved owner-pending disposition: `b13bd5e5837d74f7f436ad8b739c51837519abb909f6722c659dd1dbd497db20`
+- CS-91-AC1 binding digest: `a386ebaf90b5b50a17a606dd5d5637d6ee7e2d1fae9c54280d751466770dfe4a`
+- CS-91-AC2 binding digest: `b48aeedaf5b9ed7b39750f26deb4d07b8ee116ba864f2d65663c23fdf2e72d1a`
+- CS-91-AC3 binding digest: `0e0b6191e520c0a65f50eb74921b928b0a0c2615f98876ef25f91555da629688`
+- CS-91-AC4 binding digest: `af639b529dc6dc90996068f2e1907bad031ba07f18257f276f96d304207db84f`
+
+Provider OTP, hosted configuration and release assignment remain external/owner gates; no provider evidence is claimed.

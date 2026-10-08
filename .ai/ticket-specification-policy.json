@@ -3508,7 +3508,7 @@
         "functionalRequirements": [
           "Current-release scope is email identifier and Cognito-hosted email signup/verification/login. Phone is optional contact only; phone OTP is a later capability under `docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94` and is excluded here. Do not add a CareerScope OTP or resend endpoint: Cognito-hosted UI owns the OTP entry/resend surface unless a separately approved architecture changes that boundary.",
           "Use the existing `GET /api/auth/cognito/start` and `/api/auth/cognito/callback` contract only while CS-90 approves the exact pool/client/callback configuration. The server starts authorization-code + PKCE using the configured issuer, client and callback, then exchanges the returned code server-to-server and derives identity from verified Cognito profile claims; do not place OTP values, access/refresh tokens or provider secrets in a CareerScope URL, browser storage, logs or repository artifacts.",
-          "Create/resolve exactly one CareerScope owner by verified normalized email and provider subject under the approved account-linking rule. Missing, unverified, phone-only, duplicate or conflicting identity fails closed without creating or transferring ownership. Do not export the existing Argon2 password hash.",
+          "Create/resolve exactly one CareerScope owner by verified normalized email and provider subject under the approved account-linking rule. A repeated login for the same verified email/subject must resolve the existing owner idempotently, including concurrent same-identity callbacks, without creating a second owner. Missing, unverified, phone-only, ambiguous duplicate-owner or conflicting identity linkage fails closed without creating or transferring ownership. Do not export the existing Argon2 password hash.",
           "After accepted identity, issue only the existing opaque CareerScope application session cookie with the existing `HttpOnly`, `Secure` in HTTPS, `SameSite=Strict`, `/api` scope and expiry semantics. `POST /api/logout` revokes the application session and clears its cookie; do not claim Cognito global sign-out unless separately approved and implemented.",
           "The provider-hosted email OTP resend limit and verification expiry/reuse policy are defined by the approved Cognito pool settings. The application start/callback rate limits remain distinct controls; do not invent provider quotas or describe the current `/api/auth/cognito/start` limiter as OTP resend throttling.",
           "Return only bounded, non-enumerating error categories. Provider outage, invalid/expired/replayed callback state, unverified email, identity collision and disabled Cognito must not issue a session; clear transient state/verifier cookies on callback failure. Keep the current Argon2/session path available while Cognito is disabled or rolled back."
@@ -3543,7 +3543,7 @@
           "Emit privacy-safe counters for start/callback outcome category, throttled requests, provider timeout/unavailability, identity-link conflict and session creation/revocation. Correlate by request ID only; never log OTP, email, phone, callback query, state/verifier, authorization code, access/refresh token or provider response body. Do not claim live dashboards/alerts until measured."
         ],
         "manualExternalGates": [
-          "HARD DEPENDENCY: CS-90 owner/security approval of user-pool/client/MFA/callback settings and feature-flag/rollback design. EXTERNAL_PROVIDER: disposable Cognito pool/client with approved ap-south-1 configuration, email sender/domain verification, actual hosted email OTP/signup/resend and callback acceptance. No production pool, SMS approval or real owner-account migration is implied; owner account is never used as a test fixture."
+          "HARD DEPENDENCY: CS-90 owner/security approval of user-pool/client/MFA/callback settings and feature-flag/rollback design. EXTERNAL_PROVIDER: disposable Cognito pool/client with approved ap-south-1 configuration, email sender/domain verification, actual hosted email OTP/signup/resend and callback acceptance. No production pool, SMS approval or real owner-account migration is implied; owner account is never used as a test fixture. Historical release metadata remains unchanged; this ticket is optional/email-first and owner-pending for release assignment, not evidence that Cognito is activated."
         ],
         "implementationChecklist": [
           "Close CS-90 pool/client/callback/MFA and rollback approval before enabling the route.",
@@ -3560,7 +3560,18 @@
         "definitionOfDone": [
           "Implementation DoD: provider-hosted email signup/verification/resend and login work against the approved CS-90 config; verified normalized email resolves one owner; local session cookies/revocation, Origin/CSRF and owner isolation remain intact; phone-only identity is rejected for current release; all negative/privacy/browser tests pass and no OTP/token/PII leaks. Release DoD separately requires disposable Cognito acceptance, protected exact-SHA canary, monitoring, owner continuity and rollback evidence. Phase 3.25 specifies these gates only and performs none of them."
         ]
-      }
+      },
+        "deliveryClassification": {
+          "effectiveReleaseTarget": "OWNER_PENDING",
+          "effectiveReleaseState": "CONDITIONAL",
+          "deliveryMode": "MANUAL_GATE",
+          "rationale": "The approved architecture is optional and email-first, with Cognito default-off until owner/security configuration, disposable-provider acceptance and rollback/canary evidence exist. Preserve historical backlog/release metadata; do not infer activation or a product release assignment from the architecture approval.",
+          "sources": [
+            ".ai/ticket-specification-policy.json#CS-91",
+            ".ai/backlog.json#CS-91",
+            "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
+          ]
+        }
     },
     "CS-90": {
       "reviewStatus": "DRAFT",
@@ -6048,6 +6059,25 @@
           "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
         ]
       }
+    },
+    "CS-91": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "OWNER_DECISION_REQUIRED",
+        "rationale": "Cognito is an optional email-first capability with owner-pending release assignment. Preserve the source backlog target/state and require explicit product/release ownership before activation; architecture approval and local mocks are not release authorization.",
+        "sources": [
+          ".ai/backlog.json#CS-91",
+          ".ai/ticket-specification-policy.json#CS-91",
+          "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
+        ]
+      },
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent reviewer approved CS-91 authored binding groups after clarifying repeat/concurrent identity semantics, replay rejection, all-browser privacy coverage and conditional delivery classification.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-91",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
     }
   },
   "exactVerificationBindings": {
@@ -7730,7 +7760,7 @@
       {
         "reviewer": "Security and Privacy QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Isolated Fastify integration harness with disposable database and mock Cognito issuer; no hosted identity or production account.",
         "setup": "Inject unique synthetic OTP, authorization-code, state, verifier and provider-token sentinels; capture API request/redirect records and application logs at the server boundary.",
@@ -7751,13 +7781,13 @@
       {
         "reviewer": "Security and Privacy QA",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Local web/API browser harness with mock issuer and synthetic identity; no hosted account.",
-        "setup": "Launch Chromium using Playwright, complete a mocked authorization redirect and callback, and install a browser-storage sentinel observer.",
+        "setup": "Run the same mocked authorization redirect and callback scenario separately in Playwright Chromium, Firefox and WebKit, installing a browser-storage sentinel observer in each engine.",
         "fixtureOrData": "Synthetic OTP/token/code/state markers only.",
         "action": "Complete and reject mocked auth flows; inspect final browser URL, DOM, localStorage, sessionStorage and script-visible cookies.",
-        "procedure": "Assert final URL contains no code/state/OTP/token, neither Web Storage contains any sentinel, DOM exposes no provider token/OTP, and script-visible cookies contain no application/provider session secret. Verify no sentinel is written to browser console artifacts. The API integration test separately covers server logs and HttpOnly cookie issuance.",
+        "procedure": "For each of Chromium, Firefox and WebKit, assert the final URL contains no code/state/OTP/token, neither Web Storage contains any sentinel, DOM exposes no provider token/OTP, and script-visible cookies contain no application/provider session secret. Verify no sentinel is written to browser console artifacts. Record each engine separately; if an engine cannot run, mark that engine NOT_RUN and keep the browser acceptance gate open. The API integration test separately covers server logs and HttpOnly cookie issuance.",
         "assertion": "Browser-visible state and storage never retain OTPs, provider tokens or callback secrets after the redirect.",
         "expectedResult": "Auth completes only through the opaque HttpOnly app session; browser storage remains free of credential sentinels.",
         "testName": "Cognito browser flow scrubs callback values and never persists auth secrets",
@@ -7765,7 +7795,7 @@
         "fixtures": "Playwright browser, mock issuer and synthetic sentinels.",
         "negativeCase": "Any secret sentinel remains in the final URL, Web Storage, DOM or script-readable cookie fails.",
         "failureCase": "Browser harness cannot observe an actual redirect chain means no browser privacy claim is accepted.",
-        "evidenceArtifact": "Sanitized URL/storage/DOM sentinel match counts and browser/version result.",
+        "evidenceArtifact": "Sanitized URL/storage/DOM sentinel match counts and separate Chromium/Firefox/WebKit browser-version results, with unavailable engines explicitly marked NOT_RUN.",
         "releaseGate": "AUTH_BROWSER_SECRET_NONEXPOSURE",
         "repositoryCommand": "Planned Playwright browser test; no live provider evidence implied"
       }
@@ -7774,19 +7804,19 @@
       {
         "reviewer": "Backend QA and Security",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Isolated Fastify API, disposable PostgreSQL and local mock Cognito issuer.",
-        "setup": "Configure synthetic issuer/client/callback and verified candidate@example.invalid subject; mock token and userInfo responses.",
+        "setup": "Configure synthetic issuer/client/callback and verified candidate@example.invalid subject; mock token and userInfo responses. Prepare a pre-existing owner for that normalized email/subject and two independently initiated valid OAuth flows with distinct code/state/verifier tuples resolving to that same subject, plus a replay of one callback, a separate conflicting subject and an ambiguous duplicate-owner fixture.",
         "fixtureOrData": "Synthetic subject/email/code/state/verifier only.",
         "action": "GET /api/auth/cognito/start, complete callback, GET /api/session, then POST /api/logout under existing Origin/CSRF rules.",
-        "procedure": "Assert 302 includes response_type=code, exact redirect_uri and S256 challenge; transient cookies are HttpOnly and short-lived. Valid verified normalized email returns 302 /dashboard with only opaque app cookie (HttpOnly, Secure under HTTPS, SameSite=Strict, Path=/api); session resolves one owner; logout revokes it and the next /api/session is unauthenticated.",
-        "assertion": "Mocked app exchange and session lifecycle work; this does not prove provider OTP.",
-        "expectedResult": "Server-owned app session succeeds only after verified-email identity.",
+        "procedure": "Assert each start 302 includes response_type=code, exact redirect_uri and S256 challenge, and each transient cookie is HttpOnly and short-lived. Valid verified normalized email returns 302 /dashboard with only opaque app cookie (HttpOnly, Secure under HTTPS, SameSite=Strict, Path=/api); first login creates or resolves one owner, a repeated login for the same normalized email/subject reuses that owner, and the two independently initiated valid callbacks can complete concurrently with one owner linkage and no duplicate owner/profile. Replaying either consumed callback, or using a conflicting subject or ambiguous duplicate-owner fixture, fails closed without transfer or new session. Logout revokes the session and the next /api/session is unauthenticated.",
+        "assertion": "Mocked app exchange and session lifecycle work; repeated and independently initiated concurrent same-identity callbacks resolve one owner idempotently, replayed callbacks remain rejected, and ambiguous/conflicting linkage fails closed; this does not prove provider OTP.",
+        "expectedResult": "Server-owned app session succeeds only after verified-email identity, with no duplicate owner/profile creation for repeated or concurrent same-identity login.",
         "testName": "Cognito callback exchanges verified email for opaque owner session and logout revokes it",
         "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::Cognito callback exchanges verified email for opaque owner session and logout revokes it",
         "fixtures": "Disposable owner/database and local issuer stub.",
-        "negativeCase": "Invalid state, unverified/phone-only identity or conflicting subject creates no session.",
+        "negativeCase": "Invalid state, unverified/phone-only identity, conflicting subject or ambiguous duplicate-owner linkage creates no session and leaves owner/profile cardinality unchanged.",
         "failureCase": "Provider token reaches browser or revoked session remains usable.",
         "evidenceArtifact": "Sanitized statuses, redirect categories, row count and cookie attributes.",
         "releaseGate": "COGNITO_APPLICATION_FLOW_INTEGRATION",
@@ -7795,7 +7825,7 @@
       {
         "reviewer": "Identity operator and QA",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "EXTERNAL_PROVIDER",
         "preconditions": "CS-90 pool/client/callback/sender settings approved; isolated disposable Cognito pool and test mailbox.",
         "setup": "Record only redacted resource identifiers, region and allowlists; never use owner's account or retain mailbox credentials/OTP.",
@@ -7818,7 +7848,7 @@
       {
         "reviewer": "Security QA and API owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_SECURITY",
         "preconditions": "Disposable PostgreSQL with U1/U2 and distinct synthetic verified emails; mock callback maps only to U1.",
         "setup": "Create separate saved leads and start U1 session from verified-email callback.",
@@ -7841,13 +7871,13 @@
       {
         "reviewer": "Backend QA and Security",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "Local issuer stub and disposable auth DB; preserve separate valid Argon2 account.",
         "setup": "Script expired/mismatched/replayed state, invalid/reused code, issuer timeout/503, malformed/oversized userInfo, unverified/phone-only identity and limiter exhaustion.",
         "fixtureOrData": "Synthetic provider/user fixtures only.",
         "action": "Exercise start/callback for every failure; disable Cognito and submit valid Argon2 login.",
-        "procedure": "For expired, missing, mismatched or replayed state, assert the callback redirects with only `authError=invalid_callback`, clears both transient state/verifier cookies, issues no app session and writes no owner/session row. For invalid/reused authorization code, issuer timeout/503, malformed/oversized token or userInfo response, and rejected unverified/phone-only/duplicate identity, assert the bounded callback failure category, clear both transient cookies, issue no app session and make no partial owner/session write. For start-route limiter exhaustion, assert HTTP 429 and no app session. For callback limiter exhaustion, assert redirect with only `authError=rate_limited`, clear transient cookies, issue no app session and make no owner/session write. With Cognito disabled, start returns HTTP 404; the existing valid Argon2 login path remains usable. For each case, assert no provider body, OTP, code, state or token is reflected or logged.",
+        "procedure": "For expired, missing, mismatched or replayed state, assert the callback redirects with only `authError=invalid_callback`, clears both transient state/verifier cookies, issues no app session and writes no owner/session row. For invalid/reused authorization code, issuer timeout/503, malformed/oversized token or userInfo response, and rejected unverified/phone-only/ambiguous duplicate-owner or conflicting identity linkage, assert the bounded callback failure category, clear both transient cookies, issue no app session and make no partial owner/session write. A legitimate repeat login for an already linked email/subject is covered by AC1 and is not classified as a duplicate-identity failure. For start-route limiter exhaustion, assert HTTP 429 and no app session. For callback limiter exhaustion, assert redirect with only `authError=rate_limited`, clear transient cookies, issue no app session and make no owner/session write. With Cognito disabled, start returns HTTP 404; the existing valid Argon2 login path remains usable. For each case, assert no provider body, OTP, code, state or token is reflected or logged.",
         "assertion": "Every invalid, expired, replayed, throttled, unavailable or rejected callback fails closed with its actual bounded route contract, clears transient cookies and creates no partial owner/session state; local-auth fallback remains usable.",
         "expectedResult": "All API callback/start negative cases match the current redirect-versus-HTTP contracts, issue no session or partial identity, and preserve the Argon2 fallback.",
         "testName": "Cognito callback failures fail closed and Argon2 fallback remains available",
@@ -7862,7 +7892,7 @@
       {
         "reviewer": "Identity operator and Security QA",
         "testStatus": "EXTERNAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "EXTERNAL_PROVIDER",
         "preconditions": "Approved isolated Cognito pool/email policy; never use production or owner account.",
         "setup": "Disposable user and private test mailbox; document policy values/outcomes only and clear mailbox without saving messages.",
@@ -15116,6 +15146,30 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "7e2dcc7855fece1a22ce2cb2b08819c36ecaf88c236fe2b6112a960461e59030"
+    },
+    "CS-91-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a386ebaf90b5b50a17a606dd5d5637d6ee7e2d1fae9c54280d751466770dfe4a"
+    },
+    "CS-91-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b48aeedaf5b9ed7b39750f26deb4d07b8ee116ba864f2d65663c23fdf2e72d1a"
+    },
+    "CS-91-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "0e0b6191e520c0a65f50eb74921b928b0a0c2615f98876ef25f91555da629688"
+    },
+    "CS-91-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "af639b529dc6dc90996068f2e1907bad031ba07f18257f276f96d304207db84f"
     }
   },
   "specificationReviewReceipts": {
@@ -15160,6 +15214,12 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "7ea5fc7f23dfcbcf0a9a88e329f23342e6d41197abdd20ba3a28b363ba78fa25"
+    },
+    "CS-91": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b13bd5e5837d74f7f436ad8b739c51837519abb909f6722c659dd1dbd497db20"
     },
     "CS-82": {
       "verdict": "APPROVED",

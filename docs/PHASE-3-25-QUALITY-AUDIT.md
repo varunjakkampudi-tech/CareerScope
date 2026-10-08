@@ -2,43 +2,43 @@
 
 Structural section coverage and generated count are not implementation readiness. Every finding below is retained until source evidence or an approved specification resolves it.
 
-| Measure                                | Count              |
-| -------------------------------------- | ------------------ |
-| ticketCount                            | 216                |
-| specificationCount                     | 216                |
-| completeSpecificationCount             | 63                 |
-| incompleteSpecificationCount           | 153                |
-| epicMappedCount                        | 216                |
-| orphanTicketCount                      | 0                  |
-| duplicateIdCount                       | 0                  |
-| dependencyEdgeCount                    | 276                |
-| invalidDependencyCount                 | 0                  |
-| dependencyCycleCount                   | 0                  |
-| dependencySemanticGapCount             | 0                  |
-| acceptanceCriterionCount               | 906                |
-| suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 255                |
-| unmappedAcceptanceCriterionCount       | 651                |
-| reviewedExactTestBindingCount          | 272                |
-| authoredExactTestBindingCount          | 348                |
-| acceptanceCriteriaWithAuthoredBindings | 326                |
-| draftSpecificationCount                | 153                |
-| reviseSpecificationCount               | 0                  |
-| reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 63                 |
-| ownerDecisionReconciliationCount       | 11                 |
-| uiTicketCount                          | 146                |
-| blockedTicketCount                     | 37                 |
-| hostpendingActionCount                 | 15                 |
-| holdTicketCount                        | 33                 |
-| currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 29.166666666666668 |
-| suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 28.14569536423841  |
-| findingsCount                          | 650                |
-| openFindingCount                       | 413                |
-| resolvedFindingCount                   | 120                |
-| reclassifiedFindingCount               | 20                 |
+| Measure                                | Count             |
+| -------------------------------------- | ----------------- |
+| ticketCount                            | 216               |
+| specificationCount                     | 216               |
+| completeSpecificationCount             | 64                |
+| incompleteSpecificationCount           | 152               |
+| epicMappedCount                        | 216               |
+| orphanTicketCount                      | 0                 |
+| duplicateIdCount                       | 0                 |
+| dependencyEdgeCount                    | 276               |
+| invalidDependencyCount                 | 0                 |
+| dependencyCycleCount                   | 0                 |
+| dependencySemanticGapCount             | 0                 |
+| acceptanceCriterionCount               | 906               |
+| suggestedAcceptanceCriterionCount      | 906               |
+| mappedAcceptanceCriterionCount         | 259               |
+| unmappedAcceptanceCriterionCount       | 647               |
+| reviewedExactTestBindingCount          | 279               |
+| authoredExactTestBindingCount          | 348               |
+| acceptanceCriteriaWithAuthoredBindings | 326               |
+| draftSpecificationCount                | 152               |
+| reviseSpecificationCount               | 0                 |
+| reviewedSpecificationCount             | 0                 |
+| approvedSpecificationCount             | 64                |
+| ownerDecisionReconciliationCount       | 11                |
+| uiTicketCount                          | 146               |
+| blockedTicketCount                     | 37                |
+| hostpendingActionCount                 | 15                |
+| holdTicketCount                        | 33                |
+| currentReleaseTicketCount              | 47                |
+| specificationCoveragePercent           | 29.62962962962963 |
+| suggestedVerificationMappingPercent    | 100               |
+| exactReviewedTraceabilityPercent       | 28.58719646799117 |
+| findingsCount                          | 649               |
+| openFindingCount                       | 410               |
+| resolvedFindingCount                   | 121               |
+| reclassifiedFindingCount               | 20                |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                       |
 | ------ | ------------------------------- | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -363,9 +363,8 @@ Structural section coverage and generated count are not implementation readiness
 | CS-90  | RELEASE_STATE_UNSPECIFIED       | OPEN                    | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
 | CS-90  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-91  | OWNER_DECISION                  | RECLASSIFIED            | technicalApproach      | OTP implementation must follow the approved Cognito/session-exchange design; no provider behavior is guessed before CS-90.                                               | Product owner                         | Approved provider/session contract and negative-path acceptance plan.                                                                   |
-| CS-91  | RELEASE_TARGET_UNDECIDED        | OPEN                    | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
-| CS-91  | RELEASE_STATE_UNSPECIFIED       | OPEN                    | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                          |
-| CS-91  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
+| CS-91  | RELEASE_TARGET_UNDECIDED        | OWNER_DECISION_REQUIRED | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
+| CS-91  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-92  | RELEASE_TARGET_UNDECIDED        | OPEN                    | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                               |
 | CS-92  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                |
 | CS-93  | OWNER_DECISION                  | RECLASSIFIED            | technicalApproach      | Frontend auth states cannot be finalized until the provider and backend session contract are approved.                                                                   | Product owner                         | Approved Cognito session contract and browser-state acceptance criteria.                                                                |

@@ -4,32 +4,32 @@
 
 This is an evidence-backed snapshot of the current local repository. It does
 not certify Phase 3.25 completion. The authoritative generator and checker
-report 216 tickets, 63 approved specifications and 153 incomplete
+report 216 tickets, 64 approved specifications and 152 incomplete
 specifications. No runtime product implementation, workflow promotion, merge,
 deployment or production change was performed.
 
-| Metric                                |               Value |
-| ------------------------------------- | ------------------: |
-| Starting approved (reported baseline) |              46/216 |
-| Final approved                        |              63/216 |
-| Newly approved in this continuation   |                  17 |
-| Phase 3.25 percentage                 | 29.166666666666668% |
-| Total acceptance criteria             |                 906 |
-| Mapped acceptance criteria            |                 255 |
-| Unmapped acceptance criteria          |                 651 |
-| Authored exact bindings               |                 348 |
-| Reviewed exact bindings               |                 272 |
-| Findings                              |                 650 |
-| Open findings                         |                 413 |
-| Dependency edges / invalid / cycles   |         276 / 0 / 0 |
-| Design exact / partial / gap / N/A    |   110 / 27 / 9 / 70 |
-| Blocked tickets / hostpending actions |             37 / 15 |
+| Metric                                |              Value |
+| ------------------------------------- | -----------------: |
+| Starting approved (reported baseline) |             46/216 |
+| Final approved                        |             64/216 |
+| Newly approved in this continuation   |                 18 |
+| Phase 3.25 percentage                 | 29.62962962962963% |
+| Total acceptance criteria             |                906 |
+| Mapped acceptance criteria            |                259 |
+| Unmapped acceptance criteria          |                647 |
+| Authored exact bindings               |                348 |
+| Reviewed exact bindings               |                279 |
+| Findings                              |                649 |
+| Open findings                         |                410 |
+| Dependency edges / invalid / cycles   |        276 / 0 / 0 |
+| Design exact / partial / gap / N/A    |  110 / 27 / 9 / 70 |
+| Blocked tickets / hostpending actions |            37 / 15 |
 
 ## 2. Final Git State
 
 - Branch: `phase-3.25/cloud-continuation`
-- Local HEAD: `a052b7810215be93754579c276b18ec80dda2383`
-- Remote HEAD: `a052b7810215be93754579c276b18ec80dda2383`
+- Local HEAD: `f971c34f405bec7007aa60ed6fd5457310d89a62` (pre-remediation checkpoint)
+- Remote HEAD: `f971c34f405bec7007aa60ed6fd5457310d89a62` (pre-remediation checkpoint)
 - Local/remote commit relation: matched at the last fetch (`0/0` ahead/behind)
 - Working tree: **DIRTY**; generated projections and the current policy/tooling
   changes are present but not committed in this reporting snapshot.
@@ -47,9 +47,9 @@ CS-25, CS-26, CS-27, CS-28, CS-29, CS-30, CS-33, CS-34, CS-35, CS-36, CS-37,
 CS-41, CS-48, CS-52, CS-53, CS-54, CS-55, CS-56, CS-57, CS-58, CS-59, CS-60,
 CS-63, CS-65, CS-66, CS-67, CS-68, CS-69, CS-70, CS-71, CS-72, CS-73, CS-74,
 CS-76, CS-77, CS-80, CS-100, CS-101, CS-102, CS-103, CS-104, CS-105, CS-106,
-CS-107, CS-89, CS-78, CS-79, CS-83, CS-85, CS-86, CS-87`.
+CS-107, CS-89, CS-78, CS-79, CS-83, CS-85, CS-86, CS-87, CS-91`.
 
-The 159 incomplete tickets are every canonical ticket in `.ai/backlog.json`
+The 152 incomplete tickets are every canonical ticket in `.ai/backlog.json`
 not in that list. Their generated specifications remain in `docs/tickets/`;
 the machine-readable status and exact gaps are authoritative in
 `.ai/ticket-catalog.json` and `.ai/ticket-specification-coverage.json`.
@@ -57,7 +57,7 @@ the machine-readable status and exact gaps are authoritative in
 ## 4. Acceptance-Criteria Traceability
 
 `npm run tickets:spec:check` passes structural validation, but exact reviewed
-traceability is not complete: 651 of 906 source criteria remain unmapped.
+traceability is not complete: 647 of 906 source criteria remain unmapped.
 Planned procedures are not execution evidence. The current CS-17 AC4 browser
 binding is intentionally limited to UI/request behavior, while the separate
 service-backed persistence binding is explicitly planned. CS-82 AC2 includes
@@ -76,7 +76,7 @@ source metadata.
 
 ## 6. Findings Audit
 
-The checker reports 413 open findings, 120 resolved and 20 reclassified. The
+The checker reports 410 open findings, 121 resolved and 20 reclassified. The
 remaining open findings include exact AC bindings and other ticket-specific
 content work; they are not all external execution gates. Therefore the phase
 cannot be declared complete.
@@ -158,7 +158,7 @@ IN_PROGRESS 0, QA 5, UAT 70, PROD 0. Status changes during Phase 3.25 remain 0.
 
 ## 17. Remaining Work
 
-The shortest path to completion is to finish the 674 unmapped AC bindings,
+The shortest path to completion is to finish the 647 unmapped AC bindings,
 resolve the 421 open findings, complete the remaining ticket-specific review
 receipts, and then rerun the full validation matrix. CS-17 still requires an
 authoritative release classification; no safe classification is inferred here.
@@ -167,8 +167,8 @@ authoritative release classification; no safe classification is inferred here.
 
 **PHASE_3_25_COMPLETE: NO**
 
-The strict gate fails because approved specifications are 55/216, 674 ACs are
-unmapped, 421 findings are open, the worktree is dirty, and final test status
+The strict gate fails because approved specifications are 64/216, 647 ACs are
+unmapped, 410 findings are open, the worktree is dirty, and final test status
 has not been captured in this report.
 
 ## 19. Phase 3.5 Readiness
