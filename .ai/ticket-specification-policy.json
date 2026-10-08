@@ -789,6 +789,7 @@
         "functionalRequirements": [
           "Consume the canonical root test:unit command and its current seven explicit test files; do not resurrect v2/ paths or freeze an obsolete test-case total. Verify the named unit-only step in verify executes on push to main, pull_request and workflow_dispatch, matching the actual trigger scope; arbitrary feature-branch pushes are not configured triggers.",
           "The frozen source wording 'on every push' is preserved as historical provenance. The approved current contract is every configured integration verification event protecting main: pull_request, push to main and explicitly authorized workflow_dispatch; arbitrary feature-branch pushes are not required.",
+          "workflow_dispatch is an authorized manual verification entry point controlled by the repository/GitHub Actions permission boundary. It may run the verification job on request, but it cannot replace automatic pull_request or push-to-main coverage, activate a product feature, authorize deployment, or establish hosted evidence until the resulting exact-SHA run completes successfully.",
           "Keep mocked HTTP/unit coverage distinct from real PostgreSQL, Redis, file-worker/browser and hosted production acceptance. A failed assertion must produce nonzero child, npm and CI-step results; no continue-on-error, condition that suppresses failures, retries or reduced assertions."
         ],
         "technicalApproach": [
@@ -3895,16 +3896,23 @@
           "Give each current route a repeatable accessibility and reflow evidence boundary while preserving server ownership, honest unavailable states and the existing release gates."
         ],
         "functionalRequirements": [
+          "The current implemented route census for this specification is exactly `/`, `/dashboard`, `/jobs`, `/applications`, `/saved`, `/resume`, `/career-resources`, `/settings` and `/preparation`; derive the list from the tracked Next.js page source and record the route-to-state manifest. Marketing, admin and other design-referenced future routes are future applicability only, inherit this contract when implemented, and do not block present-state specification approval or count as implemented routes.",
           "For every applicable current route, enumerate the rendered keyboard path, focus order, visible focus, labels, errors/status announcements, dialog Escape/focus restoration and reduced-motion behavior; use the route's real or explicit unavailable state rather than adding a route or capability.",
           "Exercise 320, 390, 768, 1024 and 1440 CSS-pixel viewports with long text and narrow tables; assert no ordinary-content horizontal overflow, deliberate table behavior and usable touch targets. Locale-aware number/date formatting must use the owning formatter and must not claim translations that are not present.",
+          "The current route-state accessibility matrix must include keyboard-only traversal, skip-navigation where a landmark shell exposes it, labelled forms, error/status announcements, dialog focus entry, Escape handling, focus restoration and reduced-motion behavior for each applicable route/state. A missing screen-reader run remains HUMAN_VALIDATION_REQUIRED, not an automated pass.",
+          "Responsive assertions must record document and intentional-scroll-container widths at every required viewport, identify any table/list container that may scroll intentionally, assert long text wrapping without layout breakage, usable controls, visible focus and reachable responsive navigation; reduced-motion must preserve operation and announcements.",
+          "Locale verification must inject an explicit supported locale/timezone into the application's existing formatter seam where one exists and compute the expected date/number/currency output through the standards-based Intl contract. If no injection seam exists, record the smallest future test seam required; do not use ambient OS locale or add a translation catalogue.",
           "Run positive, denied, malformed, expired-session, stale-revision and dependency-failure fixtures through the existing session-derived ownership/API contracts; UI visibility never grants a role or capability and no private payload is captured in evidence.",
+          "The security fixture matrix must contain a synthetic positive owner, anonymous request, expired session, cross-owner resource, malformed input, stale revision for revisioned mutations and dependency-failure case where the route uses a dependency. Each expected denial is asserted at the server/API boundary with the documented status/error and no protected read/write side effect.",
           "Keep RELEASE metadata as a fail-closed acceptance state. Activation requires the declared automated, browser, manual screen-reader and authorization evidence; this ticket does not implement product routes, auth, localization catalogues or provider integrations."
         ],
         "technicalApproach": [
-          "ARCHITECTURE_IMPACT: CROSS_MODULE / API_CONTRACT. The future checks consume canonical route components and the same-origin API client; they do not create a second frontend, client-side authorization, persistence or a parallel locale system."
+          "ARCHITECTURE_IMPACT: CROSS_MODULE / API_CONTRACT. The future checks consume canonical route components and the same-origin API client; they do not create a second frontend, client-side authorization, persistence or a parallel locale system.",
+          "The actor is an authenticated candidate or an anonymous visitor encountering a safe session-expired/unavailable state. The route census is a test/specification boundary only: it does not create routes, alter Next.js composition or change server authorization. Current route owners remain the existing page modules and Fastify contracts; future marketing/admin routes inherit this contract only after their own route/design/API specifications exist."
         ],
         "apiContract": [
-          "NOT_APPLICABLE for new endpoints. Existing routes and session-derived ownership remain authoritative; assertions must use registered contracts and stable error semantics."
+          "NOT_APPLICABLE for new endpoints. Existing routes and session-derived ownership remain authoritative; assertions must use registered contracts and stable error semantics.",
+          "The shared `GET /api/session` contract returns HTTP 200 with `{authenticated:false,registrationEnabled,cognitoEnabled}` anonymously or `{authenticated:true,csrf,email,phone,owner,aiEnabled}` for a valid local session; only the 64-character owner digest is exposed, never the raw owner/session/provider token. Applicable route fixtures must use the registered method/status/error contract and must not invent endpoints for future surfaces."
         ],
         "persistence": [
           "NOT_APPLICABLE: no schema or migration. Locale/display fixtures are synthetic and must not persist user data."
@@ -3922,13 +3930,14 @@
           "NOT_APPLICABLE to authenticated/internal cross-surface checks; private surfaces remain noindex and must not place user data in metadata."
         ],
         "securityPrivacy": [
-          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity and server policy determine access; never infer capability from rendered controls, never trust client-selected owner IDs, and keep tokens, resumes, OTPs and private payloads out of screenshots, fixtures, logs and reports."
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity and server policy determine access; never infer capability from rendered controls, never trust client-selected owner IDs, and keep tokens, resumes, OTPs and private payloads out of screenshots, fixtures, logs and reports.",
+          "Trust boundary: browser route, query/body values, rendered controls, locale/timezone inputs and test fixture data are untrusted; the authenticated server session is the principal source and the owning API/repository is the resource authority. Positive owner O1 may read/write only O1 resources; anonymous and expired sessions receive the registered unauthenticated contract; O2 cannot read or mutate O1; malformed/stale/dependency failures return their documented safe errors with no protected read/write. Rate limits, CSRF/origin checks, redaction and audit/correlation requirements remain those of each existing route."
         ],
         "observability": [
           "Record only route/state/viewport/browser/build identifiers and failure categories; redact request bodies and personal data. Evidence must preserve correlation without leaking user content."
         ],
         "visualRegression": [
-          "Use approved reference paths and exact viewport/browser manifests where a visual comparison is applicable; masks must be minimal and must not cover controls, focus, errors or substantive content."
+          "Use approved reference paths and exact viewport/browser manifests where a visual comparison is applicable; masks must be minimal and must not cover controls, focus, errors or substantive content. The current visual/accessibility matrix contains only `/`, `/dashboard`, `/jobs`, `/applications`, `/saved`, `/resume`, `/career-resources`, `/settings` and `/preparation`; marketing/admin/future design references are listed separately as DESIGN_NOT_CURRENT/PLANNED_DESIGN_ONLY and are not represented as implemented surfaces or current pass criteria."
         ],
         "manualExternalGates": [
           "Manual NVDA/VoiceOver observation, UX acceptance of responsive/locale states and exact-SHA browser/axe evidence remain future gates; no hosted or live result is claimed in Phase 3.25."
@@ -4553,6 +4562,17 @@
     "evidenceRecord": "docs/PHASE-3-25-INDEPENDENT-REVIEW.md"
   },
   "findingDispositions": {
+    "CS-1": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "The independent review approved all three CS-1 authored binding groups with configured-event semantics, exact assertions, planned verification paths and content-bound receipts.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-1",
+          "docs/OWNER-DECISIONS-2026-10-08.md#CS-1",
+          "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+        ]
+      }
+    },
     "CS-46": {
       "OWNER_DECISION": {
         "disposition": "RESOLVED",
@@ -6482,11 +6502,11 @@
     "CS-107-AC1": [
       {
         "type": "AUTOMATED_ACCESSIBILITY",
-        "preconditions": "The reviewed build renders each applicable current route with synthetic, redacted state fixtures and session-derived ownership; no real user data is used.",
-        "setup": "Run axe and keyboard traversal at 320/390/768/1024/1440 CSS pixels for labels, headings, focus, dialogs, errors/status and reduced-motion states.",
-        "procedure": "Traverse every rendered interactive control with keyboard only; open/close each applicable dialog with Escape, verify focus restoration, trigger validation/error/status states and inspect live-region announcements. Assert controls remain usable without color-only meaning.",
-        "assertion": "Applicable route states meet the named WCAG 2.2 AA semantics and keyboard/focus/announcement contract; no hidden route or capability is inferred from a passing fixture.",
-        "expectedResult": "Automated axe and keyboard assertions pass for the reviewed state matrix.",
+        "preconditions": "The reviewed build renders exactly these current implemented routes with synthetic, redacted state fixtures and session-derived ownership: `/`, `/dashboard`, `/jobs`, `/applications`, `/saved`, `/resume`, `/career-resources`, `/settings` and `/preparation`; no real user data is used. Marketing, admin and other design-only/future screens are excluded from current execution.",
+        "setup": "Create one named route/state row for each of `/`, `/dashboard`, `/jobs`, `/applications`, `/saved`, `/resume`, `/career-resources`, `/settings` and `/preparation`; include the applicable loading, empty, error, form, dialog and authenticated/expired-session states for that route. Run axe and keyboard traversal at 320/390/768/1024/1440 CSS pixels for labels, headings, skip navigation where present, focus, dialogs, errors/status and reduced-motion states. Maintain a separate designOnlyRows manifest for absent/planned design screens and mark those rows PLANNED_DESIGN_ONLY/NOT_RUN.",
+        "procedure": "For each current route and each applicable empty/loading/error/dialog/form state, traverse every rendered interactive control with keyboard only; verify the accessible name, logical order and visible focus, open/close each dialog with focus entry, Escape and restoration, trigger validation/error/status states and inspect the named live-region announcement. Assert ordinary content has no unintended horizontal overflow, controls remain usable under reduced motion and no future marketing/admin route is treated as implemented. Run axe WCAG 2.2 AA checks where supported and record unavailable engines as NOT_RUN.",
+        "assertion": "Every current route/state in the census has the specified WCAG 2.2 AA semantics, keyboard/focus/announcement/reduced-motion behavior and responsive boundary; no hidden or future route/capability is inferred from a passing fixture.",
+        "expectedResult": "Automated axe, keyboard and responsive assertions produce one named result per current route/state/viewport; missing manual screen-reader evidence remains HUMAN_VALIDATION_REQUIRED rather than PASS.",
         "testName": "current route states pass cross-surface accessibility contract",
         "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-accessibility.spec.ts::current route states pass cross-surface accessibility contract",
         "fixtures": "Synthetic route manifests, labelled controls, dialog/error/status fixtures and redacted session state.",
@@ -6495,7 +6515,7 @@
         "reviewer": "Accessibility QA reviewer",
         "releaseGate": "CROSS_SURFACE_ACCESSIBILITY",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT"
+        "reviewStatus": "REVIEWED"
       },
       {
         "type": "MANUAL_ACCESSIBILITY",
@@ -6519,10 +6539,10 @@
       {
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Applicable routes expose approved responsive states and the owning locale formatter; no translation catalogue is assumed.",
-        "setup": "Exercise long synthetic text, narrow tables, reduced-motion preference and fixed supported locale/timezone fixtures for the source-required dates, times, numbers and currency values at 320/390/768/1024/1440 CSS pixels in Chromium, Firefox and WebKit.",
-        "procedure": "Measure document and scroll containers, assert no ordinary-content horizontal overflow, deliberate table reflow/overflow, usable touch targets and stable long-text wrapping/reduced-motion behavior. Compare rendered date/time/number/currency strings to an independently authored expected-output oracle for each supported locale/timezone; absent translations remain explicitly unsupported.",
-        "assertion": "Responsive and locale-aware formatting behavior is deterministic at all required viewports without claiming unsupported translations.",
-        "expectedResult": "All supported engines and viewports satisfy reflow, overflow and formatter assertions.",
+        "setup": "Exercise the nine current routes with long synthetic text, narrow tables, reduced-motion preference and fixed supported locale/timezone fixtures for dates, times, numbers and currency values at 320/390/768/1024/1440 CSS pixels in Chromium, Firefox and WebKit. Future marketing/admin routes are excluded from the present census.",
+        "procedure": "Measure document and named intentional scroll containers, assert no ordinary-content horizontal overflow, deliberate table reflow/overflow, usable touch targets, visible focus and stable long-text wrapping/reduced-motion behavior. Inject an explicit locale/timezone into the owning formatter seam where supported and compare rendered date/time/number/currency strings to an independently authored Intl expected-output oracle; absent translations remain explicitly unsupported and ambient OS locale is never used.",
+        "assertion": "Responsive and locale-aware formatting behavior is deterministic at all required viewports and current routes without claiming unsupported translations or relying on ambient machine locale.",
+        "expectedResult": "All supported engines and viewports satisfy reflow, overflow, focus, reduced-motion and formatter assertions; any missing seam or engine is recorded as a named future gate, not passed implicitly.",
         "testName": "cross-surface responsive and locale formatting matrix",
         "testFileOrProcedureId": "PLANNED:apps/web/tests/cross-surface-responsive.spec.ts::cross-surface responsive and locale formatting matrix",
         "fixtures": "Long redacted labels, synthetic table rows, reduced-motion preference, fixed locale/timezone fixtures and independently authored expected strings for supported date/time/number/currency cases.",
@@ -6531,14 +6551,14 @@
         "reviewer": "Frontend QA reviewer",
         "releaseGate": "CROSS_SURFACE_RESPONSIVE_LOCALE",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT"
+        "reviewStatus": "REVIEWED"
       }
     ],
     "CS-107-AC3": [
       {
         "type": "AUTOMATED_SECURITY",
-        "preconditions": "Synthetic owner, foreign-owner, unauthenticated, malformed, expired-session, stale-revision and dependency-failure fixtures map to existing route/API contracts.",
-        "setup": "Run each fixture through the same-origin client and registered server contract; capture only status/error/correlation metadata.",
+        "preconditions": "Synthetic owner, foreign-owner, unauthenticated, malformed, expired-session, stale-revision and dependency-failure fixtures map to existing route/API contracts for exactly `/`, `/dashboard`, `/jobs`, `/applications`, `/saved`, `/resume`, `/career-resources`, `/settings` and `/preparation`; marketing/admin/future design screens are not current execution targets.",
+        "setup": "For each of the nine current routes, run each applicable fixture through the same-origin client and registered server contract; capture only status/error/correlation metadata. Keep an explicit designOnlyRows manifest for absent/planned screens and assert that those rows make no request and cannot produce a success state.",
         "procedure": "Assert an allowed owner action succeeds, a foreign-owner or unauthenticated action returns the canonical safe denial, malformed input has no persistence side effect, expired sessions return the existing unauthenticated contract, stale revisions return conflict semantics and dependency failures return the registered safe error. Assert UI visibility never grants access.",
         "assertion": "Server contract paths preserve ownership and stable status/error semantics without promising browser recovery behavior.",
         "expectedResult": "No cross-owner data or unauthorized capability is exposed and no test fixture mutates production state.",
@@ -6550,7 +6570,7 @@
         "reviewer": "Security and API QA reviewer",
         "releaseGate": "CROSS_SURFACE_AUTHORIZATION",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT"
+        "reviewStatus": "REVIEWED"
       },
       {
         "type": "AUTOMATED_BROWSER",
@@ -9916,7 +9936,7 @@
         "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
         "releaseGate": "CI_UNIT_EXECUTION",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT"
+        "reviewStatus": "REVIEWED"
       }
     ],
     "CS-1-AC2": [
@@ -15448,19 +15468,19 @@
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "6b38a9cdc2da86214ee5e43e97e4e5daa28b15eea48039b0f680e4aa9d995a4f"
+      "contentHash": "89d60b05fedd0fb15b41947b5f902ae629523bbfe471f33d5b0aa1da3ccede11"
     },
     "CS-107-AC2": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "c17c35f6d8c6f9234c871b3a3e36f00cae10fb4d221ed5aa18f08aafb6168044"
+      "contentHash": "dc9858e071835e1a5b847d7a6a4ba4b0106284884a8a39fa7b1247c9650d5abd"
     },
     "CS-107-AC3": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "a8825bd4a1af96aca468c5cf93f91bd5c7d934edc4d3921f5c2618953f749d56"
+      "contentHash": "ad12fe38ff317cb3c54fcaae0077e2daf70ae1a54b83706e4fbb1991cde116ea"
     },
     "CS-107-AC4": {
       "verdict": "APPROVED",
@@ -15704,6 +15724,18 @@
     }
   },
   "specificationReviewReceipts": {
+    "CS-1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5573cdb39f59aa5a03c5a92215b9203cda542083720dab0b1b74bebad2924a4c"
+    },
+    "CS-107": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b10748fc9008c3186a508dd7076cd316baa9aefefb4b609379235206e82a4255"
+    },
     "CS-108": {
       "verdict": "APPROVED",
       "reviewer": "/root/cs78_review",

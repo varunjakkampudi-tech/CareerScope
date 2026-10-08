@@ -1,6 +1,6 @@
 # CS-1 — CI proves what deployment ships (v2-unit layer)
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
+Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
 
 ## 1. identity
 
@@ -180,6 +180,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     },
     {
       "requirement": "The frozen source wording 'on every push' is preserved as historical provenance. The approved current contract is every configured integration verification event protecting main: pull_request, push to main and explicitly authorized workflow_dispatch; arbitrary feature-branch pushes are not required.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
+      "requirement": "workflow_dispatch is an authorized manual verification entry point controlled by the repository/GitHub Actions permission boundary. It may run the verification job on request, but it cannot replace automatic pull_request or push-to-main coverage, activate a product feature, authorize deployment, or establish hosted evidence until the resulting exact-SHA run completes successfully.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
@@ -409,7 +414,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
           "reviewer": "Infrastructure and QA; Release Manager for hosted workflow evidence",
           "releaseGate": "CI_UNIT_EXECUTION",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT"
+          "reviewStatus": "REVIEWED"
         }
       ]
     },
@@ -738,4 +743,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 
 | Code                  | Disposition | Original reason                                                                                                          | Owner | Evidence                                                                                                 |
 | --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
-| EXACT_AC_TEST_BINDING | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

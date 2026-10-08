@@ -6,8 +6,8 @@ Structural section coverage and generated count are not implementation readiness
 | -------------------------------------- | ----------------- |
 | ticketCount                            | 216               |
 | specificationCount                     | 216               |
-| completeSpecificationCount             | 74                |
-| incompleteSpecificationCount           | 142               |
+| completeSpecificationCount             | 76                |
+| incompleteSpecificationCount           | 140               |
 | epicMappedCount                        | 216               |
 | orphanTicketCount                      | 0                 |
 | duplicateIdCount                       | 0                 |
@@ -17,32 +17,32 @@ Structural section coverage and generated count are not implementation readiness
 | dependencySemanticGapCount             | 0                 |
 | acceptanceCriterionCount               | 906               |
 | suggestedAcceptanceCriterionCount      | 906               |
-| mappedAcceptanceCriterionCount         | 264               |
-| unmappedAcceptanceCriterionCount       | 642               |
-| reviewedExactTestBindingCount          | 286               |
+| mappedAcceptanceCriterionCount         | 268               |
+| unmappedAcceptanceCriterionCount       | 638               |
+| reviewedExactTestBindingCount          | 290               |
 | authoredExactTestBindingCount          | 356               |
 | acceptanceCriteriaWithAuthoredBindings | 333               |
-| draftSpecificationCount                | 142               |
+| draftSpecificationCount                | 140               |
 | reviseSpecificationCount               | 0                 |
 | reviewedSpecificationCount             | 0                 |
-| approvedSpecificationCount             | 74                |
+| approvedSpecificationCount             | 76                |
 | ownerDecisionReconciliationCount       | 11                |
 | uiTicketCount                          | 146               |
 | blockedTicketCount                     | 37                |
 | hostpendingActionCount                 | 15                |
 | holdTicketCount                        | 33                |
 | currentReleaseTicketCount              | 47                |
-| specificationCoveragePercent           | 34.25925925925926 |
+| specificationCoveragePercent           | 35.18518518518518 |
 | suggestedVerificationMappingPercent    | 100               |
-| exactReviewedTraceabilityPercent       | 29.13907284768212 |
+| exactReviewedTraceabilityPercent       | 29.58057395143488 |
 | findingsCount                          | 645               |
-| openFindingCount                       | 390               |
-| resolvedFindingCount                   | 125               |
+| openFindingCount                       | 389               |
+| resolvedFindingCount                   | 126               |
 | reclassifiedFindingCount               | 20                |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                                                                               |
 | ------ | ------------------------------- | ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CS-1   | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
+| CS-1   | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-2   | MISSING_EXACT_DESIGN            | OPEN                    | design                 | No exact approved screen reference is mapped; a README or generic board does not verify this surface.                                                                    | UX / Product owner                    | Exact design asset, route/role/state/viewport mapping and approval.                                                                                                                             |
 | CS-2   | RELEASE_STATE_UNSPECIFIED       | OPEN                    | delivery               | Source ticket has no release/HOLD activation classification.                                                                                                             | Product owner / release reviewer      | Approved activation classification; historical package versions are not release authorization.                                                                                                  |
 | CS-2   | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |

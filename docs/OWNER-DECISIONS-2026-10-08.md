@@ -4,7 +4,7 @@ This append-only record captures the owner directives supplied for the Phase 3.2
 
 ## CS-1 — canonical CI trigger scope
 
-Decision: interpret the historical “every push” wording as every configured integration-verification event that protects the integration branch: `pull_request`, `push` to `main`, and explicitly authorized `workflow_dispatch`. Arbitrary standalone feature-branch pushes are not required solely to satisfy the historical wording.
+Decision: interpret the historical “every push” wording as every configured integration-verification event that protects the integration branch: `pull_request`, `push` to `main`, and explicitly authorized `workflow_dispatch`. `workflow_dispatch` is an authorized manual verification entry point subject to the repository/GitHub Actions permission boundary; it is not a substitute for either automatic event, activation, deployment authorization, or evidence that arbitrary feature-branch pushes are required. Arbitrary standalone feature-branch pushes are not required solely to satisfy the historical wording.
 
 Classification: `ACTIVE_R1` / implementation-now infrastructure contract; no feature flag or user activation. Historical source wording remains preserved as provenance. Hosted exact-SHA and mutation evidence remain future implementation/release evidence.
 

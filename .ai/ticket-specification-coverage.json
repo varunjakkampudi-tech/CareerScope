@@ -9,18 +9,18 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "fd32f1655dd45cff43aeeffbed6833eae715fff476273fc1df67f2cc15ee35c3",
+    ".ai/ticket-specification-policy.json": "88c3b7b702900f1416d2499c13a63e6919a80098f9d4882261d72579b6130dd8",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "1b3a6ef9981d802cc9ee720b9fda96caac9609de2fc6f8ee7639acfd4be94539",
-    "docs/OWNER-DECISIONS-2026-10-08.md": "361a5427c752bb1c281ddcdea2ea3f9380246b041fff66f68202bf3a9ab4903e"
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "23394a10d88ac95cc3c61b882a147674c904be478370cadbb3cc6797f4298195",
+    "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "counts": {
     "ticketCount": 216,
     "specificationCount": 216,
-    "completeSpecificationCount": 74,
-    "incompleteSpecificationCount": 142,
+    "completeSpecificationCount": 76,
+    "incompleteSpecificationCount": 140,
     "epicMappedCount": 216,
     "orphanTicketCount": 0,
     "duplicateIdCount": 0,
@@ -30,15 +30,15 @@
     "dependencySemanticGapCount": 0,
     "acceptanceCriterionCount": 906,
     "suggestedAcceptanceCriterionCount": 906,
-    "mappedAcceptanceCriterionCount": 264,
-    "unmappedAcceptanceCriterionCount": 642,
-    "reviewedExactTestBindingCount": 286,
+    "mappedAcceptanceCriterionCount": 268,
+    "unmappedAcceptanceCriterionCount": 638,
+    "reviewedExactTestBindingCount": 290,
     "authoredExactTestBindingCount": 356,
     "acceptanceCriteriaWithAuthoredBindings": 333,
-    "draftSpecificationCount": 142,
+    "draftSpecificationCount": 140,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
-    "approvedSpecificationCount": 74,
+    "approvedSpecificationCount": 76,
     "ownerDecisionReconciliationCount": 11,
     "uiTicketCount": 146,
     "designCounts": {
@@ -63,12 +63,12 @@
     "currentReleaseTicketCount": 47,
     "workflow": { "BACKLOG": 141, "TODO": 0, "IN_PROGRESS": 0, "QA": 5, "UAT": 70, "PROD": 0 },
     "sourceBacklogHash": "ca68f42d84b850254a82d71df3416eb9d56f750d7467712a870d0b37bf954552",
-    "specificationCoveragePercent": 34.25925925925926,
+    "specificationCoveragePercent": 35.18518518518518,
     "suggestedVerificationMappingPercent": 100,
-    "exactReviewedTraceabilityPercent": 29.13907284768212,
+    "exactReviewedTraceabilityPercent": 29.58057395143488,
     "findingsCount": 645,
-    "openFindingCount": 390,
-    "resolvedFindingCount": 125,
+    "openFindingCount": 389,
+    "resolvedFindingCount": 126,
     "reclassifiedFindingCount": 20
   },
   "findings": [
@@ -79,7 +79,13 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The independent review approved all three CS-1 authored binding groups with configured-event semantics, exact assertions, planned verification paths and content-bound receipts.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-1",
+        "docs/OWNER-DECISIONS-2026-10-08.md#CS-1",
+        "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
+      ]
     },
     {
       "ticketId": "CS-2",

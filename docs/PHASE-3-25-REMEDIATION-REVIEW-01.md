@@ -779,17 +779,17 @@ CS-14 and CS-100 through CS-107 after the shared accessibility applicability
 correction. These are content approvals only; planned, hosted and manual gates
 remain future evidence and no runtime behavior was changed.
 
-| Ticket | Current whole-spec digest                                          |
-| ------ | ------------------------------------------------------------------ |
-| CS-14  | `3f259f459431658d34a78eddc115ee23c45e759f2f5c293eb31576daf830b6fb` |
-| CS-100 | `48573fabf8fd1bf1eee549ba3523507cacddc9a088d6d7f3474b31aba24c787e` |
-| CS-101 | `0ceffca2cfd26e29176d5d020a2f2444564346b572deab62c1f2b388bccb0420` |
-| CS-102 | `b4db8d621a02b4d3524f742b9b2b2751e8008c72fa1b1d814b3b3b7702d7a5bc` |
-| CS-103 | `6ab559054c2c362a3eaa087eab1d89b032f1d161a9978660c1cbedc6173d1449` |
-| CS-104 | `43c1e0d70eec62b0cc734a687e2c92b38f9b0a05cee810a1b4531c0affdc0e72` |
-| CS-105 | `a4f7bd3b9dcc0adb3e84d6ac6252b55e379077de06802bea15856950f910e566` |
-| CS-106 | `6feab8b8b3a8fe5c60aaca8c2073e1b4f7db8c15b3e661788a9cd3d448e4bd20` |
-| CS-107 | `d9e3e82f201ceea51307528c73a7f87ee4cf00c5122c131ae136f36011cb3dce` |
+| Ticket | Current whole-spec digest                                                                                                             |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| CS-14  | `3f259f459431658d34a78eddc115ee23c45e759f2f5c293eb31576daf830b6fb`                                                                    |
+| CS-100 | `48573fabf8fd1bf1eee549ba3523507cacddc9a088d6d7f3474b31aba24c787e`                                                                    |
+| CS-101 | `0ceffca2cfd26e29176d5d020a2f2444564346b572deab62c1f2b388bccb0420`                                                                    |
+| CS-102 | `b4db8d621a02b4d3524f742b9b2b2751e8008c72fa1b1d814b3b3b7702d7a5bc`                                                                    |
+| CS-103 | `6ab559054c2c362a3eaa087eab1d89b032f1d161a9978660c1cbedc6173d1449`                                                                    |
+| CS-104 | `43c1e0d70eec62b0cc734a687e2c92b38f9b0a05cee810a1b4531c0affdc0e72`                                                                    |
+| CS-105 | `a4f7bd3b9dcc0adb3e84d6ac6252b55e379077de06802bea15856950f910e566`                                                                    |
+| CS-106 | `6feab8b8b3a8fe5c60aaca8c2073e1b4f7db8c15b3e661788a9cd3d448e4bd20`                                                                    |
+| CS-107 | `d9e3e82f201ceea51307528c73a7f87ee4cf00c5122c131ae136f36011cb3dce` (historical receipt; superseded by the final closure digest below) |
 
 The reviewer subsequently approved CS-15, CS-16, CS-18, CS-19, CS-36, CS-37
 and CS-93 after the remaining runner, exclusion-contract and stale-assertion
@@ -876,3 +876,27 @@ Final binding digests: AC1
 `f36bbeab09d5429b0b8538fd5453eb695dd51c1318a24f349181d65248fb8b8c`.
 The hashes above supersede the earlier CS-108 draft-review hashes recorded in
 this file.
+
+## CS-1 / CS-107 owner-decision closure — 2026-10-08
+
+`/root/phase325_review` independently re-reviewed the owner-decision
+propagation and approved the authored CS-1 and CS-107 specifications. CS-1
+now treats “every push” as the configured main-protection events (`pull_request`,
+push to `main`, and explicitly authorized `workflow_dispatch`); manual dispatch
+is verification-only and cannot activate or deploy. CS-107 now has the exact
+nine-route census, future design-only exclusion, accessibility and responsive
+matrix, explicit Intl locale/timezone oracle, server-owned security fixture
+matrix, and the shared session contract. All implementation/browser/hosted and
+manual screen-reader evidence remains planned; no runtime or release evidence
+is claimed.
+
+| Ticket | Whole-spec digest                                                  | Binding-group digests                                                                                                                                                                                                                                                                          |
+| ------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CS-1   | `5573cdb39f59aa5a03c5a92215b9203cda542083720dab0b1b74bebad2924a4c` | AC1 `43cbdea42e4be8791e4dd1a92f2844d65c35d2c97295e2f305dd3f1a08caedbc`; AC2 `e159ff1508ee98caaebea78f28e5b9d6242468f0bee0e480868dfeed72fb336b`; AC3 `9cde7ce4fd423807ad84de1ca0a551704c7d7e4400612b4b326d804cda5e4cba`                                                                         |
+| CS-107 | `b10748fc9008c3186a508dd7076cd316baa9aefefb4b609379235206e82a4255` | AC1 `89d60b05fedd0fb15b41947b5f902ae629523bbfe471f33d5b0aa1da3ccede11`; AC2 `dc9858e071835e1a5b847d7a6a4ba4b0106284884a8a39fa7b1247c9650d5abd`; AC3 `ad12fe38ff317cb3c54fcaae0077e2daf70ae1a54b83706e4fbb1991cde116ea`; AC4 `b36a8304ec5522c18b1a04b36e47364ef1216339fc1ec663ab24d8aa534d9dac` |
+
+The earlier net approval delta is reconciled explicitly: the prior wave added
+CS-5 and CS-108 (+2), while a stale CS-107 whole-spec receipt was removed when
+its specification content changed (-1). The resulting net increase was +1;
+this closure adds the newly content-bound CS-1 and CS-107 approvals without
+restoring the invalid receipt.
