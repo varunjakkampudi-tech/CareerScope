@@ -6,8 +6,8 @@ Structural section coverage and generated count are not implementation readiness
 | -------------------------------------- | ------------------ |
 | ticketCount                            | 216                |
 | specificationCount                     | 216                |
-| completeSpecificationCount             | 81                 |
-| incompleteSpecificationCount           | 135                |
+| completeSpecificationCount             | 82                 |
+| incompleteSpecificationCount           | 134                |
 | epicMappedCount                        | 216                |
 | orphanTicketCount                      | 0                  |
 | duplicateIdCount                       | 0                  |
@@ -17,27 +17,27 @@ Structural section coverage and generated count are not implementation readiness
 | dependencySemanticGapCount             | 0                  |
 | acceptanceCriterionCount               | 906                |
 | suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 275                |
-| unmappedAcceptanceCriterionCount       | 631                |
-| reviewedExactTestBindingCount          | 297                |
+| mappedAcceptanceCriterionCount         | 279                |
+| unmappedAcceptanceCriterionCount       | 627                |
+| reviewedExactTestBindingCount          | 301                |
 | authoredExactTestBindingCount          | 356                |
 | acceptanceCriteriaWithAuthoredBindings | 333                |
-| draftSpecificationCount                | 135                |
+| draftSpecificationCount                | 134                |
 | reviseSpecificationCount               | 0                  |
 | reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 81                 |
+| approvedSpecificationCount             | 82                 |
 | ownerDecisionReconciliationCount       | 11                 |
 | uiTicketCount                          | 147                |
 | blockedTicketCount                     | 37                 |
 | hostpendingActionCount                 | 15                 |
 | holdTicketCount                        | 33                 |
 | currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 37.5               |
+| specificationCoveragePercent           | 37.96296296296296  |
 | suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 30.353200883002206 |
+| exactReviewedTraceabilityPercent       | 30.794701986754966 |
 | findingsCount                          | 646                |
-| openFindingCount                       | 378                |
-| resolvedFindingCount                   | 128                |
+| openFindingCount                       | 376                |
+| resolvedFindingCount                   | 130                |
 | reclassifiedFindingCount               | 23                 |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                                                                               |
@@ -371,8 +371,8 @@ Structural section coverage and generated count are not implementation readiness
 | CS-93  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-94  | RELEASE_TARGET_UNDECIDED        | OWNER_DECISION_REQUIRED | delivery               | Source registry has no approved release assignment.                                                                                                                      | Product owner                         | Explicit release assignment or owner-approved future-release disposition.                                                                                                                       |
 | CS-94  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
-| CS-95  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
-| CS-95  | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
+| CS-95  | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
+| CS-95  | SURFACE_SPEC_REFINEMENT         | RESOLVED                | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
 | CS-96  | PARTIAL_DESIGN                  | OPEN                    | design                 | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.                                                            | UX                                    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.                                                                                                      |
 | CS-96  | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-96  | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
