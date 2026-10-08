@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "d9a20376e49429393d24bb4b29eae31fbe321119e2452e17d372dbc2357a09e1",
+    ".ai/ticket-specification-policy.json": "1b8f0f334af5f93a5d2d49b79d83f11438f9df0fb285672bd09b48eeec35a74b",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "6f13988fa85b30f26f4161dedb1243dd1945620318b8e8af5f471357298e2faf",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "0c0e1ee5755b8bcf7a97743c43ab887ece22a217c62807d7eef8883537beafd7",
     "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -3955,7 +3955,7 @@
       "verification": [
         {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "the procedure captures the actual screenshot, reads the committed expected baseline for chromium-search-light-320, and returns the comparator result; a deliberate above-threshold non-antialiased mismatch produces a nonzero comparison and diff artifact, while a passing comparison does not claim a diff artifact",
+          "expectedCheck": "scripts/check-pages-ui.mjs reads the committed chromium-search-light-320 PNG baseline, requires matching dimensions and passes only when pixelmatch reports zero perceptually different pixels using its per-pixel sensitivity setting of 0.1.",
           "candidateCommand": null,
           "evidenceRequired": "Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "automationStatus": "PLANNED",
@@ -3977,12 +3977,12 @@
           "action": "Run npm run pages:visual and inspect the named CS-32-AC1 pixel/diff output.",
           "repositoryCommand": "npm run pages:visual",
           "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
-          "assertion": "the procedure captures the actual screenshot, reads the committed expected baseline for chromium-search-light-320, and returns the comparator result; a deliberate above-threshold non-antialiased mismatch produces a nonzero comparison and diff artifact, while a passing comparison does not claim a diff artifact",
-          "expectedResult": "the comparator result records the exact command, commit SHA, viewport, threshold and baseline identity; the unchanged fixture passes and the deliberate above-threshold control fails without changing the baseline",
+          "assertion": "scripts/check-pages-ui.mjs reads the committed chromium-search-light-320 PNG baseline, requires matching dimensions and passes only when pixelmatch reports zero perceptually different pixels using its per-pixel sensitivity setting of 0.1.",
+          "expectedResult": "The comparator completes with its observed pass/fail result and mismatch summary for the named fixture; command, candidate SHA, viewport, baseline identity and reviewer approval are captured separately in the future evidence worksheet rather than attributed to the comparator.",
           "testName": "CS-32-AC1 exact verification",
           "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
           "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-          "negativeCase": "Apply a deliberate non-antialiased, unmasked fixture change whose measured mismatch is above the configured pixelmatch threshold, then assert scripts/check-pages-ui.mjs returns a nonzero mismatch and writes the diff artifact without updating the baseline.",
+          "negativeCase": "Apply a deliberately chosen non-antialiased pixel color change whose delta exceeds pixelmatch sensitivity 0.1 outside dynamic regions to the pinned chromium-search-light-320 fixture; assert scripts/check-pages-ui.mjs reports a nonzero perceptually different pixel count, writes the diff artifact and leaves the committed baseline unchanged.",
           "evidenceArtifact": "Future CS-32-AC1 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-32-AC1-RELEASE-GATE"
         }
@@ -3995,12 +3995,21 @@
       "verification": [
         {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "a mismatch is rejected according to the comparator's configured threshold and committed baseline, and a named review artifact identifies the responsible source-level layout/rendering cause with the before/after assertion result; any intentional baseline change is separately reviewed and approved with before/after diff evidence rather than silently accepted",
+          "expectedCheck": "scripts/check-pages-ui.mjs compares the rendered PNG with the committed chromium-search-light-320 baseline; dimensions must match and pixelmatch must report zero perceptually different pixels using its per-pixel sensitivity setting of 0.1. Source-cause analysis and visual approval are separate manual evidence.",
           "candidateCommand": null,
           "evidenceRequired": "Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "automationStatus": "PLANNED",
           "owner": "QA / ticket owner",
           "releaseGate": "CS-32-AC2-RELEASE-GATE"
+        },
+        {
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The reviewer records the exact reference, candidate SHA, viewport, comparator mismatch, source-level cause and approval/rejection decision; a baseline cannot be accepted solely because the expected image was replaced.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted visual-review worksheet with exact SHA, viewport, mismatch summary, source cause, reviewer decision and baseline disposition; no execution claimed in Phase 3.25.",
+          "automationStatus": "MANUAL_REQUIRED",
+          "owner": "Visual reviewer",
+          "releaseGate": "CS-32-AC2-VISUAL-REVIEW"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
@@ -4017,14 +4026,32 @@
           "action": "Run npm run pages:visual and inspect the named CS-32-AC2 pixel/diff output.",
           "repositoryCommand": "npm run pages:visual",
           "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
-          "assertion": "a mismatch is rejected according to the comparator's configured threshold and committed baseline, and a named review artifact identifies the responsible source-level layout/rendering cause with the before/after assertion result; any intentional baseline change is separately reviewed and approved with before/after diff evidence rather than silently accepted",
-          "expectedResult": "the runner reports pass or mismatch using its actual comparator behavior, while baseline identity, viewport, SHA, causal source diff, unchanged assertion identity and independent visual approval are recorded; changing only the expected image without documented cause, before/after diff and independent approval cannot pass",
+          "assertion": "scripts/check-pages-ui.mjs compares the rendered PNG with the committed chromium-search-light-320 baseline; dimensions must match and pixelmatch must report zero perceptually different pixels using its per-pixel sensitivity setting of 0.1. Source-cause analysis and visual approval are separate manual evidence.",
+          "expectedResult": "The comparator returns its observed pass/fail result and mismatch outcome for the named fixture; actual/expected paths, viewport, command, candidate SHA and baseline identity are captured separately in the future evidence worksheet, not claimed as comparator output.",
           "testName": "CS-32-AC2 exact verification",
           "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
           "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-          "negativeCase": "Use a stale/mismatched baseline or unsupported comparator metadata and assert a named comparator error; do not use owner/replay/API cases.",
+          "negativeCase": "Remove the committed chromium-search-light-320 PNG baseline, replace it with a dimension-mismatched image, or apply a deliberately chosen non-antialiased pixel color change whose delta exceeds pixelmatch sensitivity 0.1 outside dynamic regions; assert scripts/check-pages-ui.mjs returns its actual missing-baseline/dimension/nonzero-mismatch failure and does not update expected images.",
           "evidenceArtifact": "Future CS-32-AC2 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
           "releaseGate": "CS-32-AC2-RELEASE-GATE"
+        },
+        {
+          "preconditions": "A planned Pages visual comparison has produced a synthetic expected/actual/diff result for chromium-search-light-320; no production or destructive host action.",
+          "setup": "A visual reviewer inspects the comparator output, the exact source revision and any proposed baseline change using the approved design/publication reference. Record the cause of any mismatch and the before/after diff without changing the baseline during review.",
+          "action": "Review the named comparator result and source-level rendering change; approve a baseline update only when the visual cause is understood and the change is explicitly accepted.",
+          "procedure": "MANUAL:CS-32-AC2-VISUAL-CAUSE-AND-BASELINE-REVIEW",
+          "assertion": "The reviewer records the exact reference, candidate SHA, viewport, comparator mismatch, source-level cause and approval/rejection decision; a baseline cannot be accepted solely because the expected image was replaced.",
+          "expectedResult": "Visual cause and baseline approval are either recorded as PASS with redacted evidence or remain NOT_RUN/REJECTED; the automated comparator result is not misrepresented as human approval.",
+          "type": "MANUAL_PRODUCT",
+          "testStatus": "MANUAL_REQUIRED",
+          "reviewStatus": "REVIEWED",
+          "testName": "CS-32-AC2 manual visual cause and baseline approval",
+          "testFileOrProcedureId": "MANUAL:CS-32-AC2-VISUAL-CAUSE-AND-BASELINE-REVIEW",
+          "fixtures": "Pinned chromium-search-light-320 expected/actual/diff artifacts, approved publication reference and redacted source diff.",
+          "negativeCase": "A missing baseline, unexplained mismatch, unsupported source change or request to replace the expected image without review remains NOT_RUN/REJECTED and cannot be accepted as visual evidence.",
+          "evidenceArtifact": "Future redacted visual-review worksheet with exact SHA, viewport, mismatch summary, source cause, reviewer decision and baseline disposition; no execution claimed in Phase 3.25.",
+          "reviewer": "Visual reviewer",
+          "releaseGate": "CS-32-AC2-VISUAL-REVIEW"
         }
       ]
     },
@@ -4056,11 +4083,11 @@
           "fixtureOrData": "Synthetic public workspace job fixtures, browser state and comparator metadata registered by the named scripts.",
           "action": "Run npm run pages:visual, then npm run pages:workspace:test, recording each named procedure, engine result and publication-boundary outcome.",
           "repositoryCommand": "npm run pages:visual && npm run pages:workspace:test",
-          "procedure": "scripts/check-pages-ui.mjs::pages-visual-and-workspace-interaction::CS-32-AC3",
+          "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC3; scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
           "assertion": "Pages visual comparison and workspace interaction checks both rerun against the same final candidate revision, with Chromium, Firefox and WebKit required and each engine result separately recorded; an unavailable engine is a nonzero/not-accepted result, and no axe or manual WCAG evidence is claimed.",
           "expectedResult": "Both named procedures complete for all three required engines with unchanged publication boundaries; any engine-launch failure remains a blocking NOT_RUN/unavailable result and cannot be converted into pass evidence.",
           "testName": "CS-32-AC3 exact verification",
-          "testFileOrProcedureId": "scripts/check-pages-ui.mjs::pages-visual-and-workspace-interaction::CS-32-AC3",
+          "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC3; scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
           "fixtures": "Synthetic public workspace job fixtures, browser state and comparator metadata registered by scripts/check-public-workspace.mjs and scripts/check-pages-ui.mjs.",
           "negativeCase": "If either registered procedure, workspace fixture or browser engine is unavailable, record NOT_RUN with the runner error; do not classify missing API ownership or replay handling as a visual failure.",
           "evidenceArtifact": "Future CS-32-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",

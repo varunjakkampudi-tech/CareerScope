@@ -370,9 +370,14 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     );
     for (const row of rows) {
       const amendments = refinement?.bindingAmendments?.[row.acId] ?? {};
-      row.exactBindings = (policy.exactVerificationBindings?.[row.acId] ?? []).map(
-        (binding, index) => ({ ...binding, ...(amendments[String(index)] ?? {}) }),
-      );
+     row.exactBindings = (policy.exactVerificationBindings?.[row.acId] ?? []).map(
+       (binding, index) => ({ ...binding, ...(amendments[String(index)] ?? {}) }),
+     );
+      const corrections = refinement?.bindingCorrections?.[row.acId] ?? {};
+      row.exactBindings = row.exactBindings.map((binding, index) => ({
+        ...binding,
+        ...(corrections[String(index)] ?? {}),
+      }));
       const additions = refinement?.bindingAdditions?.[row.acId] ?? [];
       if (Array.isArray(additions) && additions.length)
         row.exactBindings.push(...additions);
@@ -1159,19 +1164,24 @@ export function validateCatalog(model, inputs, resolvePath) {
       errors.push(`empty exact binding ${acId}`);
       continue;
     }
+    const ticketId = acId.split("-AC")[0];
+    const corrections = inputs.policy.ticketRefinements?.[ticketId]?.bindingCorrections?.[acId] ?? {};
+    const reviewedBindings = Object.keys(corrections).length
+      ? bindings.map((binding, index) => ({ ...binding, ...(corrections[String(index)] ?? {}) }))
+      : bindings;
     const names = new Set();
     const receipt = inputs.policy.verificationReviewReceipts?.[acId];
     if (
-      bindings.some((binding) => binding.reviewStatus === 'REVIEWED') &&
+      reviewedBindings.some((binding) => binding.reviewStatus === 'REVIEWED') &&
       (receipt?.verdict !== 'APPROVED' ||
         !WHOLE_SPEC_REVIEWERS.has(receipt.reviewer) ||
         receipt.artifact !== 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' ||
         !resolvePath(receipt.artifact ?? '') ||
-        receipt.contentHash !== bindingDigest(bindings) ||
+        receipt.contentHash !== bindingDigest(reviewedBindings) ||
         !inputs.verificationReviewText?.includes(receipt.contentHash))
     )
       errors.push(`unproven content-bound verification review ${acId}`);
-    for (const binding of bindings) {
+    for (const binding of reviewedBindings) {
       for (const field of [
         'preconditions',
         'setup',

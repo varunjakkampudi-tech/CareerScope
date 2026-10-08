@@ -203,9 +203,9 @@
         "packages/core/src/leads.ts",
         "packages/core/src/database.test.ts",
         "apps/web/src/components/saved-leads.tsx",
-        "docs/ARCHITECTURE.md",
-        "docs/TESTING.md"
-      ],
+       "docs/ARCHITECTURE.md",
+       "docs/TESTING.md"
+     ],
       "additionalRequirements": {
         "technicalApproach": [
           "ARCHITECTURE_IMPACT: preserve the existing Fastify API, owner-scoped LeadRepository and SaveJob component boundaries; the lookup is read-only and deduplication remains in the domain/data layer.",
@@ -2290,6 +2290,55 @@
         "docs/ARCHITECTURE.md",
         "docs/TESTING.md"
       ],
+      "bindingCorrections": {
+      "CS-32-AC1": {
+        "0": {
+          "reviewStatus": "REVIEWED",
+          "assertion": "scripts/check-pages-ui.mjs reads the committed chromium-search-light-320 PNG baseline, requires matching dimensions and passes only when pixelmatch reports zero perceptually different pixels using its per-pixel sensitivity setting of 0.1.",
+          "expectedResult": "The comparator completes with its observed pass/fail result and mismatch summary for the named fixture; command, candidate SHA, viewport, baseline identity and reviewer approval are captured separately in the future evidence worksheet rather than attributed to the comparator.",
+          "negativeCase": "Apply a deliberately chosen non-antialiased pixel color change whose delta exceeds pixelmatch sensitivity 0.1 outside dynamic regions to the pinned chromium-search-light-320 fixture; assert scripts/check-pages-ui.mjs reports a nonzero perceptually different pixel count, writes the diff artifact and leaves the committed baseline unchanged."
+          }
+        },
+      "CS-32-AC2": {
+        "0": {
+          "reviewStatus": "REVIEWED",
+            "assertion": "scripts/check-pages-ui.mjs compares the rendered PNG with the committed chromium-search-light-320 baseline; dimensions must match and pixelmatch must report zero perceptually different pixels using its per-pixel sensitivity setting of 0.1. Source-cause analysis and visual approval are separate manual evidence.",
+          "expectedResult": "The comparator returns its observed pass/fail result and mismatch outcome for the named fixture; actual/expected paths, viewport, command, candidate SHA and baseline identity are captured separately in the future evidence worksheet, not claimed as comparator output.",
+          "negativeCase": "Remove the committed chromium-search-light-320 PNG baseline, replace it with a dimension-mismatched image, or apply a deliberately chosen non-antialiased pixel color change whose delta exceeds pixelmatch sensitivity 0.1 outside dynamic regions; assert scripts/check-pages-ui.mjs returns its actual missing-baseline/dimension/nonzero-mismatch failure and does not update expected images."
+          }
+        },
+      "CS-32-AC3": {
+         "0": {
+            "reviewStatus": "REVIEWED",
+           "action": "Run npm run pages:visual, then npm run pages:workspace:test, recording each named procedure, engine result and publication-boundary outcome.",
+            "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC3; scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
+            "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC3; scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
+            "negativeCase": "If either registered procedure, workspace fixture or browser engine is unavailable, record NOT_RUN with the runner error; do not classify missing API ownership or replay handling as a visual failure."
+          }
+        }
+      },
+      "bindingAdditions": {
+        "CS-32-AC2": [
+          {
+            "preconditions": "A planned Pages visual comparison has produced a synthetic expected/actual/diff result for chromium-search-light-320; no production or destructive host action.",
+            "setup": "A visual reviewer inspects the comparator output, the exact source revision and any proposed baseline change using the approved design/publication reference. Record the cause of any mismatch and the before/after diff without changing the baseline during review.",
+            "action": "Review the named comparator result and source-level rendering change; approve a baseline update only when the visual cause is understood and the change is explicitly accepted.",
+        "procedure": "MANUAL:CS-32-AC2-VISUAL-CAUSE-AND-BASELINE-REVIEW",
+            "assertion": "The reviewer records the exact reference, candidate SHA, viewport, comparator mismatch, source-level cause and approval/rejection decision; a baseline cannot be accepted solely because the expected image was replaced.",
+            "expectedResult": "Visual cause and baseline approval are either recorded as PASS with redacted evidence or remain NOT_RUN/REJECTED; the automated comparator result is not misrepresented as human approval.",
+            "type": "MANUAL_PRODUCT",
+            "testStatus": "MANUAL_REQUIRED",
+            "reviewStatus": "REVIEWED",
+            "testName": "CS-32-AC2 manual visual cause and baseline approval",
+            "testFileOrProcedureId": "MANUAL:CS-32-AC2-VISUAL-CAUSE-AND-BASELINE-REVIEW",
+            "fixtures": "Pinned chromium-search-light-320 expected/actual/diff artifacts, approved publication reference and redacted source diff.",
+            "negativeCase": "A missing baseline, unexplained mismatch, unsupported source change or request to replace the expected image without review remains NOT_RUN/REJECTED and cannot be accepted as visual evidence.",
+            "evidenceArtifact": "Future redacted visual-review worksheet with exact SHA, viewport, mismatch summary, source cause, reviewer decision and baseline disposition; no execution claimed in Phase 3.25.",
+            "reviewer": "Visual reviewer",
+            "releaseGate": "CS-32-AC2-VISUAL-REVIEW"
+          }
+        ]
+      },
       "additionalRequirements": {
         "functionalRequirements": [
           "Reproduce chromium-search-light-320 with the current Pages visual comparator scripts/check-pages-ui.mjs (npm run pages:visual), recording expected, actual and diff images from the pinned fixture; scripts/check-ui.ts is not the snapshot/pixelmatch owner. The negative control must alter a fixture pixel and fail the comparator.",
@@ -14633,24 +14682,6 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "15daf4eb80204afef11bf2335ae5948a74a5193286c90b1468fbb2aadc763b15"
     },
-    "CS-32-AC1": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "207539ac0d83f6a1f407187877184a153f94827cd82c4e1f4919ed66f60970ed"
-    },
-    "CS-32-AC2": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "78a85f4dc9e889ab9b2b753596b125dd3c6cc3447f4b55a907cb95b507d60fd2"
-    },
-    "CS-32-AC3": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "d8e7702365bf4f7e63402c9fa3bc7ef8d2250f0225e47b6db98aa1eeabe4ba11"
-    },
     "CS-13-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -14681,23 +14712,41 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "77d2c801173b197ef8f4360a0f615de49d8da9fa329e7e24e45e88efd1d7d32e"
     },
-    "CS-31-AC1": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+   "CS-31-AC1": {
+     "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "f659c0a6dd79a901068b037682dc10e43af31ac2a4c50e2c9a7ad36648f8f568"
     },
-    "CS-31-AC2": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+   "CS-31-AC2": {
+     "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "83bb02d83cd9446e5c3742b95ef6257e7819b76b9d12305b6e5da1112b97ef05"
     },
-    "CS-31-AC3": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+   "CS-31-AC3": {
+     "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a624d0a7d14be9e2c494c87abb5268873ec28771456b8f5d6bba717a02308a04"
+    },
+    "CS-32-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "cffa1c2f5730fa5f9990e8520b2d47935d51e71d9a8dd766c6c6ce698df98fa7"
+    },
+    "CS-32-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "369e7bdf252fbfbd403bf20c488bfb1a22a2e1f5e8130bcb60938288afa3a344"
+    },
+    "CS-32-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "2c4b1f4950d9aed76a0b5120888bff78ed6a0faa8415e016c9b2d2066293a9b8"
     },
     "CS-113-AC1": {
       "verdict": "APPROVED",
@@ -16468,7 +16517,19 @@
     "CS-99-AC3": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"8648a94edcdd80a92a53e68c52f4ed9db31ee203f33baf5354aefc929d8bb606"},
     "CS-99-AC4": {"verdict":"APPROVED","reviewer":"/root/cs78_review","artifact":"docs/PHASE-3-25-REMEDIATION-REVIEW-01.md","contentHash":"ac9ed0aa14d1c54b5e2f7711ebe491346a6ccb7eb6cc9bcd5be784864aaa20c7"}
   },
-  "specificationReviewReceipts": {
+ "specificationReviewReceipts": {
+    "CS-31": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a4e2562c8a77d36cb67987e78a2c6280961aaa11bdb9e9bdfe1d8f46791dd281"
+    },
+    "CS-32": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/cs78_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4e14e17b0a25fea4677a1f3b0c0ca483884d9677df48018e6fd191e6eb10c3a6"
+    },
     "CS-118": {
       "verdict": "APPROVED",
       "reviewer": "/root/cs78_review",

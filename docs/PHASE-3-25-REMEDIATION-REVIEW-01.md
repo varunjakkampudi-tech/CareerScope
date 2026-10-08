@@ -1193,6 +1193,26 @@ screen-reader or deployment execution is claimed.
 Reviewer: `/root/cs78_review`. Approval scope: current bytes and all listed
 binding content; no ticket promotion and no execution evidence.
 
+### CS-31 current whole-ticket review (2026-10-09)
+
+`/root/cs78_review` independently reviewed the current CS-31 bytes after the
+test-only design disposition was classified as DESIGN_NOT_APPLICABLE. The
+review passed all three exact planned bindings, confirms the registered
+`npm run test:ui` / `scripts/check-ui.ts` procedure, and preserves the
+release target/state as explicit EXTERNAL_GATE metadata. No browser execution,
+hosted evidence or ticket promotion is claimed.
+
+| Item | Current content/digest |
+| --- | --- |
+| Generated specification | `5F7D3C1BD2AEB69F70CDC797612437563C1DD9D8780F8F8378052805769644BD` |
+| Whole specification | `a4e2562c8a77d36cb67987e78a2c6280961aaa11bdb9e9bdfe1d8f46791dd281` |
+| CS-31 AC1 | `6f40c25744daafaf60719b668ba5e4e349bcf21fe4e9be0dfa177b0fc8458e2e` |
+| CS-31 AC2 | `b10be69ab04c2cc9de85227665231782c0f0a47ed044c273e377cc9b6cd7878e` |
+| CS-31 AC3 | `35adeda95980c0530369bc114a76df4b78b191dfa03041a84c702d6ebc7b3d94` |
+
+Reviewer: `/root/cs78_review`. Approval scope is authored specification
+content and planned verification bindings only.
+
 ### CS-41 and CS-48 fresh whole-ticket review (2026-10-09)
 
 `/root/cs78_review` independently re-reviewed the current generated content
@@ -1235,3 +1255,24 @@ fresh exact-binding review is completed.
 
 `REMOVED_OR_INVALIDATED_MAPPING_COUNT: 3`. This is not a generator defect and
 the mappings were not recreated merely to restore the previous number.
+
+### CS-32 fresh whole-ticket review (2026-10-09)
+
+`/root/cs78_review` independently reviewed the current CS-32 bytes after the
+pixelmatch comparator corrections. The review passed the three source
+criteria, including the comparator-observable assertions, non-antialiased
+pixel negative controls above sensitivity `0.1`, the separate manual visual
+cause/baseline gate, and the two named Pages procedures for AC3. Planned and
+manual procedures remain future evidence; no Pages execution, visual approval,
+hosted evidence or ticket promotion is claimed.
+
+| Item | Current content/digest |
+| --- | --- |
+| Generated specification | `3E0CFC6002881364D2C2ED913CA148E59BDEC0EA828E2B1A79002CF968DFD281` |
+| Whole specification | `4e14e17b0a25fea4677a1f3b0c0ca483884d9677df48018e6fd191e6eb10c3a6` |
+| CS-32 AC1 | `cffa1c2f5730fa5f9990e8520b2d47935d51e71d9a8dd766c6c6ce698df98fa7` |
+| CS-32 AC2 (automated + manual) | `369e7bdf252fbfbd403bf20c488bfb1a22a2e1f5e8130bcb60938288afa3a344` |
+| CS-32 AC3 | `2c4b1f4950d9aed76a0b5120888bff78ed6a0faa8415e016c9b2d2066293a9b8` |
+
+Reviewer: `/root/cs78_review`. Approval scope is current authored
+specification content and exact planned/manual bindings only.
