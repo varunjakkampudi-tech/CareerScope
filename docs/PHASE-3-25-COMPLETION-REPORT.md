@@ -28,11 +28,10 @@ deployment or production change was performed.
 ## 2. Final Git State
 
 - Branch: `phase-3.25/cloud-continuation`
-- Local HEAD: `f971c34f405bec7007aa60ed6fd5457310d89a62` (pre-remediation checkpoint)
-- Remote HEAD: `f971c34f405bec7007aa60ed6fd5457310d89a62` (pre-remediation checkpoint)
+- Local HEAD: `b557373` (`phase 3.25: approve CS-91 Cognito specification`)
+- Remote HEAD: `b557373` (matched after push)
 - Local/remote commit relation: matched at the last fetch (`0/0` ahead/behind)
-- Working tree: **DIRTY**; generated projections and the current policy/tooling
-  changes are present but not committed in this reporting snapshot.
+- Working tree: **CLEAN** at the recorded checkpoint.
 - Force push: NO
 - Merge to main: NO
 - Deployment: NO
