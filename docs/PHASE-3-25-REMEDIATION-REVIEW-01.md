@@ -1106,3 +1106,25 @@ whole-ticket readiness is claimed.
 | CS-13 AC2 | `8458021052a51243260c7ca0b52238a5e2d6752a3f67112e3f6f6074b6db6114` |
 | CS-13 AC3 | `f847bbafe8096c6a0c6b15a965051acdb67bc4763cf66a6cec81482c4c3e2f6f` |
 | CS-13 AC4 | `26f1fcfe50daa1429f1d84141c40bcf2849a08b7d81d8652b79d6df285821d99` |
+
+### CS-32 binding review (2026-10-08)
+
+Independent review approved all three CS-32 authored bindings as planned
+procedures. AC1 now requires a deliberate non-antialiased, unmasked change
+above the comparator threshold; AC2 requires causal source/diff evidence and
+independent approval for any intentional baseline change; AC3 binds both Pages
+visual comparison and workspace interaction to the same candidate revision,
+requires all three engines, and treats unavailable engines as a blocking
+unavailable/NOT_RUN result rather than pass evidence. No visual or hosted
+execution evidence is claimed.
+
+| Binding | Digest |
+| --- | --- |
+| CS-32 AC1 | `fc8629fcf20c90a631f39f1c34e082e41f24038f5bfc29941eef94cf83f1076e` |
+| CS-32 AC2 | `172053f6d3e5e45568f89a07b0d5abad225b2e0a7e39e4f5a77b77d70cea2ab4` |
+| CS-32 AC3 | `2358b1e55f91a8a85271f1552cb9e67818d632061b6b3b3c6faf50f864c2e11a` |
+
+Validator source-binding receipt hashes for the amended groups are: CS-32 AC1
+`207539ac0d83f6a1f407187877184a153f94827cd82c4e1f4919ed66f60970ed`, AC2
+`78a85f4dc9e889ab9b2b753596b125dd3c6cc3447f4b55a907cb95b507d60fd2`, and AC3
+`d8e7702365bf4f7e63402c9fa3bc7ef8d2250f0225e47b6db98aa1eeabe4ba11`.

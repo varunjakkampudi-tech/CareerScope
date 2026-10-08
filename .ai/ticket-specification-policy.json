@@ -2302,7 +2302,7 @@
         ]
       }
       ,"globalSectionOverrides":{"apiContract":"NOT_APPLICABLE","apiContractReason":"Pages visual and workspace interaction checks do not add or change an application HTTP route.","securityPrivacy":"NOT_APPLICABLE","securityPrivacyReason":"The ticket verifies public static visual and interaction behavior with synthetic fixtures; candidate ownership, CSRF and admin authorization are outside its scope."},
-      "bindingAmendments":{"CS-32-AC1":{"0":{"setup":"Use the pinned chromium-search-light-320 publication fixture and comparator-owned expected baseline; store only synthetic expected/actual/diff artifacts.","negativeCase":"Change one fixture pixel and assert scripts/check-pages-ui.mjs fails the comparator without updating the baseline."}},"CS-32-AC2":{"0":{"setup":"Use the same pinned comparator fixture and record baseline identity, renderer, viewport and threshold metadata.","negativeCase":"Use a stale/mismatched baseline or unsupported comparator metadata and assert a named comparator error; do not use owner/replay/API cases."}},"CS-32-AC3":{"0":{"setup":"Use the actual synthetic jobs and browser state created by scripts/check-public-workspace.mjs, invoked through npm run pages:workspace:test; do not provide image fixtures for this interaction check.","negativeCase":"If the registered workspace fixture or browser engine is unavailable, record NOT_RUN with the runner error; do not classify missing API ownership or replay handling as a visual failure."}}}
+      "bindingAmendments":{"CS-32-AC1":{"0":{"setup":"Use the pinned chromium-search-light-320 publication fixture and comparator-owned expected baseline; store only synthetic expected/actual/diff artifacts.","negativeCase":"Apply a deliberate non-antialiased, unmasked fixture change whose measured mismatch is above the configured pixelmatch threshold, then assert scripts/check-pages-ui.mjs returns a nonzero mismatch and writes the diff artifact without updating the baseline."}},"CS-32-AC2":{"0":{"setup":"Use the same pinned comparator fixture and record baseline identity, renderer, viewport and threshold metadata.","negativeCase":"Use a stale/mismatched baseline or unsupported comparator metadata and assert a named comparator error; do not use owner/replay/API cases."}},"CS-32-AC3":{"0":{"setup":"Run the actual synthetic Pages visual procedure and the workspace interaction procedure against the same final candidate revision. Use scripts/check-public-workspace.mjs only for workspace interactions and keep image fixtures out of this binding.","action":"Run npm run pages:visual, then npm run pages:workspace:test, recording each named procedure, engine result and publication-boundary outcome.","procedure":"scripts/check-pages-ui.mjs::pages-visual-and-workspace-interaction::CS-32-AC3","negativeCase":"If either registered procedure, workspace fixture or browser engine is unavailable, record NOT_RUN with the runner error; do not classify missing API ownership or replay handling as a visual failure."}}}
     },
     "CS-33": {
       "reviewStatus": "DRAFT",
@@ -13563,7 +13563,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
         "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC1 procedure.",
@@ -13571,8 +13571,8 @@
         "action": "Run npm run pages:visual and inspect the named CS-32-AC1 pixel/diff output.",
         "repositoryCommand": "npm run pages:visual",
         "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
-        "assertion": "the procedure captures the actual screenshot, reads the committed expected baseline for chromium-search-light-320, and returns the comparator result; a diff artifact is produced only when the comparison mismatches",
-        "expectedResult": "the comparator result is recorded with the exact command, commit SHA and viewport metadata by the surrounding evidence procedure; do not claim that the runner itself emits a diff on passing comparisons",
+        "assertion": "the procedure captures the actual screenshot, reads the committed expected baseline for chromium-search-light-320, and returns the comparator result; a deliberate above-threshold non-antialiased mismatch produces a nonzero comparison and diff artifact, while a passing comparison does not claim a diff artifact",
+        "expectedResult": "the comparator result records the exact command, commit SHA, viewport, threshold and baseline identity; the unchanged fixture passes and the deliberate above-threshold control fails without changing the baseline",
         "testName": "CS-32-AC1 exact verification",
         "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC1",
         "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
@@ -13585,7 +13585,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "VISUAL_REGRESSION",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
         "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC2 procedure.",
@@ -13593,8 +13593,8 @@
         "action": "Run npm run pages:visual and inspect the named CS-32-AC2 pixel/diff output.",
         "repositoryCommand": "npm run pages:visual",
         "procedure": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
-        "assertion": "a mismatch is rejected according to the comparator's configured threshold and the committed baseline; any baseline change requires separate visual-review evidence and is not silently accepted by the runner",
-        "expectedResult": "the runner reports pass or mismatch using its actual comparator behavior, while baseline identity, viewport and SHA are recorded by the surrounding evidence procedure",
+        "assertion": "a mismatch is rejected according to the comparator's configured threshold and committed baseline, and a named review artifact identifies the responsible source-level layout/rendering cause with the before/after assertion result; any intentional baseline change is separately reviewed and approved with before/after diff evidence rather than silently accepted",
+        "expectedResult": "the runner reports pass or mismatch using its actual comparator behavior, while baseline identity, viewport, SHA, causal source diff, unchanged assertion identity and independent visual approval are recorded; changing only the expected image without documented cause, before/after diff and independent approval cannot pass",
         "testName": "CS-32-AC2 exact verification",
         "testFileOrProcedureId": "scripts/check-pages-ui.mjs::chromium-search-light-320::CS-32-AC2",
         "fixtures": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
@@ -13607,20 +13607,20 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_BROWSER",
         "preconditions": "Canonical checkout and isolated synthetic fixtures for CS-32; no production or destructive host action.",
-        "setup": "Prepare expected/actual/diff images and renderer metadata for chromium-search-light-320 and execute only the CS-32-AC3 procedure.",
-        "fixtureOrData": "expected/actual/diff images and renderer metadata for chromium-search-light-320",
-        "action": "Run npm run pages:workspace:test and inspect the registered workspace interaction output; keep manual WCAG review separate.",
-        "repositoryCommand": "npm run pages:workspace:test",
-        "procedure": "scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
-        "assertion": "workspace interaction checks rerun with unchanged publication boundaries and each supported engine result separately recorded; this procedure does not claim axe or manual WCAG evidence.",
-        "expectedResult": "Both named procedures complete or explicitly report NOT_RUN for an unavailable engine; no snapshot allowlist or publication boundary changes.",
+        "setup": "Use synthetic public workspace jobs and browser state registered by scripts/check-public-workspace.mjs; run both Pages visual comparison and workspace interaction against the same final candidate revision, without image fixtures in the interaction portion.",
+        "fixtureOrData": "Synthetic public workspace job fixtures, browser state and comparator metadata registered by the named scripts.",
+        "action": "Run npm run pages:visual, then npm run pages:workspace:test; inspect each procedure's publication-boundary and supported-engine output, keeping manual WCAG review separate.",
+        "repositoryCommand": "npm run pages:visual && npm run pages:workspace:test",
+        "procedure": "scripts/check-pages-ui.mjs::pages-visual-and-workspace-interaction::CS-32-AC3",
+        "assertion": "Pages visual comparison and workspace interaction checks both rerun against the same final candidate revision, with Chromium, Firefox and WebKit required and each engine result separately recorded; an unavailable engine is a nonzero/not-accepted result, and no axe or manual WCAG evidence is claimed.",
+        "expectedResult": "Both named procedures complete for all three required engines with unchanged publication boundaries; any engine-launch failure remains a blocking NOT_RUN/unavailable result and cannot be converted into pass evidence.",
         "testName": "CS-32-AC3 exact verification",
-        "testFileOrProcedureId": "scripts/check-public-workspace.mjs::workspace-interaction::CS-32-AC3",
-        "fixtures": "Synthetic public workspace job fixtures and browser state registered by scripts/check-public-workspace.mjs.",
-        "negativeCase": "If the registered workspace fixture or browser engine is unavailable, record NOT_RUN with the runner error; do not classify missing API ownership or replay handling as a visual failure.",
+        "testFileOrProcedureId": "scripts/check-pages-ui.mjs::pages-visual-and-workspace-interaction::CS-32-AC3",
+        "fixtures": "Synthetic public workspace job fixtures, browser state and comparator metadata registered by scripts/check-public-workspace.mjs and scripts/check-pages-ui.mjs.",
+        "negativeCase": "If the registered workspace fixture or any required browser engine is unavailable, the command must fail or produce an explicit unavailable/NOT_RUN gate with the runner error; never classify missing engine execution as a pass or substitute missing API ownership/replay handling as a visual failure.",
         "evidenceArtifact": "Future CS-32-AC3 evidence: exact command, commit SHA, fixture IDs, raw assertion output and reviewer receipt; planned procedure is not execution.",
         "releaseGate": "CS-32-AC3-RELEASE-GATE"
       }
@@ -14500,6 +14500,24 @@
     }
   },
   "verificationReviewReceipts": {
+    "CS-32-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "207539ac0d83f6a1f407187877184a153f94827cd82c4e1f4919ed66f60970ed"
+    },
+    "CS-32-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "78a85f4dc9e889ab9b2b753596b125dd3c6cc3447f4b55a907cb95b507d60fd2"
+    },
+    "CS-32-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "/root/phase325_review",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d8e7702365bf4f7e63402c9fa3bc7ef8d2250f0225e47b6db98aa1eeabe4ba11"
+    },
     "CS-13-AC1": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
