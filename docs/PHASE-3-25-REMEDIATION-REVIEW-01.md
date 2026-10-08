@@ -1048,3 +1048,13 @@ Binding digests: CS-113 AC1 `89a26e56bf369da05713110917d01e19156e1dc0ba56002a94b
 AC2 `4ff023e139dd2ec37d0e3e095355a9b3c2eb7bad3ce2e7852172e5836ac5374d`,
 AC3 `5e579b439fd7222288b0b9630c65b5ee48d56939ef4f786136ba6db4d27b71d2`,
 AC4 `41d4d743c534f68cca06a571548faa70c0ae57e4f6f4b9a347a1f5bdb0517e7c`.
+### CS-118 closure-wave review (2026-10-08)
+
+Independent read-only review returned `REVISE`. The four exact bindings are
+complete and source-bound, but whole-ticket approval is intentionally withheld:
+the mapped Account Security image is a cropped illustrative panel and does not
+establish the password-form, mobile viewport, pending/error states or visual
+tolerance; the UI binding must remain separate from service-backed revocation
+and wrong-password checks; and empty/stale-revision states are not part of the
+existing account endpoint contract. These are recorded as a UX owner gate and
+explicit NOT_APPLICABLE contract boundaries. No whole-spec receipt was created.
