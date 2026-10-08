@@ -715,3 +715,22 @@ Independent reviewer `/root/phase325_review` approved the current CS-92 specific
 - CS-92-AC4 binding digest: `a08b626c36bb198c5263b1960a2e34682abae57ba9a2be5d2d239a0e6a80b908`
 
 Sender/copy approval, AWS/DNS configuration and disposable delivery/negative acceptance remain owner/external gates; no provider evidence is claimed.
+
+## CS-93 — Cognito frontend authentication states authored-content approval
+
+The CS-93 specification was reviewed against the approved email-first Cognito
+decision and the current server callback/session contract. The review keeps
+provider-hosted OTP/resend outside the CareerScope-owned API, requires the
+opaque server session before workspace access, and treats the missing
+provider-outage presentation as a non-blocking design gap limited to that
+future state. No provider or browser execution evidence is claimed.
+
+- Whole specification digest: `cc6f15a7437d258bc775ea1954dbb0f624dc4274dc346062ba151f6b464a4ae8`
+- CS-93-AC1 binding digest: `9273ec54dd71c9678c27a36a9a4040de4beac46abfac0abb23ad91c540e2e519`
+- CS-93-AC2 binding digest: `1be29ef8a82f71439c300b3bc8bb9dda52e8058b30002e8eb2293b1c720e2f29`
+- CS-93-AC3 binding digest: `5c993021688e26ba4f440f0e57eaaacd669879657b9bd00a1b54f302e10cb4fe`
+- CS-93-AC4 binding digest: `72908703053095589d4ebb322454ff3cc2aa666e0dfd6c4e38c157723362c9fa`
+
+Owner release/HOLD assignment, Cognito configuration, provider-outage design,
+manual NVDA/VoiceOver review and hosted disposable-session acceptance remain
+future gates.
