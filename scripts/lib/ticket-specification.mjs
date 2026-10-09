@@ -660,12 +660,13 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       technicalApproach: present(
         [
           ticket.architectureImpact ||
-            ((ticket.id === 'CS-78' || ticket.id === 'CS-79') &&
+            ((ticket.id === 'CS-78' || ticket.id === 'CS-79' || ticket.id === 'CS-72' || ticket.id === 'CS-76') &&
             policy.findingDispositions?.[ticket.id]?.MISSING_ARCHITECTURE_ASSESSMENT
               ?.disposition === 'RESOLVED'
-              ? ticket.id === 'CS-78'
+              ? ticket.id === 'CS-78' || ticket.id === 'CS-79'
                 ? 'The source registry has no architecture-impact field; the ticket-specific architecture assessment is documented in the reviewed supplemental specification requirements below.'
-                : 'The source registry has no architecture-impact field; the ticket-specific architecture assessment is documented in the CS-79 supplemental requirements below.'
+                : refinement?.additionalRequirements?.technicalApproach?.[0] ||
+                  'The ticket-specific architecture assessment is documented in the reviewed supplemental specification requirements below.'
               : 'UNRESOLVED: source architecture assessment is absent; see recorded specification gap.'),
           ...profile.approach,
         ],
@@ -740,12 +741,13 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
               [
                 refinement?.securityPrivacyBase ||
                   ticket.securityImpact ||
-                  ((ticket.id === 'CS-78' || ticket.id === 'CS-79') &&
+                  ((ticket.id === 'CS-78' || ticket.id === 'CS-79' || ticket.id === 'CS-72' || ticket.id === 'CS-76') &&
                   policy.findingDispositions?.[ticket.id]?.MISSING_SECURITY_ASSESSMENT
                     ?.disposition === 'RESOLVED'
-                    ? ticket.id === 'CS-78'
+                    ? ticket.id === 'CS-78' || ticket.id === 'CS-79'
                       ? 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the reviewed supplemental specification requirements below.'
-                      : 'The source registry has no security-impact field; the ticket-specific security/privacy assessment is documented in the CS-79 supplemental requirements below.'
+                      : refinement?.additionalRequirements?.securityPrivacy?.[0] ||
+                        'The ticket-specific security/privacy assessment is documented in the reviewed supplemental specification requirements below.'
                     : 'UNRESOLVED: source security/privacy assessment is absent; see recorded specification gap.'),
                 ...(refinement?.globalSectionOverrides?.securityPrivacy === 'TICKET_SCOPED'
                   ? []

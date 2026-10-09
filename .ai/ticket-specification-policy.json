@@ -18061,31 +18061,51 @@
     },
     "CS-72-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "0c7104f607a5fb4739ed9a8155ba43a207a4170b041dc3dd937ceaff7295db57"
     },
     "CS-72-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "1c9765d33ffc4f290b6eb6b350fc4429b88e5c6656d6030759b90a3d37b2ab30"
     },
     "CS-72-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "919fd825651e102cf0d184e4a16ccf7344d084e5edebca3423e67b99f3610ff4"
     },
     "CS-72-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "9e21e27f2225e0b78d72790f92c26ac90ab061819980d5f2e8ad4ac0776aae69"
     },
     "CS-72-AC5": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "50e29286b2989d79a99bb716bae04601d0c096180b3e75d88157e71bac980a57"
     },
@@ -18127,31 +18147,51 @@
     },
     "CS-76-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "df7321bafaf68c7b0df3d198f7ac6d02b0788e00e0c98a5d1f855a2351d9331a"
     },
     "CS-76-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "9758059c9116f8cbd4d0a43a96b20d44a1ad99248729545286c8acc68408aaca"
     },
     "CS-76-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "b1c2219c1dbc22c3c98360117c6b8de120db7561fb4608a33fa390fa3061b04a"
     },
     "CS-76-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "13255e1b05c6adc594bffeed7bc856a81b799e3500535c20ffee0cded58828f4"
     },
     "CS-76-AC5": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "1837921b8c17af2a20c84914cbe50a2468df54f0969a4a3b79eace9f4ba3da5f"
     },
@@ -19417,49 +19457,81 @@
     },
     "CS-78-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "f3ed0deb3b95854378531408bcf0a25379c30216b2c858d0a712422fc1da95f0"
     },
     "CS-78-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "43b3508b01b375e5b88f9602e4856526862434c0e86aeade57a315955c077cb0"
     },
     "CS-78-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "e3a9b14833b48febc491d10db2860fc7bd34988aad33da93f4c34e12914ca70f"
     },
     "CS-78-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "3ed2681667016ea26eb532ae5ff1ca9d0f0438a7ee1308b2752348a2bc3b87ba"
     },
     "CS-78-AC5": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "b123e68ddaf236973e94b6603e5d90816ceab43e96e9ca691ba81f1b5b1845ae"
     },
     "CS-79-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "715bc5df1deff76ddf5af2b43ce5ff8a20e46003d7afc31b744d1ca9847ccb97"
     },
     "CS-79-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "9b78d001d720e92974b3e7ee23a76de63bd5a2f5f4961b533f37041ca5d58533"
     },
     "CS-79-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "c3e2e38b4b5322b2ff442b548a34db977f48d2dde40fecc087a41b2d76bc19fa"
     },
@@ -20637,18 +20709,6 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "d22f6bbfa84c09392dc8c7bf4d5765cc6ac1ad5733910aa8eeaff3bcb67c80c0"
     },
-    "CS-78": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "034dff30a8ff904d5bd7344c4858094cc852570c93a4d3cd7352f1f27dc5a9a6"
-    },
-    "CS-79": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "fd2d988117eb87c3003597e4cb89c2844ac4f008b0a203386eb80d833db25f77"
-    },
     "CS-83": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -20985,12 +21045,6 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "468b814a0b4b18c85939577985cfac6dcb93ea9d819b864268fdebc0ac50ed5f"
     },
-    "CS-72": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "156aa2c79f2534293c3abba7ae5fa43df245744fbe9ab576a90773539dbe4a70"
-    },
     "CS-73": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -21002,12 +21056,6 @@
       "reviewer": "/root/phase325_review",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "51f9944b1c2a1f9033b96121edd6453e573da409a3b28d404aff9af8ac96a0e5"
-    },
-    "CS-76": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "abe23c8a5d145e0408e4c93663297fd7b150bdc5d8d47059d37dbe29f28c3ef5"
     },
     "CS-77": {
       "verdict": "APPROVED",
@@ -21282,6 +21330,46 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a07d21c241f0d2b736362040b73e3b05257962ee5018c8074732227377b49fb1"
+    },
+    "CS-72": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f2eebaabbd1896936969c3dc61b70211fa5b569a10d7e3d92c1612ccb4e35105"
+    },
+    "CS-76": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "29c80465253be6faf6802d145bbb074b0f7c80bf74c433bf86f7caca58640af4"
+    },
+    "CS-78": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "034dff30a8ff904d5bd7344c4858094cc852570c93a4d3cd7352f1f27dc5a9a6"
+    },
+    "CS-79": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f9faaf651698a4e49728b6746ac333be1a4ee28374e45690ade45c11ac267149"
     }
   },
   "generatedArtifactCheckpoint": {
