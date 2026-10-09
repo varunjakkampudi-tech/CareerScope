@@ -193,7 +193,7 @@ test('CS2 keeps the unreproduced 768px source defect separate from the historica
     return model.traceability.find((row) => row.acId === acId).exactBindings[0];
   });
   assert.ok(bindings.every((binding) => binding.testStatus === 'PLANNED'));
-  assert.ok(bindings.every((binding) => binding.reviewStatus === 'DRAFT'));
+  assert.ok(bindings.every((binding) => binding.reviewStatus === 'REVIEWED'));
   assert.match(bindings[0].assertion, /390px overlap result cannot satisfy/);
   assert.match(bindings[0].procedure, /PostgreSQL with migrations, Redis, LocalStack SQS/);
   assert.match(bindings[1].negativeCase, /no 768px failure can be demonstrated/);
@@ -861,10 +861,10 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.completeSpecificationCount, 109);
   assert.equal(model.counts.incompleteSpecificationCount, 107);
   assert.equal(model.counts.approvedSpecificationCount, 109);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 432);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 439);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 406);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 500);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 413);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 493);
   assert.equal(model.counts.authoredExactTestBindingCount, 444);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(

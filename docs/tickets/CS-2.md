@@ -620,7 +620,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         {
           "reviewer": "Frontend, UX and QA; Release reviewer for hosted evidence",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_BROWSER",
           "preconditions": "The owner has confirmed that the current authenticated /saved surface is the intended target and UX has approved the exact element/state and 768px expected geometry. A Linux Playwright container matching the repository lockfile can launch WebKit.",
           "setup": "Create isolated synthetic owner data with one saved lead; launch the current Next.js app and scripts/check-ui.ts browser harness; set viewport to exactly 768 by 900 CSS pixels; capture browser name/version, window.innerWidth, target selector identity, element bounding box and computed expected geometry. Do not use real account data or historical removed source files as runtime fixtures.",
@@ -657,7 +657,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         {
           "reviewer": "Frontend, QA and independent reviewer",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "AUTOMATED_BROWSER",
           "preconditions": "The target defect and approved target geometry for AC1 are established; the exact assertion is checked into scripts/check-ui.ts before any implementation change.",
           "setup": "Capture the failing pre-fix assertion from Linux WebKit at 768px and the separate 390px row-overlap control. Preserve the same fixture, selector, browser image, viewport, expected value and tolerance for before/after runs.",
@@ -694,7 +694,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
         {
           "reviewer": "QA and Release Manager",
           "testStatus": "PLANNED",
-          "reviewStatus": "DRAFT",
+          "reviewStatus": "REVIEWED",
           "type": "HOSTED_CI",
           "preconditions": "A reviewed implementation commit contains the CS-2 test and fix; its source is on the authorized branch and the normal required CI workflow runs without skip/continue-on-error/retry suppression.",
           "setup": "Record the exact commit SHA, workflow run URL, integration job named 'Test CareerScope (integration — database, queue, storage, browsers)', Playwright version and per-engine execution evidence for the CS-2 scenario.",
@@ -1051,4 +1051,4 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | MISSING_EXACT_DESIGN      | OPEN        | No exact approved screen reference is mapped; a README or generic board does not verify this surface.                    | UX / Product owner               | Exact design asset, route/role/state/viewport mapping and approval.                                      |
 | RELEASE_STATE_UNSPECIFIED | RESOLVED    | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

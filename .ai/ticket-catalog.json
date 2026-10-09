@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "01310c12098568a20b0f709efc145e3add9ac3944003e952fda14c0f83faf19f",
+    ".ai/ticket-specification-policy.json": "75680da66869e74c4a9a6278b2376928e5457b60103afdd8a44a948908c71a12",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "99342e6a7232f6408ddf039ae1ac1978fabb1a78c999c103fa55b4a04a7363d3",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "30d9881ac3693229177b4da8d5a005abbf8b500010daf16ec57df3e55da7561a",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -646,7 +646,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -1165,7 +1165,7 @@
                 {
                   "reviewer": "Frontend, UX and QA; Release reviewer for hosted evidence",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_BROWSER",
                   "preconditions": "The owner has confirmed that the current authenticated /saved surface is the intended target and UX has approved the exact element/state and 768px expected geometry. A Linux Playwright container matching the repository lockfile can launch WebKit.",
                   "setup": "Create isolated synthetic owner data with one saved lead; launch the current Next.js app and scripts/check-ui.ts browser harness; set viewport to exactly 768 by 900 CSS pixels; capture browser name/version, window.innerWidth, target selector identity, element bounding box and computed expected geometry. Do not use real account data or historical removed source files as runtime fixtures.",
@@ -1202,7 +1202,7 @@
                 {
                   "reviewer": "Frontend, QA and independent reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "AUTOMATED_BROWSER",
                   "preconditions": "The target defect and approved target geometry for AC1 are established; the exact assertion is checked into scripts/check-ui.ts before any implementation change.",
                   "setup": "Capture the failing pre-fix assertion from Linux WebKit at 768px and the separate 390px row-overlap control. Preserve the same fixture, selector, browser image, viewport, expected value and tolerance for before/after runs.",
@@ -1239,7 +1239,7 @@
                 {
                   "reviewer": "QA and Release Manager",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "HOSTED_CI",
                   "preconditions": "A reviewed implementation commit contains the CS-2 test and fix; its source is on the authorized branch and the normal required CI workflow runs without skip/continue-on-error/retry suppression.",
                   "setup": "Record the exact commit SHA, workflow run URL, integration job named 'Test CareerScope (integration — database, queue, storage, browsers)', Playwright version and per-engine execution evidence for the CS-2 scenario.",
@@ -56828,7 +56828,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -57339,7 +57339,7 @@
                 {
                   "reviewer": "Product owner, UX and Independent Reviewer",
                   "testStatus": "MANUAL_REQUIRED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "Read-only review of the versioned design repository; do not create or alter product UI, design assets, or backlog state.",
                   "setup": "Inspect `design/implementation/ADMIN-CONTROL-PLANE-SPEC.md`, both admin design README files, canonical admin boards, per-page crops, and the authoritative design-index mappings for CS-88. Use only exact repository assets and preserve their approved/locked designation.",
@@ -57380,7 +57380,7 @@
                 {
                   "reviewer": "System Designer and Security reviewer",
                   "testStatus": "MANUAL_REQUIRED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "CS-40 role provisioning/revocation and minimal endpoint contracts are approved; until then use only existing repository contracts and mark proposed admin contracts unresolved.",
                   "setup": "Create a matrix row for each admin screen and its referenced data/action; compare against CS-40, CS-6 and approved architecture. Do not invent endpoints, roles or persisted data fields.",
@@ -57421,7 +57421,7 @@
                 {
                   "reviewer": "UX, Product Architect, System Designer and Security reviewers",
                   "testStatus": "MANUAL_REQUIRED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "One immutable design and page-to-contract matrix revision exists; no implementation or release approval is implied.",
                   "setup": "Provide the same design source hash and matrix revision to all four named reviewers; collect explicit ACCEPT or REVISE for UX, Product Architect, System Designer and Security separately.",
@@ -57462,7 +57462,7 @@
                 {
                   "reviewer": "Product owner, Technical Program Manager and Independent Reviewer",
                   "testStatus": "PLANNED",
-                  "reviewStatus": "DRAFT",
+                  "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "AC1-AC3 accepted for one immutable design/contract revision and a separately authorized backlog-edit phase is active.",
                   "setup": "Use approved screen-to-contract matrix and design revision; do not create child tickets during Phase 3.25 or alter workflow status here.",

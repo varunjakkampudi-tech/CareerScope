@@ -193,7 +193,12 @@
         "Only if the named 768px defect reproduces, identify its supported root cause and make the smallest permitted layout correction without changing selector, viewport, expected value, tolerance, or retry behavior.",
         "Add or update the named scenario in scripts/check-ui.ts with isolated synthetic owner data; run the full browser suite on Chromium, Firefox, and WebKit, while asserting the CS-2-specific 768px geometry only in WebKit.",
         "Review keyboard/responsive behavior and sanitized evidence; obtain the independent QA/UX and exact-SHA hosted CI results required by the ticket before any later workflow acceptance. Preserve releaseTarget 3.0.1 without inferring activation from releaseState UNSPECIFIED."
-      ]
+      ],
+      "bindingAmendments": {
+        "CS-2-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-2-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-2-AC3": { "0": { "reviewStatus": "REVIEWED" } }
+      }
     },
     "CS-8": {
       "reviewStatus": "DRAFT",
@@ -4637,6 +4642,12 @@
         "definitionOfDone": [
           "CS-88 can close only when the existing approved references are accurately mapped, remaining exact design gaps are owner-resolved, the page/role/redaction matrix is approved against CS-40, all four required review roles accept the same revision, and independently testable child tickets are recorded in an authorized later phase. No admin implementation, API, privileged data or production capability is claimed."
         ]
+      },
+      "bindingAmendments": {
+        "CS-88-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-88-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-88-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-88-AC4": { "0": { "reviewStatus": "REVIEWED" } }
       }
     },
     "CS-99": {
@@ -17771,6 +17782,76 @@
     }
   },
   "verificationReviewReceipts": {
+    "CS-2-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c0cabf4d3e6bc005955de03991d8b99798e3ed7a1324ddfe66d004e00e30adb5"
+    },
+    "CS-2-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "064101014d24f4af78df7b8d137dd5c38d4861d76337af49f5a8be0b6245e728"
+    },
+    "CS-2-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "943d05071103c79b6e91d97131b2b72595387f1fa0277406c2daca7706f342b4"
+    },
+    "CS-88-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "153f7d83842352b1c11380c2c5d8c7372c41490f22b28ed39fb2b7674350f7a1"
+    },
+    "CS-88-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "658e27901603f99a674d8d53697d4fba33b921ee71a137dc3128471a9ee35af8"
+    },
+    "CS-88-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9cae0288a02bec799dbe720877b8633d77f8ac11b2e3609dd2d79d9cffe536f4"
+    },
+    "CS-88-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5eb0b95218198cc5a1b358fe6c8244efea0164defc4a2704c7111c4490c55e2c"
+    },
     "CS-118-AC1": {
       "verdict": "APPROVED",
       "reviewer": "careerscope-independent-reviewer",

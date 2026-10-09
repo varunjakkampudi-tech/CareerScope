@@ -1519,3 +1519,21 @@ Current bytes were independently reviewed by the read-only canonical portable re
 | Ticket | Specification digest | Binding digests | Verdict | Reviewer |
 | --- | --- | --- | --- | --- |
 | CS-48 | 1d6002605056aca3a2ab3e99fa5d0c1e5028d01d13cedce99a6f130fadba6d92 | CS-48-AC1=c4970c1e31dee137bfd887bf219996b1f6895d6301d2e8a4c2357bc9e6c06bde<br>CS-48-AC2=33923f35e1671e28d77d5dd785ef5865219a8e37b87c924ace14e174d82fcd3f<br>CS-48-AC3=db5a94abf9f09f16389133767971ab759f8d9f685aab95a6fb47bfc5ecf88417<br>CS-48-AC4=203a9f8d7ddba5fa5ae3df4f27650f299cab7943f0ab0b997c7b06c4d57fea7f<br>CS-48-AC5=ba87fd654c5bfdf5bb0a1fff561b720afed66ebcd00b85f6cab44f9a6e4ddec5<br>CS-48-AC6=7f518f7f03b53e322fa801212d99b5b6156cddfb4753d6ffd85362986c8b8ab6<br>CS-48-AC7=4bed5ffe618692834cfef7868bee0a601afb2aeb02da227a463e25b4b029bc49<br>CS-48-AC8=28ab1a79b67c36c97ba6c61eab54a1ba05c638d51045d1019ca26d2ffedd46b0<br>CS-48-AC9=15e643b69fa397832b9a0464816e69c755d7e45cfb3c32ceb49439a32fac4f99<br>CS-48-AC10=fad9f61f5c97ad90dbde8107003c63e9016ca5553b59c1411dc92a492f77fa55<br>CS-48-AC11=52516aa2cd5533af8a3650c0f542236739739b962cf69aeed419e4428831906c | APPROVED | careerscope-independent-reviewer |
+### CS-2 and CS-88 binding review (2026-10-09)
+
+The independent reviewer approved the seven current authored bindings as exact
+planned procedures. This is scoped AC-binding evidence only. CS-2 remains
+REVISE because the 768px target geometry has no approved design reference and
+CS-88 remains REVISE because its admin surface mappings and release state are
+not fully resolved. No whole-ticket receipt, implementation evidence, browser
+execution, hosted CI, or production evidence is claimed.
+
+| Binding | Digest |
+| --- | --- |
+| CS-2 AC1 | `c0cabf4d3e6bc005955de03991d8b99798e3ed7a1324ddfe66d004e00e30adb5` |
+| CS-2 AC2 | `064101014d24f4af78df7b8d137dd5c38d4861d76337af49f5a8be0b6245e728` |
+| CS-2 AC3 | `943d05071103c79b6e91d97131b2b72595387f1fa0277406c2daca7706f342b4` |
+| CS-88 AC1 | `153f7d83842352b1c11380c2c5d8c7372c41490f22b28ed39fb2b7674350f7a1` |
+| CS-88 AC2 | `658e27901603f99a674d8d53697d4fba33b921ee71a137dc3128471a9ee35af8` |
+| CS-88 AC3 | `9cae0288a02bec799dbe720877b8633d77f8ac11b2e3609dd2d79d9cffe536f4` |
+| CS-88 AC4 | `5eb0b95218198cc5a1b358fe6c8244efea0164defc4a2704c7111c4490c55e2c` |
