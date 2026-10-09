@@ -10,6 +10,7 @@ import {
   dependencyGraph,
   validateCatalog,
   SECTIONS,
+  PORTABLE_REVIEWER_POLICY,
 } from './lib/ticket-specification.mjs';
 import {
   artifacts,
@@ -981,6 +982,64 @@ test('missing review receipt cannot count as independently reviewed traceability
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>
       error.includes('unproven content-bound verification review CS-46-AC1'),
+    ),
+  );
+});
+
+test('portable canonical reviewer receipt is accepted only with role, scope, and distinct writer', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  const whole = inputs.policy.specificationReviewReceipts['CS-31'];
+  whole.reviewer = PORTABLE_REVIEWER_POLICY.canonicalReviewerId;
+  whole.reviewerRole = PORTABLE_REVIEWER_POLICY.reviewerRole;
+  whole.reviewScope = 'WHOLE_SPECIFICATION';
+  whole.writerIdentity = PORTABLE_REVIEWER_POLICY.writerIdentity;
+  whole.reviewPolicyVersion = PORTABLE_REVIEWER_POLICY.reviewPolicyVersion;
+  const binding = inputs.policy.verificationReviewReceipts['CS-31-AC1'];
+  binding.reviewer = PORTABLE_REVIEWER_POLICY.canonicalReviewerId;
+  binding.reviewerRole = PORTABLE_REVIEWER_POLICY.reviewerRole;
+  binding.reviewScope = 'AC_BINDING';
+  binding.writerIdentity = PORTABLE_REVIEWER_POLICY.writerIdentity;
+  binding.reviewPolicyVersion = PORTABLE_REVIEWER_POLICY.reviewPolicyVersion;
+  assert.deepEqual(validate(model, inputs), []);
+});
+
+test('portable reviewer rejects self-approval, role spoofing, partial scope, and stale hashes', () => {
+  const cases = [
+    ['writer self-approval', (receipt) => { receipt.writerIdentity = receipt.reviewer; }],
+    ['role spoofing', (receipt) => { receipt.reviewerRole = 'SPEC_WRITER'; }],
+    ['partial scope', (receipt) => { receipt.reviewScope = 'AC_BINDING'; }],
+    ['stale hash', (receipt) => { receipt.contentHash = '0'.repeat(64); }],
+  ];
+  for (const [name, mutate] of cases) {
+    const inputs = fresh();
+    const model = buildCatalog(inputs);
+    const receipt = inputs.policy.specificationReviewReceipts['CS-31'];
+    receipt.reviewer = PORTABLE_REVIEWER_POLICY.canonicalReviewerId;
+    receipt.reviewerRole = PORTABLE_REVIEWER_POLICY.reviewerRole;
+    receipt.reviewScope = 'WHOLE_SPECIFICATION';
+    receipt.writerIdentity = PORTABLE_REVIEWER_POLICY.writerIdentity;
+    receipt.reviewPolicyVersion = PORTABLE_REVIEWER_POLICY.reviewPolicyVersion;
+    mutate(receipt);
+    assert.ok(
+      validate(model, inputs).some((error) =>
+        error.includes('unproven content-bound whole-specification review CS-31'),
+      ),
+      name,
+    );
+  }
+});
+
+test('portable reviewer policy cannot be replaced by an unknown identity or policy drift', () => {
+  const inputs = fresh();
+  const model = buildCatalog(inputs);
+  inputs.policy.portableReviewerPolicy.canonicalReviewerId = 'unknown-reviewer';
+  assert.ok(validate(model, inputs).includes('portable reviewer policy drift'));
+  const receipt = inputs.policy.specificationReviewReceipts['CS-31'];
+  receipt.reviewer = 'unknown-reviewer';
+  assert.ok(
+    validate(model, inputs).some((error) =>
+      error.includes('unproven content-bound whole-specification review CS-31'),
     ),
   );
 });

@@ -1,10 +1,43 @@
 import { createHash } from 'node:crypto';
 import { TICKET_STATUSES } from './ticket-workflow.mjs';
 
-// Only explicitly named independent reviewers may issue whole-spec receipts.
-// The original reviewer remains valid; the active remediation wave also uses
-// the bounded read-only reviewer that produced the current receipts.
-const WHOLE_SPEC_REVIEWERS = new Set(['/root/phase325_review', '/root/cs78_review']);
+// Only explicitly named independent reviewers may issue content-bound receipts.
+// Historical aliases remain valid for existing evidence. New portable receipts
+// must carry an explicit role, scope and distinct writer identity so a writer
+// cannot self-approve by merely changing a reviewer string.
+const LEGACY_REVIEWER_ALIASES = new Set(['/root/phase325_review', '/root/cs78_review']);
+export const PORTABLE_REVIEWER_POLICY = Object.freeze({
+  reviewerRole: 'PHASE325_INDEPENDENT_REVIEWER',
+  canonicalReviewerId: 'careerscope-independent-reviewer',
+  writerIdentity: 'phase325-spec-writer',
+  reviewPolicyVersion: 'PHASE3.25-PORTABLE-1',
+  artifact: 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md',
+});
+
+const WHOLE_SPEC_REVIEWERS = new Set([
+  ...LEGACY_REVIEWER_ALIASES,
+  PORTABLE_REVIEWER_POLICY.canonicalReviewerId,
+]);
+
+function matchesReceipt(receipt, { scope, contentHash, reviewText }) {
+  if (
+    receipt?.verdict !== 'APPROVED' ||
+    !WHOLE_SPEC_REVIEWERS.has(receipt?.reviewer) ||
+    receipt.artifact !== PORTABLE_REVIEWER_POLICY.artifact ||
+    receipt.contentHash !== contentHash ||
+    !reviewText?.includes(receipt.contentHash)
+  )
+    return false;
+  if (LEGACY_REVIEWER_ALIASES.has(receipt.reviewer)) return true;
+  return (
+    receipt.reviewer === PORTABLE_REVIEWER_POLICY.canonicalReviewerId &&
+    receipt.reviewerRole === PORTABLE_REVIEWER_POLICY.reviewerRole &&
+    receipt.reviewScope === scope &&
+    receipt.writerIdentity === PORTABLE_REVIEWER_POLICY.writerIdentity &&
+    receipt.writerIdentity !== receipt.reviewer &&
+    receipt.reviewPolicyVersion === PORTABLE_REVIEWER_POLICY.reviewPolicyVersion
+  );
+}
 
 export const SECTIONS = Object.freeze([
   'identity',
@@ -996,11 +1029,13 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
     };
     const receipt = policy.specificationReviewReceipts?.[ticket.id];
     const receiptMatches =
-      receipt?.verdict === 'APPROVED' &&
-      WHOLE_SPEC_REVIEWERS.has(receipt?.reviewer) &&
-      receipt.artifact === 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' &&
-      receipt.contentHash === specificationDigest(specification) &&
-      gaps.every((gap) => gap.disposition !== 'OPEN');
+      matchesReceipt(receipt, {
+        scope: 'WHOLE_SPECIFICATION',
+        contentHash: specificationDigest(specification),
+        // buildCatalog only determines readiness from the receipt itself;
+        // validateCatalog additionally requires the hash in the review artifact.
+        reviewText: receipt?.contentHash,
+      }) && gaps.every((gap) => gap.disposition !== 'OPEN');
     if (receiptMatches) {
       specification.readiness = 'IMPLEMENTATION_READY';
       specification.reviewState = 'APPROVED';
@@ -1134,6 +1169,16 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
 
 export function validateCatalog(model, inputs, resolvePath) {
   const errors = [];
+  const configuredPortableReviewer = inputs.policy.portableReviewerPolicy;
+  if (
+    !configuredPortableReviewer ||
+    JSON.stringify(configuredPortableReviewer) !==
+      JSON.stringify({
+        ...PORTABLE_REVIEWER_POLICY,
+        legacyAliases: [...LEGACY_REVIEWER_ALIASES],
+      })
+  )
+    errors.push('portable reviewer policy drift');
   const canonicalAcs = new Set(
     inputs.backlog.items.flatMap((ticket) =>
       ticket.acceptanceCriteria.map((_, index) => `${ticket.id}-AC${index + 1}`),
@@ -1176,12 +1221,12 @@ export function validateCatalog(model, inputs, resolvePath) {
     const receipt = inputs.policy.verificationReviewReceipts?.[acId];
     if (
       reviewedBindings.some((binding) => binding.reviewStatus === 'REVIEWED') &&
-      (receipt?.verdict !== 'APPROVED' ||
-        !WHOLE_SPEC_REVIEWERS.has(receipt.reviewer) ||
-        receipt.artifact !== 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' ||
-        !resolvePath(receipt.artifact ?? '') ||
-        receipt.contentHash !== bindingDigest(reviewedBindings) ||
-        !inputs.verificationReviewText?.includes(receipt.contentHash))
+      (!resolvePath(receipt?.artifact ?? '') ||
+        !matchesReceipt(receipt, {
+          scope: 'AC_BINDING',
+          contentHash: bindingDigest(reviewedBindings),
+          reviewText: inputs.verificationReviewText,
+        }))
     )
       errors.push(`unproven content-bound verification review ${acId}`);
     for (const binding of reviewedBindings) {
@@ -1226,13 +1271,13 @@ export function validateCatalog(model, inputs, resolvePath) {
       continue;
     }
     if (
-      receipt?.verdict !== 'APPROVED' ||
-      !WHOLE_SPEC_REVIEWERS.has(receipt.reviewer) ||
-      receipt.artifact !== 'docs/PHASE-3-25-REMEDIATION-REVIEW-01.md' ||
-      !resolvePath(receipt.artifact ?? '') ||
-      receipt.contentHash !== specificationDigest(specification) ||
-      specification.gaps.some((gap) => gap.disposition === 'OPEN') ||
-      !inputs.verificationReviewText?.includes(receipt.contentHash)
+      !resolvePath(receipt?.artifact ?? '') ||
+      !matchesReceipt(receipt, {
+        scope: 'WHOLE_SPECIFICATION',
+        contentHash: specificationDigest(specification),
+        reviewText: inputs.verificationReviewText,
+      }) ||
+      specification.gaps.some((gap) => gap.disposition === 'OPEN')
     )
       errors.push(`unproven content-bound whole-specification review ${ticketId}`);
   }

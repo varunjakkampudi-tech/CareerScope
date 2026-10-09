@@ -1,5 +1,13 @@
 {
   "schemaVersion": 1,
+  "portableReviewerPolicy": {
+    "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+    "canonicalReviewerId": "careerscope-independent-reviewer",
+    "writerIdentity": "phase325-spec-writer",
+    "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+    "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+    "legacyAliases": ["/root/phase325_review", "/root/cs78_review"]
+  },
   "uiTicketIds": [
     "CS-45",
     "CS-46"
