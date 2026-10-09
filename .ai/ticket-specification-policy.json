@@ -3904,6 +3904,12 @@
         "Record future live-provider, external catalog, hosted, UI/manual and release evidence as separate gates; do not add runtime functionality in this specification pass."
       ],
       "sectionTextReplacements": {
+        "technicalApproach": [
+          [
+            "New provider abstraction and (at least) one new API route surface; new outbound egress destination; contradicts and must update the \"AI is deferred\" architecture/security docs rather than leaving them stale.",
+            "New provider abstraction and new outbound egress destination; reuse the existing POST /api/preparation/:checkId/ai-elaborate route and do not introduce a new API route. Update the \"AI is deferred\" architecture/security docs rather than leaving them stale."
+          ]
+        ],
         "problem": [
           [
             "CareerScope has no AI-assisted capability at all today",
@@ -14328,7 +14334,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "AI_ENABLED=false and isolated provider adapter fixture.",
         "setup": "Run the provider boundary with AI disabled and inspect configuration access.",
@@ -14350,7 +14356,7 @@
       {
         "reviewer": "Security owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Synthetic config matrix for disabled, missing key and missing model.",
         "setup": "Execute startup/config validation for each matrix row.",
@@ -14372,7 +14378,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Synthetic live-catalog response fixtures and explicit free model ID.",
         "setup": "Evaluate short-TTL catalog cache for present, absent and paid model responses.",
@@ -14394,7 +14400,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Synthetic provider response matrix.",
         "setup": "Run disabled/missing-key/missing-model as configuration rows, unavailable/no-longer-free as catalog rows, and 401/402/429/5xx/timeout/malformed/oversized as mock HTTP response rows.",
@@ -14416,7 +14422,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Synthetic prompt, bounded token and timeout fixtures.",
         "setup": "Run named deterministic control cases with AI disabled and with timeout/5xx provider failures; no budget, cancellation or retry behavior is inferred for this synchronous preparation-only capability.",
@@ -14438,7 +14444,7 @@
       {
         "reviewer": "Security owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Synthetic secret and redaction fixtures.",
         "setup": "Run the existing static sibling-module import scan only; broader decision-boundary call tracing is a separate planned procedure.",
@@ -14460,7 +14466,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "A synthetic ProfileRecord with sentinel PII and a real PreparationReport target; no retry or provider-failure matrix is required for this payload-minimization assertion.",
         "setup": "Capture the exact HTTP JSON envelope emitted by requestCompletion and inspect its model, messages and max_tokens fields separately from the Authorization transport header.",
@@ -14482,7 +14488,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "A synthetic preparation target and exact configured free model are available; the existing route is enabled only in an isolated test app.",
         "setup": "Invoke POST /api/preparation/:checkId/ai-elaborate and inspect the response contract and the planned preparation-panel attribution state; lead-note persistence is NOT_APPLICABLE.",
@@ -14504,7 +14510,7 @@
       {
         "reviewer": "QA / ticket owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Feature flag and deterministic local inference control.",
         "setup": "Prepare the canonical ticket-specific fixtures and execute only the named planned procedure.",
@@ -14526,7 +14532,7 @@
       {
         "reviewer": "Security owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "Synthetic unauthorized owner and provider payload fixtures.",
         "setup": "Use the existing ai-provider unit matrix for status/config/catalog/timeout/malformed rows and the existing database integration test for owner/off/provider-failure isolation; any missing matrix row is explicitly planned, not claimed executed.",
@@ -14548,7 +14554,7 @@
       {
         "reviewer": "Independent reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_OPERATOR",
         "preconditions": "Complete CS-48 contract artifacts and review receipt.",
         "setup": "Prepare the canonical ticket-specific fixtures and execute only the named planned procedure.",
@@ -18349,69 +18355,113 @@
     },
     "CS-48-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "6be65385550a3d659038a03b5abe29b5223957188883ea8d831fb11634a953a8"
+      "contentHash": "c4970c1e31dee137bfd887bf219996b1f6895d6301d2e8a4c2357bc9e6c06bde"
     },
     "CS-48-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "c3f79779f714decf71eccb67e9d8404483717492cc0cbe28b47117ffe1bd46b4"
+      "contentHash": "33923f35e1671e28d77d5dd785ef5865219a8e37b87c924ace14e174d82fcd3f"
     },
     "CS-48-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "4beb515794f9b89aff052fd9df7afce97b32d8f953607c15fca9fd8cabbb6548"
+      "contentHash": "db5a94abf9f09f16389133767971ab759f8d9f685aab95a6fb47bfc5ecf88417"
     },
     "CS-48-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "4c8a6a294b607a1730e443e93738b9616ca726c6f746889f653a4f19a5a4c066"
+      "contentHash": "203a9f8d7ddba5fa5ae3df4f27650f299cab7943f0ab0b997c7b06c4d57fea7f"
     },
     "CS-48-AC5": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "905bb072b2530d8112be332901395390234fc868f8b21ed69b55a8e2516dee71"
+      "contentHash": "ba87fd654c5bfdf5bb0a1fff561b720afed66ebcd00b85f6cab44f9a6e4ddec5"
     },
     "CS-48-AC6": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "9fbbdb4b5eec549bddf3b49c1e36dc4223809182c81041583e3b92c95b99c956"
+      "contentHash": "7f518f7f03b53e322fa801212d99b5b6156cddfb4753d6ffd85362986c8b8ab6"
     },
     "CS-48-AC7": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "0eb52d087f93ef626a8aa3d7c723216824c88604d8d26eeaf203378d3b1bb612"
+      "contentHash": "4bed5ffe618692834cfef7868bee0a601afb2aeb02da227a463e25b4b029bc49"
     },
     "CS-48-AC8": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "21d590988dbad1de0e880532df72e2e59cc5851da337f45a76a40223629466b8"
+      "contentHash": "28ab1a79b67c36c97ba6c61eab54a1ba05c638d51045d1019ca26d2ffedd46b0"
     },
     "CS-48-AC9": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "f3603a661b96817065717de7b7742953d74674dc55af15b2c6ae39c1af9929c3"
+      "contentHash": "15e643b69fa397832b9a0464816e69c755d7e45cfb3c32ceb49439a32fac4f99"
     },
     "CS-48-AC10": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "e0b106e35c331bc647d0d621177e9f1ec02b1c4ab192358fae1c2b94a67192fa"
+      "contentHash": "fad9f61f5c97ad90dbde8107003c63e9016ca5553b59c1411dc92a492f77fa55"
     },
     "CS-48-AC11": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "57bb9f72fb102b2ebb8a4088f85f03a36bee951cc94639aead99d9acab2c8cc0"
+      "contentHash": "52516aa2cd5533af8a3650c0f542236739739b962cf69aeed419e4428831906c"
     },
     "CS-52-AC1": {
       "verdict": "APPROVED",
@@ -20719,12 +20769,6 @@
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "580e8d21e859159ce7834c31a4b26cf0e37c5228b71ba1fb31bd49a51029a7f8"
     },
-    "CS-48": {
-      "verdict": "APPROVED",
-      "reviewer": "/root/cs78_review",
-      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "f66f95cd95a28e46e8b6d2aa4f3fe56c337f9585ffa62dac2fa248db434a6683"
-    },
     "CS-113": {
       "verdict": "APPROVED",
       "reviewer": "/root/phase325_review",
@@ -21460,6 +21504,16 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "fb5eb781e72706fcb01329721e1bd663b5f8f9fbca998c6ffafbb8820d6187d6"
+    },
+    "CS-48": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1d6002605056aca3a2ab3e99fa5d0c1e5028d01d13cedce99a6f130fadba6d92"
     }
   },
   "generatedArtifactCheckpoint": {
