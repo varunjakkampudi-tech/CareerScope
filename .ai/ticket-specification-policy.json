@@ -19,6 +19,95 @@
     { "prerequisite": "CS-19", "dependent": "CS-47", "sourceAcIndex": 3 }
   ],
   "ticketRefinements": {
+    "CS-49": {
+      "reviewStatus": "DRAFT",
+      "designDisposition": {
+        "status": "DESIGN_PARTIAL_NON_BLOCKING",
+        "reason": "The approved Phase 0 candidate-core shell and dashboard reference establish the information architecture, tokens, component language and responsive behavior. CS-49 adds a real route and honest API-backed content; no new product UX decision is required. Loading, empty and error states derive from the canonical shared state contract. The owner-supplied dashboard image is recorded as provenance in the backlog but is not treated as executed visual evidence.",
+        "blocking": false
+      },
+      "sourceReferences": [
+        ".ai/backlog.json#CS-49",
+        "design/DESIGN-INDEX.json",
+        "docs/DESIGN-IMPLEMENTATION-MAP.md",
+        "docs/FRONTEND-ADMIN-ROADMAP.md",
+        "docs/OWNER-DECISIONS-2026-10-02.md"
+      ],
+      "additionalRequirements": {
+        "manualExternalGates": [
+          "OWNER_INPUT_REQUIRED: assign the product release target/state for the already-implemented dashboard route; the source registry currently leaves releaseTarget unset."
+        ]
+      }
+    },
+    "CS-51": {
+      "reviewStatus": "DRAFT",
+      "designDisposition": {
+        "status": "DESIGN_PARTIAL_NON_BLOCKING",
+        "reason": "The behavior is deep-link and identifier propagation across existing /jobs, /saved, /applications and dashboard surfaces. Phase 0 parent surfaces and shared error/empty states provide the required information architecture; this ticket does not introduce a new visual surface or product interaction. URL/query behavior is specified as a functional contract and must not alter styling.",
+        "blocking": false
+      },
+      "sourceReferences": [
+        ".ai/backlog.json#CS-51",
+        "design/DESIGN-INDEX.json",
+        "docs/DESIGN-IMPLEMENTATION-MAP.md",
+        "docs/API-SURFACE.md",
+        "docs/tickets/CS-51.md"
+      ],
+      "additionalRequirements": {
+        "manualExternalGates": [
+          "OWNER_INPUT_REQUIRED: assign the product release target/state; the source registry currently leaves releaseTarget unset. Dependencies CS-70 and CS-75 remain separately tracked."
+        ]
+      }
+    },
+    "CS-61": {
+      "reviewStatus": "DRAFT",
+      "designDisposition": {
+        "status": "DESIGN_NOT_APPLICABLE",
+        "reason": "CS-61 changes React Query ownership keys, session-derived cache identity and teardown defense-in-depth. It introduces no new page, component, copy, layout or visual state; existing surfaces remain unchanged.",
+        "blocking": false
+      },
+      "sourceReferences": [
+        ".ai/backlog.json#CS-61",
+        "docs/ARCHITECTURE.md",
+        "docs/SECURITY.md",
+        "docs/tickets/CS-61.md",
+        "apps/web/src/lib/session.ts"
+      ],
+      "additionalRequirements": {
+        "manualExternalGates": [
+          "OWNER_INPUT_REQUIRED: assign the product release target/state; the source registry currently leaves releaseTarget unset."
+        ]
+      }
+    },
+    "CS-75": {
+      "reviewStatus": "DRAFT",
+      "designDisposition": {
+        "status": "DESIGN_NOT_APPLICABLE",
+        "reason": "CS-75 hardens the shared API client response-body lifecycle. It changes no route, component, layout, copy or visual state; callers continue to render their existing error and success states.",
+        "blocking": false
+      },
+      "sourceReferences": [
+        ".ai/backlog.json#CS-75",
+        "docs/ARCHITECTURE.md",
+        "docs/SECURITY.md",
+        "docs/tickets/CS-75.md",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/lib/api.test.ts"
+      ],
+      "additionalRequirements": {
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE. The owning boundary is apps/web/src/lib/api.ts. Non-OK responses must consume or cancel the unread body before throwing; 409 keeps its structured conflict-body path. No database, transaction, event, queue, or persistence contract is introduced.",
+          "FAILURE/RECOVERY: 400/404/429 and network failures reject after the response settles; callers retain existing safe error states. A successful request remains the positive control."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: INPUT_VALIDATION and PRIVACY_PII. Preserve canonical ApiError mapping, do not include response bodies, credentials, cookies or private payloads in logs, and retain server-side authentication, CSRF/origin and ownership enforcement. This client fix does not grant authorization.",
+          "NOT_APPLICABLE: no provider token, resume, database or admin data is introduced by this module change."
+        ],
+        "manualExternalGates": [
+          "OWNER_INPUT_REQUIRED: assign the product release target/state; the source registry currently leaves releaseTarget unset."
+        ]
+      }
+    },
     "CS-6": {
       "reviewStatus": "DRAFT",
       "deliveryClassification": {

@@ -35,8 +35,8 @@ Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc
 | specificationCoveragePercent           | 58.7962962962963  |
 | suggestedVerificationMappingPercent    | 100               |
 | exactReviewedTraceabilityPercent       | 55.18763796909492 |
-| findingsCount                          | 635               |
-| openFindingCount                       | 265               |
+| findingsCount                          | 631               |
+| openFindingCount                       | 261               |
 | resolvedFindingCount                   | 229               |
 | reclassifiedFindingCount               | 30                |
 
