@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "ab4d8e41071059ffeb827aed357f35f1cdb7096d72afd854cc5884e3026e821f",
+    ".ai/ticket-specification-policy.json": "d0cc27481a9f3207a8e7087526d8f7837f0b7b8d55f6846321e425040dd49b18",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -33,8 +33,8 @@
     "mappedAcceptanceCriterionCount": 317,
     "unmappedAcceptanceCriterionCount": 589,
     "reviewedExactTestBindingCount": 343,
-    "authoredExactTestBindingCount": 408,
-    "acceptanceCriteriaWithAuthoredBindings": 382,
+    "authoredExactTestBindingCount": 412,
+    "acceptanceCriteriaWithAuthoredBindings": 386,
     "draftSpecificationCount": 126,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
@@ -68,8 +68,8 @@
     "suggestedVerificationMappingPercent": 100,
     "exactReviewedTraceabilityPercent": 34.98896247240618,
     "findingsCount": 643,
-    "openFindingCount": 332,
-    "resolvedFindingCount": 167,
+    "openFindingCount": 330,
+    "resolvedFindingCount": 169,
     "reclassifiedFindingCount": 27
   },
   "findings": [
@@ -4723,7 +4723,14 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All four CS-120 criteria have exact planned source-contract, visual-browser, security-accessibility-state and RELEASE-gate procedures with negative cases, evidence artifacts and no fabricated provider data.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-120-AC1",
+        ".ai/ticket-specification-policy.json#CS-120-AC2",
+        ".ai/ticket-specification-policy.json#CS-120-AC3",
+        ".ai/ticket-specification-policy.json#CS-120-AC4"
+      ]
     },
     {
       "ticketId": "CS-120",
@@ -4732,7 +4739,12 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "Phase 0 Job Source Trust Safety references, shared primitives, ownership, provenance, responsive/accessibility behavior and external-URL-not-Applied invariant are ticket-specific without inventing a provider capability.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-120",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/06-06-job-source-trust-safety.png"
+      ]
     },
     {
       "ticketId": "CS-121",
