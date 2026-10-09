@@ -2847,13 +2847,14 @@
             "failureCase": "A browser result that assumes one representation, silently marks Applied, or mutates lifecycle from external navigation is a specification failure.",
             "negativeCase": "No owner decision, unknown representation, or unavailable contract must remain DRAFT/OWNER_DECISION_REQUIRED; it must not be converted into a passing persistence assertion."
           },
-          "1": {
-            "setup": "Do not execute the service-backed disposition fixture until the owner selects the representation and the corresponding route/schema contract is registered.",
-            "action": "After that decision only, instantiate the selected owner/job/revision fixture and run the representation-specific integration procedure.",
-            "procedure": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4-after-owner-decision",
-            "failureCase": "A missing owner decision or unregistered route/schema is an explicit owner-decision gate, not a database test failure.",
-            "negativeCase": "No representation-specific persistence, restore or audit assertion may be labeled verified before the decision and contract exist."
-          }
+      "1": {
+        "setup": "Do not execute the service-backed disposition fixture until the owner selects the representation and the corresponding route/schema contract is registered.",
+        "action": "After that decision only, instantiate the selected owner/job/revision fixture and run the representation-specific integration procedure.",
+        "procedure": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4-after-owner-decision",
+        "failureCase": "A missing owner decision or unregistered route/schema is an explicit owner-decision gate, not a database test failure.",
+        "negativeCase": "No representation-specific persistence, restore or audit assertion may be labeled verified before the decision and contract exist.",
+        "reviewStatus": "REVIEWED"
+      }
         }
       }
     },
@@ -5426,12 +5427,18 @@
           "Define normalized-email identity mapping, duplicate/conflict preflight, no-password-hash-export constraint, unchanged user-data ownership and reversible canary/cutover/rollback conditions.",
           "Complete revision-bound Security and System Designer threat-model reviews; keep downstream implementation tickets blocked until owner/external configuration dependencies and design acceptance are explicit."
         ],
-        "risksRecovery": [
-          "A duplicate or ambiguous email mapping can lock out the owner or disclose another account; abort before linking on any mismatch. A failed cutover must keep the current Argon2/session path usable and avoid partial identity changes; rollback must not delete user data, rotate credentials unnecessarily or replay provider tokens."
-        ],
-        "definitionOfDone": [
-          "CS-90 specification is complete only when the approved decision provenance is propagated, remaining user-pool/callback/MFA configuration choices are explicitly resolved, migration/rollback and threat model are reviewed by Security and System Designer against the same revision, and no implementation begins before those gates. Provider provisioning, live OTP, account migration and deployment remain separate evidence gates."
-        ]
+      "risksRecovery": [
+        "A duplicate or ambiguous email mapping can lock out the owner or disclose another account; abort before linking on any mismatch. A failed cutover must keep the current Argon2/session path usable and avoid partial identity changes; rollback must not delete user data, rotate credentials unnecessarily or replay provider tokens."
+      ],
+      "definitionOfDone": [
+        "CS-90 specification is complete only when the approved decision provenance is propagated, remaining user-pool/callback/MFA configuration choices are explicitly resolved, migration/rollback and threat model are reviewed by Security and System Designer against the same revision, and no implementation begins before those gates. Provider provisioning, live OTP, account migration and deployment remain separate evidence gates."
+      ]
+    },
+      "bindingAmendments": {
+        "CS-90-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-90-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-90-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-90-AC4": { "0": { "reviewStatus": "REVIEWED" } }
       }
     },
     "CS-105": {
@@ -17934,9 +17941,53 @@
     },
     "CS-17-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "77d2c801173b197ef8f4360a0f615de49d8da9fa329e7e24e45e88efd1d7d32e"
+    },
+    "CS-90-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "ac4baf28d7028756fc8476e53d31f15dc18669de073a8a322efe49e2efbc499b"
+    },
+    "CS-90-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d45a78c1add79a457d607c43ce8f8eb4b5e5ab6ed10e9ad751ddf619c38ab89c"
+    },
+    "CS-90-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "65f0ddd61473cb3bf30267bb96c351162159801bba6963f430b2cfae0d06dccf"
+    },
+    "CS-90-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4f0403b2c8e35ed8a690a8c135571b6398bb90f85a676834266bbc8e194490f5"
     },
     "CS-31-AC1": {
       "verdict": "APPROVED",

@@ -1537,3 +1537,20 @@ execution, hosted CI, or production evidence is claimed.
 | CS-88 AC2 | `658e27901603f99a674d8d53697d4fba33b921ee71a137dc3128471a9ee35af8` |
 | CS-88 AC3 | `9cae0288a02bec799dbe720877b8633d77f8ac11b2e3609dd2d79d9cffe536f4` |
 | CS-88 AC4 | `5eb0b95218198cc5a1b358fe6c8244efea0164defc4a2704c7111c4490c55e2c` |
+
+### CS-17 and CS-90 binding review (2026-10-09)
+
+The independent reviewer approved the remaining authored binding for CS-17 and
+all four CS-90 architecture bindings. CS-17 AC4 binding 1 remains explicitly
+owner-decision gated; CS-90 remains incomplete because pool/client/MFA and
+provider configuration, threat-model approval and live Cognito evidence are
+still separate gates. These receipts do not approve either whole ticket and do
+not claim implementation or hosted execution.
+
+| Binding | Digest |
+| --- | --- |
+| CS-17 AC4 (binding group) | `77d2c801173b197ef8f4360a0f615de49d8da9fa329e7e24e45e88efd1d7d32e` |
+| CS-90 AC1 | `ac4baf28d7028756fc8476e53d31f15dc18669de073a8a322efe49e2efbc499b` |
+| CS-90 AC2 | `d45a78c1add79a457d607c43ce8f8eb4b5e5ab6ed10e9ad751ddf619c38ab89c` |
+| CS-90 AC3 | `65f0ddd61473cb3bf30267bb96c351162159801bba6963f430b2cfae0d06dccf` |
+| CS-90 AC4 | `4f0403b2c8e35ed8a690a8c135571b6398bb90f85a676834266bbc8e194490f5` |

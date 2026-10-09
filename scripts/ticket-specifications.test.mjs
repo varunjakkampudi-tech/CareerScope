@@ -861,10 +861,10 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   assert.equal(model.counts.completeSpecificationCount, 109);
   assert.equal(model.counts.incompleteSpecificationCount, 107);
   assert.equal(model.counts.approvedSpecificationCount, 109);
-  assert.equal(model.counts.reviewedExactTestBindingCount, 439);
+  assert.equal(model.counts.reviewedExactTestBindingCount, 444);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
-  assert.equal(model.counts.mappedAcceptanceCriterionCount, 413);
-  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 493);
+  assert.equal(model.counts.mappedAcceptanceCriterionCount, 418);
+  assert.equal(model.counts.unmappedAcceptanceCriterionCount, 488);
   assert.equal(model.counts.authoredExactTestBindingCount, 444);
   assert.equal(model.counts.ownerDecisionReconciliationCount, 11);
   assert.equal(
