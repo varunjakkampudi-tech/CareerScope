@@ -1006,10 +1006,30 @@ test('portable canonical reviewer receipt is accepted only with role, scope, and
 
 test('portable reviewer rejects self-approval, role spoofing, partial scope, and stale hashes', () => {
   const cases = [
-    ['writer self-approval', (receipt) => { receipt.writerIdentity = receipt.reviewer; }],
-    ['role spoofing', (receipt) => { receipt.reviewerRole = 'SPEC_WRITER'; }],
-    ['partial scope', (receipt) => { receipt.reviewScope = 'AC_BINDING'; }],
-    ['stale hash', (receipt) => { receipt.contentHash = '0'.repeat(64); }],
+    [
+      'writer self-approval',
+      (receipt) => {
+        receipt.writerIdentity = receipt.reviewer;
+      },
+    ],
+    [
+      'role spoofing',
+      (receipt) => {
+        receipt.reviewerRole = 'SPEC_WRITER';
+      },
+    ],
+    [
+      'partial scope',
+      (receipt) => {
+        receipt.reviewScope = 'AC_BINDING';
+      },
+    ],
+    [
+      'stale hash',
+      (receipt) => {
+        receipt.contentHash = '0'.repeat(64);
+      },
+    ],
   ];
   for (const [name, mutate] of cases) {
     const inputs = fresh();
