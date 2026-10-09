@@ -1,6 +1,6 @@
 # CS-6 — Frontend route architecture and auth boundary
 
-Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
+Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
 
 ## 1. identity
 

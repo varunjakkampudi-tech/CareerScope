@@ -2,43 +2,43 @@
 
 Source branch: phase-3/canonical-workflow-migration. Source SHA: ba60388f049f3cc173098f1b88f8f7a69357d4c9. Branch: phase-3.25/ticket-specification-catalog. Final artifact commit: use git log -- docs/PHASE-3-25-FINAL-REPORT.md; a file cannot embed its own commit hash. Final SHA and clean-tree result are reported after commit.
 
-| Measure                                | Count              |
-| -------------------------------------- | ------------------ |
-| ticketCount                            | 216                |
-| specificationCount                     | 216                |
-| completeSpecificationCount             | 104                |
-| incompleteSpecificationCount           | 112                |
-| epicMappedCount                        | 216                |
-| orphanTicketCount                      | 0                  |
-| duplicateIdCount                       | 0                  |
-| dependencyEdgeCount                    | 276                |
-| invalidDependencyCount                 | 0                  |
-| dependencyCycleCount                   | 0                  |
-| dependencySemanticGapCount             | 0                  |
-| acceptanceCriterionCount               | 906                |
-| suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 394                |
-| unmappedAcceptanceCriterionCount       | 512                |
-| reviewedExactTestBindingCount          | 420                |
-| authoredExactTestBindingCount          | 444                |
-| acceptanceCriteriaWithAuthoredBindings | 418                |
-| draftSpecificationCount                | 112                |
-| reviseSpecificationCount               | 0                  |
-| reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 104                |
-| ownerDecisionReconciliationCount       | 11                 |
-| uiTicketCount                          | 147                |
-| blockedTicketCount                     | 37                 |
-| hostpendingActionCount                 | 15                 |
-| holdTicketCount                        | 33                 |
-| currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 48.148148148148145 |
-| suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 43.4878587196468   |
-| findingsCount                          | 637                |
-| openFindingCount                       | 307                |
-| resolvedFindingCount                   | 191                |
-| reclassifiedFindingCount               | 29                 |
+| Measure                                | Count            |
+| -------------------------------------- | ---------------- |
+| ticketCount                            | 216              |
+| specificationCount                     | 216              |
+| completeSpecificationCount             | 108              |
+| incompleteSpecificationCount           | 108              |
+| epicMappedCount                        | 216              |
+| orphanTicketCount                      | 0                |
+| duplicateIdCount                       | 0                |
+| dependencyEdgeCount                    | 276              |
+| invalidDependencyCount                 | 0                |
+| dependencyCycleCount                   | 0                |
+| dependencySemanticGapCount             | 0                |
+| acceptanceCriterionCount               | 906              |
+| suggestedAcceptanceCriterionCount      | 906              |
+| mappedAcceptanceCriterionCount         | 394              |
+| unmappedAcceptanceCriterionCount       | 512              |
+| reviewedExactTestBindingCount          | 420              |
+| authoredExactTestBindingCount          | 444              |
+| acceptanceCriteriaWithAuthoredBindings | 418              |
+| draftSpecificationCount                | 108              |
+| reviseSpecificationCount               | 0                |
+| reviewedSpecificationCount             | 0                |
+| approvedSpecificationCount             | 108              |
+| ownerDecisionReconciliationCount       | 11               |
+| uiTicketCount                          | 147              |
+| blockedTicketCount                     | 37               |
+| hostpendingActionCount                 | 15               |
+| holdTicketCount                        | 33               |
+| currentReleaseTicketCount              | 47               |
+| specificationCoveragePercent           | 50               |
+| suggestedVerificationMappingPercent    | 100              |
+| exactReviewedTraceabilityPercent       | 43.4878587196468 |
+| findingsCount                          | 637              |
+| openFindingCount                       | 307              |
+| resolvedFindingCount                   | 191              |
+| reclassifiedFindingCount               | 29               |
 
 Workflow before/after: {"BACKLOG":141,"TODO":0,"IN_PROGRESS":0,"QA":5,"UAT":70,"PROD":0}. Status changes: 0. All six frozen Phase 3 inputs, including migration/design/blocker evidence and hostpending, are compared against the source commit.
 
@@ -54,4 +54,4 @@ Remediation starting checkpoint: 3a2ffcc5c368f08e88df6be5e0ffe4e55b2c1c14. Initi
 
 Continuation checkpoint: 2c37f25a52d7d4635c5cf7ecc2f0068a0cf9c111. The bounded CS-62–CS-71 remediation ledger records individually reviewed CS-67/CS-70/CS-71 bindings, corrected verification-design findings and unimplemented SaveJob defects. See PHASE-3-25-REMEDIATION-LEDGER.md and PHASE-3-25-REMEDIATION-REVIEW-01.md. Scoped binding approval does not resolve whole-spec release classification or approve the entire phase. The final local artifact commit is resolvable through git log for this report; no self-referential SHA is invented.
 
-PHASE_3_25_COMPLETION: 48.15% reviewed implementation-ready specifications (104/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.
+PHASE_3_25_COMPLETION: 50.00% reviewed implementation-ready specifications (108/216). PHASE_3_25_STATUS: INCOMPLETE. READY_FOR_PHASE_3_5: NO. Draft structural coverage is not the readiness numerator.
