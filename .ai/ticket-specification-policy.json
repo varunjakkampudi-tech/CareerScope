@@ -2862,6 +2862,150 @@
         }
       }
     },
+    "CS-141": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-141",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/01-dashboard.png",
+        "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
+        "apps/web/src/app/(app)/dashboard/page.tsx",
+        "apps/web/src/components/dashboard-shell.tsx",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "CS-141 is a candidate-owned /dashboard handoff slice. The approved design establishes composition, but neither the image nor the current source proves that real API state, safe unavailable states, accessibility behavior and browser parity are implemented. This specification must not copy illustrative names, counts or match values from the board."
+        ],
+        "functionalRequirements": [
+          "Render only server/API-backed dashboard data or an explicit pending, empty, unavailable or error state. A missing field remains unknown; no synthetic production metric is permitted.",
+          "Keep /dashboard behind the existing authenticated route boundary and derive ownership from the session/API contract. The dashboard route must not accept a client-selected owner identifier.",
+          "Use the Phase 0 dashboard reference for structure and shared shell components for navigation; loading, empty and error states preserve layout and expose an accessible status without inventing a new information architecture.",
+          "The dashboard is presentation only for this ticket: it must not create application lifecycle events, alter deterministic matching, or infer recruiter/ATS activity."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE. Compose the existing Next.js dashboard route, shared shell and canonical API client. Domain data contracts remain owned by CS-49 and other declared prerequisites; do not duplicate their persistence or scoring logic."
+        ],
+        "apiContract": [
+          "EXISTING_CONTRACT where a dashboard data endpoint is already registered: bind each displayed field to its real response path and preserve its authorization/error semantics. If a required summary is not available, render an explicit unavailable state rather than inventing an endpoint or value.",
+          "Ownership is session-derived; malformed responses, 401/403 and network failure must fail closed to a named safe state with no private data flash."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: CS-141 does not introduce durable dashboard state or schema changes. Any synthetic fixtures are isolated test data only."
+        ],
+        "accessibility": [
+          "Use semantic landmarks and heading order, accessible names for actionable cards/links, visible focus, keyboard traversal and status/live-region semantics for pending/error/empty states. Manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Use the approved desktop dashboard reference and the shared responsive contract at 320, 390, 768, 1024 and 1440 CSS px; reflow without ordinary-content horizontal scrolling and preserve touch target/focus behavior."
+        ],
+        "browsers": [
+          "Future browser evidence must run Chromium, Firefox and WebKit with synthetic authenticated and unauthenticated fixtures; an engine that cannot launch is NOT_RUN, not PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE beyond the existing noindex/private-workspace contract; no user data may enter metadata or public build output."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity is authoritative; cross-owner dashboard data is denied without existence leakage. Evidence uses synthetic data and excludes cookies, tokens, resumes and personal notes."
+        ],
+        "observability": [
+          "Use existing redacted request/correlation logging; do not log dashboard payloads or private fields. Distinguish unavailable data from an empty result in the UI without exposing backend internals."
+        ],
+        "manualExternalGates": [
+          "HUMAN_VALIDATION: UX and accessibility review of the rendered reference/state mapping remains future evidence; exact-SHA browser/axe and manual screen-reader evidence are release gates, not current execution proof."
+        ],
+        "implementationChecklist": [
+          "Inventory the current /dashboard route, shell, API fields and CS-49 dependency; map each visible element to a real source field or explicit unavailable state.",
+          "Define pending/empty/error/unauthorized/expired-session rendering without private-content flash or fabricated values.",
+          "Add component/contract/browser/accessibility procedures using isolated synthetic fixtures, then record exact-SHA evidence after implementation.",
+          "Review responsive and design parity against the canonical dashboard asset and preserve R1 release semantics without activation in Phase 3.25."
+        ],
+        "risksRecovery": [
+          "A dashboard can leak candidate data through cached or illustrative content. Recovery is to fail closed, clear private query state on session loss and revert the unshipped presentation change; no migration or production rollback is authorized here."
+        ],
+        "definitionOfDone": [
+          "The specification is ready only when all four source ACs have exact reviewed procedures, the real/unavailable data boundary and owner authorization are explicit, design/responsive/a11y requirements are mapped, no local finding remains, and an independent current-content review plus receipt exists. Runtime and hosted evidence remain future gates."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-141-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-141-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-141-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-141-AC4": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-142": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-142",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/03-jobs-expanded-sidebar.png",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/04-jobs-collapsed-sidebar.png",
+        "apps/web/src/app/(app)/jobs/page.tsx",
+        "packages/matching/src",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "CS-142 is the candidate-owned /jobs presentation handoff. The approved expanded/collapsed references do not authorize fabricated salary, provenance, match or saved state; every displayed value must come from an existing contract or be explicitly unknown/unavailable."
+        ],
+        "functionalRequirements": [
+          "Filters, pagination and sorting must use the existing jobs/search contract and preserve cursor/revision semantics; a malformed or unavailable response renders a named error state rather than an empty all-clear.",
+          "Display source/provenance, saved state and deterministic match evidence only from actual response fields. Unknown salary/location/company metadata remains unknown and is never inferred from imagery.",
+          "Session-derived ownership controls saved state and candidate-specific data. Opening a source/application URL remains external navigation and never marks an application Applied.",
+          "Expanded/collapsed sidebar references change presentation only; they must not change authorization, selected job, saved state, match score or query semantics."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation boundary. Reuse the existing /jobs route, API client, provider provenance and deterministic matching explanation; do not add a second search or ranking implementation."
+        ],
+        "apiContract": [
+          "EXISTING_CONTRACT: bind filters, cursor/page metadata, job provenance, saved state and match explanation to their registered response fields. Preserve 400 validation, 401/403 ownership denial, 404 missing job and 409 stale revision semantics where the current contract defines them.",
+          "No endpoint is invented for a missing field; the UI renders unknown/unavailable and records the missing contract as a dependency finding."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE for listing presentation. Save/archive mutations remain owned by the existing saved-job contract and must preserve owner/job uniqueness, revision and idempotency."
+        ],
+        "accessibility": [
+          "Filters have labels and associated errors; result cards/table semantics expose title, company, source and match evidence; keyboard focus remains visible through pagination, save and details actions; status updates use an accessible live region."
+        ],
+        "responsive": [
+          "Use the approved expanded/collapsed desktop assets and shared responsive rules at 320, 390, 768, 1024 and 1440 CSS px. Results reflow to the canonical narrow representation without ordinary-content horizontal scrolling; any controlled dense-region overflow is labelled and keyboard reachable."
+        ],
+        "browsers": [
+          "Future browser evidence must run Chromium, Firefox and WebKit with synthetic jobs, missing salary and provider-unavailable fixtures; a skipped engine is NOT_RUN, not PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE beyond private workspace noindex; job/private candidate state must not appear in metadata, sitemap or public previews."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION / PROVIDER_BOUNDARY. Session identity controls candidate-specific saved state; provider descriptions and URLs are untrusted and must be sanitized/validated. Evidence contains synthetic jobs only and never tokens, resumes or private notes."
+        ],
+        "observability": [
+          "Use existing request correlation and provider/search error classification without logging query secrets, raw private payloads or full provider responses. Track unavailable/empty/error distinctions in test evidence, not fabricated telemetry."
+        ],
+        "manualExternalGates": [
+          "HUMAN_VALIDATION: UX/accessibility review of expanded/collapsed and narrow result states remains future evidence; exact-SHA browser/axe, visual and provider provenance acceptance are not claimed in Phase 3.25."
+        ],
+        "implementationChecklist": [
+          "Inventory the current /jobs response and matching/provenance fields; map each filter/result action to an existing contract.",
+          "Specify loading, empty, unavailable, validation, unauthorized, expired-session and stale-revision behavior with no fabricated result data.",
+          "Bind the five source ACs to exact component/browser/contract procedures using isolated synthetic fixtures and review them immediately.",
+          "Review responsive/accessibility behavior against all three canonical jobs references and preserve R1 release semantics without implementation in this phase."
+        ],
+        "risksRecovery": [
+          "A jobs UI can mislead candidates by presenting unknown salary/provenance as fact or by mutating application state from external navigation. Recovery is to preserve unknown state and revert the unshipped presentation change; no provider or database migration is authorized here."
+        ],
+        "definitionOfDone": [
+          "The specification is ready only when all five source ACs have exact reviewed procedures, the API/data/provenance boundaries are explicit, design/responsive/a11y requirements are mapped, no local finding remains, and an independent current-content review plus receipt exists. Runtime, provider and hosted evidence remain future gates."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-142-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-142-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-142-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-142-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-142-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
     "CS-18": {
       "reviewStatus": "DRAFT",
       "sourceReferences": [
@@ -6231,6 +6375,49 @@
         "integration": "npm run test:integration",
         "browser": "npm run test:ui"
       }
+    },
+    "CS-141": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "Independent read-only review found the four CS-141 bindings exact, source-faithful and explicitly planned; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-141-AC1",
+          ".ai/ticket-specification-policy.json#CS-141-AC2",
+          ".ai/ticket-specification-policy.json#CS-141-AC3",
+          ".ai/ticket-specification-policy.json#CS-141-AC4"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The dashboard refinement names the canonical route, Phase 0 reference, real/unavailable data boundary, owner authorization, responsive/accessibility behavior and future release evidence without inventing UI or runtime proof.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-141",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/01-dashboard.png"
+        ]
+      }
+    },
+    "CS-142": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "Independent read-only review found the five CS-142 bindings exact, source-faithful and explicitly planned; no browser, provider or hosted execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-142-AC1",
+          ".ai/ticket-specification-policy.json#CS-142-AC2",
+          ".ai/ticket-specification-policy.json#CS-142-AC3",
+          ".ai/ticket-specification-policy.json#CS-142-AC4",
+          ".ai/ticket-specification-policy.json#CS-142-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The jobs refinement maps the approved expanded/collapsed Phase 0 references to the real /jobs contract, provenance and deterministic matching boundaries, responsive/accessibility behavior and future evidence gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-142",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/03-jobs-expanded-sidebar.png",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/04-jobs-collapsed-sidebar.png"
+        ]
+      }
     }
   },
   "review": {
@@ -8568,9 +8755,268 @@
           "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/16-16-data-export-deletion.png"
         ]
       }
+    },
+    "CS-141": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "Independent read-only review found the four CS-141 bindings exact, source-faithful and explicitly planned; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-141-AC1",
+          ".ai/ticket-specification-policy.json#CS-141-AC2",
+          ".ai/ticket-specification-policy.json#CS-141-AC3",
+          ".ai/ticket-specification-policy.json#CS-141-AC4"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The dashboard refinement names the canonical route, Phase 0 reference, real/unavailable data boundary, owner authorization, responsive/accessibility behavior and future release evidence without inventing UI or runtime proof.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-141",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/01-dashboard.png"
+        ]
+      }
+    },
+    "CS-142": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "Independent read-only review found the five CS-142 bindings exact, source-faithful and explicitly planned; no browser, provider or hosted execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-142-AC1",
+          ".ai/ticket-specification-policy.json#CS-142-AC2",
+          ".ai/ticket-specification-policy.json#CS-142-AC3",
+          ".ai/ticket-specification-policy.json#CS-142-AC4",
+          ".ai/ticket-specification-policy.json#CS-142-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "The jobs refinement maps the approved expanded/collapsed Phase 0 references to the real /jobs contract, provenance and deterministic matching boundaries, responsive/accessibility behavior and future evidence gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-142",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/03-jobs-expanded-sidebar.png",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/04-jobs-collapsed-sidebar.png"
+        ]
+      }
     }
   },
   "exactVerificationBindings": {
+    "CS-141-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the dashboard session; all dashboard APIs are stubbed with contract-shaped synthetic responses and no real PII.",
+        "setup": "Render the existing /dashboard route through the canonical authenticated shell with a real-valued fixture, then repeat with each optional summary field absent.",
+        "fixtureOrData": "Synthetic dashboard response containing only fields registered by the current API contract; missing salary/count/summary values are represented as absent.",
+        "action": "Inspect every visible dashboard value and the network/client mapping while switching between populated, empty and unavailable responses.",
+        "procedure": "PLANNED:apps/web/tests/dashboard-contract.spec.ts::CS-141-AC1-real-or-explicitly-unavailable-dashboard-state",
+        "assertion": "Every rendered value has a corresponding registered response field or an explicit unknown/unavailable state; no board sample name, count, score or status is copied into the DOM.",
+        "expectedResult": "Dashboard content is truthful and source-bound for populated and missing data; no fabricated production data appears.",
+        "testName": "CS-141-AC1 renders real dashboard data or explicit unavailable state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-contract.spec.ts::CS-141-AC1-real-or-explicitly-unavailable-dashboard-state",
+        "fixtures": "Synthetic candidate C1 and contract-shaped dashboard responses only.",
+        "negativeCase": "A response field not in the contract, illustrative board value, or missing field rendered as a numeric zero without source meaning fails.",
+        "failureCase": "Malformed/partial response renders the named unavailable/error state and does not silently become an all-clear dashboard.",
+        "evidenceArtifact": "Future exact-SHA component report with response-field map and sanitized DOM assertions; no execution is claimed now.",
+        "releaseGate": "DASHBOARD_TRUTHFUL_DATA",
+        "authoritativeSource": ".ai/backlog.json#CS-141",
+        "sourcePath": "apps/web/src/app/(app)/dashboard/page.tsx; design/01-IMPLEMENTATION-ORDER/04-candidate-core/01-dashboard.png"
+      }
+    ],
+    "CS-141-AC2": [
+      {
+        "reviewer": "UX QA",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Build the current dashboard implementation with deterministic synthetic data and authenticated candidate fixture C1; use the approved Phase 0 dashboard reference.",
+        "setup": "Capture /dashboard at the approved 1440px-class desktop and approved mobile viewport from the design contract using Chromium, Firefox and WebKit.",
+        "fixtureOrData": "Synthetic dashboard data with dynamic timestamps/counts masked only where the approved tolerance policy allows.",
+        "action": "Compare rendered structure, shell, card hierarchy and responsive reflow to the canonical reference; record viewport, browser, masks and deterministic tolerance.",
+        "procedure": "PLANNED:apps/web/tests/dashboard-visual.spec.ts::CS-141-AC2-cross-browser-reference-comparison",
+        "assertion": "Each engine produces a comparison artifact at both required viewports, no ordinary-content horizontal overflow exists, and every difference is within the approved deterministic tolerance or explicitly recorded as a design deviation.",
+        "expectedResult": "The dashboard is traceable to the approved reference without claiming pixel parity before implementation evidence exists.",
+        "testName": "CS-141-AC2 compares dashboard reference across three engines and viewports",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-visual.spec.ts::CS-141-AC2-cross-browser-reference-comparison",
+        "fixtures": "Canonical dashboard reference plus synthetic candidate fixture; no real user data.",
+        "negativeCase": "Missing viewport, skipped browser, invented tolerance, blanket dynamic mask or horizontal overflow fails the procedure.",
+        "failureCase": "A visual mismatch remains a review finding; it is not hidden by widening tolerance or substituting a different design asset.",
+        "evidenceArtifact": "Future browser screenshots, dimensions, diff summary and independent UX approval bound to the exact revision.",
+        "releaseGate": "DASHBOARD_VISUAL_REFERENCE",
+        "authoritativeSource": ".ai/backlog.json#CS-141",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/01-dashboard.png; design/foundations/DESIGN-TOKENS.md"
+      }
+    ],
+    "CS-141-AC3": [
+      {
+        "reviewer": "QA Accessibility Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Use isolated synthetic dashboard fixtures and exercise pending, empty, error, unauthorized, expired-session and stale-revision states only where the owning API contract supports them.",
+        "setup": "Run component/axe and keyboard procedures against /dashboard, delaying session/data responses and then resolving each state separately.",
+        "fixtureOrData": "Synthetic session responses, contract-shaped dashboard responses, and safe 401/403/409/network-error fixtures.",
+        "action": "Traverse headings, landmarks, links/cards and retry controls by keyboard; inspect focus, accessible names, status announcements and absence of private content in denied/expired states.",
+        "procedure": "PLANNED:apps/web/tests/dashboard-accessibility.spec.ts::CS-141-AC3-state-and-keyboard-contract",
+        "assertion": "Each applicable state has one named visual/status result; axe has no applicable violation; focus remains visible and ordered; unauthorized/expired states contain no private dashboard data; stale revision is not swallowed.",
+        "expectedResult": "State handling and keyboard semantics are deterministic and safe; manual screen-reader review remains explicitly pending.",
+        "testName": "CS-141-AC3 dashboard state, accessibility and denial behavior",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-accessibility.spec.ts::CS-141-AC3-state-and-keyboard-contract",
+        "fixtures": "Synthetic session and dashboard fixtures only.",
+        "negativeCase": "Private content flash, unlabeled control, hidden focus, swallowed 401/403/409, or an empty result that masks an error fails.",
+        "failureCase": "Unsupported state remains NOT_APPLICABLE with source rationale; no new state is invented from screenshots.",
+        "evidenceArtifact": "Future axe/keyboard report plus manual NVDA/VoiceOver record where required; no current execution claimed.",
+        "releaseGate": "DASHBOARD_ACCESSIBILITY_AND_STATE",
+        "authoritativeSource": ".ai/backlog.json#CS-141",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md; apps/web/src/app/(app)/dashboard/page.tsx"
+      }
+    ],
+    "CS-141-AC4": [
+      {
+        "reviewer": "Release Manager Independent Reviewer",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "The preceding dashboard specification and evidence gates are satisfied in a reviewed implementation revision; no workflow promotion occurs in Phase 3.25.",
+        "setup": "Review the ticket's R1 release metadata, feature-flag state, exact-SHA evidence list and authorization boundaries against the source registry.",
+        "fixtureOrData": "Ticket registry, current specification, CI evidence references and redacted review artifacts; no production data.",
+        "action": "Confirm the dashboard remains RELEASE-scoped but unactivated until declared implementation, QA/UAT and production gates pass.",
+        "procedure": "MANUAL-CS141-AC4-RELEASE-SEMANTICS",
+        "assertion": "Release semantics match the source ticket; no design/specification approval is represented as implementation, deployment or production activation.",
+        "expectedResult": "R1 classification is preserved with fail-closed activation and explicit future evidence.",
+        "testName": "CS-141-AC4 release semantics remain evidence-gated",
+        "testFileOrProcedureId": "MANUAL-CS141-AC4-RELEASE-SEMANTICS",
+        "fixtures": "Sanitized registry/specification/review metadata only.",
+        "negativeCase": "Promoting workflow, enabling a feature flag, or claiming production readiness from design evidence fails.",
+        "failureCase": "Missing exact-SHA or UAT evidence leaves the ticket unaccepted without changing its source status.",
+        "evidenceArtifact": "Future release review record and exact-SHA gate links; not present in this specification pass.",
+        "releaseGate": "R1_RELEASE_SEMANTICS",
+        "authoritativeSource": ".ai/backlog.json#CS-141",
+        "sourcePath": ".ai/backlog.json#CS-141.delivery; docs/ai/quality-gates.md"
+      }
+    ],
+    "CS-142-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_CONTRACT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the jobs session; job/search fixtures contain known provenance, saved state and deterministic match explanation fields.",
+        "setup": "Invoke the existing /jobs data contract with valid filters/cursor, missing optional salary and provider-unavailable variants.",
+        "fixtureOrData": "Synthetic jobs J1/J2 with source URL, canonical URL, discovered/verified timestamps, saved state and frozen match dimensions; no real postings.",
+        "action": "Apply filters and pagination, render result fields and inspect save/explanation state without changing the fixture source.",
+        "procedure": "PLANNED:apps/web/tests/jobs-contract.spec.ts::CS-142-AC1-filters-provenance-saved-match-unknown-salary",
+        "assertion": "Filters/pagination use the registered request shape; each provenance/saved/match field maps to its response source; absent salary remains explicitly unknown; no ranking is recalculated in the UI.",
+        "expectedResult": "Jobs state is source-backed and deterministic while unavailable optional data remains unknown.",
+        "testName": "CS-142-AC1 jobs filters and evidence remain contract-bound",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/jobs-contract.spec.ts::CS-142-AC1-filters-provenance-saved-match-unknown-salary",
+        "fixtures": "Synthetic J1/J2 provider and match fixtures.",
+        "negativeCase": "Unknown salary rendered as zero, provenance invented, saved state assigned to another owner, or UI score differs from returned explanation fails.",
+        "failureCase": "Provider unavailable or malformed response renders unavailable/error and does not become an empty successful search.",
+        "evidenceArtifact": "Future exact-SHA contract report with field map and sanitized request/response assertions.",
+        "releaseGate": "JOBS_TRUTHFUL_CONTRACT",
+        "authoritativeSource": ".ai/backlog.json#CS-142",
+        "sourcePath": "apps/web/src/app/(app)/jobs/page.tsx; packages/matching/src; docs/PROJECT-STATE.md"
+      }
+    ],
+    "CS-142-AC2": [
+      {
+        "reviewer": "Frontend QA",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Render /jobs with synthetic populated, empty and unavailable responses through the canonical shell.",
+        "setup": "Resolve loading, empty, network/provider failure, unauthorized and stale-result fixtures separately.",
+        "fixtureOrData": "Synthetic jobs only; no illustrative board values.",
+        "action": "Inspect result cards/table, filters, retry and empty/unavailable messaging.",
+        "procedure": "PLANNED:apps/web/tests/jobs-state.spec.ts::CS-142-AC2-real-or-explicitly-unavailable-jobs-state",
+        "assertion": "Rendered jobs fields come from real response data or an explicit state component; no sample company, count, salary or status is copied from a design board.",
+        "expectedResult": "The Jobs surface is truthful for populated, empty and unavailable states.",
+        "testName": "CS-142-AC2 jobs render source data or explicit states",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/jobs-state.spec.ts::CS-142-AC2-real-or-explicitly-unavailable-jobs-state",
+        "fixtures": "Synthetic jobs response and safe failure responses.",
+        "negativeCase": "A missing field becomes a fabricated value, or provider failure becomes a successful empty result.",
+        "failureCase": "401/403/409 remain their canonical safe states without private data leakage.",
+        "evidenceArtifact": "Future component report with sanitized DOM and response mapping.",
+        "releaseGate": "JOBS_TRUTHFUL_STATE",
+        "authoritativeSource": ".ai/backlog.json#CS-142",
+        "sourcePath": "apps/web/src/app/(app)/jobs/page.tsx; design/01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png"
+      }
+    ],
+    "CS-142-AC3": [
+      {
+        "reviewer": "UX QA",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Use synthetic jobs fixtures and the three approved Jobs references: base, expanded sidebar and collapsed sidebar.",
+        "setup": "Capture 1440px-class desktop and approved mobile viewports in Chromium, Firefox and WebKit with deterministic masks only for documented dynamic regions.",
+        "fixtureOrData": "Synthetic J1/J2 listings and deterministic filter state.",
+        "action": "Compare structure, sidebar state, result hierarchy and narrow reflow against the exact reference asset for each state.",
+        "procedure": "PLANNED:apps/web/tests/jobs-visual.spec.ts::CS-142-AC3-three-engine-reference-comparison",
+        "assertion": "All required engines/viewports produce artifacts; differences stay within an approved tolerance; no ordinary-content horizontal overflow or blanket masking is used.",
+        "expectedResult": "Visual evidence is reproducible and tied to the canonical Jobs references.",
+        "testName": "CS-142-AC3 compares Jobs reference states across engines",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/jobs-visual.spec.ts::CS-142-AC3-three-engine-reference-comparison",
+        "fixtures": "Canonical Jobs references plus synthetic listings.",
+        "negativeCase": "Skipped browser, missing viewport, invented tolerance, blanket mask or overflow fails.",
+        "failureCase": "Unresolved visual mismatch remains a finding and blocks whole-ticket approval.",
+        "evidenceArtifact": "Future exact-SHA screenshots/diff report and independent UX approval.",
+        "releaseGate": "JOBS_VISUAL_REFERENCE",
+        "authoritativeSource": ".ai/backlog.json#CS-142",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png; design/01-IMPLEMENTATION-ORDER/04-candidate-core/03-jobs-expanded-sidebar.png; design/01-IMPLEMENTATION-ORDER/04-candidate-core/04-jobs-collapsed-sidebar.png"
+      }
+    ],
+    "CS-142-AC4": [
+      {
+        "reviewer": "QA Accessibility Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Use synthetic jobs, session and revision fixtures; exercise only states supported by the existing API contract.",
+        "setup": "Run axe and keyboard checks through loading, empty, provider failure, unauthorized, expired-session and stale-revision paths.",
+        "fixtureOrData": "Synthetic session/results and safe 401/403/409/network-error responses.",
+        "action": "Traverse filters, result actions, save/details controls and retry; inspect focus, labels, status announcements and no-private-data denial.",
+        "procedure": "PLANNED:apps/web/tests/jobs-accessibility.spec.ts::CS-142-AC4-state-keyboard-and-denial-contract",
+        "assertion": "Applicable states are distinct, controls are labelled and keyboard reachable, focus remains visible, axe has no applicable violation, and unauthorized/expired/stale responses do not leak or silently mutate state.",
+        "expectedResult": "Jobs state/error/accessibility behavior is deterministic; manual screen-reader review remains future evidence.",
+        "testName": "CS-142-AC4 Jobs state, keyboard and denial behavior",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/jobs-accessibility.spec.ts::CS-142-AC4-state-keyboard-and-denial-contract",
+        "fixtures": "Synthetic jobs/session/revision fixtures only.",
+        "negativeCase": "Private content flash, unlabeled filter, swallowed conflict, disabled keyboard action or error represented as empty success fails.",
+        "failureCase": "Unsupported state is marked NOT_APPLICABLE with source rationale, not silently invented or passed.",
+        "evidenceArtifact": "Future axe/keyboard report and manual NVDA/VoiceOver record where required.",
+        "releaseGate": "JOBS_ACCESSIBILITY_AND_STATE",
+        "authoritativeSource": ".ai/backlog.json#CS-142",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md; apps/web/src/app/(app)/jobs/page.tsx"
+      }
+    ],
+    "CS-142-AC5": [
+      {
+        "reviewer": "Release Manager Independent Reviewer",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "All other Jobs specification gates are satisfied in a reviewed implementation revision; Phase 3.25 workflow remains unchanged.",
+        "setup": "Review source releaseTarget R1, releaseState RELEASE, feature flag and exact-SHA evidence requirements against the registry.",
+        "fixtureOrData": "Sanitized registry/specification/review metadata only.",
+        "action": "Confirm implementation/QA/UAT/production evidence is required before activation and that external navigation never implies Applied.",
+        "procedure": "MANUAL-CS142-AC5-RELEASE-SEMANTICS",
+        "assertion": "The Jobs ticket retains RELEASE semantics without promoting workflow or claiming production acceptance from design/planned evidence.",
+        "expectedResult": "Activation remains evidence-gated and candidate ownership rules are preserved.",
+        "testName": "CS-142-AC5 release semantics remain evidence-gated",
+        "testFileOrProcedureId": "MANUAL-CS142-AC5-RELEASE-SEMANTICS",
+        "fixtures": "Sanitized registry/specification/review metadata only.",
+        "negativeCase": "Workflow promotion, feature activation, fabricated provider data or external URL treated as Applied fails.",
+        "failureCase": "Missing exact-SHA/QA/UAT/production evidence leaves the ticket incomplete.",
+        "evidenceArtifact": "Future release review record and exact-SHA gate links; no current execution claimed.",
+        "releaseGate": "R1_RELEASE_SEMANTICS",
+        "authoritativeSource": ".ai/backlog.json#CS-142",
+        "sourcePath": ".ai/backlog.json#CS-142.delivery; docs/ai/quality-gates.md"
+      }
+    ],
     "CS-118-AC1": [
       {
         "preconditions": "Use an authenticated synthetic candidate session with server-derived CSRF and no real credential values; render the existing `/settings` route and `AccountSecurity` component.",
@@ -20897,6 +21343,96 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "ad0eb6f26031b79de9e640d71f07644fd33a02a96266dcc80b2d5f6212b39d80"
+    },
+    "CS-141-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c31eddc7a722d67d95c38e7f2a445a4618c8b2f3d63539501ec7ddad04d81513"
+    },
+    "CS-141-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e62780ac63ddfe5d5cab8f5178b862fe882f96a3f98dec18fbfa82bde6d7f8c3"
+    },
+    "CS-141-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a5f36492ef3a0887505330d98eac8fddeb16ad9184a7879713aca03d35d88b2e"
+    },
+    "CS-141-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4c27e5884e8d36defbed84289bea957d5a1ae295e63dabc9c538fa057dab72a5"
+    },
+    "CS-142-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "23f16f55560229728eece5669404e9279f2cc4eef9c3a2173ebc66647cf886b4"
+    },
+    "CS-142-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b0d06dcdcda7cde024d8da0ca1646255a4bf146bc51191e37dd125d625a6aed7"
+    },
+    "CS-142-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a225300717de9fc71a2340b8a5b7144ad97834cbd82bff7e91478baef943d43d"
+    },
+    "CS-142-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e2f030af652119f94c99f3858235731a7e29c59bb0e2b5d0688323cf2585931f"
+    },
+    "CS-142-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e5d4158844a360deb89bdf40f15798e79aade38d4beaaa685bd0b007b0a58e13"
     }
   },
   "specificationReviewReceipts": {
@@ -21683,6 +22219,26 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a3b6a2cce7ffb89efd814f222e2ab4a95674163462e96279dc6583fe55ebc12c"
+    },
+    "CS-141": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "7be73dea1f4e192518c3e096b3cd027c2c9201664141fa0ac0f44f5508389250"
+    },
+    "CS-142": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "7b0ac876f048ce0f2ed9d8b048453f57682707bcca1ffab161cd52a4036ee65d"
     }
   },
   "generatedArtifactCheckpoint": {

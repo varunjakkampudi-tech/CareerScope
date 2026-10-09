@@ -6,8 +6,8 @@ Structural section coverage and generated count are not implementation readiness
 | -------------------------------------- | ------------------ |
 | ticketCount                            | 216                |
 | specificationCount                     | 216                |
-| completeSpecificationCount             | 110                |
-| incompleteSpecificationCount           | 106                |
+| completeSpecificationCount             | 112                |
+| incompleteSpecificationCount           | 104                |
 | epicMappedCount                        | 216                |
 | orphanTicketCount                      | 0                  |
 | duplicateIdCount                       | 0                  |
@@ -17,27 +17,27 @@ Structural section coverage and generated count are not implementation readiness
 | dependencySemanticGapCount             | 0                  |
 | acceptanceCriterionCount               | 906                |
 | suggestedAcceptanceCriterionCount      | 906                |
-| mappedAcceptanceCriterionCount         | 418                |
-| unmappedAcceptanceCriterionCount       | 488                |
-| reviewedExactTestBindingCount          | 444                |
-| authoredExactTestBindingCount          | 444                |
-| acceptanceCriteriaWithAuthoredBindings | 418                |
-| draftSpecificationCount                | 106                |
+| mappedAcceptanceCriterionCount         | 427                |
+| unmappedAcceptanceCriterionCount       | 479                |
+| reviewedExactTestBindingCount          | 453                |
+| authoredExactTestBindingCount          | 453                |
+| acceptanceCriteriaWithAuthoredBindings | 427                |
+| draftSpecificationCount                | 104                |
 | reviseSpecificationCount               | 0                  |
 | reviewedSpecificationCount             | 0                  |
-| approvedSpecificationCount             | 110                |
+| approvedSpecificationCount             | 112                |
 | ownerDecisionReconciliationCount       | 11                 |
 | uiTicketCount                          | 147                |
 | blockedTicketCount                     | 37                 |
 | hostpendingActionCount                 | 15                 |
 | holdTicketCount                        | 33                 |
 | currentReleaseTicketCount              | 47                 |
-| specificationCoveragePercent           | 50.925925925925924 |
+| specificationCoveragePercent           | 51.851851851851855 |
 | suggestedVerificationMappingPercent    | 100                |
-| exactReviewedTraceabilityPercent       | 46.136865342163354 |
+| exactReviewedTraceabilityPercent       | 47.13024282560706  |
 | findingsCount                          | 636                |
-| openFindingCount                       | 300                |
-| resolvedFindingCount                   | 195                |
+| openFindingCount                       | 296                |
+| resolvedFindingCount                   | 199                |
 | reclassifiedFindingCount               | 30                 |
 
 | Ticket | Gap                             | Disposition             | Section                | Reason                                                                                                                                                                   | Owner                                 | Required evidence                                                                                                                                                                               |
@@ -475,10 +475,10 @@ Structural section coverage and generated count are not implementation readiness
 | CS-139 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
 | CS-140 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-140 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
-| CS-141 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
-| CS-141 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
-| CS-142 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
-| CS-142 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
+| CS-141 | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
+| CS-141 | SURFACE_SPEC_REFINEMENT         | RESOLVED                | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
+| CS-142 | EXACT_AC_TEST_BINDING           | RESOLVED                | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
+| CS-142 | SURFACE_SPEC_REFINEMENT         | RESOLVED                | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
 | CS-143 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
 | CS-143 | SURFACE_SPEC_REFINEMENT         | OPEN                    | functionalRequirements | Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.         | Product Architect / UX / domain owner | Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.                                                         |
 | CS-144 | EXACT_AC_TEST_BINDING           | OPEN                    | testStrategy           | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.                                                 | QA                                    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.                                                                                        |
