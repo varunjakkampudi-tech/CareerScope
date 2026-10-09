@@ -953,7 +953,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "actions": []
     },
     {
-      "requirement": "OWNER_DECISION_REQUIRED: choose whether CS-2 continues to target the unreproduced 768px offset or should be formally dispositioned separately from the historical 390px fix; no registry edit is made in Phase 3.25.",
+      "requirement": "OWNER_DECISION_RESOLVED: retain the exact 768px criterion; the historical 390px fix remains separate evidence and does not satisfy the 768px requirement. No registry edit or runtime implementation is made in Phase 3.25.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
@@ -1050,5 +1050,5 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
 | Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
 | ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | MISSING_EXACT_DESIGN      | OPEN        | No exact approved screen reference is mapped; a README or generic board does not verify this surface.                    | UX / Product owner               | Exact design asset, route/role/state/viewport mapping and approval.                                      |
-| RELEASE_STATE_UNSPECIFIED | OPEN        | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
+| RELEASE_STATE_UNSPECIFIED | RESOLVED    | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
 | EXACT_AC_TEST_BINDING     | OPEN        | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

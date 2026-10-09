@@ -235,3 +235,7 @@ implementation/release gates.
 `OWNER_DECISIONS_REMAINING: 6` (CS-80's narrow checkpoint conflict is
 resolved; its whole-ticket readiness remains incomplete; CS-109 and CS-110
 internal specification decisions are resolved.)
+
+# Resolution status (2026-10-09)
+
+The previously recorded questions for CS-2, CS-4, CS-5, CS-6, CS-7, CS-13 and CS-81 are resolved by the locked owner decisions in `docs/OWNER-DECISIONS-2026-10-08.md`. The historical questions below are preserved for audit history; they are not outstanding decisions. Canonical propagation is recorded in `.ai/ticket-specification-policy.json#decisionReconciliations` and the corresponding finding dispositions. No new owner decision is required for these topics.

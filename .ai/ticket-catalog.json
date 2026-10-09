@@ -9,11 +9,11 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "0efde672b4a10d8231cc63adebfc5f25b69808c5a6200f625c5ef5b155b861e6",
+    ".ai/ticket-specification-policy.json": "00151c14510b87fbffab8e9f6a8d1d4b2a03551a241239d16182ab4e10680c80",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
-    "docs/OWNER-DECISIONS-2026-10-08.md": "3f8c446f7da2797be519513a68a6794137a142037b718f27a14c970eeb021d36"
+    "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "authority": "Editorial planning supplement only. Identity, workflow, dependencies, release assignment and source acceptance criteria remain owned by backlog.json. Design mappings remain owned by design/DESIGN-INDEX.json and design-ticket-coverage.json. Generated catalogs and documents are read-only projections.",
@@ -638,7 +638,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -1463,7 +1463,7 @@
               "actions": []
             },
             {
-              "requirement": "OWNER_DECISION_REQUIRED: choose whether CS-2 continues to target the unreproduced 768px offset or should be formally dispositioned separately from the historical 390px fix; no registry edit is made in Phase 3.25.",
+              "requirement": "OWNER_DECISION_RESOLVED: retain the exact 768px criterion; the historical 390px fix remains separate evidence and does not satisfy the 768px requirement. No registry edit or runtime implementation is made in Phase 3.25.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -2242,25 +2242,9 @@
     {
       "ticketId": "CS-4",
       "primaryEpicId": "EPIC-DELIVERY-TOOLING",
-      "readiness": "IMPLEMENTATION_READY",
-      "reviewState": "APPROVED",
+      "readiness": "INCOMPLETE",
+      "reviewState": "DRAFT",
       "gaps": [
-        {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "EXTERNAL_GATE"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "EXTERNAL_GATE"
-        },
         {
           "code": "EXACT_AC_TEST_BINDING",
           "section": "testStrategy",
@@ -2859,11 +2843,19 @@
             {
               "size": "S",
               "complexity": 1,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "Owner decision OD-2026-10-08-CS4 places the publication helper in Release 1 implementation scope after its declared gates; this does not authorize execution or publication in Phase 3.25.",
+                "sources": [".ai/backlog.json#CS-4", "docs/OWNER-DECISIONS-2026-10-08.md#CS-4"]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -3566,8 +3558,8 @@
     {
       "ticketId": "CS-6",
       "primaryEpicId": "EPIC-CANDIDATE-CORE",
-      "readiness": "IMPLEMENTATION_READY",
-      "reviewState": "APPROVED",
+      "readiness": "INCOMPLETE",
+      "reviewState": "DRAFT",
       "gaps": [
         {
           "code": "PARTIAL_DESIGN",
@@ -3576,22 +3568,6 @@
           "owner": "UX",
           "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
           "disposition": "RECLASSIFIED"
-        },
-        {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "EXTERNAL_GATE"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "EXTERNAL_GATE"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -4384,11 +4360,19 @@
             {
               "size": "M",
               "complexity": 4,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "Owner decision OD-2026-10-08-CS6 places the existing authenticated route/session boundary in Release 1 implementation scope after its declared gates; no new route or dashboard surface is authorized.",
+                "sources": [".ai/backlog.json#CS-6", "docs/OWNER-DECISIONS-2026-10-08.md#CS-6"]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -4407,8 +4391,8 @@
     {
       "ticketId": "CS-7",
       "primaryEpicId": "EPIC-PLATFORM",
-      "readiness": "IMPLEMENTATION_READY",
-      "reviewState": "APPROVED",
+      "readiness": "INCOMPLETE",
+      "reviewState": "DRAFT",
       "gaps": [
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -4416,7 +4400,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "EXTERNAL_GATE"
+          "disposition": "RESOLVED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -4643,7 +4627,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "AC3's future refusal demonstration must observe the real require-ci -> gate -> deploy conditions in an isolated non-shipping hosted harness, with a paired successful control and zero secret/SSH/shipping calls. This harness is not equivalent to a broken-main production dispatch; Release Manager/product owner must explicitly accept that safe replacement for the frozen literal procedure before closure.",
+              "requirement": "AC3's future refusal demonstration must observe the real require-ci -> gate -> deploy conditions in an isolated non-shipping hosted harness, with a paired successful control and zero secret/SSH/shipping calls. The owner-approved harness is the safe semantic replacement for the frozen literal broken-main procedure; it remains future evidence and is not claimed executed.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -5058,7 +5042,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Keep AC3 unaccepted until the owner/Release Manager accepts a source-hash-bound hosted non-shipping harness as a safe substitute for deliberately pushing broken main. If not accepted, preserve the original AC as unresolved; never bypass branch protection or dispatch production to test refusal.",
+              "requirement": "Keep AC3 unexecuted until the approved source-hash-bound hosted non-shipping harness is run; the owner decision resolves the semantic substitution, but it does not provide hosted evidence. Never bypass branch protection or dispatch production to test refusal.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -5099,7 +5083,7 @@
               "actions": []
             },
             {
-              "requirement": "OWNER/RELEASE MANAGER DECISION: the frozen AC3 literally requires pushing a deliberately failing commit and observing deploy refusal, while the approved deployment contract is manual, main-only, protected and fail-closed. Do not bypass branch protection or push broken main. Owner must either approve an isolated non-shipping hosted harness derived from the real workflow DAG as the replacement evidence, or later authorize a safe AC wording/registry change. Until then AC3 remains unresolved.",
+              "requirement": "OWNER_DECISION_RESOLVED: the frozen AC3 literal procedure is semantically replaced by the approved isolated non-shipping hosted harness derived from the real workflow DAG. Do not bypass branch protection or push broken main; the harness remains unexecuted future evidence.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
@@ -8708,22 +8692,6 @@
           "disposition": "OPEN"
         },
         {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
-        },
-        {
           "code": "EXACT_AC_TEST_BINDING",
           "section": "testStrategy",
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
@@ -9502,11 +9470,19 @@
             {
               "size": "M",
               "complexity": 2,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "Owner decision OD-2026-10-08-CS13 makes the shared loading/error/empty contract a Release 1 quality baseline for applicable authenticated routes; implementation remains Phase 4 work after declared gates.",
+                "sources": [".ai/backlog.json#CS-13", "docs/OWNER-DECISIONS-2026-10-08.md#CS-13"]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -51615,8 +51591,8 @@
     {
       "ticketId": "CS-81",
       "primaryEpicId": "EPIC-DOMAIN",
-      "readiness": "IMPLEMENTATION_READY",
-      "reviewState": "APPROVED",
+      "readiness": "INCOMPLETE",
+      "reviewState": "DRAFT",
       "gaps": [
         {
           "code": "MISSING_ARCHITECTURE_ASSESSMENT",
@@ -51639,7 +51615,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OWNER_DECISION_REQUIRED"
+          "disposition": "RESOLVED"
         },
         {
           "code": "RELEASE_STATE_UNSPECIFIED",
@@ -51647,7 +51623,7 @@
           "reason": "Source ticket has no release/HOLD activation classification.",
           "owner": "Product owner / release reviewer",
           "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OWNER_DECISION_REQUIRED"
+          "disposition": "RESOLVED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -51684,7 +51660,7 @@
           "requirements": [
             "isRefusedCodePoint refuses 0x200b-0x200f, which contains U+200C ZWNJ and U+200D ZWJ. Those are not decoration - Indic, Arabic and Persian scripts need them for correct orthography. A Hindi job title using ZWNJ to suppress a conjunct ligature has that joiner silently removed, changing the word. On an India-focused product this is plausible real input, not a hypothetical.",
             {
-              "requirement": "The source acceptance criteria require a context-sensitive orthographic joiner policy and explicitly call it a product/security design decision. Current code implements an allow rule for U+200C/U+200D only between letters/marks assigned to the same script in a local list; resume and matching consumers intentionally have different outcomes. The code and tests prove implementation behavior, but no approved owner record was found that establishes this precise Unicode policy as the product decision.",
+              "requirement": "The source acceptance criteria require a context-sensitive orthographic joiner policy and explicitly call it a product/security design decision. The owner-approved contract adopts the current repository-defined allow rule for U+200C/U+200D between letters/marks assigned to the same script in the local matrix; resume and matching consumers intentionally have different outcomes. The exact matrix is approved without broadening it.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -51705,7 +51681,7 @@
           "requirements": [
             "isRefusedCodePoint refuses 0x200b-0x200f, which contains U+200C ZWNJ and U+200D ZWJ. Those are not decoration - Indic, Arabic and Persian scripts need them for correct orthography. A Hindi job title using ZWNJ to suppress a conjunct ligature has that joiner silently removed, changing the word. On an India-focused product this is plausible real input, not a hypothetical.",
             {
-              "requirement": "Prevent both silent loss of legitimate resume titles and silent alteration of stored match explanations while retaining the anti-spoofing refusal boundary. A code implementation or historical green run is not a substitute for explicit approval of the accepted contexts/scripts.",
+              "requirement": "Prevent both silent loss of legitimate resume titles and silent alteration of stored match explanations while retaining the anti-spoofing refusal boundary under the owner-approved context matrix.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -51749,7 +51725,7 @@
             "Both affected paths are addressed with their different behaviours stated: resume REJECTS a title segment containing these, and matching NEUTRALISES them - one drops legitimate input, the other mangles stored evidence",
             "The spoofing rationale that put these characters in the refusal set is preserved and cited, so the change reads as a narrowing of an over-broad rule rather than a removal of a control",
             {
-              "requirement": "Specify a centrally shared context decision and preserve separate consumer behavior: resume extraction rejects a title segment when a joiner is refused; matching evidence neutralizes refused joiners without claiming that raw resume or candidate text is otherwise verified. The exact set of scripts/contexts remains owner-approved policy, not an agent inference.",
+              "requirement": "Preserve the centrally approved context decision and separate consumer behavior: resume extraction rejects a title segment when a joiner is refused; matching evidence neutralizes refused joiners without claiming that raw resume or candidate text is otherwise verified. The exact scripts/contexts are the current repository matrix and must not be broadened.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -52157,7 +52133,7 @@
                   "reviewStatus": "REVIEWED",
                   "type": "MANUAL_PRODUCT",
                   "preconditions": "The security rationale is traceable to an authoritative reference and the adopted context policy has not removed the anti-spoofing control wholesale.",
-                  "setup": "Inspect the existing shared evidence-text source comments, security documentation, original CS-81 evidence and Unicode Standard, Chapter 23.2 (Layout Controls), together with docs/SECURITY.md#input-validation-and-privacy as the repository security boundary; the final owner decision must cite the exact adopted subsection and retain the hostile-context negative case.",
+                  "setup": "Inspect the existing shared evidence-text source comments, security documentation, original CS-81 evidence and Unicode Standard, Chapter 23.2 (Layout Controls), together with docs/SECURITY.md#input-validation-and-privacy as the repository security boundary; the owner-approved current repository matrix is the adopted product policy and retains the hostile-context negative case.",
                   "fixtureOrData": "Public security/design rationale and synthetic Unicode examples only.",
                   "action": "Check that the final decision/specification cites why joiners were restricted and distinguishes a narrowly contextual allowance from removal of the spoofing safeguard.",
                   "procedure": "Verify the citation resolves to the authoritative source, supports the stated restriction/context claim, and is preserved in the decision/spec; verify corresponding hostile placement remains a negative test case.",
@@ -52266,7 +52242,7 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "Obtain explicit Product/Security approval for allowed scripts and contexts and a named implementation owner before modifying the policy.",
+              "requirement": "Preserve the owner-approved current matrix and require Product/Security review of any future implementation change; do not modify the script list or normalization policy by inference.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -52300,7 +52276,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "OWNER_DECISION_REQUIRED: approve the exact allowed character contexts/scripts for U+200C and U+200D, and whether the current shared helper's same-script letters/marks rule is the intended product policy. Current code and historical test evidence are not that approval. The ticket has no authoritative release target or activation/HOLD classification. The source does not assign a named implementation owner; Product/Security must designate one before execution, while QA and the independent reviewer remain review roles rather than assumed assignees.",
+              "requirement": "OWNER_DECISION_RESOLVED: the current repository-defined context-aware U+200C/U+200D matrix is approved without broadening. Future implementation evidence must prove preservation for approved contexts and refusal for unsupported/isolated contexts; the ticket remains specification-only and future multilingual derivation remains out of scope.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -87866,12 +87842,12 @@
               "sourceMapping": {
                 "existingEndpoints": [],
                 "sourceEvidence": "apps/api/src/app.ts; packages/core/src/schema.ts; apps/web/src/lib/api.ts",
-                "missingRequirements": [
-                  "Define bounded consent-scoped data/actions before capability exposure; no corresponding general endpoint is implied."
-                ],
+                "missingRequirements": [],
                 "authorization": "Session-derived ownership; no client-selected owner.",
                 "readWrite": "No API implied; missing operations require separately approved domain contracts.",
-                "uiOnly": false
+                "uiOnly": true,
+                "unknownContracts": [],
+                "plannedPersistenceBoundary": "No current search endpoint or persistence capability is claimed. A future registered search contract is a prerequisite; this handoff remains unavailable/default-off until that contract is approved."
               },
               "registrationAuthority": "apps/api/src/app.ts",
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
@@ -88735,12 +88711,12 @@
               "sourceMapping": {
                 "existingEndpoints": [],
                 "sourceEvidence": "apps/api/src/app.ts; packages/core/src/schema.ts; apps/web/src/lib/api.ts",
-                "missingRequirements": [
-                  "Define bounded consent-scoped data/actions before capability exposure; no corresponding general endpoint is implied."
-                ],
+                "missingRequirements": [],
                 "authorization": "Session-derived ownership; no client-selected owner.",
                 "readWrite": "No API implied; missing operations require separately approved domain contracts.",
-                "uiOnly": false
+                "uiOnly": true,
+                "unknownContracts": [],
+                "plannedPersistenceBoundary": "No current notification endpoint or persistence capability is claimed. A future registered notification contract is a prerequisite; this handoff remains unavailable/default-off until that contract is approved."
               },
               "registrationAuthority": "apps/api/src/app.ts",
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",

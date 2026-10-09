@@ -1,6 +1,6 @@
 # CS-4 — Release publishes a stale version string when a version file is added
 
-Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -743,11 +743,19 @@ Content-reviewed specification; this does not assert implementation or execution
     {
       "size": "S",
       "complexity": 1,
-      "releaseTarget": null,
-      "releaseState": "UNSPECIFIED",
+      "releaseTarget": "R1",
+      "releaseState": "ACTIVE_R1",
+      "sourceReleaseTarget": null,
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "R1",
+        "effectiveReleaseState": "ACTIVE_R1",
+        "deliveryMode": "IMPLEMENT_NOW",
+        "rationale": "Owner decision OD-2026-10-08-CS4 places the publication helper in Release 1 implementation scope after its declared gates; this does not authorize execution or publication in Phase 3.25.",
+        "sources": [".ai/backlog.json#CS-4", "docs/OWNER-DECISIONS-2026-10-08.md#CS-4"]
+      },
       "sourceDisposition": "ACTIVE_R1",
       "deferredDecision": null,
-      "deliveryMode": "UNDECIDED",
+      "deliveryMode": "IMPLEMENT_NOW",
       "featureFlag": null,
       "holdReason": null,
       "implementationOrder": null,
@@ -761,8 +769,6 @@ Content-reviewed specification; this does not assert implementation or execution
 
 ## Specification gate history
 
-| Code                      | Disposition   | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_TARGET_UNDECIDED  | EXTERNAL_GATE | Source registry has no approved release assignment.                                                                      | Product owner                    | Explicit release assignment or owner-approved future-release disposition.                                |
-| RELEASE_STATE_UNSPECIFIED | EXTERNAL_GATE | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED      | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                  | Disposition | Original reason                                                                                                          | Owner | Evidence                                                                                                 |
+| --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
+| EXACT_AC_TEST_BINDING | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

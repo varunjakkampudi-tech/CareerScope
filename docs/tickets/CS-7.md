@@ -1,6 +1,6 @@
 # CS-7 — Deploy can ship a revision that continuous integration rejected
 
-Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -255,7 +255,7 @@ Content-reviewed specification; this does not assert implementation or execution
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "AC3's future refusal demonstration must observe the real require-ci -> gate -> deploy conditions in an isolated non-shipping hosted harness, with a paired successful control and zero secret/SSH/shipping calls. This harness is not equivalent to a broken-main production dispatch; Release Manager/product owner must explicitly accept that safe replacement for the frozen literal procedure before closure.",
+      "requirement": "AC3's future refusal demonstration must observe the real require-ci -> gate -> deploy conditions in an isolated non-shipping hosted harness, with a paired successful control and zero secret/SSH/shipping calls. The owner-approved harness is the safe semantic replacement for the frozen literal broken-main procedure; it remains future evidence and is not claimed executed.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -760,7 +760,7 @@ Content-reviewed specification; this does not assert implementation or execution
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
-      "requirement": "Keep AC3 unaccepted until the owner/Release Manager accepts a source-hash-bound hosted non-shipping harness as a safe substitute for deliberately pushing broken main. If not accepted, preserve the original AC as unresolved; never bypass branch protection or dispatch production to test refusal.",
+      "requirement": "Keep AC3 unexecuted until the approved source-hash-bound hosted non-shipping harness is run; the owner decision resolves the semantic substitution, but it does not provide hosted evidence. Never bypass branch protection or dispatch production to test refusal.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     }
@@ -811,7 +811,7 @@ Content-reviewed specification; this does not assert implementation or execution
       "actions": []
     },
     {
-      "requirement": "OWNER/RELEASE MANAGER DECISION: the frozen AC3 literally requires pushing a deliberately failing commit and observing deploy refusal, while the approved deployment contract is manual, main-only, protected and fail-closed. Do not bypass branch protection or push broken main. Owner must either approve an isolated non-shipping hosted harness derived from the real workflow DAG as the replacement evidence, or later authorize a safe AC wording/registry change. Until then AC3 remains unresolved.",
+      "requirement": "OWNER_DECISION_RESOLVED: the frozen AC3 literal procedure is semantically replaced by the approved isolated non-shipping hosted harness derived from the real workflow DAG. Do not bypass branch protection or push broken main; the harness remains unexecuted future evidence.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
@@ -899,7 +899,7 @@ Content-reviewed specification; this does not assert implementation or execution
 
 ## Specification gate history
 
-| Code                      | Disposition   | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| RELEASE_STATE_UNSPECIFIED | EXTERNAL_GATE | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED      | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                      | Disposition | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| RELEASE_STATE_UNSPECIFIED | RESOLVED    | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
+| EXACT_AC_TEST_BINDING     | RESOLVED    | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |

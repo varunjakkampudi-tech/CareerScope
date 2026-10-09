@@ -1,6 +1,6 @@
 # CS-6 — Frontend route architecture and auth boundary
 
-Content-reviewed specification; this does not assert implementation or execution evidence. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: APPROVED; readiness: IMPLEMENTATION_READY.
+Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification-policy.json; design: design/DESIGN-INDEX.json. Do not edit this document. Specification state: DRAFT; readiness: INCOMPLETE.
 
 ## 1. identity
 
@@ -936,11 +936,19 @@ Content-reviewed specification; this does not assert implementation or execution
     {
       "size": "M",
       "complexity": 4,
-      "releaseTarget": null,
-      "releaseState": "UNSPECIFIED",
+      "releaseTarget": "R1",
+      "releaseState": "ACTIVE_R1",
+      "sourceReleaseTarget": null,
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "R1",
+        "effectiveReleaseState": "ACTIVE_R1",
+        "deliveryMode": "IMPLEMENT_NOW",
+        "rationale": "Owner decision OD-2026-10-08-CS6 places the existing authenticated route/session boundary in Release 1 implementation scope after its declared gates; no new route or dashboard surface is authorized.",
+        "sources": [".ai/backlog.json#CS-6", "docs/OWNER-DECISIONS-2026-10-08.md#CS-6"]
+      },
       "sourceDisposition": "ACTIVE_R1",
       "deferredDecision": null,
-      "deliveryMode": "UNDECIDED",
+      "deliveryMode": "IMPLEMENT_NOW",
       "featureFlag": null,
       "holdReason": null,
       "implementationOrder": null,
@@ -958,9 +966,7 @@ Content-reviewed specification; this does not assert implementation or execution
 
 ## Specification gate history
 
-| Code                      | Disposition   | Original reason                                                                                                          | Owner                            | Evidence                                                                                                 |
-| ------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| PARTIAL_DESIGN            | RECLASSIFIED  | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.            | UX                               | Ticket-specific state and viewport mapping or independently approved design N/A rationale.               |
-| RELEASE_TARGET_UNDECIDED  | EXTERNAL_GATE | Source registry has no approved release assignment.                                                                      | Product owner                    | Explicit release assignment or owner-approved future-release disposition.                                |
-| RELEASE_STATE_UNSPECIFIED | EXTERNAL_GATE | Source ticket has no release/HOLD activation classification.                                                             | Product owner / release reviewer | Approved activation classification; historical package versions are not release authorization.           |
-| EXACT_AC_TEST_BINDING     | RESOLVED      | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA                               | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
+| Code                  | Disposition  | Original reason                                                                                                          | Owner | Evidence                                                                                                 |
+| --------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
+| PARTIAL_DESIGN        | RECLASSIFIED | References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.            | UX    | Ticket-specific state and viewport mapping or independently approved design N/A rationale.               |
+| EXACT_AC_TEST_BINDING | RESOLVED     | Every criterion has a suggested verification method, but current test assertions have not been individually bound to it. | QA    | Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC. |
