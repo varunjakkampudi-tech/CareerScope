@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "9cf98719de43eea63065cac38eed52c6140175df9eecc319e1d5de996296be11",
+    ".ai/ticket-specification-policy.json": "8c98501fa51f5d1eeb1f00875af95e3b3f35951ca61f4d4ff3cfbca4bc395acc",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -68,8 +68,8 @@
     "suggestedVerificationMappingPercent": 100,
     "exactReviewedTraceabilityPercent": 34.98896247240618,
     "findingsCount": 643,
-    "openFindingCount": 316,
-    "resolvedFindingCount": 181,
+    "openFindingCount": 312,
+    "resolvedFindingCount": 185,
     "reclassifiedFindingCount": 29
   },
   "findings": [
@@ -4753,7 +4753,14 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All four CS-121 criteria have exact planned component, visual/browser, accessibility/state and conditional-release procedures with redacted fixtures and no fabricated route or runtime evidence.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-121-AC1",
+        ".ai/ticket-specification-policy.json#CS-121-AC2",
+        ".ai/ticket-specification-policy.json#CS-121-AC3",
+        ".ai/ticket-specification-policy.json#CS-121-AC4"
+      ]
     },
     {
       "ticketId": "CS-121",
@@ -4762,7 +4769,13 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The Phase 0 States Feedback and Component States references, CS-105/CS-106 ownership, UNKNOWN route boundary, state taxonomy, security redaction and responsive/accessibility contract are ticket-specific without inventing a runtime surface.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-121",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/08-08-states-feedback.png",
+        "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/12-12-component-states-design-system.png"
+      ]
     },
     {
       "ticketId": "CS-122",
@@ -4802,7 +4815,14 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All four CS-123 criteria have exact planned component, visual/browser, accessibility/state and conditional-release procedures with truthful system-state fixtures and negative cases.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-123-AC1",
+        ".ai/ticket-specification-policy.json#CS-123-AC2",
+        ".ai/ticket-specification-policy.json#CS-123-AC3",
+        ".ai/ticket-specification-policy.json#CS-123-AC4"
+      ]
     },
     {
       "ticketId": "CS-123",
@@ -4811,7 +4831,13 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The Phase 0 System State Pages references, CS-106 shared ownership, UNKNOWN route/no-endpoint boundary, state taxonomy, redaction and responsive/accessibility behavior are ticket-specific without inventing a route or recovery capability.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-123",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/12-12-system-state-pages.png",
+        "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/13-13-system-state-pages.png"
+      ]
     },
     {
       "ticketId": "CS-124",

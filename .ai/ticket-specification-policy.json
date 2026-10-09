@@ -2034,6 +2034,7 @@
     },
     "CS-121": {
       "reviewStatus": "DRAFT",
+      "authority": "SOURCE_BACKED_TECHNICAL_CONSTRAINT",
       "sourceReferences": [
         ".ai/backlog.json#CS-121",
         "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/08-08-states-feedback.png",
@@ -2116,6 +2117,55 @@
         "Define deterministic supported, unsupported, malformed and unavailable locale fixtures and the exact Intl formatting seam without inventing translations or persistence.",
         "Map each state to shared components, including keyboard/focus/error announcements, redaction and responsive long-string behavior.",
         "Run the planned component, browser, accessibility and visual procedures with named references and keep future/manual/provider evidence separate from specification approval."
+      ]
+    },
+    "CS-123": {
+      "reviewStatus": "DRAFT",
+      "authority": "SOURCE_BACKED_TECHNICAL_CONSTRAINT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-123",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/12-12-system-state-pages.png",
+        "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/13-13-system-state-pages.png",
+        "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+        ".ai/ticket-specification-policy.json#CS-123-AC1",
+        ".ai/ticket-specification-policy.json#CS-123-AC2",
+        ".ai/ticket-specification-policy.json#CS-123-AC3",
+        ".ai/ticket-specification-policy.json#CS-123-AC4"
+      ],
+      "apiContractSourceMappingOverride": {
+        "uiOnly": true,
+        "missingRequirements": [],
+        "unknownContracts": [],
+        "plannedPersistenceBoundary": "No current system-state endpoint or persistence capability is claimed. Shared components consume registered caller/server state; route ownership remains UNKNOWN until a separately approved surface exists."
+      },
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Treat CS-123 as a shared system-state handoff, not as a new route or backend. Render only registered server/caller state or explicit empty, unavailable, denied and expired-session states; never use illustrative production data.",
+          "Keep route ownership UNKNOWN and do not invent candidate/admin navigation, persistence, recovery success or a new API. Missing or disabled contracts remain unavailable and do not issue unauthorized requests.",
+          "System-state variants must remain distinct: pending/loading is not empty, error is not success, and unauthorized/expired state must not render protected child content."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE / SHARED_UI. Reuse CS-106 primitives and the canonical error/state model; do not introduce a parallel state system or route-specific ownership shortcut."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Future owning surfaces derive ownership from the server session, validate state identifiers, redact tokens/raw responses/private data, and fail closed on denied or expired sessions."
+        ],
+        "accessibility": [
+          "Use semantic status/alert/region structures, accessible names, visible focus, keyboard operation, error/status announcements, focus preservation/restoration and reduced motion; manual screen-reader judgment remains future evidence."
+        ],
+        "responsive": [
+          "At 320/390/768/1024/1440 CSS px, state messages and actions wrap without ordinary horizontal overflow, preserve readable hierarchy and remain touch-target sized."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: the four exact bindings, both Phase 0 system-state references, CS-106 ownership, UNKNOWN route/no-endpoint boundary, truthful state taxonomy, security redaction, accessibility/responsive rules and fail-closed release semantics are complete; no runtime or executed evidence is claimed.",
+          "Future implementation DoD: the registered owning surface renders the applicable states with browser/axe/visual/manual evidence and never claims unavailable recovery or protected content."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Read both Phase 0 System State Pages references and CS-106 contracts; preserve UNKNOWN route ownership.",
+        "Define deterministic pending, empty, error, denied, expired and unavailable fixtures without inventing routes, persistence or recovery outcomes.",
+        "Map each state to shared primitives with redaction, focus/keyboard, responsive and reduced-motion behavior.",
+        "Run planned component, browser, accessibility and visual procedures and keep future/manual/hosted evidence separate from specification approval."
       ]
     },
     "CS-124": {
@@ -5620,6 +5670,14 @@
     "CS-128": {
       "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All four CS-128 criteria have exact planned component, visual, accessibility/state and conditional-release procedures with safe redacted fixtures and negative cases.","sources":[".ai/ticket-specification-policy.json#CS-128-AC1",".ai/ticket-specification-policy.json#CS-128-AC2",".ai/ticket-specification-policy.json#CS-128-AC3",".ai/ticket-specification-policy.json#CS-128-AC4"]},
       "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The Phase 0 Error Loading Empty Component States reference, shared CS-106 ownership, state taxonomy, redaction and responsive/accessibility behavior are ticket-specific without inventing a route or endpoint.","sources":[".ai/ticket-specification-policy.json#ticketRefinements.CS-128","design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/18-18-error-loading-empty-component-states.png"]}
+    },
+    "CS-121": {
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All four CS-121 criteria have exact planned component, visual/browser, accessibility/state and conditional-release procedures with redacted fixtures and no fabricated route or runtime evidence.","sources":[".ai/ticket-specification-policy.json#CS-121-AC1",".ai/ticket-specification-policy.json#CS-121-AC2",".ai/ticket-specification-policy.json#CS-121-AC3",".ai/ticket-specification-policy.json#CS-121-AC4"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The Phase 0 States Feedback and Component States references, CS-105/CS-106 ownership, UNKNOWN route boundary, state taxonomy, security redaction and responsive/accessibility contract are ticket-specific without inventing a runtime surface.","sources":[".ai/ticket-specification-policy.json#ticketRefinements.CS-121","design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/08-08-states-feedback.png","design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/12-12-component-states-design-system.png"]}
+    },
+    "CS-123": {
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All four CS-123 criteria have exact planned component, visual/browser, accessibility/state and conditional-release procedures with truthful system-state fixtures and negative cases.","sources":[".ai/ticket-specification-policy.json#CS-123-AC1",".ai/ticket-specification-policy.json#CS-123-AC2",".ai/ticket-specification-policy.json#CS-123-AC3",".ai/ticket-specification-policy.json#CS-123-AC4"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The Phase 0 System State Pages references, CS-106 shared ownership, UNKNOWN route/no-endpoint boundary, state taxonomy, redaction and responsive/accessibility behavior are ticket-specific without inventing a route or recovery capability.","sources":[".ai/ticket-specification-policy.json#ticketRefinements.CS-123","design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/12-12-system-state-pages.png","design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/13-13-system-state-pages.png"]}
     },
     "CS-122": {
       "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All four CS-122 criteria have exact planned component, visual/browser, accessibility/state and conditional-release procedures with supported/unsupported locale fixtures, negative cases and no fabricated translation or runtime evidence.","sources":[".ai/ticket-specification-policy.json#CS-122-AC1",".ai/ticket-specification-policy.json#CS-122-AC2",".ai/ticket-specification-policy.json#CS-122-AC3",".ai/ticket-specification-policy.json#CS-122-AC4"]},
