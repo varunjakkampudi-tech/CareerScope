@@ -871,6 +871,11 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       }
     }
     if (refinement) {
+      const refinementAuthority =
+        refinement.authority ??
+        (decision
+          ? 'OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING'
+          : 'EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR');
       for (const [section, requirements] of Object.entries(refinement.additionalRequirements)) {
         if (section === 'sectionTextReplacements') continue;
         sections[section] = present(
@@ -879,9 +884,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
             ...requirements.map((requirement) => ({
               requirement,
               reviewStatus: refinement.reviewStatus,
-              authority: decision
-                ? 'OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING'
-                : 'EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR',
+              authority: refinementAuthority,
             })),
           ],
           [...new Set([...(sections[section].sources ?? []), ...refinement.sourceReferences])],
@@ -892,9 +895,7 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
           refinement.implementationChecklistOverride.map((requirement) => ({
             requirement,
             reviewStatus: refinement.reviewStatus,
-            authority: decision
-              ? 'OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING'
-              : 'EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR',
+            authority: refinementAuthority,
           })),
           [source, ...refinement.sourceReferences],
         );
