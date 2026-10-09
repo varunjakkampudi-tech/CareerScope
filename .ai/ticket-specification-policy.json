@@ -2929,6 +2929,17 @@
     },
     "CS-13": {
       "reviewStatus": "DRAFT",
+      "designDisposition": {
+        "status": "DESIGN_PARTIAL",
+        "reason": "Phase 0 provides the canonical global UX system-state board, foundations board, shared-state component contract and responsive/accessibility contracts. CS-13 is a shared authenticated-state behavior contract rather than a new route or bespoke screen; loading, filtered-empty, nothing-yet and error/retry micro-states are derived from those approved shared contracts. No unsupported visual surface is being invented. Future implementation still requires the named browser, accessibility and visual verification evidence in this specification.",
+        "references": [
+          "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/00-full-reference-board.png",
+          "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/README.md",
+          "design/canonical/foundations/careerscope-final-ux-foundations-reference-board.png",
+          "docs/DESIGN-IMPLEMENTATION-MAP.md"
+        ],
+        "blocking": false
+      },
       "deliveryClassification": {
         "effectiveReleaseTarget": "R1",
         "effectiveReleaseState": "ACTIVE_R1",
@@ -6195,6 +6206,19 @@
         "sources": [
           "docs/OWNER-DECISIONS-2026-10-08.md#CS-2",
           ".ai/ticket-specification-policy.json#ticketRefinements.CS-2"
+        ]
+      }
+    },
+    "CS-13": {
+      "PARTIAL_DESIGN": {
+        "disposition": "RECLASSIFIED",
+        "rationale": "Phase 0 global UX system-state and foundations references establish the shared loading, empty, error, accessibility and responsive contracts. CS-13 has no bespoke route or new visual surface; its microstates are derived from those approved shared contracts. The prior generic partial-design warning is therefore non-blocking, while future browser, accessibility and visual evidence remains required and is not claimed here.",
+        "sources": [
+          "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/00-full-reference-board.png",
+          "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/README.md",
+          "design/canonical/foundations/careerscope-final-ux-foundations-reference-board.png",
+          "docs/DESIGN-IMPLEMENTATION-MAP.md",
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-13.designDisposition"
         ]
       }
     },
@@ -17767,25 +17791,41 @@
     },
     "CS-13-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "b41d1da82e0a04845761707e1da0a4a0129ead1161196fb72f2ecf7901f5185a"
     },
     "CS-13-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "8458021052a51243260c7ca0b52238a5e2d6752a3f67112e3f6f6074b6db6114"
     },
     "CS-13-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "f847bbafe8096c6a0c6b15a965051acdb67bc4763cf66a6cec81482c4c3e2f6f"
     },
     "CS-13-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "26f1fcfe50daa1429f1d84141c40bcf2849a08b7d81d8652b79d6df285821d99"
     },
@@ -21370,6 +21410,16 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "f9faaf651698a4e49728b6746ac333be1a4ee28374e45690ade45c11ac267149"
+    },
+    "CS-13": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "fb5eb781e72706fcb01329721e1bd663b5f8f9fbca998c6ffafbb8820d6187d6"
     }
   },
   "generatedArtifactCheckpoint": {
