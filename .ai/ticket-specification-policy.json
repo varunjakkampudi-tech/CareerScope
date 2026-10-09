@@ -11764,7 +11764,7 @@
       {
         "reviewer": "Infrastructure, Security and release owner",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_CONTRACT",
         "preconditions": "The owner-approved fixed-main/protected-production decision is recorded; Pages' separate explicit ref/environment contract is tested independently; do not modify workflows or execute deployment.",
         "setup": "Inspect deploy.yml and the triggered CI gate using synthetic YAML. Prepare fixed-main/protected-production fixtures plus malformed caller-ref/environment injection and moving-main cases.",
@@ -19235,7 +19235,11 @@
     },
     "CS-82-AC1": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "a1e99ae78163eb7cad1a729c62c0b6db6880e6c5ac98f163dea412eeeb17a4d4"
     },
@@ -19299,19 +19303,31 @@
     },
     "CS-82-AC2": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "cd2b2deb6e8be3832e7d1c73cee04eaa1a75c6a11931cd69c467309f42f873b9"
     },
     "CS-82-AC3": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "bdc7519f6a14b2e9549493f1ef2aff4e05d186e4b50d7cbb923b6f6c6a910f8f"
     },
     "CS-82-AC4": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "55544293effe94f74128b9dc144f6f4bd4336436ab7378ccba9d3f2a3fae0cfb"
     },
@@ -20799,9 +20815,13 @@
     },
     "CS-82": {
       "verdict": "APPROVED",
-      "reviewer": "/root/phase325_review",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
-      "contentHash": "d068b76ac1fed99c8bbd1c8044514dec4a7e783479ee5938b0106ef93ec8a35d"
+      "contentHash": "e607e02736daacc97120c052c266275bb93ca951f89bd94101d1e7d7a7cd8075"
     },
     "CS-106": {
       "verdict": "APPROVED",

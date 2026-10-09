@@ -47,7 +47,6 @@ const inputs = loadInputs(root);
 inputs.policy = rawPolicy;
 const model = buildCatalog(inputs);
 const reportPath = path.join(root, PORTABLE_REVIEWER_POLICY.artifact);
-const report = fs.readFileSync(reportPath, 'utf8');
 const receiptLines = [];
 
 for (const ticketId of ticketIds) {
@@ -57,7 +56,6 @@ for (const ticketId of ticketIds) {
   if (spec.gaps.some((gap) => gap.disposition === 'OPEN'))
     throw new Error(`open specification gap ${ticketId}`);
   const expected = expectedHashes[ticketId];
-  const currentSpecHash = specificationDigest(spec);
   const generatedPath = path.join(root, 'docs/tickets', `${ticketId}.md`);
   const currentGeneratedFileHash = createHash('sha256')
     .update(fs.readFileSync(generatedPath))
