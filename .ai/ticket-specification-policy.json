@@ -6596,6 +6596,356 @@
         "CS-147-AC3": { "0": { "reviewStatus": "REVIEWED" } },
         "CS-147-AC4": { "0": { "reviewStatus": "REVIEWED" } }
       }
+    },
+    "CS-133": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-133",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png",
+        "design/canonical/marketing/careerscope-public-home.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "Home is an approved public design handoff, but the current repository does not prove a production route, truthful metadata/content rendering or cross-browser acceptance. The specification must preserve public/private route separation without inventing claims."
+        ],
+        "functionalRequirements": [
+          "Define the planned public route / as a separate public template; root currently owns sign-in, so authenticated and public route boundaries must not leak private content.",
+          "Publish only approved content and provenance. Unknown metrics, testimonials, partnerships, counts and ratings remain absent or explicitly unavailable.",
+          "Use canonical design structure and shared primitives; loading, empty and error states preserve the public information architecture and never expose private candidate data.",
+          "Authenticated/private workspace remains noindex and no user data enters public metadata, generated pages, previews or structured data."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE public route composition. Reuse the Next.js app router, shared design tokens, metadata helpers and existing same-origin client. Dependencies CS-106, CS-96, CS-109 remain prerequisites; no parallel frontend is introduced."
+        ],
+        "apiContract": [
+          "PLANNED_CONTRACT: the public route must use only registered content/provenance sources. If a claim has no authoritative source, render it unavailable or omit it; do not invent an endpoint, CMS, testimonial or analytics feed.",
+          "Public responses must not include authenticated candidate data; private APIs remain session-authorized and are not repurposed for marketing content."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no candidate or marketing persistence change is authorized by this handoff specification. Any content fixture is isolated and synthetic."
+        ],
+        "accessibility": [
+          "Use one semantic main landmark, a logical heading hierarchy, descriptive link names, visible focus, keyboard traversal, reduced-motion support, contrast-compliant tokens and live-region status for loading/error where applicable. Manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the Phase 0 public responsive contract at 320, 390, 768, 1024 and 1440 CSS px; reflow without ordinary-content horizontal scrolling and preserve touch targets."
+        ],
+        "browsers": [
+          "Future visual and browser evidence runs Chromium, Firefox and WebKit at the named viewports. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "Public pages require truthful title, description, canonical, Open Graph and robots behavior. Authenticated/private data remains noindex and excluded from metadata/sitemap."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: PRIVACY_PII / INPUT_VALIDATION / AUTHORIZATION. Public content is allowlisted and provenance-backed; private session/profile/resume/application fields never enter the public response, cache or metadata. External links are validated and unsafe schemes rejected."
+        ],
+        "observability": [
+          "Use redacted request/correlation logging for route failures; never log private data, tokens or raw content payloads. Distinguish unavailable content from empty content."
+        ],
+        "manualExternalGates": [
+          "Future design, browser, axe, manual accessibility, SEO and UAT evidence remain release gates; no public deployment or publication is claimed in Phase 3.25."
+        ],
+        "implementationChecklist": [
+          "Confirm the / route boundary and map each visible Home element to the ordered/canonical references.",
+          "Create an approved-content/provenance matrix and omit unsupported claims rather than supplying placeholders.",
+          "Define loading/empty/error/noindex/private-boundary behavior and exact visual/browser/accessibility procedures.",
+          "Review metadata, external-link validation, responsive behavior and release authorization before implementation."
+        ],
+        "risksRecovery": [
+          "Unsupported public claims create trust and privacy risk. Recovery is to remove the unsupported field, fall back to explicit unavailable state and revert the unshipped route; no production migration is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All five source ACs have exact reviewed procedures for Home, the planned public route and private boundary are explicit, metadata/provenance/security/accessibility/responsive requirements are source-backed, no local finding remains and a current independent receipt exists."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-133-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-133-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-133-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-133-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-133-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-134": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-134",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png",
+        "design/canonical/marketing/careerscope-public-features.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "Features is an approved public design handoff, but the current repository does not prove a production route, truthful metadata/content rendering or cross-browser acceptance. The specification must preserve public/private route separation without inventing claims."
+        ],
+        "functionalRequirements": [
+          "Define the planned public route /features as a separate public template; root currently owns sign-in, so authenticated and public route boundaries must not leak private content.",
+          "Publish only approved content and provenance. Unknown metrics, testimonials, partnerships, counts and ratings remain absent or explicitly unavailable.",
+          "Use canonical design structure and shared primitives; loading, empty and error states preserve the public information architecture and never expose private candidate data.",
+          "Authenticated/private workspace remains noindex and no user data enters public metadata, generated pages, previews or structured data."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE public route composition. Reuse the Next.js app router, shared design tokens, metadata helpers and existing same-origin client. Dependencies CS-106, CS-96, CS-109 remain prerequisites; no parallel frontend is introduced."
+        ],
+        "apiContract": [
+          "PLANNED_CONTRACT: the public route must use only registered content/provenance sources. If a claim has no authoritative source, render it unavailable or omit it; do not invent an endpoint, CMS, testimonial or analytics feed.",
+          "Public responses must not include authenticated candidate data; private APIs remain session-authorized and are not repurposed for marketing content."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no candidate or marketing persistence change is authorized by this handoff specification. Any content fixture is isolated and synthetic."
+        ],
+        "accessibility": [
+          "Use one semantic main landmark, a logical heading hierarchy, descriptive link names, visible focus, keyboard traversal, reduced-motion support, contrast-compliant tokens and live-region status for loading/error where applicable. Manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the Phase 0 public responsive contract at 320, 390, 768, 1024 and 1440 CSS px; reflow without ordinary-content horizontal scrolling and preserve touch targets."
+        ],
+        "browsers": [
+          "Future visual and browser evidence runs Chromium, Firefox and WebKit at the named viewports. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "Public pages require truthful title, description, canonical, Open Graph and robots behavior. Authenticated/private data remains noindex and excluded from metadata/sitemap."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: PRIVACY_PII / INPUT_VALIDATION / AUTHORIZATION. Public content is allowlisted and provenance-backed; private session/profile/resume/application fields never enter the public response, cache or metadata. External links are validated and unsafe schemes rejected."
+        ],
+        "observability": [
+          "Use redacted request/correlation logging for route failures; never log private data, tokens or raw content payloads. Distinguish unavailable content from empty content."
+        ],
+        "manualExternalGates": [
+          "Future design, browser, axe, manual accessibility, SEO and UAT evidence remain release gates; no public deployment or publication is claimed in Phase 3.25."
+        ],
+        "implementationChecklist": [
+          "Confirm the /features route boundary and map each visible Features element to the ordered/canonical references.",
+          "Create an approved-content/provenance matrix and omit unsupported claims rather than supplying placeholders.",
+          "Define loading/empty/error/noindex/private-boundary behavior and exact visual/browser/accessibility procedures.",
+          "Review metadata, external-link validation, responsive behavior and release authorization before implementation."
+        ],
+        "risksRecovery": [
+          "Unsupported public claims create trust and privacy risk. Recovery is to remove the unsupported field, fall back to explicit unavailable state and revert the unshipped route; no production migration is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All five source ACs have exact reviewed procedures for Features, the planned public route and private boundary are explicit, metadata/provenance/security/accessibility/responsive requirements are source-backed, no local finding remains and a current independent receipt exists."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-134-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-134-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-134-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-134-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-134-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-135": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-135",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png",
+        "design/canonical/marketing/careerscope-public-how-it-works.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "How It Works is an approved public design handoff, but the current repository does not prove a production route, truthful metadata/content rendering or cross-browser acceptance. The specification must preserve public/private route separation without inventing claims."
+        ],
+        "functionalRequirements": [
+          "Define the planned public route /how-it-works as a separate public template; root currently owns sign-in, so authenticated and public route boundaries must not leak private content.",
+          "Publish only approved content and provenance. Unknown metrics, testimonials, partnerships, counts and ratings remain absent or explicitly unavailable.",
+          "Use canonical design structure and shared primitives; loading, empty and error states preserve the public information architecture and never expose private candidate data.",
+          "Authenticated/private workspace remains noindex and no user data enters public metadata, generated pages, previews or structured data."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE public route composition. Reuse the Next.js app router, shared design tokens, metadata helpers and existing same-origin client. Dependencies CS-106, CS-96, CS-109 remain prerequisites; no parallel frontend is introduced."
+        ],
+        "apiContract": [
+          "PLANNED_CONTRACT: the public route must use only registered content/provenance sources. If a claim has no authoritative source, render it unavailable or omit it; do not invent an endpoint, CMS, testimonial or analytics feed.",
+          "Public responses must not include authenticated candidate data; private APIs remain session-authorized and are not repurposed for marketing content."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no candidate or marketing persistence change is authorized by this handoff specification. Any content fixture is isolated and synthetic."
+        ],
+        "accessibility": [
+          "Use one semantic main landmark, a logical heading hierarchy, descriptive link names, visible focus, keyboard traversal, reduced-motion support, contrast-compliant tokens and live-region status for loading/error where applicable. Manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the Phase 0 public responsive contract at 320, 390, 768, 1024 and 1440 CSS px; reflow without ordinary-content horizontal scrolling and preserve touch targets."
+        ],
+        "browsers": [
+          "Future visual and browser evidence runs Chromium, Firefox and WebKit at the named viewports. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "Public pages require truthful title, description, canonical, Open Graph and robots behavior. Authenticated/private data remains noindex and excluded from metadata/sitemap."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: PRIVACY_PII / INPUT_VALIDATION / AUTHORIZATION. Public content is allowlisted and provenance-backed; private session/profile/resume/application fields never enter the public response, cache or metadata. External links are validated and unsafe schemes rejected."
+        ],
+        "observability": [
+          "Use redacted request/correlation logging for route failures; never log private data, tokens or raw content payloads. Distinguish unavailable content from empty content."
+        ],
+        "manualExternalGates": [
+          "Future design, browser, axe, manual accessibility, SEO and UAT evidence remain release gates; no public deployment or publication is claimed in Phase 3.25."
+        ],
+        "implementationChecklist": [
+          "Confirm the /how-it-works route boundary and map each visible How It Works element to the ordered/canonical references.",
+          "Create an approved-content/provenance matrix and omit unsupported claims rather than supplying placeholders.",
+          "Define loading/empty/error/noindex/private-boundary behavior and exact visual/browser/accessibility procedures.",
+          "Review metadata, external-link validation, responsive behavior and release authorization before implementation."
+        ],
+        "risksRecovery": [
+          "Unsupported public claims create trust and privacy risk. Recovery is to remove the unsupported field, fall back to explicit unavailable state and revert the unshipped route; no production migration is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All five source ACs have exact reviewed procedures for How It Works, the planned public route and private boundary are explicit, metadata/provenance/security/accessibility/responsive requirements are source-backed, no local finding remains and a current independent receipt exists."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-135-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-135-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-135-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-135-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-135-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-136": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-136",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png",
+        "design/canonical/marketing/careerscope-public-about.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "About is an approved public design handoff, but the current repository does not prove a production route, truthful metadata/content rendering or cross-browser acceptance. The specification must preserve public/private route separation without inventing claims."
+        ],
+        "functionalRequirements": [
+          "Define the planned public route /about as a separate public template; root currently owns sign-in, so authenticated and public route boundaries must not leak private content.",
+          "Publish only approved content and provenance. Unknown metrics, testimonials, partnerships, counts and ratings remain absent or explicitly unavailable.",
+          "Use canonical design structure and shared primitives; loading, empty and error states preserve the public information architecture and never expose private candidate data.",
+          "Authenticated/private workspace remains noindex and no user data enters public metadata, generated pages, previews or structured data."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE public route composition. Reuse the Next.js app router, shared design tokens, metadata helpers and existing same-origin client. Dependencies CS-106, CS-96, CS-109 remain prerequisites; no parallel frontend is introduced."
+        ],
+        "apiContract": [
+          "PLANNED_CONTRACT: the public route must use only registered content/provenance sources. If a claim has no authoritative source, render it unavailable or omit it; do not invent an endpoint, CMS, testimonial or analytics feed.",
+          "Public responses must not include authenticated candidate data; private APIs remain session-authorized and are not repurposed for marketing content."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no candidate or marketing persistence change is authorized by this handoff specification. Any content fixture is isolated and synthetic."
+        ],
+        "accessibility": [
+          "Use one semantic main landmark, a logical heading hierarchy, descriptive link names, visible focus, keyboard traversal, reduced-motion support, contrast-compliant tokens and live-region status for loading/error where applicable. Manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the Phase 0 public responsive contract at 320, 390, 768, 1024 and 1440 CSS px; reflow without ordinary-content horizontal scrolling and preserve touch targets."
+        ],
+        "browsers": [
+          "Future visual and browser evidence runs Chromium, Firefox and WebKit at the named viewports. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "Public pages require truthful title, description, canonical, Open Graph and robots behavior. Authenticated/private data remains noindex and excluded from metadata/sitemap."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: PRIVACY_PII / INPUT_VALIDATION / AUTHORIZATION. Public content is allowlisted and provenance-backed; private session/profile/resume/application fields never enter the public response, cache or metadata. External links are validated and unsafe schemes rejected."
+        ],
+        "observability": [
+          "Use redacted request/correlation logging for route failures; never log private data, tokens or raw content payloads. Distinguish unavailable content from empty content."
+        ],
+        "manualExternalGates": [
+          "Future design, browser, axe, manual accessibility, SEO and UAT evidence remain release gates; no public deployment or publication is claimed in Phase 3.25."
+        ],
+        "implementationChecklist": [
+          "Confirm the /about route boundary and map each visible About element to the ordered/canonical references.",
+          "Create an approved-content/provenance matrix and omit unsupported claims rather than supplying placeholders.",
+          "Define loading/empty/error/noindex/private-boundary behavior and exact visual/browser/accessibility procedures.",
+          "Review metadata, external-link validation, responsive behavior and release authorization before implementation."
+        ],
+        "risksRecovery": [
+          "Unsupported public claims create trust and privacy risk. Recovery is to remove the unsupported field, fall back to explicit unavailable state and revert the unshipped route; no production migration is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All five source ACs have exact reviewed procedures for About, the planned public route and private boundary are explicit, metadata/provenance/security/accessibility/responsive requirements are source-backed, no local finding remains and a current independent receipt exists."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-136-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-136-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-136-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-136-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-136-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-137": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-137",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png",
+        "design/canonical/marketing/careerscope-public-resources.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "Resources Blog is an approved public design handoff, but the current repository does not prove a production route, truthful metadata/content rendering or cross-browser acceptance. The specification must preserve public/private route separation without inventing claims."
+        ],
+        "functionalRequirements": [
+          "Define the planned public route /resources as a separate public template; root currently owns sign-in, so authenticated and public route boundaries must not leak private content.",
+          "Publish only approved content and provenance. Unknown metrics, testimonials, partnerships, counts and ratings remain absent or explicitly unavailable.",
+          "Use canonical design structure and shared primitives; loading, empty and error states preserve the public information architecture and never expose private candidate data.",
+          "Authenticated/private workspace remains noindex and no user data enters public metadata, generated pages, previews or structured data."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE public route composition. Reuse the Next.js app router, shared design tokens, metadata helpers and existing same-origin client. Dependencies CS-106, CS-96, CS-109 remain prerequisites; no parallel frontend is introduced."
+        ],
+        "apiContract": [
+          "PLANNED_CONTRACT: the public route must use only registered content/provenance sources. If a claim has no authoritative source, render it unavailable or omit it; do not invent an endpoint, CMS, testimonial or analytics feed.",
+          "Public responses must not include authenticated candidate data; private APIs remain session-authorized and are not repurposed for marketing content."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE: no candidate or marketing persistence change is authorized by this handoff specification. Any content fixture is isolated and synthetic."
+        ],
+        "accessibility": [
+          "Use one semantic main landmark, a logical heading hierarchy, descriptive link names, visible focus, keyboard traversal, reduced-motion support, contrast-compliant tokens and live-region status for loading/error where applicable. Manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the Phase 0 public responsive contract at 320, 390, 768, 1024 and 1440 CSS px; reflow without ordinary-content horizontal scrolling and preserve touch targets."
+        ],
+        "browsers": [
+          "Future visual and browser evidence runs Chromium, Firefox and WebKit at the named viewports. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "Public pages require truthful title, description, canonical, Open Graph and robots behavior. Authenticated/private data remains noindex and excluded from metadata/sitemap."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: PRIVACY_PII / INPUT_VALIDATION / AUTHORIZATION. Public content is allowlisted and provenance-backed; private session/profile/resume/application fields never enter the public response, cache or metadata. External links are validated and unsafe schemes rejected."
+        ],
+        "observability": [
+          "Use redacted request/correlation logging for route failures; never log private data, tokens or raw content payloads. Distinguish unavailable content from empty content."
+        ],
+        "manualExternalGates": [
+          "Future design, browser, axe, manual accessibility, SEO and UAT evidence remain release gates; no public deployment or publication is claimed in Phase 3.25."
+        ],
+        "implementationChecklist": [
+          "Confirm the /resources route boundary and map each visible Resources Blog element to the ordered/canonical references.",
+          "Create an approved-content/provenance matrix and omit unsupported claims rather than supplying placeholders.",
+          "Define loading/empty/error/noindex/private-boundary behavior and exact visual/browser/accessibility procedures.",
+          "Review metadata, external-link validation, responsive behavior and release authorization before implementation."
+        ],
+        "risksRecovery": [
+          "Unsupported public claims create trust and privacy risk. Recovery is to remove the unsupported field, fall back to explicit unavailable state and revert the unshipped route; no production migration is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All five source ACs have exact reviewed procedures for Resources Blog, the planned public route and private boundary are explicit, metadata/provenance/security/accessibility/responsive requirements are source-backed, no local finding remains and a current independent receipt exists."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-137-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-137-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-137-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-137-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-137-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
     }
   },
   "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
@@ -9242,6 +9592,116 @@
         "sources": [
           ".ai/ticket-specification-policy.json#ticketRefinements.CS-147",
           "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png"
+        ]
+      }
+    },
+    "CS-133": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All five CS-133 criteria have criterion-specific planned assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-133-AC1",
+          ".ai/ticket-specification-policy.json#CS-133-AC2",
+          ".ai/ticket-specification-policy.json#CS-133-AC3",
+          ".ai/ticket-specification-policy.json#CS-133-AC4",
+          ".ai/ticket-specification-policy.json#CS-133-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-133 now has a public route-specific, Phase 0 source-backed refinement with truthful metadata, privacy, accessibility and responsive gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-133",
+          "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png",
+          "design/canonical/marketing/careerscope-public-home.png"
+        ]
+      }
+    },
+    "CS-134": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All five CS-134 criteria have criterion-specific planned assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-134-AC1",
+          ".ai/ticket-specification-policy.json#CS-134-AC2",
+          ".ai/ticket-specification-policy.json#CS-134-AC3",
+          ".ai/ticket-specification-policy.json#CS-134-AC4",
+          ".ai/ticket-specification-policy.json#CS-134-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-134 now has a public route-specific, Phase 0 source-backed refinement with truthful metadata, privacy, accessibility and responsive gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-134",
+          "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png",
+          "design/canonical/marketing/careerscope-public-features.png"
+        ]
+      }
+    },
+    "CS-135": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All five CS-135 criteria have criterion-specific planned assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-135-AC1",
+          ".ai/ticket-specification-policy.json#CS-135-AC2",
+          ".ai/ticket-specification-policy.json#CS-135-AC3",
+          ".ai/ticket-specification-policy.json#CS-135-AC4",
+          ".ai/ticket-specification-policy.json#CS-135-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-135 now has a public route-specific, Phase 0 source-backed refinement with truthful metadata, privacy, accessibility and responsive gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-135",
+          "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png",
+          "design/canonical/marketing/careerscope-public-how-it-works.png"
+        ]
+      }
+    },
+    "CS-136": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All five CS-136 criteria have criterion-specific planned assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-136-AC1",
+          ".ai/ticket-specification-policy.json#CS-136-AC2",
+          ".ai/ticket-specification-policy.json#CS-136-AC3",
+          ".ai/ticket-specification-policy.json#CS-136-AC4",
+          ".ai/ticket-specification-policy.json#CS-136-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-136 now has a public route-specific, Phase 0 source-backed refinement with truthful metadata, privacy, accessibility and responsive gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-136",
+          "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png",
+          "design/canonical/marketing/careerscope-public-about.png"
+        ]
+      }
+    },
+    "CS-137": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All five CS-137 criteria have criterion-specific planned assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-137-AC1",
+          ".ai/ticket-specification-policy.json#CS-137-AC2",
+          ".ai/ticket-specification-policy.json#CS-137-AC3",
+          ".ai/ticket-specification-policy.json#CS-137-AC4",
+          ".ai/ticket-specification-policy.json#CS-137-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-137 now has a public route-specific, Phase 0 source-backed refinement with truthful metadata, privacy, accessibility and responsive gates.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-137",
+          "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png",
+          "design/canonical/marketing/careerscope-public-resources.png"
         ]
       }
     }
@@ -19194,6 +19654,606 @@
         "authoritativeSource": ".ai/backlog.json#CS-147",
         "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png; route remains unspecified; docs/TESTING.md"
       }
+    ],
+    "CS-133-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned / surface using approved Home content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-133-AC1 against the Home public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC1-source-backed-public-contract",
+        "assertion": "The public fixture emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships or ratings are absent and no illustrative value is rendered as fact.",
+        "expectedResult": "The Home public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-133-AC1 verifies Home public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC1-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-133 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-133",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png; design/canonical/marketing/careerscope-public-home.png; /; docs/TESTING.md"
+      }
+    ],
+    "CS-133-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned / surface using approved Home content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-133-AC2 against the Home public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC2-source-backed-public-contract",
+        "assertion": "Every visible public field is sourced from approved content/API data or an explicit empty/unavailable state; no design-board sample content is copied into the production render.",
+        "expectedResult": "The Home public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-133-AC2 verifies Home public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC2-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-133 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-133",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png; design/canonical/marketing/careerscope-public-home.png; /; docs/TESTING.md"
+      }
+    ],
+    "CS-133-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned / surface using approved Home content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-133-AC3 against the Home public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC3-source-backed-public-contract",
+        "assertion": "The visual report compares the canonical public reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/minimal dynamic masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The Home public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-133-AC3 verifies Home public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC3-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-133 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-133",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png; design/canonical/marketing/careerscope-public-home.png; /; docs/TESTING.md"
+      }
+    ],
+    "CS-133-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned / surface using approved Home content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-133-AC4 against the Home public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC4-source-backed-public-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use the applicable safe state; keyboard traversal, labels, focus, headings and screen-reader announcements remain operable.",
+        "expectedResult": "The Home public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-133-AC4 verifies Home public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC4-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-133 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-133",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png; design/canonical/marketing/careerscope-public-home.png; /; docs/TESTING.md"
+      }
+    ],
+    "CS-133-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned / surface using approved Home content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-133-AC5 against the Home public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC5-source-backed-public-contract",
+        "assertion": "The public surface remains RELEASE-gated and activation requires the declared acceptance, metadata/provenance and authorization evidence; specification work does not claim publication.",
+        "expectedResult": "The Home public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-133-AC5 verifies Home public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-133-contract.spec.ts::CS-133-AC5-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-133 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-133",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/01-home.png; design/canonical/marketing/careerscope-public-home.png; /; docs/TESTING.md"
+      }
+    ],
+    "CS-134-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /features; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /features surface using approved Features content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-134-AC1 against the Features public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC1-source-backed-public-contract",
+        "assertion": "The public fixture emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships or ratings are absent and no illustrative value is rendered as fact.",
+        "expectedResult": "The Features public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-134-AC1 verifies Features public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC1-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-134 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-134",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png; design/canonical/marketing/careerscope-public-features.png; /features; docs/TESTING.md"
+      }
+    ],
+    "CS-134-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /features; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /features surface using approved Features content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-134-AC2 against the Features public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC2-source-backed-public-contract",
+        "assertion": "Every visible public field is sourced from approved content/API data or an explicit empty/unavailable state; no design-board sample content is copied into the production render.",
+        "expectedResult": "The Features public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-134-AC2 verifies Features public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC2-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-134 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-134",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png; design/canonical/marketing/careerscope-public-features.png; /features; docs/TESTING.md"
+      }
+    ],
+    "CS-134-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /features; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /features surface using approved Features content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-134-AC3 against the Features public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC3-source-backed-public-contract",
+        "assertion": "The visual report compares the canonical public reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/minimal dynamic masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The Features public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-134-AC3 verifies Features public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC3-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-134 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-134",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png; design/canonical/marketing/careerscope-public-features.png; /features; docs/TESTING.md"
+      }
+    ],
+    "CS-134-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /features; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /features surface using approved Features content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-134-AC4 against the Features public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC4-source-backed-public-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use the applicable safe state; keyboard traversal, labels, focus, headings and screen-reader announcements remain operable.",
+        "expectedResult": "The Features public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-134-AC4 verifies Features public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC4-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-134 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-134",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png; design/canonical/marketing/careerscope-public-features.png; /features; docs/TESTING.md"
+      }
+    ],
+    "CS-134-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /features; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /features surface using approved Features content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-134-AC5 against the Features public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC5-source-backed-public-contract",
+        "assertion": "The public surface remains RELEASE-gated and activation requires the declared acceptance, metadata/provenance and authorization evidence; specification work does not claim publication.",
+        "expectedResult": "The Features public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-134-AC5 verifies Features public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-134-contract.spec.ts::CS-134-AC5-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-134 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-134",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/02-features.png; design/canonical/marketing/careerscope-public-features.png; /features; docs/TESTING.md"
+      }
+    ],
+    "CS-135-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /how-it-works; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /how-it-works surface using approved How It Works content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-135-AC1 against the How It Works public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC1-source-backed-public-contract",
+        "assertion": "The public fixture emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships or ratings are absent and no illustrative value is rendered as fact.",
+        "expectedResult": "The How It Works public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-135-AC1 verifies How It Works public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC1-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-135 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-135",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png; design/canonical/marketing/careerscope-public-how-it-works.png; /how-it-works; docs/TESTING.md"
+      }
+    ],
+    "CS-135-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /how-it-works; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /how-it-works surface using approved How It Works content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-135-AC2 against the How It Works public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC2-source-backed-public-contract",
+        "assertion": "Every visible public field is sourced from approved content/API data or an explicit empty/unavailable state; no design-board sample content is copied into the production render.",
+        "expectedResult": "The How It Works public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-135-AC2 verifies How It Works public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC2-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-135 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-135",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png; design/canonical/marketing/careerscope-public-how-it-works.png; /how-it-works; docs/TESTING.md"
+      }
+    ],
+    "CS-135-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /how-it-works; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /how-it-works surface using approved How It Works content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-135-AC3 against the How It Works public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC3-source-backed-public-contract",
+        "assertion": "The visual report compares the canonical public reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/minimal dynamic masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The How It Works public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-135-AC3 verifies How It Works public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC3-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-135 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-135",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png; design/canonical/marketing/careerscope-public-how-it-works.png; /how-it-works; docs/TESTING.md"
+      }
+    ],
+    "CS-135-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /how-it-works; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /how-it-works surface using approved How It Works content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-135-AC4 against the How It Works public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC4-source-backed-public-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use the applicable safe state; keyboard traversal, labels, focus, headings and screen-reader announcements remain operable.",
+        "expectedResult": "The How It Works public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-135-AC4 verifies How It Works public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC4-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-135 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-135",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png; design/canonical/marketing/careerscope-public-how-it-works.png; /how-it-works; docs/TESTING.md"
+      }
+    ],
+    "CS-135-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /how-it-works; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /how-it-works surface using approved How It Works content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-135-AC5 against the How It Works public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC5-source-backed-public-contract",
+        "assertion": "The public surface remains RELEASE-gated and activation requires the declared acceptance, metadata/provenance and authorization evidence; specification work does not claim publication.",
+        "expectedResult": "The How It Works public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-135-AC5 verifies How It Works public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-135-contract.spec.ts::CS-135-AC5-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-135 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-135",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/03-how-it-works.png; design/canonical/marketing/careerscope-public-how-it-works.png; /how-it-works; docs/TESTING.md"
+      }
+    ],
+    "CS-136-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /about; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /about surface using approved About content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-136-AC1 against the About public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC1-source-backed-public-contract",
+        "assertion": "The public fixture emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships or ratings are absent and no illustrative value is rendered as fact.",
+        "expectedResult": "The About public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-136-AC1 verifies About public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC1-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-136 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-136",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png; design/canonical/marketing/careerscope-public-about.png; /about; docs/TESTING.md"
+      }
+    ],
+    "CS-136-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /about; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /about surface using approved About content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-136-AC2 against the About public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC2-source-backed-public-contract",
+        "assertion": "Every visible public field is sourced from approved content/API data or an explicit empty/unavailable state; no design-board sample content is copied into the production render.",
+        "expectedResult": "The About public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-136-AC2 verifies About public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC2-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-136 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-136",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png; design/canonical/marketing/careerscope-public-about.png; /about; docs/TESTING.md"
+      }
+    ],
+    "CS-136-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /about; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /about surface using approved About content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-136-AC3 against the About public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC3-source-backed-public-contract",
+        "assertion": "The visual report compares the canonical public reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/minimal dynamic masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The About public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-136-AC3 verifies About public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC3-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-136 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-136",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png; design/canonical/marketing/careerscope-public-about.png; /about; docs/TESTING.md"
+      }
+    ],
+    "CS-136-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /about; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /about surface using approved About content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-136-AC4 against the About public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC4-source-backed-public-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use the applicable safe state; keyboard traversal, labels, focus, headings and screen-reader announcements remain operable.",
+        "expectedResult": "The About public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-136-AC4 verifies About public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC4-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-136 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-136",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png; design/canonical/marketing/careerscope-public-about.png; /about; docs/TESTING.md"
+      }
+    ],
+    "CS-136-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /about; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /about surface using approved About content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-136-AC5 against the About public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC5-source-backed-public-contract",
+        "assertion": "The public surface remains RELEASE-gated and activation requires the declared acceptance, metadata/provenance and authorization evidence; specification work does not claim publication.",
+        "expectedResult": "The About public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-136-AC5 verifies About public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-136-contract.spec.ts::CS-136-AC5-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-136 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-136",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/04-about.png; design/canonical/marketing/careerscope-public-about.png; /about; docs/TESTING.md"
+      }
+    ],
+    "CS-137-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /resources; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /resources surface using approved Resources Blog content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-137-AC1 against the Resources Blog public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC1-source-backed-public-contract",
+        "assertion": "The public fixture emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships or ratings are absent and no illustrative value is rendered as fact.",
+        "expectedResult": "The Resources Blog public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-137-AC1 verifies Resources Blog public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC1-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-137 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-137",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png; design/canonical/marketing/careerscope-public-resources.png; /resources; docs/TESTING.md"
+      }
+    ],
+    "CS-137-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /resources; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /resources surface using approved Resources Blog content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-137-AC2 against the Resources Blog public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC2-source-backed-public-contract",
+        "assertion": "Every visible public field is sourced from approved content/API data or an explicit empty/unavailable state; no design-board sample content is copied into the production render.",
+        "expectedResult": "The Resources Blog public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-137-AC2 verifies Resources Blog public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC2-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-137 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-137",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png; design/canonical/marketing/careerscope-public-resources.png; /resources; docs/TESTING.md"
+      }
+    ],
+    "CS-137-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /resources; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /resources surface using approved Resources Blog content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-137-AC3 against the Resources Blog public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC3-source-backed-public-contract",
+        "assertion": "The visual report compares the canonical public reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/minimal dynamic masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The Resources Blog public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-137-AC3 verifies Resources Blog public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC3-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-137 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-137",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png; design/canonical/marketing/careerscope-public-resources.png; /resources; docs/TESTING.md"
+      }
+    ],
+    "CS-137-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_BROWSER",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /resources; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /resources surface using approved Resources Blog content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-137-AC4 against the Resources Blog public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC4-source-backed-public-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use the applicable safe state; keyboard traversal, labels, focus, headings and screen-reader announcements remain operable.",
+        "expectedResult": "The Resources Blog public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-137-AC4 verifies Resources Blog public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC4-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-137 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-137",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png; design/canonical/marketing/careerscope-public-resources.png; /resources; docs/TESTING.md"
+      }
+    ],
+    "CS-137-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Fresh unauthenticated synthetic browser context for public /resources; no candidate session, cookies, tokens or real PII.",
+        "setup": "Render the planned /resources surface using approved Resources Blog content fixtures and a control fixture with unsupported claims omitted.",
+        "fixtureOrData": "Synthetic approved-content/provenance fixture only; unsupported claim fields are absent.",
+        "action": "Execute CS-137-AC5 against the Resources Blog public surface and inspect rendered content, metadata, network boundaries and state behavior.",
+        "procedure": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC5-source-backed-public-contract",
+        "assertion": "The public surface remains RELEASE-gated and activation requires the declared acceptance, metadata/provenance and authorization evidence; specification work does not claim publication.",
+        "expectedResult": "The Resources Blog public surface satisfies the criterion without unsupported claims, private data exposure or fabricated runtime evidence.",
+        "testName": "CS-137-AC5 verifies Resources Blog public surface contract",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/public-cs-137-contract.spec.ts::CS-137-AC5-source-backed-public-contract",
+        "fixtures": "Synthetic public content and unauthenticated session fixtures only.",
+        "negativeCase": "Unsupported claim, private API response, unsafe external URL, missing metadata, session leakage, malformed content or skipped browser engine must fail or remain NOT_RUN.",
+        "failureCase": "A screenshot sample, placeholder metric, private response, generic “secure” assertion or unexecuted browser result cannot be recorded as PASS.",
+        "evidenceArtifact": "Future exact-SHA CS-137 public contract/visual/axe report with sanitized DOM, metadata, engine and viewport evidence; no execution is claimed now.",
+        "releaseGate": "R1_PUBLIC_RELEASE_ACCEPTANCE",
+        "authoritativeSource": ".ai/backlog.json#CS-137",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/01-marketing-public/05-resources-blog.png; design/canonical/marketing/careerscope-public-resources.png; /resources; docs/TESTING.md"
+      }
     ]
   },
   "ownerDecisionSource": {
@@ -22661,6 +23721,256 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "67e3538816a58cee81a1381b24887b0e3ecfff55b1df8feefd9c560ea5f0943a"
+    },
+    "CS-133-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f5360104d5bff0c3ec606edd08310042633ba0fe88a078c5e112b51377321f78"
+    },
+    "CS-133-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "91ba9b0c0c2c32f70b9f4b24ff717658bf761e286bc67782353773d5256ae8e8"
+    },
+    "CS-133-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "650e5f36045128110aedcdaa2d6d8fae73af3f60ef91382d2e56cc7a2dc84164"
+    },
+    "CS-133-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e8521620660d247a846ece655219e81bccb26768413c896266c4d1108347ec01"
+    },
+    "CS-133-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1d84b636d403e8fbeb79f3a3f10a78ad382c13bca03c659fb2e99073f4858e92"
+    },
+    "CS-134-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1467255702e2af7d9fccd3869142d9c57b5ba6602eb34fd6e34e7b45cebd1798"
+    },
+    "CS-134-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "2937e5152475620fa71d3bbcef344cef740e591a56a9973c4959cc7925f24f3f"
+    },
+    "CS-134-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "938e65c576c003111cd68e8e91e61922a8963cd2e71a45c402867568c04b79df"
+    },
+    "CS-134-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "ed8994b1d064de297fc78f44027ba428c23abaaf1535e6bc93fcdb962bd36d33"
+    },
+    "CS-134-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5c25d42ee7379dbbea84a9ce549bfc39591560ada3e4b049e9b10cb11621c32e"
+    },
+    "CS-135-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5f5d723d9d36d37c505b48626bee74b30cb92d70130948c0f51135bd4f2ca42c"
+    },
+    "CS-135-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f8af57a8e21b67ba717a761a01597e00e21bd344e7cb8984ad05ad60df0de656"
+    },
+    "CS-135-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f317eb3348ab7b8ba23fcfbae4b8701bf50e8d34edae19706dd773c143d24a90"
+    },
+    "CS-135-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8ad4d29a906586bb8971f8893dd7c1dfbc2c41a338f45af69689584aca31f1cb"
+    },
+    "CS-135-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "131b42591579f14c99c20cad84b7080693a11ce4b765d538a0bda8363cec987d"
+    },
+    "CS-136-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "803aed788245c3b04407ecef3efcc9c2bfa43beea50d32aa69dc24324e0623db"
+    },
+    "CS-136-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "521508d0af6032249cb17d8dc6cd3fed314dadba112473bbf23c7f57253cd498"
+    },
+    "CS-136-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e330e66019ee50b5e8532c4ac5560f5c5993133cdb5b62d69e9f2387d6b7ffc5"
+    },
+    "CS-136-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "903cb68a49d905a061f36068d66db84fb55596fc1479d42e1b4c2417dc046958"
+    },
+    "CS-136-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "b0442a2d4711f0d6b728cbee35f228600d8baf8f208eeb5e256f7314555da56b"
+    },
+    "CS-137-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4015cb67e4dfb8cf76e351a76cbf86c3f50872f08bf900f8a5c3b7e73eaffc6e"
+    },
+    "CS-137-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "cbdfaa94b42644993b39500e2b071d5880b1aa24ac76ced6f89c89aebf213fd3"
+    },
+    "CS-137-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "2523db50d2227b936c967db790f69350c026add8b21f7c0e241d2f5dcd04ff9d"
+    },
+    "CS-137-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "99e514839255342a4589662b039da71e8d24414591859e32e65674e1d47f686d"
+    },
+    "CS-137-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "3c17c42ce19ef77c384b15d4b034f7b2e0b38cb56139ba335be1978c8eeab587"
     }
   },
   "specificationReviewReceipts": {
@@ -23517,6 +24827,56 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "423e465808cd66db9bc041159e4aaec6c2719f91fdae76c2d573304abb80f9ab"
+    },
+    "CS-133": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "af87d6b78862555c7c25a812a2a88d8de857bf471995214c8ded601a469579e1"
+    },
+    "CS-134": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c4285d08a4e66bfe6cb84197e7326bc0a51e62ead5188ff165098b2cb30e9a2e"
+    },
+    "CS-135": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "e404bcfccfa403cbf40ff2d6fd85f1d2f2143df80a4a9ddf11e47db07393ee38"
+    },
+    "CS-136": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "875db90d4d099e5fc732c77026de5e16ee462b860b968237ebb56a3a93742091"
+    },
+    "CS-137": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9dc1763cebcf62bc75606444ff62e3f355518551eacdf1d2503449f5125ed5d2"
     }
   },
   "generatedArtifactCheckpoint": {
