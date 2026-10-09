@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "ad064ca7d6774fb1df7a7cdd8340a0761aa84de61fc1803a8075325f7c802dcc",
+    ".ai/ticket-specification-policy.json": "4db7dd86cef1b2e5c16d6c24bfb410abd10b4c8f013b2bc36bdcb44bf422842b",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "51ac4f1d3c880f4280a53ecb5a2ae03f133052846137d1e9934b2b8f93140c17",
@@ -93626,13 +93626,7 @@
               "id": "CS-122-AC1",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -93640,7 +93634,7 @@
               "id": "CS-122-AC2",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -93648,11 +93642,7 @@
               "id": "CS-122-AC3",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -93660,7 +93650,7 @@
               "id": "CS-122-AC4",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -93839,49 +93829,36 @@
               "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-122-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "Labels, locale metadata and formatting use only the named Phase 0 references, shared contract and registered fields or explicit unavailable state; no fabricated translation, locale preference or client-selected owner is displayed.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-122-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-122-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-122-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "LIVE_HOST",
-                  "expectedCheck": "CS-122-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
+                  "evidenceRequired": "redacted-localization-source-state-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Frontend",
+                  "releaseGate": "R1-UI-LOCALE-SOURCE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Authenticated synthetic candidate with exact Phase 0 localization reference `design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/11-11-localization-internationalization.png`, shared component-state reference `design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/12-12-component-states-design-system.png`, CS-105/CS-106 contracts, and a registered locale/config response or explicit unavailable response; no production/sample data.",
+                  "setup": "Render the localization surface using deterministic supported/unsupported locale fixtures and capture source/config provenance.",
+                  "procedure": "CS-122-AC1-localization-source-state",
+                  "assertion": "Labels, locale metadata and formatting use only the named Phase 0 references, shared contract and registered fields or explicit unavailable state; no fabricated translation, locale preference or client-selected owner is displayed.",
+                  "expectedResult": "The surface renders deterministically from the registered contract; absent/unsupported data is unavailable without unauthorized requests or silent capability claims.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "renders Localization Internationalization from approved references and registered state",
+                  "testFileOrProcedureId": "apps/web/src/components/localization/__tests__/localization.test.tsx::source-state",
+                  "fixtures": "Synthetic session, named Phase 0 references, CS-105/CS-106 fixture, supported/unsupported locale responses and unavailable state.",
+                  "negativeCase": "Unknown locale, invented translation, malformed tag, sample copy or absent contract must not render claimed localized success or issue an unauthorized request.",
+                  "evidenceArtifact": "redacted-localization-source-state-report.json",
+                  "reviewer": "Frontend",
+                  "releaseGate": "R1-UI-LOCALE-SOURCE"
+                }
+              ]
             },
             {
               "ticketId": "CS-122",
@@ -93889,33 +93866,36 @@
               "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-122-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "VISUAL_REGRESSION",
-                  "expectedCheck": "CS-122-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-122-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Each available engine compares the rendered locale/state to the named Phase 0 reference within tolerance; altered reference, unsupported locale/viewport, missing engine or unapproved mask fails or is NOT_RUN and never PASS.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-localization-visual-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "UX",
+                  "releaseGate": "R1-BROWSER-VISUAL-LOCALE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Deterministic localization fixture and exact Phase 0 references `design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/11-11-localization-internationalization.png` and `design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/12-12-component-states-design-system.png`; approved dimensions and responsive policy are available.",
+                  "setup": "Capture the same locale/state in Chromium, Firefox and WebKit at exact reference dimensions and approved mobile viewport; record hash, locale, viewport, masks, tolerance and engine availability.",
+                  "procedure": "CS-122-AC2-localization-visual-regression",
+                  "assertion": "Each available engine compares the rendered locale/state to the named Phase 0 reference within tolerance; altered reference, unsupported locale/viewport, missing engine or unapproved mask fails or is NOT_RUN and never PASS.",
+                  "expectedResult": "Visual evidence is reproducible and redacted with reference, locale, engine, viewport and state identified.",
+                  "type": "VISUAL_REGRESSION",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "compares Localization Internationalization against exact Phase 0 references",
+                  "testFileOrProcedureId": "scripts/check-ui.ts::CS-122-AC2-localization",
+                  "fixtures": "Named Phase 0 assets, deterministic locale/state, browser/viewport matrix and hash/mask/tolerance manifest.",
+                  "negativeCase": "Hash mismatch, unsupported locale/viewport, missing engine, excessive mask, clipped text or private data blocks acceptance.",
+                  "evidenceArtifact": "redacted-localization-visual-report.json",
+                  "reviewer": "UX",
+                  "releaseGate": "R1-BROWSER-VISUAL-LOCALE"
+                }
+              ]
             },
             {
               "ticketId": "CS-122",
@@ -93923,33 +93903,36 @@
               "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "verification": [
                 {
-                  "type": "MANUAL_ACCESSIBILITY",
-                  "expectedCheck": "CS-122-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner / authorized reviewer"
-                },
-                {
                   "type": "AUTOMATED_ACCESSIBILITY",
-                  "expectedCheck": "CS-122-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-122-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Applicable states expose labelled controls/status, preserve focus and reflow without horizontal overflow, reject denied/expired requests without protected content, and ignore stale responses; unsupported locale/revision behavior is NOT_APPLICABLE rather than PASS.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-localization-a11y-state-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Accessibility",
+                  "releaseGate": "R1-A11Y-LOCALE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Synthetic supported/unsupported locale, pending, empty, error, unauthenticated, expired-session, unauthorized, keyboard/focus and stale-request fixtures at 320/390/768/1024/1440 widths.",
+                  "setup": "Run the registered component/browser accessibility matrix with axe and keyboard traversal, including long strings and typed errors; record NOT_APPLICABLE for unsupported contract states.",
+                  "procedure": "CS-122-AC3-localization-accessibility-state-matrix",
+                  "assertion": "Applicable states expose labelled controls/status, preserve focus and reflow without horizontal overflow, reject denied/expired requests without protected content, and ignore stale responses; unsupported locale/revision behavior is NOT_APPLICABLE rather than PASS.",
+                  "expectedResult": "Automated accessibility/state checks pass for applicable locales and widths; manual screen-reader and language-quality judgment remain separate future evidence.",
+                  "type": "AUTOMATED_ACCESSIBILITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "covers Localization Internationalization states, reflow and keyboard accessibility",
+                  "testFileOrProcedureId": "apps/web/src/components/localization/__tests__/localization.a11y.test.tsx::state-matrix",
+                  "fixtures": "Synthetic locale strings, HTTP/session errors, ownership denial, axe tree, keyboard/focus, cancellation and responsive fixtures.",
+                  "negativeCase": "Missing label, clipped/overlapping long text, focus loss, stale content flash, protected content after denial or malformed locale acceptance fails.",
+                  "evidenceArtifact": "redacted-localization-a11y-state-report.json",
+                  "reviewer": "Accessibility",
+                  "releaseGate": "R1-A11Y-LOCALE"
+                }
+              ]
             },
             {
               "ticketId": "CS-122",
@@ -93957,25 +93940,36 @@
               "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-122-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-122-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "The release gate accepts the slice only when declared source, browser, accessibility, privacy and visual evidence exists; incomplete evidence fails closed and cannot enable runtime or promote the ticket.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "redacted-localization-release-report.json",
+                  "automationStatus": "PLANNED",
+                  "owner": "Release",
+                  "releaseGate": "R1-RELEASE-GATE"
                 }
               ],
               "releaseGate": "RELEASE",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "CS-122 remains BACKLOG/R1 with no deployment credentials, production activation authority or unverified locale switch.",
+                  "setup": "Run the release checker against incomplete and complete-shape synthetic localization evidence without changing workflow, runtime configuration, user preferences or stored content.",
+                  "procedure": "CS-122-AC4-localization-release-gate",
+                  "assertion": "The release gate accepts the slice only when declared source, browser, accessibility, privacy and visual evidence exists; incomplete evidence fails closed and cannot enable runtime or promote the ticket.",
+                  "expectedResult": "The checker reports missing evidence explicitly, performs no network/deployment/workflow mutation and preserves canonical status/release classification.",
+                  "type": "AUTOMATED_CONTRACT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "DRAFT",
+                  "testName": "keeps Localization Internationalization release-gated until evidence exists",
+                  "testFileOrProcedureId": "scripts/release-gate.mjs::CS-122-AC4",
+                  "fixtures": "Synthetic release manifest, missing-evidence variants, complete-shape control and unchanged workflow snapshot.",
+                  "negativeCase": "Screenshot-only evidence, client activation, fabricated translation/locale or incomplete accessibility/visual evidence is rejected without mutation.",
+                  "evidenceArtifact": "redacted-localization-release-report.json",
+                  "reviewer": "Release",
+                  "releaseGate": "R1-RELEASE-GATE"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-122", "docs/TESTING.md"]
@@ -94004,13 +93998,7 @@
               "id": "CS-122-AC1",
               "sourceText": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
               "expectedResult": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "VISUAL_REGRESSION",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "LIVE_HOST"
-              ],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -94018,7 +94006,7 @@
               "id": "CS-122-AC2",
               "sourceText": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
               "expectedResult": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
-              "verificationIds": ["MANUAL_PRODUCT", "VISUAL_REGRESSION", "AUTOMATED_BROWSER"],
+              "verificationIds": ["VISUAL_REGRESSION"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -94026,11 +94014,7 @@
               "id": "CS-122-AC3",
               "sourceText": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
               "expectedResult": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
-              "verificationIds": [
-                "MANUAL_ACCESSIBILITY",
-                "AUTOMATED_ACCESSIBILITY",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["AUTOMATED_ACCESSIBILITY"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -94038,7 +94022,7 @@
               "id": "CS-122-AC4",
               "sourceText": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
               "expectedResult": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_CONTRACT"],
               "authority": ".ai/backlog.json#CS-122",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
