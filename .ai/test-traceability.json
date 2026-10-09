@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "421bb92e64e7935c7677e23450c8de564890c212725247d7351cce453e0c3b25",
+    ".ai/ticket-specification-policy.json": "deb89e89d30b3796abd2d261c4801b2552f4febb2f245be08912a8389f31a39d",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bbc2d53676e48db633efe4c4623b5106f8c602e51de7b35e3199cd296428f97c",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "7e9a6eaad57090ddefe869371e4326bf1661f5f9db8fab13f96d5058761c05e4",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -4834,16 +4834,35 @@
       "verification": [
         {
           "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-40-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "The review records the same immutable matrix revision, explicit role capabilities, denied secrets/tokens/passwords/cookies/raw resumes/arbitrary SQL, and independent reviewer verdicts before implementation.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
+          "evidenceRequired": "Future redacted capability-matrix review record; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product Architect / System Designer / Security",
+          "releaseGate": "R1-ADMIN-SECURITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a redacted capability-matrix revision and synthetic role fixtures; no privileged production data.",
+          "setup": "Product Architect, System Designer and Security review the same role/projection matrix revision, including role provisioning/revocation, least privilege, read-only data boundaries and default-deny exclusions.",
+          "procedure": "PLANNED:docs/FRONTEND-ADMIN-ROADMAP.md::CS-40-AC1-capability-matrix-review",
+          "assertion": "The review records the same immutable matrix revision, explicit role capabilities, denied secrets/tokens/passwords/cookies/raw resumes/arbitrary SQL, and independent reviewer verdicts before implementation.",
+          "expectedResult": "Privileged scope is approved and attributable before any admin endpoint or page is implemented; a missing or conflicting review keeps the hold.",
+          "type": "MANUAL_PRODUCT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "approves CS-40 role and projection capability matrix before implementation",
+          "testFileOrProcedureId": "PLANNED:docs/FRONTEND-ADMIN-ROADMAP.md::CS-40-AC1-capability-matrix-review",
+          "fixtures": "Redacted matrix revision and synthetic role/projection fixture.",
+          "negativeCase": "A role without explicit capability, arbitrary database access, secret-bearing projection or one-reviewer approval is accepted; fail.",
+          "evidenceArtifact": "Future redacted capability-matrix review record; no execution claimed.",
+          "reviewer": "Product Architect / System Designer / Security",
+          "releaseGate": "R1-ADMIN-SECURITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-40",
@@ -4852,16 +4871,35 @@
       "verification": [
         {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-40-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Anonymous and ordinary users receive canonical denial without object existence leakage; authorized roles receive only their approved redacted projection; client role/owner fields cannot elevate access.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted integration/security report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "R1-ADMIN-SECURITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use synthetic anonymous, ordinary-authenticated and authorized-admin sessions against a disposable route fixture.",
+          "setup": "Register only approved capability routes with server-side role checks, safe non-enumerating errors and session-derived actor identity.",
+          "procedure": "PLANNED:apps/api/tests/admin-authorization.integration.test.ts::CS-40-AC2-server-enforced-role-boundary",
+          "assertion": "Anonymous and ordinary users receive canonical denial without object existence leakage; authorized roles receive only their approved redacted projection; client role/owner fields cannot elevate access.",
+          "expectedResult": "Authorization is enforced server-side and not merely by navigation visibility.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "rejects unauthorized admin access and limits authorized projections",
+          "testFileOrProcedureId": "PLANNED:apps/api/tests/admin-authorization.integration.test.ts::CS-40-AC2-server-enforced-role-boundary",
+          "fixtures": "Synthetic anonymous, ordinary, support and platform-admin sessions with redacted projection fixtures.",
+          "negativeCase": "Hidden navigation with reachable route, forged role/owner, cross-candidate data or enumerating denial is accepted; fail.",
+          "evidenceArtifact": "Future redacted integration/security report; no execution claimed.",
+          "reviewer": "Security",
+          "releaseGate": "R1-ADMIN-SECURITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-40",
@@ -4869,33 +4907,36 @@
       "criterion": "Keep Swagger separate from admin UI and exclude secrets, tokens and raw resumes; mutations, audit-storage design and destructive controls require separately approved scope",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-40-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-40-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-40-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Swagger remains separate from admin UI; responses and logs exclude secrets/tokens/raw resumes; no unapproved mutation, arbitrary SQL, impersonation or destructive control is exposed; approved actions emit immutable audit events.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted security/contract report; no sensitive fixture output retained.",
+          "automationStatus": "PLANNED",
+          "owner": "Security / System Designer",
+          "releaseGate": "R1-ADMIN-PRIVACY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use synthetic Swagger and admin-surface fixtures with secrets, tokens, raw resume content and destructive operation candidates.",
+          "setup": "Inspect the generated contract and audit policy before implementation; keep all mutation/destructive paths disabled unless separately approved.",
+          "procedure": "PLANNED:apps/api/tests/admin-surface-contract.security.test.ts::CS-40-AC3-redaction-and-scope",
+          "assertion": "Swagger remains separate from admin UI; responses and logs exclude secrets/tokens/raw resumes; no unapproved mutation, arbitrary SQL, impersonation or destructive control is exposed; approved actions emit immutable audit events.",
+          "expectedResult": "The privileged surface is minimized, redacted and auditable.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "keeps admin contracts redacted and destructive scope default-deny",
+          "testFileOrProcedureId": "PLANNED:apps/api/tests/admin-surface-contract.security.test.ts::CS-40-AC3-redaction-and-scope",
+          "fixtures": "Synthetic secret/token/resume sentinels, Swagger contract and audit-event fixture.",
+          "negativeCase": "Any sensitive sentinel leaks, Swagger grants admin authority, unapproved mutation or missing audit event passes; fail.",
+          "evidenceArtifact": "Future redacted security/contract report; no sensitive fixture output retained.",
+          "reviewer": "Security / System Designer",
+          "releaseGate": "R1-ADMIN-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-41",
@@ -5187,25 +5228,36 @@
       "criterion": "Document recovery/verification requirements and threat model separately from existing authenticated password change and operator recovery",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-44-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-44-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The contract separates password change/operator recovery from provider-managed recovery, defines threat controls and records the same reviewed revision before implementation.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted architecture/security review; no provider execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product Architect / Security",
+          "releaseGate": "R1-AUTH-RECOVERY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use a default-off Cognito recovery fixture with existing password-change and operator-recovery paths available; no real sender or account data.",
+          "setup": "Review the recovery threat model and provider contract at one immutable revision, including CS-59 rate-limit prerequisite and safe non-enumerating response.",
+          "procedure": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC1-contract-review",
+          "assertion": "The contract separates password change/operator recovery from provider-managed recovery, defines threat controls and records the same reviewed revision before implementation.",
+          "expectedResult": "Recovery requirements and threat model are explicit without inventing a second token store or enabling the provider.",
+          "type": "MANUAL_PRODUCT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "approves provider-managed recovery threat model and boundary",
+          "testFileOrProcedureId": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC1-contract-review",
+          "fixtures": "Redacted threat-model revision and default-off provider fixture.",
+          "negativeCase": "Custom token persistence, enabled provider without CS-59, or account-existence disclosure is treated as approved; fail.",
+          "evidenceArtifact": "Future redacted architecture/security review; no provider execution claimed.",
+          "reviewer": "Product Architect / Security",
+          "releaseGate": "R1-AUTH-RECOVERY"
+        }
+      ]
     },
     {
       "ticketId": "CS-44",
@@ -5213,25 +5265,36 @@
       "criterion": "Specify non-enumerating responses, bounded attempts, expiring single-use tokens, replay rejection, safe origin/link handling and session invalidation with positive, malformed and abuse fixtures",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-44-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-44-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Known and unknown accounts receive the same safe response shape; invalid/replayed/expired/over-limit/provider-failure paths fail closed, do not reveal account existence, do not persist raw codes/tokens and do not weaken password/session auth. Recovery links and redirects are built only from the server-configured canonical origin: hostile Host/X-Forwarded-Host values and referrers cannot alter the destination, create an open redirect, or leak codes/tokens. After a successful password recovery, the pre-existing opaque session is rejected on the next authenticated request (or the approved session-continuity policy is asserted explicitly); no prior session remains usable by default.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted integration/security report; no real OTP or provider token retained.",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "R1-AUTH-RECOVERY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use synthetic known/unknown account, malformed/expired/replayed/over-limit code and provider-outage fixtures with recovery default-off; establish a server-configured canonical origin and one pre-existing opaque session for the recovery owner.",
+          "setup": "Drive initiation and verification through the planned server-side provider boundary with bounded attempts and redacted structured logging; send equivalent requests with the configured origin, hostile Host, hostile X-Forwarded-Host, and an untrusted referrer.",
+          "procedure": "PLANNED:apps/api/tests/account-recovery.integration.test.ts::CS-44-AC2-safe-provider-flow",
+          "assertion": "Known and unknown accounts receive the same safe response shape; invalid/replayed/expired/over-limit/provider-failure paths fail closed, do not reveal account existence, do not persist raw codes/tokens and do not weaken password/session auth. Recovery links and redirects are built only from the server-configured canonical origin: hostile Host/X-Forwarded-Host values and referrers cannot alter the destination, create an open redirect, or leak codes/tokens. After a successful password recovery, the pre-existing opaque session is rejected on the next authenticated request (or the approved session-continuity policy is asserted explicitly); no prior session remains usable by default.",
+          "expectedResult": "Provider recovery is non-enumerating, single-use, abuse-bounded, origin-pinned, and invalidates prior sessions after credential recovery unless a separately approved continuity policy is recorded.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "rejects recovery abuse and provider failures without enumeration",
+          "testFileOrProcedureId": "PLANNED:apps/api/tests/account-recovery.integration.test.ts::CS-44-AC2-safe-provider-flow",
+          "fixtures": "Synthetic account states, provider responses, code replay and throttle counters; canonical-origin configuration, hostile Host/X-Forwarded-Host values, referrer, recovery link, and a pre-recovery opaque session cookie.",
+          "negativeCase": "Different known/unknown response, replay acceptance, raw-code log, unlimited attempts, provider outage weakening auth, host-header-controlled redirect, referrer/code leakage, or continued use of the pre-recovery session passes; fail.",
+          "evidenceArtifact": "Future redacted integration/security report; no real OTP or provider token retained.",
+          "reviewer": "Security",
+          "releaseGate": "R1-AUTH-RECOVERY"
+        }
+      ]
     },
     {
       "ticketId": "CS-44",
@@ -5239,41 +5302,36 @@
       "criterion": "Require explicit approval of sender, domain, secret handling and security design before implementing or enabling email or recovery pages; keep registration disabled and existing recovery available",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "EXTERNAL_PROVIDER",
+          "expectedCheck": "Missing/unverified sender, domain, secret reference, Cognito callback or security review keeps recovery disabled; no secret value is committed or logged and existing recovery remains available.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future AWS/Cognito/SES and exact-SHA evidence owned by operator; no hosted evidence claimed.",
+          "automationStatus": "EXTERNAL_REQUIRED",
+          "owner": "Release Manager / Security",
+          "releaseGate": "R1-EXTERNAL-PROVIDER"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use default-off configuration with synthetic sender/domain/secret references and no production provider credentials.",
+          "setup": "Validate configuration schema, secret-store injection, rotation/rollback procedure and browser/accessibility activation gates without changing live infrastructure.",
+          "procedure": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC3-external-activation-gate",
+          "assertion": "Missing/unverified sender, domain, secret reference, Cognito callback or security review keeps recovery disabled; no secret value is committed or logged and existing recovery remains available.",
+          "expectedResult": "External provider action is explicit and fail-closed rather than silently activated.",
+          "type": "EXTERNAL_PROVIDER",
+          "testStatus": "EXTERNAL_REQUIRED",
+          "reviewStatus": "REVIEWED",
+          "testName": "keeps Cognito recovery default-off until external sender and security gates pass",
+          "testFileOrProcedureId": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC3-external-activation-gate",
+          "fixtures": "Synthetic environment schema and redacted secret identifiers only.",
+          "negativeCase": "Unverified sender/domain, missing secret, provider callback mismatch or disabled security gate enables recovery; fail.",
+          "evidenceArtifact": "Future AWS/Cognito/SES and exact-SHA evidence owned by operator; no hosted evidence claimed.",
+          "reviewer": "Release Manager / Security",
+          "releaseGate": "R1-EXTERNAL-PROVIDER"
+        }
+      ]
     },
     {
       "ticketId": "CS-45",
@@ -6207,40 +6265,35 @@
       "verification": [
         {
           "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "The decision record explicitly selects candidate-controlled manual tracking, excludes ATS synchronization/auto-apply/fabricated employer events, and the CS-50 UI contract uses those exact exclusions.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future reviewer-signed redacted decision trace; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product Owner / Product Architect",
+          "releaseGate": "R1-APPLICATION-TRACKING"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "The current owner-direction record is available and its reduced truthful manual-tracking decision is unchanged; use synthetic candidate A1 and application A1 only.",
+          "setup": "Read docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md and docs/OWNER-DECISIONS-2026-10-02.md at the same revision as the specification.",
+          "procedure": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC1-owner-direction-review",
+          "assertion": "The decision record explicitly selects candidate-controlled manual tracking, excludes ATS synchronization/auto-apply/fabricated employer events, and the CS-50 UI contract uses those exact exclusions.",
+          "expectedResult": "Product scope is traceable to the current owner direction; no unresolved owner decision is required for the reduced contract.",
+          "type": "MANUAL_PRODUCT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "confirms CS-50 reduced manual-tracking scope against owner direction",
+          "testFileOrProcedureId": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC1-owner-direction-review",
+          "fixtures": "Current redacted decision documents and synthetic A1 application fixture.",
+          "negativeCase": "A stale decision, ATS-only state, auto-apply behavior or fabricated provider event is treated as approved scope; fail and keep the ticket unapproved.",
+          "evidenceArtifact": "Future reviewer-signed redacted decision trace; no execution claimed.",
+          "reviewer": "Product Owner / Product Architect",
+          "releaseGate": "R1-APPLICATION-TRACKING"
+        }
+      ]
     },
     {
       "ticketId": "CS-50",
@@ -6248,17 +6301,88 @@
       "criterion": "If proceeded: a schema for dated sub-stage events distinct from the current single leadStatusSchema value, and a notes-history model distinct from the current single saved_leads.notes field - designed by Product Architect/System Designer before any code, per this session's established practice for architecture-impacting changes",
       "verification": [
         {
-          "type": "AUTOMATED_INTEGRATION",
-          "expectedCheck": "CS-50-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:integration",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_CONTRACT",
+          "expectedCheck": "The contract contains separate multi-entry status-event and notes-history records; each entry has server-controlled date/actor/source/provenance, preserves cardinality across multiple entries, and is approved by Product Architect/System Designer before implementation.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted contract/schema review and integration report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Backend/Security/System Designer",
+          "releaseGate": "R1-APPLICATION-DATA"
+        },
+        {
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "Both named roles accept the identical contract revision/hash before implementation begins; any mismatch, missing reviewer, or REVISE verdict blocks implementation and preserves the prior revision.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted Product Architect/System Designer receipt pair with matching revision/hash; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product Architect / System Designer",
+          "releaseGate": "R1-APPLICATION-DATA"
+        },
+        {
+          "type": "AUTOMATED_SECURITY",
+          "expectedCheck": "Captured logs retain correlation/outcome metadata but contain neither the sentinel note text nor token-like payload; failed requests perform no write and expose no private field.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted security test report containing safe field-name assertions only; no raw sentinel output retained.",
+          "automationStatus": "PLANNED",
+          "owner": "Security",
+          "releaseGate": "R1-APPLICATION-PRIVACY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use disposable owner A1/application A1 fixtures and a planned contract revision approved by Product Architect/System Designer; no production data.",
+          "setup": "Define the planned logical contract as a distinct dated status-event collection and a distinct append-only notes-history collection, each with owner, actor/source, server timestamp and revision/provenance; do not claim these collections exist yet.",
+          "procedure": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-distinct-history-contract",
+          "assertion": "The contract contains separate multi-entry status-event and notes-history records; each entry has server-controlled date/actor/source/provenance, preserves cardinality across multiple entries, and is approved by Product Architect/System Designer before implementation.",
+          "expectedResult": "The planned data contract satisfies the source AC without inventing executed schema evidence; unauthorized, malformed or oversized input performs no write.",
+          "type": "AUTOMATED_CONTRACT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "validates distinct dated status events and notes history contract",
+          "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-distinct-history-contract",
+          "fixtures": "Synthetic A1/A1 records, two status-event entries, two note entries, forged owner, unsupported enum, malformed timestamp, boundary-size note and stale revision.",
+          "negativeCase": "A single scalar status/notes field, client-supplied date/owner, cross-owner read/write, malformed or over-limit input, unsupported ATS event or stale revision is accepted; fail with no persistence side effect and safe non-enumerating error.",
+          "evidenceArtifact": "Future redacted contract/schema review and integration report; no execution claimed.",
+          "reviewer": "Backend/Security/System Designer",
+          "releaseGate": "R1-APPLICATION-DATA"
+        },
+        {
+          "preconditions": "Before any implementation, Product Architect and System Designer review the same immutable planned-contract revision for CS-50-AC2.",
+          "setup": "Record the contract revision identifier/hash, the two reviewer identities, review timestamp, and each reviewer verdict in the Phase 3.25 evidence procedure; use synthetic field definitions only.",
+          "procedure": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC2-architecture-review",
+          "assertion": "Both named roles accept the identical contract revision/hash before implementation begins; any mismatch, missing reviewer, or REVISE verdict blocks implementation and preserves the prior revision.",
+          "expectedResult": "Architecture approval is independently attributable and temporally precedes implementation; no runtime/schema evidence is implied by this specification.",
+          "type": "MANUAL_PRODUCT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "records dual-role approval of CS-50 history contract before implementation",
+          "testFileOrProcedureId": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC2-architecture-review",
+          "fixtures": "Redacted contract revision/hash and synthetic reviewer receipt fixture.",
+          "negativeCase": "Only one reviewer, different revisions, post-implementation approval, or unverifiable identity is treated as sufficient; fail and keep the gate blocked.",
+          "evidenceArtifact": "Future redacted Product Architect/System Designer receipt pair with matching revision/hash; no execution claimed.",
+          "reviewer": "Product Architect / System Designer",
+          "releaseGate": "R1-APPLICATION-DATA"
+        },
+        {
+          "preconditions": "Execute the planned owner-scoped history mutation with a synthetic sentinel note and token-like value; capture only sanitized structured test logs.",
+          "setup": "Use valid, forged-owner, malformed and boundary-overflow payloads against the planned contract; configure the logger capture fixture to retain correlation ID and outcome fields.",
+          "procedure": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-log-redaction",
+          "assertion": "Captured logs retain correlation/outcome metadata but contain neither the sentinel note text nor token-like payload; failed requests perform no write and expose no private field.",
+          "expectedResult": "AC2 privacy/redaction behavior is falsifiable and safe under success and rejection paths.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "redacts candidate history notes and token-like payloads from logs",
+          "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-log-redaction",
+          "fixtures": "Synthetic sentinel note, token-like string, correlation ID, valid owner, foreign owner and invalid payloads.",
+          "negativeCase": "Any sentinel note/token or raw rejected payload appears in structured logs, or a failed request writes data; fail.",
+          "evidenceArtifact": "Future redacted security test report containing safe field-name assertions only; no raw sentinel output retained.",
+          "reviewer": "Security",
+          "releaseGate": "R1-APPLICATION-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-50",
@@ -6266,17 +6390,36 @@
       "criterion": "The \"AI Insights & Suggestions [Beta]\" panel shown in both design images is explicitly out of scope for this ticket - it belongs to CS-48 and must not be implemented here even as a placeholder that looks functional",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-50-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "No AI Insights/Suggestions panel is functional or implied by this ticket; unsupported controls are absent or explicitly unavailable and the candidate history remains usable.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner"
+          "evidenceRequired": "Future redacted component/accessibility report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product/Security",
+          "releaseGate": "R1-APPLICATION-PRIVACY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use the existing Applications UI fixture with AI capability disabled and deterministic application data.",
+          "setup": "Render list and details at 320, 768 and 1440 CSS pixels with loading, empty and unavailable-provider states.",
+          "procedure": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC3-no-ai-panel",
+          "assertion": "No AI Insights/Suggestions panel is functional or implied by this ticket; unsupported controls are absent or explicitly unavailable and the candidate history remains usable.",
+          "expectedResult": "AI remains outside CS-50 and no fabricated provider data appears.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "keeps AI preparation out of application tracking",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC3-no-ai-panel",
+          "fixtures": "Synthetic deterministic application records with AI disabled.",
+          "negativeCase": "A functional AI action, provider payload or invented suggestion appears; fail.",
+          "evidenceArtifact": "Future redacted component/accessibility report; no execution claimed.",
+          "reviewer": "Product/Security",
+          "releaseGate": "R1-APPLICATION-PRIVACY"
+        }
+      ]
     },
     {
       "ticketId": "CS-50",
@@ -6284,17 +6427,36 @@
       "criterion": "No stage, date, or note is ever fabricated to make the screen look populated in absence of real data - every field distinguishes not-yet-provided from provided",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-50-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Empty history is stated as not yet provided; populated values exactly match persisted candidate-entered records; unavailable provider state is labeled unknown/unavailable.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted component/browser report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Independent Reviewer",
+          "releaseGate": "R1-APPLICATION-TRUTH"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Use candidate A1 application A1 with empty history and a separate fixture containing one candidate-entered event.",
+          "setup": "Render empty, populated and provider-unavailable details states without seeding employer-side events.",
+          "procedure": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC4-no-fabrication",
+          "assertion": "Empty history is stated as not yet provided; populated values exactly match persisted candidate-entered records; unavailable provider state is labeled unknown/unavailable.",
+          "expectedResult": "No stage, date or note is fabricated to make the surface look populated.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "testName": "does not fabricate application timeline data",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC4-no-fabrication",
+          "fixtures": "Synthetic empty, populated and unavailable-provider states.",
+          "negativeCase": "Any missing stage/date/note is synthesized or shown as verified employer state; fail.",
+          "evidenceArtifact": "Future redacted component/browser report; no execution claimed.",
+          "reviewer": "Independent Reviewer",
+          "releaseGate": "R1-APPLICATION-TRUTH"
+        }
+      ]
     },
     {
       "ticketId": "CS-51",

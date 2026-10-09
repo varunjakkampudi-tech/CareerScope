@@ -63,9 +63,10 @@ for (const ticketId of ticketIds) {
   if (!expected || expected !== currentGeneratedFileHash)
     throw new Error(`current content hash mismatch ${ticketId}`);
   const bindings = inputs.policy.exactVerificationBindings ?? {};
+  const refinementBindings = inputs.policy.ticketRefinements?.[ticketId]?.bindingAdditions ?? {};
   for (let index = 0; index < ticket.acceptanceCriteria.length; index += 1) {
     const acId = `${ticketId}-AC${index + 1}`;
-    const rows = bindings[acId];
+    const rows = [...(bindings[acId] ?? []), ...(refinementBindings[acId] ?? [])];
     if (!Array.isArray(rows) || !rows.length) throw new Error(`missing binding ${acId}`);
     for (const row of rows) row.reviewStatus = 'REVIEWED';
   }
@@ -90,7 +91,11 @@ for (const ticketId of ticketIds) {
   const acHashes = [];
   for (let index = 0; index < ticket.acceptanceCriteria.length; index += 1) {
     const acId = `${ticketId}-AC${index + 1}`;
-    const rows = inputs.policy.exactVerificationBindings[acId];
+    const rows = [
+      ...(inputs.policy.exactVerificationBindings?.[acId] ?? []),
+      ...(inputs.policy.ticketRefinements?.[ticketId]?.bindingAdditions?.[acId] ?? []),
+    ];
+    if (!rows.length) throw new Error(`missing binding ${acId}`);
     const hash = bindingDigest(rows);
     acHashes.push(`${acId}=${hash}`);
     inputs.policy.verificationReviewReceipts ??= {};

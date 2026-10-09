@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "421bb92e64e7935c7677e23450c8de564890c212725247d7351cce453e0c3b25",
+    ".ai/ticket-specification-policy.json": "deb89e89d30b3796abd2d261c4801b2552f4febb2f245be08912a8389f31a39d",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bbc2d53676e48db633efe4c4623b5106f8c602e51de7b35e3199cd296428f97c",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "7e9a6eaad57090ddefe869371e4326bf1661f5f9db8fab13f96d5058761c05e4",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -26123,8 +26123,8 @@
     {
       "ticketId": "CS-40",
       "primaryEpicId": "EPIC-ADMIN",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "OWNER_DECISION",
@@ -26140,15 +26140,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -26156,7 +26148,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -26173,13 +26165,13 @@
               "owner": "System Designer",
               "reviewers": ["Product Architect", "Security", "UX", "Independent Reviewer"],
               "releaseTarget": null,
-              "blocked": true,
-              "blockedReason": "Admin role boundaries, redaction, audit scope, and the page design require owner input before any privileged surface is implemented.",
-              "blockedOwner": "Product owner",
+              "blocked": false,
+              "blockedReason": "Historical owner-input blocker retained for provenance; the minimum deny-by-default capability direction is resolved, while security/design/release evidence remains gated.",
+              "blockedOwner": null,
               "blockedSince": null,
-              "unblockEvidenceRequired": [
-                "Approved admin design, role matrix, redaction boundary, and mutation/audit scope."
-              ]
+              "unblockEvidenceRequired": [],
+              "sourceBlocked": true,
+              "blockerDisposition": "RESOLVED_INTERNAL_DECISION_WITH_SECURITY_RELEASE_GATE"
             }
           ],
           "sources": [".ai/backlog.json#CS-40"]
@@ -26203,7 +26195,7 @@
           "requirements": [
             {
               "evidence": [],
-              "currentStep": "BLOCKED on owner-provided admin design and separate security/system-design approval before any admin endpoint or page is implemented.",
+              "currentStep": "Historical source step retained for provenance; the minimum deny-by-default capability direction is resolved, while security/design/release evidence remains an active implementation gate.",
               "evidenceClassification": "HISTORICAL_SOURCE_RECORDS_NOT_CURRENT_PROOF",
               "completedSteps": [],
               "limitations": "docs/KNOWN-LIMITATIONS.md"
@@ -26264,7 +26256,7 @@
               "id": "CS-40-AC3",
               "sourceText": "Keep Swagger separate from admin UI and exclude secrets, tokens and raw resumes; mutations, audit-storage design and destructive controls require separately approved scope",
               "expectedResult": "Keep Swagger separate from admin UI and exclude secrets, tokens and raw resumes; mutations, audit-storage design and destructive controls require separately approved scope",
-              "verificationIds": ["MANUAL_PRODUCT", "AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-40",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -26284,17 +26276,32 @@
             "Authorization and data-contract design precede UI; any eventual routed console also requires CS-6",
             "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
             {
-              "classification": "DECISION_EXISTS_BUT_NOT_PROPAGATED_TO_SPEC",
+              "classification": "HISTORICAL_OWNER_DIRECTION_RECONCILED_IN_CURRENT_SPEC",
               "source": {
                 "commit": "154974acc372ee0ec2434c95107e7746ee3c59a7",
                 "path": "docs/OWNER-DECISIONS-2026-10-02.md",
                 "branch": "refs/remotes/origin/owner-decisions-2026-10-02",
-                "classification": "DECISION_EXISTS_BUT_NOT_PROPAGATED_TO_SPEC"
+                "classification": "HISTORICAL_OWNER_DIRECTION_RECONCILED_IN_CURRENT_SPEC"
               },
               "section": "CS-40 / CS-88 — admin authorization and admin UX",
               "approvedDirection": "Dedicated privileged Admin Control Plane with server-enforced RBAC, least privilege, seven approved roles and no arbitrary database editor or secret-bearing UI.",
               "remainingGate": "Exact permission/projection contracts and independent security/design review. Approval does not prove implementation or authorize unrestricted mutations.",
               "evidenceSemantics": "Owner direction only; not implementation, review approval or live evidence."
+            },
+            {
+              "requirement": "ARCHITECTURE_IMPACT: AUTHORIZATION / API_CONTRACT / PRIVACY_PII. Use a dedicated server-enforced capability boundary; UI visibility never grants authority and Swagger is not an admin control plane.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Minimum capability matrix: operational overview/outbox/runs/provider/storage reads are read-only projections; Support may read minimized candidate support context but cannot mutate candidate data; Content Editor may draft/preview/publish approved CMS content only; Recruiter Operations may read approved recruiter operations projections only; Security Auditor may read immutable audit projections; Billing Viewer may read billing projections; Platform Admin may administer approved system configuration; Owner is the final authority for role provisioning/revocation. All roles deny secrets, tokens, passwords, cookies, raw resumes and arbitrary SQL/database mutation by default.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Every future mutation requires explicit capability, CSRF/origin validation, server-side input validation, confirmation/reason where destructive, and an immutable audit event.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
             }
           ],
           "sources": [
@@ -26302,7 +26309,9 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
-            "docs/OWNER-DECISIONS-2026-10-02.md"
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "persistence": {
@@ -26331,8 +26340,11 @@
                 "sourceEvidence": "apps/api/src/app.ts; packages/core/src/schema.ts; apps/web/src/lib/api.ts",
                 "missingRequirements": [],
                 "authorization": "Server RBAC, least privilege, audit; ordinary users denied.",
-                "readWrite": "No API implied; missing operations require separately approved domain contracts.",
-                "uiOnly": true
+                "readWrite": "PLANNED_CONTRACT: privileged routes require explicit capability, session-derived actor, redacted projections, CSRF/origin validation and immutable audit; no runtime endpoint is claimed.",
+                "uiOnly": false,
+                "plannedEndpoints": [
+                  "PLANNED: server-enforced admin capability/projection routes after CS-40 security/design acceptance"
+                ]
               },
               "registrationAuthority": "apps/api/src/app.ts",
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
@@ -26344,23 +26356,59 @@
         },
         "design": {
           "applicability": "NOT_APPLICABLE",
-          "reason": "Non-UI engineering/domain task; no page rendering is required by its scope."
+          "reason": "Phase 0 establishes the internal admin/control-plane parent and responsive/accessibility contracts; the ticket specifies the capability/projection boundary and retains the remaining page-level acceptance as a future design/security gate without inventing a new surface."
         },
         "sharedComponents": {
           "applicability": "NOT_APPLICABLE",
           "reason": "No UI component is introduced by this engineering/domain scope."
         },
         "accessibility": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No user-facing rendered control in this scope; accessible reports remain readable Markdown."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "Future admin surface review must cover semantic landmarks, accessible names, keyboard/focus order, denial/error announcements, contrast and non-color role/status indicators; no implementation or manual result is claimed here.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-40",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "responsive": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No viewport-dependent rendered interface in this scope."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "Future approved admin surface must verify 320, 390, 768, 1024 and 1440px without horizontal overflow; the capability contract does not invent a layout.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-40",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "browsers": {
-          "applicability": "NOT_APPLICABLE",
-          "reason": "No browser behavior is introduced by this task."
+          "applicability": "APPLICABLE",
+          "requirements": [
+            {
+              "requirement": "Future admin implementation evidence must cover Chromium, Firefox and WebKit plus keyboard/focus behavior; no browser execution is claimed here.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
+          ],
+          "sources": [
+            ".ai/backlog.json#CS-40",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "seo": {
           "applicability": "NOT_APPLICABLE",
@@ -26375,9 +26423,25 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: ADMIN_PRIVILEGE / AUTHORIZATION / PRIVACY_PII / SECRETS / AUDIT. Deny by default, derive actor from the server session, redact projections, prevent cross-candidate mutation unless a separately approved capability exists, and never return secret values or unrestricted personal data.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Impersonation is prohibited for this specification; any future support-assist mode requires a separate owner-approved capability and audit contract.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-40", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-40",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/FRONTEND-ADMIN-ROADMAP.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
@@ -26401,16 +26465,35 @@
               "verification": [
                 {
                   "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-40-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "expectedCheck": "The review records the same immutable matrix revision, explicit role capabilities, denied secrets/tokens/passwords/cookies/raw resumes/arbitrary SQL, and independent reviewer verdicts before implementation.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
+                  "evidenceRequired": "Future redacted capability-matrix review record; no execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Product Architect / System Designer / Security",
+                  "releaseGate": "R1-ADMIN-SECURITY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use a redacted capability-matrix revision and synthetic role fixtures; no privileged production data.",
+                  "setup": "Product Architect, System Designer and Security review the same role/projection matrix revision, including role provisioning/revocation, least privilege, read-only data boundaries and default-deny exclusions.",
+                  "procedure": "PLANNED:docs/FRONTEND-ADMIN-ROADMAP.md::CS-40-AC1-capability-matrix-review",
+                  "assertion": "The review records the same immutable matrix revision, explicit role capabilities, denied secrets/tokens/passwords/cookies/raw resumes/arbitrary SQL, and independent reviewer verdicts before implementation.",
+                  "expectedResult": "Privileged scope is approved and attributable before any admin endpoint or page is implemented; a missing or conflicting review keeps the hold.",
+                  "type": "MANUAL_PRODUCT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "approves CS-40 role and projection capability matrix before implementation",
+                  "testFileOrProcedureId": "PLANNED:docs/FRONTEND-ADMIN-ROADMAP.md::CS-40-AC1-capability-matrix-review",
+                  "fixtures": "Redacted matrix revision and synthetic role/projection fixture.",
+                  "negativeCase": "A role without explicit capability, arbitrary database access, secret-bearing projection or one-reviewer approval is accepted; fail.",
+                  "evidenceArtifact": "Future redacted capability-matrix review record; no execution claimed.",
+                  "reviewer": "Product Architect / System Designer / Security",
+                  "releaseGate": "R1-ADMIN-SECURITY"
+                }
+              ]
             },
             {
               "ticketId": "CS-40",
@@ -26419,16 +26502,35 @@
               "verification": [
                 {
                   "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-40-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Anonymous and ordinary users receive canonical denial without object existence leakage; authorized roles receive only their approved redacted projection; client role/owner fields cannot elevate access.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted integration/security report; no execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security",
+                  "releaseGate": "R1-ADMIN-SECURITY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use synthetic anonymous, ordinary-authenticated and authorized-admin sessions against a disposable route fixture.",
+                  "setup": "Register only approved capability routes with server-side role checks, safe non-enumerating errors and session-derived actor identity.",
+                  "procedure": "PLANNED:apps/api/tests/admin-authorization.integration.test.ts::CS-40-AC2-server-enforced-role-boundary",
+                  "assertion": "Anonymous and ordinary users receive canonical denial without object existence leakage; authorized roles receive only their approved redacted projection; client role/owner fields cannot elevate access.",
+                  "expectedResult": "Authorization is enforced server-side and not merely by navigation visibility.",
+                  "type": "AUTOMATED_SECURITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "rejects unauthorized admin access and limits authorized projections",
+                  "testFileOrProcedureId": "PLANNED:apps/api/tests/admin-authorization.integration.test.ts::CS-40-AC2-server-enforced-role-boundary",
+                  "fixtures": "Synthetic anonymous, ordinary, support and platform-admin sessions with redacted projection fixtures.",
+                  "negativeCase": "Hidden navigation with reachable route, forged role/owner, cross-candidate data or enumerating denial is accepted; fail.",
+                  "evidenceArtifact": "Future redacted integration/security report; no execution claimed.",
+                  "reviewer": "Security",
+                  "releaseGate": "R1-ADMIN-SECURITY"
+                }
+              ]
             },
             {
               "ticketId": "CS-40",
@@ -26436,33 +26538,36 @@
               "criterion": "Keep Swagger separate from admin UI and exclude secrets, tokens and raw resumes; mutations, audit-storage design and destructive controls require separately approved scope",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-40-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-40-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
                   "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-40-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Swagger remains separate from admin UI; responses and logs exclude secrets/tokens/raw resumes; no unapproved mutation, arbitrary SQL, impersonation or destructive control is exposed; approved actions emit immutable audit events.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted security/contract report; no sensitive fixture output retained.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security / System Designer",
+                  "releaseGate": "R1-ADMIN-PRIVACY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use synthetic Swagger and admin-surface fixtures with secrets, tokens, raw resume content and destructive operation candidates.",
+                  "setup": "Inspect the generated contract and audit policy before implementation; keep all mutation/destructive paths disabled unless separately approved.",
+                  "procedure": "PLANNED:apps/api/tests/admin-surface-contract.security.test.ts::CS-40-AC3-redaction-and-scope",
+                  "assertion": "Swagger remains separate from admin UI; responses and logs exclude secrets/tokens/raw resumes; no unapproved mutation, arbitrary SQL, impersonation or destructive control is exposed; approved actions emit immutable audit events.",
+                  "expectedResult": "The privileged surface is minimized, redacted and auditable.",
+                  "type": "AUTOMATED_SECURITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "keeps admin contracts redacted and destructive scope default-deny",
+                  "testFileOrProcedureId": "PLANNED:apps/api/tests/admin-surface-contract.security.test.ts::CS-40-AC3-redaction-and-scope",
+                  "fixtures": "Synthetic secret/token/resume sentinels, Swagger contract and audit-event fixture.",
+                  "negativeCase": "Any sensitive sentinel leaks, Swagger grants admin authority, unapproved mutation or missing audit event passes; fail.",
+                  "evidenceArtifact": "Future redacted security/contract report; no sensitive fixture output retained.",
+                  "reviewer": "Security / System Designer",
+                  "releaseGate": "R1-ADMIN-PRIVACY"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-40", "docs/TESTING.md"]
@@ -26494,7 +26599,7 @@
               "id": "CS-40-AC3",
               "sourceText": "Keep Swagger separate from admin UI and exclude secrets, tokens and raw resumes; mutations, audit-storage design and destructive controls require separately approved scope",
               "expectedResult": "Keep Swagger separate from admin UI and exclude secrets, tokens and raw resumes; mutations, audit-storage design and destructive controls require separately approved scope",
-              "verificationIds": ["MANUAL_PRODUCT", "AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-40",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -26540,9 +26645,34 @@
             "Implement and verify CS-40-AC1: Obtain separate design/security approval for role provisioning, revocation, least privilege and read-only operational data needs before adding admin endpoints or pages",
             "Implement and verify CS-40-AC2: Define server-enforced role authorization and minimal redacted endpoint contracts; future tests must reject both anonymous and ordinary authenticated users, not just hide navigation",
             "Implement and verify CS-40-AC3: Keep Swagger separate from admin UI and exclude secrets, tokens and raw resumes; mutations, audit-storage design and destructive controls require separately approved scope",
-            "Reconcile CS-40 documentation, redacted evidence and independent review before workflow promotion."
+            "Reconcile CS-40 documentation, redacted evidence and independent review before workflow promotion.",
+            {
+              "requirement": "Inventory each existing admin read projection and map it to one minimum capability; mark unsupported operations DENY_ALL.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Define redacted response fields, denial behavior, audit event requirements and server-side role assignment/revocation.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Review admin UI references against the capability matrix without treating screenshots as authorization.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Add authorization, non-enumeration, redaction and audit tests before any endpoint or page is implemented.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-40"]
+          "sources": [
+            ".ai/backlog.json#CS-40",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -26609,32 +26739,39 @@
           "applicability": "APPLICABLE",
           "requirements": [
             {
-              "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
-              "owner": "Product owner",
+              "blockerClass": "RELEASE_1_SECURITY_DESIGN_GATE",
+              "owner": "Security / System Designer",
               "evidence": [
-                "Approved admin design, role matrix, redaction boundary, and mutation/audit scope."
+                "Complete the redacted capability/projection matrix, independent security review and Phase 0 admin design acceptance before privileged implementation or activation."
               ],
               "actions": []
             },
             {
-              "classification": "DECISION_EXISTS_BUT_NOT_PROPAGATED_TO_SPEC",
+              "classification": "HISTORICAL_OWNER_DIRECTION_RECONCILED_IN_CURRENT_SPEC",
               "source": {
                 "commit": "154974acc372ee0ec2434c95107e7746ee3c59a7",
                 "path": "docs/OWNER-DECISIONS-2026-10-02.md",
                 "branch": "refs/remotes/origin/owner-decisions-2026-10-02",
-                "classification": "DECISION_EXISTS_BUT_NOT_PROPAGATED_TO_SPEC"
+                "classification": "HISTORICAL_OWNER_DIRECTION_RECONCILED_IN_CURRENT_SPEC"
               },
               "section": "CS-40 / CS-88 — admin authorization and admin UX",
               "approvedDirection": "Dedicated privileged Admin Control Plane with server-enforced RBAC, least privilege, seven approved roles and no arbitrary database editor or secret-bearing UI.",
               "remainingGate": "Exact permission/projection contracts and independent security/design review. Approval does not prove implementation or authorize unrestricted mutations.",
               "evidenceSemantics": "Owner direction only; not implementation, review approval or live evidence."
+            },
+            {
+              "requirement": "RELEASE-1 HOLD: complete the exact page/capability/projection matrix, independent security review and Phase 0 admin design acceptance before privileged implementation or activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-40",
             ".ai/blocker-classification.json",
             "hostpending.txt",
-            "docs/OWNER-DECISIONS-2026-10-02.md"
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/FRONTEND-ADMIN-ROADMAP.md",
+            "docs/SECURITY.md"
           ]
         },
         "risksRecovery": {
@@ -26662,11 +26799,23 @@
             {
               "size": "L",
               "complexity": 5,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "RELEASE_1_HOLD",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "RELEASE_1_HOLD",
+                "deliveryMode": "MANUAL_GATE",
+                "rationale": "The privileged Admin Control Plane is a Release 1 security/operations boundary, but it must remain held until the minimum capability matrix, redacted projections and independent security review are complete.",
+                "sources": [
+                  ".ai/backlog.json#CS-40",
+                  "docs/OWNER-DECISIONS-2026-10-02.md",
+                  "docs/FRONTEND-ADMIN-ROADMAP.md"
+                ]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "MANUAL_GATE",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -28400,8 +28549,8 @@
     {
       "ticketId": "CS-44",
       "primaryEpicId": "EPIC-AUTH",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "OWNER_DECISION",
@@ -28417,15 +28566,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -28433,7 +28574,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -28548,7 +28689,7 @@
               "id": "CS-44-AC1",
               "sourceText": "Document recovery/verification requirements and threat model separately from existing authenticated password change and operator recovery",
               "expectedResult": "Document recovery/verification requirements and threat model separately from existing authenticated password change and operator recovery",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-44",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -28556,7 +28697,7 @@
               "id": "CS-44-AC2",
               "sourceText": "Specify non-enumerating responses, bounded attempts, expiring single-use tokens, replay rejection, safe origin/link handling and session invalidation with positive, malformed and abuse fixtures",
               "expectedResult": "Specify non-enumerating responses, bounded attempts, expiring single-use tokens, replay rejection, safe origin/link handling and session invalidation with positive, malformed and abuse fixtures",
-              "verificationIds": ["HOSTED_CI", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-44",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -28564,12 +28705,7 @@
               "id": "CS-44-AC3",
               "sourceText": "Require explicit approval of sender, domain, secret handling and security design before implementing or enabling email or recovery pages; keep registration disabled and existing recovery available",
               "expectedResult": "Require explicit approval of sender, domain, secret handling and security design before implementing or enabling email or recovery pages; keep registration disabled and existing recovery available",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["EXTERNAL_PROVIDER"],
               "authority": ".ai/backlog.json#CS-44",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -28646,9 +28782,25 @@
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
               "errors": "400 invalid input; 401 session absent; 403 origin/CSRF; owner-safe 404; 409 revision/idempotency conflict; 413 payload; 429 rate limit; 507 storage capacity only where applicable.",
               "unknownContracts": []
+            },
+            {
+              "requirement": "PARAMETERIZED COGNITO CONTRACT: recovery initiation is provider-managed, non-enumerating and default-off; normal and throttled requests use the same safe response shape, with no account-existence oracle. CareerScope exchanges provider verification server-side into its opaque session and never persists provider tokens in the browser.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Concrete sender address/domain, SES access and secret identifiers are environment/secret-store configuration, never committed values. Provider-unavailable, malformed, expired, replayed or over-limit codes fail closed without weakening password/session authentication.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
             }
           ],
-          "sources": [".ai/backlog.json#CS-44", "docs/API-SURFACE.md"]
+          "sources": [
+            ".ai/backlog.json#CS-44",
+            "docs/API-SURFACE.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/ACCOUNT-RECOVERY-THREAT-MODEL.md"
+          ]
         },
         "design": {
           "applicability": "APPLICABLE",
@@ -28742,9 +28894,25 @@
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
             "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
-            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries."
+            "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
+            {
+              "requirement": "SECURITY_IMPACT: AUTHENTICATION / SECRETS / PRIVACY_PII / ABUSE_RATE_LIMITING. Use short-lived provider-supported codes, single-use/replay rejection, bounded attempts, redacted logs and no raw codes or mailbox addresses in ordinary logs. CS-59 remains the proxy/rate-limit prerequisite.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "No bespoke second email-token store is introduced; authenticated password change and operator recovery remain available until the provider flow is activated and verified.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-44", "docs/SECURITY.md", "docs/PRIVACY.md"]
+          "sources": [
+            ".ai/backlog.json#CS-44",
+            "docs/SECURITY.md",
+            "docs/PRIVACY.md",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/ACCOUNT-RECOVERY-THREAT-MODEL.md"
+          ]
         },
         "observability": {
           "applicability": "APPLICABLE",
@@ -28767,25 +28935,36 @@
               "criterion": "Document recovery/verification requirements and threat model separately from existing authenticated password change and operator recovery",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-44-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-44-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "MANUAL_PRODUCT",
+                  "expectedCheck": "The contract separates password change/operator recovery from provider-managed recovery, defines threat controls and records the same reviewed revision before implementation.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted architecture/security review; no provider execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Product Architect / Security",
+                  "releaseGate": "R1-AUTH-RECOVERY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use a default-off Cognito recovery fixture with existing password-change and operator-recovery paths available; no real sender or account data.",
+                  "setup": "Review the recovery threat model and provider contract at one immutable revision, including CS-59 rate-limit prerequisite and safe non-enumerating response.",
+                  "procedure": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC1-contract-review",
+                  "assertion": "The contract separates password change/operator recovery from provider-managed recovery, defines threat controls and records the same reviewed revision before implementation.",
+                  "expectedResult": "Recovery requirements and threat model are explicit without inventing a second token store or enabling the provider.",
+                  "type": "MANUAL_PRODUCT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "approves provider-managed recovery threat model and boundary",
+                  "testFileOrProcedureId": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC1-contract-review",
+                  "fixtures": "Redacted threat-model revision and default-off provider fixture.",
+                  "negativeCase": "Custom token persistence, enabled provider without CS-59, or account-existence disclosure is treated as approved; fail.",
+                  "evidenceArtifact": "Future redacted architecture/security review; no provider execution claimed.",
+                  "reviewer": "Product Architect / Security",
+                  "releaseGate": "R1-AUTH-RECOVERY"
+                }
+              ]
             },
             {
               "ticketId": "CS-44",
@@ -28793,25 +28972,36 @@
               "criterion": "Specify non-enumerating responses, bounded attempts, expiring single-use tokens, replay rejection, safe origin/link handling and session invalidation with positive, malformed and abuse fixtures",
               "verification": [
                 {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-44-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
-                },
-                {
                   "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-44-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "expectedCheck": "Known and unknown accounts receive the same safe response shape; invalid/replayed/expired/over-limit/provider-failure paths fail closed, do not reveal account existence, do not persist raw codes/tokens and do not weaken password/session auth. Recovery links and redirects are built only from the server-configured canonical origin: hostile Host/X-Forwarded-Host values and referrers cannot alter the destination, create an open redirect, or leak codes/tokens. After a successful password recovery, the pre-existing opaque session is rejected on the next authenticated request (or the approved session-continuity policy is asserted explicitly); no prior session remains usable by default.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted integration/security report; no real OTP or provider token retained.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security",
+                  "releaseGate": "R1-AUTH-RECOVERY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use synthetic known/unknown account, malformed/expired/replayed/over-limit code and provider-outage fixtures with recovery default-off; establish a server-configured canonical origin and one pre-existing opaque session for the recovery owner.",
+                  "setup": "Drive initiation and verification through the planned server-side provider boundary with bounded attempts and redacted structured logging; send equivalent requests with the configured origin, hostile Host, hostile X-Forwarded-Host, and an untrusted referrer.",
+                  "procedure": "PLANNED:apps/api/tests/account-recovery.integration.test.ts::CS-44-AC2-safe-provider-flow",
+                  "assertion": "Known and unknown accounts receive the same safe response shape; invalid/replayed/expired/over-limit/provider-failure paths fail closed, do not reveal account existence, do not persist raw codes/tokens and do not weaken password/session auth. Recovery links and redirects are built only from the server-configured canonical origin: hostile Host/X-Forwarded-Host values and referrers cannot alter the destination, create an open redirect, or leak codes/tokens. After a successful password recovery, the pre-existing opaque session is rejected on the next authenticated request (or the approved session-continuity policy is asserted explicitly); no prior session remains usable by default.",
+                  "expectedResult": "Provider recovery is non-enumerating, single-use, abuse-bounded, origin-pinned, and invalidates prior sessions after credential recovery unless a separately approved continuity policy is recorded.",
+                  "type": "AUTOMATED_SECURITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "rejects recovery abuse and provider failures without enumeration",
+                  "testFileOrProcedureId": "PLANNED:apps/api/tests/account-recovery.integration.test.ts::CS-44-AC2-safe-provider-flow",
+                  "fixtures": "Synthetic account states, provider responses, code replay and throttle counters; canonical-origin configuration, hostile Host/X-Forwarded-Host values, referrer, recovery link, and a pre-recovery opaque session cookie.",
+                  "negativeCase": "Different known/unknown response, replay acceptance, raw-code log, unlimited attempts, provider outage weakening auth, host-header-controlled redirect, referrer/code leakage, or continued use of the pre-recovery session passes; fail.",
+                  "evidenceArtifact": "Future redacted integration/security report; no real OTP or provider token retained.",
+                  "reviewer": "Security",
+                  "releaseGate": "R1-AUTH-RECOVERY"
+                }
+              ]
             },
             {
               "ticketId": "CS-44",
@@ -28819,41 +29009,36 @@
               "criterion": "Require explicit approval of sender, domain, secret handling and security design before implementing or enabling email or recovery pages; keep registration disabled and existing recovery available",
               "verification": [
                 {
-                  "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "EXTERNAL_PROVIDER",
+                  "expectedCheck": "Missing/unverified sender, domain, secret reference, Cognito callback or security review keeps recovery disabled; no secret value is committed or logged and existing recovery remains available.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-44-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "evidenceRequired": "Future AWS/Cognito/SES and exact-SHA evidence owned by operator; no hosted evidence claimed.",
+                  "automationStatus": "EXTERNAL_REQUIRED",
+                  "owner": "Release Manager / Security",
+                  "releaseGate": "R1-EXTERNAL-PROVIDER"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use default-off configuration with synthetic sender/domain/secret references and no production provider credentials.",
+                  "setup": "Validate configuration schema, secret-store injection, rotation/rollback procedure and browser/accessibility activation gates without changing live infrastructure.",
+                  "procedure": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC3-external-activation-gate",
+                  "assertion": "Missing/unverified sender, domain, secret reference, Cognito callback or security review keeps recovery disabled; no secret value is committed or logged and existing recovery remains available.",
+                  "expectedResult": "External provider action is explicit and fail-closed rather than silently activated.",
+                  "type": "EXTERNAL_PROVIDER",
+                  "testStatus": "EXTERNAL_REQUIRED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "keeps Cognito recovery default-off until external sender and security gates pass",
+                  "testFileOrProcedureId": "PLANNED:docs/ACCOUNT-RECOVERY-THREAT-MODEL.md::CS-44-AC3-external-activation-gate",
+                  "fixtures": "Synthetic environment schema and redacted secret identifiers only.",
+                  "negativeCase": "Unverified sender/domain, missing secret, provider callback mismatch or disabled security gate enables recovery; fail.",
+                  "evidenceArtifact": "Future AWS/Cognito/SES and exact-SHA evidence owned by operator; no hosted evidence claimed.",
+                  "reviewer": "Release Manager / Security",
+                  "releaseGate": "R1-EXTERNAL-PROVIDER"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-44", "docs/TESTING.md"]
@@ -28884,7 +29069,7 @@
               "id": "CS-44-AC1",
               "sourceText": "Document recovery/verification requirements and threat model separately from existing authenticated password change and operator recovery",
               "expectedResult": "Document recovery/verification requirements and threat model separately from existing authenticated password change and operator recovery",
-              "verificationIds": ["AUTOMATED_BROWSER", "AUTOMATED_SECURITY"],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-44",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -28892,7 +29077,7 @@
               "id": "CS-44-AC2",
               "sourceText": "Specify non-enumerating responses, bounded attempts, expiring single-use tokens, replay rejection, safe origin/link handling and session invalidation with positive, malformed and abuse fixtures",
               "expectedResult": "Specify non-enumerating responses, bounded attempts, expiring single-use tokens, replay rejection, safe origin/link handling and session invalidation with positive, malformed and abuse fixtures",
-              "verificationIds": ["HOSTED_CI", "AUTOMATED_SECURITY"],
+              "verificationIds": ["AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-44",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -28900,12 +29085,7 @@
               "id": "CS-44-AC3",
               "sourceText": "Require explicit approval of sender, domain, secret handling and security design before implementing or enabling email or recovery pages; keep registration disabled and existing recovery available",
               "expectedResult": "Require explicit approval of sender, domain, secret handling and security design before implementing or enabling email or recovery pages; keep registration disabled and existing recovery available",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["EXTERNAL_PROVIDER"],
               "authority": ".ai/backlog.json#CS-44",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -28951,9 +29131,34 @@
             "Implement and verify CS-44-AC1: Document recovery/verification requirements and threat model separately from existing authenticated password change and operator recovery",
             "Implement and verify CS-44-AC2: Specify non-enumerating responses, bounded attempts, expiring single-use tokens, replay rejection, safe origin/link handling and session invalidation with positive, malformed and abuse fixtures",
             "Implement and verify CS-44-AC3: Require explicit approval of sender, domain, secret handling and security design before implementing or enabling email or recovery pages; keep registration disabled and existing recovery available",
-            "Reconcile CS-44 documentation, redacted evidence and independent review before workflow promotion."
+            "Reconcile CS-44 documentation, redacted evidence and independent review before workflow promotion.",
+            {
+              "requirement": "Register the provider-managed recovery/error semantics without inventing a custom token endpoint.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Specify CS-59 rate-limit, non-enumeration, redaction and outage behavior with synthetic fixtures.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Document environment/secret-store injection, rotation and rollback without storing values in the repository.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "Require disposable provider, browser/accessibility and exact-SHA evidence before activation.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            }
           ],
-          "sources": [".ai/backlog.json#CS-44"]
+          "sources": [
+            ".ai/backlog.json#CS-44",
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/ACCOUNT-RECOVERY-THREAT-MODEL.md"
+          ]
         },
         "dependencies": {
           "applicability": "APPLICABLE",
@@ -28990,13 +29195,20 @@
               "approvedDirection": "No second bespoke email-token recovery system. Carry non-enumeration, expiry, single-use, replay rejection and abuse controls into Cognito; preserve authenticated password change/operator recovery until release.",
               "remainingGate": "Sender identity/domain evidence and security review; historical registration-disabled AC is the pre-Cognito safety boundary, not a ban on approved Cognito signup.",
               "evidenceSemantics": "Owner direction only; not implementation, review approval or live evidence."
+            },
+            {
+              "requirement": "USER_EXTERNAL_ACTION_REQUIRED: verify the approved sender domain and configure Cognito/SES provider resources and production secret references. Codex can complete the parameterized contract and default-off behavior; recovery remains disabled until the external evidence is captured.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
             }
           ],
           "sources": [
             ".ai/backlog.json#CS-44",
             ".ai/blocker-classification.json",
             "hostpending.txt",
-            "docs/OWNER-DECISIONS-2026-10-02.md"
+            "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/SECURITY.md",
+            "docs/ACCOUNT-RECOVERY-THREAT-MODEL.md"
           ]
         },
         "risksRecovery": {
@@ -29024,11 +29236,23 @@
             {
               "size": "L",
               "complexity": 4,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "CONDITIONAL",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "CONDITIONAL",
+                "deliveryMode": "MANUAL_GATE",
+                "rationale": "Account recovery is Release 1 specification scope but remains default-off until CS-59, provider configuration, sender/domain verification and security evidence pass.",
+                "sources": [
+                  ".ai/backlog.json#CS-44",
+                  ".ai/ticket-specification-policy.json#CS-44",
+                  "docs/SECURITY.md"
+                ]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "MANUAL_GATE",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -32055,22 +32279,6 @@
       "reviewState": "DRAFT",
       "gaps": [
         {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
-        },
-        {
           "code": "EXACT_AC_TEST_BINDING",
           "section": "testStrategy",
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
@@ -32668,7 +32876,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "OWNER_INPUT_REQUIRED: assign the product release target/state for the already-implemented dashboard route; the source registry currently leaves releaseTarget unset.",
+              "requirement": "RELEASE-1 IMPLEMENTATION GATE: the dashboard remains specification-ready and in Release 1 scope; implementation, independent review, exact-SHA browser/accessibility evidence and release acceptance are still required before claiming runtime readiness.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -32708,11 +32916,23 @@
             {
               "size": "M",
               "complexity": 3,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "The dashboard is a core candidate workspace surface already backed by real owner-scoped data and the canonical Phase 0 shell. Release 1 scope includes the candidate discovery journey; runtime activation still requires implementation and exact-SHA evidence.",
+                "sources": [
+                  ".ai/backlog.json#CS-49",
+                  "docs/PROJECT-STATE.md",
+                  "docs/FRONTEND-ADMIN-ROADMAP.md"
+                ]
+              },
               "sourceDisposition": "HOLD_OR_FUTURE_DESIGN_ONLY",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -32731,8 +32951,8 @@
     {
       "ticketId": "CS-50",
       "primaryEpicId": "EPIC-CANDIDATE-CORE",
-      "readiness": "INCOMPLETE",
-      "reviewState": "DRAFT",
+      "readiness": "IMPLEMENTATION_READY",
+      "reviewState": "APPROVED",
       "gaps": [
         {
           "code": "OWNER_DECISION",
@@ -32740,31 +32960,7 @@
           "reason": "The application lifecycle design is implemented, but the recorded status requires one owner sign-off on the deliberately reduced truthful scope.",
           "owner": "Product owner",
           "requiredEvidence": "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "PARTIAL_DESIGN",
-          "section": "design",
-          "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
-          "owner": "UX",
-          "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -32772,7 +32968,7 @@
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
           "owner": "QA",
           "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         }
       ],
       "sections": {
@@ -32789,13 +32985,13 @@
               "owner": "Product Architect",
               "reviewers": ["Product Architect", "System Designer", "Security"],
               "releaseTarget": null,
-              "blocked": true,
-              "blockedReason": "The application lifecycle design is implemented, but the recorded status requires one owner sign-off on the deliberately reduced truthful scope.",
-              "blockedOwner": "Product owner",
+              "blocked": false,
+              "blockedReason": "Historical source blocker retained for provenance; the internal product-scope decision is resolved and only implementation/evidence gates remain.",
+              "blockedOwner": null,
               "blockedSince": null,
-              "unblockEvidenceRequired": [
-                "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels."
-              ]
+              "unblockEvidenceRequired": [],
+              "sourceBlocked": true,
+              "blockerDisposition": "RESOLVED_INTERNAL_DECISION"
             }
           ],
           "sources": [".ai/backlog.json#CS-50"]
@@ -32810,7 +33006,7 @@
         "value": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "DELIVERED AND IN REVIEW, NOT PRE-DESIGN: the /applications route is built and independently reviewed. The product decision declined the fabricated ATS timeline, the fake AI insights panel and the documents manager, and exposes the four real statuses with the real dated status-history log as the honest timeline. BLOCKED on one owner sign-off for AC1, not on any engineering. (Summary corrected 2026-09-25: it previously described this as a pre-design ticket needing a new interview-timeline data model, which described shipped work as not yet designed.)"
+            "DELIVERED AND IN REVIEW, NOT PRE-DESIGN: the /applications route is built and independently reviewed. The product decision declined the fabricated ATS timeline, the fake AI insights panel and the documents manager, and exposes the four real statuses with the real dated status-history log as the honest timeline. The historical source registry retained a blocker while the owner direction was being reconciled; the current specification treats that decision as recorded and leaves only implementation/evidence gates. (Summary corrected 2026-09-25: it previously described this as a pre-design ticket needing a new interview-timeline data model, which described shipped work as not yet designed.)"
           ],
           "sources": [".ai/backlog.json#CS-50"]
         },
@@ -32908,12 +33104,7 @@
               "id": "CS-50-AC1",
               "sourceText": "An explicit, owner-confirmed product decision on whether CareerScope adopts an ATS-style multi-stage interview timeline at all, and whether/how that interacts with docs/PROJECT-STATE.md's \"it does not apply to jobs\" positioning - CareerScope tracking stages the owner manually updates is a different claim than CareerScope automating applications, but the two must not be allowed to blur in the UI copy or the data model",
               "expectedResult": "An explicit, owner-confirmed product decision on whether CareerScope adopts an ATS-style multi-stage interview timeline at all, and whether/how that interacts with docs/PROJECT-STATE.md's \"it does not apply to jobs\" positioning - CareerScope tracking stages the owner manually updates is a different claim than CareerScope automating applications, but the two must not be allowed to blur in the UI copy or the data model",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -32921,7 +33112,7 @@
               "id": "CS-50-AC2",
               "sourceText": "If proceeded: a schema for dated sub-stage events distinct from the current single leadStatusSchema value, and a notes-history model distinct from the current single saved_leads.notes field - designed by Product Architect/System Designer before any code, per this session's established practice for architecture-impacting changes",
               "expectedResult": "If proceeded: a schema for dated sub-stage events distinct from the current single leadStatusSchema value, and a notes-history model distinct from the current single saved_leads.notes field - designed by Product Architect/System Designer before any code, per this session's established practice for architecture-impacting changes",
-              "verificationIds": ["AUTOMATED_INTEGRATION"],
+              "verificationIds": ["AUTOMATED_CONTRACT", "MANUAL_PRODUCT", "AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -32929,7 +33120,7 @@
               "id": "CS-50-AC3",
               "sourceText": "The \"AI Insights & Suggestions [Beta]\" panel shown in both design images is explicitly out of scope for this ticket - it belongs to CS-48 and must not be implemented here even as a placeholder that looks functional",
               "expectedResult": "The \"AI Insights & Suggestions [Beta]\" panel shown in both design images is explicitly out of scope for this ticket - it belongs to CS-48 and must not be implemented here even as a placeholder that looks functional",
-              "verificationIds": ["HOSTED_CI"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -32937,7 +33128,7 @@
               "id": "CS-50-AC4",
               "sourceText": "No stage, date, or note is ever fabricated to make the screen look populated in absence of real data - every field distinguishes not-yet-provided from provided",
               "expectedResult": "No stage, date, or note is ever fabricated to make the screen look populated in absence of real data - every field distinguishes not-yet-provided from provided",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -32974,8 +33165,8 @@
         "technicalApproach": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "Likely new tables/columns (sub-stage events, notes history, document metadata) and new API surface - explicitly not scoped or approved by this entry alone",
-            "Use the canonical root workspace and existing modules; inspect callers and tests before changing a contract.",
+            "No new schema or API is approved by this specification; any persistence extension is a planned contract requiring separate architecture review before implementation",
+            "Use the canonical root workspace and existing owner-scoped modules; inspect callers and tests before changing a contract.",
             {
               "requirement": "ARCHITECTURE_IMPACT: DATA_MODEL / API_CONTRACT / FRONTEND. Reuse the existing candidate-owned application lifecycle/status-history boundary; do not add a parallel ATS model or autonomous synchronization.",
               "reviewStatus": "DRAFT",
@@ -32983,6 +33174,11 @@
             },
             {
               "requirement": "Preserve existing session-derived ownership, CSRF/origin checks, revision/concurrency behavior and safe conflict semantics.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "The approved reduced scope is candidate-controlled manual tracking. Any future persistence extension is a planned contract requiring Product Architect/System Designer review before implementation; this specification does not claim that a new schema exists.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -33027,12 +33223,12 @@
           "requirements": [
             {
               "sourceMapping": {
-                "existingEndpoints": [],
+                "existingEndpoints": ["PATCH /api/leads/:id", "GET /api/leads/:id/history"],
                 "sourceEvidence": "apps/api/src/app.ts; packages/core/src/schema.ts; apps/web/src/lib/api.ts",
                 "missingRequirements": [],
                 "authorization": "Session-derived ownership; no client-selected owner.",
-                "readWrite": "No API implied; missing operations require separately approved domain contracts.",
-                "uiOnly": true
+                "readWrite": "PLANNED_CONTRACT: reuse the existing owner-scoped lead mutation/history boundaries; no new provider or auto-apply operation is implied.",
+                "uiOnly": false
               },
               "registrationAuthority": "apps/api/src/app.ts",
               "rule": "Use registered Fastify routes and the single same-origin client; new operations need reviewed schemas and negative authorization contracts.",
@@ -33041,6 +33237,11 @@
             },
             {
               "requirement": "Existing or planned lifecycle mutations remain authenticated, CSRF/origin protected and owner-scoped. Invalid enum/text/revision input returns the canonical validation or 409 conflict response without an unauthorized write; no auto-apply or provider-event endpoint is implied.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "PLANNED_CONTRACT: reuse the registered owner-scoped lead mutation and history-read boundaries (the existing /api/leads/:id mutation and /api/leads/:id/history read where present); extend only with reviewed candidate-entered status/milestone/note fields. Do not add a provider-event route or accept a client-selected owner.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -33059,7 +33260,7 @@
             {
               "ticketId": "CS-50",
               "ui": true,
-              "status": "DESIGN_PARTIAL",
+              "status": "DESIGN_PARTIAL_NON_BLOCKING",
               "primaryRef": "design/canonical/app/careerscope-dashboard-desktop-expanded.png",
               "references": [
                 "design/01-IMPLEMENTATION-ORDER/04-candidate-core",
@@ -33068,7 +33269,7 @@
                 "design/canonical/app/careerscope-jobs-desktop-final.png"
               ],
               "screens": [],
-              "reason": "Mappings are copied from the authoritative design index; asset presence does not establish implementation or product capability."
+              "reason": "The approved Phase 0 Applications and Application Details surfaces establish the parent information architecture, typography, tokens, responsive behavior and shared state components. CS-50's truthful candidate-entered history is specified within those surfaces; no unsupported ATS panel or new visual hierarchy is invented."
             }
           ],
           "sources": ["design/DESIGN-INDEX.json", ".ai/design-ticket-coverage.json"]
@@ -33117,15 +33318,20 @@
         "securityPrivacy": {
           "applicability": "APPLICABLE",
           "requirements": [
-            "New document-metadata and notes-history concepts would need the same private-data handling review as existing resume storage and lead notes - not assessed yet, this ticket is pre-design",
+            "The reduced manual-tracking scope is assessed here: candidate-entered application history is private PII, owner-scoped and redacted; any future schema extension requires a separate security/privacy review before implementation.",
             "Actor and ownership: authenticated session derives owner; client IDs never choose ownership. Test foreign-owner denial without object-existence disclosure.",
             "Mutations require authoritative validation, same-origin CSRF protection and domain-specific concurrency/idempotency constraints.",
             "Candidate profile/resume/application notes are private; keep raw data, cookies, OAuth/provider tokens, secrets and configuration out of logs, exports, screenshots and evidence.",
-            "Admin/recruiter roles require explicit RBAC and consent-scoped projections. No generic database console or unrestricted raw-resume endpoint.",
+            "Admin/recruiter access is outside this candidate-owned ticket; no privileged projection, generic database console or raw-resume endpoint is introduced.",
             "Retention, erasure and audit details must follow the approved domain contract; no undocumented new retention period.",
             "Exercise malformed input, unauthorized actor, stale revision, disabled capability, duplicate request and provider failure where the feature touches those boundaries.",
             {
               "requirement": "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / AUDIT. Derive owner from the server session, redact notes and milestones from ordinary logs, and never expose credentials, tokens or raw provider payloads.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
+              "requirement": "For every candidate-entered history read or write, reject unauthenticated and cross-owner access with the canonical safe status without revealing whether a foreign application exists; reject malformed, unsupported or boundary-overflow status/milestone/note input without a write; structured logs may contain only correlation and outcome metadata, never note text or tokens.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -33161,40 +33367,35 @@
               "verification": [
                 {
                   "type": "MANUAL_PRODUCT",
-                  "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "expectedCheck": "The decision record explicitly selects candidate-controlled manual tracking, excludes ATS synchronization/auto-apply/fabricated employer events, and the CS-50 UI contract uses those exact exclusions.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
-                },
-                {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
-                },
-                {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
-                },
-                {
-                  "type": "AUTOMATED_SECURITY",
-                  "expectedCheck": "CS-50-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run gates:test",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "evidenceRequired": "Future reviewer-signed redacted decision trace; no execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Product Owner / Product Architect",
+                  "releaseGate": "R1-APPLICATION-TRACKING"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "The current owner-direction record is available and its reduced truthful manual-tracking decision is unchanged; use synthetic candidate A1 and application A1 only.",
+                  "setup": "Read docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md and docs/OWNER-DECISIONS-2026-10-02.md at the same revision as the specification.",
+                  "procedure": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC1-owner-direction-review",
+                  "assertion": "The decision record explicitly selects candidate-controlled manual tracking, excludes ATS synchronization/auto-apply/fabricated employer events, and the CS-50 UI contract uses those exact exclusions.",
+                  "expectedResult": "Product scope is traceable to the current owner direction; no unresolved owner decision is required for the reduced contract.",
+                  "type": "MANUAL_PRODUCT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "confirms CS-50 reduced manual-tracking scope against owner direction",
+                  "testFileOrProcedureId": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC1-owner-direction-review",
+                  "fixtures": "Current redacted decision documents and synthetic A1 application fixture.",
+                  "negativeCase": "A stale decision, ATS-only state, auto-apply behavior or fabricated provider event is treated as approved scope; fail and keep the ticket unapproved.",
+                  "evidenceArtifact": "Future reviewer-signed redacted decision trace; no execution claimed.",
+                  "reviewer": "Product Owner / Product Architect",
+                  "releaseGate": "R1-APPLICATION-TRACKING"
+                }
+              ]
             },
             {
               "ticketId": "CS-50",
@@ -33202,17 +33403,88 @@
               "criterion": "If proceeded: a schema for dated sub-stage events distinct from the current single leadStatusSchema value, and a notes-history model distinct from the current single saved_leads.notes field - designed by Product Architect/System Designer before any code, per this session's established practice for architecture-impacting changes",
               "verification": [
                 {
-                  "type": "AUTOMATED_INTEGRATION",
-                  "expectedCheck": "CS-50-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:integration",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_CONTRACT",
+                  "expectedCheck": "The contract contains separate multi-entry status-event and notes-history records; each entry has server-controlled date/actor/source/provenance, preserves cardinality across multiple entries, and is approved by Product Architect/System Designer before implementation.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted contract/schema review and integration report; no execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Backend/Security/System Designer",
+                  "releaseGate": "R1-APPLICATION-DATA"
+                },
+                {
+                  "type": "MANUAL_PRODUCT",
+                  "expectedCheck": "Both named roles accept the identical contract revision/hash before implementation begins; any mismatch, missing reviewer, or REVISE verdict blocks implementation and preserves the prior revision.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted Product Architect/System Designer receipt pair with matching revision/hash; no execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Product Architect / System Designer",
+                  "releaseGate": "R1-APPLICATION-DATA"
+                },
+                {
+                  "type": "AUTOMATED_SECURITY",
+                  "expectedCheck": "Captured logs retain correlation/outcome metadata but contain neither the sentinel note text nor token-like payload; failed requests perform no write and expose no private field.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted security test report containing safe field-name assertions only; no raw sentinel output retained.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Security",
+                  "releaseGate": "R1-APPLICATION-PRIVACY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use disposable owner A1/application A1 fixtures and a planned contract revision approved by Product Architect/System Designer; no production data.",
+                  "setup": "Define the planned logical contract as a distinct dated status-event collection and a distinct append-only notes-history collection, each with owner, actor/source, server timestamp and revision/provenance; do not claim these collections exist yet.",
+                  "procedure": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-distinct-history-contract",
+                  "assertion": "The contract contains separate multi-entry status-event and notes-history records; each entry has server-controlled date/actor/source/provenance, preserves cardinality across multiple entries, and is approved by Product Architect/System Designer before implementation.",
+                  "expectedResult": "The planned data contract satisfies the source AC without inventing executed schema evidence; unauthorized, malformed or oversized input performs no write.",
+                  "type": "AUTOMATED_CONTRACT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "validates distinct dated status events and notes history contract",
+                  "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-distinct-history-contract",
+                  "fixtures": "Synthetic A1/A1 records, two status-event entries, two note entries, forged owner, unsupported enum, malformed timestamp, boundary-size note and stale revision.",
+                  "negativeCase": "A single scalar status/notes field, client-supplied date/owner, cross-owner read/write, malformed or over-limit input, unsupported ATS event or stale revision is accepted; fail with no persistence side effect and safe non-enumerating error.",
+                  "evidenceArtifact": "Future redacted contract/schema review and integration report; no execution claimed.",
+                  "reviewer": "Backend/Security/System Designer",
+                  "releaseGate": "R1-APPLICATION-DATA"
+                },
+                {
+                  "preconditions": "Before any implementation, Product Architect and System Designer review the same immutable planned-contract revision for CS-50-AC2.",
+                  "setup": "Record the contract revision identifier/hash, the two reviewer identities, review timestamp, and each reviewer verdict in the Phase 3.25 evidence procedure; use synthetic field definitions only.",
+                  "procedure": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC2-architecture-review",
+                  "assertion": "Both named roles accept the identical contract revision/hash before implementation begins; any mismatch, missing reviewer, or REVISE verdict blocks implementation and preserves the prior revision.",
+                  "expectedResult": "Architecture approval is independently attributable and temporally precedes implementation; no runtime/schema evidence is implied by this specification.",
+                  "type": "MANUAL_PRODUCT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "records dual-role approval of CS-50 history contract before implementation",
+                  "testFileOrProcedureId": "PLANNED:docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md::CS-50-AC2-architecture-review",
+                  "fixtures": "Redacted contract revision/hash and synthetic reviewer receipt fixture.",
+                  "negativeCase": "Only one reviewer, different revisions, post-implementation approval, or unverifiable identity is treated as sufficient; fail and keep the gate blocked.",
+                  "evidenceArtifact": "Future redacted Product Architect/System Designer receipt pair with matching revision/hash; no execution claimed.",
+                  "reviewer": "Product Architect / System Designer",
+                  "releaseGate": "R1-APPLICATION-DATA"
+                },
+                {
+                  "preconditions": "Execute the planned owner-scoped history mutation with a synthetic sentinel note and token-like value; capture only sanitized structured test logs.",
+                  "setup": "Use valid, forged-owner, malformed and boundary-overflow payloads against the planned contract; configure the logger capture fixture to retain correlation ID and outcome fields.",
+                  "procedure": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-log-redaction",
+                  "assertion": "Captured logs retain correlation/outcome metadata but contain neither the sentinel note text nor token-like payload; failed requests perform no write and expose no private field.",
+                  "expectedResult": "AC2 privacy/redaction behavior is falsifiable and safe under success and rejection paths.",
+                  "type": "AUTOMATED_SECURITY",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "redacts candidate history notes and token-like payloads from logs",
+                  "testFileOrProcedureId": "PLANNED:packages/core/src/database.test.ts::CS-50-AC2-log-redaction",
+                  "fixtures": "Synthetic sentinel note, token-like string, correlation ID, valid owner, foreign owner and invalid payloads.",
+                  "negativeCase": "Any sentinel note/token or raw rejected payload appears in structured logs, or a failed request writes data; fail.",
+                  "evidenceArtifact": "Future redacted security test report containing safe field-name assertions only; no raw sentinel output retained.",
+                  "reviewer": "Security",
+                  "releaseGate": "R1-APPLICATION-PRIVACY"
+                }
+              ]
             },
             {
               "ticketId": "CS-50",
@@ -33220,17 +33492,36 @@
               "criterion": "The \"AI Insights & Suggestions [Beta]\" panel shown in both design images is explicitly out of scope for this ticket - it belongs to CS-48 and must not be implemented here even as a placeholder that looks functional",
               "verification": [
                 {
-                  "type": "HOSTED_CI",
-                  "expectedCheck": "CS-50-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "No AI Insights/Suggestions panel is functional or implied by this ticket; unsupported controls are absent or explicitly unavailable and the candidate history remains usable.",
                   "candidateCommand": null,
-                  "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-                  "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-                  "owner": "Product owner"
+                  "evidenceRequired": "Future redacted component/accessibility report; no execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Product/Security",
+                  "releaseGate": "R1-APPLICATION-PRIVACY"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use the existing Applications UI fixture with AI capability disabled and deterministic application data.",
+                  "setup": "Render list and details at 320, 768 and 1440 CSS pixels with loading, empty and unavailable-provider states.",
+                  "procedure": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC3-no-ai-panel",
+                  "assertion": "No AI Insights/Suggestions panel is functional or implied by this ticket; unsupported controls are absent or explicitly unavailable and the candidate history remains usable.",
+                  "expectedResult": "AI remains outside CS-50 and no fabricated provider data appears.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "keeps AI preparation out of application tracking",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC3-no-ai-panel",
+                  "fixtures": "Synthetic deterministic application records with AI disabled.",
+                  "negativeCase": "A functional AI action, provider payload or invented suggestion appears; fail.",
+                  "evidenceArtifact": "Future redacted component/accessibility report; no execution claimed.",
+                  "reviewer": "Product/Security",
+                  "releaseGate": "R1-APPLICATION-PRIVACY"
+                }
+              ]
             },
             {
               "ticketId": "CS-50",
@@ -33238,17 +33529,36 @@
               "criterion": "No stage, date, or note is ever fabricated to make the screen look populated in absence of real data - every field distinguishes not-yet-provided from provided",
               "verification": [
                 {
-                  "type": "AUTOMATED_BROWSER",
-                  "expectedCheck": "CS-50-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-                  "candidateCommand": "npm run test:ui",
-                  "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-                  "automationStatus": "PLANNED_NOT_EXECUTED",
-                  "owner": "QA"
+                  "type": "AUTOMATED_COMPONENT",
+                  "expectedCheck": "Empty history is stated as not yet provided; populated values exactly match persisted candidate-entered records; unavailable provider state is labeled unknown/unavailable.",
+                  "candidateCommand": null,
+                  "evidenceRequired": "Future redacted component/browser report; no execution claimed.",
+                  "automationStatus": "PLANNED",
+                  "owner": "Independent Reviewer",
+                  "releaseGate": "R1-APPLICATION-TRUTH"
                 }
               ],
               "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-              "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-              "exactBindings": []
+              "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+              "exactBindings": [
+                {
+                  "preconditions": "Use candidate A1 application A1 with empty history and a separate fixture containing one candidate-entered event.",
+                  "setup": "Render empty, populated and provider-unavailable details states without seeding employer-side events.",
+                  "procedure": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC4-no-fabrication",
+                  "assertion": "Empty history is stated as not yet provided; populated values exactly match persisted candidate-entered records; unavailable provider state is labeled unknown/unavailable.",
+                  "expectedResult": "No stage, date or note is fabricated to make the surface look populated.",
+                  "type": "AUTOMATED_COMPONENT",
+                  "testStatus": "PLANNED",
+                  "reviewStatus": "REVIEWED",
+                  "testName": "does not fabricate application timeline data",
+                  "testFileOrProcedureId": "PLANNED:apps/web/tests/applications-tracking.test.tsx::CS-50-AC4-no-fabrication",
+                  "fixtures": "Synthetic empty, populated and unavailable-provider states.",
+                  "negativeCase": "Any missing stage/date/note is synthesized or shown as verified employer state; fail.",
+                  "evidenceArtifact": "Future redacted component/browser report; no execution claimed.",
+                  "reviewer": "Independent Reviewer",
+                  "releaseGate": "R1-APPLICATION-TRUTH"
+                }
+              ]
             }
           ],
           "sources": [".ai/backlog.json#CS-50", "docs/TESTING.md"]
@@ -33279,12 +33589,7 @@
               "id": "CS-50-AC1",
               "sourceText": "An explicit, owner-confirmed product decision on whether CareerScope adopts an ATS-style multi-stage interview timeline at all, and whether/how that interacts with docs/PROJECT-STATE.md's \"it does not apply to jobs\" positioning - CareerScope tracking stages the owner manually updates is a different claim than CareerScope automating applications, but the two must not be allowed to blur in the UI copy or the data model",
               "expectedResult": "An explicit, owner-confirmed product decision on whether CareerScope adopts an ATS-style multi-stage interview timeline at all, and whether/how that interacts with docs/PROJECT-STATE.md's \"it does not apply to jobs\" positioning - CareerScope tracking stages the owner manually updates is a different claim than CareerScope automating applications, but the two must not be allowed to blur in the UI copy or the data model",
-              "verificationIds": [
-                "MANUAL_PRODUCT",
-                "AUTOMATED_BROWSER",
-                "HOSTED_CI",
-                "AUTOMATED_SECURITY"
-              ],
+              "verificationIds": ["MANUAL_PRODUCT"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -33292,7 +33597,7 @@
               "id": "CS-50-AC2",
               "sourceText": "If proceeded: a schema for dated sub-stage events distinct from the current single leadStatusSchema value, and a notes-history model distinct from the current single saved_leads.notes field - designed by Product Architect/System Designer before any code, per this session's established practice for architecture-impacting changes",
               "expectedResult": "If proceeded: a schema for dated sub-stage events distinct from the current single leadStatusSchema value, and a notes-history model distinct from the current single saved_leads.notes field - designed by Product Architect/System Designer before any code, per this session's established practice for architecture-impacting changes",
-              "verificationIds": ["AUTOMATED_INTEGRATION"],
+              "verificationIds": ["AUTOMATED_CONTRACT", "MANUAL_PRODUCT", "AUTOMATED_SECURITY"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -33300,7 +33605,7 @@
               "id": "CS-50-AC3",
               "sourceText": "The \"AI Insights & Suggestions [Beta]\" panel shown in both design images is explicitly out of scope for this ticket - it belongs to CS-48 and must not be implemented here even as a placeholder that looks functional",
               "expectedResult": "The \"AI Insights & Suggestions [Beta]\" panel shown in both design images is explicitly out of scope for this ticket - it belongs to CS-48 and must not be implemented here even as a placeholder that looks functional",
-              "verificationIds": ["HOSTED_CI"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             },
@@ -33308,7 +33613,7 @@
               "id": "CS-50-AC4",
               "sourceText": "No stage, date, or note is ever fabricated to make the screen look populated in absence of real data - every field distinguishes not-yet-provided from provided",
               "expectedResult": "No stage, date, or note is ever fabricated to make the screen look populated in absence of real data - every field distinguishes not-yet-provided from provided",
-              "verificationIds": ["AUTOMATED_BROWSER"],
+              "verificationIds": ["AUTOMATED_COMPONENT"],
               "authority": ".ai/backlog.json#CS-50",
               "reviewStatus": "UNREVIEWED_SPECIFICATION"
             }
@@ -33338,7 +33643,7 @@
               },
               "sourceEvidence": "Historical evidence is retained above, not treated as fresh pass.",
               "required": [
-                "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels."
+                "Current product-owner direction is recorded in docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md; future completion requires implementation evidence and independent review, not a repeat of the already-resolved scope decision."
               ],
               "rule": "Future exact-content command results, independent review, docs and relevant service/manual acceptance; specification completion is not ticket promotion."
             }
@@ -33351,8 +33656,8 @@
             "Review CS-50 problem and each criterion with Product Architect.",
             "Resolve only the recorded CS-50 specification/activation gaps before claiming readiness.",
             "Inspect and change only modules permitted by the technical approach for Applications tracking: interview-stage data model and UI (list + details).",
-            "Implement and verify CS-50-AC1: An explicit, owner-confirmed product decision on whether CareerScope adopts an ATS-style multi-stage interview timeline at all, and whether/how that interacts with docs/PROJECT-STATE.md's \"it does not apply to jobs\" positioning - CareerScope tracking stages the owner manually updates is a different claim than CareerScope automating applications, but the two must not be allowed to blur in the UI copy or the data model",
-            "Implement and verify CS-50-AC2: If proceeded: a schema for dated sub-stage events distinct from the current single leadStatusSchema value, and a notes-history model distinct from the current single saved_leads.notes field - designed by Product Architect/System Designer before any code, per this session's established practice for architecture-impacting changes",
+            "Implement and verify CS-50-AC1 against the already-recorded reduced truthful manual-tracking decision: candidate-entered statuses/history only, no ATS synchronization or auto-apply semantics, and no fabricated employer state.",
+            "Implement and verify CS-50-AC2 only after the planned distinct dated-event and notes-history contract receives Product Architect/System Designer review; this specification does not claim those schema changes exist.",
             "Implement and verify CS-50-AC3: The \"AI Insights & Suggestions [Beta]\" panel shown in both design images is explicitly out of scope for this ticket - it belongs to CS-48 and must not be implemented here even as a placeholder that looks functional",
             "Implement and verify CS-50-AC4: No stage, date, or note is ever fabricated to make the screen look populated in absence of real data - every field distinguishes not-yet-provided from provided",
             "Reconcile CS-50 documentation, redacted evidence and independent review before workflow promotion.",
@@ -33400,20 +33705,20 @@
           "applicability": "APPLICABLE",
           "requirements": [
             {
-              "blockerClass": "B1_PRODUCT_OR_OWNER_DECISION",
-              "owner": "Product owner",
+              "blockerClass": "RESOLVED_INTERNAL_DECISION",
+              "owner": null,
               "evidence": [
-                "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels."
+                "Source blocker metadata remains available in .ai/backlog.json#CS-50; no unresolved owner decision remains for the reduced truthful scope."
               ],
               "actions": []
             },
             {
-              "requirement": "OWNER_DIRECTION_PROVIDED_BY_CURRENT_TASK: reduced truthful manual tracking is the selected product scope; this does not constitute implementation, independent review, release assignment or hosted evidence.",
+              "requirement": "INTERNAL_DECISION_RESOLVED: reduced truthful manual tracking is the selected product scope and is recorded in the cited decision dossier; no owner sign-off remains an active blocker for specification approval.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
-              "requirement": "RELEASE_OWNER_INPUT_REQUIRED: source releaseTarget remains unset; do not infer activation from UAT status.",
+              "requirement": "R1 IMPLEMENTATION/EVIDENCE GATE: runtime implementation, independent review and hosted acceptance remain future gates; this specification does not claim those results or production activation.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -33460,11 +33765,23 @@
             {
               "size": "L",
               "complexity": 5,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "Candidate-owned application tracking is part of the Release 1 journey. The approved scope is truthful manual tracking, not an ATS synchronization product; runtime implementation and evidence remain future work.",
+                "sources": [
+                  ".ai/backlog.json#CS-50",
+                  "docs/PROJECT-STATE.md",
+                  "docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md"
+                ]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -33492,15 +33809,7 @@
           "reason": "Source registry has no approved release assignment.",
           "owner": "Product owner",
           "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "RECLASSIFIED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -33989,7 +34298,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "OWNER_INPUT_REQUIRED: assign the product release target/state; the source registry currently leaves releaseTarget unset. Dependencies CS-70 and CS-75 remain separately tracked.",
+              "requirement": "RELEASE-1 HOLD / DEPENDENCY-GATED: specification-ready, runtime-not-active until CS-70 service-backed owner isolation and CS-75 shared-client evidence pass.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -34029,11 +34338,23 @@
             {
               "size": "M",
               "complexity": 2,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "RELEASE_1_HOLD",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "RELEASE_1_HOLD",
+                "deliveryMode": "DEPENDENCY_GATED",
+                "rationale": "Identifier propagation is a Release 1 candidate-core behavior, but activation must remain held until CS-70 service-backed ownership verification and the shared CS-75 client contract are accepted.",
+                "sources": [
+                  ".ai/backlog.json#CS-51",
+                  ".ai/ticket-specification-policy.json#CS-75",
+                  ".ai/blocker-classification.json"
+                ]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "DEPENDENCY_GATED",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -39369,22 +39690,6 @@
       "reviewState": "DRAFT",
       "gaps": [
         {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
-        },
-        {
           "code": "EXACT_AC_TEST_BINDING",
           "section": "testStrategy",
           "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
@@ -39880,7 +40185,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "OWNER_INPUT_REQUIRED: assign the product release target/state; the source registry currently leaves releaseTarget unset.",
+              "requirement": "RELEASE-1 SECURITY GATE: owner-derived cache keys, safe invalidation, bounded TTL, redacted diagnostics and fail-safe authorization remain required implementation and exact-SHA evidence before runtime acceptance.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -39920,11 +40225,19 @@
             {
               "size": "M",
               "complexity": 2,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "Cross-candidate cache isolation is required security/data-integrity behavior for Release 1. It is not optional UX and does not depend on a new visual surface.",
+                "sources": [".ai/backlog.json#CS-61", "docs/SECURITY.md", "docs/ARCHITECTURE.md"]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,
@@ -47547,7 +47860,7 @@
           "section": "technicalApproach",
           "reason": "Source architecture impact note is absent.",
           "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "MISSING_SECURITY_ASSESSMENT",
@@ -47555,23 +47868,7 @@
           "reason": "Source security/privacy impact note is absent.",
           "owner": "Security reviewer",
           "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_TARGET_UNDECIDED",
-          "section": "delivery",
-          "reason": "Source registry has no approved release assignment.",
-          "owner": "Product owner",
-          "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-          "disposition": "OPEN"
-        },
-        {
-          "code": "RELEASE_STATE_UNSPECIFIED",
-          "section": "delivery",
-          "reason": "Source ticket has no release/HOLD activation classification.",
-          "owner": "Product owner / release reviewer",
-          "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-          "disposition": "OPEN"
+          "disposition": "RESOLVED"
         },
         {
           "code": "EXACT_AC_TEST_BINDING",
@@ -48028,7 +48325,7 @@
           "requirements": [
             { "blockerClass": null, "owner": null, "evidence": [], "actions": [] },
             {
-              "requirement": "OWNER_INPUT_REQUIRED: assign the product release target/state; the source registry currently leaves releaseTarget unset.",
+              "requirement": "RELEASE-1 INTERNAL INFRASTRUCTURE GATE: client response-body settlement, structured conflict handling, redaction and server-authoritative auth/CSRF/ownership remain required exact-SHA evidence. Provider configuration is not introduced by this ticket.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             }
@@ -48069,11 +48366,19 @@
             {
               "size": "S",
               "complexity": 2,
-              "releaseTarget": null,
-              "releaseState": "UNSPECIFIED",
+              "releaseTarget": "R1",
+              "releaseState": "ACTIVE_R1",
+              "sourceReleaseTarget": null,
+              "deliveryClassification": {
+                "effectiveReleaseTarget": "R1",
+                "effectiveReleaseState": "ACTIVE_R1",
+                "deliveryMode": "IMPLEMENT_NOW",
+                "rationale": "The shared API client is internal Release 1 infrastructure required for reliable error handling and safe browser requests. Provider-specific activation is separate and remains default-off when unconfigured.",
+                "sources": [".ai/backlog.json#CS-75", "docs/ARCHITECTURE.md", "docs/SECURITY.md"]
+              },
               "sourceDisposition": "ACTIVE_R1",
               "deferredDecision": null,
-              "deliveryMode": "UNDECIDED",
+              "deliveryMode": "IMPLEMENT_NOW",
               "featureFlag": null,
               "holdReason": null,
               "implementationOrder": null,

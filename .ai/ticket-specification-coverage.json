@@ -9,18 +9,18 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "421bb92e64e7935c7677e23450c8de564890c212725247d7351cce453e0c3b25",
+    ".ai/ticket-specification-policy.json": "deb89e89d30b3796abd2d261c4801b2552f4febb2f245be08912a8389f31a39d",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bbc2d53676e48db633efe4c4623b5106f8c602e51de7b35e3199cd296428f97c",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "7e9a6eaad57090ddefe869371e4326bf1661f5f9db8fab13f96d5058761c05e4",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "counts": {
     "ticketCount": 216,
     "specificationCount": 216,
-    "completeSpecificationCount": 127,
-    "incompleteSpecificationCount": 89,
+    "completeSpecificationCount": 130,
+    "incompleteSpecificationCount": 86,
     "epicMappedCount": 216,
     "orphanTicketCount": 0,
     "duplicateIdCount": 0,
@@ -30,23 +30,23 @@
     "dependencySemanticGapCount": 0,
     "acceptanceCriterionCount": 906,
     "suggestedAcceptanceCriterionCount": 906,
-    "mappedAcceptanceCriterionCount": 500,
-    "unmappedAcceptanceCriterionCount": 406,
-    "reviewedExactTestBindingCount": 526,
-    "authoredExactTestBindingCount": 526,
-    "acceptanceCriteriaWithAuthoredBindings": 500,
-    "draftSpecificationCount": 89,
+    "mappedAcceptanceCriterionCount": 510,
+    "unmappedAcceptanceCriterionCount": 396,
+    "reviewedExactTestBindingCount": 538,
+    "authoredExactTestBindingCount": 538,
+    "acceptanceCriteriaWithAuthoredBindings": 510,
+    "draftSpecificationCount": 86,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
-    "approvedSpecificationCount": 127,
+    "approvedSpecificationCount": 130,
     "ownerDecisionReconciliationCount": 11,
     "uiTicketCount": 147,
     "designCounts": {
-      "DESIGN_NOT_APPLICABLE": 73,
+      "DESIGN_NOT_APPLICABLE": 72,
       "DESIGN_GAP": 4,
-      "DESIGN_PARTIAL": 25,
+      "DESIGN_PARTIAL": 24,
       "DESIGN_VERIFIED": 108,
-      "DESIGN_PARTIAL_NON_BLOCKING": 6
+      "DESIGN_PARTIAL_NON_BLOCKING": 8
     },
     "blockedTicketCount": 37,
     "hostpendingActionCount": 15,
@@ -64,13 +64,13 @@
     "currentReleaseTicketCount": 47,
     "workflow": { "BACKLOG": 141, "TODO": 0, "IN_PROGRESS": 0, "QA": 5, "UAT": 70, "PROD": 0 },
     "sourceBacklogHash": "ca68f42d84b850254a82d71df3416eb9d56f750d7467712a870d0b37bf954552",
-    "specificationCoveragePercent": 58.7962962962963,
+    "specificationCoveragePercent": 60.18518518518518,
     "suggestedVerificationMappingPercent": 100,
-    "exactReviewedTraceabilityPercent": 55.18763796909492,
-    "findingsCount": 631,
-    "openFindingCount": 261,
-    "resolvedFindingCount": 229,
-    "reclassifiedFindingCount": 30
+    "exactReviewedTraceabilityPercent": 56.29139072847682,
+    "findingsCount": 619,
+    "openFindingCount": 240,
+    "resolvedFindingCount": 235,
+    "reclassifiedFindingCount": 33
   },
   "findings": [
     {
@@ -1303,16 +1303,12 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-40",
-      "code": "RELEASE_STATE_UNSPECIFIED",
-      "section": "delivery",
-      "reason": "Source ticket has no release/HOLD activation classification.",
-      "owner": "Product owner / release reviewer",
-      "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "RECLASSIFIED",
+      "dispositionRationale": "Admin Control Plane is Release 1 security/operations scope held behind the minimum capability matrix and independent review.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-40.deliveryClassification",
+        "docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md"
+      ]
     },
     {
       "ticketId": "CS-40",
@@ -1321,7 +1317,7 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED"
     },
     {
       "ticketId": "CS-41",
@@ -1456,16 +1452,12 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-44",
-      "code": "RELEASE_STATE_UNSPECIFIED",
-      "section": "delivery",
-      "reason": "Source ticket has no release/HOLD activation classification.",
-      "owner": "Product owner / release reviewer",
-      "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "RECLASSIFIED",
+      "dispositionRationale": "Account recovery is Release 1 specification scope but default-off and conditional on CS-59/provider/sender evidence.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-44.deliveryClassification",
+        "docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md"
+      ]
     },
     {
       "ticketId": "CS-44",
@@ -1474,7 +1466,7 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED"
     },
     {
       "ticketId": "CS-45",
@@ -1650,24 +1642,6 @@
     },
     {
       "ticketId": "CS-49",
-      "code": "RELEASE_TARGET_UNDECIDED",
-      "section": "delivery",
-      "reason": "Source registry has no approved release assignment.",
-      "owner": "Product owner",
-      "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-49",
-      "code": "RELEASE_STATE_UNSPECIFIED",
-      "section": "delivery",
-      "reason": "Source ticket has no release/HOLD activation classification.",
-      "owner": "Product owner / release reviewer",
-      "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-49",
       "code": "EXACT_AC_TEST_BINDING",
       "section": "testStrategy",
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
@@ -1682,34 +1656,12 @@
       "reason": "The application lifecycle design is implemented, but the recorded status requires one owner sign-off on the deliberately reduced truthful scope.",
       "owner": "Product owner",
       "requiredEvidence": "Owner sign-off on application statuses, history, and exclusion of fabricated ATS/AI panels.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-50",
-      "code": "PARTIAL_DESIGN",
-      "section": "design",
-      "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
-      "owner": "UX",
-      "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-50",
-      "code": "RELEASE_TARGET_UNDECIDED",
-      "section": "delivery",
-      "reason": "Source registry has no approved release assignment.",
-      "owner": "Product owner",
-      "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-50",
-      "code": "RELEASE_STATE_UNSPECIFIED",
-      "section": "delivery",
-      "reason": "Source ticket has no release/HOLD activation classification.",
-      "owner": "Product owner / release reviewer",
-      "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "Current owner direction selects truthful candidate-controlled manual tracking and rejects a fabricated ATS timeline; implementation and evidence remain future.",
+      "dispositionSources": [
+        "docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md",
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-50"
+      ]
     },
     {
       "ticketId": "CS-50",
@@ -1718,7 +1670,7 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED"
     },
     {
       "ticketId": "CS-51",
@@ -1727,16 +1679,11 @@
       "reason": "Source registry has no approved release assignment.",
       "owner": "Product owner",
       "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-51",
-      "code": "RELEASE_STATE_UNSPECIFIED",
-      "section": "delivery",
-      "reason": "Source ticket has no release/HOLD activation classification.",
-      "owner": "Product owner / release reviewer",
-      "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "RECLASSIFIED",
+      "dispositionRationale": "Identifier propagation is Release 1 scope but held behind CS-70 service-backed evidence and CS-75 client acceptance.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-51.deliveryClassification"
+      ]
     },
     {
       "ticketId": "CS-51",
@@ -2070,24 +2017,6 @@
         ".ai/ticket-specification-policy.json",
         "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md"
       ]
-    },
-    {
-      "ticketId": "CS-61",
-      "code": "RELEASE_TARGET_UNDECIDED",
-      "section": "delivery",
-      "reason": "Source registry has no approved release assignment.",
-      "owner": "Product owner",
-      "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-61",
-      "code": "RELEASE_STATE_UNSPECIFIED",
-      "section": "delivery",
-      "reason": "Source ticket has no release/HOLD activation classification.",
-      "owner": "Product owner / release reviewer",
-      "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
     },
     {
       "ticketId": "CS-61",
@@ -2801,7 +2730,12 @@
       "section": "technicalApproach",
       "reason": "Source architecture impact note is absent.",
       "requiredEvidence": "Ticket-specific affected modules, integration boundary and reviewed change rationale.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The shared API client boundary, response-body lifecycle and absence of persistence/event contracts are explicit in the refinement.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-75",
+        "docs/ARCHITECTURE.md"
+      ]
     },
     {
       "ticketId": "CS-75",
@@ -2810,25 +2744,12 @@
       "reason": "Source security/privacy impact note is absent.",
       "owner": "Security reviewer",
       "requiredEvidence": "Ticket-specific actor, data classification, ownership/abuse cases and reviewed N/A rationale where appropriate.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-75",
-      "code": "RELEASE_TARGET_UNDECIDED",
-      "section": "delivery",
-      "reason": "Source registry has no approved release assignment.",
-      "owner": "Product owner",
-      "requiredEvidence": "Explicit release assignment or owner-approved future-release disposition.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-75",
-      "code": "RELEASE_STATE_UNSPECIFIED",
-      "section": "delivery",
-      "reason": "Source ticket has no release/HOLD activation classification.",
-      "owner": "Product owner / release reviewer",
-      "requiredEvidence": "Approved activation classification; historical package versions are not release authorization.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "The refinement records trust boundaries, canonical error mapping, redaction and preservation of server auth/CSRF/ownership enforcement.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-75",
+        "docs/SECURITY.md"
+      ]
     },
     {
       "ticketId": "CS-75",
@@ -7271,7 +7192,7 @@
     "policy": "CONTROLLED_ROLLING_DETERMINISTIC_MANIFEST",
     "decisionId": "OD-2026-10-07-CS80-AC3-V2",
     "baseCommit": "3911a52fb2167707a1b04e258c15c403815286e4",
-    "previousManifestHash": "103bb9872fb919c9c2424e4eb2a42fcc66a769aabfaf995936068182706c4c2a",
+    "previousManifestHash": "6a0558ca08c29ee10e08bf206c9b747e88d69748de3f8044f5d5ede2515de450",
     "previousPathCount": 231,
     "paths": [
       {
@@ -8579,6 +8500,7 @@
       "docs/tickets/CS-38.md",
       "docs/tickets/CS-39.md",
       "docs/tickets/CS-4.md",
+      "docs/tickets/CS-40.md",
       "docs/tickets/CS-41.md",
       "docs/tickets/CS-43.md",
       "docs/tickets/CS-44.md",
@@ -8862,6 +8784,6 @@
     "determinismValidated": "YES",
     "determinismValidationScope": "Generation uses deterministic canonical inputs and formatting; tickets:spec:test and repeated generation are separately required checkpoint evidence.",
     "mainIntegrationAuthorized": "NO",
-    "currentManifestHash": "6a0558ca08c29ee10e08bf206c9b747e88d69748de3f8044f5d5ede2515de450"
+    "currentManifestHash": "17ef0ffcd83c378150a31e09355d4061367b479a567a6a7482907fa03e1424f6"
   }
 }

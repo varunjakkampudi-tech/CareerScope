@@ -625,11 +625,25 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
             owner: ticket.ownerAgent,
             reviewers: ticket.reviewAgents,
             releaseTarget: ticket.releaseTarget ?? null,
-            blocked: ticket.blocked,
-            blockedReason: ticket.blockedReason,
-            blockedOwner: ticket.blockedOwner,
-            blockedSince: ticket.blockedSince,
-            unblockEvidenceRequired: ticket.unblockEvidenceRequired,
+            blocked: refinement?.identityOverride?.blocked ?? ticket.blocked,
+            blockedReason: refinement?.identityOverride
+              ? refinement.identityOverride.blockedReason
+              : ticket.blockedReason,
+            blockedOwner: refinement?.identityOverride
+              ? refinement.identityOverride.blockedOwner
+              : ticket.blockedOwner,
+            blockedSince: refinement?.identityOverride
+              ? refinement.identityOverride.blockedSince
+              : ticket.blockedSince,
+            unblockEvidenceRequired: refinement?.identityOverride
+              ? refinement.identityOverride.unblockEvidenceRequired
+              : ticket.unblockEvidenceRequired,
+            ...(refinement?.identityOverride
+              ? {
+                  sourceBlocked: ticket.blocked,
+                  blockerDisposition: refinement.identityOverride.blockerDisposition ?? null,
+                }
+              : {}),
           },
         ],
         [source],
@@ -827,14 +841,16 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
         [source],
       ),
       manualExternalGates: present(
-        [
-          {
-            blockerClass: blocker?.primaryClass ?? null,
-            owner: ticket.blockedOwner,
-            evidence: ticket.unblockEvidenceRequired,
-            actions: actions.filter((action) => action.ticketId === ticket.id),
-          },
-        ],
+        refinement?.manualExternalGatesOverride
+          ? [...refinement.manualExternalGatesOverride]
+          : [
+              {
+                blockerClass: blocker?.primaryClass ?? null,
+                owner: ticket.blockedOwner,
+                evidence: ticket.unblockEvidenceRequired,
+                actions: actions.filter((action) => action.ticketId === ticket.id),
+              },
+            ],
         [source, '.ai/blocker-classification.json', 'hostpending.txt'],
       ),
       risksRecovery: present(
