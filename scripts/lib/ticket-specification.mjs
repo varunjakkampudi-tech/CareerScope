@@ -660,7 +660,10 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
       technicalApproach: present(
         [
           ticket.architectureImpact ||
-            ((ticket.id === 'CS-78' || ticket.id === 'CS-79' || ticket.id === 'CS-72' || ticket.id === 'CS-76') &&
+            ((ticket.id === 'CS-78' ||
+              ticket.id === 'CS-79' ||
+              ticket.id === 'CS-72' ||
+              ticket.id === 'CS-76') &&
             policy.findingDispositions?.[ticket.id]?.MISSING_ARCHITECTURE_ASSESSMENT
               ?.disposition === 'RESOLVED'
               ? ticket.id === 'CS-78' || ticket.id === 'CS-79'
@@ -741,7 +744,10 @@ export function buildCatalog({ backlog, coverage, designIndex, blockers, manualT
               [
                 refinement?.securityPrivacyBase ||
                   ticket.securityImpact ||
-                  ((ticket.id === 'CS-78' || ticket.id === 'CS-79' || ticket.id === 'CS-72' || ticket.id === 'CS-76') &&
+                  ((ticket.id === 'CS-78' ||
+                    ticket.id === 'CS-79' ||
+                    ticket.id === 'CS-72' ||
+                    ticket.id === 'CS-76') &&
                   policy.findingDispositions?.[ticket.id]?.MISSING_SECURITY_ASSESSMENT
                     ?.disposition === 'RESOLVED'
                     ? ticket.id === 'CS-78' || ticket.id === 'CS-79'
