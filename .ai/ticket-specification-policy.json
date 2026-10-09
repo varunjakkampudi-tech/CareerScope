@@ -110,6 +110,7 @@
       "reviewStatus": "DRAFT",
       "sourceReferences": [
         ".ai/backlog.json#CS-2",
+        "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
         "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
         "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
         "apps/web/src/app/(app)/saved/page.tsx",
@@ -179,6 +180,7 @@
         ],
         "manualExternalGates": [
           "OWNER_DECISION_RESOLVED: retain the exact 768px criterion; the historical 390px fix remains separate evidence and does not satisfy the 768px requirement. No registry edit or runtime implementation is made in Phase 3.25.",
+          "DESIGN_BLOCKING: Phase 0 supplies saved-jobs context and responsive rules but no approved numeric 768px element/state/geometry target. Do not invent one; UX/product must approve the target before whole-ticket review.",
           "HUMAN_VALIDATION: UX must approve the exact current saved-workspace 768px element/state/expected geometry because the approved saved-jobs image does not specify sticky-header measurements.",
           "HOSTED_REQUIRED: after any future authorized implementation, the exact commit must run the current browser CI lane on Linux with Chromium, Firefox and WebKit; historical CI run IDs do not satisfy this gate."
         ],
@@ -2803,6 +2805,7 @@
       "reviewStatus": "DRAFT",
       "sourceReferences": [
         ".ai/backlog.json#CS-17",
+        "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
         "docs/tickets/CS-17.md",
         "apps/web/src",
         "packages/providers/src",
@@ -2835,6 +2838,7 @@
           "Map response fields; define safe URL/content rendering; add XSS and malformed-record negatives; bind action persistence/conflict behavior; retain exact browser evidence."
         ],
         "manualExternalGates": [
+          "OWNER_DECISION_REQUIRED: choose candidate-owned lead status versus separate reversible discovery disposition before approving a dismissal-specific route, schema or persistence contract.",
           "Source release metadata is unspecified; owner classification is required before activation and external source-link verification remains future evidence."
         ]
       },
@@ -4579,6 +4583,7 @@
       "reviewStatus": "DRAFT",
       "sourceReferences": [
         ".ai/backlog.json#CS-88",
+        "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
         ".ai/backlog.json#CS-40",
         ".ai/backlog.json#CS-6",
         "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -4628,6 +4633,8 @@
           "Future views may display only existing real health/queue/storage/deployment signals with source, timestamp and unavailable/stale state. Do not generate metrics, claim nonexistent telemetry, or log sensitive page payloads. Admin reads should be auditable under the future CS-40 contract without recording secrets or raw candidate content."
         ],
         "manualExternalGates": [
+          "DESIGN_BLOCKING: approved boards provide visual context but not the exact page/state/RBAC/redaction contract for CS-88; preserve DESIGN_PARTIAL and do not invent admin behavior.",
+          "EXTERNAL_GATE: release target and activation remain unspecified until the owner accepts the design/contract package; no feature activation is inferred.",
           "HUMAN_VALIDATION: owner/design authority must accept the remaining page-to-role/data-state matrix and interactions, then UX, Product Architect, System Designer and Security review the same revision. CS-40's admin authorization contract is a hard prerequisite; CS-6 supplies only the frontend route/auth boundary, not admin privilege. Keep this ticket blocked until these exact artifacts and approvals exist."
         ],
         "implementationChecklist": [

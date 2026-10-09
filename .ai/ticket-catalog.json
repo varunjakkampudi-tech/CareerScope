@@ -9,7 +9,7 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "59391193a602aeb0dd30d357e89c71af83e13404daef21acacd82e163b0a6486",
+    ".ai/ticket-specification-policy.json": "3b857a53b8ee2fbf50f521a762181c60d46752c923ef7199bc7c573435b73cf4",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
     "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "1e974bb2a1b4bfe54c46437b9c6affafd06b98c2aff3351bb54a9cd29d8ae878",
@@ -686,6 +686,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -708,6 +709,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -794,6 +796,7 @@
             "docs/PROJECT-STATE.md",
             "docs/ARCHITECTURE.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -853,6 +856,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -886,6 +890,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -915,6 +920,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -943,6 +949,7 @@
           "sources": [
             ".ai/backlog.json#CS-2",
             "docs/API-SURFACE.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -981,6 +988,7 @@
           "sources": [
             "design/foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1008,6 +1016,7 @@
             "docs/FRONTEND-ARCHITECTURE.md",
             "docs/TESTING.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1033,6 +1042,7 @@
             "docs/FRONTEND-ARCHITECTURE.md",
             "docs/TESTING.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1057,6 +1067,7 @@
           "sources": [
             "docs/TESTING.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1077,6 +1088,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1107,6 +1119,7 @@
             ".ai/backlog.json#CS-2",
             "docs/SECURITY.md",
             "docs/PRIVACY.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1132,6 +1145,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1264,6 +1278,7 @@
           "sources": [
             ".ai/backlog.json#CS-2",
             "docs/TESTING.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1291,6 +1306,7 @@
           "sources": [
             "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1349,6 +1365,7 @@
           "sources": [
             "docs/ai/quality-gates.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1383,6 +1400,7 @@
           "sources": [
             "docs/TESTING.md",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1429,6 +1447,7 @@
           "sources": [
             ".ai/backlog.json#CS-2",
             ".ai/backlog.json#CS-2",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1468,6 +1487,11 @@
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
             },
             {
+              "requirement": "DESIGN_BLOCKING: Phase 0 supplies saved-jobs context and responsive rules but no approved numeric 768px element/state/geometry target. Do not invent one; UX/product must approve the target before whole-ticket review.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
               "requirement": "HUMAN_VALIDATION: UX must approve the exact current saved-workspace 768px element/state/expected geometry because the approved saved-jobs image does not specify sticky-header measurements.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -1482,6 +1506,7 @@
             ".ai/backlog.json#CS-2",
             ".ai/blocker-classification.json",
             "hostpending.txt",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -1514,6 +1539,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
             "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
             "apps/web/src/app/(app)/saved/page.tsx",
@@ -11923,6 +11949,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-17",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -11953,6 +11980,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -11980,6 +12008,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -12018,6 +12047,7 @@
           "sources": [
             ".ai/backlog.json#CS-17",
             "docs/API-SURFACE.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -12081,6 +12111,7 @@
             "docs/FRONTEND-ARCHITECTURE.md",
             "docs/TESTING.md",
             ".ai/backlog.json#CS-17",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -12117,6 +12148,7 @@
             ".ai/backlog.json#CS-17",
             "docs/SECURITY.md",
             "docs/PRIVACY.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -12425,6 +12457,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-17",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -12456,6 +12489,11 @@
               "actions": []
             },
             {
+              "requirement": "OWNER_DECISION_REQUIRED: choose candidate-owned lead status versus separate reversible discovery disposition before approving a dismissal-specific route, schema or persistence contract.",
+              "reviewStatus": "DRAFT",
+              "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+            },
+            {
               "requirement": "Source release metadata is unspecified; owner classification is required before activation and external source-link verification remains future evidence.",
               "reviewStatus": "DRAFT",
               "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -12465,6 +12503,7 @@
             ".ai/backlog.json#CS-17",
             ".ai/blocker-classification.json",
             "hostpending.txt",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-17",
             "docs/tickets/CS-17.md",
             "apps/web/src",
             "packages/providers/src",
@@ -56874,6 +56913,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -56896,6 +56936,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57022,6 +57063,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57069,6 +57111,7 @@
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
             "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57099,6 +57142,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57135,6 +57179,7 @@
           "sources": [
             ".ai/backlog.json#CS-88",
             "docs/API-SURFACE.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57192,6 +57237,7 @@
             "docs/FRONTEND-ARCHITECTURE.md",
             "docs/TESTING.md",
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57229,6 +57275,7 @@
           "sources": [
             "docs/TESTING.md",
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57250,6 +57297,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57280,6 +57328,7 @@
             ".ai/backlog.json#CS-88",
             "docs/SECURITY.md",
             "docs/PRIVACY.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57305,6 +57354,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57563,6 +57613,7 @@
           "sources": [
             "docs/ai/quality-gates.md",
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57628,6 +57679,7 @@
           ],
           "sources": [
             ".ai/backlog.json#CS-88",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57683,6 +57735,16 @@
               "evidenceSemantics": "Owner direction only; not implementation, review approval or live evidence."
             },
             {
+              "requirement": "DESIGN_BLOCKING: approved boards provide visual context but not the exact page/state/RBAC/redaction contract for CS-88; preserve DESIGN_PARTIAL and do not invent admin behavior.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
+              "requirement": "EXTERNAL_GATE: release target and activation remain unspecified until the owner accepts the design/contract package; no feature activation is inferred.",
+              "reviewStatus": "DRAFT",
+              "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
+            },
+            {
               "requirement": "HUMAN_VALIDATION: owner/design authority must accept the remaining page-to-role/data-state matrix and interactions, then UX, Product Architect, System Designer and Security review the same revision. CS-40's admin authorization contract is a hard prerequisite; CS-6 supplies only the frontend route/auth boundary, not admin privilege. Keep this ticket blocked until these exact artifacts and approvals exist.",
               "reviewStatus": "DRAFT",
               "authority": "OWNER_DIRECTION_PROPAGATED_SPECIFICATION_REVIEW_PENDING"
@@ -57693,6 +57755,7 @@
             ".ai/blocker-classification.json",
             "hostpending.txt",
             "docs/OWNER-DECISIONS-2026-10-02.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",
@@ -57725,6 +57788,7 @@
             "docs/ARCHITECTURE.md",
             "docs/TESTING.md",
             "docs/KNOWN-LIMITATIONS.md",
+            "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-88",
             ".ai/backlog.json#CS-40",
             ".ai/backlog.json#CS-6",
             "design/implementation/ADMIN-CONTROL-PLANE-SPEC.md",

@@ -46,6 +46,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -73,6 +74,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -179,6 +181,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/PROJECT-STATE.md",
     "docs/ARCHITECTURE.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -243,6 +246,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -286,6 +290,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
     "docs/KNOWN-LIMITATIONS.md",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -320,6 +325,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
     "docs/KNOWN-LIMITATIONS.md",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -353,6 +359,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     ".ai/backlog.json#CS-2",
     "docs/API-SURFACE.md",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -401,6 +408,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     "design/foundations/ATOMIC-DESIGN-COMPONENT-HIERARCHY.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -433,6 +441,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/FRONTEND-ARCHITECTURE.md",
     "docs/TESTING.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -463,6 +472,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/FRONTEND-ARCHITECTURE.md",
     "docs/TESTING.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -492,6 +502,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     "docs/TESTING.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -517,6 +528,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   ],
   "sources": [
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -552,6 +564,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     ".ai/backlog.json#CS-2",
     "docs/SECURITY.md",
     "docs/PRIVACY.md",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -582,6 +595,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
     "docs/KNOWN-LIMITATIONS.md",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -719,6 +733,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     ".ai/backlog.json#CS-2",
     "docs/TESTING.md",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -751,6 +766,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     "design/01-IMPLEMENTATION-ORDER/00-foundations-first/visual-parity-acceptance.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -819,6 +835,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     "docs/ai/quality-gates.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -858,6 +875,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     "docs/TESTING.md",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -909,6 +927,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
   "sources": [
     ".ai/backlog.json#CS-2",
     ".ai/backlog.json#CS-2",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -958,6 +977,11 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
     },
     {
+      "requirement": "DESIGN_BLOCKING: Phase 0 supplies saved-jobs context and responsive rules but no approved numeric 768px element/state/geometry target. Do not invent one; UX/product must approve the target before whole-ticket review.",
+      "reviewStatus": "DRAFT",
+      "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
+    },
+    {
       "requirement": "HUMAN_VALIDATION: UX must approve the exact current saved-workspace 768px element/state/expected geometry because the approved saved-jobs image does not specify sticky-header measurements.",
       "reviewStatus": "DRAFT",
       "authority": "EDITORIAL_PROPOSAL_NOT_ACCEPTED_PRODUCT_BEHAVIOR"
@@ -972,6 +996,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     ".ai/backlog.json#CS-2",
     ".ai/blocker-classification.json",
     "hostpending.txt",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
@@ -1009,6 +1034,7 @@ Generated draft. Source: .ai/backlog.json; supplements: .ai/ticket-specification
     "docs/ARCHITECTURE.md",
     "docs/TESTING.md",
     "docs/KNOWN-LIMITATIONS.md",
+    "docs/PHASE-3-25-DECISION-DOSSIERS.md#CS-2",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/README.md",
     "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
     "apps/web/src/app/(app)/saved/page.tsx",
