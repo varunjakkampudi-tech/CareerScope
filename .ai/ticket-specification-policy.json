@@ -39,6 +39,48 @@
         ]
       }
     },
+    "CS-50": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-50",
+        "docs/PHASE-3-25-OWNER-RELEASE-DECISION-WAVE.md",
+        "docs/OWNER-DECISIONS-2026-10-02.md",
+        "docs/PROJECT-STATE.md"
+      ],
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Current owner direction selects REDUCED_TRUTHFUL_MANUAL_APPLICATION_TRACKING rather than a full ATS-style interview timeline: candidates may explicitly record supported application statuses, milestones, notes and server timestamps; employer-side stages are not inferred from external URL opens, elapsed time or unavailable providers.",
+          "USER_ENTERED_STATUS, USER_ENTERED_MILESTONE and NOTES remain candidate-authored and owner-scoped. Persist the authorized actor/source and server timestamp; do not accept client-selected ownership or fabricate recruiter/ATS/AI events. An OPTIONAL_INTERVIEW_EVENT is allowed only if the existing application domain already supports it.",
+          "Application details distinguish candidate-entered history from any future verified provider event and render unknown/unavailable state honestly. Opening an external destination never changes the lifecycle to Applied."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: DATA_MODEL / API_CONTRACT / FRONTEND. Reuse the existing candidate-owned application lifecycle/status-history boundary; do not add a parallel ATS model or autonomous synchronization.",
+          "Preserve existing session-derived ownership, CSRF/origin checks, revision/concurrency behavior and safe conflict semantics."
+        ],
+        "persistence": [
+          "Persist only supported candidate-owned status/milestone/note records with source/type, owner, server timestamp and revision/provenance. Raw provider payloads and inferred employer-side events are not persistence inputs."
+        ],
+        "apiContract": [
+          "Existing or planned lifecycle mutations remain authenticated, CSRF/origin protected and owner-scoped. Invalid enum/text/revision input returns the canonical validation or 409 conflict response without an unauthorized write; no auto-apply or provider-event endpoint is implied."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / AUDIT. Derive owner from the server session, redact notes and milestones from ordinary logs, and never expose credentials, tokens or raw provider payloads."
+        ],
+        "manualExternalGates": [
+          "OWNER_DIRECTION_PROVIDED_BY_CURRENT_TASK: reduced truthful manual tracking is the selected product scope; this does not constitute implementation, independent review, release assignment or hosted evidence.",
+          "RELEASE_OWNER_INPUT_REQUIRED: source releaseTarget remains unset; do not infer activation from UAT status."
+        ],
+        "implementationChecklist": [
+          "Enumerate the existing lifecycle/status-history fields and mark unsupported ATS stages as excluded.",
+          "Specify validation, ownership, CSRF/origin, revision conflict and log-redaction behavior for candidate-entered changes.",
+          "Map list/details UI labels and unknown/provider states without inventing visual controls.",
+          "Add exact unit/integration/authorization/concurrency/browser/accessibility procedures as planned evidence, then obtain an independent whole-ticket review."
+        ],
+        "risksRecovery": [
+          "If an unsupported employer-side stage appears, remove it and preserve only candidate-entered history; keep the capability gated until the contract and evidence pass."
+        ]
+      }
+    },
     "CS-51": {
       "reviewStatus": "DRAFT",
       "designDisposition": {
