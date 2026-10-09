@@ -9,18 +9,18 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "89aa4326f0b2b245790cf80adce34c503893fb5595bc88f31ac97467ab352c17",
+    ".ai/ticket-specification-policy.json": "955afde6df511eeb86f68730a8d3377ef72f1125ec174e5f596a543150439399",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "3db1e5d212f619e2d44878a31ac7d43f3eb41dd7b615cb0eab9eea246f26de04",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "ef451c690233ff14cbe02af0d636e218946a5dd688f8de0503c521c3be3e848e",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "counts": {
     "ticketCount": 216,
     "specificationCount": 216,
-    "completeSpecificationCount": 112,
-    "incompleteSpecificationCount": 104,
+    "completeSpecificationCount": 117,
+    "incompleteSpecificationCount": 99,
     "epicMappedCount": 216,
     "orphanTicketCount": 0,
     "duplicateIdCount": 0,
@@ -30,15 +30,15 @@
     "dependencySemanticGapCount": 0,
     "acceptanceCriterionCount": 906,
     "suggestedAcceptanceCriterionCount": 906,
-    "mappedAcceptanceCriterionCount": 427,
-    "unmappedAcceptanceCriterionCount": 479,
-    "reviewedExactTestBindingCount": 453,
-    "authoredExactTestBindingCount": 453,
-    "acceptanceCriteriaWithAuthoredBindings": 427,
-    "draftSpecificationCount": 104,
+    "mappedAcceptanceCriterionCount": 450,
+    "unmappedAcceptanceCriterionCount": 456,
+    "reviewedExactTestBindingCount": 476,
+    "authoredExactTestBindingCount": 476,
+    "acceptanceCriteriaWithAuthoredBindings": 450,
+    "draftSpecificationCount": 99,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
-    "approvedSpecificationCount": 112,
+    "approvedSpecificationCount": 117,
     "ownerDecisionReconciliationCount": 11,
     "uiTicketCount": 147,
     "designCounts": {
@@ -64,12 +64,12 @@
     "currentReleaseTicketCount": 47,
     "workflow": { "BACKLOG": 141, "TODO": 0, "IN_PROGRESS": 0, "QA": 5, "UAT": 70, "PROD": 0 },
     "sourceBacklogHash": "ca68f42d84b850254a82d71df3416eb9d56f750d7467712a870d0b37bf954552",
-    "specificationCoveragePercent": 51.851851851851855,
+    "specificationCoveragePercent": 54.166666666666664,
     "suggestedVerificationMappingPercent": 100,
-    "exactReviewedTraceabilityPercent": 47.13024282560706,
+    "exactReviewedTraceabilityPercent": 49.66887417218543,
     "findingsCount": 636,
-    "openFindingCount": 296,
-    "resolvedFindingCount": 199,
+    "openFindingCount": 286,
+    "resolvedFindingCount": 209,
     "reclassifiedFindingCount": 30
   },
   "findings": [
@@ -5290,7 +5290,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All 5 CS-143 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-143-AC1",
+        ".ai/ticket-specification-policy.json#CS-143-AC2",
+        ".ai/ticket-specification-policy.json#CS-143-AC3",
+        ".ai/ticket-specification-policy.json#CS-143-AC4",
+        ".ai/ticket-specification-policy.json#CS-143-AC5"
+      ]
     },
     {
       "ticketId": "CS-143",
@@ -5299,7 +5307,12 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-143 now has a ticket-specific, source-backed Applications list and selected application panel refinement with explicit future evidence and no fabricated runtime capability.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-143",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png"
+      ]
     },
     {
       "ticketId": "CS-144",
@@ -5308,7 +5321,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All 5 CS-144 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-144-AC1",
+        ".ai/ticket-specification-policy.json#CS-144-AC2",
+        ".ai/ticket-specification-policy.json#CS-144-AC3",
+        ".ai/ticket-specification-policy.json#CS-144-AC4",
+        ".ai/ticket-specification-policy.json#CS-144-AC5"
+      ]
     },
     {
       "ticketId": "CS-144",
@@ -5317,7 +5338,12 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-144 now has a ticket-specific, source-backed Application Details selected panel refinement with explicit future evidence and no fabricated runtime capability.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-144",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png"
+      ]
     },
     {
       "ticketId": "CS-145",
@@ -5326,7 +5352,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All 5 CS-145 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-145-AC1",
+        ".ai/ticket-specification-policy.json#CS-145-AC2",
+        ".ai/ticket-specification-policy.json#CS-145-AC3",
+        ".ai/ticket-specification-policy.json#CS-145-AC4",
+        ".ai/ticket-specification-policy.json#CS-145-AC5"
+      ]
     },
     {
       "ticketId": "CS-145",
@@ -5335,7 +5369,12 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-145 now has a ticket-specific, source-backed Settings Resume management surface refinement with explicit future evidence and no fabricated runtime capability.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-145",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png"
+      ]
     },
     {
       "ticketId": "CS-146",
@@ -5344,7 +5383,14 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All 4 CS-146 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-146-AC1",
+        ".ai/ticket-specification-policy.json#CS-146-AC2",
+        ".ai/ticket-specification-policy.json#CS-146-AC3",
+        ".ai/ticket-specification-policy.json#CS-146-AC4"
+      ]
     },
     {
       "ticketId": "CS-146",
@@ -5353,7 +5399,12 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-146 now has a ticket-specific, source-backed Saved Jobs list and detail actions refinement with explicit future evidence and no fabricated runtime capability.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-146",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png"
+      ]
     },
     {
       "ticketId": "CS-147",
@@ -5362,7 +5413,14 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "All 4 CS-147 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-147-AC1",
+        ".ai/ticket-specification-policy.json#CS-147-AC2",
+        ".ai/ticket-specification-policy.json#CS-147-AC3",
+        ".ai/ticket-specification-policy.json#CS-147-AC4"
+      ]
     },
     {
       "ticketId": "CS-147",
@@ -5371,7 +5429,12 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-147 now has a ticket-specific, source-backed Career Insights approved reference; route remains a future contract refinement with explicit future evidence and no fabricated runtime capability.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-147",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png"
+      ]
     },
     {
       "ticketId": "CS-148",

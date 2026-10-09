@@ -6253,6 +6253,349 @@
         "Run future axe/keyboard checks and the named manual NVDA/VoiceOver procedure; distinguish absent UI, planned automation, human review and provider/live evidence.",
         "Require separate provider/product/security/privacy authorization before integration behavior and CS-40 approval/implementation before any privileged admin operation; keep HOLD until independent release authorization and exact-SHA evidence."
       ]
+    },
+    "CS-143": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-143",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The Applications surface must preserve candidate-owned lifecycle state and never infer Applied from external navigation. This handoff is a specification boundary, not proof that the runtime or hosted acceptance evidence exists."
+        ],
+        "functionalRequirements": [
+          "Use the canonical Applications list and selected application panel reference and bind every displayed value to a real API/domain field or an explicit unavailable state; never copy illustrative board data.",
+          "Derive candidate ownership from the authenticated session and preserve the declared dependency CS-50; do not accept a client-selected owner identifier.",
+          "Preserve pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior where the underlying contract supports it; do not invent an endpoint or lifecycle event.",
+          "External application destinations remain navigation only and never create an Applied event; no ATS, recruiter or insight event may be fabricated."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation handoff. Reuse the existing Next.js route, shared shell, API client and declared domain dependency CS-50; do not add a parallel data or ranking implementation."
+        ],
+        "apiContract": [
+          "EXISTING_CONTRACT where the dependency is implemented: bind visible fields and stable 400/401/403/404/409 semantics to the registered contract. If a required capability is absent, render unavailable and record the missing contract as a future dependency; do not invent a route.",
+          "Route ownership is session-derived and all mutations retain server-side authorization, idempotency and revision semantics."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE to this presentation handoff: no new schema or migration is authorized. Existing domain persistence remains owned by the declared dependency and uses synthetic fixtures only in tests."
+        ],
+        "accessibility": [
+          "Use semantic landmarks, heading order, labels, visible focus, keyboard traversal, accessible status announcements and error association. Dialogs restore focus and Escape closes only where the existing component contract supports it; manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the approved Phase 0 responsive contract at 320, 390, 768, 1024 and 1440 CSS px. Reflow without ordinary-content horizontal scrolling, preserve touch targets and keep dense regions intentionally labelled if controlled overflow is required."
+        ],
+        "browsers": [
+          "Future evidence runs Chromium, Firefox and WebKit with isolated synthetic fixtures. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE beyond the authenticated/private noindex contract; no candidate data or internal state enters metadata, sitemap or public previews."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity is authoritative, cross-owner data is denied without existence leakage, provider/external text is treated as untrusted, and evidence excludes tokens, cookies, resumes and real notes. Session-derived ownership; no client-selected owner. Secrets and PII must remain outside design/test evidence."
+        ],
+        "observability": [
+          "Use existing redacted correlation logging and distinguish unavailable, empty and failed operations. Never log passwords, session identifiers, resume contents, provider tokens or raw private payloads."
+        ],
+        "manualExternalGates": [
+          "Future browser, axe, visual, manual accessibility and UAT evidence remain release gates. This specification records planned procedures only and does not claim runtime, hosted or production execution."
+        ],
+        "implementationChecklist": [
+          "Inventory the current /applications ownership and map every visible element to the approved reference, registered contract or explicit unavailable state.",
+          "Define pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior with no private-content flash or fabricated value.",
+          "Add exact component, contract, browser and accessibility procedures using isolated synthetic fixtures; retain engine/version, viewport and sanitized evidence.",
+          "Review dependency, security, responsive and release semantics before implementation; do not activate or promote the product ticket during Phase 3.25."
+        ],
+        "risksRecovery": [
+          "A presentation handoff can mislead a candidate by showing illustrative or stale state as fact. Recovery is to fail closed to unavailable/error, clear private client state on session loss and revert the unshipped presentation change; no production migration or data rollback is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All source ACs have exact reviewed procedures, Applications list and selected application panel requirements are source-backed, ownership/security/accessibility/responsive behavior is explicit, no local finding remains, and a current independent whole-ticket receipt exists. Runtime and hosted evidence remain future gates."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-143-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-143-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-143-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-143-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-143-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-144": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-144",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The Application Details surface must expose only authorized application data and preserve the external-URL-not-Applied invariant. This handoff is a specification boundary, not proof that the runtime or hosted acceptance evidence exists."
+        ],
+        "functionalRequirements": [
+          "Use the canonical Application Details selected panel reference and bind every displayed value to a real API/domain field or an explicit unavailable state; never copy illustrative board data.",
+          "Derive candidate ownership from the authenticated session and preserve the declared dependency CS-50; do not accept a client-selected owner identifier.",
+          "Preserve pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior where the underlying contract supports it; do not invent an endpoint or lifecycle event.",
+          "External application destinations remain navigation only and never create an Applied event; no ATS, recruiter or insight event may be fabricated."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation handoff. Reuse the existing Next.js route, shared shell, API client and declared domain dependency CS-50; do not add a parallel data or ranking implementation."
+        ],
+        "apiContract": [
+          "EXISTING_CONTRACT where the dependency is implemented: bind visible fields and stable 400/401/403/404/409 semantics to the registered contract. If a required capability is absent, render unavailable and record the missing contract as a future dependency; do not invent a route.",
+          "Route ownership is session-derived and all mutations retain server-side authorization, idempotency and revision semantics."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE to this presentation handoff: no new schema or migration is authorized. Existing domain persistence remains owned by the declared dependency and uses synthetic fixtures only in tests."
+        ],
+        "accessibility": [
+          "Use semantic landmarks, heading order, labels, visible focus, keyboard traversal, accessible status announcements and error association. Dialogs restore focus and Escape closes only where the existing component contract supports it; manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the approved Phase 0 responsive contract at 320, 390, 768, 1024 and 1440 CSS px. Reflow without ordinary-content horizontal scrolling, preserve touch targets and keep dense regions intentionally labelled if controlled overflow is required."
+        ],
+        "browsers": [
+          "Future evidence runs Chromium, Firefox and WebKit with isolated synthetic fixtures. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE beyond the authenticated/private noindex contract; no candidate data or internal state enters metadata, sitemap or public previews."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity is authoritative, cross-owner data is denied without existence leakage, provider/external text is treated as untrusted, and evidence excludes tokens, cookies, resumes and real notes. Session-derived ownership; no client-selected owner. Secrets and PII must remain outside design/test evidence."
+        ],
+        "observability": [
+          "Use existing redacted correlation logging and distinguish unavailable, empty and failed operations. Never log passwords, session identifiers, resume contents, provider tokens or raw private payloads."
+        ],
+        "manualExternalGates": [
+          "Future browser, axe, visual, manual accessibility and UAT evidence remain release gates. This specification records planned procedures only and does not claim runtime, hosted or production execution."
+        ],
+        "implementationChecklist": [
+          "Inventory the current /applications ownership and map every visible element to the approved reference, registered contract or explicit unavailable state.",
+          "Define pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior with no private-content flash or fabricated value.",
+          "Add exact component, contract, browser and accessibility procedures using isolated synthetic fixtures; retain engine/version, viewport and sanitized evidence.",
+          "Review dependency, security, responsive and release semantics before implementation; do not activate or promote the product ticket during Phase 3.25."
+        ],
+        "risksRecovery": [
+          "A presentation handoff can mislead a candidate by showing illustrative or stale state as fact. Recovery is to fail closed to unavailable/error, clear private client state on session loss and revert the unshipped presentation change; no production migration or data rollback is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All source ACs have exact reviewed procedures, Application Details selected panel requirements are source-backed, ownership/security/accessibility/responsive behavior is explicit, no local finding remains, and a current independent whole-ticket receipt exists. Runtime and hosted evidence remain future gates."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-144-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-144-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-144-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-144-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-144-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-145": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-145",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The Settings Resume surface must represent real upload, parsing, cancellation, retry, deletion, capacity and revision behavior without inventing file capability. This handoff is a specification boundary, not proof that the runtime or hosted acceptance evidence exists."
+        ],
+        "functionalRequirements": [
+          "Use the canonical Settings Resume management surface reference and bind every displayed value to a real API/domain field or an explicit unavailable state; never copy illustrative board data.",
+          "Derive candidate ownership from the authenticated session and preserve the declared dependency CS-37; do not accept a client-selected owner identifier.",
+          "Preserve pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior where the underlying contract supports it; do not invent an endpoint or lifecycle event.",
+          "External application destinations remain navigation only and never create an Applied event; no ATS, recruiter or insight event may be fabricated."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation handoff. Reuse the existing Next.js route, shared shell, API client and declared domain dependency CS-37; do not add a parallel data or ranking implementation."
+        ],
+        "apiContract": [
+          "EXISTING_CONTRACT where the dependency is implemented: bind visible fields and stable 400/401/403/404/409 semantics to the registered contract. If a required capability is absent, render unavailable and record the missing contract as a future dependency; do not invent a route.",
+          "Route ownership is session-derived and all mutations retain server-side authorization, idempotency and revision semantics."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE to this presentation handoff: no new schema or migration is authorized. Existing domain persistence remains owned by the declared dependency and uses synthetic fixtures only in tests."
+        ],
+        "accessibility": [
+          "Use semantic landmarks, heading order, labels, visible focus, keyboard traversal, accessible status announcements and error association. Dialogs restore focus and Escape closes only where the existing component contract supports it; manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the approved Phase 0 responsive contract at 320, 390, 768, 1024 and 1440 CSS px. Reflow without ordinary-content horizontal scrolling, preserve touch targets and keep dense regions intentionally labelled if controlled overflow is required."
+        ],
+        "browsers": [
+          "Future evidence runs Chromium, Firefox and WebKit with isolated synthetic fixtures. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE beyond the authenticated/private noindex contract; no candidate data or internal state enters metadata, sitemap or public previews."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity is authoritative, cross-owner data is denied without existence leakage, provider/external text is treated as untrusted, and evidence excludes tokens, cookies, resumes and real notes. Session-derived ownership; no client-selected owner. Secrets and PII must remain outside design/test evidence."
+        ],
+        "observability": [
+          "Use existing redacted correlation logging and distinguish unavailable, empty and failed operations. Never log passwords, session identifiers, resume contents, provider tokens or raw private payloads."
+        ],
+        "manualExternalGates": [
+          "Future browser, axe, visual, manual accessibility and UAT evidence remain release gates. This specification records planned procedures only and does not claim runtime, hosted or production execution."
+        ],
+        "implementationChecklist": [
+          "Inventory the current /settings ownership and map every visible element to the approved reference, registered contract or explicit unavailable state.",
+          "Define pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior with no private-content flash or fabricated value.",
+          "Add exact component, contract, browser and accessibility procedures using isolated synthetic fixtures; retain engine/version, viewport and sanitized evidence.",
+          "Review dependency, security, responsive and release semantics before implementation; do not activate or promote the product ticket during Phase 3.25."
+        ],
+        "risksRecovery": [
+          "A presentation handoff can mislead a candidate by showing illustrative or stale state as fact. Recovery is to fail closed to unavailable/error, clear private client state on session loss and revert the unshipped presentation change; no production migration or data rollback is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All source ACs have exact reviewed procedures, Settings Resume management surface requirements are source-backed, ownership/security/accessibility/responsive behavior is explicit, no local finding remains, and a current independent whole-ticket receipt exists. Runtime and hosted evidence remain future gates."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-145-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-145-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-145-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-145-AC4": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-145-AC5": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-146": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-146",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The Saved Jobs surface must render owner-scoped saved state and preserve revision, archive and external-navigation semantics. This handoff is a specification boundary, not proof that the runtime or hosted acceptance evidence exists."
+        ],
+        "functionalRequirements": [
+          "Use the canonical Saved Jobs list and detail actions reference and bind every displayed value to a real API/domain field or an explicit unavailable state; never copy illustrative board data.",
+          "Derive candidate ownership from the authenticated session and preserve the declared dependency CS-19; do not accept a client-selected owner identifier.",
+          "Preserve pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior where the underlying contract supports it; do not invent an endpoint or lifecycle event.",
+          "External application destinations remain navigation only and never create an Applied event; no ATS, recruiter or insight event may be fabricated."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation handoff. Reuse the existing Next.js route, shared shell, API client and declared domain dependency CS-19; do not add a parallel data or ranking implementation."
+        ],
+        "apiContract": [
+          "EXISTING_CONTRACT where the dependency is implemented: bind visible fields and stable 400/401/403/404/409 semantics to the registered contract. If a required capability is absent, render unavailable and record the missing contract as a future dependency; do not invent a route.",
+          "Route ownership is session-derived and all mutations retain server-side authorization, idempotency and revision semantics."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE to this presentation handoff: no new schema or migration is authorized. Existing domain persistence remains owned by the declared dependency and uses synthetic fixtures only in tests."
+        ],
+        "accessibility": [
+          "Use semantic landmarks, heading order, labels, visible focus, keyboard traversal, accessible status announcements and error association. Dialogs restore focus and Escape closes only where the existing component contract supports it; manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the approved Phase 0 responsive contract at 320, 390, 768, 1024 and 1440 CSS px. Reflow without ordinary-content horizontal scrolling, preserve touch targets and keep dense regions intentionally labelled if controlled overflow is required."
+        ],
+        "browsers": [
+          "Future evidence runs Chromium, Firefox and WebKit with isolated synthetic fixtures. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE beyond the authenticated/private noindex contract; no candidate data or internal state enters metadata, sitemap or public previews."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity is authoritative, cross-owner data is denied without existence leakage, provider/external text is treated as untrusted, and evidence excludes tokens, cookies, resumes and real notes. Session-derived ownership; no client-selected owner. Secrets and PII must remain outside design/test evidence."
+        ],
+        "observability": [
+          "Use existing redacted correlation logging and distinguish unavailable, empty and failed operations. Never log passwords, session identifiers, resume contents, provider tokens or raw private payloads."
+        ],
+        "manualExternalGates": [
+          "Future browser, axe, visual, manual accessibility and UAT evidence remain release gates. This specification records planned procedures only and does not claim runtime, hosted or production execution."
+        ],
+        "implementationChecklist": [
+          "Inventory the current /saved ownership and map every visible element to the approved reference, registered contract or explicit unavailable state.",
+          "Define pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior with no private-content flash or fabricated value.",
+          "Add exact component, contract, browser and accessibility procedures using isolated synthetic fixtures; retain engine/version, viewport and sanitized evidence.",
+          "Review dependency, security, responsive and release semantics before implementation; do not activate or promote the product ticket during Phase 3.25."
+        ],
+        "risksRecovery": [
+          "A presentation handoff can mislead a candidate by showing illustrative or stale state as fact. Recovery is to fail closed to unavailable/error, clear private client state on session loss and revert the unshipped presentation change; no production migration or data rollback is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All source ACs have exact reviewed procedures, Saved Jobs list and detail actions requirements are source-backed, ownership/security/accessibility/responsive behavior is explicit, no local finding remains, and a current independent whole-ticket receipt exists. Runtime and hosted evidence remain future gates."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-146-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-146-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-146-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-146-AC4": { "0": { "reviewStatus": "REVIEWED" } }
+      }
+    },
+    "CS-147": {
+      "reviewStatus": "DRAFT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-147",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png",
+        "docs/TESTING.md"
+      ],
+      "additionalRequirements": {
+        "problem": [
+          "The Career Insights reference must remain truthful about available aggregates; it must render unavailable state when the current API has no supported insight contract. This handoff is a specification boundary, not proof that the runtime or hosted acceptance evidence exists."
+        ],
+        "functionalRequirements": [
+          "Use the canonical Career Insights approved reference; route remains a future contract reference and bind every displayed value to a real API/domain field or an explicit unavailable state; never copy illustrative board data.",
+          "Derive candidate ownership from the authenticated session and preserve the declared dependency CS-41; do not accept a client-selected owner identifier.",
+          "Preserve pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior where the underlying contract supports it; do not invent an endpoint or lifecycle event.",
+          "External application destinations remain navigation only and never create an Applied event; no ATS, recruiter or insight event may be fabricated."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: CROSS_MODULE presentation handoff. Reuse the existing Next.js route, shared shell, API client and declared domain dependency CS-41; do not add a parallel data or ranking implementation."
+        ],
+        "apiContract": [
+          "PLANNED_CONTRACT: the approved Career Insights reference has no canonical route or skills-aggregate endpoint in current source. Existing market/pipeline endpoints may provide context only; they do not satisfy a candidate-owned insights aggregate. The implementation must first define and authorize a bounded owner-scoped contract, otherwise render explicit unavailable state. Do not invent or claim an endpoint.",
+          "Route ownership is session-derived and all mutations retain server-side authorization, idempotency and revision semantics."
+        ],
+        "persistence": [
+          "NOT_APPLICABLE to this presentation handoff: no new schema or migration is authorized. Existing domain persistence remains owned by the declared dependency and uses synthetic fixtures only in tests."
+        ],
+        "accessibility": [
+          "Use semantic landmarks, heading order, labels, visible focus, keyboard traversal, accessible status announcements and error association. Dialogs restore focus and Escape closes only where the existing component contract supports it; manual screen-reader review remains future evidence."
+        ],
+        "responsive": [
+          "Apply the approved Phase 0 responsive contract at 320, 390, 768, 1024 and 1440 CSS px. Reflow without ordinary-content horizontal scrolling, preserve touch targets and keep dense regions intentionally labelled if controlled overflow is required."
+        ],
+        "browsers": [
+          "Future evidence runs Chromium, Firefox and WebKit with isolated synthetic fixtures. An unavailable engine is NOT_RUN, never PASS."
+        ],
+        "seo": [
+          "NOT_APPLICABLE beyond the authenticated/private noindex contract; no candidate data or internal state enters metadata, sitemap or public previews."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: AUTHORIZATION / PRIVACY_PII / INPUT_VALIDATION. Session identity is authoritative, cross-owner data is denied without existence leakage, provider/external text is treated as untrusted, and evidence excludes tokens, cookies, resumes and real notes. Session-derived ownership; no client-selected owner. Secrets and PII must remain outside design/test evidence."
+        ],
+        "observability": [
+          "Use existing redacted correlation logging and distinguish unavailable, empty and failed operations. Never log passwords, session identifiers, resume contents, provider tokens or raw private payloads."
+        ],
+        "manualExternalGates": [
+          "Future browser, axe, visual, manual accessibility and UAT evidence remain release gates. This specification records planned procedures only and does not claim runtime, hosted or production execution."
+        ],
+        "implementationChecklist": [
+          "Inventory the current future surface ownership and map every visible element to the approved reference, registered contract or explicit unavailable state.",
+          "Define pending, empty, unavailable, error, unauthorized, expired-session and stale-revision behavior with no private-content flash or fabricated value.",
+          "Add exact component, contract, browser and accessibility procedures using isolated synthetic fixtures; retain engine/version, viewport and sanitized evidence.",
+          "Review dependency, security, responsive and release semantics before implementation; do not activate or promote the product ticket during Phase 3.25."
+        ],
+        "risksRecovery": [
+          "A presentation handoff can mislead a candidate by showing illustrative or stale state as fact. Recovery is to fail closed to unavailable/error, clear private client state on session loss and revert the unshipped presentation change; no production migration or data rollback is part of this phase."
+        ],
+        "definitionOfDone": [
+          "All source ACs have exact reviewed procedures, Career Insights approved reference; route remains a future contract requirements are source-backed, ownership/security/accessibility/responsive behavior is explicit, no local finding remains, and a current independent whole-ticket receipt exists. Runtime and hosted evidence remain future gates."
+        ]
+      },
+      "bindingAmendments": {
+        "CS-147-AC1": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-147-AC2": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-147-AC3": { "0": { "reviewStatus": "REVIEWED" } },
+        "CS-147-AC4": { "0": { "reviewStatus": "REVIEWED" } }
+      }
     }
   },
   "sourcePhase3Commit": "ba60388f049f3cc173098f1b88f8f7a69357d4c9",
@@ -8796,6 +9139,109 @@
           "design/01-IMPLEMENTATION-ORDER/04-candidate-core/02-jobs.png",
           "design/01-IMPLEMENTATION-ORDER/04-candidate-core/03-jobs-expanded-sidebar.png",
           "design/01-IMPLEMENTATION-ORDER/04-candidate-core/04-jobs-collapsed-sidebar.png"
+        ]
+      }
+    },
+    "CS-143": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All 5 CS-143 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-143-AC1",
+          ".ai/ticket-specification-policy.json#CS-143-AC2",
+          ".ai/ticket-specification-policy.json#CS-143-AC3",
+          ".ai/ticket-specification-policy.json#CS-143-AC4",
+          ".ai/ticket-specification-policy.json#CS-143-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-143 now has a ticket-specific, source-backed Applications list and selected application panel refinement with explicit future evidence and no fabricated runtime capability.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-143",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png"
+        ]
+      }
+    },
+    "CS-144": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All 5 CS-144 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-144-AC1",
+          ".ai/ticket-specification-policy.json#CS-144-AC2",
+          ".ai/ticket-specification-policy.json#CS-144-AC3",
+          ".ai/ticket-specification-policy.json#CS-144-AC4",
+          ".ai/ticket-specification-policy.json#CS-144-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-144 now has a ticket-specific, source-backed Application Details selected panel refinement with explicit future evidence and no fabricated runtime capability.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-144",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png"
+        ]
+      }
+    },
+    "CS-145": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All 5 CS-145 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-145-AC1",
+          ".ai/ticket-specification-policy.json#CS-145-AC2",
+          ".ai/ticket-specification-policy.json#CS-145-AC3",
+          ".ai/ticket-specification-policy.json#CS-145-AC4",
+          ".ai/ticket-specification-policy.json#CS-145-AC5"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-145 now has a ticket-specific, source-backed Settings Resume management surface refinement with explicit future evidence and no fabricated runtime capability.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-145",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png"
+        ]
+      }
+    },
+    "CS-146": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All 4 CS-146 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-146-AC1",
+          ".ai/ticket-specification-policy.json#CS-146-AC2",
+          ".ai/ticket-specification-policy.json#CS-146-AC3",
+          ".ai/ticket-specification-policy.json#CS-146-AC4"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-146 now has a ticket-specific, source-backed Saved Jobs list and detail actions refinement with explicit future evidence and no fabricated runtime capability.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-146",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png"
+        ]
+      }
+    },
+    "CS-147": {
+      "EXACT_AC_TEST_BINDING": {
+        "disposition": "RESOLVED",
+        "rationale": "All 4 CS-147 criteria have exact planned procedures, assertions, negative cases and evidence artifacts; no execution is claimed.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-147-AC1",
+          ".ai/ticket-specification-policy.json#CS-147-AC2",
+          ".ai/ticket-specification-policy.json#CS-147-AC3",
+          ".ai/ticket-specification-policy.json#CS-147-AC4"
+        ]
+      },
+      "SURFACE_SPEC_REFINEMENT": {
+        "disposition": "RESOLVED",
+        "rationale": "CS-147 now has a ticket-specific, source-backed Career Insights approved reference; route remains a future contract refinement with explicit future evidence and no fabricated runtime capability.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-147",
+          "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png"
         ]
       }
     }
@@ -18196,6 +18642,558 @@
         "reviewer": "Release",
         "releaseGate": "R1-RELEASE-GATE"
       }
+    ],
+    "CS-143-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Applications list and selected application panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-143 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-143-AC1 procedure against the Applications list and selected application panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC1-source-backed-contract",
+        "assertion": "Opening the synthetic external application URL leaves the application status, timeline, notes, dated events and documents unchanged; only an approved CS-50 contract may create a lifecycle event.",
+        "expectedResult": "The Applications list and selected application panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-143-AC1 verifies applications list and selected application panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC1-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-143 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-143",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-143-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Applications list and selected application panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-143 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-143-AC2 procedure against the Applications list and selected application panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC2-source-backed-contract",
+        "assertion": "Each rendered application field is sourced from the registered response or shown as explicit empty/unavailable; no illustrative company, status, date or document appears.",
+        "expectedResult": "The Applications list and selected application panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-143-AC2 verifies applications list and selected application panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC2-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-143 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-143",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-143-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Applications list and selected application panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-143 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-143-AC3 procedure against the Applications list and selected application panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC3-source-backed-contract",
+        "assertion": "The visual report records the approved application reference, 1440px-class desktop and approved mobile viewport, deterministic tolerance/masks, and separate Chromium, Firefox and WebKit results.",
+        "expectedResult": "The Applications list and selected application panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-143-AC3 verifies applications list and selected application panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC3-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-143 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-143",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-143-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Applications list and selected application panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-143 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-143-AC4 procedure against the Applications list and selected application panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC4-source-backed-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures produce their named safe states; keyboard traversal, focus and screen-reader names remain operable.",
+        "expectedResult": "The Applications list and selected application panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-143-AC4 verifies applications list and selected application panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC4-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-143 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-143",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-143-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Applications list and selected application panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-143 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-143-AC5 procedure against the Applications list and selected application panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC5-source-backed-contract",
+        "assertion": "The surface remains RELEASE-gated and no activation or authorization claim is marked complete by specification work alone.",
+        "expectedResult": "The Applications list and selected application panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-143-AC5 verifies applications list and selected application panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-143-surface.spec.ts::CS-143-AC5-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-143 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-143",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/05-applications.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-144-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Application Details selected panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-144 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-144-AC1 procedure against the Application Details selected panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC1-source-backed-contract",
+        "assertion": "Opening the external destination from Application Details does not change status or append a timeline event; notes, dates and documents remain unchanged without the CS-50 contract.",
+        "expectedResult": "The Application Details selected panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-144-AC1 verifies application details selected panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC1-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-144 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-144",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-144-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Application Details selected panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-144 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-144-AC2 procedure against the Application Details selected panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC2-source-backed-contract",
+        "assertion": "Application Details renders only registered job/application fields or explicit unavailable state; no reference-board values are copied into the DOM.",
+        "expectedResult": "The Application Details selected panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-144-AC2 verifies application details selected panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC2-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-144 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-144",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-144-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Application Details selected panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-144 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-144-AC3 procedure against the Application Details selected panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC3-source-backed-contract",
+        "assertion": "The visual report compares the Application Details reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The Application Details selected panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-144-AC3 verifies application details selected panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC3-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-144 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-144",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-144-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Application Details selected panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-144 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-144-AC4 procedure against the Application Details selected panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC4-source-backed-contract",
+        "assertion": "The selected panel handles pending, empty, error, unauthorized, expired-session and stale-revision fixtures with accessible labels, focus and announcements.",
+        "expectedResult": "The Application Details selected panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-144-AC4 verifies application details selected panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC4-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-144 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-144",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-144-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-50 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Application Details selected panel using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-144 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-144-AC5 procedure against the Application Details selected panel fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC5-source-backed-contract",
+        "assertion": "The surface remains RELEASE-gated and cannot be activated without the declared acceptance and authorization evidence.",
+        "expectedResult": "The Application Details selected panel renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-144-AC5 verifies application details selected panel contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-144-surface.spec.ts::CS-144-AC5-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-144 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-144",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/06-application-details.png; /applications; docs/TESTING.md"
+      }
+    ],
+    "CS-145-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-37 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Settings Resume management surface using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-145 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-145-AC1 procedure against the Settings Resume management surface fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC1-source-backed-contract",
+        "assertion": "A stale resume revision returns the canonical conflict without overwriting newer edits; unsupported file, parsing, cancellation, retry, deletion and 507 fixtures render their named real capability states.",
+        "expectedResult": "The Settings Resume management surface renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-145-AC1 verifies settings resume management surface contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC1-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-145 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-145",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; /settings; docs/TESTING.md"
+      }
+    ],
+    "CS-145-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-37 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Settings Resume management surface using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-145 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-145-AC2 procedure against the Settings Resume management surface fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC2-source-backed-contract",
+        "assertion": "Every resume-management value is response-backed or explicit empty/unavailable; no sample filename, parser result or storage capacity is presented as production data.",
+        "expectedResult": "The Settings Resume management surface renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-145-AC2 verifies settings resume management surface contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC2-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-145 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-145",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; /settings; docs/TESTING.md"
+      }
+    ],
+    "CS-145-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-37 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Settings Resume management surface using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-145 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-145-AC3 procedure against the Settings Resume management surface fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC3-source-backed-contract",
+        "assertion": "The visual report compares the Settings Resume reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The Settings Resume management surface renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-145-AC3 verifies settings resume management surface contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC3-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-145 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-145",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; /settings; docs/TESTING.md"
+      }
+    ],
+    "CS-145-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-37 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Settings Resume management surface using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-145 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-145-AC4 procedure against the Settings Resume management surface fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC4-source-backed-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision resume states expose accessible names, errors, focus and keyboard behavior without leaking file contents.",
+        "expectedResult": "The Settings Resume management surface renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-145-AC4 verifies settings resume management surface contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC4-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-145 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-145",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; /settings; docs/TESTING.md"
+      }
+    ],
+    "CS-145-AC5": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-37 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Settings Resume management surface using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-145 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-145-AC5 procedure against the Settings Resume management surface fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC5-source-backed-contract",
+        "assertion": "The surface remains RELEASE-gated and no upload, parsing or deletion capability is claimed as implemented by this specification.",
+        "expectedResult": "The Settings Resume management surface renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-145-AC5 verifies settings resume management surface contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/settings-resume-contract.spec.ts::CS-145-AC5-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-145 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-145",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; /settings; docs/TESTING.md"
+      }
+    ],
+    "CS-146-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-19 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Saved Jobs list and detail actions using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-146 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-146-AC1 procedure against the Saved Jobs list and detail actions fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC1-source-backed-contract",
+        "assertion": "Each saved-job field is response-backed or explicit empty/unavailable; no illustrative job, company, salary or status is copied from the reference.",
+        "expectedResult": "The Saved Jobs list and detail actions renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-146-AC1 verifies saved jobs list and detail actions contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC1-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-146 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-146",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png; /saved; docs/TESTING.md"
+      }
+    ],
+    "CS-146-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-19 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Saved Jobs list and detail actions using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-146 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-146-AC2 procedure against the Saved Jobs list and detail actions fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC2-source-backed-contract",
+        "assertion": "The visual report compares the Saved Jobs reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/masks across Chromium, Firefox and WebKit.",
+        "expectedResult": "The Saved Jobs list and detail actions renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-146-AC2 verifies saved jobs list and detail actions contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC2-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-146 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-146",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png; /saved; docs/TESTING.md"
+      }
+    ],
+    "CS-146-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-19 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Saved Jobs list and detail actions using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-146 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-146-AC3 procedure against the Saved Jobs list and detail actions fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC3-source-backed-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures render safe states; save/archive/detail controls remain labelled, keyboard-operable and announced.",
+        "expectedResult": "The Saved Jobs list and detail actions renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-146-AC3 verifies saved jobs list and detail actions contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC3-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-146 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-146",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png; /saved; docs/TESTING.md"
+      }
+    ],
+    "CS-146-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-19 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Saved Jobs list and detail actions using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-146 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-146-AC4 procedure against the Saved Jobs list and detail actions fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC4-source-backed-contract",
+        "assertion": "The surface remains RELEASE-gated and does not promote a saved job or external URL to Applied without the declared acceptance and authorization evidence.",
+        "expectedResult": "The Saved Jobs list and detail actions renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-146-AC4 verifies saved jobs list and detail actions contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-146-surface.spec.ts::CS-146-AC4-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-146 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-146",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/09-saved-jobs.png; /saved; docs/TESTING.md"
+      }
+    ],
+    "CS-147-AC1": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_COMPONENT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-41 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Career Insights approved reference; route remains a future contract using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-147 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-147-AC1 procedure against the Career Insights approved reference; route remains a future contract fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC1-source-backed-contract",
+        "assertion": "When no supported insights aggregate exists, the surface renders explicit unavailable state; it never infers market, skill or success metrics from a design image or unrelated endpoint.",
+        "expectedResult": "The Career Insights approved reference; route remains a future contract renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-147-AC1 verifies career insights approved reference; route remains a future contract contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC1-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-147 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-147",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png; route remains unspecified; docs/TESTING.md"
+      }
+    ],
+    "CS-147-AC2": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "VISUAL_REGRESSION",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-41 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Career Insights approved reference; route remains a future contract using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-147 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-147-AC2 procedure against the Career Insights approved reference; route remains a future contract fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC2-source-backed-contract",
+        "assertion": "The visual report compares the Career Insights reference at 1440px-class desktop and approved mobile viewport with deterministic tolerance/masks across Chromium, Firefox and WebKit, or records NOT_RUN when no route exists.",
+        "expectedResult": "The Career Insights approved reference; route remains a future contract renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-147-AC2 verifies career insights approved reference; route remains a future contract contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC2-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-147 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-147",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png; route remains unspecified; docs/TESTING.md"
+      }
+    ],
+    "CS-147-AC3": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "AUTOMATED_ACCESSIBILITY",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-41 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Career Insights approved reference; route remains a future contract using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-147 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-147-AC3 procedure against the Career Insights approved reference; route remains a future contract fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC3-source-backed-contract",
+        "assertion": "Pending, empty, error, unauthorized, expired-session and unsupported-route fixtures render safe states with accessible names, focus and status announcements.",
+        "expectedResult": "The Career Insights approved reference; route remains a future contract renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-147-AC3 verifies career insights approved reference; route remains a future contract contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC3-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-147 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-147",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png; route remains unspecified; docs/TESTING.md"
+      }
+    ],
+    "CS-147-AC4": [
+      {
+        "reviewer": "Frontend QA Security",
+        "testStatus": "PLANNED",
+        "reviewStatus": "REVIEWED",
+        "type": "MANUAL_PRODUCT",
+        "preconditions": "Authenticated synthetic candidate C1 owns the session; dependency CS-41 is represented by contract-shaped synthetic fixtures; no real PII or provider secret is loaded.",
+        "setup": "Render Career Insights approved reference; route remains a future contract using the canonical route/surface fixture, then exercise the criterion-specific populated, missing, denied or unavailable branch without mutating canonical data.",
+        "fixtureOrData": "Synthetic CS-147 fixture containing only registered contract fields; missing or unsupported fields remain absent/unknown.",
+        "action": "Execute the CS-147-AC4 procedure against the Career Insights approved reference; route remains a future contract fixture and inspect DOM, request/response mapping and state transition.",
+        "procedure": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC4-source-backed-contract",
+        "assertion": "The surface remains RELEASE-gated; route and data-contract activation require separate owner/architecture acceptance and are not claimed here.",
+        "expectedResult": "The Career Insights approved reference; route remains a future contract renders the expected truthful state, preserves ownership and release semantics, and records the required future evidence without claiming execution now.",
+        "testName": "CS-147-AC4 verifies career insights approved reference; route remains a future contract contract without fabricated state",
+        "testFileOrProcedureId": "PLANNED:apps/web/tests/career-insights-contract.spec.ts::CS-147-AC4-source-backed-contract",
+        "fixtures": "Synthetic isolated candidate/job/application/resume fixtures only.",
+        "negativeCase": "Wrong owner, malformed response, missing capability, external navigation, stale revision or unsupported state must fail closed with no persistence or fabricated event.",
+        "failureCase": "A board value, client-selected owner, unregistered endpoint, secret-bearing fixture, or skipped engine represented as PASS fails the specification.",
+        "evidenceArtifact": "Future exact-SHA CS-147 contract/browser/accessibility report with sanitized assertions and engine/viewport metadata; no current execution is claimed.",
+        "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+        "authoritativeSource": ".ai/backlog.json#CS-147",
+        "sourcePath": "design/01-IMPLEMENTATION-ORDER/04-candidate-core/10-career-insights.png; route remains unspecified; docs/TESTING.md"
+      }
     ]
   },
   "ownerDecisionSource": {
@@ -21433,6 +22431,236 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "e5d4158844a360deb89bdf40f15798e79aade38d4beaaa685bd0b007b0a58e13"
+    },
+    "CS-143-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "67ac33450fe4c822d0365ff95c87e6e837a497c297f79af2119dbf7216f8055c"
+    },
+    "CS-143-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "9909e82307e05f1e13d06734d46ac04b95d3ed94edd63fb23b7aae34c3e86b75"
+    },
+    "CS-143-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "63b0b69dcc1069ab45687711f6c4257f44db256d6f9a6897fee6e7338d885ce3"
+    },
+    "CS-143-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5de9b36a63680a09f2f88e24a300656d86398a6e249ad6c312f6e4267338f3e5"
+    },
+    "CS-143-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "1c78547650086868f23cbc0b6e70808b9f5e492ccecc3e02dff73614b2dbdb0c"
+    },
+    "CS-144-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "4d274c5af3db14c3438634355cecaac404586ba0ea14b993dc05d9cc8fa38a5b"
+    },
+    "CS-144-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "7d9f054846ec3f9182b929427c145f7de9d82711e64a24e1c20768535f453c44"
+    },
+    "CS-144-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8dba63e99c2a5817616c7fcdccbb989fcbede84a2a0307303cbd5428d7957061"
+    },
+    "CS-144-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5fa1af955885fdbfc04003335d99ecaae02a728037b1b89e023f8d16d8d0224b"
+    },
+    "CS-144-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "91978dcd87672f99d504f916f770765dcaf7e7d645b1940b7c82ec15b12bd25a"
+    },
+    "CS-145-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "646fcb67e97d60b077af7f070008926d12f0c9857a9c6b710b8899e2df97ed58"
+    },
+    "CS-145-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "08b81487b71ee2cd0f36f669b163829c043afe8ee260aea43d3f1615f5fa27de"
+    },
+    "CS-145-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c0374629a67ec1905d39a59ad5d03330109575a30e1c48c288bb174e2da07c97"
+    },
+    "CS-145-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "37674935286f256e9430aad4fd2f33b5baf1763f882ac323ca2f46d6c56c5d69"
+    },
+    "CS-145-AC5": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "8ed2938b3b37c1f9ad212740535291ab15ba8614fcafcb1fbb4bd6a086be7c49"
+    },
+    "CS-146-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f3b9e1246a04ab8d718ba836365425715e33e8a21a8555ad6fdff29d2e30044d"
+    },
+    "CS-146-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "c075caf25bdfcf679f496bec4786cad4a9ac919ceac48264e680e708f801b65d"
+    },
+    "CS-146-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a3cab740cdee8185980ebb816f76853ca0f434cedc5bea10ba6cdf0b59a0b29b"
+    },
+    "CS-146-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "f0c515861e8581d0c346c6be198462a17e276c3ac020ca541175e03c56446139"
+    },
+    "CS-147-AC1": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "d48c881a68d188a327b51b71fd60d332358f6f39118541907f425532f6eeecdc"
+    },
+    "CS-147-AC2": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "764195d01040a2de355daa737fbf0510d1b7c522c1406bae5f7339f5a8b1f6c7"
+    },
+    "CS-147-AC3": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "5963d0d1c9f5a1b1898f85c66da10be19e60f63198351d6772bc7a9e2174d10a"
+    },
+    "CS-147-AC4": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "AC_BINDING",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "67e3538816a58cee81a1381b24887b0e3ecfff55b1df8feefd9c560ea5f0943a"
     }
   },
   "specificationReviewReceipts": {
@@ -22239,6 +23467,56 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "7b0ac876f048ce0f2ed9d8b048453f57682707bcca1ffab161cd52a4036ee65d"
+    },
+    "CS-143": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "54d4e8cc77609fe37a330a9f00b54198777ed467591da2d7b2d54b1d7b7fb122"
+    },
+    "CS-144": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "3a91a91b6e476eed0484dab76c21908ce2987a3956b495f36375015b38cebf29"
+    },
+    "CS-145": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "be7cc807419e3b17945b93b07dcb3bbef3a904b760c6a0d265d54a7dce05dfcc"
+    },
+    "CS-146": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "998ee575a52d78b5adccc4ef7323a64e4c6891322cd7a04799bc73652a7ada84"
+    },
+    "CS-147": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "423e465808cd66db9bc041159e4aaec6c2719f91fdae76c2d573304abb80f9ab"
     }
   },
   "generatedArtifactCheckpoint": {
