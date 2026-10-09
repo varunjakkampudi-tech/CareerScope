@@ -420,7 +420,7 @@ test('whole-spec approval is content-bound and invalidates after substantive cha
   assert.equal(approved.reviewState, 'APPROVED');
   assert.equal(approved.readiness, 'IMPLEMENTATION_READY');
   assert.equal(approved.gaps[0].disposition, 'RESOLVED');
-  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 109);
+  assert.equal(buildCatalog(inputs).counts.approvedSpecificationCount, 110);
 
   inputs.policy.ticketRefinements['CS-3'].additionalRequirements.value[0] +=
     ' Substantive mutation invalidates review.';
@@ -858,9 +858,9 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   });
   assert.equal(model.counts.blockedTicketCount, 37);
   assert.equal(model.actions.length, 15);
-  assert.equal(model.counts.completeSpecificationCount, 109);
-  assert.equal(model.counts.incompleteSpecificationCount, 107);
-  assert.equal(model.counts.approvedSpecificationCount, 109);
+  assert.equal(model.counts.completeSpecificationCount, 110);
+  assert.equal(model.counts.incompleteSpecificationCount, 106);
+  assert.equal(model.counts.approvedSpecificationCount, 110);
   assert.equal(model.counts.reviewedExactTestBindingCount, 444);
   assert.equal(model.counts.acceptanceCriterionCount, 906);
   assert.equal(model.counts.mappedAcceptanceCriterionCount, 418);
@@ -882,7 +882,7 @@ test('216 source-linked drafts preserve registry and canonical stages without re
   // CS-109's Phase 0 design disposition is now explicitly
   // DESIGN_PARTIAL_NON_BLOCKING, so its former PARTIAL_DESIGN finding is
   // reclassified rather than retained as an open finding.
-  assert.equal(model.findings.length, 637);
+  assert.equal(model.findings.length, 636);
   for (const id of ['CS-45', 'CS-107', 'CS-108'])
     assert.equal(model.designTraceability.find((entry) => entry.ticketId === id).ui, true);
   assert.ok(
@@ -916,7 +916,7 @@ test('existing owner directions retain source provenance without fabricated read
   assert.match(direction.approvedDirection, /without silently clearing candidate intent/);
   assert.match(direction.remainingGate, /lower bound/);
   assert.equal(spec.reviewState, 'APPROVED');
-  assert.equal(model.counts.approvedSpecificationCount, 109);
+  assert.equal(model.counts.approvedSpecificationCount, 110);
   inputs.policy.decisionReconciliations['CS-46'].section = 'invented owner approval';
   assert.ok(
     validate(buildCatalog(inputs), inputs).some((error) =>

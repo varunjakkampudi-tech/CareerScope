@@ -1554,3 +1554,11 @@ not claim implementation or hosted execution.
 | CS-90 AC2 | `d45a78c1add79a457d607c43ce8f8eb4b5e5ab6ed10e9ad751ddf619c38ab89c` |
 | CS-90 AC3 | `65f0ddd61473cb3bf30267bb96c351162159801bba6963f430b2cfae0d06dccf` |
 | CS-90 AC4 | `4f0403b2c8e35ed8a690a8c135571b6398bb90f85a676834266bbc8e194490f5` |
+
+### Portable independent reviewer wave (2026-10-09)
+
+Current bytes were independently reviewed by the read-only canonical portable reviewer. The writer recomputed every digest before recording receipts; planned or hosted evidence remains future evidence.
+
+| Ticket | Specification digest | Binding digests | Verdict | Reviewer |
+| --- | --- | --- | --- | --- |
+| CS-90 | a3b6a2cce7ffb89efd814f222e2ab4a95674163462e96279dc6583fe55ebc12c | CS-90-AC1=ac4baf28d7028756fc8476e53d31f15dc18669de073a8a322efe49e2efbc499b<br>CS-90-AC2=d45a78c1add79a457d607c43ce8f8eb4b5e5ab6ed10e9ad751ddf619c38ab89c<br>CS-90-AC3=65f0ddd61473cb3bf30267bb96c351162159801bba6963f430b2cfae0d06dccf<br>CS-90-AC4=4f0403b2c8e35ed8a690a8c135571b6398bb90f85a676834266bbc8e194490f5 | APPROVED | careerscope-independent-reviewer |

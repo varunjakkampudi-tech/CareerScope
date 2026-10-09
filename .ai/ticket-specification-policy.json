@@ -2847,14 +2847,14 @@
             "failureCase": "A browser result that assumes one representation, silently marks Applied, or mutates lifecycle from external navigation is a specification failure.",
             "negativeCase": "No owner decision, unknown representation, or unavailable contract must remain DRAFT/OWNER_DECISION_REQUIRED; it must not be converted into a passing persistence assertion."
           },
-      "1": {
-        "setup": "Do not execute the service-backed disposition fixture until the owner selects the representation and the corresponding route/schema contract is registered.",
-        "action": "After that decision only, instantiate the selected owner/job/revision fixture and run the representation-specific integration procedure.",
-        "procedure": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4-after-owner-decision",
-        "failureCase": "A missing owner decision or unregistered route/schema is an explicit owner-decision gate, not a database test failure.",
-        "negativeCase": "No representation-specific persistence, restore or audit assertion may be labeled verified before the decision and contract exist.",
-        "reviewStatus": "REVIEWED"
-      }
+          "1": {
+            "setup": "Do not execute the service-backed disposition fixture until the owner selects the representation and the corresponding route/schema contract is registered.",
+            "action": "After that decision only, instantiate the selected owner/job/revision fixture and run the representation-specific integration procedure.",
+            "procedure": "PLANNED:packages/core/src/leads.integration.test.ts::CS-17-AC4-after-owner-decision",
+            "failureCase": "A missing owner decision or unregistered route/schema is an explicit owner-decision gate, not a database test failure.",
+            "negativeCase": "No representation-specific persistence, restore or audit assertion may be labeled verified before the decision and contract exist.",
+            "reviewStatus": "REVIEWED"
+          }
         }
       }
     },
@@ -5427,18 +5427,28 @@
           "Define normalized-email identity mapping, duplicate/conflict preflight, no-password-hash-export constraint, unchanged user-data ownership and reversible canary/cutover/rollback conditions.",
           "Complete revision-bound Security and System Designer threat-model reviews; keep downstream implementation tickets blocked until owner/external configuration dependencies and design acceptance are explicit."
         ],
-      "risksRecovery": [
-        "A duplicate or ambiguous email mapping can lock out the owner or disclose another account; abort before linking on any mismatch. A failed cutover must keep the current Argon2/session path usable and avoid partial identity changes; rollback must not delete user data, rotate credentials unnecessarily or replay provider tokens."
-      ],
-      "definitionOfDone": [
-        "CS-90 specification is complete only when the approved decision provenance is propagated, remaining user-pool/callback/MFA configuration choices are explicitly resolved, migration/rollback and threat model are reviewed by Security and System Designer against the same revision, and no implementation begins before those gates. Provider provisioning, live OTP, account migration and deployment remain separate evidence gates."
-      ]
-    },
+        "risksRecovery": [
+          "A duplicate or ambiguous email mapping can lock out the owner or disclose another account; abort before linking on any mismatch. A failed cutover must keep the current Argon2/session path usable and avoid partial identity changes; rollback must not delete user data, rotate credentials unnecessarily or replay provider tokens."
+        ],
+        "definitionOfDone": [
+          "CS-90 specification is complete only when the approved decision provenance is propagated, remaining user-pool/callback/MFA configuration choices are explicitly resolved, migration/rollback and threat model are reviewed by Security and System Designer against the same revision, and no implementation begins before those gates. Provider provisioning, live OTP, account migration and deployment remain separate evidence gates."
+        ]
+      },
       "bindingAmendments": {
         "CS-90-AC1": { "0": { "reviewStatus": "REVIEWED" } },
         "CS-90-AC2": { "0": { "reviewStatus": "REVIEWED" } },
         "CS-90-AC3": { "0": { "reviewStatus": "REVIEWED" } },
         "CS-90-AC4": { "0": { "reviewStatus": "REVIEWED" } }
+      },
+      "deliveryClassification": {
+        "effectiveReleaseTarget": "OWNER_PENDING",
+        "effectiveReleaseState": "CONDITIONAL",
+        "deliveryMode": "MANUAL_GATE",
+        "rationale": "The owner-approved Cognito architecture is specification-ready but must remain default-off until pool/client configuration, threat-model approval, disposable-provider acceptance, monitoring and rollback evidence exist. This is not a production activation or deployment authorization.",
+        "sources": [
+          ".ai/ticket-specification-policy.json#CS-90",
+          "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94"
+        ]
       }
     },
     "CS-105": {
@@ -6230,6 +6240,16 @@
         "sources": [
           "docs/OWNER-DECISIONS-2026-10-08.md#CS-2",
           ".ai/ticket-specification-policy.json#ticketRefinements.CS-2"
+        ]
+      }
+    },
+    "CS-90": {
+      "RELEASE_TARGET_UNDECIDED": {
+        "disposition": "EXTERNAL_GATE",
+        "rationale": "The approved owner direction supports a conditional, default-off Cognito architecture but does not assign it to an active product release. The effective OWNER_PENDING/MANUAL_GATE classification is explicit and keeps provider configuration, threat-model approval, canary and hosted evidence outside this specification approval.",
+        "sources": [
+          "docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94",
+          ".ai/ticket-specification-policy.json#ticketRefinements.CS-90.deliveryClassification"
         ]
       }
     },
@@ -11328,7 +11348,7 @@
       {
         "reviewer": "Product owner, Cognito architect and Independent Reviewer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "Use approved owner decision records and sanitized AWS configuration metadata; do not create, modify or inspect production credentials or migrate an account.",
         "setup": "Compare CS-90 AC1 with `docs/OWNER-DECISIONS-2026-10-02.md#CS-90..CS-94` and record a decision matrix for region, pool/client settings, custom domain, primary identifier, verification/MFA/callback/logout allowlists and phone capability scope.",
@@ -11351,7 +11371,7 @@
       {
         "reviewer": "System Designer and Security reviewer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "Do not change production auth or create a Cognito pool; use current `auth.ts`/API architecture as baseline and the approved owner decision as constraint.",
         "setup": "Model the future flow as a sequence with trust boundary, request actor, data/token lifetime, state transition, error and rollback for each stage.",
@@ -11374,7 +11394,7 @@
       {
         "reviewer": "Database/Identity Architect and Security reviewer",
         "testStatus": "PLANNED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "AUTOMATED_INTEGRATION",
         "preconditions": "The migration mapping is approved and tested only in an isolated disposable database using synthetic identities; never execute against the owner's live account or production data.",
         "setup": "Prepare deterministic owner records for unique verified email, case/whitespace-normalized equivalent, duplicate identity, missing email, unverified email and conflicting external subject; include related synthetic profile/application rows.",
@@ -11397,7 +11417,7 @@
       {
         "reviewer": "Security and System Designer",
         "testStatus": "MANUAL_REQUIRED",
-        "reviewStatus": "DRAFT",
+        "reviewStatus": "REVIEWED",
         "type": "MANUAL_PRODUCT",
         "preconditions": "One immutable architecture, migration and rollback revision exists; no production configuration change or authentication cutover is underway.",
         "setup": "Provide the same threat model, flow sequence and migration document to both reviewers and collect separate revision-bound dispositions.",
@@ -21646,6 +21666,16 @@
       "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
       "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
       "contentHash": "1d6002605056aca3a2ab3e99fa5d0c1e5028d01d13cedce99a6f130fadba6d92"
+    },
+    "CS-90": {
+      "verdict": "APPROVED",
+      "reviewer": "careerscope-independent-reviewer",
+      "reviewerRole": "PHASE325_INDEPENDENT_REVIEWER",
+      "reviewScope": "WHOLE_SPECIFICATION",
+      "writerIdentity": "phase325-spec-writer",
+      "reviewPolicyVersion": "PHASE3.25-PORTABLE-1",
+      "artifact": "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md",
+      "contentHash": "a3b6a2cce7ffb89efd814f222e2ab4a95674163462e96279dc6583fe55ebc12c"
     }
   },
   "generatedArtifactCheckpoint": {
