@@ -2069,6 +2069,55 @@
         "Run planned component, accessibility, browser and visual procedures with named references, viewports, engines, masks and future human review gates."
       ]
     },
+    "CS-122": {
+      "reviewStatus": "DRAFT",
+      "authority": "SOURCE_BACKED_TECHNICAL_CONSTRAINT",
+      "sourceReferences": [
+        ".ai/backlog.json#CS-122",
+        "design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/11-11-localization-internationalization.png",
+        "design/01-IMPLEMENTATION-ORDER/11-admin-production-operations/12-12-component-states-design-system.png",
+        "design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md",
+        ".ai/ticket-specification-policy.json#CS-122-AC1",
+        ".ai/ticket-specification-policy.json#CS-122-AC2",
+        ".ai/ticket-specification-policy.json#CS-122-AC3",
+        ".ai/ticket-specification-policy.json#CS-122-AC4"
+      ],
+      "apiContractSourceMappingOverride": {
+        "uiOnly": true,
+        "missingRequirements": [],
+        "unknownContracts": [],
+        "plannedPersistenceBoundary": "No current localization endpoint, translation catalogue or persistence capability is claimed. Shared components consume a registered locale/config contract; route ownership remains UNKNOWN until a separately approved owning surface exists."
+      },
+      "additionalRequirements": {
+        "functionalRequirements": [
+          "Treat CS-122 as a shared localization/state handoff, not as implementation of a translation service. Labels, locale metadata and locale-aware date/number formatting may be rendered only from a registered contract or explicit unavailable state.",
+          "Supported and unsupported locale behavior must be deterministic: a registered supported locale may render its source-backed formatting; an absent, malformed or unsupported locale must render an explicit unavailable/unsupported state without silently claiming translated content, inventing a fallback locale or issuing an unauthorized request.",
+          "Keep route ownership UNKNOWN and do not invent a candidate/admin route, user preference persistence, translation catalogue or production language claim."
+        ],
+        "technicalApproach": [
+          "ARCHITECTURE_IMPACT: LOCAL_MODULE. Reuse CS-105/CS-106 primitives and the existing Intl/configuration seam where one exists; do not add a new API, persistence model or parallel localization system."
+        ],
+        "securityPrivacy": [
+          "SECURITY_IMPACT: INPUT_VALIDATION / PRIVACY_PII. Validate locale identifiers at the registered boundary, derive ownership from the server session for any future host surface, keep private data and tokens out of locale fixtures/logs, and fail closed on denied or expired state."
+        ],
+        "accessibility": [
+          "Expose the active locale or explicit unsupported/unavailable state with an accessible name, preserve keyboard/focus semantics and announce errors/status changes; manual NVDA/VoiceOver and language-quality review remain future evidence."
+        ],
+        "responsive": [
+          "At 320/390/768/1024/1440 CSS px, long localized strings must wrap/reflow without ordinary horizontal overflow; unsupported locale messaging and controls remain touch-target sized and respect reduced motion."
+        ],
+        "definitionOfDone": [
+          "Specification DoD: the four exact bindings, authoritative 11-11 Phase 0 mapping, supported/unsupported locale contract, UNKNOWN route/no-endpoint boundary, security redaction, accessibility/responsive rules and fail-closed release semantics are complete; no runtime or executed localization evidence is claimed.",
+          "Future implementation DoD: the owning route supplies a registered locale contract, applicable browser/axe/visual/manual evidence passes, and no fabricated translation or persistence capability is enabled."
+        ]
+      },
+      "implementationChecklistOverride": [
+        "Read the authoritative 11-11 localization and shared component references plus the accessibility/responsive contract; preserve UNKNOWN route ownership.",
+        "Define deterministic supported, unsupported, malformed and unavailable locale fixtures and the exact Intl formatting seam without inventing translations or persistence.",
+        "Map each state to shared components, including keyboard/focus/error announcements, redaction and responsive long-string behavior.",
+        "Run the planned component, browser, accessibility and visual procedures with named references and keep future/manual/provider evidence separate from specification approval."
+      ]
+    },
     "CS-124": {
       "reviewStatus": "DRAFT",
       "authority": "SOURCE_BACKED_TECHNICAL_CONSTRAINT",
@@ -5571,6 +5620,10 @@
     "CS-128": {
       "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All four CS-128 criteria have exact planned component, visual, accessibility/state and conditional-release procedures with safe redacted fixtures and negative cases.","sources":[".ai/ticket-specification-policy.json#CS-128-AC1",".ai/ticket-specification-policy.json#CS-128-AC2",".ai/ticket-specification-policy.json#CS-128-AC3",".ai/ticket-specification-policy.json#CS-128-AC4"]},
       "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The Phase 0 Error Loading Empty Component States reference, shared CS-106 ownership, state taxonomy, redaction and responsive/accessibility behavior are ticket-specific without inventing a route or endpoint.","sources":[".ai/ticket-specification-policy.json#ticketRefinements.CS-128","design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/18-18-error-loading-empty-component-states.png"]}
+    },
+    "CS-122": {
+      "EXACT_AC_TEST_BINDING": {"disposition":"RESOLVED","rationale":"All four CS-122 criteria have exact planned component, visual/browser, accessibility/state and conditional-release procedures with supported/unsupported locale fixtures, negative cases and no fabricated translation or runtime evidence.","sources":[".ai/ticket-specification-policy.json#CS-122-AC1",".ai/ticket-specification-policy.json#CS-122-AC2",".ai/ticket-specification-policy.json#CS-122-AC3",".ai/ticket-specification-policy.json#CS-122-AC4"]},
+      "SURFACE_SPEC_REFINEMENT": {"disposition":"RESOLVED","rationale":"The authoritative 11-11 Phase 0 localization reference, shared component-state reference and accessibility/responsive localization contract now define supported/unsupported locale behavior, formatting boundaries, unavailable semantics and no-fabricated-translation scope without inventing a route, endpoint or catalogue.","sources":[".ai/ticket-specification-policy.json#ticketRefinements.CS-122","design/01-IMPLEMENTATION-ORDER/12-global-ux-system-states/11-11-localization-internationalization.png","design/01-IMPLEMENTATION-ORDER/00-foundations-first/ACCESSIBILITY-RESPONSIVE-LOCALIZATION-CONTRACT.md"]}
     },
     "CS-111": {
       "MISSING_DOMAIN_CONTRACT": {"disposition":"RESOLVED","rationale":"The frontend projection is explicitly dependent on the CS-110 planned read-only candidate contract and does not invent an API; ownership, typed errors, feature-flag behavior and unavailable states are defined as future implementation gates.","sources":[".ai/ticket-specification-policy.json#ticketRefinements.CS-111",".ai/backlog.json#CS-111",".ai/backlog.json#CS-110"]},
