@@ -9,18 +9,18 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "1e20509f6d3952b8e61fd70c313ddbf3e74f4e353be79507769e2ec83545b6b9",
+    ".ai/ticket-specification-policy.json": "f1e999ab24c4ced10f3fcc058882c0568b0543d8b541cc14136df8e08d525b47",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "58ab6b3abb54ba84c8b8ce1fa69b1d675b0a420aa968be7d83d478c0f804dcf0",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bbc2d53676e48db633efe4c4623b5106f8c602e51de7b35e3199cd296428f97c",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
   "counts": {
     "ticketCount": 216,
     "specificationCount": 216,
-    "completeSpecificationCount": 122,
-    "incompleteSpecificationCount": 94,
+    "completeSpecificationCount": 127,
+    "incompleteSpecificationCount": 89,
     "epicMappedCount": 216,
     "orphanTicketCount": 0,
     "duplicateIdCount": 0,
@@ -30,23 +30,23 @@
     "dependencySemanticGapCount": 0,
     "acceptanceCriterionCount": 906,
     "suggestedAcceptanceCriterionCount": 906,
-    "mappedAcceptanceCriterionCount": 475,
-    "unmappedAcceptanceCriterionCount": 431,
-    "reviewedExactTestBindingCount": 501,
-    "authoredExactTestBindingCount": 501,
-    "acceptanceCriteriaWithAuthoredBindings": 475,
-    "draftSpecificationCount": 94,
+    "mappedAcceptanceCriterionCount": 500,
+    "unmappedAcceptanceCriterionCount": 406,
+    "reviewedExactTestBindingCount": 526,
+    "authoredExactTestBindingCount": 526,
+    "acceptanceCriteriaWithAuthoredBindings": 500,
+    "draftSpecificationCount": 89,
     "reviseSpecificationCount": 0,
     "reviewedSpecificationCount": 0,
-    "approvedSpecificationCount": 122,
+    "approvedSpecificationCount": 127,
     "ownerDecisionReconciliationCount": 11,
     "uiTicketCount": 147,
     "designCounts": {
       "DESIGN_NOT_APPLICABLE": 71,
       "DESIGN_GAP": 7,
-      "DESIGN_PARTIAL": 27,
+      "DESIGN_PARTIAL": 26,
       "DESIGN_VERIFIED": 108,
-      "DESIGN_PARTIAL_NON_BLOCKING": 3
+      "DESIGN_PARTIAL_NON_BLOCKING": 4
     },
     "blockedTicketCount": 37,
     "hostpendingActionCount": 15,
@@ -64,12 +64,12 @@
     "currentReleaseTicketCount": 47,
     "workflow": { "BACKLOG": 141, "TODO": 0, "IN_PROGRESS": 0, "QA": 5, "UAT": 70, "PROD": 0 },
     "sourceBacklogHash": "ca68f42d84b850254a82d71df3416eb9d56f750d7467712a870d0b37bf954552",
-    "specificationCoveragePercent": 56.48148148148148,
+    "specificationCoveragePercent": 58.7962962962963,
     "suggestedVerificationMappingPercent": 100,
-    "exactReviewedTraceabilityPercent": 52.428256070640174,
-    "findingsCount": 636,
-    "openFindingCount": 276,
-    "resolvedFindingCount": 219,
+    "exactReviewedTraceabilityPercent": 55.18763796909492,
+    "findingsCount": 635,
+    "openFindingCount": 265,
+    "resolvedFindingCount": 229,
     "reclassifiedFindingCount": 30
   },
   "findings": [
@@ -5261,7 +5261,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-139 now has criterion-specific planned procedures, exact assertions, negative/failure cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-139-AC1",
+        ".ai/ticket-specification-policy.json#CS-139-AC2",
+        ".ai/ticket-specification-policy.json#CS-139-AC3",
+        ".ai/ticket-specification-policy.json#CS-139-AC4",
+        ".ai/ticket-specification-policy.json#CS-139-AC5"
+      ]
     },
     {
       "ticketId": "CS-139",
@@ -5270,7 +5278,17 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-139 now has a route/surface-specific handoff with source-backed contracts, design, accessibility, responsive, security and release semantics.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-139",
+        ".ai/backlog.json#CS-139",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png",
+        "design/canonical/marketing/careerscope-public-privacy.png",
+        "apps/web/src/app/page.tsx",
+        "docs/PRIVACY.md",
+        "docs/TESTING.md"
+      ]
     },
     {
       "ticketId": "CS-140",
@@ -5279,7 +5297,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-140 now has criterion-specific planned procedures, exact assertions, negative/failure cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-140-AC1",
+        ".ai/ticket-specification-policy.json#CS-140-AC2",
+        ".ai/ticket-specification-policy.json#CS-140-AC3",
+        ".ai/ticket-specification-policy.json#CS-140-AC4",
+        ".ai/ticket-specification-policy.json#CS-140-AC5"
+      ]
     },
     {
       "ticketId": "CS-140",
@@ -5288,7 +5314,17 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-140 now has a route/surface-specific handoff with source-backed contracts, design, accessibility, responsive, security and release semantics.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-140",
+        ".ai/backlog.json#CS-140",
+        "design/01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png",
+        "design/canonical/marketing/careerscope-public-terms.png",
+        "apps/web/src/app/page.tsx",
+        "docs/PROJECT-STATE.md",
+        "docs/TESTING.md"
+      ]
     },
     {
       "ticketId": "CS-141",
@@ -7133,7 +7169,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-213 now has criterion-specific planned procedures, exact assertions, negative/failure cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-213-AC1",
+        ".ai/ticket-specification-policy.json#CS-213-AC2",
+        ".ai/ticket-specification-policy.json#CS-213-AC3",
+        ".ai/ticket-specification-policy.json#CS-213-AC4",
+        ".ai/ticket-specification-policy.json#CS-213-AC5"
+      ]
     },
     {
       "ticketId": "CS-213",
@@ -7142,7 +7186,19 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-213 now has a route/surface-specific handoff with source-backed contracts, design, accessibility, responsive, security and release semantics.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-213",
+        ".ai/backlog.json#CS-213",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png",
+        "design/canonical/app/careerscope-settings-resume-management-reference-board.png",
+        "apps/web/src/app/(app)/settings/page.tsx",
+        "apps/web/src/components/profile-editor.tsx",
+        "packages/core/src/schema.ts",
+        "docs/OWNER-DECISIONS-2026-10-02.md",
+        "docs/TESTING.md"
+      ]
     },
     {
       "ticketId": "CS-214",
@@ -7151,7 +7207,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-214 now has criterion-specific planned procedures, exact assertions, negative/failure cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-214-AC1",
+        ".ai/ticket-specification-policy.json#CS-214-AC2",
+        ".ai/ticket-specification-policy.json#CS-214-AC3",
+        ".ai/ticket-specification-policy.json#CS-214-AC4",
+        ".ai/ticket-specification-policy.json#CS-214-AC5"
+      ]
     },
     {
       "ticketId": "CS-214",
@@ -7160,16 +7224,19 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
-    },
-    {
-      "ticketId": "CS-215",
-      "code": "PARTIAL_DESIGN",
-      "section": "design",
-      "reason": "References exist, but the exact ticket-specific surface/state mapping is not established by the screen index.",
-      "owner": "UX",
-      "requiredEvidence": "Ticket-specific state and viewport mapping or independently approved design N/A rationale.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-214 now has a route/surface-specific handoff with source-backed contracts, design, accessibility, responsive, security and release semantics.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-214",
+        ".ai/backlog.json#CS-214",
+        "design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png",
+        "design/canonical/app/careerscope-settings-resume-management-reference-board.png",
+        "apps/web/src/app/(app)/settings/page.tsx",
+        "apps/web/src/components/resume-panel.tsx",
+        "packages/resume/src",
+        "docs/TESTING.md",
+        "docs/TESTING.md"
+      ]
     },
     {
       "ticketId": "CS-215",
@@ -7178,7 +7245,15 @@
       "reason": "Every criterion has a suggested verification method, but current test assertions have not been individually bound to it.",
       "owner": "QA",
       "requiredEvidence": "Reviewed test path and test/assertion name, or exact manual procedure and expected outcome, for each AC.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-215 now has criterion-specific planned procedures, exact assertions, negative/failure cases and evidence artifacts; no execution is claimed.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#CS-215-AC1",
+        ".ai/ticket-specification-policy.json#CS-215-AC2",
+        ".ai/ticket-specification-policy.json#CS-215-AC3",
+        ".ai/ticket-specification-policy.json#CS-215-AC4",
+        ".ai/ticket-specification-policy.json#CS-215-AC5"
+      ]
     },
     {
       "ticketId": "CS-215",
@@ -7187,7 +7262,19 @@
       "reason": "Phase 1 criteria are broad cross-surface requirements; screenshot controls, per-field validation and interactions still need a ticket-specific written contract.",
       "owner": "Product Architect / UX / domain owner",
       "requiredEvidence": "Reviewed per-surface behavior/state/validation inventory tied to each numbered criterion; do not infer functionality from image labels.",
-      "disposition": "OPEN"
+      "disposition": "RESOLVED",
+      "dispositionRationale": "CS-215 now has a route/surface-specific handoff with source-backed contracts, design, accessibility, responsive, security and release semantics.",
+      "dispositionSources": [
+        ".ai/ticket-specification-policy.json#ticketRefinements.CS-215",
+        ".ai/backlog.json#CS-215",
+        "design/01-IMPLEMENTATION-ORDER/02-auth/01-sign-in.png",
+        "design/canonical/auth/careerscope-auth-sign-in.png",
+        "apps/web/src/app/page.tsx",
+        "apps/web/src/components/account-form.tsx",
+        "docs/OWNER-DECISIONS-2026-10-02.md",
+        "docs/PROJECT-STATE.md",
+        "docs/TESTING.md"
+      ]
     },
     {
       "ticketId": "CS-216",

@@ -1619,3 +1619,51 @@ Current bytes were independently reviewed by the read-only canonical portable re
 | CS-135 | e404bcfccfa403cbf40ff2d6fd85f1d2f2143df80a4a9ddf11e47db07393ee38 | CS-135-AC1=5f5d723d9d36d37c505b48626bee74b30cb92d70130948c0f51135bd4f2ca42c<br>CS-135-AC2=f8af57a8e21b67ba717a761a01597e00e21bd344e7cb8984ad05ad60df0de656<br>CS-135-AC3=f317eb3348ab7b8ba23fcfbae4b8701bf50e8d34edae19706dd773c143d24a90<br>CS-135-AC4=8ad4d29a906586bb8971f8893dd7c1dfbc2c41a338f45af69689584aca31f1cb<br>CS-135-AC5=131b42591579f14c99c20cad84b7080693a11ce4b765d538a0bda8363cec987d | APPROVED | careerscope-independent-reviewer |
 | CS-136 | 875db90d4d099e5fc732c77026de5e16ee462b860b968237ebb56a3a93742091 | CS-136-AC1=803aed788245c3b04407ecef3efcc9c2bfa43beea50d32aa69dc24324e0623db<br>CS-136-AC2=521508d0af6032249cb17d8dc6cd3fed314dadba112473bbf23c7f57253cd498<br>CS-136-AC3=e330e66019ee50b5e8532c4ac5560f5c5993133cdb5b62d69e9f2387d6b7ffc5<br>CS-136-AC4=903cb68a49d905a061f36068d66db84fb55596fc1479d42e1b4c2417dc046958<br>CS-136-AC5=b0442a2d4711f0d6b728cbee35f228600d8baf8f208eeb5e256f7314555da56b | APPROVED | careerscope-independent-reviewer |
 | CS-137 | 9dc1763cebcf62bc75606444ff62e3f355518551eacdf1d2503449f5125ed5d2 | CS-137-AC1=4015cb67e4dfb8cf76e351a76cbf86c3f50872f08bf900f8a5c3b7e73eaffc6e<br>CS-137-AC2=cbdfaa94b42644993b39500e2b071d5880b1aa24ac76ced6f89c89aebf213fd3<br>CS-137-AC3=2523db50d2227b936c967db790f69350c026add8b21f7c0e241d2f5dcd04ff9d<br>CS-137-AC4=99e514839255342a4589662b039da71e8d24414591859e32e65674e1d47f686d<br>CS-137-AC5=3c17c42ce19ef77c384b15d4b034f7b2e0b38cb56139ba335be1978c8eeab587 | APPROVED | careerscope-independent-reviewer |
+
+### Portable independent reviewer wave (2026-10-09)
+
+Current bytes were independently reviewed by the read-only canonical portable reviewer. The writer recomputed every digest before recording receipts; planned or hosted evidence remains future evidence.
+
+| Ticket | Specification digest | Binding digests | Verdict | Reviewer |
+| --- | --- | --- | --- | --- |
+| CS-139 | d019d330c881c99bfc722dec6e3f39f03d04e35240f615b1d102147a728ffeff | CS-139-AC1=c867c220cadcc78e6ea5387ce2cc6fcf5bfd906122e76a9e0228f020c6041c9f<br>CS-139-AC2=d0ca801f2ed6d59e3541f536578fa6ad00f639d986ee28100da36681f48cad02<br>CS-139-AC3=659ae0563327afba7a58e9b6f6f681ec78f4aca428c174a23e89c34597abc920<br>CS-139-AC4=b6c268afd10fe073a3a50ee44dbd4321b8e8075211e34c4552b32b1ed661dc23<br>CS-139-AC5=704e2ed2e06e031e73520cbc0f07b6aaef697166a9584b62d8c62cec06c4fcce | APPROVED | careerscope-independent-reviewer |
+
+### Portable independent reviewer wave (2026-10-09)
+
+Current bytes were independently reviewed by the read-only canonical portable reviewer. The writer recomputed every digest before recording receipts; planned or hosted evidence remains future evidence.
+
+| Ticket | Specification digest | Binding digests | Verdict | Reviewer |
+| --- | --- | --- | --- | --- |
+| CS-139 | 85deaf9fbf565c4ef5a26236214f2de89cd67ac797ec8e3ef2ac982926aeef48 | CS-139-AC1=c867c220cadcc78e6ea5387ce2cc6fcf5bfd906122e76a9e0228f020c6041c9f<br>CS-139-AC2=d0ca801f2ed6d59e3541f536578fa6ad00f639d986ee28100da36681f48cad02<br>CS-139-AC3=659ae0563327afba7a58e9b6f6f681ec78f4aca428c174a23e89c34597abc920<br>CS-139-AC4=b6c268afd10fe073a3a50ee44dbd4321b8e8075211e34c4552b32b1ed661dc23<br>CS-139-AC5=704e2ed2e06e031e73520cbc0f07b6aaef697166a9584b62d8c62cec06c4fcce | APPROVED | careerscope-independent-reviewer |
+
+### Portable independent reviewer wave (2026-10-09)
+
+Current bytes were independently reviewed by the read-only canonical portable reviewer. The writer recomputed every digest before recording receipts; planned or hosted evidence remains future evidence.
+
+| Ticket | Specification digest | Binding digests | Verdict | Reviewer |
+| --- | --- | --- | --- | --- |
+| CS-140 | 6a65f02c154bf258b339f48879db538f46d70517e7d42bc9ed2dcea0df31a473 | CS-140-AC1=dc31139925e3e5a7a9c919eeab309a817edeba9c1b66a530d0dfd95f5419efed<br>CS-140-AC2=888006239d3a841d477c31f51edbd083b4f0e5dea7246511d64565b3744f6b13<br>CS-140-AC3=4713afd23f5b9e167998f3197792896494fe4b5cdcdca7653573271ec03df9ad<br>CS-140-AC4=4708a2f81c711c63efa82aab81693e64693160abe70c7487c126626330b195fe<br>CS-140-AC5=b40765db4c5bab1284380e015cac9e0f4cfd90206ff3750eb6d7eff376101d6a | APPROVED | careerscope-independent-reviewer |
+
+### Portable independent reviewer wave (2026-10-09)
+
+Current bytes were independently reviewed by the read-only canonical portable reviewer. The writer recomputed every digest before recording receipts; planned or hosted evidence remains future evidence.
+
+| Ticket | Specification digest | Binding digests | Verdict | Reviewer |
+| --- | --- | --- | --- | --- |
+| CS-213 | fa50e35809eff04bc2ae95c7a693739351d52e49e4fe75e8a36f12b811f9aead | CS-213-AC1=31546cc9022d771af7639ef8e2d9f676d928cf17433d2f3027f6e5a966557310<br>CS-213-AC2=c5729a85b66871f896c754b4b2dc8dc4c826ee8f019ebb4979201e19d5cdd8ef<br>CS-213-AC3=67b4e410aba60f5de1e571ba148a7781875d9273ab64a2ab5c4fec9454dc73a3<br>CS-213-AC4=833700c0e799fa753ac84796c8697ab4f630617893f1a46dcae67f4ef01686bf<br>CS-213-AC5=708a0d14384c802efb4c8e695d5c3388cddc5cccb26fde922dab9533be27d372 | APPROVED | careerscope-independent-reviewer |
+
+### Portable independent reviewer wave (2026-10-09)
+
+Current bytes were independently reviewed by the read-only canonical portable reviewer. The writer recomputed every digest before recording receipts; planned or hosted evidence remains future evidence.
+
+| Ticket | Specification digest | Binding digests | Verdict | Reviewer |
+| --- | --- | --- | --- | --- |
+| CS-214 | 937d60955e7ef356b32c6d9b99f75aa6c39a80ecafd75606353a61b26d359cab | CS-214-AC1=8506235b1f3282be72603b649e4d2a16b0a276131b4698dbc61e0f7078557663<br>CS-214-AC2=12d167550c43416254b3c84fdac16823951213adcc2427633077292a7cbace2c<br>CS-214-AC3=b619f9e6082e28e66c4ffb26d15a1f925f3d5c0eaeb6f3cd70ae9c6ca875299b<br>CS-214-AC4=66fe0b78fd5925a38337f3d2b0c0f4167fed624a5ebcf775457dde27dbfeb193<br>CS-214-AC5=5edce64ee3436721870e158f9ed865cd69bbd9db5c7e092a476abebdba085bdd | APPROVED | careerscope-independent-reviewer |
+
+### Portable independent reviewer wave (2026-10-09)
+
+Current bytes were independently reviewed by the read-only canonical portable reviewer. The writer recomputed every digest before recording receipts; planned or hosted evidence remains future evidence.
+
+| Ticket | Specification digest | Binding digests | Verdict | Reviewer |
+| --- | --- | --- | --- | --- |
+| CS-215 | 8181b111a986ad496d2d42a6dce2c6fad14db3e7af102fecfcf1d5bee8c75d2b | CS-215-AC1=10fec44ef5e5364f39464b80b173a05ac2d53f977f54318803f153ff95906e90<br>CS-215-AC2=276e42ea40a5cec614fbd00cfa6b254e81a1cbb7b175ae1808a854782565164f<br>CS-215-AC3=0e18192f72f470b98234a53f2875ffcb732ab7f071cc75a6664cb2ead2d1fb80<br>CS-215-AC4=1bacb2fba696de6140493bfaa2e4b8f7de58422ae79640386d176a8b239fcb79<br>CS-215-AC5=52170f41edfdfb8d5eecdea55274a825317d8eaa8a8d23293eaf1c8fbba8fa3f | APPROVED | careerscope-independent-reviewer |

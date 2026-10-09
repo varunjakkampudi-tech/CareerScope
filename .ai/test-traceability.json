@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "1e20509f6d3952b8e61fd70c313ddbf3e74f4e353be79507769e2ec83545b6b9",
+    ".ai/ticket-specification-policy.json": "f1e999ab24c4ced10f3fcc058882c0568b0543d8b541cc14136df8e08d525b47",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "58ab6b3abb54ba84c8b8ce1fa69b1d675b0a420aa968be7d83d478c0f804dcf0",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "bbc2d53676e48db633efe4c4623b5106f8c602e51de7b35e3199cd296428f97c",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -20115,17 +20115,41 @@
       "criterion": "Do not publish unsupported testimonials/counts/partnerships; public content has approved metadata and real provenance.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-139-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "The public fixture for the planned route emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships and ratings are absent.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Use isolated synthetic fixtures for Privacy; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /privacy state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-139 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-139-AC1 against the /privacy surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC1-source-backed-contract",
+          "assertion": "The public fixture for the planned route emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships and ratings are absent.",
+          "expectedResult": "The Privacy specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-139-AC1 verifies Privacy source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC1-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-139",
+          "sourcePath": ".ai/backlog.json#CS-139; design/01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png; design/canonical/marketing/careerscope-public-privacy.png; apps/web/src/app/page.tsx; docs/PRIVACY.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-139",
@@ -20133,49 +20157,41 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-139-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Every visible field on /privacy is sourced from approved content/provenance or an explicit unavailable state; design-board sample values are never copied into production output.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-139-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-139-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-139-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-139-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "Use isolated synthetic fixtures for Privacy; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /privacy state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-139 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-139-AC2 against the /privacy surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC2-source-backed-contract",
+          "assertion": "Every visible field on /privacy is sourced from approved content/provenance or an explicit unavailable state; design-board sample values are never copied into production output.",
+          "expectedResult": "The Privacy specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-139-AC2 verifies Privacy source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC2-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-139",
+          "sourcePath": ".ai/backlog.json#CS-139; design/01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png; design/canonical/marketing/careerscope-public-privacy.png; apps/web/src/app/page.tsx; docs/PRIVACY.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-139",
@@ -20183,33 +20199,41 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-139-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-139-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-139-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The visual report compares /privacy against its canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "VISUAL_REGRESSION",
+          "preconditions": "Use isolated synthetic fixtures for Privacy; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /privacy state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-139 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-139-AC3 against the /privacy surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC3-source-backed-contract",
+          "assertion": "The visual report compares /privacy against its canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "expectedResult": "The Privacy specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-139-AC3 verifies Privacy source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC3-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-139",
+          "sourcePath": ".ai/backlog.json#CS-139; design/01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png; design/canonical/marketing/careerscope-public-privacy.png; apps/web/src/app/page.tsx; docs/PRIVACY.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-139",
@@ -20217,33 +20241,41 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-139-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use safe states; keyboard traversal, labels, focus, headings and status announcements remain operable.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-139-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-139-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Use isolated synthetic fixtures for Privacy; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /privacy state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-139 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-139-AC4 against the /privacy surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC4-source-backed-contract",
+          "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use safe states; keyboard traversal, labels, focus, headings and status announcements remain operable.",
+          "expectedResult": "The Privacy specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-139-AC4 verifies Privacy source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC4-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-139",
+          "sourcePath": ".ai/backlog.json#CS-139; design/01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png; design/canonical/marketing/careerscope-public-privacy.png; apps/web/src/app/page.tsx; docs/PRIVACY.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-139",
@@ -20251,25 +20283,41 @@
       "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-139-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-139-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The public surface remains RELEASE-gated; specification work does not claim publication or production deployment.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Use isolated synthetic fixtures for Privacy; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /privacy state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-139 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-139-AC5 against the /privacy surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC5-source-backed-contract",
+          "assertion": "The public surface remains RELEASE-gated; specification work does not claim publication or production deployment.",
+          "expectedResult": "The Privacy specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-139-AC5 verifies Privacy source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-139-contract.spec.ts::CS-139-AC5-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-139 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-139",
+          "sourcePath": ".ai/backlog.json#CS-139; design/01-IMPLEMENTATION-ORDER/01-marketing-public/07-privacy.png; design/canonical/marketing/careerscope-public-privacy.png; apps/web/src/app/page.tsx; docs/PRIVACY.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-140",
@@ -20277,17 +20325,41 @@
       "criterion": "Do not publish unsupported testimonials/counts/partnerships; public content has approved metadata and real provenance.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-140-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "The public fixture for the planned route emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships and ratings are absent.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Use isolated synthetic fixtures for Terms; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /terms state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-140 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-140-AC1 against the /terms surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC1-source-backed-contract",
+          "assertion": "The public fixture for the planned route emits only approved metadata and source-backed claims; unsupported testimonials, counts, partnerships and ratings are absent.",
+          "expectedResult": "The Terms specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-140-AC1 verifies Terms source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC1-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-140",
+          "sourcePath": ".ai/backlog.json#CS-140; design/01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png; design/canonical/marketing/careerscope-public-terms.png; apps/web/src/app/page.tsx; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-140",
@@ -20295,49 +20367,41 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-140-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Every visible field on /terms is sourced from approved content/provenance or an explicit unavailable state; design-board sample values are never copied into production output.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-140-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-140-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-140-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-140-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "Use isolated synthetic fixtures for Terms; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /terms state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-140 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-140-AC2 against the /terms surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC2-source-backed-contract",
+          "assertion": "Every visible field on /terms is sourced from approved content/provenance or an explicit unavailable state; design-board sample values are never copied into production output.",
+          "expectedResult": "The Terms specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-140-AC2 verifies Terms source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC2-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-140",
+          "sourcePath": ".ai/backlog.json#CS-140; design/01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png; design/canonical/marketing/careerscope-public-terms.png; apps/web/src/app/page.tsx; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-140",
@@ -20345,33 +20409,41 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-140-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-140-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-140-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The visual report compares /terms against its canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "VISUAL_REGRESSION",
+          "preconditions": "Use isolated synthetic fixtures for Terms; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /terms state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-140 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-140-AC3 against the /terms surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC3-source-backed-contract",
+          "assertion": "The visual report compares /terms against its canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "expectedResult": "The Terms specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-140-AC3 verifies Terms source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC3-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-140",
+          "sourcePath": ".ai/backlog.json#CS-140; design/01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png; design/canonical/marketing/careerscope-public-terms.png; apps/web/src/app/page.tsx; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-140",
@@ -20379,33 +20451,41 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-140-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use safe states; keyboard traversal, labels, focus, headings and status announcements remain operable.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-140-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-140-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Use isolated synthetic fixtures for Terms; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /terms state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-140 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-140-AC4 against the /terms surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC4-source-backed-contract",
+          "assertion": "Pending, empty, error, unauthorized, expired-session and stale-revision fixtures use safe states; keyboard traversal, labels, focus, headings and status announcements remain operable.",
+          "expectedResult": "The Terms specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-140-AC4 verifies Terms source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC4-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-140",
+          "sourcePath": ".ai/backlog.json#CS-140; design/01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png; design/canonical/marketing/careerscope-public-terms.png; apps/web/src/app/page.tsx; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-140",
@@ -20413,25 +20493,41 @@
       "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-140-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-140-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The public surface remains RELEASE-gated; specification work does not claim publication or production deployment.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Use isolated synthetic fixtures for Terms; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /terms state using only registered public-content contract fixtures.",
+          "fixtureOrData": "Synthetic CS-140 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-140-AC5 against the /terms surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC5-source-backed-contract",
+          "assertion": "The public surface remains RELEASE-gated; specification work does not claim publication or production deployment.",
+          "expectedResult": "The Terms specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-140-AC5 verifies Terms source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-140-contract.spec.ts::CS-140-AC5-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-140 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-140",
+          "sourcePath": ".ai/backlog.json#CS-140; design/01-IMPLEMENTATION-ORDER/01-marketing-public/08-terms.png; design/canonical/marketing/careerscope-public-terms.png; apps/web/src/app/page.tsx; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-141",
@@ -32561,33 +32657,41 @@
       "criterion": "Client/server validation agree; only explicit saved/reviewed inputs enter matching; resume-declined fields require CS-46 product decision.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-213-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "Given authenticated owner O1 and revision R, invalid profile input returns canonical 400 validation details; no profile row or matching snapshot changes, and a declined CS-46 resume-derived fact remains excluded.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-213-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-213-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Use isolated synthetic fixtures for Profile and preferences; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered profile/preferences contract fixtures.",
+          "fixtureOrData": "Synthetic CS-213 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-213-AC1 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC1-source-backed-contract",
+          "assertion": "Given authenticated owner O1 and revision R, invalid profile input returns canonical 400 validation details; no profile row or matching snapshot changes, and a declined CS-46 resume-derived fact remains excluded.",
+          "expectedResult": "The Profile and preferences specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-213-AC1 verifies Profile and preferences source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC1-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-213",
+          "sourcePath": ".ai/backlog.json#CS-213; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/profile-editor.tsx; packages/core/src/schema.ts; docs/OWNER-DECISIONS-2026-10-02.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-213",
@@ -32595,49 +32699,41 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-213-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Given owner O1 with registered profile fields, the `/settings` surface renders only API-backed values or explicit unavailable state; a fixture value not in the contract is absent.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-213-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-213-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-213-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-213-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "Use isolated synthetic fixtures for Profile and preferences; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered profile/preferences contract fixtures.",
+          "fixtureOrData": "Synthetic CS-213 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-213-AC2 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC2-source-backed-contract",
+          "assertion": "Given owner O1 with registered profile fields, the `/settings` surface renders only API-backed values or explicit unavailable state; a fixture value not in the contract is absent.",
+          "expectedResult": "The Profile and preferences specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-213-AC2 verifies Profile and preferences source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC2-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-213",
+          "sourcePath": ".ai/backlog.json#CS-213; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/profile-editor.tsx; packages/core/src/schema.ts; docs/OWNER-DECISIONS-2026-10-02.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-213",
@@ -32645,33 +32741,41 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-213-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-213-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-213-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The visual report compares the `/settings` profile surface against the canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "VISUAL_REGRESSION",
+          "preconditions": "Use isolated synthetic fixtures for Profile and preferences; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered profile/preferences contract fixtures.",
+          "fixtureOrData": "Synthetic CS-213 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-213-AC3 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC3-source-backed-contract",
+          "assertion": "The visual report compares the `/settings` profile surface against the canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "expectedResult": "The Profile and preferences specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-213-AC3 verifies Profile and preferences source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC3-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-213",
+          "sourcePath": ".ai/backlog.json#CS-213; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/profile-editor.tsx; packages/core/src/schema.ts; docs/OWNER-DECISIONS-2026-10-02.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-213",
@@ -32679,33 +32783,41 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-213-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Pending, empty, 401/403, expired-session and 409 revision fixtures produce the named safe UI state; fields have labels, errors are associated, focus is visible and status is announced.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-213-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-213-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Use isolated synthetic fixtures for Profile and preferences; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered profile/preferences contract fixtures.",
+          "fixtureOrData": "Synthetic CS-213 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-213-AC4 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC4-source-backed-contract",
+          "assertion": "Pending, empty, 401/403, expired-session and 409 revision fixtures produce the named safe UI state; fields have labels, errors are associated, focus is visible and status is announced.",
+          "expectedResult": "The Profile and preferences specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-213-AC4 verifies Profile and preferences source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC4-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-213",
+          "sourcePath": ".ai/backlog.json#CS-213; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/profile-editor.tsx; packages/core/src/schema.ts; docs/OWNER-DECISIONS-2026-10-02.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-213",
@@ -32713,25 +32825,41 @@
       "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-213-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-213-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The surface remains RELEASE-gated; specification approval does not promote or deploy profile functionality.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Use isolated synthetic fixtures for Profile and preferences; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered profile/preferences contract fixtures.",
+          "fixtureOrData": "Synthetic CS-213 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-213-AC5 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC5-source-backed-contract",
+          "assertion": "The surface remains RELEASE-gated; specification approval does not promote or deploy profile functionality.",
+          "expectedResult": "The Profile and preferences specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-213-AC5 verifies Profile and preferences source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-213-contract.spec.ts::CS-213-AC5-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-213 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-213",
+          "sourcePath": ".ai/backlog.json#CS-213; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/profile-editor.tsx; packages/core/src/schema.ts; docs/OWNER-DECISIONS-2026-10-02.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-214",
@@ -32739,17 +32867,41 @@
       "criterion": "Upload progress, parsing/cancel/retry/delete/replacement, unsupported file, storage disabled and typed 507 messaging remain distinct; encrypted single-writer storage unchanged.",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-214-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_INTEGRATION",
+          "expectedCheck": "For synthetic owner O1, upload/parse/cancel/retry/delete/replacement and typed 413/507 fixtures produce their distinct state and preserve encrypted single-writer ownership; no raw file or parse text appears in logs.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_INTEGRATION",
+          "preconditions": "Use isolated synthetic fixtures for Resume upload and parsing; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered resume/storage contract fixtures.",
+          "fixtureOrData": "Synthetic CS-214 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-214-AC1 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC1-source-backed-contract",
+          "assertion": "For synthetic owner O1, upload/parse/cancel/retry/delete/replacement and typed 413/507 fixtures produce their distinct state and preserve encrypted single-writer ownership; no raw file or parse text appears in logs.",
+          "expectedResult": "The Resume upload and parsing specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-214-AC1 verifies Resume upload and parsing source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC1-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-214",
+          "sourcePath": ".ai/backlog.json#CS-214; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/resume-panel.tsx; packages/resume/src; docs/TESTING.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-214",
@@ -32757,49 +32909,41 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-214-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "The `/settings` resume surface renders only registered resume metadata/status or explicit unavailable state; illustrative filenames, parse output and capacity values are absent.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-214-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-214-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-214-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-214-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "Use isolated synthetic fixtures for Resume upload and parsing; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered resume/storage contract fixtures.",
+          "fixtureOrData": "Synthetic CS-214 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-214-AC2 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC2-source-backed-contract",
+          "assertion": "The `/settings` resume surface renders only registered resume metadata/status or explicit unavailable state; illustrative filenames, parse output and capacity values are absent.",
+          "expectedResult": "The Resume upload and parsing specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-214-AC2 verifies Resume upload and parsing source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC2-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-214",
+          "sourcePath": ".ai/backlog.json#CS-214; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/resume-panel.tsx; packages/resume/src; docs/TESTING.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-214",
@@ -32807,33 +32951,41 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-214-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-214-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-214-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The visual report compares the resume surface against the canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "VISUAL_REGRESSION",
+          "preconditions": "Use isolated synthetic fixtures for Resume upload and parsing; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered resume/storage contract fixtures.",
+          "fixtureOrData": "Synthetic CS-214 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-214-AC3 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC3-source-backed-contract",
+          "assertion": "The visual report compares the resume surface against the canonical reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "expectedResult": "The Resume upload and parsing specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-214-AC3 verifies Resume upload and parsing source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC3-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-214",
+          "sourcePath": ".ai/backlog.json#CS-214; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/resume-panel.tsx; packages/resume/src; docs/TESTING.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-214",
@@ -32841,33 +32993,41 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-214-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Pending, empty, 401/403, expired-session and stale/recovery fixtures produce safe UI states; upload controls, progress, cancel/delete dialogs and errors remain keyboard and screen-reader operable.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-214-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-214-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Use isolated synthetic fixtures for Resume upload and parsing; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered resume/storage contract fixtures.",
+          "fixtureOrData": "Synthetic CS-214 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-214-AC4 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC4-source-backed-contract",
+          "assertion": "Pending, empty, 401/403, expired-session and stale/recovery fixtures produce safe UI states; upload controls, progress, cancel/delete dialogs and errors remain keyboard and screen-reader operable.",
+          "expectedResult": "The Resume upload and parsing specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-214-AC4 verifies Resume upload and parsing source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC4-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-214",
+          "sourcePath": ".ai/backlog.json#CS-214; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/resume-panel.tsx; packages/resume/src; docs/TESTING.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-214",
@@ -32875,25 +33035,41 @@
       "criterion": "Preserve RELEASE release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-214-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-214-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The surface remains RELEASE-gated; no storage migration or production deployment is claimed.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION"
         }
       ],
       "releaseGate": "RELEASE",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Use isolated synthetic fixtures for Resume upload and parsing; session identity and ownership are explicit with no real PII or private payload.",
+          "setup": "Prepare the criterion-specific /settings state using only registered resume/storage contract fixtures.",
+          "fixtureOrData": "Synthetic CS-214 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-214-AC5 against the /settings surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC5-source-backed-contract",
+          "assertion": "The surface remains RELEASE-gated; no storage migration or production deployment is claimed.",
+          "expectedResult": "The Resume upload and parsing specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-214-AC5 verifies Resume upload and parsing source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-214-contract.spec.ts::CS-214-AC5-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-214 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_ACCEPTANCE_AND_AUTHORIZATION",
+          "authoritativeSource": ".ai/backlog.json#CS-214",
+          "sourcePath": ".ai/backlog.json#CS-214; design/01-IMPLEMENTATION-ORDER/04-candidate-core/08-settings-resume.png; design/canonical/app/careerscope-settings-resume-management-reference-board.png; apps/web/src/app/(app)/settings/page.tsx; apps/web/src/components/resume-panel.tsx; packages/resume/src; docs/TESTING.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-215",
@@ -32901,25 +33077,41 @@
       "criterion": "Google/email/mobile/OTP controls reflect actual configured availability; generic failures never reveal account existence; preserve opaque cookie/session reset.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-215-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "EXTERNAL_PROVIDER",
-          "expectedCheck": "CS-215-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_SECURITY",
+          "expectedCheck": "Given configured capability flags, only enabled auth controls render; provider/account existence failures use the same generic safe response, no OTP/token/secret is exposed, and session reset remains opaque.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_SECURITY",
+          "preconditions": "Use isolated synthetic fixtures for Sign-in and capability-gated OTP; provider capability flags are explicit and no real account, OTP, token or credential is used.",
+          "setup": "Prepare the criterion-specific / state using only registered auth/session contract fixtures.",
+          "fixtureOrData": "Synthetic CS-215 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-215-AC1 against the / surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC1-source-backed-contract",
+          "assertion": "Given configured capability flags, only enabled auth controls render; provider/account existence failures use the same generic safe response, no OTP/token/secret is exposed, and session reset remains opaque.",
+          "expectedResult": "The Sign-in and capability-gated OTP specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-215-AC1 verifies Sign-in and capability-gated OTP source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC1-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE",
+          "authoritativeSource": ".ai/backlog.json#CS-215",
+          "sourcePath": ".ai/backlog.json#CS-215; design/01-IMPLEMENTATION-ORDER/02-auth/01-sign-in.png; design/canonical/auth/careerscope-auth-sign-in.png; apps/web/src/app/page.tsx; apps/web/src/components/account-form.tsx; docs/OWNER-DECISIONS-2026-10-02.md; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-215",
@@ -32927,49 +33119,41 @@
       "criterion": "Render from approved canonical/ordered references with real API state or explicit empty/unavailable values; no illustrative production data.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-215-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "The `/` sign-in surface renders only registered auth state or explicit unavailable state from the canonical reference; illustrative provider availability is not treated as production truth.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-215-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-215-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-215-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-215-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_COMPONENT",
+          "preconditions": "Use isolated synthetic fixtures for Sign-in and capability-gated OTP; provider capability flags are explicit and no real account, OTP, token or credential is used.",
+          "setup": "Prepare the criterion-specific / state using only registered auth/session contract fixtures.",
+          "fixtureOrData": "Synthetic CS-215 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-215-AC2 against the / surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC2-source-backed-contract",
+          "assertion": "The `/` sign-in surface renders only registered auth state or explicit unavailable state from the canonical reference; illustrative provider availability is not treated as production truth.",
+          "expectedResult": "The Sign-in and capability-gated OTP specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-215-AC2 verifies Sign-in and capability-gated OTP source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC2-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE",
+          "authoritativeSource": ".ai/backlog.json#CS-215",
+          "sourcePath": ".ai/backlog.json#CS-215; design/01-IMPLEMENTATION-ORDER/02-auth/01-sign-in.png; design/canonical/auth/careerscope-auth-sign-in.png; apps/web/src/app/page.tsx; apps/web/src/components/account-form.tsx; docs/OWNER-DECISIONS-2026-10-02.md; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-215",
@@ -32977,33 +33161,41 @@
       "criterion": "Compare reference and rendered screenshots at 1440px-class desktop and approved mobile viewport; document deterministic tolerance and minimal dynamic masks; verify Chromium, Firefox and WebKit.",
       "verification": [
         {
-          "type": "MANUAL_PRODUCT",
-          "expectedCheck": "CS-215-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-215-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-215-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "The visual report compares sign-in geometry against the canonical auth reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "VISUAL_REGRESSION",
+          "preconditions": "Use isolated synthetic fixtures for Sign-in and capability-gated OTP; provider capability flags are explicit and no real account, OTP, token or credential is used.",
+          "setup": "Prepare the criterion-specific / state using only registered auth/session contract fixtures.",
+          "fixtureOrData": "Synthetic CS-215 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-215-AC3 against the / surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC3-source-backed-contract",
+          "assertion": "The visual report compares sign-in geometry against the canonical auth reference at 1440px-class desktop and approved mobile viewport across Chromium, Firefox and WebKit with deterministic tolerance and minimal masks.",
+          "expectedResult": "The Sign-in and capability-gated OTP specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-215-AC3 verifies Sign-in and capability-gated OTP source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC3-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE",
+          "authoritativeSource": ".ai/backlog.json#CS-215",
+          "sourcePath": ".ai/backlog.json#CS-215; design/01-IMPLEMENTATION-ORDER/02-auth/01-sign-in.png; design/canonical/auth/careerscope-auth-sign-in.png; apps/web/src/app/page.tsx; apps/web/src/components/account-form.tsx; docs/OWNER-DECISIONS-2026-10-02.md; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-215",
@@ -33011,33 +33203,41 @@
       "criterion": "Verify pending, empty, error, unauthorized, expired-session and stale-revision states where applicable; keyboard and screen-reader semantics remain operable.",
       "verification": [
         {
-          "type": "MANUAL_ACCESSIBILITY",
-          "expectedCheck": "CS-215-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Pending, unavailable, error, 401/403, expired-session and provider-disabled fixtures produce safe states; labels, focus, keyboard traversal, alerts and reduced-motion semantics remain operable.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_ACCESSIBILITY",
-          "expectedCheck": "CS-215-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-215-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "AUTOMATED_BROWSER",
+          "preconditions": "Use isolated synthetic fixtures for Sign-in and capability-gated OTP; provider capability flags are explicit and no real account, OTP, token or credential is used.",
+          "setup": "Prepare the criterion-specific / state using only registered auth/session contract fixtures.",
+          "fixtureOrData": "Synthetic CS-215 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-215-AC4 against the / surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC4-source-backed-contract",
+          "assertion": "Pending, unavailable, error, 401/403, expired-session and provider-disabled fixtures produce safe states; labels, focus, keyboard traversal, alerts and reduced-motion semantics remain operable.",
+          "expectedResult": "The Sign-in and capability-gated OTP specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-215-AC4 verifies Sign-in and capability-gated OTP source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC4-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE",
+          "authoritativeSource": ".ai/backlog.json#CS-215",
+          "sourcePath": ".ai/backlog.json#CS-215; design/01-IMPLEMENTATION-ORDER/02-auth/01-sign-in.png; design/canonical/auth/careerscope-auth-sign-in.png; apps/web/src/app/page.tsx; apps/web/src/components/account-form.tsx; docs/OWNER-DECISIONS-2026-10-02.md; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-215",
@@ -33045,25 +33245,41 @@
       "criterion": "Preserve CONDITIONAL release semantics; activation requires the declared acceptance and authorization gates.",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-215-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-215-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The surface remains CONDITIONAL; Cognito/mobile OTP activation requires declared provider, authorization and hosted acceptance evidence.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend QA Security",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE"
         }
       ],
       "releaseGate": "CONDITIONAL",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "reviewer": "Frontend QA Security",
+          "testStatus": "PLANNED",
+          "reviewStatus": "REVIEWED",
+          "type": "MANUAL_PRODUCT",
+          "preconditions": "Use isolated synthetic fixtures for Sign-in and capability-gated OTP; provider capability flags are explicit and no real account, OTP, token or credential is used.",
+          "setup": "Prepare the criterion-specific / state using only registered auth/session contract fixtures.",
+          "fixtureOrData": "Synthetic CS-215 fixture with approved source fields only; unsupported, private or illustrative values are absent.",
+          "action": "Execute CS-215-AC5 against the / surface and inspect the exact state, request boundary, redacted output and persistence/non-persistence result.",
+          "procedure": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC5-source-backed-contract",
+          "assertion": "The surface remains CONDITIONAL; Cognito/mobile OTP activation requires declared provider, authorization and hosted acceptance evidence.",
+          "expectedResult": "The Sign-in and capability-gated OTP specification satisfies the criterion without fabricated runtime, provider or production evidence.",
+          "testName": "CS-215-AC5 verifies Sign-in and capability-gated OTP source-backed contract",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/cs-215-contract.spec.ts::CS-215-AC5-source-backed-contract",
+          "fixtures": "Synthetic isolated fixtures only; no secrets, OTPs, cookies, resume contents or real PII.",
+          "negativeCase": "Wrong owner, malformed input, unsupported state, missing provenance/metadata, private response, unregistered capability or skipped browser engine must fail or remain NOT_RUN.",
+          "failureCase": "Generic assertions, illustrative values, raw secrets/private payloads or unexecuted hosted/browser results cannot be recorded as PASS.",
+          "evidenceArtifact": "Future exact-SHA CS-215 contract/browser/axe/visual report with sanitized assertions and engine/viewport metadata; no execution is claimed now.",
+          "releaseGate": "R1_CONDITIONAL_AUTH_ACCEPTANCE",
+          "authoritativeSource": ".ai/backlog.json#CS-215",
+          "sourcePath": ".ai/backlog.json#CS-215; design/01-IMPLEMENTATION-ORDER/02-auth/01-sign-in.png; design/canonical/auth/careerscope-auth-sign-in.png; apps/web/src/app/page.tsx; apps/web/src/components/account-form.tsx; docs/OWNER-DECISIONS-2026-10-02.md; docs/PROJECT-STATE.md; docs/TESTING.md"
+        }
+      ]
     },
     {
       "ticketId": "CS-216",
