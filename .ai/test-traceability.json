@@ -12,7 +12,7 @@
     ".ai/ticket-specification-policy.json": "1b5419523ab3a77e452411880d8ecd951da705f08203447b5cb828e6cc5518a3",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "4734ba2e4e9e07db48a85fcd8ad2874df2cf6f9df561a86559fb5a617346e9d9",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "fb5d42342d94ee5ce8064a357a7c03b514faefba58a46af636aa480d19b83b02",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
