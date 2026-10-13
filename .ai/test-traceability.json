@@ -9,10 +9,10 @@
     "design/DESIGN-INDEX.json": "954e95cb5ed0b48ee3c0d86e71642a09a52982c9135f0b59b172eec9844c5a94",
     ".ai/blocker-classification.json": "1128f32bfcd18cab5abb0b4ab39022d0f970e30eafd68d418906e94aed4734df",
     "hostpending.txt": "e0eecb72e54cf45d5c53e217977ec9032bec714d2cddd854eacbab209e74266d",
-    ".ai/ticket-specification-policy.json": "deb89e89d30b3796abd2d261c4801b2552f4febb2f245be08912a8389f31a39d",
+    ".ai/ticket-specification-policy.json": "a8ab0c33f6b92973fe6cbe8b4915fb42e8873149073d244cf005b50cf2f5369f",
     ".prettierrc.json": "29b0e6319c0aeddf9a427b3e9011eed861ca1400b55af1f6cdc4246646c459e1",
     "docs/OWNER-DECISIONS-2026-10-02.md": "17fbdbcafe1951d8f41bc5fbed76106de81592f36d57414909e02a716dd3b88b",
-    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "7e9a6eaad57090ddefe869371e4326bf1661f5f9db8fab13f96d5058761c05e4",
+    "docs/PHASE-3-25-REMEDIATION-REVIEW-01.md": "c07e2e139003e09f7460e954d516addf195f21a205c3877b97793551476f29aa",
     "docs/OWNER-DECISIONS-2026-10-08.md": "562c9473df39b62cb40ccd74385b885c1da43f55bcf428944e5e313060fb9ba2"
   },
   "evidenceSemantics": "Planning only; generated output is not execution evidence, independent approval or release authorization.",
@@ -6124,17 +6124,36 @@
       "criterion": "Every displayed value maps to a real, owner-scoped API field already returned today (recent search runs via GET /api/searches, lead counts via GET /api/leads by status) - no invented totals, trend deltas, or analytics not backed by a real endpoint",
       "verification": [
         {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-49-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Every displayed numeric/text value equals a field from the stubbed API responses; no trend, total or analytics value is derived from an unsupported field.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA component/browser report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend / Product",
+          "releaseGate": "R1-DASHBOARD"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Authenticated candidate A1 with synthetic searches and leads returned by the existing owner-scoped APIs.",
+          "setup": "Stub GET /api/searches and GET /api/leads?status=* with deterministic fields and a sentinel value not present in either response.",
+          "procedure": "PLANNED:apps/web/tests/dashboard-route.test.tsx::CS-49-AC1-api-backed-values",
+          "assertion": "Every displayed numeric/text value equals a field from the stubbed API responses; no trend, total or analytics value is derived from an unsupported field.",
+          "expectedResult": "Dashboard content is traceable to real API fields only.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "renders only owner-scoped API-backed dashboard values",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-route.test.tsx::CS-49-AC1-api-backed-values",
+          "fixtures": "Synthetic A1 search/lead responses and unsupported-metric sentinel.",
+          "negativeCase": "A fabricated total, trend delta or sentinel value appears; fail.",
+          "evidenceArtifact": "Future exact-SHA component/browser report; no execution claimed.",
+          "reviewer": "Frontend / Product",
+          "releaseGate": "R1-DASHBOARD"
+        }
+      ]
     },
     {
       "ticketId": "CS-49",
@@ -6142,25 +6161,36 @@
       "criterion": "Reuses the shared shell/visual system extracted from the four real design images (sidebar structure, topbar, stat-card pattern, card/badge/tag language). Does not implement the \"Upgrade Plan/Free Plan\" widget (single-owner app has no billing). An AI Assistant panel MAY be shown, since the owner subsequently supplied the real Dashboard design directly (2026-09-23) and it includes one, but it must always read \"Not available yet\" (never \"Active\") and must never claim AI produced any of the real, deterministic content shown elsewhere on the page - CS-48 owns the actual OpenRouter implementation, this panel is a disabled placeholder only",
       "verification": [
         {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-49-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-49-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "The route reuses canonical shell primitives, omits Upgrade/Free Plan billing UI, and any AI panel is visibly unavailable with text Not available yet and cannot claim authorship of deterministic content.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future component/accessibility evidence with design-reference link; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product / Design",
+          "releaseGate": "R1-DASHBOARD-DESIGN"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Authenticated candidate A1 with the canonical Phase 0 shell reference and AI capability disabled.",
+          "setup": "Render the route with sidebar/topbar/stat-card/card/badge primitives and the owner-supplied dashboard provenance; configure no billing entitlement.",
+          "procedure": "PLANNED:apps/web/tests/dashboard-route.test.tsx::CS-49-AC2-shell-and-disabled-ai",
+          "assertion": "The route reuses canonical shell primitives, omits Upgrade/Free Plan billing UI, and any AI panel is visibly unavailable with text Not available yet and cannot claim authorship of deterministic content.",
+          "expectedResult": "Design and capability boundaries are preserved without invented billing or AI behavior.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "uses canonical shell and keeps AI assistant disabled",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-route.test.tsx::CS-49-AC2-shell-and-disabled-ai",
+          "fixtures": "Phase 0 design reference, AI-disabled session and synthetic deterministic dashboard data.",
+          "negativeCase": "Billing widget, active AI claim or novel visual hierarchy appears; fail.",
+          "evidenceArtifact": "Future component/accessibility evidence with design-reference link; no execution claimed.",
+          "reviewer": "Product / Design",
+          "releaseGate": "R1-DASHBOARD-DESIGN"
+        }
+      ]
     },
     {
       "ticketId": "CS-49",
@@ -6168,17 +6198,36 @@
       "criterion": "Distinguishes loading, empty (\"no searches yet\"), and error states honestly - preserves the existing pane's already-correct handling of these three states rather than regressing it while restyling",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-49-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "expectedCheck": "Pending preserves layout with accessible status; empty says no searches yet; error uses the shared error/retry state and does not render fabricated values.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future axe/component report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Accessibility / Frontend",
+          "releaseGate": "R1-DASHBOARD-STATES"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Route receives loading, empty-search and API-error fixtures for candidate A1.",
+          "setup": "Control the existing query promise to remain pending, resolve with no searches, then reject with canonical error.",
+          "procedure": "PLANNED:apps/web/tests/dashboard-route.test.tsx::CS-49-AC3-state-contract",
+          "assertion": "Pending preserves layout with accessible status; empty says no searches yet; error uses the shared error/retry state and does not render fabricated values.",
+          "expectedResult": "Loading, empty and error states are distinct, honest and accessible.",
+          "type": "AUTOMATED_ACCESSIBILITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "renders honest dashboard loading empty and error states",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-route.test.tsx::CS-49-AC3-state-contract",
+          "fixtures": "Pending, empty and rejected query fixtures.",
+          "negativeCase": "An error is shown as zero data, empty state is omitted, or retry is not keyboard/name accessible; fail.",
+          "evidenceArtifact": "Future axe/component report; no execution claimed.",
+          "reviewer": "Accessibility / Frontend",
+          "releaseGate": "R1-DASHBOARD-STATES"
+        }
+      ]
     },
     {
       "ticketId": "CS-49",
@@ -6187,16 +6236,35 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-49-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Direct navigation resolves the dashboard route and back/forward restores the expected URL and view without a view-state-only toggle or private-data leak.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future Chromium/Firefox/WebKit report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "R1-ROUTING"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Authenticated A1 session and a deep-link-capable browser history fixture.",
+          "setup": "Open the canonical dashboard route directly, navigate to a linked route, then invoke browser back and forward without replacing the document.",
+          "procedure": "PLANNED:apps/web/tests/dashboard-route.browser.test.ts::CS-49-AC4-deep-link-history",
+          "assertion": "Direct navigation resolves the dashboard route and back/forward restores the expected URL and view without a view-state-only toggle or private-data leak.",
+          "expectedResult": "Dashboard is a real route with deterministic history behavior.",
+          "type": "AUTOMATED_BROWSER",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "supports dashboard deep links and browser history",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-route.browser.test.ts::CS-49-AC4-deep-link-history",
+          "fixtures": "Synthetic authenticated A1 browser context and route fixtures.",
+          "negativeCase": "Direct route 404s, history changes only an internal toggle, or private content mounts without session; fail.",
+          "evidenceArtifact": "Future Chromium/Firefox/WebKit report; no execution claimed.",
+          "reviewer": "QA",
+          "releaseGate": "R1-ROUTING"
+        }
+      ]
     },
     {
       "ticketId": "CS-49",
@@ -6205,16 +6273,35 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-49-AC5: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Each viewport renders without horizontal overflow, clipped controls or inaccessible state text; each engine reaches the same canonical route and data assertions.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future three-engine exact-SHA browser artifact; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / Accessibility",
+          "releaseGate": "R1-BROWSER-UX"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Authenticated A1 dashboard with deterministic data and shared state components.",
+          "setup": "Run the same route test at 320, 768 and 1440 CSS pixels in Chromium, Firefox and WebKit.",
+          "procedure": "PLANNED:apps/web/tests/dashboard-route.browser.test.ts::CS-49-AC5-browser-matrix",
+          "assertion": "Each viewport renders without horizontal overflow, clipped controls or inaccessible state text; each engine reaches the same canonical route and data assertions.",
+          "expectedResult": "Responsive and cross-browser dashboard behavior is verified by a future browser run.",
+          "type": "AUTOMATED_BROWSER",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "passes dashboard browser matrix at required widths",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/dashboard-route.browser.test.ts::CS-49-AC5-browser-matrix",
+          "fixtures": "A1 dashboard fixture and 320/768/1440 viewports.",
+          "negativeCase": "Overflow, clipped action, engine-specific route failure or missing state announcement occurs; fail.",
+          "evidenceArtifact": "Future three-engine exact-SHA browser artifact; no execution claimed.",
+          "reviewer": "QA / Accessibility",
+          "releaseGate": "R1-BROWSER-UX"
+        }
+      ]
     },
     {
       "ticketId": "CS-49",
@@ -6222,41 +6309,36 @@
       "criterion": "The owner supplied the real Dashboard design directly in chat on 2026-09-23 (not saved to page-designs/) after this ticket was opened noting no mockup existed; the shipped implementation is built against that image, reconciling its content with real API data per the first two criteria above rather than inventing metrics to match it pixel-for-pixel",
       "verification": [
         {
-          "type": "VISUAL_REGRESSION",
-          "expectedCheck": "CS-49-AC6: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-49-AC6: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-49-AC6: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "type": "MANUAL_PRODUCT",
+          "expectedCheck": "The planned implementation preserves the supplied dashboard hierarchy while replacing unsupported visual metrics with real API-backed content; no missing image asset is invented.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-49-AC6: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future signed design/data review; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Product Architect / Designer",
+          "releaseGate": "R1-DESIGN-TRACEABILITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "The owner-supplied dashboard image is available as provenance only and not treated as an executable fixture.",
+          "setup": "Compare the implementation plan against the image's information architecture and the real API contract at one reviewed revision.",
+          "procedure": "PLANNED:docs/DESIGN-IMPLEMENTATION-MAP.md::CS-49-AC6-owner-supplied-design-reconciliation",
+          "assertion": "The planned implementation preserves the supplied dashboard hierarchy while replacing unsupported visual metrics with real API-backed content; no missing image asset is invented.",
+          "expectedResult": "Design reconciliation is explicit and truthful.",
+          "type": "MANUAL_PRODUCT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "reviews dashboard design provenance and data reconciliation",
+          "testFileOrProcedureId": "PLANNED:docs/DESIGN-IMPLEMENTATION-MAP.md::CS-49-AC6-owner-supplied-design-reconciliation",
+          "fixtures": "Redacted design provenance and API field map.",
+          "negativeCase": "The image is claimed as an approved repository asset, or unsupported metrics are added solely for visual parity; fail.",
+          "evidenceArtifact": "Future signed design/data review; no execution claimed.",
+          "reviewer": "Product Architect / Designer",
+          "releaseGate": "R1-DESIGN-TRACEABILITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-50",
@@ -6464,17 +6546,36 @@
       "criterion": "Every identifier that exists at a call site reaches its destination: SaveJob onOpen, initialId on /saved and /applications, and the Dashboard Recent Discovery run link",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-51-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "Each of the five separately named consumers delivers its own ID exactly once to the intended destination, with no null, substitution or client-selected owner.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA browser trace; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend / QA",
+          "releaseGate": "R1-IDENTIFIER-INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Authenticated A1 browser fixture with five distinct identifier consumers: job-search-view SaveJob onOpen, dashboard Recent Discovery SaveJob onOpen, /saved initialId, /applications initialId, and the dashboard Recent Discovery run link.",
+          "setup": "Instrument each of those five concrete consumers with a different synthetic ID and observe its destination handler/route; keep owner identity server-derived.",
+          "procedure": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC1-call-site-destinations",
+          "assertion": "Each of the five separately named consumers delivers its own ID exactly once to the intended destination, with no null, substitution or client-selected owner.",
+          "expectedResult": "No identifier is dropped between any of the five source locations and its destination.",
+          "type": "AUTOMATED_BROWSER",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "propagates identifiers from each concrete call site",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC1-call-site-destinations",
+          "fixtures": "Five named synthetic IDs: job-search-view SaveJob, dashboard SaveJob, saved initialId, applications initialId, and Recent Discovery run link.",
+          "negativeCase": "Any one named consumer is omitted, sends null/different ID, or permits a client-selected owner; fail.",
+          "evidenceArtifact": "Future exact-SHA browser trace; no execution claimed.",
+          "reviewer": "Frontend / QA",
+          "releaseGate": "R1-IDENTIFIER-INTEGRITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-51",
@@ -6482,17 +6583,36 @@
       "criterion": "A selected run is addressable by URL on /jobs and falls back to current behaviour when the parameter is absent",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-51-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_BROWSER",
+          "expectedCheck": "A valid run ID is addressable through the URL and selected deterministically; absence of the parameter preserves the existing default behavior.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future exact-SHA browser report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "R1-IDENTIFIER-INTEGRITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Authenticated A1 browser fixture with a selected run ID and a route that supports the canonical /jobs query contract.",
+          "setup": "Open /jobs with a valid synthetic run identifier, then repeat without the parameter.",
+          "procedure": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC2-selected-run-url",
+          "assertion": "A valid run ID is addressable through the URL and selected deterministically; absence of the parameter preserves the existing default behavior.",
+          "expectedResult": "URL state controls selection without replacing canonical route semantics.",
+          "type": "AUTOMATED_BROWSER",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "selects a run from URL and preserves default without parameter",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC2-selected-run-url",
+          "fixtures": "Valid synthetic run ID and no-parameter route.",
+          "negativeCase": "Parameter is ignored, changes route identity, or absence causes a crash; fail.",
+          "evidenceArtifact": "Future exact-SHA browser report; no execution claimed.",
+          "reviewer": "QA",
+          "releaseGate": "R1-IDENTIFIER-INTEGRITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-51",
@@ -6500,25 +6620,36 @@
       "criterion": "An unknown, malformed or foreign-owner identifier in any URL parameter renders the existing safe empty/error state, never a crash, a blank screen, or another owner data",
       "verification": [
         {
-          "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-51-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-51-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "Each invalid/foreign identifier renders the existing safe empty or error state, returns no other owner's data, and never throws an uncaught exception or blank screen.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted browser/security report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Security / QA",
+          "releaseGate": "R1-OWNERSHIP"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "A1 authenticated context with unknown, malformed and foreign-owner identifiers.",
+          "setup": "Navigate each canonical URL using hostile/foreign IDs without changing session or reloading into another owner.",
+          "procedure": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC3-safe-invalid-ids",
+          "assertion": "Each invalid/foreign identifier renders the existing safe empty or error state, returns no other owner's data, and never throws an uncaught exception or blank screen.",
+          "expectedResult": "Invalid identifiers fail closed without existence leakage.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "rejects malformed unknown and foreign-owner identifiers safely",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC3-safe-invalid-ids",
+          "fixtures": "Malformed, unknown and owner-B identifiers with A1 session.",
+          "negativeCase": "A foreign record, stack trace, blank page or uncaught exception is observable; fail.",
+          "evidenceArtifact": "Future redacted browser/security report; no execution claimed.",
+          "reviewer": "Security / QA",
+          "releaseGate": "R1-OWNERSHIP"
+        }
+      ]
     },
     {
       "ticketId": "CS-51",
@@ -6527,24 +6658,35 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-51-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-51-AC4: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "Each regression test demonstrably fails when propagation is removed and passes when restored; the executable test is registered in the browser gate.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future before/after test log and registry evidence; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "QA",
+          "releaseGate": "R1-TEST-TRACEABILITY"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "The five identifier paths and their browser tests exist in the same reviewed revision.",
+          "setup": "Run each test once against a deliberately failing propagation fixture, then against the corrected fixture; retain only assertion outcomes, not private data.",
+          "procedure": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC4-regression-proof",
+          "assertion": "Each regression test demonstrably fails when propagation is removed and passes when restored; the executable test is registered in the browser gate.",
+          "expectedResult": "Coverage proves the original defect rather than merely exercising a happy path.",
+          "type": "AUTOMATED_BROWSER",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "proves identifier regression tests observe the dropped-value defect",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-51-AC4-regression-proof",
+          "fixtures": "Failing and corrected propagation fixtures with synthetic identifiers.",
+          "negativeCase": "A test remains green with the identifier removed, or is not registered in the browser gate; fail.",
+          "evidenceArtifact": "Future before/after test log and registry evidence; no execution claimed.",
+          "reviewer": "QA",
+          "releaseGate": "R1-TEST-TRACEABILITY"
+        }
+      ]
     },
     {
       "ticketId": "CS-52",
@@ -7752,25 +7894,36 @@
       "criterion": "Owner-scoped query keys - [profile, ownerId], [leads, ownerId, status], [resumes, ownerId] and any sibling - so a different owner structurally misses the cache instead of relying on a reset having run. EXEMPTION, stated so nobody rewrites it circularly: [session] stays owner-agnostic, because it is the query through which the owner is DISCOVERED and cannot be keyed by its own result.",
       "verification": [
         {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-61-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
           "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-61-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "expectedCheck": "No private fetch/cache entry exists before an owner is known; after discovery, private keys include the owner digest/id for profile, leads and resumes; [session] remains owner-agnostic; B1 key space cannot structurally hit A1 entries.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future redacted query-key/security report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Security / Frontend",
+          "releaseGate": "R1-CACHE-ISOLATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "Synthetic anonymous/pre-owner state followed by authenticated owners A1 and B1 in one browser document with profile, leads and resumes queries configured.",
+          "setup": "Before owner discovery, assert private queries are disabled and no [private, undefined] key or private cache entry is created. After discovery, inspect key construction while session changes from A1 to B1; retain [session] as the only owner-discovery key.",
+          "procedure": "PLANNED:apps/web/tests/query-cache-isolation.browser.test.ts::CS-61-AC1-owner-derived-keys",
+          "assertion": "No private fetch/cache entry exists before an owner is known; after discovery, private keys include the owner digest/id for profile, leads and resumes; [session] remains owner-agnostic; B1 key space cannot structurally hit A1 entries.",
+          "expectedResult": "Owner discovery gates private queries and owner-derived keys enforce cache partitioning by construction.",
+          "type": "AUTOMATED_SECURITY",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "gates private queries before owner discovery and scopes keys by owner",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/query-cache-isolation.browser.test.ts::CS-61-AC1-owner-derived-keys",
+          "fixtures": "Anonymous/pre-owner state, synthetic A1/B1 sessions, query-key snapshots and fetch counters.",
+          "negativeCase": "A private query runs with undefined owner, [private, undefined] is cached, a private key omits owner identity, session key depends on its own result, or B1 key equals A1 key; fail.",
+          "evidenceArtifact": "Future redacted query-key/security report; no execution claimed.",
+          "reviewer": "Security / Frontend",
+          "releaseGate": "R1-CACHE-ISOLATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-61",
@@ -7778,17 +7931,36 @@
       "criterion": "cache.clear() on the three teardown paths is retained as defence in depth, not removed because the keys now make it redundant",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-61-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_COMPONENT",
+          "expectedCheck": "Each named path invokes cache.clear() or its canonical equivalent as defense in depth; no path relies solely on UI navigation and no unrelated duplicate hook is counted as coverage.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future component/security report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend / Security",
+          "releaseGate": "R1-CACHE-ISOLATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "The three authenticated-shell cleanup paths are instrumented with synthetic counters: unauthenticated session resolve, SESSION_EXPIRED_EVENT, and logout.onSuccess.",
+          "setup": "Trigger each exact path while owner-derived keys are enabled; do not substitute a generic owner-replacement path for any of the three hooks.",
+          "procedure": "PLANNED:apps/web/tests/query-cache-isolation.browser.test.ts::CS-61-AC2-teardown-defense",
+          "assertion": "Each named path invokes cache.clear() or its canonical equivalent as defense in depth; no path relies solely on UI navigation and no unrelated duplicate hook is counted as coverage.",
+          "expectedResult": "Explicit cleanup remains present on all three recorded authenticated-shell paths even though keys are owner-scoped.",
+          "type": "AUTOMATED_COMPONENT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "retains cache teardown defense on exact authenticated-shell paths",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/query-cache-isolation.browser.test.ts::CS-61-AC2-teardown-defense",
+          "fixtures": "Unauthenticated resolve, SESSION_EXPIRED_EVENT, logout.onSuccess counters with A1/B1 sessions.",
+          "negativeCase": "Any named path omits cleanup, only a generic owner-replacement path is tested, or private entries remain; fail.",
+          "evidenceArtifact": "Future component/security report; no execution claimed.",
+          "reviewer": "Frontend / Security",
+          "releaseGate": "R1-CACHE-ISOLATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-61",
@@ -7797,40 +7969,35 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-61-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "HOSTED_CI",
-          "expectedCheck": "CS-61-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "With owner-derived keys, B1 never renders A1 profile data; with owner-agnostic keys in the paired control, B1 does render the sentinel A1 cache value, proving the experiment observes the defect.",
           "candidateCommand": null,
-          "evidenceRequired": "Future exact-SHA hosted run URL, job/check name and conclusion; a local command is insufficient.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
-        },
-        {
-          "type": "AUTOMATED_SECURITY",
-          "expectedCheck": "CS-61-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "AUTOMATED_INTEGRATION",
-          "expectedCheck": "CS-61-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:integration",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "evidenceRequired": "Future exact-SHA browser/security artifact; no private data retained.",
+          "automationStatus": "PLANNED",
+          "owner": "Security / QA",
+          "releaseGate": "R1-CACHE-ISOLATION"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "One browser document, A1 then B1 authentication, cache.clear() deliberately disabled, and profile staleTime Infinity enabled; no page.goto, reload or context recreation.",
+          "setup": "Run the owner-A to sign-out to owner-B flow through the existing UI, first with owner-derived keys and then with keys reverted to owner-agnostic as the paired positive control.",
+          "procedure": "PLANNED:apps/web/tests/query-cache-isolation.browser.test.ts::CS-61-AC3-single-document-experiment",
+          "assertion": "With owner-derived keys, B1 never renders A1 profile data; with owner-agnostic keys in the paired control, B1 does render the sentinel A1 cache value, proving the experiment observes the defect.",
+          "expectedResult": "The test proves persistent cross-owner cache isolation rather than a reload/race artifact.",
+          "type": "AUTOMATED_BROWSER",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "proves owner cache isolation in one document with paired regression control",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/query-cache-isolation.browser.test.ts::CS-61-AC3-single-document-experiment",
+          "fixtures": "Synthetic A1/B1 profile sentinels, disabled cleanup hook and staleTime Infinity profile query.",
+          "negativeCase": "A1 data appears with owner-derived keys, the paired control cannot observe the known bleed, or the test uses reload/context recreation; fail.",
+          "evidenceArtifact": "Future exact-SHA browser/security artifact; no private data retained.",
+          "reviewer": "Security / QA",
+          "releaseGate": "R1-CACHE-ISOLATION"
+        }
+      ]
     },
     {
       "ticketId": "CS-62",
@@ -9320,17 +9487,36 @@
       "criterion": "api() consumes or cancels the response body before throwing, so a non-OK response does not leave the fetch in-flight",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-75-AC1: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "api() consumes or cancels the non-OK body before rejecting with the canonical ApiError; the fetch promise settles and no unread stream remains.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future unit-test output and redaction assertion; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend / QA",
+          "releaseGate": "R1-API-CLIENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "A disposable fetch mock returns a non-OK response with a readable body and a successful response in the same test process.",
+          "setup": "Invoke api() against the non-OK response and instrument body consumption/cancellation plus promise settlement.",
+          "procedure": "PLANNED:apps/web/src/lib/api.test.ts::CS-75-AC1-settles-error-body",
+          "assertion": "api() consumes or cancels the non-OK body before rejecting with the canonical ApiError; the fetch promise settles and no unread stream remains.",
+          "expectedResult": "A non-OK response cannot leave the client request in flight.",
+          "type": "AUTOMATED_UNIT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "settles and consumes non-OK response body before throwing",
+          "testFileOrProcedureId": "PLANNED:apps/web/src/lib/api.test.ts::CS-75-AC1-settles-error-body",
+          "fixtures": "Synthetic 400 response body, abort/cancel spy and successful positive control.",
+          "negativeCase": "Promise remains pending, body is unread, or error exposes raw private body; fail.",
+          "evidenceArtifact": "Future unit-test output and redaction assertion; no execution claimed.",
+          "reviewer": "Frontend / QA",
+          "releaseGate": "R1-API-CLIENT"
+        }
+      ]
     },
     {
       "ticketId": "CS-75",
@@ -9339,24 +9525,35 @@
       "verification": [
         {
           "type": "AUTOMATED_BROWSER",
-          "expectedCheck": "CS-75-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run test:ui",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
-        },
-        {
-          "type": "LIVE_HOST",
-          "expectedCheck": "CS-75-AC2: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
+          "expectedCheck": "CS-51 AC3 still settles and passes without a test-only body-drain/workaround, demonstrating the production client fix is causal.",
           "candidateCommand": null,
-          "evidenceRequired": "Future dated independent observation with declared actor, test condition and result; redacted evidence only.",
-          "automationStatus": "MANUAL_OR_EXTERNAL_NOT_EXECUTED",
-          "owner": "Product owner / authorized reviewer"
+          "evidenceRequired": "Future exact-SHA browser report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "QA / Frontend",
+          "releaseGate": "R1-API-CLIENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "The CS-51 browser harness is run with its response-body workaround removed.",
+          "setup": "Execute CS-51 AC3 invalid-ID browser assertions using the production api() client and canonical error states.",
+          "procedure": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-75-AC2-no-harness-workaround",
+          "assertion": "CS-51 AC3 still settles and passes without a test-only body-drain/workaround, demonstrating the production client fix is causal.",
+          "expectedResult": "The shared client fix removes the harness workaround without weakening ownership/error assertions.",
+          "type": "AUTOMATED_BROWSER",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "passes identifier safety without response-body test workaround",
+          "testFileOrProcedureId": "PLANNED:apps/web/tests/identifier-propagation.browser.test.ts::CS-75-AC2-no-harness-workaround",
+          "fixtures": "Synthetic malformed/unknown/foreign IDs and production api() client.",
+          "negativeCase": "The browser test requires the old workaround, times out, or suppresses an assertion; fail.",
+          "evidenceArtifact": "Future exact-SHA browser report; no execution claimed.",
+          "reviewer": "QA / Frontend",
+          "releaseGate": "R1-API-CLIENT"
+        }
+      ]
     },
     {
       "ticketId": "CS-75",
@@ -9364,17 +9561,36 @@
       "criterion": "Proven able to fail: a deliberate 400 and a deliberate 404 each complete rather than hanging, asserted on the request actually settling, with a successful request in the same test as the positive control",
       "verification": [
         {
-          "type": "AUTOMATED_CONTRACT",
-          "expectedCheck": "CS-75-AC3: assert the stated behavior, including denial/malformed/failure cases when the condition permits.",
-          "candidateCommand": "npm run gates:test",
-          "evidenceRequired": "Future test path, named assertion, command, Node >=24, exit status and nonzero pass totals for the reviewed content.",
-          "automationStatus": "PLANNED_NOT_EXECUTED",
-          "owner": "QA"
+          "type": "AUTOMATED_UNIT",
+          "expectedCheck": "Successful request resolves; 400 and 404 requests each reject with canonical errors after settling, within the test's bounded timeout, and neither leaves a pending fetch.",
+          "candidateCommand": null,
+          "evidenceRequired": "Future unit-test output and safe error mapping report; no execution claimed.",
+          "automationStatus": "PLANNED",
+          "owner": "Frontend / QA",
+          "releaseGate": "R1-API-CLIENT"
         }
       ],
       "releaseGate": "SOURCE_RELEASE_ASSIGNMENT_REQUIRES_REVIEW",
-      "mappingBasis": "Suggested verification plan from explicit criterion terms; independent review required; no existing execution is claimed.",
-      "exactBindings": []
+      "mappingBasis": "Explicit exact binding in .ai/ticket-specification-policy.json; review/execution status is shown separately.",
+      "exactBindings": [
+        {
+          "preconditions": "The client has a deterministic successful response, deliberate 400 response and deliberate 404 response.",
+          "setup": "Issue all three requests in one test and await each request's settlement, recording only status/error codes.",
+          "procedure": "PLANNED:apps/web/src/lib/api.test.ts::CS-75-AC3-settlement-regression",
+          "assertion": "Successful request resolves; 400 and 404 requests each reject with canonical errors after settling, within the test's bounded timeout, and neither leaves a pending fetch.",
+          "expectedResult": "Both non-OK classes are proven to settle with a successful positive control.",
+          "type": "AUTOMATED_UNIT",
+          "testStatus": "PLANNED",
+          "reviewStatus": "DRAFT",
+          "testName": "settles deliberate 400 and 404 with successful positive control",
+          "testFileOrProcedureId": "PLANNED:apps/web/src/lib/api.test.ts::CS-75-AC3-settlement-regression",
+          "fixtures": "Successful response plus deliberate 400/404 response fixtures.",
+          "negativeCase": "Any request hangs, resolves a non-OK response, or emits raw body/private data; fail.",
+          "evidenceArtifact": "Future unit-test output and safe error mapping report; no execution claimed.",
+          "reviewer": "Frontend / QA",
+          "releaseGate": "R1-API-CLIENT"
+        }
+      ]
     },
     {
       "ticketId": "CS-76",
