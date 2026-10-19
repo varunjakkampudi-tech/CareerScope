@@ -41,3 +41,21 @@ workflow step and currently fails on unaccepted high-severity development
 dependency advisories. No staging or production workflow was added. Hosted
 trigger/failure/coverage/artifact acceptance remains NOT VERIFIED; see GOV-02
 in `blocker.txt` and `docs/runbooks/ci-cd.md`.
+
+## Authentication and design-source follow-up (2026-10-20)
+
+Read-only source review on `codex/dev` at
+`7d55fcee685c8fe59c3e07643f1180552f7ec223` confirmed the approved v12 auth gap:
+the API currently exposes the legacy password/test-access login path, while no
+OTP challenge, Resend sender, fallback provider, refresh-token family, or device
+revocation implementation was found. The active authentication design-index
+entries also contained stale Cognito-specific evidence. Those two descriptions
+are corrected; their approved visual references remain unchanged.
+
+The schema still declares `users.externalSubject`, introduced by historical
+migrations `0017_cognito_external_subject` and `0018_cognito_phone_identity`.
+Repository search found no non-schema runtime read/write of `externalSubject`.
+The migrations are retained as immutable history; removing an unused active
+schema declaration or dropping persisted data is a separate reviewed database
+change and has not been performed. AUTH-01 remains open; no OTP or provider
+behavior is claimed as implemented by this source-document correction.
