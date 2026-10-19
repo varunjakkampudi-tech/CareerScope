@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Tests the retained CI decision policy. If deployment workflows are restored,
-// validate their wiring as well. No workflow means deployment automation is disabled.
+// Tests the CI decision policy independently of deployment. A safe validation
+// workflow does not require a staging or production deployment workflow.
 
 import { existsSync, readFileSync } from 'node:fs';
 import { decide, PASS, REFUSE, WAIT } from './require-ci-success.mjs';
@@ -86,14 +86,14 @@ check(
   REFUSE,
 );
 
-// A partially restored deployment must fail validation. When both workflows are
-// absent there is no automation to authorize; the decision policy above still runs.
+// CI and deployment have independent lifecycles. Deployment requires CI, while
+// CI remains valid without any deployment workflow (for example before the owner
+// provides a separate staging target).
 const deployExists = existsSync('.github/workflows/deploy.yml');
 const ciExists = existsSync('.github/workflows/ci.yml');
-check('CI and deployment workflows are restored together', deployExists, ciExists);
-if (deployExists && ciExists) {
+check('deployment requires a CI workflow', !deployExists || ciExists, true);
+if (deployExists) {
   const workflow = readFileSync('.github/workflows/deploy.yml', 'utf8');
-  const ciWorkflow = readFileSync('.github/workflows/ci.yml', 'utf8');
   check(
     'deploy.yml runs the gate script',
     workflow.includes('node scripts/require-ci-success.mjs'),
@@ -120,9 +120,27 @@ if (deployExists && ciExists) {
     ),
     false,
   );
+}
+if (ciExists) {
+  const ciWorkflow = readFileSync('.github/workflows/ci.yml', 'utf8');
   check('CI does not publish Pages', ciWorkflow.includes('actions/deploy-pages@'), false);
-} else if (!deployExists && !ciExists) {
-  console.log('Deployment automation disabled: CI and deploy workflows are absent.');
+  check(
+    'CI has explicit least-privilege workflow permissions',
+    /^permissions:\r?\n/m.test(ciWorkflow),
+    true,
+  );
+  check(
+    'CI does not select a production environment',
+    /^\s{4}environment:\s*production\s*$/m.test(ciWorkflow),
+    false,
+  );
+  check(
+    'CI does not invoke deployment workflow',
+    /(?:workflow_dispatch|gh workflow run).*deploy/i.test(ciWorkflow),
+    false,
+  );
+} else if (!deployExists) {
+  console.log('No CI workflow exists; deployment automation is disabled.');
 }
 
 console.log(failures === 0 ? '\ndeploy CI gate behaves' : `\n${failures} check(s) failed`);

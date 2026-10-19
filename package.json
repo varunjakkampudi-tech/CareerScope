@@ -50,7 +50,7 @@
     "requirements:check": "node scripts/check-approved-sources.mjs",
     "requirements:test": "node --test scripts/check-approved-sources.test.mjs",
     "node:check:test": "node --test scripts/check-node-version.test.mjs",
-    "deploy:gate:test": "node scripts/check-deploy-gate.mjs",
+    "deploy:gate:test": "node --test scripts/check-deploy-gate.test.mjs && node scripts/check-deploy-gate.mjs",
     "eol:check": "node scripts/check-line-endings.mjs",
     "privacy:check": "node scripts/check-privacy.mjs",
     "privacy:test": "node --test scripts/check-privacy.test.mjs",

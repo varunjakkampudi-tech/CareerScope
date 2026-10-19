@@ -117,3 +117,22 @@ EOL, lint, strict typecheck (45 canonical test files), and 44/44 unit tests;
 no skips or failures. Full formatting and diff checks pass. Compose's resolved
 synthetic configuration also confirms production/disabled and absence of the API
 test assertion. No real service, hosted or browser evidence is implied.
+
+## CI and deployment-gate policy correction
+
+On local task branch `codex/task/ci-without-deployment-gate`, corrected the
+workflow checker to reflect the approved sequence: CI validation can exist
+without deployment automation; deployment still requires CI. No deployment
+workflow is currently tracked or active. If one is restored, the retained
+checker requires manual-only dispatch, main-revision verification, the
+production environment and exact-revision CI verification. Added five
+isolated synthetic workflow fixtures, including denial of a CI job that
+dispatches deployment from a multiline shell step. `npm run deploy:gate:test`
+passed 5/5 fixtures plus the existing CI-decision checks; formatting and
+`git diff --check` passed. Independent read-only review `ci_gate_review`
+APPROVED for the implementation and tests, with one documentation precision
+correction applied afterward and awaiting fresh review. The broad
+`npm run gates:test` run exited 0, including policy, source, privacy, deploy-gate,
+EOL, lint, typecheck and 44/44 unit tests. Hosted CI remains unavailable because
+GitHub Actions is disabled; no workflow was hosted or run, and no setting was
+changed. No runtime product or deployment behavior changed.

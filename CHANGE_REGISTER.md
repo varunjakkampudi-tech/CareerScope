@@ -24,3 +24,20 @@ Recovery: preserve this commit and apply a reviewed corrective commit if needed.
 Do not roll back to a production test-login bypass. Public production sign-in
 must stay unavailable until approved OTP is implemented and verified. Existing
 session data, account ownership, migrations and proxy password controls are unchanged.
+
+## CI/deployment gate independence task
+
+Base: `a552f722644a37f9cfa951e0b2b8ddfa9f088076` on local development.
+The local workflow checker now allows a CI-only validation workflow while
+remaining fail-closed if a deployment workflow exists without CI. No deployment
+workflow is currently tracked or active; if `deploy.yml` is restored, the
+checker requires manual-only dispatch, main-revision verification, a protected
+environment, and no bypass. Added isolated fixture tests for CI-only,
+no-workflow, deploy-only, production-environment rejection, and CI dispatching
+deploy from a multiline shell step. Targeted suite passed 5/5; independent read-only
+review `ci_gate_review` APPROVED. This is local checker evidence only; there is
+no hosted workflow execution evidence. GitHub Actions remains disabled pending
+the owner-controlled setting transition documented in `blocker.txt`.
+
+Recovery: retain the task commit and apply a corrective commit if needed; do
+not weaken the production deployment gate or use it to enable hosted Actions.
