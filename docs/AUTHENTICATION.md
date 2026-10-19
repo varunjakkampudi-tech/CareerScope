@@ -10,7 +10,7 @@ Local development defaults to loopback access. `TEST_ACCESS_MODE=local` is
 refused with a public origin or production runtime. Public origins default to
 disabled test access. Hosted testing requires all of:
 
-- HTTPS and `TEST_ACCESS_MODE=proxy`;
+- explicit `DEPLOYMENT_ENVIRONMENT=staging`, HTTPS and `TEST_ACCESS_MODE=proxy`;
 - a shared staging password enforced by Caddy's `basic_auth`;
 - `CAREERSCOPE_STAGING_USER` and a bcrypt
   `CAREERSCOPE_STAGING_PASSWORD_HASH`, supplied privately by the operator;
@@ -43,3 +43,24 @@ Password-account internals and their regression tests remain for compatibility
 with existing stored accounts. The executable API always selects the explicit
 test-access configuration, disables registration and refuses password changes.
 This temporary testing arrangement is not public production authentication.
+
+## Production prohibition
+
+`DEPLOYMENT_ENVIRONMENT` accepts only `development`, `staging` or `production`.
+If absent, a production Node runtime defaults to production; otherwise it defaults
+to development. Unknown or empty values fail startup. Production permits only
+disabled test access, even with a valid proxy assertion and loopback origin.
+Staging never defaults to local selection. A production-built staging deployment
+can explicitly select staging while retaining `NODE_ENV=production`; this is not
+permission to activate test access in production.
+
+The production Compose API pins deployment environment to production and test
+access to disabled, independent of the operator's env file. It no longer consumes
+the staging assertion for API login. Existing proxy password protection is not
+removed. A separately reviewed private staging configuration must supply the
+explicit staging environment and the existing password/assertion safeguards.
+No hosted configuration or deployment was changed by this code update.
+
+Until the approved email OTP implementation is delivered and verified, production
+candidate sign-in remains unavailable. Do not restore a test shortcut to make
+production appear operational. This guard alone does not complete authentication.

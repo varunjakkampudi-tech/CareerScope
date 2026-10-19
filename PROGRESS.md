@@ -8,7 +8,7 @@
   reviewed, committed and fast-forward integrated into `codex/dev`. Verified
   baseline ancestry and clean worktree before beginning this audit task.
 - Existing baseline: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
-- Development integration: `codex/dev`; current task: v12 baseline audit.
+- Development integration: `codex/dev`; current task: production test-access guard.
 - Main is not modified, pushed or merged. No production/provider actions performed.
 - Existing GitHub main protection query returned HTTP 404 (not protected); branch
   rules query returned an empty array. No repository setting was changed.
@@ -57,7 +57,10 @@ source policy, followed by the complete v12 launch core in dependency order.
 No percentage is claimed until the requirement denominator is derived and verified.
 Historical R1 cleanup reports remain history, not v12 implementation proof.
 
-## Baseline audit task (not yet integrated)
+## Baseline audit task
+
+Committed as `54e09da604d4f67742bea343d3a9a268c1ee9bb1`, fast-forward
+integrated into `codex/dev`; clean working tree verified before the auth task.
 
 The three approved CareerScope source documents are now canonical immutable
 snapshots; no cross-product program status or private path is published.
@@ -94,3 +97,23 @@ privacy 3/3 and scan, deployment fixtures, EOL, lint, 45-file typecheck and
 APPROVE and rerun 5/5 with source-checker coverage of 94.74% lines, 85.71%
 branches and 100% functions. This coverage is only for the new source checker,
 not application-wide coverage. No hosted, database or browser run is claimed.
+
+## Production test-access guard
+
+Task: `codex/task/auth-production-test-guard`, based on `54e09da`.
+The API startup policy now rejects every test selector in production. Proxy
+selection requires explicit staging, preserving HTTPS, private assertion and
+loopback enforcement. Production Compose pins production/disabled access.
+No live configuration changed; OTP and full v12 authentication remain incomplete.
+
+Independent `production_guard_review` returned APPROVE for all five implementation
+files and inspected executable API wiring. Six targeted tests pass. Node 24 native
+coverage with explicit `**/test-users.ts` include and `**/*.test.ts` exclude measures
+100% lines/branches/functions for this small guard module only. The earlier narrow
+path invocation produced an empty report and is NOT coverage evidence. Strict
+changed-file lint and privacy scan pass. The broader Node 24 gate rerun exited 0:
+policy 4/4, source 5/5, privacy 3/3 and scan, deployment decision fixtures,
+EOL, lint, strict typecheck (45 canonical test files), and 44/44 unit tests;
+no skips or failures. Full formatting and diff checks pass. Compose's resolved
+synthetic configuration also confirms production/disabled and absence of the API
+test assertion. No real service, hosted or browser evidence is implied.

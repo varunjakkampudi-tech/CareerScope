@@ -121,20 +121,24 @@ Priority: Critical
 Module: Authentication
 v12 requirement / checklist item: D1/D11, section 4.1; checklist 1-3/7-8
 Status: OPEN
-Problem: Explicit proxy mode currently works with production NODE_ENV; no production
-  OTP/fallback, refresh-family/device or verified-signal recovery implementation.
+Problem: No production OTP/fallback, refresh-family/device or verified-signal
+  recovery implementation. Production selector prohibition is locally implemented
+  and tested; hosted deployment remains unperformed.
 Verified root cause: test-users.ts, auth.ts, sessions schema and executable API read.
 Current implementation: Private two-account selector and opaque owned sessions.
 Impact: Cannot be a public production identity system under v12.
 What the agent already tried: Source/config/test inventory; no host changes.
-Work completed: Recorded startup-guard priority and independent OTP/token requirements.
+Work completed: Independently reviewed production/staging/local startup guard;
+  six tests pass, guard module coverage 100% lines/branches/functions. Production
+  Compose pins disabled selectors; synthetic config validation passes.
 Why autonomous resolution is unsafe or impossible: Local work is authorized and
-  pending baseline audit; real provider acceptance needs owner configuration.
+  continuing after baseline audit; real provider acceptance needs owner configuration.
 Exact owner action required: None for local guard/mock implementation; see PROVIDER-01.
-Step-by-step resolution instructions: Agent adds environment guard and adversarial
-  startup tests, then approved OTP/session contracts, isolated tests and review.
+Step-by-step resolution instructions: Agent implements approved OTP/session
+  contracts, isolated tests and review; owner later validates approved hosted
+  configuration. Do not enable a selector as an OTP substitute.
 Required environment-variable names (no values): Current TEST_ACCESS_MODE,
-  TEST_PROXY_SECRET, NODE_ENV; explicit deployment-environment name to be designed.
+  TEST_PROXY_SECRET, NODE_ENV, DEPLOYMENT_ENVIRONMENT.
 External dependencies: PROVIDER-01 for actual delivery; no real sends permitted now
 Expected result: Production cannot enable test selection; OTP and devices validated.
 Verification procedure: Production/staging/local matrix, denial/replay/concurrency

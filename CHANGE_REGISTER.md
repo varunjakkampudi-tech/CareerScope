@@ -7,3 +7,20 @@
 
 Main remains at `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`. Nothing in
 this register authorizes production, protected-main promotion or external actions.
+
+## Production test-access guard task
+
+Base: `54e09da604d4f67742bea343d3a9a268c1ee9bb1` on local development.
+Scope: explicit deployment environment, production selector prohibition and
+production Compose's pinned disabled access; no migration or hosted change.
+Independent implementation review: `production_guard_review`, APPROVE.
+Evidence: six targeted tests pass; guard module 100% line/branch/function coverage;
+strict changed-file lint/privacy pass; Compose config validates using synthetic
+variables and `--quiet` (no rendered secrets). Broad Node 24 gate rerun passes:
+44/44 unit, policy 4/4, source 5/5, privacy 3/3 plus scan, deploy fixtures,
+lint/typecheck/EOL; complete format and diff checks pass.
+
+Recovery: preserve this commit and apply a reviewed corrective commit if needed.
+Do not roll back to a production test-login bypass. Public production sign-in
+must stay unavailable until approved OTP is implemented and verified. Existing
+session data, account ownership, migrations and proxy password controls are unchanged.
