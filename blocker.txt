@@ -1,0 +1,114 @@
+# CareerScope canonical blocker register
+# Never include values, credentials, raw data, private paths or full transcripts.
+
+BLOCKER ID: GOV-01
+Title: Authoritative documents and activation approval
+Priority: Critical
+Module: Governance
+v12 requirement / checklist item: Goal prerequisites; global standard 2.4
+Status: RESOLVED
+Problem: Five sources and recorded activation authority were initially unavailable.
+Verified root cause: Initial search omitted Downloads; repository lacked approval.
+Current implementation: Five source hashes recorded; owner explicitly approved all
+  five on 20 October 2026 and authorized recording. Governance integration pending.
+Impact: Runtime implementation waits for the committed/verified transition.
+What the agent already tried: Read-only source searches, source reading, backup.
+Work completed: Full source read, hashes, OA-2026-10-20-01, canonical contract.
+Why autonomous resolution is unsafe or impossible: No remaining approval question;
+  activation still requires actual review/commit verification, not this entry alone.
+Exact owner action required: None for recording the approved transition.
+Step-by-step resolution instructions: Agent validates, independently reviews,
+  commits and verifies development integration; main remains unchanged.
+Required environment-variable names (no values): None
+External dependencies: None for local transition
+Expected result: Verified dev commit includes current owner approval/governance.
+Verification procedure: git ancestry/status and review evidence, then activation.
+Tests to rerun: Documentation/privacy/EOL/gate checks applicable to transition.
+Affected tasks: All v12 implementation
+Evidence references: docs/decisions/OWNER_APPROVALS.md; PROGRESS.md
+
+BLOCKER ID: GOV-02
+Title: Main protection and CI settings are owner-controlled
+Priority: High
+Module: Repository governance
+v12 requirement / checklist item: Goal 4 and 16B; global categories 3/27
+Status: READY_FOR_OWNER
+Problem: Main has no observed GitHub protection/rules; Actions removed previously.
+Verified root cause: Read-only protection query 404; rules []; no tracked workflows.
+Current implementation: No agent main writes; local dev workflow being established.
+Impact: Hosted protection/CI acceptance cannot be claimed from local checks.
+What the agent already tried: Read repository docs and current hosted rule metadata.
+Work completed: Preserved settings and recorded the gap.
+Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
+Exact owner action required: Review intended main/dev rules and Actions permissions.
+Step-by-step resolution instructions:
+  1. GitHub repository > Settings > Rules > Rulesets: protect main against deletion,
+     force pushes and direct unreviewed promotion, preserving owner promotion controls.
+  2. Settings > Actions > General: review permitted Actions and token permissions;
+     enable only the validated dev test workflows once authored and reviewed.
+  3. Settings > Environments: provide separate staging credentials/branch restriction
+     only when that independent host exists; never use production test secrets.
+  4. Check account billing/Actions usage before required nightly runs; provide the
+     approved budget/schedule. Do not disable mandatory suites to save minutes.
+  5. After workflow names exist, select actual required checks, not placeholders.
+Required environment-variable names (no values): To be specified per validated workflow
+External dependencies: Owner GitHub settings/Actions budget; separate staging host
+Expected result: Protected main and observed successful/negative-control dev runs.
+Verification procedure: Re-query rules and inspect exact-SHA hosted workflow runs.
+Tests to rerun: Goal 16B.11 trigger/failure/coverage/security/artifact checks
+Affected tasks: Hosted CI/staging/release certification; not unrelated local coding
+Evidence references: PROGRESS.md; docs/governance/ENGINEERING-CONTRACT.md
+
+BLOCKER ID: RECOVERY-01
+Title: D12 fallback contradicts Critical go/no-go item 9
+Priority: Critical
+Module: Disaster recovery
+v12 requirement / checklist item: D12, sections 6/7, checklist 9/10
+Status: READY_FOR_OWNER
+Problem: D12 permits disclosed 24-hour fallback; checklist 9 requires one-hour WAL RPO.
+Verified root cause: Both clauses read in approved SRC-01; no amendment found.
+Current implementation: Local backup/restore tooling; off-host WAL not verified.
+Impact: Recovery launch gate cannot pass through an agent-inferred fallback.
+What the agent already tried: Compared exact clauses and current backup source/docs.
+Work completed: Kept one-hour launch gate closed, no waiver or host change.
+Why autonomous resolution is unsafe or impossible: Changing D12/checklist is owner-only.
+Exact owner action required: Choose strict one-hour gate or explicitly amend fallback.
+Step-by-step resolution instructions:
+  1. Review D12 and checklist row 9 side-by-side.
+  2. Recommended: retain one-hour WAL recovery as launch-blocking until demonstrated.
+  3. Alternative: record exact amendment permitting the D12 disclosed fallback, with
+     owner/date, scope and re-evaluation; independent off-host copies remain required.
+  4. Provide a separately approved off-host store/configuration through protected
+     environment channels, never chat/Git, then authorize a disposable restore drill.
+Required environment-variable names (no values): Determined by approved archive adapter
+External dependencies: Owner decision; off-host backup/WAL account; isolated drill host
+Expected result: Unambiguous approved RPO/RTO and observed restore evidence.
+Verification procedure: Compare backup horizon/recovered records and timed drill.
+Tests to rerun: WAL archive/replay, backup/restore, deletion reapplication, app smoke
+Affected tasks: Recovery release gate; not other local implementation
+Evidence references: SRC-01 D12/section 15 row 9; SRC-03 section 15
+
+BLOCKER ID: AUDIT-01
+Title: Full dependency audit has unresolved high findings
+Priority: High
+Module: Development supply chain
+v12 requirement / checklist item: Engineering Standards 5/7; global 22/30
+Status: OPEN
+Problem: Current full npm audit reports five high and seven moderate entries.
+Verified root cause: Current npm audit JSON; lint/schema-tool and DOCX parser chains.
+Current implementation: Production audit alone has three moderate; no full-audit pass.
+Impact: Affected integrations cannot be marked done with a high finding ignored.
+What the agent already tried: Read-only full and production audit; no force fix.
+Work completed: Finding inventory; no downgrade, suppression or waiver.
+Why autonomous resolution is unsafe or impossible: Local remediation pending activation;
+  no owner waiver requested as substitute for safe supported remediation.
+Exact owner action required: None unless a true unresolved exception is later needed.
+Step-by-step resolution instructions: Agent identifies reachable dependency paths,
+  chooses compatible fixes, adds regression checks, reruns full audit and tests.
+Required environment-variable names (no values): None
+External dependencies: Package registry for metadata/install, no paid provider
+Expected result: Verified remediation or precise unresolved findings; no fake pass.
+Verification procedure: Lockfile paths, current audits, lint/build/regression.
+Tests to rerun: Full dependency audit and applicable definition of done
+Affected tasks: Supply-chain affected integrations
+Evidence references: PROGRESS.md current executed evidence

@@ -45,7 +45,6 @@ Thumbs.db
 repomix-output*
 
 # Local assistant instructions and editor configuration are not product sources.
-AGENTS.md
 CLAUDE.md
 .vscode/
 .ai/
