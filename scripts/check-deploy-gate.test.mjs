@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
+import { parseDocument } from 'yaml';
 
 const checker = resolve('scripts/check-deploy-gate.mjs');
 
@@ -40,13 +41,15 @@ test('CI validation is allowed without a deployment workflow', () => {
       'jobs:',
       '  test:',
       '    runs-on: ubuntu-latest',
-      '    steps: []',
+      '    steps:',
+      '      - name: Checkout',
+      '        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803',
       '',
     ].join('\n'),
   });
 
   assert.equal(result.status, 0, result.output);
-  assert.match(result.output, /CI has explicit least-privilege workflow permissions/);
+  assert.match(result.output, /CI and job permission blocks are explicit and read-only/);
 });
 
 test('absence of both workflows keeps deployment automation disabled', () => {
@@ -99,6 +102,7 @@ test('CI cannot dispatch the deployment workflow from a multiline step', () => {
       '    runs-on: ubuntu-latest',
       '    steps:',
       '      - name: Deploy',
+      '        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803',
       '        run: |',
       '          gh workflow run deploy.yml',
       '',
@@ -107,4 +111,157 @@ test('CI cannot dispatch the deployment workflow from a multiline step', () => {
 
   assert.notEqual(result.status, 0, result.output);
   assert.match(result.output, /CI does not invoke deployment workflow/);
+});
+
+test('CI rejects mutable third-party action tags', () => {
+  const result = runWithWorkflows({
+    'ci.yml': [
+      'name: CI',
+      'on:',
+      '  push:',
+      'permissions:',
+      '  contents: read',
+      'jobs:',
+      '  test:',
+      '    runs-on: ubuntu-latest',
+      '    steps:',
+      '      - uses: actions/checkout@v4',
+      '',
+    ].join('\n'),
+  });
+
+  assert.notEqual(result.status, 0, result.output);
+  assert.match(result.output, /CI third-party actions are pinned to full commit SHAs/);
+});
+
+test('CI cannot access repository secrets', () => {
+  for (const secretReference of [
+    '${{ secrets.PROVIDER_TOKEN }}',
+    "${{ secrets['PROVIDER_TOKEN'] }}",
+    "${{ secrets[format('PROVIDER_{0}', 'TOKEN')] }}",
+  ]) {
+    const result = runWithWorkflows({
+      'ci.yml': [
+        'name: CI',
+        'on:',
+        '  push:',
+        'permissions:',
+        '  contents: read',
+        'jobs:',
+        '  test:',
+        '    runs-on: ubuntu-latest',
+        '    steps:',
+        '      - name: Checkout',
+        '        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803',
+        '        env:',
+        `          TOKEN: ${secretReference}`,
+        '',
+      ].join('\n'),
+    });
+
+    assert.notEqual(result.status, 0, result.output);
+    assert.match(result.output, /CI contains no GitHub secret-context references/);
+  }
+});
+
+test('CI cannot grant write permissions at workflow or job scope', () => {
+  const invalidWorkflows = [
+    [
+      'name: CI',
+      'on:',
+      '  push:',
+      'permissions:',
+      '  contents: write',
+      'jobs:',
+      '  test:',
+      '    runs-on: ubuntu-latest',
+      '    steps: []',
+      '',
+    ].join('\n'),
+    [
+      'name: CI',
+      'on:',
+      '  push:',
+      'permissions:',
+      '  contents: read',
+      'jobs:',
+      '  test:',
+      '    runs-on: ubuntu-latest',
+      "    'permissions': { actions: write }",
+      '    steps: []',
+      '',
+    ].join('\n'),
+    [
+      'name: CI',
+      'on:',
+      '  push:',
+      'permissions: &ci_permissions',
+      '  contents: read',
+      'jobs:',
+      '  test:',
+      '    runs-on: ubuntu-latest',
+      '    permissions: *ci_permissions',
+      '    steps: []',
+      '',
+    ].join('\n'),
+  ];
+
+  for (const workflow of invalidWorkflows) {
+    const parsed = parseDocument(workflow);
+    assert.equal(parsed.errors.length, 0, parsed.errors.map((error) => error.message).join('\n'));
+    const result = runWithWorkflows({ 'ci.yml': workflow });
+
+    assert.notEqual(result.status, 0, result.output);
+    assert.match(result.output, /CI and job permission blocks are explicit and read-only/);
+  }
+});
+
+test('the root CI service topology is disposable, loopback-only and recovery-compatible', () => {
+  const workflow = readFileSync(resolve('.github/workflows/ci.yml'), 'utf8');
+  const fullDiskCheck = readFileSync(resolve('infra/check-full-disk.mjs'), 'utf8');
+  const backupCheck = readFileSync(resolve('infra/check-backup.sh'), 'utf8');
+  const queueRuntimeCheck = readFileSync(resolve('scripts/check-queue-runtime.ts'), 'utf8');
+  const databaseRecoveryCheck = readFileSync(resolve('scripts/check-database-recovery.ts'), 'utf8');
+  const postgresImage = workflow.match(/postgres:17\.6-alpine@sha256:[a-f0-9]{64}/)?.[0];
+  const redisImage = workflow.match(/redis:7\.4\.5-alpine@sha256:[a-f0-9]{64}/)?.[0];
+
+  assert.match(workflow, /CAREERSCOPE_POSTGRES_CONTAINER:\s*careerscope-ci-postgres/);
+  assert.equal(
+    [
+      ...workflow.matchAll(
+        /^[ ]{8}uses: actions\/checkout@[a-f0-9]{40}\r?\n[ ]{8}with:\r?\n[ ]{10}persist-credentials: false$/gm,
+      ),
+    ].length,
+    2,
+    'each CI job must prevent checkout credentials from persisting into test execution',
+  );
+  assert.match(workflow, /--name careerscope-ci-postgres --publish 127\.0\.0\.1:5432:5432/);
+  assert.match(workflow, /postgres:17\.6-alpine@sha256:[a-f0-9]{64}/);
+  assert.match(workflow, /--tmpfs \/var\/lib\/postgresql\/data:rw,size=1g/);
+  assert.match(workflow, /--name careerscope-ci-rate-limit --publish 127\.0\.0\.1:6379:6379/);
+  assert.match(workflow, /--name careerscope-ci-queue --publish 127\.0\.0\.1:6380:6379/);
+  assert.match(workflow, /redis:7\.4\.5-alpine@sha256:[a-f0-9]{64}/);
+  assert.ok(postgresImage, 'the CI workflow must declare its immutable PostgreSQL image');
+  assert.ok(redisImage, 'the CI workflow must declare its immutable Redis image');
+  assert.match(
+    fullDiskCheck,
+    /node:26\.8\.1-bookworm-slim@sha256:[a-f0-9]{64}/,
+    'recovery containers must use immutable image digests',
+  );
+  assert.match(queueRuntimeCheck, /redis:7\.4\.5-alpine@sha256:[a-f0-9]{64}/);
+  assert.match(databaseRecoveryCheck, /postgres:17\.6-alpine@sha256:[a-f0-9]{64}/);
+  assert.ok(
+    backupCheck.includes(postgresImage),
+    'backup verification must use the CI PostgreSQL image',
+  );
+  assert.ok(
+    databaseRecoveryCheck.includes(postgresImage),
+    'database recovery must use the CI PostgreSQL image',
+  );
+  assert.ok(queueRuntimeCheck.includes(redisImage), 'queue runtime must use the CI Redis image');
+  assert.match(workflow, /redis-server --appendonly yes --maxmemory-policy noeviction/);
+  assert.match(workflow, /redis-cli INFO persistence \| grep -qx 'aof_enabled:1'/);
+  assert.match(workflow, /Remove ephemeral database and Redis containers\s+if: always\(\)/);
+  assert.match(workflow, /Start production frontend for browser acceptance/);
+  assert.match(workflow, /Stop production frontend test server\s+if: always\(\)/);
 });

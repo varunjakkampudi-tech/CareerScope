@@ -234,7 +234,7 @@ test(
         'POSTGRES_DB=careerscope',
         '-e',
         'POSTGRES_PASSWORD',
-        'postgres:17.6-alpine',
+        'postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94',
       ]);
       containerCreated = true;
       const binding = docker(['port', restoredContainer, '5432/tcp']);

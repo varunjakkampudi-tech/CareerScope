@@ -136,3 +136,41 @@ correction applied afterward and awaiting fresh review. The broad
 EOL, lint, typecheck and 44/44 unit tests. Hosted CI remains unavailable because
 GitHub Actions is disabled; no workflow was hosted or run, and no setting was
 changed. No runtime product or deployment behavior changed.
+
+## CI recovery image consistency and local validation (2026-10-20)
+
+Continued on `codex/task/ci-workflows` from `f9cbead2dcc767f1ebd29812b565d03bcc7e2aca`.
+Pinned the disposable PostgreSQL image used by `infra/check-backup.sh` to the
+same immutable digest as the CI service, and strengthened the deploy-gate test
+to assert exact PostgreSQL/Redis digest equality across workflow, database
+recovery, queue runtime, and backup verification. No application runtime,
+production configuration, hosted setting, or persistent database changed.
+
+Local Node 24 validation on the current working changes: `npm run deploy:gate:test`
+passed 9/9 workflow tests and all deploy-decision fixtures; `npm run gates:test`
+passed policy/source/privacy/deploy/EOL/lint/typecheck and 47/47 unit tests;
+`npm run test:domain` passed 29 files / 830 tests; `npm run test:integration`
+passed 49/49; `npm run test:queue-runtime` passed after supplying the required
+synthetic APP_ORIGIN; `npm run test:database-recovery` and
+`npm run test:crash-recovery` passed; `npm run test:full-disk` passed with the
+digest-pinned recovery image; `npm run build` passed both CSP builds and verified
+all 12 inline-script hashes; `npm run format:check`, `npm run eol:check`, privacy
+scan, and `git diff --check` passed. Browser acceptance previously passed on
+Chromium, Firefox, and WebKit with axe, keyboard, and responsive checks. One
+earlier browser invocation failed before a clean reproduction passed; the
+initial invocation's cause was not established, so it remains a recorded
+stability anomaly rather than being erased by the successful run.
+
+The backup/restore test passed all checks, including 0600/0700 permission
+assertions, when run in a Linux shell container against the local Docker daemon.
+An initial Git Bash run on the Windows-backed temporary filesystem reported
+0644/0755 because Windows ACL semantics do not implement the expected POSIX
+mode bits; no assertion was weakened. Independent read-only review confirmed
+there are no remaining mutable PostgreSQL/Redis image references in the CI
+workflow's directly invoked recovery paths. Separate, non-CI Compose files
+retain mutable tags and were not changed in this task.
+
+The full dependency audit remains a blocker: 12 findings (5 high, 7 moderate);
+no major downgrade, test weakening, or audit suppression was applied. The
+workflow remains unverified on GitHub because Actions is disabled. No push,
+merge to `main`, deployment, production change, or hosted evidence occurred.

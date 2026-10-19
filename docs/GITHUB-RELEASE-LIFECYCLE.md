@@ -1,9 +1,11 @@
 # GitHub release lifecycle
 
-The repository currently has no GitHub Actions workflows or Dependabot
-configuration. Changes do not trigger hosted CI, deployment, dependency update
-PRs, load tests or release publication. Run the documented local checks before
-committing. Local checks do not certify production acceptance.
+The repository now contains `.github/workflows/ci.yml`, a CI-only workflow for
+task/development/main pushes, scheduled regression, and allowlisted manual suites.
+GitHub Actions is currently disabled in repository settings, so no hosted run
+has occurred and pushes do not yet prove CI execution. No deployment or
+Dependabot workflow/configuration exists. Run the documented local checks before
+committing; local workflow syntax and tests do not certify hosted acceptance.
 
 Production deployment tooling still requires successful CI for the exact
 reviewed revision. Without an approved hosted validation process, deployment

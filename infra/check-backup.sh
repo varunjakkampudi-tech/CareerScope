@@ -30,7 +30,7 @@ check() {
 echo "== starting a disposable postgres for this test only"
 docker run -d --name "$pg_name" \
   -e POSTGRES_PASSWORD=test -e POSTGRES_USER=careerscope -e POSTGRES_DB=careerscope \
-  postgres:17.6-alpine >/dev/null
+  postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94 >/dev/null
 
 ready=0
 for _ in $(seq 1 30); do

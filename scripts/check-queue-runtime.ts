@@ -10,7 +10,8 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Database, BullSearchQueue, users } from '@careerscope/core';
 
 const execute = promisify(execFile);
-const image = 'redis:7.4.5-alpine';
+const image =
+  'redis:7.4.5-alpine@sha256:bb186d083732f669da90be8b0f975a37812b15e913465bb14d845db72a4e3e08';
 
 async function docker(...args: string[]) {
   const result = await execute('docker', args, { timeout: 30_000, maxBuffer: 256_000 });

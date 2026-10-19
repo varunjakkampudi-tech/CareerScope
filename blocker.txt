@@ -35,26 +35,33 @@ Priority: High
 Module: Repository governance
 v12 requirement / checklist item: Goal 4 and 16B; global categories 3/27
 Status: READY_FOR_OWNER
-Problem: Main has no observed GitHub protection/rules; Actions removed previously.
-Verified root cause: Read-only protection query 404; rules []; no tracked workflows.
-Current implementation: No agent main writes; local dev workflow being established.
+Problem: Main has no observed GitHub protection/rules; GitHub Actions is disabled.
+Verified root cause: Read-only protection query 404; rules []; repository Actions
+  API reports enabled=false; no hosted run can execute. A local CI workflow now
+  exists at .github/workflows/ci.yml; its presence does not prove hosted behavior.
+Current implementation: No agent main writes; CI-only validation is authored and
+  locally checked. Deployment automation remains absent.
 Impact: Hosted protection/CI acceptance cannot be claimed from local checks.
 What the agent already tried: Read repository docs and current hosted rule metadata.
-Work completed: Preserved settings and recorded the gap.
+Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
+  task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
 Exact owner action required: Review intended main/dev rules and Actions permissions.
 Step-by-step resolution instructions:
   1. GitHub repository > Settings > Rules > Rulesets: protect main against deletion,
      force pushes and direct unreviewed promotion, preserving owner promotion controls.
   2. Settings > Actions > General: review permitted Actions and token permissions;
-     enable only the validated dev test workflows once authored and reviewed.
+     after inspecting the local workflow and owner-approved budget, enable the
+     CI-only workflow. Do not enable or create a deployment workflow.
   3. Settings > Environments: provide separate staging credentials/branch restriction
      only when that independent host exists; never use production test secrets.
   4. Check account billing/Actions usage before required nightly runs; provide the
      approved budget/schedule. Do not disable mandatory suites to save minutes.
-  5. After workflow names exist, select actual required checks, not placeholders.
-Required environment-variable names (no values): To be specified per validated workflow
-External dependencies: Owner GitHub settings/Actions budget; separate staging host
+  5. After the first hosted run, configure required check names from successful
+     exact-run evidence, not placeholders; test fail-closed behavior and workflow
+     dispatch before treating automation as accepted.
+Required environment-variable names (no values): None; CI uses synthetic service credentials only
+External dependencies: Owner GitHub settings/Actions budget; separate staging host; unaccepted high-severity dependency findings
 Expected result: Protected main and observed successful/negative-control dev runs.
 Verification procedure: Re-query rules and inspect exact-SHA hosted workflow runs.
 Tests to rerun: Goal 16B.11 trigger/failure/coverage/security/artifact checks
@@ -96,12 +103,19 @@ Priority: High
 Module: Development supply chain
 v12 requirement / checklist item: Engineering Standards 5/7; global 22/30
 Status: OPEN
-Problem: Current full npm audit reports five high and seven moderate entries.
-Verified root cause: Current npm audit JSON; lint/schema-tool and DOCX parser chains.
-Current implementation: Production audit alone has three moderate; no full-audit pass.
+Problem: The current full npm audit reports five high and seven moderate findings.
+Verified root cause: On 20 October 2026 under Node 24, the high findings follow
+  eslint-config-next 16.3.8 > @next/eslint-plugin-next > fast-glob > micromatch
+  > braces 3.0.3. npm audit offers only --force with an eslint-config-next 14
+  major downgrade; npm metadata reports braces 3.0.3 is still latest. Moderate
+  findings include the legacy esbuild loader under drizzle-kit and sprintf-js
+  through Mammoth's argparse dependency.
+Current implementation: The production-only high-severity gate exits 0 but
+  reports three moderate Mammoth/argparse/sprintf-js findings. No full-audit pass.
 Impact: Affected integrations cannot be marked done with a high finding ignored.
-What the agent already tried: Read-only full and production audit; no force fix.
-Work completed: Finding inventory; no downgrade, suppression or waiver.
+What the agent already tried: Read-only full/production audits and registry
+  metadata inspection; no compatible patched braces or non-breaking audit fix found.
+Work completed: Recorded affected chains; no major downgrade, suppression or waiver.
 Why autonomous resolution is unsafe or impossible: Local remediation pending activation;
   no owner waiver requested as substitute for safe supported remediation.
 Exact owner action required: None unless a true unresolved exception is later needed.

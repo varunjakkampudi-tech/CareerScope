@@ -26,9 +26,14 @@ import {
 import { createApp } from '../apps/api/src/app.js';
 import { collect } from '../apps/workers/search/src/collect.js';
 import { createRemoteOkProvider } from '@careerscope/providers';
+import { selectUiBrowsers } from './ui-browsers.js';
 
 const configured = process.env.DATABASE_URL;
 assert.ok(configured);
+const uiBrowsers = selectUiBrowsers(
+  { chromium, firefox, webkit },
+  process.env.CAREERSCOPE_UI_BROWSER,
+);
 const url = new URL(configured);
 assert.ok(['localhost', '127.0.0.1'].includes(url.hostname));
 const admin = new Database(configured);
@@ -316,7 +321,7 @@ try {
       );
     }
   };
-  for (const [engine, browserType] of Object.entries({ chromium, firefox, webkit })) {
+  for (const [engine, browserType] of uiBrowsers) {
     // Legacy password-account fixtures exercise existing data/session behavior.
     // The public test selector and its real allowlist are verified separately.
     const accountEmail = `signup-${engine}@example.test`;
@@ -2566,7 +2571,7 @@ try {
   });
   try {
     await testApp.listen({ host: '127.0.0.1', port: 5390 });
-    for (const [engine, browserType] of Object.entries({ chromium, firefox, webkit })) {
+    for (const [engine, browserType] of uiBrowsers) {
       const browser = await browserType.launch();
       try {
         const page = await browser.newPage();

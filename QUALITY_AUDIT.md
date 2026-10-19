@@ -29,3 +29,15 @@ No fabricated review count or percentage is assigned.
 Known findings are not closed by documentation. Fix/retest/independent-review
 evidence must replace these initial observations. This report does not claim
 global-category completion, legal compliance, WCAG certification or launch GO.
+
+## CI implementation follow-up (2026-10-20)
+
+The initial CI row above is preserved as a baseline finding. A SHA-pinned,
+least-privilege CI-only workflow has since been authored at
+`.github/workflows/ci.yml`; local workflow-policy fixtures, Node 24 gates, and
+format/EOL/privacy checks pass. It has not run on GitHub because Actions is
+disabled. Full `npm audit --audit-level=high` is intentionally a blocking
+workflow step and currently fails on unaccepted high-severity development
+dependency advisories. No staging or production workflow was added. Hosted
+trigger/failure/coverage/artifact acceptance remains NOT VERIFIED; see GOV-02
+in `blocker.txt` and `docs/runbooks/ci-cd.md`.
