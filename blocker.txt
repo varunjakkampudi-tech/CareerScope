@@ -69,24 +69,36 @@ Affected tasks: Hosted CI/staging/release certification; not unrelated local cod
 Evidence references: PROGRESS.md; docs/governance/ENGINEERING-CONTRACT.md
 
 BLOCKER ID: RECOVERY-01
-Title: D12 fallback contradicts Critical go/no-go item 9
+Title: Recovery objective clauses require owner reconciliation
 Priority: Critical
 Module: Disaster recovery
 v12 requirement / checklist item: D12, sections 6/7, checklist 9/10
 Status: READY_FOR_OWNER
-Problem: D12 permits disclosed 24-hour fallback; checklist 9 requires one-hour WAL RPO.
-Verified root cause: Both clauses read in approved SRC-01; no amendment found.
+Problem: Approved v12 D12 and section 6 specify a 1-hour RPO with a disclosed
+  24-hour fallback; section 7's restore acceptance permits either the 1-hour
+  target or disclosed fallback, while section 15 critical go/no-go item 9 names
+  only the 1-hour WAL RPO.
+Verified root cause: All three clauses were compared in approved SRC-01; no
+  owner amendment clarifies whether the fallback satisfies the critical gate.
 Current implementation: Local backup/restore tooling; off-host WAL not verified.
 Impact: Recovery launch gate cannot pass through an agent-inferred fallback.
-What the agent already tried: Compared exact clauses and current backup source/docs.
-Work completed: Kept one-hour launch gate closed, no waiver or host change.
-Why autonomous resolution is unsafe or impossible: Changing D12/checklist is owner-only.
-Exact owner action required: Choose strict one-hour gate or explicitly amend fallback.
+What the agent already tried: Compared D12, v12 sections 6/7/15, the GO-NO-GO
+  ledger and current backup source/docs.
+Work completed: Kept the critical launch gate closed and recorded the three-way
+  inconsistency; no waiver or host change.
+Why autonomous resolution is unsafe or impossible: Deciding whether a disclosed
+  24-hour recovery point is acceptable at launch changes the approved risk posture.
+Exact owner action required: Confirm the accepted launch gate: strict 1-hour RPO,
+  or the v12 disclosed 24-hour fallback under owner-defined conditions; authorize
+  corresponding wording reconciliation without deleting the original clauses.
 Step-by-step resolution instructions:
-  1. Review D12 and checklist row 9 side-by-side.
-  2. Recommended: retain one-hour WAL recovery as launch-blocking until demonstrated.
-  3. Alternative: record exact amendment permitting the D12 disclosed fallback, with
-     owner/date, scope and re-evaluation; independent off-host copies remain required.
+  1. Review D12, section 6's RPO clause, section 7's restore acceptance test,
+     and section 15 critical go/no-go item 9 together.
+  2. Recommended: keep the critical launch gate at one hour until the owner
+     explicitly confirms the fallback interpretation; do not claim a pass meanwhile.
+  3. If the fallback is accepted, record an exact owner amendment explaining when
+     24 hours is permitted, its required candidate disclosure and any go/no-go
+     wording change, with owner/date and re-evaluation; retain off-host copies.
   4. Provide a separately approved off-host store/configuration through protected
      environment channels, never chat/Git, then authorize a disposable restore drill.
 Required environment-variable names (no values): Determined by approved archive adapter
@@ -95,7 +107,7 @@ Expected result: Unambiguous approved RPO/RTO and observed restore evidence.
 Verification procedure: Compare backup horizon/recovered records and timed drill.
 Tests to rerun: WAL archive/replay, backup/restore, deletion reapplication, app smoke
 Affected tasks: Recovery release gate; not other local implementation
-Evidence references: SRC-01 D12/section 15 row 9; SRC-03 section 15
+Evidence references: SRC-01 D12, sections 6/7/15 row 9; SRC-03 section 15
 
 BLOCKER ID: AUDIT-01
 Title: Full dependency audit has unresolved high findings

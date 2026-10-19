@@ -174,3 +174,23 @@ The full dependency audit remains a blocker: 12 findings (5 high, 7 moderate);
 no major downgrade, test weakening, or audit suppression was applied. The
 workflow remains unverified on GitHub because Actions is disabled. No push,
 merge to `main`, deployment, production change, or hosted evidence occurred.
+
+## Critical-path sequencing audit (2026-10-20)
+
+On `codex/task/critical-path-audit`, based on the locally integrated CI commit
+`50eadcb3ec8224aece178eb3981290d0b4e6e226`, added
+`docs/CRITICAL-PATH-AUDIT.md`. It maps the v12 launch chain and parallel-safe
+local work to the approved requirements, current gap/test matrices, blocker
+register, and 25-item go/no-go ledger. It distinguishes local synthetic
+implementation from owner/provider/legal/hosted/human evidence and does not
+change runtime behavior or mark any launch gate passed.
+
+The first independent review identified two documentation defects: interview
+organizer was associated with the outreach-abuse gate, and the recovery conflict
+omitted v12 section 7's explicit fallback acceptance. Both were corrected in
+the audit and `RECOVERY-01`; the refreshed independent review returned APPROVED.
+The recovery objective remains `READY_FOR_OWNER`, since its launch interpretation
+is an owner risk decision. Privacy, EOL, format, and diff checks passed after the
+corrections. No external source, provider account, candidate data, or production
+system was accessed. This audit is sequencing evidence only and is not a final
+whole-repository or release certification.
