@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@careerscope/core": "3.0.0",
+    "@careerscope/shared": "3.0.0",
     "@fastify/cookie": "^11.0.2",
     "@fastify/helmet": "^13.0.2",
     "@fastify/swagger": "9.8.1",

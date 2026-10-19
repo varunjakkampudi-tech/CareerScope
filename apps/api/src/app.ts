@@ -6,6 +6,13 @@ import Fastify, { LogController } from 'fastify';
 import cookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
 import { z } from 'zod';
+import {
+  JOB_SOURCE_PERMISSION_PENDING_MESSAGE,
+  LAUNCH_JOB_SOURCE_CANDIDATES,
+  SOURCE_LABELS,
+  isJobSourcePermittedForCandidateDiscovery,
+  type SourceId,
+} from '@careerscope/shared';
 import { registerOpenApi } from './openapi.js';
 import {
   Auth,
@@ -66,6 +73,8 @@ export async function createApp(
   options: {
     testAccess?: TestAccess;
     registrationEnabled?: boolean;
+    /** Test-only policy injection for isolated synthetic browser/integration fixtures. */
+    sourcePermitted?: (source: SourceId) => boolean;
     resumeStorage?: UploadStorage & {
       cancelUpload?: (
         object: import('@careerscope/core').ResumeObject,
@@ -661,13 +670,35 @@ export async function createApp(
     if (!lead) throw new HttpError(404, 'Lead not found');
     return lead;
   });
+  app.get('/api/job-sources', async (request) => {
+    await readBudget(request, 'job-sources-read', 120);
+    const sourcePermitted = options.sourcePermitted ?? isJobSourcePermittedForCandidateDiscovery;
+    return {
+      items: LAUNCH_JOB_SOURCE_CANDIDATES.map((source) => {
+        const available = sourcePermitted(source);
+        return {
+          id: source,
+          label: SOURCE_LABELS[source],
+          available,
+          unavailableReason: available ? null : JOB_SOURCE_PERMISSION_PENDING_MESSAGE,
+        };
+      }),
+    };
+  });
   app.post('/api/searches', async (request, reply) => {
     if (!(await rateLimit(`search:${request.ownerId!}`, 10, 60)))
       throw new HttpError(429, 'Too many searches');
+    const searchInput = createSearchSchema.parse(request.body);
+    if (
+      searchInput.sources.some(
+        (source) => !(options.sourcePermitted ?? isJobSourcePermittedForCandidateDiscovery)(source),
+      )
+    )
+      throw new HttpError(503, JOB_SOURCE_PERMISSION_PENDING_MESSAGE);
     const search = await database.createSearch(
       request.ownerId!,
       idempotencyKey.parse(request.headers['idempotency-key']),
-      createSearchSchema.parse(request.body),
+      searchInput,
     );
     // Links the run to the request that created it for end-to-end tracing.
     request.log.info(

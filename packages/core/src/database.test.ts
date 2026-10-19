@@ -2250,44 +2250,48 @@ test('partial search outcomes are atomic, owner-scoped, terminal and usable thro
       false,
     );
     assert.equal((await database.getSearch(ownerId, cancelled.id))?.sourceOutcomes, null);
-    const handler = searchHandler(database, [
-      {
-        ...createRemoteOkProvider(),
-        async *search() {
-          yield {
-            source: 'remoteok' as const,
-            sourceJobId: 'queue-partial',
-            title: job.title,
-            companyName: job.company,
-            location: job.location,
-            description: job.description,
-            sourceUrl: job.sourceUrl,
-            applyUrl: job.applyUrl,
-            // REQUIRED by RawJob and it was missing, so this synthetic job was
-            // not a RawJob at all — invisible until v2 test files were first
-            // type-checked. It is not inert: `collect.ts` uses it to decide
-            // whether to fetch detail, `normalize.ts` folds it into the
-            // description and into dedup ranking, and a missing value read as
-            // `undefined`, i.e. falsy.
-            //
-            // `false` is deliberate, not a placeholder. It reproduces exactly
-            // the branch this test has always taken; `true` would change what
-            // the test exercises under cover of a type fix. If a full
-            // description was ever intended here, that is a separate,
-            // deliberate change — asserted below to make no difference to this
-            // test's subject either way.
-            hasFullDescription: false,
-          };
+    const handler = searchHandler(
+      database,
+      [
+        {
+          ...createRemoteOkProvider(),
+          async *search() {
+            yield {
+              source: 'remoteok' as const,
+              sourceJobId: 'queue-partial',
+              title: job.title,
+              companyName: job.company,
+              location: job.location,
+              description: job.description,
+              sourceUrl: job.sourceUrl,
+              applyUrl: job.applyUrl,
+              // REQUIRED by RawJob and it was missing, so this synthetic job was
+              // not a RawJob at all — invisible until v2 test files were first
+              // type-checked. It is not inert: `collect.ts` uses it to decide
+              // whether to fetch detail, `normalize.ts` folds it into the
+              // description and into dedup ranking, and a missing value read as
+              // `undefined`, i.e. falsy.
+              //
+              // `false` is deliberate, not a placeholder. It reproduces exactly
+              // the branch this test has always taken; `true` would change what
+              // the test exercises under cover of a type fix. If a full
+              // description was ever intended here, that is a separate,
+              // deliberate change — asserted below to make no difference to this
+              // test's subject either way.
+              hasFullDescription: false,
+            };
+          },
         },
-      },
-      {
-        ...createHimalayasProvider(),
-        async *search() {
-          yield* [];
-          throw new Error('Synthetic provider outage; must not reach events');
+        {
+          ...createHimalayasProvider(),
+          async *search() {
+            yield* [];
+            throw new Error('Synthetic provider outage; must not reach events');
+          },
         },
-      },
-    ]);
+      ],
+      () => true,
+    );
     const queue = new LocalQueue(process.env.QUEUE_REDIS_URL!);
     for (let attempt = 0; attempt < 4; attempt += 1) {
       const racing = await database.createSearch(ownerId, `event-order-${attempt}`, request);
@@ -2327,6 +2331,7 @@ test('partial search outcomes are atomic, owner-scoped, terminal and usable thro
                   throw new Error('Synthetic total source outage');
                 },
               })),
+              () => true,
             )
           : handler;
         const queued = await database.createSearch(
@@ -2670,7 +2675,11 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
     ]);
     let allowRequest = true;
     const origin = 'http://localhost:5280';
-    const app = await createApp(database, origin, async () => allowRequest);
+    const app = await createApp(database, origin, async () => allowRequest, {
+      // This API fixture verifies persistence/ownership with synthetic jobs;
+      // source rights policy has separate default-deny coverage.
+      sourcePermitted: () => true,
+    });
     try {
       assert.equal((await app.inject('/api/searches')).statusCode, 401);
       assert.equal(
@@ -3593,7 +3602,11 @@ test('recentSourceStatuses reports the most recent outcomes for one source acros
     context.mock.method(logger, 'warn', (...args: unknown[]) => {
       warnCalls.push(args);
     });
-    const handler = searchHandler(database, [{ ...createRemoteOkProvider(), async *search() {} }]);
+    const handler = searchHandler(
+      database,
+      [{ ...createRemoteOkProvider(), async *search() {} }],
+      () => true,
+    );
     const sixthSearch = await database.createSearch(ownerA, 'run-6-via-handler', request);
     const sixthCommand = (await database.unpublished()).find(
       (entry) => entry.command.aggregateId === sixthSearch.id,
@@ -3660,7 +3673,68 @@ test('CS-35: conflicts carry a stable code and the HTTP layer surfaces distinct,
     // The real HTTP layer must expose the code, and a distinct, safe message
     // per code - not the same "Idempotency conflict" string for both.
     const origin = 'http://localhost:5280';
-    const app = await createApp(database, origin, async () => true);
+    const guardedApp = await createApp(database, origin, async () => true);
+    try {
+      const login = await guardedApp.inject({
+        method: 'POST',
+        url: '/api/login',
+        headers: { origin },
+        payload: { email: `${ownerId}@example.test`, password },
+      });
+      const cookie = login.cookies[0]!;
+      const cookies = { [cookie.name]: cookie.value };
+      const session = await guardedApp.inject({ url: '/api/session', cookies });
+      const catalog = await guardedApp.inject({ url: '/api/job-sources', cookies });
+      assert.equal(catalog.statusCode, 200);
+      assert.deepEqual(
+        catalog
+          .json()
+          .items.map(
+            (source: { id: string; available: boolean; unavailableReason: string | null }) => [
+              source.id,
+              source.available,
+              source.unavailableReason !== null,
+            ],
+          ),
+        [
+          ['greenhouse', false, true],
+          ['lever', false, true],
+          ['ashby', false, true],
+          ['workable', false, true],
+        ],
+      );
+      const beforeDeniedSearch = Number(
+        (await database.pool.query<{ count: string }>('SELECT count(*) FROM search_runs')).rows[0]!
+          .count,
+      );
+      const denied = await guardedApp.inject({
+        method: 'POST',
+        url: '/api/searches',
+        headers: {
+          origin,
+          'x-csrf-token': session.json().csrf,
+          'idempotency-key': randomUUID(),
+        },
+        cookies,
+        payload: { query: 'Synthetic permission check', sources: ['greenhouse'] },
+      });
+      assert.equal(denied.statusCode, 503);
+      assert.equal(
+        Number(
+          (await database.pool.query<{ count: string }>('SELECT count(*) FROM search_runs'))
+            .rows[0]!.count,
+        ),
+        beforeDeniedSearch,
+        'source permission denial must not persist a search',
+      );
+    } finally {
+      await guardedApp.close();
+    }
+    // This fixture then explicitly permits synthetic source data to exercise
+    // the idempotency/conflict response contract below.
+    const app = await createApp(database, origin, async () => true, {
+      sourcePermitted: () => true,
+    });
     try {
       const login = await app.inject({
         method: 'POST',

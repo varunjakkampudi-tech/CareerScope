@@ -22,7 +22,7 @@ const object = (
 });
 const nullable = (schema: Schema): Schema => ({ ...schema, nullable: true });
 const status = text({ enum: leadStatusSchema.options });
-const sources = ['remoteok', 'himalayas', 'greenhouse', 'lever', 'workable'];
+const sources = ['remoteok', 'himalayas', 'greenhouse', 'lever', 'ashby', 'workable'];
 const searchStatus = text({
   enum: ['queued', 'running', 'completed', 'partial', 'failed', 'cancelled'],
 });
@@ -85,7 +85,7 @@ const searchInput = object(
     query: text({ minLength: 2, maxLength: 160 }),
     useProfileTitles: bool,
     origin: text({ enum: ['manual', 'scheduled'], default: 'manual' }),
-    sources: array(text({ enum: sources }), { minItems: 1, maxItems: 5, uniqueItems: true }),
+    sources: array(text({ enum: sources }), { minItems: 1, maxItems: 6, uniqueItems: true }),
   },
   ['query', 'sources'],
 );
@@ -93,10 +93,19 @@ const sourceOutcomes = nullable(
   array(
     object({
       source: text({ enum: sources }),
-      status: text({ enum: ['completed', 'failed'] }),
+      status: text({ enum: ['completed', 'empty', 'failed'] }),
       accepted: integer({ minimum: 0, maximum: 100 }),
       limited: bool,
-      errorCode: nullable(text({ enum: ['source_failed', 'source_timeout', 'invalid_response'] })),
+      errorCode: nullable(
+        text({
+          enum: [
+            'source_failed',
+            'source_timeout',
+            'invalid_response',
+            'source_permission_pending',
+          ],
+        }),
+      ),
     }),
   ),
 );
@@ -461,11 +470,26 @@ function contracts(options: {
         failures: [400, 404, 429],
       },
     ),
+    'GET /api/job-sources': operation(
+      'List launch discovery sources and whether each has a current approved permission profile',
+      object({
+        items: array(
+          object({
+            id: text({ enum: ['greenhouse', 'lever', 'ashby', 'workable'] }),
+            label: text(),
+            available: bool,
+            unavailableReason: nullable(text()),
+          }),
+          { maxItems: 4 },
+        ),
+      }),
+      { failures: [429] },
+    ),
     'POST /api/searches': operation('Queue a search with a frozen profile snapshot', run, {
       code: 202,
       body: searchInput,
       headers: object({ 'idempotency-key': key }),
-      failures: [400, 409, 429],
+      failures: [400, 409, 429, 503],
     }),
     'GET /api/searches': operation(
       'List the latest 50 searches',

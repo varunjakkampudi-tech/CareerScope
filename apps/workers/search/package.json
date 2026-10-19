@@ -6,9 +6,7 @@
   "dependencies": {
     "@careerscope/core": "3.0.0",
     "@careerscope/matching": "file:../../../packages/matching",
+    "@careerscope/shared": "file:../../../packages/shared",
     "@careerscope/providers": "file:../../../packages/providers"
-  },
-  "devDependencies": {
-    "@careerscope/shared": "file:../../../packages/shared"
   }
 }

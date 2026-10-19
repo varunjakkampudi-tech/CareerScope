@@ -194,3 +194,44 @@ is an owner risk decision. Privacy, EOL, format, and diff checks passed after th
 corrections. No external source, provider account, candidate data, or production
 system was accessed. This audit is sequencing evidence only and is not a final
 whole-repository or release certification.
+
+## D14 source-permission enforcement (2026-10-20)
+
+Implemented on the isolated branch `codex/task/source-permission-policy` from
+the local `codex/dev` baseline. Only the D14 ATS candidates Greenhouse, Lever,
+Ashby and Workable are eligible, and only through a current source-specific
+permission profile covering collection, storage, transformation and candidate
+display. The production profile registry is intentionally empty; no job source
+was contacted and no rights were inferred. API discovery and search submission,
+worker-time execution, scheduled discovery and the UI availability/pending
+states all fail closed. Candidate-provided links are not provider collection and
+are not implemented by this source catalog; their separate candidate-owned
+product contract remains outstanding.
+
+Independent review identified and the implementation corrected a queue-time
+permission-expiry edge case: a source that becomes unauthorized after enqueue
+no longer suppresses another still-permitted source; the denied source receives
+its own `source_permission_pending` outcome. Regression tests assert that the
+permitted provider runs once and the denied provider is never called. A first
+integration rerun also exposed an outcome-order mismatch; the implementation
+now preserves provider result order and appends denied-source outcomes, and the
+focused PostgreSQL test passed without changing its assertion.
+
+Executed in this continuation on bundled Node 24.19.0: worker/API unit suite
+49/49; domain suite 30 files / 835 tests; focused PostgreSQL partial-search test
+PASS; full local Postgres/Redis integration suite 49/49; application and test
+typecheck PASS (47 test files); lint PASS; privacy check/test PASS; formatting
+and EOL checks PASS. The current production-built web bundle passed the full
+Chromium/Firefox/WebKit browser journey, including axe, session switching,
+keyboard checks, five viewport widths and the accessible per-source pending
+reason. The test harness now excludes the known long-lived search event-stream
+endpoint by its API route, so Firefox does not misclassify it as a request that
+must settle. The final rerun of `npm run gates:test` passed, including 49 unit
+tests, and the repeated format/EOL/diff checks passed. `npm run test:integration`
+passed 49/49 on local PostgreSQL/Redis. The current security command passed its
+high-severity threshold, but the raw current audits still report 12 findings
+(5 high, 7 moderate) overall and 3 moderate production dependency findings;
+`AUDIT-01` remains open, with no waiver or forced major downgrade. No hosted CI,
+production deployment,
+external provider, credential, or live source validation is claimed. SOURCE-01
+remains `READY_FOR_OWNER` for source-rights evidence and measured launch coverage.

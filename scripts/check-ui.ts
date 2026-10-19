@@ -25,8 +25,9 @@ import {
 } from '@careerscope/core';
 import { createApp } from '../apps/api/src/app.js';
 import { collect } from '../apps/workers/search/src/collect.js';
-import { createRemoteOkProvider } from '@careerscope/providers';
+import { createRemoteOkProvider, type JobProvider } from '@careerscope/providers';
 import { selectUiBrowsers } from './ui-browsers.js';
+import { JOB_SOURCE_PERMISSION_PENDING_MESSAGE } from '@careerscope/shared';
 
 const configured = process.env.DATABASE_URL;
 assert.ok(configured);
@@ -53,9 +54,13 @@ const resumeStorage = new PrivateFileResumeStorage({ directory: objectDirectory,
 await resumeStorage.initialize();
 const filesQueue = new LocalQueue(process.env.QUEUE_REDIS_URL!);
 const filesQueueName = `test-files-${randomUUID()}`;
+const syntheticPermittedSources = new Set(['greenhouse', 'lever', 'ashby', 'workable']);
 let filesWorker: ReturnType<typeof spawn> | undefined;
 const app = await createApp(database, origin, async () => true, {
   registrationEnabled: true,
+  // The browser fixture uses only synthetic source data; production does not
+  // inject this approval bypass and remains bound to recorded profiles.
+  sourcePermitted: (source) => syntheticPermittedSources.has(source),
   resumeStorage,
 });
 try {
@@ -173,7 +178,7 @@ try {
       status: 'failed' as const,
       accepted: 1,
       limited: false,
-      errorCode: 'source_failed' as const,
+      errorCode: 'source_permission_pending' as const,
     },
   ];
   await database.completeCollection(
@@ -199,6 +204,35 @@ try {
       ...scored.jobs,
     ],
     sourceOutcomes,
+  );
+  // A separate approved-source failure keeps the retry control covered without
+  // making the historical Himalayas fixture look retryable before rights are
+  // recorded. Both the account and provider data are synthetic.
+  const retryableSearch = await database.createSearch(ownerId, 'browser-retry-fixture', {
+    query: 'Greenhouse Retry',
+    sources: ['greenhouse'],
+  });
+  const retryableCommand = (await database.unpublished()).find(
+    (entry) => entry.command.aggregateId === retryableSearch.id,
+  )!.command;
+  const retryableFence = await database.claim(retryableCommand.id);
+  assert.ok(retryableFence);
+  assert.equal(
+    await database.completeCollection(
+      retryableCommand,
+      retryableFence,
+      [],
+      [
+        {
+          source: 'greenhouse',
+          status: 'failed',
+          accepted: 0,
+          limited: false,
+          errorCode: 'source_failed',
+        },
+      ],
+    ),
+    true,
   );
   // A second, entirely unrelated owner with a real run and a real saved lead.
   // `/jobs?run=` and `/saved?lead=` are attacker-supplied input: these two ids
@@ -394,7 +428,9 @@ try {
       // never let the page look idle.
       const inflight = new Set<import('playwright').Request>();
       page.on('request', (request) => {
-        if (request.resourceType() !== 'eventsource') inflight.add(request);
+        const pathname = new URL(request.url()).pathname;
+        const isSearchEventStream = /^\/api\/searches\/[^/]+\/events$/.test(pathname);
+        if (request.resourceType() !== 'eventsource' && !isSearchEventStream) inflight.add(request);
       });
       page.on('requestfinished', (request) => inflight.delete(request));
       page.on('requestfailed', (request) => inflight.delete(request));
@@ -486,6 +522,63 @@ try {
       await page.getByRole('alert').filter({ hasText: 'Request failed.' }).waitFor();
       await selectFixtureAccount(accountEmail);
       await page.getByText('No searches yet.', { exact: true }).waitFor();
+      syntheticPermittedSources.clear();
+      syntheticPermittedSources.add('greenhouse');
+      const jobSources = await page.request.get(`${origin}/api/job-sources`);
+      assert.equal(jobSources.status(), 200);
+      assert.deepEqual(
+        (await jobSources.json()).items.map(
+          (source: { id: string; available: boolean; unavailableReason: string | null }) => [
+            source.id,
+            source.available,
+            source.unavailableReason !== null,
+          ],
+        ),
+        [
+          ['greenhouse', true, false],
+          ['lever', false, true],
+          ['ashby', false, true],
+          ['workable', false, true],
+        ],
+        `${engine} source catalog did not expose exact per-source permission state`,
+      );
+      const beforeDeniedSearch = Number(
+        (await database.pool.query<{ count: string }>('SELECT count(*) FROM search_runs')).rows[0]!
+          .count,
+      );
+      const session = await (await page.request.get(`${origin}/api/session`)).json();
+      const deniedSearch = await page.request.post(`${origin}/api/searches`, {
+        headers: {
+          origin,
+          'x-csrf-token': session.csrf,
+          'idempotency-key': `policy-${randomUUID()}`,
+        },
+        data: { query: 'Synthetic policy rejection', sources: ['lever'] },
+      });
+      assert.equal(deniedSearch.status(), 503);
+      const afterDeniedSearch = Number(
+        (await database.pool.query<{ count: string }>('SELECT count(*) FROM search_runs')).rows[0]!
+          .count,
+      );
+      assert.equal(afterDeniedSearch, beforeDeniedSearch, 'denied source created a search record');
+      await page.getByRole('link', { name: 'Jobs', exact: true }).click();
+      await page.getByRole('heading', { name: 'Find Your Next Role' }).waitFor();
+      const unavailableLever = page.getByRole('checkbox', { name: 'Lever', exact: true });
+      await unavailableLever.waitFor();
+      assert.equal(await unavailableLever.isDisabled(), true);
+      const leverReasonId = await unavailableLever.getAttribute('aria-describedby');
+      assert.ok(leverReasonId, `${engine} unavailable Lever source lacks an accessible reason`);
+      assert.equal(
+        await page.locator(`#${leverReasonId}`).textContent(),
+        JOB_SOURCE_PERMISSION_PENDING_MESSAGE,
+        `${engine} unavailable Lever source does not render its exact permission reason`,
+      );
+      syntheticPermittedSources.add('lever');
+      syntheticPermittedSources.add('ashby');
+      syntheticPermittedSources.add('workable');
+      await page.getByRole('link', { name: 'Dashboard', exact: true }).click();
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.getByRole('navigation', { name: 'CareerScope', exact: true }).waitFor();
       // WCAG 1.4.10 reflow: 320px at 200% zoom must not force horizontal scrolling.
       await page.setViewportSize({ width: 320, height: 512 });
       await page.evaluate(() => {
@@ -1325,7 +1418,7 @@ try {
         .getByRole('button', { name: /^React.*partial/s })
         .click();
       await page.getByRole('heading', { name: 'Senior React Engineer' }).waitFor();
-      for (const source of ['Greenhouse', 'Lever', 'Workable']) {
+      for (const source of ['Greenhouse', 'Lever', 'Ashby', 'Workable']) {
         const control = page.getByRole('checkbox', { name: source, exact: true });
         await control.check();
         assert.equal(await control.isChecked(), true);
@@ -1340,11 +1433,11 @@ try {
         .waitFor();
       await page
         .getByRole('list', { name: 'Source outcomes' })
-        .getByText('Himalayas: 1 accepted; source failed', { exact: true })
+        .getByText('Himalayas: 1 accepted; permission review pending', { exact: true })
         .waitFor();
       assert.equal(
-        await page.getByRole('button', { name: 'Retry failed sources', exact: true }).isEnabled(),
-        true,
+        await page.getByRole('button', { name: 'Retry failed sources', exact: true }).count(),
+        0,
       );
       assert.equal(resultBody.jobs[0].data.title, 'Scored React Engineer');
       assert.equal(resultBody.jobs[1].data.match, null);
@@ -1497,13 +1590,13 @@ try {
         .click();
       await page.getByLabel('Filter results').fill('');
       await page.getByLabel('Role or technology').fill('TypeScript');
-      await page.getByRole('checkbox', { name: 'Remote OK', exact: true }).uncheck();
+      await page.getByRole('checkbox', { name: 'Greenhouse', exact: true }).uncheck();
       assert.equal(
         await page.getByRole('button', { name: 'Search', exact: true }).isDisabled(),
         true,
       );
-      await page.getByRole('checkbox', { name: 'Himalayas', exact: true }).check();
-      await page.getByRole('checkbox', { name: 'Remote OK', exact: true }).check();
+      await page.getByRole('checkbox', { name: 'Greenhouse', exact: true }).check();
+      await page.getByRole('checkbox', { name: 'Lever', exact: true }).check();
       const submitted = page.waitForResponse(
         (response) =>
           response.url().endsWith('/api/searches') && response.request().method() === 'POST',
@@ -1517,8 +1610,8 @@ try {
       assert.equal(submission.status(), 202);
       const submittedId = (await submission.json()).runId;
       assert.deepEqual((await database.getSearch(ownerId, submittedId))?.request.sources, [
-        'himalayas',
-        'remoteok',
+        'greenhouse',
+        'lever',
       ]);
       await page.getByText('Search in progress', { exact: true }).waitFor();
       assert.equal((await progressStream).status(), 200);
@@ -1578,7 +1671,7 @@ try {
       await page.reload();
       await page
         .getByLabel('Search sources', { exact: true })
-        .getByText('Himalayas + Remote OK', { exact: true })
+        .getByText('Greenhouse + Lever', { exact: true })
         .waitFor();
       await page
         .getByRole('status')
@@ -1937,7 +2030,7 @@ try {
       await page.waitForURL(`${origin}/jobs`);
       await page
         .getByRole('navigation', { name: 'Search history' })
-        .getByRole('button', { name: /^React.*partial/s })
+        .getByRole('button', { name: /^Greenhouse Retry.*failed/s })
         .click();
       const retried = page.waitForResponse(
         (response) =>
@@ -1948,7 +2041,7 @@ try {
       assert.equal(retryResponse.status(), 202);
       const retryId = (await retryResponse.json()).runId;
       assert.deepEqual((await database.getSearch(ownerId, retryId))?.request.sources, [
-        'himalayas',
+        'greenhouse',
       ]);
       assert.equal((await database.getSearch(ownerId, search.id))?.status, 'partial');
       await database.cancelSearch(ownerId, retryId);
@@ -1965,26 +2058,30 @@ try {
       const profileRun = await database.getSearch(ownerId, profileId);
       assert.equal(profileRun?.request.useProfileTitles, true);
       assert.ok(profileRun?.matchingProfile?.preferences.titles.length);
+      const profileProvider: JobProvider = {
+        id: 'greenhouse',
+        kind: 'ats',
+        label: 'Greenhouse',
+        unavailableReason: null,
+        async *search(query) {
+          assert.deepEqual(
+            query.titles,
+            [
+              ...new Map(
+                profileRun!.matchingProfile!.preferences.titles.map((title) => [
+                  title.trim().replace(/\s+/g, ' ').toLowerCase(),
+                  title.trim().replace(/\s+/g, ' '),
+                ]),
+              ).values(),
+            ].slice(0, 5),
+          );
+          yield* [];
+        },
+      };
       const profileCollected = await collect(
         profileRun!.request,
         new AbortController().signal,
-        {
-          ...createRemoteOkProvider(),
-          async *search(query) {
-            assert.deepEqual(
-              query.titles,
-              [
-                ...new Map(
-                  profileRun!.matchingProfile!.preferences.titles.map((title) => [
-                    title.trim().replace(/\s+/g, ' ').toLowerCase(),
-                    title.trim().replace(/\s+/g, ' '),
-                  ]),
-                ).values(),
-              ].slice(0, 5),
-            );
-            yield* [];
-          },
-        },
+        profileProvider,
         undefined,
         { profile: profileRun!.matchingProfile },
       );
@@ -2033,30 +2130,48 @@ try {
           });
       }
       await page.getByRole('combobox', { name: 'Discovery mode' }).selectOption('query');
-      for (const source of ['Remote OK', 'Himalayas', 'Greenhouse', 'Lever', 'Workable'])
+      assert.deepEqual(
+        await page
+          .getByRole('group', { name: 'Sources' })
+          .getByRole('checkbox')
+          .evaluateAll((checkboxes) =>
+            checkboxes.map((checkbox) => ({
+              label: checkbox.parentElement?.textContent?.trim(),
+              disabled: (checkbox as HTMLInputElement).disabled,
+            })),
+          ),
+        [
+          { label: 'Greenhouse', disabled: false },
+          { label: 'Lever', disabled: false },
+          { label: 'Ashby', disabled: false },
+          { label: 'Workable', disabled: false },
+        ],
+        `${engine} source selector diverges from the approved D14 source set`,
+      );
+      for (const source of ['Greenhouse', 'Lever', 'Ashby', 'Workable'])
         await page.getByRole('checkbox', { name: source, exact: true }).check();
-      await page.getByLabel('Role or technology').fill('Five source acceptance');
-      const fiveSubmitted = page.waitForResponse(
+      await page.getByLabel('Role or technology').fill('Four source acceptance');
+      const fourSubmitted = page.waitForResponse(
         (response) =>
           response.url().endsWith('/api/searches') && response.request().method() === 'POST',
       );
       await page.getByRole('button', { name: 'Search', exact: true }).click();
-      const fiveResponse = await fiveSubmitted;
-      assert.equal(fiveResponse.status(), 202);
-      const fiveId = (await fiveResponse.json()).runId;
-      const fiveRun = await database.getSearch(ownerId, fiveId);
-      assert.equal(fiveRun?.request.sources.length, 5);
-      const fiveCommand = (await database.unpublished()).find(
-        (entry) => entry.command.aggregateId === fiveId,
+      const fourResponse = await fourSubmitted;
+      assert.equal(fourResponse.status(), 202);
+      const fourId = (await fourResponse.json()).runId;
+      const fourRun = await database.getSearch(ownerId, fourId);
+      assert.equal(fourRun?.request.sources.length, 4);
+      const fourCommand = (await database.unpublished()).find(
+        (entry) => entry.command.aggregateId === fourId,
       )!.command;
-      const fiveFence = await database.claim(fiveCommand.id);
-      assert.ok(fiveFence);
+      const fourFence = await database.claim(fourCommand.id);
+      assert.ok(fourFence);
       assert.equal(
         await database.completeCollection(
-          fiveCommand,
-          fiveFence,
+          fourCommand,
+          fourFence,
           [],
-          fiveRun!.request.sources.map((source) => ({
+          fourRun!.request.sources.map((source) => ({
             source,
             status: 'completed',
             accepted: 0,
@@ -2075,22 +2190,22 @@ try {
       await page
         .getByRole('list', { name: 'Source outcomes' })
         .getByRole('listitem')
-        .nth(4)
+        .nth(3)
         .waitFor();
       assert.equal(
         await page.getByRole('list', { name: 'Source outcomes' }).getByRole('listitem').count(),
-        5,
+        4,
       );
       // ---------------------------------------------------------------
       // Forensic audit F-3: a link to a discovery run must open THAT run.
-      // Five real runs exist for this owner by now, so "most recent" and
+      // Several real runs exist for this owner by now, so "most recent" and
       // "the one asked for" are genuinely different records — without that
       // the check could not fail. `search.id` is the oldest ("React",
-      // partial); `fiveId` is the newest ("Five source acceptance").
+      // partial); `fourId` is the newest ("Four source acceptance").
       const runOrder = await page.request.get(`${origin}/api/searches`);
       assert.equal(runOrder.status(), 200);
       const runIds = (await runOrder.json()).items.map((item: { id: string }) => item.id);
-      assert.equal(runIds[0], fiveId, `${engine} fixture: newest run is not the five-source run`);
+      assert.equal(runIds[0], fourId, `${engine} fixture: newest run is not the four-source run`);
       assert.ok(
         runIds.indexOf(search.id) > 0,
         `${engine} fixture: the run used for the deep-link check must not be the newest one`,
@@ -2119,7 +2234,7 @@ try {
       await resultHeading.waitFor();
       assert.match(
         (await resultHeading.textContent()) ?? '',
-        /^Five source acceptance/,
+        /^Four source acceptance/,
         `${engine} /jobs without ?run= no longer falls back to the most recent run`,
       );
       // Selecting a run keeps the URL in sync, and Back returns to the run
@@ -2129,12 +2244,12 @@ try {
       await page.goto(`${origin}/jobs?run=${search.id}`);
       await resultHeading.waitFor();
       await history
-        .getByRole('button', { name: /^Five source acceptance/ })
+        .getByRole('button', { name: /^Four source acceptance/ })
         .first()
         .click();
-      await page.waitForURL(`${origin}/jobs?run=${fiveId}`);
+      await page.waitForURL(`${origin}/jobs?run=${fourId}`);
       await page.waitForFunction(() =>
-        document.querySelector('.result-toolbar h2')?.textContent?.startsWith('Five source'),
+        document.querySelector('.result-toolbar h2')?.textContent?.startsWith('Four source'),
       );
       await page.goBack();
       await page.waitForURL(`${origin}/jobs?run=${search.id}`);
@@ -2215,7 +2330,7 @@ try {
         .locator('a')
         .evaluateAll((elements) => elements.map((element) => element.getAttribute('href')));
       assert.ok(
-        discoveryHrefs.includes(`/jobs?run=${fiveId}`),
+        discoveryHrefs.includes(`/jobs?run=${fourId}`),
         `${engine} Recent Discovery does not link runs by id (got ${discoveryHrefs.join(', ')})`,
       );
       assert.equal(

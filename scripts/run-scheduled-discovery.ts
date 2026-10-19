@@ -18,14 +18,7 @@
 import { setTimeout as delay } from 'node:timers/promises';
 import { Conflict, Database, ProfileRepository, configuration, logger } from '@careerscope/core';
 import type { CreateSearch } from '@careerscope/core';
-
-const ALL_SOURCES: CreateSearch['sources'] = [
-  'greenhouse',
-  'himalayas',
-  'lever',
-  'remoteok',
-  'workable',
-];
+import { permittedCandidateDiscoverySources } from '@careerscope/shared';
 
 /** Deterministic per calendar day (UTC), so a restart or an accidental
  * second invocation on the same day cannot double-enqueue - relies on
@@ -82,11 +75,27 @@ export async function runForOwner(
   now: Date,
   alert: Alerter,
   pollOptions: { deadlineMs: number; intervalMs: number },
-): Promise<'disabled' | 'skipped-no-titles' | 'completed' | 'partial' | 'failed' | 'alerted'> {
+  sources: readonly CreateSearch['sources'][number][] = permittedCandidateDiscoverySources(),
+): Promise<
+  | 'disabled'
+  | 'skipped-no-titles'
+  | 'skipped-no-permitted-sources'
+  | 'completed'
+  | 'partial'
+  | 'failed'
+  | 'alerted'
+> {
   const profile = await new ProfileRepository(database).get(ownerId);
   if (!profile?.scheduledDiscoveryEnabled) {
     logger.info({ ownerId }, 'Scheduled discovery disabled for this owner; not running');
     return 'disabled';
+  }
+  if (!sources.length) {
+    logger.info(
+      { ownerId },
+      'Scheduled discovery not enqueued: no source has a current permission profile',
+    );
+    return 'skipped-no-permitted-sources';
   }
 
   const firstTitle = profile.profile.preferences.titles[0]?.trim();
@@ -100,7 +109,7 @@ export async function runForOwner(
         firstTitle && firstTitle.length >= 2 ? firstTitle.slice(0, 160) : 'Scheduled discovery',
       useProfileTitles: true,
       origin: 'scheduled',
-      sources: ALL_SOURCES,
+      sources: [...sources],
     });
     searchId = search.id;
   } catch (error) {

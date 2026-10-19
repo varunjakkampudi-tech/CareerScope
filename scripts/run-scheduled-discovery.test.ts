@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Database, Auth, ProfileRepository, Conflict } from '@careerscope/core';
+const syntheticApprovedSources = ['greenhouse'] as const;
 import {
   dayKey,
   isMissingTitlesConflict,
@@ -166,10 +167,24 @@ test('runForOwner: disabled, missing-titles, and a settled run are all classifie
 
     await profiles.setScheduledDiscoveryEnabled(ownerId, true);
 
+    // Production has no approved source permission profile yet, so the
+    // scheduler must not create a doomed search or contact any provider.
+    assert.equal(
+      await runForOwner(database, ownerId, new Date(), alert, { deadlineMs: 10, intervalMs: 1 }),
+      'skipped-no-permitted-sources',
+    );
+
     // 3. Enabled, but the only saved title is unusable - a real, expected,
     // non-alertable skip, not a crash and not a silent success claim.
     assert.equal(
-      await runForOwner(database, ownerId, new Date(), alert, { deadlineMs: 10, intervalMs: 1 }),
+      await runForOwner(
+        database,
+        ownerId,
+        new Date(),
+        alert,
+        { deadlineMs: 10, intervalMs: 1 },
+        syntheticApprovedSources,
+      ),
       'skipped-no-titles',
     );
     assert.equal(alerts.length, 0);
@@ -205,10 +220,17 @@ test('runForOwner: disabled, missing-titles, and a settled run are all classifie
       }
     };
     const [outcome] = await Promise.all([
-      runForOwner(database, ownerId, new Date('2026-09-23T00:00:00.000Z'), alert, {
-        deadlineMs: 5_000,
-        intervalMs: 10,
-      }),
+      runForOwner(
+        database,
+        ownerId,
+        new Date('2026-09-23T00:00:00.000Z'),
+        alert,
+        {
+          deadlineMs: 5_000,
+          intervalMs: 10,
+        },
+        syntheticApprovedSources,
+      ),
       settleWhenCreated('scheduled-2026-09-23', 'completed'),
     ]);
     assert.equal(outcome, 'completed');
@@ -232,6 +254,7 @@ test('runForOwner: disabled, missing-titles, and a settled run are all classifie
         deadlineMs: 10,
         intervalMs: 1,
       },
+      syntheticApprovedSources,
     );
     assert.equal(repeat, 'completed');
     const { rows: countRows } = await database.pool.query<{ count: string }>(
@@ -242,10 +265,17 @@ test('runForOwner: disabled, missing-titles, and a settled run are all classifie
 
     // 6. A run that fails is alerted, not silently absorbed.
     const [failOutcome] = await Promise.all([
-      runForOwner(database, ownerId, new Date('2026-09-24T00:00:00.000Z'), alert, {
-        deadlineMs: 5_000,
-        intervalMs: 10,
-      }),
+      runForOwner(
+        database,
+        ownerId,
+        new Date('2026-09-24T00:00:00.000Z'),
+        alert,
+        {
+          deadlineMs: 5_000,
+          intervalMs: 10,
+        },
+        syntheticApprovedSources,
+      ),
       settleWhenCreated('scheduled-2026-09-24', 'failed'),
     ]);
     assert.equal(failOutcome, 'alerted');

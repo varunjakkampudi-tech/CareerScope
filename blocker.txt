@@ -181,13 +181,25 @@ v12 requirement / checklist item: D10/D13/D14, 4.6/4.14, checklist 4-6
 Status: READY_FOR_OWNER
 Problem: Runtime defaults include remote feeds; D14 launch set and per-source rights
   must be explicit. Public access alone does not grant redistribution/AI rights.
-Verified root cause: Current commands/collect source factories differ from D14;
-  no verified complete permitted-use/coverage record has been supplied.
-Current implementation: ATS/remote adapters, deterministic normalization/matching;
-  library portal scrapers disabled by default and not selectable in runtime enum.
+Verified root cause: No verified complete permitted-use/coverage record has been
+  supplied. Public availability is not authorization for collection, storage,
+  transformation, display, redistribution or AI processing.
+Current implementation: Source permission profiles fail closed by source and
+  capability; only the D14 ATS candidates Greenhouse, Lever, Ashby and Workable
+  can become eligible, and only with current, complete permission evidence.
+  API discovery, submission and worker execution enforce eligibility. If a
+  permission expires after queueing, the worker still runs other permitted
+  sources and records the denied source independently. No production profile is
+  currently approved, so discovery remains unavailable by default.
 Impact: No public discovery expansion or rights-cleared full-text claim is justified.
-What the agent already tried: Read enum/factories/registry; no job-source calls.
-Work completed: Planned source capability gate and source-by-source permission matrix.
+What the agent already tried: Inspected the source enum, provider factories,
+  API, worker, UI and scheduled discovery. Implemented the fail-closed
+  source-capability gate, API contract, user-visible pending state, worker-time
+  revalidation and scheduled-discovery skip. Synthetic tests only; no job-source
+  calls were made.
+Work completed: Local source allowlist, capability-profile schema, no-profile
+  default, API/UI/worker/scheduler enforcement, and mixed-permission regression
+  coverage. This does not establish actual source rights or launch coverage.
 Why autonomous resolution is unsafe or impossible: Agent cannot accept terms,
   contact providers/employers or invent collection/display/training rights.
 Exact owner action required: Supply permitted-use evidence and approve measured
@@ -205,9 +217,15 @@ Required environment-variable names (no values): Provider-specific names only on
   an approved adapter requires them; never attach tokens or agreements with secrets.
 External dependencies: Source permissions/licenses; owner coverage thresholds
 Expected result: Source allowlist and every data-use capability fail closed.
-Verification procedure: Denied-source no-network tests, provenance/rights tests,
-  golden-set metrics and owner-approved enabled set.
-Tests to rerun: Provider/collect/domain, API/UI, public SEO/right-gating suites
+  Current code verifies this using synthetic policy profiles; no source is
+  enabled without owner-recorded source-specific evidence.
+Verification procedure: Local denied-source no-call tests and mixed-permission
+  worker test; after owner supplies evidence, independently review every right,
+  then run authorized-source provenance, coverage and stale/duplicate golden-set
+  checks before enabling any profile. Public SSR/indexing requires its own
+  rights-gating acceptance and is not enabled by this policy alone.
+Tests to rerun: requirements, shared policy, worker/domain, API integration,
+  browser/axe, public SEO/right-gating suites
 Affected tasks: Discovery activation/public pages; not deterministic fixture tests
 Evidence references: GAP_MATRIX.md 4.6/4.14; approved v12 D10/D13/D14
 
