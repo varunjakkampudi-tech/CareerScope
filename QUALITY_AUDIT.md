@@ -52,9 +52,10 @@ revocation implementation was found. The active authentication design-index
 entries also contained stale Cognito-specific evidence. Those two descriptions
 are corrected; their approved visual references remain unchanged.
 
-The schema still declares `users.externalSubject`, introduced by historical
-migrations `0017_cognito_external_subject` and `0018_cognito_phone_identity`.
-Repository search found no non-schema runtime read/write of `externalSubject`.
+The schema still declares `users.externalSubject`, added by historical migration
+`0017_cognito_external_subject`; `0018_cognito_phone_identity` separately adds
+the phone identity column. Repository search found no non-schema runtime
+read/write of `externalSubject`.
 The migrations are retained as immutable history; removing an unused active
 schema declaration or dropping persisted data is a separate reviewed database
 change and has not been performed. AUTH-01 remains open; no OTP or provider
