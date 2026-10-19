@@ -52,3 +52,9 @@ design/ASSET-INVENTORY.txt
 design/MANIFEST.txt
 design/FINAL-DESIGN-ASSET-AUDIT.md
 design/archive/
+
+# Owner-approved immutable source snapshots; source hashes are checked by
+# requirements:check rather than rewriting approved document evidence.
+docs/requirements/CareerScope-v12.md
+docs/requirements/CareerScope-Engineering-Standards.md
+docs/requirements/CareerScope-Goal.md

@@ -6,16 +6,18 @@ Title: Authoritative documents and activation approval
 Priority: Critical
 Module: Governance
 v12 requirement / checklist item: Goal prerequisites; global standard 2.4
-Status: RESOLVED
+Status: VERIFIED
 Problem: Five sources and recorded activation authority were initially unavailable.
 Verified root cause: Initial search omitted Downloads; repository lacked approval.
 Current implementation: Five source hashes recorded; owner explicitly approved all
-  five on 20 October 2026 and authorized recording. Governance integration pending.
-Impact: Runtime implementation waits for the committed/verified transition.
+  five on 20 October 2026 and authorized recording. Governance commit
+  2a1eb65d67151c485cddd417b6c249146c017a35 is reviewed and verified on codex/dev.
+Impact: Activation prerequisite satisfied; ordinary authorized implementation may
+  proceed after its required baseline audit and per-change gates.
 What the agent already tried: Read-only source searches, source reading, backup.
 Work completed: Full source read, hashes, OA-2026-10-20-01, canonical contract.
 Why autonomous resolution is unsafe or impossible: No remaining approval question;
-  activation still requires actual review/commit verification, not this entry alone.
+  actual independent review/commit verification completed, not inferred from this entry.
 Exact owner action required: None for recording the approved transition.
 Step-by-step resolution instructions: Agent validates, independently reviews,
   commits and verifies development integration; main remains unchanged.
@@ -112,3 +114,139 @@ Verification procedure: Lockfile paths, current audits, lint/build/regression.
 Tests to rerun: Full dependency audit and applicable definition of done
 Affected tasks: Supply-chain affected integrations
 Evidence references: PROGRESS.md current executed evidence
+
+BLOCKER ID: AUTH-01
+Title: Current test access is not production OTP authentication
+Priority: Critical
+Module: Authentication
+v12 requirement / checklist item: D1/D11, section 4.1; checklist 1-3/7-8
+Status: OPEN
+Problem: Explicit proxy mode currently works with production NODE_ENV; no production
+  OTP/fallback, refresh-family/device or verified-signal recovery implementation.
+Verified root cause: test-users.ts, auth.ts, sessions schema and executable API read.
+Current implementation: Private two-account selector and opaque owned sessions.
+Impact: Cannot be a public production identity system under v12.
+What the agent already tried: Source/config/test inventory; no host changes.
+Work completed: Recorded startup-guard priority and independent OTP/token requirements.
+Why autonomous resolution is unsafe or impossible: Local work is authorized and
+  pending baseline audit; real provider acceptance needs owner configuration.
+Exact owner action required: None for local guard/mock implementation; see PROVIDER-01.
+Step-by-step resolution instructions: Agent adds environment guard and adversarial
+  startup tests, then approved OTP/session contracts, isolated tests and review.
+Required environment-variable names (no values): Current TEST_ACCESS_MODE,
+  TEST_PROXY_SECRET, NODE_ENV; explicit deployment-environment name to be designed.
+External dependencies: PROVIDER-01 for actual delivery; no real sends permitted now
+Expected result: Production cannot enable test selection; OTP and devices validated.
+Verification procedure: Production/staging/local matrix, denial/replay/concurrency
+  cases and isolated real DB/browser tests; real delivery reported separately.
+Tests to rerun: Auth, ownership, CSRF, cookie, provider outage, token-family regressions
+Affected tasks: Production sign-in acceptance; unrelated local engineering continues
+Evidence references: GAP_MATRIX.md 4.1; TEST_MATRIX.md AUTH-TEST-01/02
+
+BLOCKER ID: SOURCE-01
+Title: Launch-source policy and permitted-use evidence incomplete
+Priority: Critical
+Module: Discovery/public job pages
+v12 requirement / checklist item: D10/D13/D14, 4.6/4.14, checklist 4-6
+Status: READY_FOR_OWNER
+Problem: Runtime defaults include remote feeds; D14 launch set and per-source rights
+  must be explicit. Public access alone does not grant redistribution/AI rights.
+Verified root cause: Current commands/collect source factories differ from D14;
+  no verified complete permitted-use/coverage record has been supplied.
+Current implementation: ATS/remote adapters, deterministic normalization/matching;
+  library portal scrapers disabled by default and not selectable in runtime enum.
+Impact: No public discovery expansion or rights-cleared full-text claim is justified.
+What the agent already tried: Read enum/factories/registry; no job-source calls.
+Work completed: Planned source capability gate and source-by-source permission matrix.
+Why autonomous resolution is unsafe or impossible: Agent cannot accept terms,
+  contact providers/employers or invent collection/display/training rights.
+Exact owner action required: Supply permitted-use evidence and approve measured
+  launch city/role coverage thresholds when golden-set measurement is available.
+Step-by-step resolution instructions:
+  1. For each proposed source, provide the approved public ATS endpoint/company
+     permission or licensed agreement; exclude LinkedIn, keep portals gated.
+  2. Record collection, storage, transformation, AI, public display and redistribution
+     rights separately, including retention/attribution/expiry and review date.
+  3. Authorize only eligible source/fixture measurement; agent implements tests
+     without collecting real postings until that permission exists.
+  4. Review measured listing/stale/duplicate results by target city/role and record
+     thresholds; unsupported coverage falls back to authorized postings/user links.
+Required environment-variable names (no values): Provider-specific names only once
+  an approved adapter requires them; never attach tokens or agreements with secrets.
+External dependencies: Source permissions/licenses; owner coverage thresholds
+Expected result: Source allowlist and every data-use capability fail closed.
+Verification procedure: Denied-source no-network tests, provenance/rights tests,
+  golden-set metrics and owner-approved enabled set.
+Tests to rerun: Provider/collect/domain, API/UI, public SEO/right-gating suites
+Affected tasks: Discovery activation/public pages; not deterministic fixture tests
+Evidence references: GAP_MATRIX.md 4.6/4.14; approved v12 D10/D13/D14
+
+BLOCKER ID: PROVIDER-01
+Title: Primary/fallback OTP and notification provider acceptance
+Priority: Critical
+Module: Authentication/notifications
+v12 requirement / checklist item: D1/D9/D11; 4.1/4.15; checklist 1-3
+Status: READY_FOR_OWNER
+Problem: No verified primary/fallback account/domain and independent test delivery
+  evidence supplied. Mock tests cannot prove real provider integration.
+Verified root cause: Current API has no OTP provider integration; v12 external list.
+Current implementation: No production email login; no provider call made in audit.
+Impact: Production OTP/failover/deliverability cannot pass.
+What the agent already tried: Source review; no account creation, paid call or send.
+Work completed: Local adapters/outage/quota tests planned independently of accounts.
+Why autonomous resolution is unsafe or impossible: Accounts, DNS, secret values,
+  spend limits and real communications are owner-controlled.
+Exact owner action required: Provide separately authorized staging provider access
+  through protected environment channels and choose/provision the fallback provider.
+Step-by-step resolution instructions:
+  1. Owner signs into the approved Resend account and completes its domain ownership
+     and sender verification using the current provider-issued DNS instructions.
+     Do not paste DNS secret material or API keys into chat or Git.
+  2. Owner chooses/provisions a second email provider and independently verifies
+     required SPF/DKIM/DMARC and sending domain; no agent-created account.
+  3. After local adapter configuration is implemented, set its documented exact
+     variable names in isolated staging secrets, scoped only to sending test mail.
+     Provider credential names are not invented before the adapter exists.
+  4. Record explicit allowed recipients, test authorization and spend/quota cap
+     before any live verification. Current authorization permits mocks only.
+  5. Run approved single-provider/failover/both-down/restore tests and retain only
+     sanitized request IDs/statuses, not OTP codes, payloads or personal data.
+Required environment-variable names (no values): Pending implemented adapter contract
+External dependencies: Resend, fallback provider, DNS owner, separate staging
+Expected result: Actual OTP/fallback acceptance with no production test shortcut.
+Verification procedure: Provider sandbox/live test evidence distinct from mock runs.
+Tests to rerun: OTP/outage/abuse/notification delivery and production config guards
+Affected tasks: Hosted sign-in/notification acceptance; local implementation unblocked
+Evidence references: TEST_MATRIX.md AUTH-TEST-02/MESSAGE-TEST-01
+
+BLOCKER ID: LEGAL-01
+Title: Privacy, rights and trust text require legal/human review
+Priority: High
+Module: Privacy/trust
+v12 requirement / checklist item: 9/10/12; checklist 23-25
+Status: READY_FOR_OWNER
+Problem: No counsel review/current official applicability evidence has been supplied.
+Verified root cause: Approved v12 marks these external dependencies To do; no legal
+  approval record observed. This does not assert any legal commencement date.
+Current implementation: Existing privacy documentation, not compliance certification.
+Impact: Published legal/consent/age/verification/outreach claims cannot be certified.
+What the agent already tried: Read approved requirements and current privacy docs.
+Work completed: Technical data-inventory/deletion/consent work can proceed locally.
+Why autonomous resolution is unsafe or impossible: Counsel and real-user acceptance
+  cannot be simulated; no agent may claim legal approval or accept terms.
+Exact owner action required: Arrange counsel and native-language review of the
+  versioned data inventory, notices, retention, processors, consent and terms.
+Step-by-step resolution instructions:
+  1. Provide counsel the completed technical data-flow/inventory and proposed copy.
+  2. Counsel verifies official applicable notifications, required grievance/breach
+     duties, retention exceptions and cross-border/provider disclosures.
+  3. Record approver/date/document or string versions and exact required changes.
+  4. Arrange Telugu/Hindi safety/legal/consent review and genuine manual accessibility
+     acceptance; preserve reviewer/tool/environment/SHA, never fabricate results.
+Required environment-variable names (no values): None
+External dependencies: Counsel; authorized human/native-language/device reviewers
+Expected result: Version-bound legal and human acceptance with technical retests.
+Verification procedure: Trace review to current copy/data behavior and open findings.
+Tests to rerun: Privacy/deletion/consent, localization, accessibility and regression
+Affected tasks: Legal/trust launch acceptance; not safe technical implementation
+Evidence references: GAP_MATRIX.md 9/10; TEST_MATRIX.md HUMAN-TEST-01/LEGAL-TEST-01

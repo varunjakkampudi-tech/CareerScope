@@ -22,3 +22,14 @@ An agent lacking the complete source must request access; this summary/register
 does not replace the documents. A hash change requires reconciliation, not silent
 inheritance of approval. Product decisions, legal/provider permissions, actual CI,
 hosted evidence and production GO are separate from this approval.
+
+The three CareerScope documents now have immutable canonical snapshots beside this
+register. v12 and Engineering Standards retain the exact supplied SHA256. Goal's
+CRLF line endings were normalized to repository LF and Markdown two-space hard
+breaks converted to equivalent backslash hard breaks, and a final LF appended;
+its canonical SHA256 is
+`11e61b5b28d2e5bfc736ebfa9e0272b7ee5f2996233db0ea75bdc1ae06daf9c9`.
+That exact deterministic transformation was compared against the approved original
+with no wording changes. The original Goal hash remains the approved identity.
+`npm run requirements:check` enforces canonical snapshot integrity. These snapshots
+are not editable working plans; changes require explicit source reconciliation.

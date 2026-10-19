@@ -1,0 +1,9 @@
+# Change and rollback register
+
+| Integration / task                         | Scope                                                                                   | Evidence                                                                                   | Risk / migrations                                                     | Recovery                                                                                                                                     |
+| ------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `2a1eb65d67151c485cddd417b6c249146c017a35` | OA-2026-10-20-01 governance/source register and thin AGENTS entry point                 | Independent governance_review APPROVE; format/privacy/EOL/diff checks; baseline gate suite | Documentation/policy only; no schema/runtime/settings/provider change | Retain commit/history; if correction needed, apply a new reviewed governance commit, never rewrite history or silently revoke owner approval |
+| Current baseline-audit task                | Approved source snapshots, initial gap/test/quality inventories and activation evidence | Independent baseline_audit_review APPROVE; source-integrity 4/4; format and diff checks    | No runtime/schema change; source snapshots immutable                  | New corrective commit; preserve approval hashes and disclose Goal LF, hard-break and final-newline normalization                             |
+
+Main remains at `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`. Nothing in
+this register authorizes production, protected-main promotion or external actions.

@@ -3,9 +3,12 @@
 ## Activation checkpoint
 
 - Owner approval: OA-2026-10-20-01, dated 20 October 2026.
-- Activation: APPROVED_PENDING_GOVERNANCE_INTEGRATION.
+- Activation: ACTIVE for authorized development only.
+- Governance transition: `2a1eb65d67151c485cddd417b6c249146c017a35`, independently
+  reviewed, committed and fast-forward integrated into `codex/dev`. Verified
+  baseline ancestry and clean worktree before beginning this audit task.
 - Existing baseline: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
-- Development integration: `codex/dev`; current task: governance activation.
+- Development integration: `codex/dev`; current task: v12 baseline audit.
 - Main is not modified, pushed or merged. No production/provider actions performed.
 - Existing GitHub main protection query returned HTTP 404 (not protected); branch
   rules query returned an empty array. No repository setting was changed.
@@ -47,9 +50,47 @@ scope and activation boundaries. Its scope was governance only, not product
 certification; supplied baseline test/backup/hosted-query evidence was not rerun
 by that reviewer. Format/privacy/EOL/diff checks for the transition passed.
 
-First independently review/commit/verify this governance transition. Then complete
-the source-grounded gap/test/category matrices and critical-path audit before
-runtime implementation. Prioritize security/data integrity and approval-compliant
+The governance transition is verified. Complete and independently review the
+source-grounded baseline matrices and critical-path audit before runtime
+implementation. Prioritize security/data integrity and approval-compliant
 source policy, followed by the complete v12 launch core in dependency order.
 No percentage is claimed until the requirement denominator is derived and verified.
 Historical R1 cleanup reports remain history, not v12 implementation proof.
+
+## Baseline audit task (not yet integrated)
+
+The three approved CareerScope source documents are now canonical immutable
+snapshots; no cross-product program status or private path is published.
+Goal's CRLF was normalized to LF and two-space Markdown hard breaks converted
+to equivalent backslash breaks, and a final LF appended, with exact
+transformed-content comparison;
+the source register preserves both identities. A dependency-free check plus
+negative-control tests refuses missing/changed snapshots. Formatting exemptions
+apply only to those byte-preserved sources, not executable code or working docs.
+
+GAP_MATRIX.md, TEST_MATRIX.md, QUALITY_AUDIT.md, product profile and initial
+threat model record current limitations. A 319-item source inventory preserves
+all numbered/bulleted/table and selected normative narrative clauses; duplicates
+across decisions/capability/acceptance tables are not independent feature counts.
+The large approved Goal snapshot and generated JSON inventory exceed 400 lines
+because they preserve source/evidence traceability, not oversized runtime modules.
+No reviewed specification approval or test coverage is inferred from generation.
+
+Full dependency path investigation identifies the five high entries as the
+Next ESLint plugin > fast-glob > micromatch > braces chain. Registry metadata
+still reports braces 3.0.3 as latest; advisory affects <=3.0.3. The newer plugin
+16.4.2 also declares fast-glob 3.3.1. No unsupported downgrade or security scan
+suppression is used to manufacture an audit pass; remediation options remain open.
+
+Independent `baseline_audit_review` returned APPROVE after fresh review of the
+current source transformation, 319 unique source-matching inventory items and
+25 NOT_VERIFIED go/no-go gates. No product or release certification was inferred.
+The review's final-newline provenance correction and two omitted normative clauses
+were applied before approval. Source-integrity tests passed 4/4; exact transformed
+Goal comparison, complete formatting check and staged/unstaged diff checks passed.
+The complete Node 24 local gate suite then exited 0: policy 4/4, source 4/4,
+privacy 3/3 and scan, deployment fixtures, EOL, lint, 45-file typecheck and
+42/42 unit tests. An additional CLI-execution test was independently reviewed
+APPROVE and rerun 5/5 with source-checker coverage of 94.74% lines, 85.71%
+branches and 100% functions. This coverage is only for the new source checker,
+not application-wide coverage. No hosted, database or browser run is claimed.
