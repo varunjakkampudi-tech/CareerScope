@@ -1,11 +1,11 @@
 # CareerScope v12 critical-path audit
 
 **Status:** planning evidence only; not implementation approval, launch
-certification, risk acceptance, or production GO.  
+certification, risk acceptance, or production GO.
 **Source of truth:** the owner-approved source register in
 [`docs/requirements/SOURCE-REGISTER.md`](requirements/SOURCE-REGISTER.md),
 CareerScope v12 sections 1, 4, 6–10, 12–15, the observed-code gap matrix, test
-matrix, and [`docs/GO-NO-GO.md`](GO-NO-GO.md).  
+matrix, and [`docs/GO-NO-GO.md`](GO-NO-GO.md).
 **Baseline inspected:** development integration commit `50eadcb3ec8224aece178eb3981290d0b4e6e226`;
 this audit does not change runtime behavior.
 
