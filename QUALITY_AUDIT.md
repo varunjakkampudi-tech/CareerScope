@@ -1,5 +1,12 @@
 # CareerScope initial v12 quality audit
 
+21 October integration update: independent auth, application-evidence and
+browser-harness reviews passed after fixing signup's disabled-selector capability
+check, popup proof, exact 503 text and route/request-settlement assertions.
+Current executed local evidence and the unchanged full-audit dependency findings
+are recorded in [the consolidation report](docs/MAIN-CONSOLIDATION-2026-10-21.md).
+This update does not replace the baseline audit or certify the full v12 scope.
+
 Baseline runtime: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
 Governance: `2a1eb65d67151c485cddd417b6c249146c017a35`.
 Scope: initial source/governance/contract assessment, not final certification.

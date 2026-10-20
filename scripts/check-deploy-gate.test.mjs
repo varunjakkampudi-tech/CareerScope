@@ -265,3 +265,33 @@ test('the root CI service topology is disposable, loopback-only and recovery-com
   assert.match(workflow, /Start production frontend for browser acceptance/);
   assert.match(workflow, /Stop production frontend test server\s+if: always\(\)/);
 });
+
+test('pull requests to main run the read-only service-backed CI and browser checks', () => {
+  const workflow = readFileSync(resolve('.github/workflows/ci.yml'), 'utf8');
+  const document = parseDocument(workflow);
+  assert.equal(document.errors.length, 0, document.errors.map((error) => error.message).join('\n'));
+  const parsed = document.toJS();
+
+  assert.deepEqual(parsed.on.pull_request.branches, ['main']);
+  assert.deepEqual(parsed.on.pull_request.types, [
+    'opened',
+    'synchronize',
+    'reopened',
+    'ready_for_review',
+  ]);
+  assert.match(parsed.jobs.services.if, /github\.event_name == 'pull_request'/);
+  for (const stepName of [
+    'Start production frontend for browser acceptance',
+    'Install selected Playwright browser and system dependencies',
+    'Run browser, axe accessibility, keyboard, and responsive checks',
+  ]) {
+    const step = parsed.jobs.services.steps.find((item) => item.name === stepName);
+    assert.ok(step, `missing CI step: ${stepName}`);
+    assert.match(
+      step.if,
+      /github\.event_name == 'pull_request'/,
+      `${stepName} skips pull requests`,
+    );
+  }
+  assert.equal(parsed.permissions.contents, 'read');
+});

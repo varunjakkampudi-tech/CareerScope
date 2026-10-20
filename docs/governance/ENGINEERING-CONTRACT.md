@@ -15,18 +15,24 @@ program does not expand product scope. Record material conflicts READY_FOR_OWNER
 
 ## Git and independent review
 
-- Integration branch: `codex/dev`; task branches: `codex/task/<id>-<slug>`.
-- Never push or merge to `main`, force-push, rewrite published history, bypass
-  protection, or change GitHub settings. Production remains owner-only.
-- No agent-created pull requests. Integrate coherent validated changes locally,
-  sequentially, preserving the complete existing history.
+- Permanent integration branch: `main`. The owner's 21 October 2026 direct
+  instruction supersedes the earlier `codex/dev`-only restriction and authorizes
+  local integration followed by a normal push to the currently unprotected main.
+  Temporary task branches/worktrees are optional isolation, not permanent stages.
+- Preserve history and all owner work. Never force-push, rewrite published
+  history, bypass protection, or change GitHub settings. Production remains
+  owner-only. Recheck remote main before integration and before pushing.
+- Integrate coherent validated changes locally and sequentially. Hosted Actions
+  evidence remains unavailable while Actions is disabled; disclose this limit.
+  This owner-authorized repository synchronization is not production acceptance.
 - Before major changes: verified external all-ref bundle, SHA256, recovery clone,
   ref comparison and fsck. Preserve owner edits; use separate worktrees if dirty.
 - One writer per branch. Independent review uses a separate session receiving
   requirements, diff, surrounding code and test results, not writer reasoning.
 - Sensitive auth/authorization/personal-data migration/outbound messaging/deletion
-  changes remain on task branches until independent review. Owner review is
-  required before eventual promotion. No self-approval or simulated review.
+  changes require independent review before integration. No self-approval or
+  simulated review. The owner has authorized this consolidation into main;
+  production promotion still requires separate owner acceptance.
 - Keep a change/rollback register. No destructive rollback of personal data.
 
 ## Product invariants

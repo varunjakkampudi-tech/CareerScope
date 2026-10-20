@@ -282,7 +282,7 @@ test('Swagger documents every runtime route without changing validation and prot
         assert.deepEqual(
           spec.paths['/api/leads/{id}'].put.requestBody.content['application/json'].schema
             .properties.status.enum,
-          ['saved', 'applied', 'interviewing', 'offer', 'rejected', 'archived'],
+          ['saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived'],
         );
         assert.match(
           spec.paths['/api/resumes'].post.description,
@@ -3032,9 +3032,22 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
         // 'applied' became a real pipeline stage; 'hired' is still not one, so
         // this keeps asserting that an unknown status is refused.
         { revision: 1, notes: '', status: 'hired' },
+        { revision: 1, notes: '', status: 'applied' },
         { revision: 0, notes: '', status: 'saved' },
         { revision: 1, notes: 'x'.repeat(10001), status: 'saved' },
         { revision: 1, notes: '', status: 'saved', ownerId },
+        {
+          revision: 1,
+          notes: '',
+          status: 'applied',
+          applicationEvidence: {
+            method: 'Employer website',
+            appliedAt: new Date(Date.now() + 60_000).toISOString(),
+            confirmation: 'unknown',
+            source: '',
+            confidence: 'unknown',
+          },
+        },
       ])
         assert.equal(
           (await app.inject({ method: 'PUT', url: leadUrl, cookies, headers, payload: invalid }))
@@ -3143,6 +3156,138 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
       ).rows[0].id;
       const secondLead = await leadRepository.save(ownerId, { jobId: secondJob });
       assert.ok(secondLead);
+      const appliedWithoutEvidence = await app.inject({
+        method: 'PUT',
+        url: `/api/leads/${secondLead.id}`,
+        cookies,
+        headers,
+        payload: { revision: 1, notes: '', status: 'applied' },
+      });
+      assert.equal(appliedWithoutEvidence.statusCode, 400);
+      assert.equal((await leadRepository.get(ownerId, secondLead.id))?.status, 'saved');
+      assert.equal((await leadRepository.get(ownerId, secondLead.id))?.revision, 1);
+
+      const candidateClaim = {
+        method: 'Employer website',
+        appliedAt: new Date(Date.now() - 60_000).toISOString(),
+        confirmation: 'received',
+        source: 'Candidate reported confirmation email',
+        confidence: 'medium',
+      };
+      const applied = await app.inject({
+        method: 'PUT',
+        url: `/api/leads/${secondLead.id}`,
+        cookies,
+        headers,
+        payload: {
+          revision: 1,
+          notes: '',
+          status: 'applied',
+          applicationEvidence: candidateClaim,
+        },
+      });
+      assert.equal(applied.statusCode, 200, applied.body);
+      assert.equal(applied.json().status, 'applied');
+      assert.deepEqual(applied.json().applicationEvidence, candidateClaim);
+      assert.equal(applied.json().revision, 2);
+      const duplicateClaim = await app.inject({
+        method: 'PUT',
+        url: `/api/leads/${secondLead.id}`,
+        cookies,
+        headers,
+        payload: {
+          revision: 2,
+          notes: '',
+          status: 'applied',
+          // Property order intentionally differs from the first request: the
+          // persisted value is PostgreSQL jsonb, whose object order is not an
+          // API-level semantic difference.
+          applicationEvidence: {
+            confidence: candidateClaim.confidence,
+            source: candidateClaim.source,
+            method: candidateClaim.method,
+            confirmation: candidateClaim.confirmation,
+            appliedAt: candidateClaim.appliedAt,
+          },
+        },
+      });
+      assert.equal(duplicateClaim.statusCode, 200, duplicateClaim.body);
+      assert.equal(duplicateClaim.json().revision, 2);
+      for (const path of [`/api/leads/${secondLead.id}`, `/api/leads/${secondLead.id}/history`]) {
+        const foreignRead: { statusCode: number; body: string } = await app.inject({
+          url: path,
+          cookies: { [cookieValue.name]: otherToken },
+        });
+        assert.equal(foreignRead.statusCode, 404);
+        assert.doesNotMatch(foreignRead.body, /Candidate reported confirmation|Employer website/);
+      }
+      await assert.rejects(
+        database.pool.query(
+          `UPDATE saved_leads SET application_evidence = $1::jsonb WHERE owner_id = $2 AND id = $3`,
+          [JSON.stringify({ ...candidateClaim, unrecognized: true }), ownerId, secondLead.id],
+        ),
+      );
+      const applicationHistory = await app.inject({
+        url: `/api/leads/${secondLead.id}/history`,
+        cookies,
+      });
+      assert.equal(applicationHistory.statusCode, 200);
+      const claimEntry = applicationHistory.json().items[0];
+      assert.equal(claimEntry.revision, 2);
+      assert.equal(claimEntry.previousStatus, 'saved');
+      assert.equal(claimEntry.status, 'applied');
+      assert.equal(claimEntry.notesChanged, false);
+      assert.equal(claimEntry.applicationEvidenceChanged, true);
+      assert.deepEqual(claimEntry.applicationEvidence, candidateClaim);
+      const removedClaim = await app.inject({
+        method: 'PUT',
+        url: `/api/leads/${secondLead.id}`,
+        cookies,
+        headers,
+        payload: {
+          revision: 2,
+          notes: '',
+          status: 'applied',
+          applicationEvidence: null,
+        },
+      });
+      assert.equal(removedClaim.statusCode, 400);
+      assert.deepEqual(
+        (await leadRepository.get(ownerId, secondLead.id))?.applicationEvidence,
+        candidateClaim,
+      );
+      const archivedApplication = await app.inject({
+        method: 'PUT',
+        url: `/api/leads/${secondLead.id}`,
+        cookies,
+        headers,
+        payload: { revision: 2, notes: '', status: 'archived' },
+      });
+      assert.equal(archivedApplication.statusCode, 200, archivedApplication.body);
+      assert.equal(archivedApplication.json().status, 'archived');
+      assert.deepEqual(archivedApplication.json().applicationEvidence, candidateClaim);
+      const restoredApplication = await app.inject({
+        method: 'PUT',
+        url: `/api/leads/${secondLead.id}`,
+        cookies,
+        headers,
+        payload: { revision: 3, notes: '', status: 'saved' },
+      });
+      assert.equal(restoredApplication.statusCode, 200, restoredApplication.body);
+      assert.equal(restoredApplication.json().status, 'saved');
+      assert.deepEqual(restoredApplication.json().applicationEvidence, candidateClaim);
+      const restoredHistory = await app.inject({
+        url: `/api/leads/${secondLead.id}/history`,
+        cookies,
+      });
+      assert.deepEqual(
+        restoredHistory
+          .json()
+          .items.slice(0, 2)
+          .map((entry: { status: string }) => entry.status),
+        ['saved', 'archived'],
+      );
+      assert.equal(restoredHistory.json().items[0].applicationEvidenceChanged, false);
       await database.pool.query('UPDATE saved_leads SET created_at = $1 WHERE owner_id = $2', [
         '2026-09-14T00:00:00.123456Z',
         ownerId,

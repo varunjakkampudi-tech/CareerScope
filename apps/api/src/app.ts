@@ -257,7 +257,7 @@ export async function createApp(
     : undefined;
   const registrationAvailable =
     options.registrationEnabled === true &&
-    options.testAccess === undefined &&
+    (options.testAccess === undefined || options.testAccess.mode === 'disabled') &&
     options.emailOtp !== undefined &&
     registrationPolicy !== undefined;
   const market = new MarketRepository(database.pool);
@@ -461,15 +461,16 @@ export async function createApp(
     // not a privacy leak (never used for anything but a real initials
     // avatar on the Dashboard, CS-49) - deliberately not joined into
     // Auth.session() itself, which many other routes rely on staying minimal.
-    const owner = await database.pool.query<{ email: string | null }>(
-      'SELECT email FROM users WHERE id = $1',
-      [session.ownerId],
-    );
+    const owner = await database.pool.query<{
+      email: string | null;
+      email_verified_at: Date | null;
+    }>('SELECT email, email_verified_at FROM users WHERE id = $1', [session.ownerId]);
     return {
       authenticated: true,
       csrf: session.csrf,
       sessionId: session.sessionId,
       email: owner.rows[0]?.email,
+      emailVerifiedAt: owner.rows[0]?.email_verified_at?.toISOString() ?? null,
       emailOtpEnabled: options.emailOtp !== undefined,
       testUser: options.testAccess
         ? testUsers.find((user) => user.id === session.ownerId)?.role

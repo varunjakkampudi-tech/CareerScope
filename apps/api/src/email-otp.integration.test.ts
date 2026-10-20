@@ -69,6 +69,9 @@ test(
         ],
       );
       appOne = await createApp(database, origin, limiterOne.consume, {
+        // Match the executable production composition: a disabled selector is
+        // explicit and must not disable the separately configured OTP signup.
+        testAccess: { mode: 'disabled' },
         emailOtp: { secret, provider },
         registrationEnabled: true,
         registrationPolicy: {
@@ -80,6 +83,7 @@ test(
         },
       });
       appTwo = await createApp(database, origin, limiterTwo.consume, {
+        testAccess: { mode: 'disabled' },
         emailOtp: { secret, provider },
         registrationEnabled: true,
         registrationPolicy: {
@@ -90,6 +94,11 @@ test(
           marketingVersion: 'marketing-test-1',
         },
       });
+
+      const productionSession = (await appOne.inject('/api/session')).json();
+      assert.equal(productionSession.registrationEnabled, true);
+      assert.equal(productionSession.testUsersEnabled, false);
+      assert.deepEqual(productionSession.testAccounts, []);
 
       const requestCode = (
         app: FastifyInstance,

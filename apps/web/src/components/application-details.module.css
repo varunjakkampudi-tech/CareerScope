@@ -145,6 +145,10 @@
   background: var(--dash-status-archived-bg);
   color: var(--dash-status-archived-fg);
 }
+.statusBadge[data-status='withdrawn'] {
+  background: var(--dash-status-withdrawn-bg);
+  color: var(--dash-status-withdrawn-fg);
+}
 .statusDot {
   width: 6px;
   height: 6px;
@@ -362,6 +366,47 @@
   display: flex;
   flex-direction: column;
   gap: var(--dash-space-2);
+}
+
+.evidenceForm {
+  display: grid;
+  gap: var(--dash-space-3);
+  margin-top: var(--dash-space-4);
+  padding: var(--dash-space-4);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-card-radius);
+  background: var(--dash-surface-subtle);
+}
+.evidenceForm h3,
+.evidenceForm p {
+  margin: 0;
+}
+.evidenceForm p {
+  color: var(--dash-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.evidenceForm label {
+  display: grid;
+  gap: var(--dash-space-1);
+  font-size: 14px;
+  font-weight: 600;
+}
+.evidenceForm input,
+.evidenceForm select {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid var(--dash-control-border);
+  border-radius: 8px;
+  background: var(--dash-surface);
+  color: var(--dash-ink);
+  font: inherit;
+}
+.evidenceForm input:focus-visible,
+.evidenceForm select:focus-visible {
+  outline: 3px solid var(--dash-focus);
+  outline-offset: 2px;
 }
 
 /* Documents + Notes */

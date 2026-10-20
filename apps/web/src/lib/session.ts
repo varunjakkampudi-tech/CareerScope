@@ -13,6 +13,7 @@ export type Session = {
   csrf?: string;
   sessionId?: string;
   email?: string;
+  emailVerifiedAt?: string | null;
   registrationEnabled?: boolean;
   legalDocuments?: {
     termsVersion: string;

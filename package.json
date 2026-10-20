@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "test": "npm run test:unit",
-    "test:unit": "npm run build:core && node --import tsx --test apps/api/src/rate-limit.test.ts packages/core/src/commands.test.ts packages/core/src/email-otp-challenges.clock.test.ts packages/core/src/email-otp-delivery.test.ts packages/core/src/email-otp.test.mjs packages/core/src/file-storage.test.ts packages/core/src/profile.test.ts packages/core/src/test-users.test.ts apps/workers/search/src/collect.test.ts apps/web/src/lib/api.test.ts scripts/ui-browsers.test.ts",
+    "test:unit": "npm run build:core && node --import tsx --test apps/api/src/rate-limit.test.ts packages/core/src/commands.test.ts packages/core/src/email-otp-challenges.clock.test.ts packages/core/src/email-otp-delivery.test.ts packages/core/src/email-otp.test.mjs packages/core/src/file-storage.test.ts packages/core/src/profile.test.ts packages/core/src/test-users.test.ts apps/workers/search/src/collect.test.ts apps/web/src/lib/api.test.ts scripts/ui-browsers.test.ts scripts/ui-requests.test.ts",
     "test:ui": "node --env-file=.env --import tsx scripts/check-ui.ts",
     "test:visual": "node --import tsx scripts/visual-regression.ts",
     "test:queue-runtime": "npm run build:core && node --env-file=.env --import tsx --test scripts/check-queue-runtime.ts",

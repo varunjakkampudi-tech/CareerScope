@@ -19,6 +19,7 @@ import type { CollectedJob, SourceOutcome } from './jobs.js';
 import type { WritableProfile, MatchingProfile } from './profile.js';
 import type { z } from 'zod';
 import type { parsedResumeSchema } from './resume-parser.js';
+import type { ApplicationEvidence } from './leads.js';
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey(),
@@ -327,9 +328,12 @@ export const leads = pgTable(
     // A job search is a pipeline, not a bookmark list. Widening this is additive:
     // every existing row is 'saved' or 'archived' and stays valid.
     status: text('status')
-      .$type<'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'archived'>()
+      .$type<
+        'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'archived'
+      >()
       .notNull()
       .default('saved'),
+    applicationEvidence: jsonb('application_evidence').$type<ApplicationEvidence | null>(),
     // Stamped on every status change so "nothing has moved in three weeks" is a
     // question the data can answer.
     statusChangedAt: timestamp('status_changed_at', { withTimezone: true }).defaultNow().notNull(),
@@ -357,7 +361,24 @@ export const leads = pgTable(
     check('lead_revision_positive', sql`${table.revision} > 0`),
     check(
       'lead_status_valid',
-      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'archived')`,
+      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived')`,
+    ),
+    check(
+      'lead_application_evidence_valid',
+      sql`${table.applicationEvidence} IS NULL OR (
+        jsonb_typeof(${table.applicationEvidence}) = 'object'
+        AND ${table.applicationEvidence} ?& ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']
+        AND (${table.applicationEvidence} - ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']::text[]) = '{}'::jsonb
+        AND jsonb_typeof(${table.applicationEvidence}->'method') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'method')) BETWEEN 1 AND 120
+        AND jsonb_typeof(${table.applicationEvidence}->'appliedAt') = 'string'
+        AND jsonb_typeof(${table.applicationEvidence}->'confirmation') = 'string'
+        AND ${table.applicationEvidence}->>'confirmation' IN ('unknown', 'received', 'not_received')
+        AND jsonb_typeof(${table.applicationEvidence}->'source') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'source')) <= 160
+        AND jsonb_typeof(${table.applicationEvidence}->'confidence') = 'string'
+        AND ${table.applicationEvidence}->>'confidence' IN ('unknown', 'low', 'medium', 'high')
+      )`,
     ),
     check(
       'lead_liveness_status_valid',
@@ -375,9 +396,16 @@ export const leadHistory = pgTable(
     leadId: uuid('lead_id').notNull(),
     revision: integer('revision').notNull(),
     status: text('status')
-      .$type<'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'archived'>()
+      .$type<
+        'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'archived'
+      >()
       .notNull(),
     notesChanged: integer('notes_changed').notNull(),
+    previousStatus: text('previous_status').$type<
+      'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'archived' | null
+    >(),
+    applicationEvidenceChanged: boolean('application_evidence_changed').notNull().default(false),
+    applicationEvidence: jsonb('application_evidence').$type<ApplicationEvidence | null>(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
@@ -388,9 +416,30 @@ export const leadHistory = pgTable(
     uniqueIndex('lead_history_revision').on(table.ownerId, table.leadId, table.revision),
     check(
       'lead_history_status_valid',
-      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'archived')`,
+      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived')`,
+    ),
+    check(
+      'lead_history_previous_status_valid',
+      sql`${table.previousStatus} IS NULL OR ${table.previousStatus} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived')`,
     ),
     check('lead_history_notes_changed_valid', sql`${table.notesChanged} IN (0, 1)`),
+    check(
+      'lead_history_application_evidence_valid',
+      sql`${table.applicationEvidence} IS NULL OR (
+        jsonb_typeof(${table.applicationEvidence}) = 'object'
+        AND ${table.applicationEvidence} ?& ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']
+        AND (${table.applicationEvidence} - ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']::text[]) = '{}'::jsonb
+        AND jsonb_typeof(${table.applicationEvidence}->'method') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'method')) BETWEEN 1 AND 120
+        AND jsonb_typeof(${table.applicationEvidence}->'appliedAt') = 'string'
+        AND jsonb_typeof(${table.applicationEvidence}->'confirmation') = 'string'
+        AND ${table.applicationEvidence}->>'confirmation' IN ('unknown', 'received', 'not_received')
+        AND jsonb_typeof(${table.applicationEvidence}->'source') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'source')) <= 160
+        AND jsonb_typeof(${table.applicationEvidence}->'confidence') = 'string'
+        AND ${table.applicationEvidence}->>'confidence' IN ('unknown', 'low', 'medium', 'high')
+      )`,
+    ),
   ],
 );
 

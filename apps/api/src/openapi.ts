@@ -22,6 +22,13 @@ const object = (
 });
 const nullable = (schema: Schema): Schema => ({ ...schema, nullable: true });
 const status = text({ enum: leadStatusSchema.options });
+const applicationEvidence = object({
+  method: text({ minLength: 1, maxLength: 120 }),
+  appliedAt: timestamp,
+  confirmation: text({ enum: ['unknown', 'received', 'not_received'] }),
+  source: text({ maxLength: 160 }),
+  confidence: text({ enum: ['unknown', 'low', 'medium', 'high'] }),
+});
 const sources = ['remoteok', 'himalayas', 'greenhouse', 'lever', 'ashby', 'workable'];
 const searchStatus = text({
   enum: ['queued', 'running', 'completed', 'partial', 'failed', 'cancelled'],
@@ -146,6 +153,7 @@ const lead = object({
   data: job,
   notes: text({ maxLength: 10000 }),
   status,
+  applicationEvidence: nullable(applicationEvidence),
   livenessStatus: text({ enum: ['unknown', 'live', 'stale'] }),
   livenessCheckedAt: nullable(timestamp),
   revision,
@@ -252,6 +260,7 @@ function contracts(options: {
             csrf: text(),
             sessionId: uuid,
             email: nullable(text({ format: 'email' })),
+            emailVerifiedAt: nullable(timestamp),
             emailOtpEnabled: bool,
             phone: nullable(text({ pattern: '^\\+[1-9][0-9]{7,14}$' })),
             testUser: text({ enum: ['candidate', 'admin'] }),
@@ -592,14 +601,36 @@ function contracts(options: {
       { failures: [400, 429] },
     ),
     'GET /api/leads/:id': operation('Read a saved lead', lead, { failures: [400, 404, 429] }),
-    'PUT /api/leads/:id': operation('Update notes and stage using optimistic concurrency', lead, {
-      body: object({ revision, notes: text({ maxLength: 10000 }), status }),
-      failures: [400, 404, 409, 429],
-    }),
+    'PUT /api/leads/:id': operation(
+      'Update candidate-owned notes, stage, and candidate-reported application evidence using optimistic concurrency',
+      lead,
+      {
+        body: object(
+          {
+            revision,
+            notes: text({ maxLength: 10000 }),
+            status,
+            applicationEvidence,
+          },
+          ['revision', 'notes', 'status'],
+        ),
+        failures: [400, 404, 409, 429],
+      },
+    ),
     'GET /api/leads/:id/history': operation(
       'List lead revisions, newest first (25 per page)',
       object({
-        items: array(object({ revision, status, notesChanged: bool, createdAt: timestamp })),
+        items: array(
+          object({
+            revision,
+            previousStatus: nullable(status),
+            status,
+            notesChanged: bool,
+            applicationEvidenceChanged: bool,
+            applicationEvidence: nullable(applicationEvidence),
+            createdAt: timestamp,
+          }),
+        ),
         nextCursor: nullable(integer()),
       }),
       {

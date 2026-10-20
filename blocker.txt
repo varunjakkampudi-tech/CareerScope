@@ -39,9 +39,12 @@ Problem: Main has no observed GitHub protection/rules; GitHub Actions is disable
 Verified root cause: Read-only protection query 404; rules []; repository Actions
   API reports enabled=false; no hosted run can execute. A local CI workflow now
   exists at .github/workflows/ci.yml; its presence does not prove hosted behavior.
-Current implementation: No agent main writes; CI-only validation is authored and
-  locally checked. Deployment automation remains absent.
-Impact: Hosted protection/CI acceptance cannot be claimed from local checks.
+Current implementation: The owner explicitly authorized local merge and a direct
+  normal main push on 21 October 2026. Local validation and independent review
+  support this repository checkpoint; hosted CI remains unavailable. Deployment
+  automation remains absent. This item does not block that authorized sync.
+Impact: Hosted protection/CI and production acceptance cannot be claimed from
+  local checks. Owner-directed main synchronization does not certify launch.
 What the agent already tried: Read repository docs and current hosted rule metadata.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
@@ -279,7 +282,9 @@ Step-by-step resolution instructions:
   3. Authorize only eligible source/fixture measurement; agent implements tests
      without collecting real postings until that permission exists.
   4. Review measured listing/stale/duplicate results by target city/role and record
-     thresholds; unsupported coverage falls back to authorized postings/user links.
+     thresholds. Unsupported coverage remains unavailable. Authorized postings or
+     candidate-supplied links are future alternatives requiring their own approved
+     contract; candidate-supplied links are not currently implemented.
 Required environment-variable names (no values): Provider-specific names only once
   an approved adapter requires them; never attach tokens or agreements with secrets.
 External dependencies: Source permissions/licenses; owner coverage thresholds

@@ -8,18 +8,28 @@ read-only, its third-party actions are pinned to full commit SHAs, and its
 PostgreSQL/Redis credentials are synthetic values confined to ephemeral runner
 services.
 
-The workflow listens to pushes on `main`, `codex/dev`, and `codex/task/**`, a
-nightly schedule, and an allowlisted `workflow_dispatch`. Task branches run the
-static quality checks. A development or main push and the nightly event also
-run the PostgreSQL/Redis integration and browser suite; the nightly browser
-suite selects Chromium, Firefox, and WebKit. Manual runs use only CI-ephemeral
-services; there is no staging or production target.
+The workflow listens to pushes on `main` and temporary `codex/task/**` branches,
+pull requests targeting `main`, a nightly schedule, and an allowlisted
+`workflow_dispatch`. Task-branch pushes run the static quality checks. A
+main push, a pull request to `main`, and the nightly event also
+run the PostgreSQL/Redis integration and browser suite; pull-request and nightly
+browser runs select Chromium, Firefox, and WebKit. Manual runs use only CI-ephemeral
+services; there is no staging or production target. Pull-request runs have
+read-only permissions, use no repository secrets, and validate the proposed
+merge revision.
 
 GitHub Actions is disabled in repository settings as last verified on
-2026-10-20. The workflow has not been accepted by GitHub or executed on a hosted
+2026-10-21. The workflow has not been accepted by GitHub or executed on a hosted
 runner. Local YAML parsing, policy fixtures, and local test results are not
-hosted evidence. Do not configure required checks or claim workflow acceptance
-until real exact-SHA runs are available.
+hosted evidence. An owner must enable the repository's approved Actions policy
+before pull-request checks can run; do not configure required checks or claim
+workflow acceptance until real exact-SHA runs are available.
+
+The owner's 21 October instruction permits a validated local integration and
+direct normal push to the unprotected main for repository synchronization.
+`main` is the permanent integration branch; task triggers remain supported for
+temporary isolation work. This authorization
+does not change Actions settings or represent a hosted CI or production pass.
 
 ## Checks and suite mapping
 

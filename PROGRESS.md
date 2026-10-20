@@ -866,3 +866,31 @@ Git history was changed as part of this audit. The existing 53-path dirty task
 worktree was preserved. No fetch, commit, push, merge, hosted run, real provider
 call, shared-database migration or deployment occurred. Separate UI evidence
 containers were left running untouched.
+
+### Owner-authorized main consolidation (2026-10-21)
+
+OA-2026-10-21-01 supersedes the development-only integration restriction.
+The current consolidation preserves every local branch history, both original
+dirty worktrees and their untracked source, and the approved design corpus.
+Independent auth, application-evidence and browser-test reviews passed after
+correcting the production signup capability gate and test lifecycle defects.
+The current local merge includes canonical OTP/session/email-change work,
+application evidence/history/withdrawal, consent, source-permission controls,
+CI-only workflow and the v12 engineering evidence. Superseded OTP variants and
+conflicting unpublished migration numbers remain in ancestry rather than
+competing in the active implementation. Migration 0026 is additive.
+
+Current Node 24 evidence: gates 77/77; integration 55/55 with no skips; domain
+835/835; build and 12 CSP hashes; formatting; production dependency/security
+check; two recovery tests comparing 18 tables plus encrypted objects; full-disk
+and four crash boundaries; complete Chromium/Firefox/WebKit browser and selector
+journeys with axe, keyboard and reflow. Drizzle regeneration reports no drift.
+See docs/MAIN-CONSOLIDATION-2026-10-21.md for commands, failed diagnostic attempts,
+conflict decisions and limitations. The full dependency audit still reports
+five high development-tool and seven moderate entries; no security threshold or
+scan was weakened. Hosted Actions is still disabled and no hosted pass exists.
+This is a local integration candidate, not a synchronized main checkpoint or
+completion of the full v12 goal. The full-tree high dependency audit blocks the
+main update until remediation or an explicit owner exception under the contract.
+No such exception is inferred from direct-push permission. No deployment, live
+provider call or shared migration occurred.

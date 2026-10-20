@@ -25,3 +25,16 @@
 
 No full chat transcript, personal contact information, secret or private local
 path is included. No prior decision is backdated or silently overwritten.
+
+## OA-2026-10-21-01 — main integration and direct synchronization
+
+The project owner explicitly instructed this CareerScope session on 21 October
+2026 to merge the development work locally and push directly to the unprotected
+`main`, making main the single permanent integration branch. This supersedes the
+older development-only and PR-only synchronization restrictions for this operation.
+It permits recording the matching governance transition and preserving overlapping
+work through reviewed conflict resolution. It does not waive local tests, privacy,
+security or independent review, authorize force-push/history rewriting, enable
+GitHub Actions or change protections, or authorize production deployment. Hosted CI
+remains unverified while repository Actions is disabled; repository synchronization
+does not certify the approved launch scope or production readiness.

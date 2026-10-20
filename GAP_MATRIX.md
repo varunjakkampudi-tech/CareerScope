@@ -1,5 +1,13 @@
 # CareerScope v12 baseline gap matrix
 
+21 October consolidation delta: candidate-reported application evidence,
+withdrawal and history/revision/ownership behavior are now implemented and
+covered by local API/database/browser checks. Canonical OTP/session/email-change
+work is integrated with independent source review and production-composition
+regression coverage. Full v12 scope, provider/fallback/legal/hosted acceptance and
+the full dependency audit remain open; baseline inventory states below are not
+silently promoted. See [current evidence](docs/MAIN-CONSOLIDATION-2026-10-21.md).
+
 Baseline runtime: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
 Governance activation: `2a1eb65d67151c485cddd417b6c249146c017a35` on `codex/dev`.
 Evidence below is OBSERVED_CODE unless an executed check is explicitly named.

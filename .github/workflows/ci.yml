@@ -4,8 +4,15 @@ on:
   push:
     branches:
       - main
-      - codex/dev
       - 'codex/task/**'
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
@@ -97,7 +104,7 @@ jobs:
       - name: Summarize static-check provenance
         if: always()
         env:
-          SUITE: ${{ github.event_name == 'workflow_dispatch' && inputs.suite || 'scheduled-or-push' }}
+          SUITE: ${{ github.event_name == 'workflow_dispatch' && inputs.suite || 'scheduled-push-or-pull-request' }}
           RESULT: ${{ job.status }}
         run: |
           {
@@ -116,7 +123,8 @@ jobs:
     timeout-minutes: 90
     if: >-
       github.event_name == 'schedule' ||
-      (github.event_name == 'push' && contains(fromJSON('["refs/heads/main","refs/heads/codex/dev"]'), github.ref)) ||
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_dispatch' &&
       contains(fromJSON('["all","integration","browser","cross-browser","performance","soak","recovery"]'), inputs.suite))
     env:
@@ -132,7 +140,7 @@ jobs:
       SEARCH_QUEUE_REDIS_URL: redis://127.0.0.1:6380
       CAREERSCOPE_POSTGRES_CONTAINER: careerscope-ci-postgres
       CAREERSCOPE_UI_BROWSER: >-
-        ${{ github.event_name == 'schedule' && 'all' || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["all","cross-browser"]'), inputs.suite) && 'all') || (github.event_name == 'workflow_dispatch' && inputs.browser || 'chromium') }}
+        ${{ (github.event_name == 'schedule' || github.event_name == 'pull_request') && 'all' || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["all","cross-browser"]'), inputs.suite) && 'all') || (github.event_name == 'workflow_dispatch' && inputs.browser || 'chromium') }}
     steps:
       - name: Check out the triggering revision
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
@@ -199,7 +207,8 @@ jobs:
       - name: Start production frontend for browser acceptance
         if: >-
           github.event_name == 'schedule' ||
-          (github.event_name == 'push' && contains(fromJSON('["refs/heads/main","refs/heads/codex/dev"]'), github.ref)) ||
+          github.event_name == 'pull_request' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
           (github.event_name == 'workflow_dispatch' &&
           contains(fromJSON('["all","browser","cross-browser"]'), inputs.suite))
         run: |
@@ -222,7 +231,8 @@ jobs:
       - name: Install selected Playwright browser and system dependencies
         if: >-
           github.event_name == 'schedule' ||
-          (github.event_name == 'push' && contains(fromJSON('["refs/heads/main","refs/heads/codex/dev"]'), github.ref)) ||
+          github.event_name == 'pull_request' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
           (github.event_name == 'workflow_dispatch' &&
           contains(fromJSON('["all","browser","cross-browser"]'), inputs.suite))
         run: |
@@ -235,7 +245,8 @@ jobs:
       - name: Run browser, axe accessibility, keyboard, and responsive checks
         if: >-
           github.event_name == 'schedule' ||
-          (github.event_name == 'push' && contains(fromJSON('["refs/heads/main","refs/heads/codex/dev"]'), github.ref)) ||
+          github.event_name == 'pull_request' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
           (github.event_name == 'workflow_dispatch' &&
           contains(fromJSON('["all","browser","cross-browser"]'), inputs.suite))
         run: npm run test:ui
@@ -279,7 +290,7 @@ jobs:
       - name: Summarize run provenance and test scope
         if: always()
         env:
-          SUITE: ${{ github.event_name == 'workflow_dispatch' && inputs.suite || 'scheduled-or-push' }}
+          SUITE: ${{ github.event_name == 'workflow_dispatch' && inputs.suite || 'scheduled-push-or-pull-request' }}
           UI_BROWSER: ${{ env.CAREERSCOPE_UI_BROWSER }}
           RESULT: ${{ job.status }}
         run: |

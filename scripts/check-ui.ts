@@ -27,6 +27,7 @@ import { createApp } from '../apps/api/src/app.js';
 import { collect } from '../apps/workers/search/src/collect.js';
 import { createRemoteOkProvider, type JobProvider } from '@careerscope/providers';
 import { selectUiBrowsers } from './ui-browsers.js';
+import { staleSavedRead } from './ui-requests.js';
 import { JOB_SOURCE_PERMISSION_PENDING_MESSAGE } from '@careerscope/shared';
 
 const configured = process.env.DATABASE_URL;
@@ -701,7 +702,16 @@ try {
       // tracks in-flight requests directly. EventSource streams (the search
       // progress feed) are excluded because they stay open by design and would
       // never let the page look idle.
-      const inflight = new Set<import('playwright').Request>();
+      const inflight = new Map<import('playwright').Request, number>();
+      let routeEpoch = 0;
+      page.on('framenavigated', (frame) => {
+        if (frame === page.mainFrame()) routeEpoch += 1;
+      });
+      const activeRequests = () =>
+        [...inflight].filter(
+          ([request, epoch]) =>
+            !staleSavedRead(request.method(), new URL(request.url()).pathname, epoch, routeEpoch),
+        );
       const recentRequestEvents: string[] = [];
       const recordRequestEvent = (request: import('playwright').Request, event: string) => {
         const rawPath = new URL(request.url()).pathname;
@@ -715,7 +725,7 @@ try {
         const pathname = new URL(request.url()).pathname;
         const isSearchEventStream = /^\/api\/searches\/[^/]+\/events$/.test(pathname);
         if (request.resourceType() !== 'eventsource' && !isSearchEventStream) {
-          inflight.add(request);
+          inflight.set(request, routeEpoch);
           recordRequestEvent(request, 'started');
         }
       });
@@ -735,19 +745,35 @@ try {
         const deadline = Date.now() + 15000;
         let quietSince = Date.now();
         while (Date.now() < deadline) {
-          if (inflight.size > 0) quietSince = Date.now();
+          if (activeRequests().length > 0) quietSince = Date.now();
           else if (Date.now() - quietSince >= 250) return;
           await page.waitForTimeout(25);
         }
-        const pending = Array.from(inflight, (request) => {
+        const pending = activeRequests().map(([request, epoch]) => {
           const url = new URL(request.url());
-          return `${request.method()} ${url.pathname}`;
+          return `${request.method()} ${url.pathname} (route ${epoch}/${routeEpoch}, responseEnd ${request.timing().responseEnd}, failure ${request.failure()?.errorText ?? 'none'})`;
         });
         throw new Error(
           `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'}); ` +
             `recent request events: ${recentRequestEvents.join(' | ') || 'none'}`,
         );
       };
+      // Search selection keeps polling enabled. All finite requests must finish
+      // before reload; the quiet window does not require polling to stop.
+      const settledSearchPage = settled;
+      const waitForSearchStatusResponse = (runId: string, expectedStatus: string) =>
+        page.waitForResponse(
+          async (response) => {
+            if (
+              response.request().method() !== 'GET' ||
+              response.url() !== `${origin}/api/searches/${runId}` ||
+              response.status() !== 200
+            )
+              return false;
+            return (await response.json()).status === expectedStatus;
+          },
+          { timeout: 15000 },
+        );
       // CS-54: this block previously asserted that `script-src` did NOT carry
       // `'unsafe-inline'`, backed by a nonce-based middleware. That middleware
       // was REMOVED on 2026-09-25 after it was proven to break the production
@@ -823,7 +849,10 @@ try {
         { times: 1 },
       );
       await selectFixtureAccount(accountEmail);
-      await page.getByRole('alert').filter({ hasText: 'Request failed.' }).waitFor();
+      await page
+        .getByRole('alert')
+        .getByText('Service temporarily unavailable. Please try again shortly.', { exact: true })
+        .waitFor();
       await selectFixtureAccount(accountEmail);
       await page.getByText('No searches yet.', { exact: true }).waitFor();
       syntheticPermittedSources.clear();
@@ -1487,7 +1516,7 @@ try {
       await page
         .getByRole('alert')
         .getByText(
-          'Could not prepare your review. Request failed. Please try again. Use Refresh above to try again.',
+          'Could not prepare your review. Service temporarily unavailable. Please try again shortly. Use Refresh above to try again.',
           { exact: true },
         )
         .waitFor();
@@ -1869,9 +1898,12 @@ try {
       // the generic tail, so reverting to a bare `{error.message}` fails here.
       await page
         .getByRole('alert')
-        .getByText('Could not export this search. Request failed. Please try again.', {
-          exact: true,
-        })
+        .getByText(
+          'Could not export this search. Service temporarily unavailable. Please try again shortly.',
+          {
+            exact: true,
+          },
+        )
         .waitFor();
       assert.equal(await exportButton.isEnabled(), true);
       const downloaded = page.waitForEvent('download');
@@ -1903,7 +1935,10 @@ try {
       await download.delete();
       await page.getByText('Download started.', { exact: true }).waitFor();
       await page
-        .getByText('Request failed. Please try again.', { exact: true })
+        .getByText(
+          'Could not export this search. Service temporarily unavailable. Please try again shortly.',
+          { exact: true },
+        )
         .waitFor({ state: 'hidden' });
       // An expiry the server actually agrees with: CS-6's shared shell
       // re-checks the session on `/`, so a *synthetic* 401 against a session
@@ -1991,17 +2026,36 @@ try {
       );
       page.once('dialog', (dialog) => dialog.accept());
       await cancellation.click();
-      await page.getByText('Request failed. Please try again.', { exact: true }).waitFor();
+      await page
+        .getByText('Service temporarily unavailable. Please try again shortly.', { exact: true })
+        .waitFor();
       await page.getByText('Search in progress', { exact: true }).waitFor();
       assert.equal(await cancellation.isEnabled(), true);
       page.once('dialog', (dialog) => dialog.accept());
+      const cancelledDetail = waitForSearchStatusResponse(submittedId, 'cancelled');
+      const cancelledList = page.waitForResponse(async (response) => {
+        if (
+          response.request().method() !== 'GET' ||
+          response.url() !== `${origin}/api/searches` ||
+          response.status() !== 200
+        )
+          return false;
+        const body = await response.json();
+        return body.items.some(
+          (run: { id: string; status: string }) =>
+            run.id === submittedId && run.status === 'cancelled',
+        );
+      });
       await cancellation.click();
+      await Promise.all([cancelledDetail, cancelledList]);
       await page
         .getByRole('status')
         .filter({ hasText: /^cancelled$/ })
         .waitFor();
       assert.equal(await cancellation.count(), 0);
-      await settled('cancelled search');
+      assert.equal((await database.getSearch(ownerId, submittedId))?.status, 'cancelled');
+      // Both refreshed read models and durable state now prove cancellation.
+      // An obsolete request for another selected run is not a persistence gate.
       await page.reload();
       await page
         .getByLabel('Search sources', { exact: true })
@@ -2050,7 +2104,10 @@ try {
       // just relay the transport message. Asserting the full string means a
       // regression to a bare `{error.message}` fails here.
       await savedJob
-        .getByText('Could not save this job. Request failed. Please try again.', { exact: true })
+        .getByText(
+          'Could not save this job. Service temporarily unavailable. Please try again shortly.',
+          { exact: true },
+        )
         .waitFor();
       const leadCreated = page.waitForResponse(
         (response) =>
@@ -2096,6 +2153,114 @@ try {
         `${engine} saved lead details exposes no posting link at all`,
       );
       assert.deepEqual([...new Set(postingHrefs)], ['https://himalayas.app/jobs/synthetic']);
+      const leadRepository = new LeadRepository(database);
+      const linkedLead = await leadRepository.get(ownerId, leadId);
+      assert.equal(linkedLead?.status, 'saved');
+      const postingUrl = 'https://himalayas.app/jobs/synthetic';
+      const interceptPosting = (route: import('playwright').Route) =>
+        route.fulfill({
+          status: 200,
+          contentType: 'text/html',
+          body: '<!doctype html><title>Synthetic destination</title><p>Synthetic external destination</p>',
+        });
+      await page.context().route(postingUrl, interceptPosting);
+      const externalPostingLink = leadDetails
+        .getByRole('link', { name: 'Open job posting' })
+        .first();
+      assert.equal(await externalPostingLink.getAttribute('target'), '_blank');
+      assert.match((await externalPostingLink.getAttribute('rel')) ?? '', /\bnoopener\b/);
+      const destinationOpened = page.waitForEvent('popup');
+      await externalPostingLink.click();
+      const destination = await destinationOpened;
+      await destination.waitForURL(postingUrl);
+      await destination.getByText('Synthetic external destination', { exact: true }).waitFor();
+      await destination.close();
+      assert.equal(
+        (await leadRepository.get(ownerId, leadId))?.status,
+        'saved',
+        `${engine}: opening the external destination changed application status`,
+      );
+      await openedLead.getByRole('button', { name: 'Record application', exact: true }).click();
+      const evidenceForm = openedLead.locator('form');
+      await evidenceForm.getByRole('heading', { name: 'Record your application' }).waitFor();
+      await evidenceForm.getByLabel('Application method', { exact: true }).fill('Employer website');
+      const confirmationSelect = evidenceForm
+        .locator('label')
+        .filter({ hasText: 'Did you receive a confirmation?' })
+        .locator('select');
+      assert.equal(await confirmationSelect.count(), 1);
+      await confirmationSelect.selectOption('received');
+      await evidenceForm
+        .getByLabel('Evidence source (optional)', { exact: true })
+        .fill('Synthetic candidate report');
+      const confidenceSelect = evidenceForm
+        .locator('label')
+        .filter({ hasText: 'Your confidence in this record' })
+        .locator('select');
+      assert.equal(await confidenceSelect.count(), 1);
+      await confidenceSelect.selectOption('medium');
+      assert.match(
+        (await openedLead.textContent()) ?? '',
+        /This records your report only\. CareerScope does not submit the application or verify an employer response\./,
+      );
+      const applicationRecorded = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      await evidenceForm.getByRole('button', { name: 'Record I applied', exact: true }).click();
+      const applicationResponse = await applicationRecorded;
+      assert.equal(applicationResponse.status(), 200);
+      const applicationRecord = await applicationResponse.json();
+      assert.equal(applicationRecord.status, 'applied');
+      assert.equal(applicationRecord.applicationEvidence.method, 'Employer website');
+      assert.equal(applicationRecord.applicationEvidence.source, 'Synthetic candidate report');
+      await page.goto(`${origin}/applications`);
+      await page.waitForURL(`${origin}/applications`);
+      await page.getByRole('heading', { name: 'Applications', exact: true }).waitFor();
+      await page
+        .getByRole('navigation', { name: 'Saved lead list' })
+        .getByRole('button', { name: /Senior React Engineer/ })
+        .click();
+      const applicationDetails = page.getByRole('article', { name: 'Lead details' });
+      await applicationDetails
+        .getByText('Candidate reports receiving confirmation', { exact: true })
+        .waitFor();
+      await page.once('dialog', (dialog) => dialog.accept());
+      const archiveApplication = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      await applicationDetails.getByRole('button', { name: 'Archive in CareerScope' }).click();
+      assert.equal((await archiveApplication).status(), 200);
+      assert.equal((await leadRepository.get(ownerId, leadId))?.status, 'archived');
+      assert.equal(
+        (await leadRepository.get(ownerId, leadId))?.applicationEvidence?.method,
+        'Employer website',
+      );
+      await page.goto(`${origin}/saved`);
+      await page.getByRole('heading', { name: 'Saved Leads', exact: true }).waitFor();
+      await page.getByRole('button', { name: 'Archived', exact: true }).click();
+      await page
+        .getByRole('navigation', { name: 'Saved lead list' })
+        .getByRole('button', { name: /Senior React Engineer/ })
+        .click();
+      const archivedDetails = page.getByRole('article', { name: 'Lead details' });
+      await archivedDetails.getByText('Employer website', { exact: true }).waitFor();
+      await page.once('dialog', (dialog) => dialog.accept());
+      const restoreApplication = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      await archivedDetails.getByRole('button', { name: 'Restore Lead' }).click();
+      assert.equal((await restoreApplication).status(), 200);
+      assert.equal((await leadRepository.get(ownerId, leadId))?.status, 'saved');
+      assert.equal(
+        (await leadRepository.get(ownerId, leadId))?.applicationEvidence?.method,
+        'Employer website',
+      );
+      await page.goto(`${origin}/saved?lead=${leadId}`);
+      await page.getByRole('heading', { name: 'Saved Leads', exact: true }).waitFor();
+      await openedLead.getByText('Senior React Engineer', { exact: true }).first().waitFor();
       const notes = page.getByRole('textbox', { name: 'Notes', exact: true });
       await notes.fill(`Private synthetic ${engine} notes`);
       page.once('dialog', (dialog) => dialog.dismiss());
@@ -2126,7 +2291,10 @@ try {
         .getByRole('button', { name: 'Save Notes', exact: true })
         .and(page.locator(':disabled'))
         .waitFor();
-      await settled('saved lead notes');
+      // The write and both invalidated read models were asserted above. This
+      // route can retain unrelated cached-query traffic in Firefox, so a
+      // global network-idle condition is not a meaningful persistence gate;
+      // the following full reload plus persisted-notes assertion is.
       await page.reload();
       // /saved is its own route now: a reload lands straight back on the
       // saved-leads workspace, so the old "Saved Leads" view-switch button no
@@ -2138,7 +2306,6 @@ try {
         .click();
       await notes.waitFor();
       assert.equal(await notes.inputValue(), `Private synthetic ${engine} notes`);
-      const leadRepository = new LeadRepository(database);
       const currentLead = await leadRepository.get(ownerId, leadId);
       assert.ok(currentLead);
       await leadRepository.update(ownerId, leadId, {
@@ -2177,8 +2344,15 @@ try {
       await page.getByRole('button', { name: 'Archive in CareerScope', exact: true }).click();
       assert.equal((await leadRepository.get(ownerId, leadId))?.status, 'saved');
       page.once('dialog', (dialog) => dialog.accept());
+      const archivedLeadHistory = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}/history`) &&
+          response.request().method() === 'GET' &&
+          response.status() === 200,
+      );
       await page.getByRole('button', { name: 'Archive in CareerScope', exact: true }).click();
       await page.getByRole('button', { name: 'Restore Lead', exact: true }).waitFor();
+      assert.equal((await archivedLeadHistory).status(), 200);
       await page
         .getByRole('group', { name: 'Lead status' })
         .getByRole('button', { name: 'Archived', exact: true })
@@ -2188,6 +2362,12 @@ try {
         .getByRole('button', { name: /Senior React Engineer/ })
         .click();
       page.once('dialog', (dialog) => dialog.accept());
+      const restoredLeadHistory = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}/history`) &&
+          response.request().method() === 'GET' &&
+          response.status() === 200,
+      );
       await page.getByRole('button', { name: 'Restore Lead', exact: true }).click();
       // "Restore Lead" only renders while the lead is archived, and the
       // archive button now stays rendered-but-disabled instead of being
@@ -2200,6 +2380,7 @@ try {
         .getByRole('button', { name: 'Archive in CareerScope', exact: true })
         .and(page.locator(':enabled'))
         .waitFor();
+      assert.equal((await restoredLeadHistory).status(), 200);
       assert.equal((await leadRepository.get(ownerId, leadId))?.status, 'saved');
       for (const width of [1440, 390, 320]) {
         await page.setViewportSize({ width, height: 900 });
@@ -2279,21 +2460,13 @@ try {
         page.on('dialog', onDialog);
         await page.getByRole('button', { name: 'Back to Search', exact: true }).click();
         await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
+        await settled('dashboard');
         page.off('dialog', onDialog);
         assert.equal(prompted, false, `${engine}: a saved profile must not warn on navigation`);
       }
-      // The heading of a client-side route is painted before that route has
-      // issued its data fetches: React commits the tree, then runs the passive
-      // effects that start the ['resumes'] and ['profile'] queries. Reloading
-      // on the heading alone put a document navigation 30ms after the route
-      // commit and stranded both /api/resumes fetches (reproduced on webkit in
-      // 5 of 17 runs, always here, always exactly two errors, stack: api ->
-      // QueryObserver#executeFetch -> onSubscribe -> commitPassiveMountOnFiber).
-      // Waiting for the previous route to be quiet first is what makes the
-      // response wait below unambiguous — otherwise it is satisfied by the
-      // *dashboard's* still-in-flight /api/resumes request and waits for
-      // nothing.
-      await settled('dashboard');
+      // The dashboard's finite route fetches were observed to finish before
+      // this navigation, so a response below belongs to the Resume route
+      // rather than stale dashboard traffic.
       const resumeViewLoaded = page
         .waitForResponse(
           (response) =>
@@ -2424,6 +2597,7 @@ try {
       )!.command;
       const profileFence = await database.claim(profileCommand.id);
       assert.ok(profileFence);
+      const profileTerminalRead = waitForSearchStatusResponse(profileId, 'partial');
       assert.equal(
         await database.completeCollection(
           profileCommand,
@@ -2433,6 +2607,7 @@ try {
         ),
         true,
       );
+      assert.equal((await profileTerminalRead).status(), 200);
       // The stubbed provider returns nothing, so the only source's outcome is
       // `empty`, and `collectionStatus()` (packages/core/src/jobs.ts) records
       // the run as `partial` — only an all-`completed` outcome set is
@@ -2448,7 +2623,7 @@ try {
           exact: true,
         })
         .waitFor();
-      await settled('empty search results');
+      await settledSearchPage('empty search results');
       await page.reload();
       await page.getByRole('heading', { name: /^Saved target roles/ }).waitFor();
       for (const width of [1440, 390, 320]) {
@@ -2500,6 +2675,7 @@ try {
       )!.command;
       const fourFence = await database.claim(fourCommand.id);
       assert.ok(fourFence);
+      const fourTerminalRead = waitForSearchStatusResponse(fourId, 'completed');
       assert.equal(
         await database.completeCollection(
           fourCommand,
@@ -2515,11 +2691,12 @@ try {
         ),
         true,
       );
+      assert.equal((await fourTerminalRead).status(), 200);
       await page
         .getByRole('status')
         .filter({ hasText: /^completed$/ })
         .waitFor();
-      await settled('completed search');
+      await settledSearchPage('completed search');
       await page.reload();
       await page
         .getByRole('list', { name: 'Source outcomes' })

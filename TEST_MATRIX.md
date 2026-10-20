@@ -1,5 +1,13 @@
 # CareerScope v12 test evidence matrix
 
+Current integration checkpoint (21 October 2026): 77 unit, 55 real-service
+integration and 835 domain tests pass; all three browser engines and selector
+journeys pass with axe/keyboard/reflow. Recovery, full-disk, build/CSP, formatting,
+lint/typecheck and privacy checks pass. Exact commands and evidence limits are
+in [the consolidation report](docs/MAIN-CONSOLIDATION-2026-10-21.md). Hosted CI,
+live provider, legal and production acceptance remain separate unverified gates.
+The source inventory below retains its baseline assessment state.
+
 Baseline SHA: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
 319 source items are inventoried, not 319 executed tests. This initial matrix is
 not complete AC-to-test binding coverage. Future required checks below are PLANNED,
