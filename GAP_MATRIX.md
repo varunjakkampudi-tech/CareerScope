@@ -75,6 +75,7 @@ OTP login flow. There is still no atomic challenge persistence, email
 provider/failover, OTP API/login, refresh-token family rotation/reuse
 revocation, device inventory/revocation, recovery or staff MFA. See
 `TEST_MATRIX.md` AUTH-TEST-03 and `blocker.txt` AUTH-01 /
-INDEPENDENT-REVIEW-01. Service-backed and browser acceptance were not run for
-this slice. This note does not change the baseline assessment into a completion
-claim.
+INDEPENDENT-REVIEW-01. The full serial integration test list passed 49/49 on
+disposable PostgreSQL/Redis; it does not exercise OTP persistence. Browser
+acceptance was not run because this slice adds no UI behavior. This note does
+not change the baseline assessment into a completion claim.
