@@ -124,12 +124,30 @@ Verified root cause: On 20 October 2026 under Node 24, the high findings follow
   through Mammoth's argparse dependency.
 Current implementation: The production-only high-severity gate exits 0 but
   reports three moderate Mammoth/argparse/sprintf-js findings. No full-audit pass.
+Reachability review: `packages/resume/src/extract.ts` imports Mammoth's
+  `lib/index.js` API for in-process DOCX extraction. In the installed Mammoth
+  package, `argparse` is required by `bin/mammoth`; `sprintf-js` is then used by
+  that CLI parser. No repository source, script, container entrypoint, or
+  workflow invokes the Mammoth CLI, and Mammoth's `lib/` modules do not import
+  `argparse` or `sprintf-js`. This narrows the observed application path but
+  does not remove the vulnerable packages from the production dependency tree
+  or clear the audit finding. The configured production audit still reports
+  three moderate findings.
 Impact: Affected integrations cannot be marked done with a high finding ignored.
 What the agent already tried: Read-only full/production audits and registry
   metadata inspection; no compatible patched braces or non-breaking audit fix
   found. A fresh `npm audit` on 20 October 2026 in the disposable Node 24
   checkout again exited 1 with 12 findings (5 high, 7 moderate); no dependency
-  was changed or waived.
+  was changed or waived. The GitHub Advisory Database entry for sprintf-js
+  GHSA-hp3w-g68c-fv3c currently reports no patched version. The only project
+  path to this package is Mammoth's CLI-only argument parser based on the
+  inspected installed package and repository references; this is reachability
+  evidence, not a security waiver or a claim that the dependency is safe.
+  Current JSON audit enumerates 12 vulnerable package nodes (5 high, 7 moderate),
+  not 12 independent attack paths. npm's proposed `eslint-config-next` 14.2.35,
+  `drizzle-kit` 0.18.1, and `mammoth` 0.3.29 resolutions are major downgrades;
+  none was applied. No compatible upstream fix or separately reviewed mitigation
+  is currently established.
 Work completed: Recorded affected chains; no major downgrade, suppression or waiver.
 Why autonomous resolution is unsafe or impossible: Local remediation pending activation;
   no owner waiver requested as substitute for safe supported remediation.

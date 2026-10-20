@@ -329,3 +329,29 @@ It exited 1 with 12 findings: 5 high and 7 moderate, consistent with AUDIT-01.
 The reported automatic remedy requires `--force` and major downgrades, so no
 automatic fix was applied. These findings remain open; this command is current
 audit evidence, not a security-review completion or accepted risk waiver.
+The production-only report's three moderate findings trace to `sprintf-js`
+through `mammoth -> argparse`. Source inspection found that CareerScope calls
+Mammoth's in-process `lib/index.js` API for DOCX extraction; `argparse` is
+referenced only by Mammoth's CLI entrypoint, which this repository does not
+invoke. This narrows the code path observed but does not remove those packages
+from the production dependency tree or clear the audit finding. The current
+GitHub Advisory Database entry for `sprintf-js` GHSA-hp3w-g68c-fv3c has no
+patched version. No override, waiver, or dependency change was made.
+The fresh JSON report enumerated 12 vulnerable package nodes: high `eslint-config-next`,
+`@next/eslint-plugin-next`, `fast-glob`, `micromatch`, and `braces`; moderate
+`drizzle-kit`, `@esbuild-kit/core-utils`, `@esbuild-kit/esm-loader`, `esbuild`,
+`mammoth`, `argparse`, and `sprintf-js`. npm's suggested resolutions downgrade
+`eslint-config-next` to 14.2.35, `drizzle-kit` to 0.18.1, or `mammoth` to 0.3.29;
+each is a major-version downgrade and was not applied. This list records audit
+package nodes, not twelve independent attack paths.
+
+The `sprintf-js` path is production-classified by npm because it is present below
+the production `mammoth` dependency. Repository code imports Mammoth's
+`lib/index.js` API for DOCX extraction. Installed-package inspection found
+`argparse` only in Mammoth's `bin/mammoth` CLI entrypoint, with `sprintf-js`
+used by that parser; repository source, scripts, container entrypoints, and
+workflows do not invoke that CLI. This reduces the observed application
+reachability but does not remove the packages from the production dependency
+tree or clear the advisory. The upstream advisory currently lists no patched
+`sprintf-js` release. `AUDIT-01` remains OPEN pending a compatible upstream fix
+or a separately reviewed mitigation with regression evidence.
