@@ -198,6 +198,22 @@ source/toolchain, bounded resources, and scratch-only writes; that capability
 was unavailable. `AUDIT-01` remains OPEN. No dependency, production code,
 configuration, or audit policy was changed.
 
+## Candidate application-evidence gap review (2026-10-20)
+
+At `codex/dev` parent `2081e8120ba7b7e7a4fd354583af14004c9b385f`, performed a
+static comparison of approved v12 sections 4.8–4.9 against the current lead
+schema/repository, API/OpenAPI routes, Applications UI, migration `0012`, and
+the existing database integration test definition. Updated GAP_MATRIX.md,
+TEST_MATRIX.md, QUALITY_AUDIT.md and CHANGE_REGISTER.md with exact current
+status/history fields and the missing manual application-evidence contract.
+The existing integration test covers owner isolation, duplicate saves,
+invalid statuses, revision conflict and redacted status/notes history, but not
+the complete v12 evidence contract. The independent `source_policy_review`
+returned PASS for the documentation claims. `git diff --check` passed. No
+runtime/schema/migration change or test execution occurred; the application
+tracking requirement remains incomplete and needs an implementation task with
+database, API, UI, recovery and browser acceptance.
+
 ## Critical-path sequencing audit (2026-10-20)
 
 On `codex/task/critical-path-audit`, based on the locally integrated CI commit

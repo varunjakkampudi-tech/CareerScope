@@ -60,3 +60,42 @@ The migrations are retained as immutable history; removing an unused active
 schema declaration or dropping persisted data is a separate reviewed database
 change and has not been performed. AUTH-01 remains open; no OTP or provider
 behavior is claimed as implemented by this source-document correction.
+
+## Candidate application-evidence contract review (2026-10-20)
+
+Static source review at `codex/dev` commit
+`2081e8120ba7b7e7a4fd354583af14004c9b385f` compared v12 sections 4.8–4.9 with
+`packages/core/src/leads.ts`, `packages/core/src/schema.ts`, lead routes and
+OpenAPI in `apps/api/src/app.ts` and `apps/api/src/openapi.ts`, the Applications
+route and shared UI in `apps/web/src/app/(app)/applications/page.tsx` and
+`apps/web/src/components/saved-leads.tsx`, and migration `0012`.
+
+Observed behavior: leads are candidate-owned saved-job records with notes,
+revision, current status and liveness fields. The accepted status enum is
+`saved`, `applied`, `interviewing`, `offer`, `rejected`, and `archived`. Updates
+use the owner from the authenticated request, a row lock and revision check;
+history records status, whether notes changed, and timestamp. The Applications
+route filters the same records to `applied`, `interviewing`, `offer`, and
+`rejected`. Application destinations are external anchors; the inspected UI has
+no link-open mutation that marks a record applied. These are source observations,
+not a test run in this checkpoint.
+
+The approved v12 contract requires manual application evidence including method,
+timestamp, confirmation, source and confidence, and keeps candidate claims
+separate from employer/ATS acknowledgements. The inspected schema/API do not
+represent those fields or a separate acknowledgement record. The current enum
+also lacks `withdrawn`; the v12 `interview` term has not yet been mapped and
+accepted against existing `interviewing` semantics. Application-specific
+contacts/documents/reminders and duplicate-application warning were not proven
+during this focused review. This is a concrete local implementation gap, not a
+basis to infer external ATS capability or fabricate application events.
+
+Existing evidence is partial: `packages/core/src/database.test.ts` contains the
+`market and pipeline HTTP routes preserve evidence, query bounds and owner
+isolation` integration test, including lead ownership, duplicate-save,
+revision-conflict, history-redaction and status-validation cases. The matrix
+records that coverage but does not present it as v12 acceptance. Exact
+application-evidence tests, migration/recovery checks, and current browser/DB
+execution remain outstanding. No runtime files or migrations were modified; no
+application state or external link was opened and no test was executed in this
+review.
