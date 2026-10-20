@@ -68,9 +68,13 @@ finding dispositioned; an inventory or passing linter cannot certify that.
 
 On `codex/task/email-otp-auth` only, a dependency-free six-digit challenge,
 digest, expiry and attempt-budget primitive was added after this baseline.
-Its isolated Node 24.21.0 tests pass 9/9; this does not establish an OTP login
-flow. There is still no atomic challenge persistence, email provider/failover,
-OTP API/login, refresh-token family rotation/reuse revocation, device
-inventory/revocation, recovery or staff MFA. See `TEST_MATRIX.md` AUTH-TEST-03
-and `blocker.txt` AUTH-01 / VALIDATION-ENV-01. This note does not change the
-baseline assessment into a completion claim.
+Its isolated Node 24.21.0 tests pass 9/9; the complete `npm run gates:test`
+also passed (58/58 root unit tests), and the production build passed after
+allowing its approved Inter font build-time fetch. This does not establish an
+OTP login flow. There is still no atomic challenge persistence, email
+provider/failover, OTP API/login, refresh-token family rotation/reuse
+revocation, device inventory/revocation, recovery or staff MFA. See
+`TEST_MATRIX.md` AUTH-TEST-03 and `blocker.txt` AUTH-01 /
+INDEPENDENT-REVIEW-01. Service-backed and browser acceptance were not run for
+this slice. This note does not change the baseline assessment into a completion
+claim.
