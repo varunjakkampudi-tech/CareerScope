@@ -86,9 +86,10 @@ separate from employer/ATS acknowledgements. The inspected schema/API do not
 represent those fields or a separate acknowledgement record. The current enum
 also lacks `withdrawn`; the v12 `interview` term has not yet been mapped and
 accepted against existing `interviewing` semantics. Application-specific
-contacts/documents/reminders and duplicate-application warning were not proven
-during this focused review. This is a concrete local implementation gap, not a
-basis to infer external ATS capability or fabricate application events.
+contacts/documents/reminders, duplicate-application warning, and CSV/PDF export
+were not proven during this focused review. These are concrete local
+implementation gaps, not a basis to infer external ATS capability or fabricate
+application events.
 
 Existing evidence is partial: `packages/core/src/database.test.ts` contains the
 `market and pipeline HTTP routes preserve evidence, query bounds and owner
