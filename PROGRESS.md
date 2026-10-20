@@ -406,3 +406,10 @@ response change, including the repository's two-pass CSP verification (12 inline
 script hashes covered). Full `npm run gates:test` also passed (58 unit tests,
 including lint and the complete typecheck pipeline). These local results do not
 substitute for hosted CI or independent review.
+
+The implementation and migration guard were committed locally as
+`471788ea165600a7a445d2b7bf64552109544352` on
+`codex/task/email-otp-auth`. No push, merge, shared-database migration, or
+deployment was performed. The branch remains subject to fresh independent
+review and owner review before promotion; the owner-reviewed legacy-value
+preflight/disposition and full authentication-flow work remain outstanding.
