@@ -365,3 +365,11 @@ CareerScope codebase commit). Current task HEAD is a descendant, 18 commits
 ahead, with no remote-main-only commits to integrate. The development work
 remains isolated on `codex/task/email-otp-auth`; neither `main` nor the remote
 branch was modified.
+
+### Repository formatting correction (2026-10-20)
+
+The full Node 24 Prettier check identified only `design/DESIGN-INDEX.json`.
+That file was normalized with Prettier, then parsed and deep-compared against
+the committed JSON object; the content is semantically identical. The full
+repository Prettier check now passes. No design references, screens, or
+implementation mappings were added, removed, or changed.
