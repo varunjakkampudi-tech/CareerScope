@@ -35,7 +35,7 @@ until that happens; no unmapped item is silently waived.
 
 ## AUTH-TEST-03 — isolated email OTP primitive
 
-`packages/core/src/email-otp.test.mjs` contains nine synthetic Node tests and is
+At the original primitive-only checkpoint, `packages/core/src/email-otp.test.mjs` contained nine synthetic Node tests and was
 listed in the `test:unit` script. It passed 9/9 directly, and also passed within
 the full `npm run gates:test` run on Node 24.21.0 in a disposable bounded
 container; the root unit suite completed 58/58 with no skips. Focused strict
@@ -54,6 +54,33 @@ for this core-only change. The independent matching/provider/resume domain suite
 passed 30 files / 835 tests in the clean Node 24 container. The OTP tests cover
 code shape, HMAC challenge
 binding, secret mismatch, malformed values, expiry, attempt metadata and the
-final allowed attempt. They do not establish atomic persistence, email/IP rate
-limiting, account enumeration resistance at the API boundary, delivery/failover,
-OTP login, refresh-token families, device management, staff MFA or recovery.
+final allowed attempt. They do not establish email/IP rate limiting, account
+enumeration resistance at the API boundary, delivery/failover, OTP login,
+refresh-token families, device management, staff MFA or recovery.
+
+## AUTH-TEST-04 — PostgreSQL-backed OTP challenge state
+
+`packages/core/src/email-otp-challenges.test.ts` is registered in the serial
+integration suite. On Node 24.19.0 it passed within the full local integration
+run: 51 tests passed, 0 failed, 0 skipped, against newly created disposable
+PostgreSQL 17.6 and three Redis 7.4.5 services bound to loopback, with explicit
+synthetic environment values. It verifies normalized-email replacement,
+keyed-email hashing (no raw address column), wrong-email rejection, successful
+single-use consumption/replay denial, concurrent attempt serialization and the
+five-attempt terminal state, and expiry deletion. The OTP code is not persisted.
+This is database-layer evidence only: there is no request/verification API,
+delivery provider, email/IP request limiter, account creation, session issuance,
+refresh-token rotation, device/recovery flow or browser UI. Expired rows are
+cleaned in bounded batches on issuance; a periodic retention caller still needs
+to be wired when the API flow is integrated.
+
+## AUTH-TEST-05 — Resend adapter and fallback boundary
+
+`packages/core/src/email-otp-delivery.test.ts` passed 6/6 on Node 24.19.0.
+Using a synthetic `fetch` implementation only, it verifies the fixed HTTPS
+endpoint, bearer-header/body contract, normalized recipient, strict six-digit
+input, redirect refusal, retryable-status classification, no provider response
+body exposure, fallback only after retryable primary failure, no fallback for a
+permanent primary configuration failure, and sanitized both-provider failure.
+No network request, credential, account, real address or email send was used.
+The generic fallback is only an interface; no second vendor was selected.

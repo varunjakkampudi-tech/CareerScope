@@ -413,3 +413,39 @@ The implementation and migration guard were committed locally as
 deployment was performed. The branch remains subject to fresh independent
 review and owner review before promotion; the owner-reviewed legacy-value
 preflight/disposition and full authentication-flow work remain outstanding.
+
+### OTP challenge persistence and delivery boundary (2026-10-20)
+
+On the same isolated development branch, added additive PostgreSQL challenge
+state using a domain-separated keyed email hash and OTP digest; raw email and
+OTP values are not stored in the challenge row. Challenge replacement and
+consumption are transactional, verification attempts are serialized, the
+five-attempt limit is enforced, and accepted/expired/exhausted challenges are
+single-use/removed. Expired-row cleanup is bounded and currently runs on
+issuance; a periodic retention caller remains necessary when the API flow is
+integrated. The migration is `0020_email_otp_challenges.sql` and has not been
+applied to any shared database.
+
+Added a fixed-endpoint Resend adapter and provider-neutral transient-failure
+fallback coordinator. The fallback is injected; no second vendor is selected.
+Synthetic fetch tests verify request shape, strict OTP input, redirect refusal,
+retry classification and sanitized errors. No network request, credential,
+provider account, real recipient, or email send was used. Neither the challenge
+store nor delivery adapter is wired to an HTTP endpoint, account creation,
+session issuance, or a complete login flow.
+
+Node 24.19.0 local evidence: `npm run gates:test` exited 0, including its
+registered policy/source/privacy/deployment checks, lint, strict typecheck and
+unit suite; a separate `npm run test:unit` run passed 64/64 with no skips.
+The serial integration command passed 51/51 against disposable loopback
+PostgreSQL 17.6 and Redis 7.4.5 services with synthetic configuration. The new
+challenge-store test verifies normalized-address replacement, HMAC storage,
+wrong-address denial, successful single-use consumption, replay denial,
+concurrent attempt serialization and expiry deletion. The Resend adapter suite
+passed 6/6 with an injected synthetic fetch only. `npm run build` passed both
+production build/CSP passes and covered all 12 generated inline-script hashes;
+`npm run format:check`, `npm run eol:check`, `npm run privacy:test`,
+`npm run privacy:check`, and `git diff --check` passed. No hosted CI, browser,
+external provider, shared database, independent auth review, push, merge, or
+deployment evidence is claimed. Auth flow, API abuse controls, recovery, and
+owner/provider configuration remain open.

@@ -40,6 +40,26 @@ export const sessions = pgTable(
   (table) => [index('session_owner').on(table.ownerId)],
 );
 
+export const emailOtpChallenges = pgTable(
+  'email_otp_challenges',
+  {
+    id: uuid('id').primaryKey(),
+    emailHash: text('email_hash').notNull(),
+    digest: text('digest').notNull(),
+    attempts: integer('attempts').notNull().default(0),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex('email_otp_email_hash').on(table.emailHash),
+    check('email_otp_email_hash_hex', sql`${table.emailHash} ~ '^[a-f0-9]{64}$'`),
+    check('email_otp_digest_hex', sql`${table.digest} ~ '^[a-f0-9]{64}$'`),
+    check('email_otp_attempts_bounded', sql`${table.attempts} BETWEEN 0 AND 5`),
+    check('email_otp_expiry_after_creation', sql`${table.expiresAt} > ${table.createdAt}`),
+    index('email_otp_expiration').on(table.expiresAt),
+  ],
+);
+
 export const profiles = pgTable(
   'candidate_profiles',
   {

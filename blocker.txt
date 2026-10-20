@@ -172,12 +172,16 @@ Problem: No production OTP/fallback, refresh-family/device or verified-signal
   recovery implementation. Production selector prohibition is locally implemented
   and tested; hosted deployment remains unperformed.
 Verified root cause: test-users.ts, auth.ts, sessions schema and executable API read.
-Current implementation: Private two-account selector and opaque owned sessions.
+Current implementation: Private two-account selector and opaque owned sessions;
+  an OTP primitive and PostgreSQL challenge store now exist locally. Production
+  OTP endpoints, account verification/creation and session issuance remain absent.
 Impact: Cannot be a public production identity system under v12.
 What the agent already tried: Source/config/test inventory; no host changes.
 Work completed: Independently reviewed production/staging/local startup guard;
   six tests pass, guard module coverage 100% lines/branches/functions. Production
-  Compose pins disabled selectors; synthetic config validation passes.
+  Compose pins disabled selectors; synthetic config validation passes. OTP core
+  and PostgreSQL challenge state have local unit and isolated service-backed
+  coverage; this is not a complete login flow.
 Why autonomous resolution is unsafe or impossible: Local work is authorized and
   continuing after baseline audit; real provider acceptance needs owner configuration.
 Exact owner action required: None for local guard/mock implementation; see PROVIDER-01.
@@ -259,13 +263,17 @@ Status: READY_FOR_OWNER
 Problem: No verified primary/fallback account/domain and independent test delivery
   evidence supplied. Mock tests cannot prove real provider integration.
 Verified root cause: Current API has no OTP provider integration; v12 external list.
-Current implementation: No production email login; a dependency-free OTP
-  primitive exists only on the unintegrated local task branch. No Resend or
-  fallback adapter/configuration, challenge persistence, or provider call exists.
+Current implementation: No production email login. The dependency-free OTP
+  primitive, HMAC-keyed PostgreSQL challenge store, Resend HTTP adapter and
+  generic fallback coordinator exist on the local task branch. They are not
+  wired into the API; no fallback vendor/configuration, session issuance or
+  provider call exists.
 Impact: Production OTP/failover/deliverability cannot pass.
 What the agent already tried: Source review; no account creation, paid call or send.
-Work completed: A local OTP code/digest/expiry/attempt primitive is implemented;
-  its isolated synthetic suite passes 9/9. Provider adapter/outage/quota tests
+Work completed: OTP code/digest/expiry/attempt primitive passes 9/9 unit tests;
+  PostgreSQL challenge replacement/consumption/concurrent-attempt behavior passes
+  isolated integration tests; the Resend adapter/fallback boundary passes 6/6
+  mocked unit tests. Fallback vendor/configuration and API outage/quota tests
   remain unimplemented. No real account or communication was used.
 Why autonomous resolution is unsafe or impossible: Accounts, DNS, secret values,
   spend limits and real communications are owner-controlled.

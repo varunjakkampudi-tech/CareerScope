@@ -43,3 +43,26 @@ the owner-controlled setting transition documented in `blocker.txt`.
 
 Recovery: retain the task commit and apply a corrective commit if needed; do
 not weaken the production deployment gate or use it to enable hosted Actions.
+
+## OTP challenge persistence and delivery boundary (local task branch)
+
+Scope: additive `email_otp_challenges` migration/store and injected Resend plus
+provider-neutral failover adapters on `codex/task/email-otp-auth`. The store
+persists only challenge ID, keyed normalized-email hash, OTP digest, attempt
+count and timestamps; no raw address/code column exists. Delivery tests use
+synthetic fetch only. No HTTP login endpoint, session issuance, account
+creation, rate limiter, fallback-vendor selection, real provider call or
+external configuration was added.
+
+Evidence on Node 24.19.0: `npm run gates:test` exited 0; focused unit run
+64/64; full serial disposable-service integration 51/51 against loopback
+PostgreSQL 17.6 and Redis 7.4.5; adapter tests 6/6 (included in the 64 unit
+tests); two-pass production build/CSP verified all 12 generated inline-script
+hashes; format, EOL and privacy checks passed. These are local engineering
+results, not hosted/production authentication acceptance. The migration has
+not been applied to shared data. Independent security/auth review and owner
+review remain required before promotion.
+
+Recovery: keep the schema change additive and isolated to this task branch.
+Any migration rollback or account/auth flow decision requires fresh review;
+do not run migration 0020 against shared, staging or production databases.

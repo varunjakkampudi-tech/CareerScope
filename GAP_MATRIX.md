@@ -64,14 +64,14 @@ This is the baseline before runtime implementation, not the final whole-codebase
 line-by-line audit. Full cleanup requires every tracked file and pre-existing
 finding dispositioned; an inventory or passing linter cannot certify that.
 
-### Authentication continuation note (2026-10-20)
+### Authentication continuation note (2026-10-20 baseline checkpoint)
 
-On `codex/task/email-otp-auth` only, a dependency-free six-digit challenge,
+At this checkpoint on `codex/task/email-otp-auth`, a dependency-free six-digit challenge,
 digest, expiry and attempt-budget primitive was added after this baseline.
 Its isolated Node 24.21.0 tests pass 9/9; the complete `npm run gates:test`
 also passed (58/58 root unit tests), and the production build passed after
-allowing its approved Inter font build-time fetch. This does not establish an
-OTP login flow. There is still no atomic challenge persistence, email
+allowing its approved Inter font build-time fetch. This did not establish an
+OTP login flow. At that point there was no atomic challenge persistence, email
 provider/failover, OTP API/login, refresh-token family rotation/reuse
 revocation, device inventory/revocation, recovery or staff MFA. See
 `TEST_MATRIX.md` AUTH-TEST-03 and `blocker.txt` AUTH-01 /
@@ -87,6 +87,20 @@ fails without altering the stored rows. Historical migration files are retained.
 The migration has been exercised only on an isolated synthetic PostgreSQL
 database. This schema cleanup does not implement email OTP, establish account
 recovery for legacy phone-only records, or change AUTH-01's incomplete status.
+
+### OTP challenge persistence continuation (2026-10-20)
+
+An additive `email_otp_challenges` table and core store now persist only a
+challenge UUID, HMAC-keyed normalized-email digest, OTP digest, attempt count,
+expiry and creation time. The service atomically replaces a prior challenge,
+serializes concurrent issuance/verification, consumes or deletes terminal
+challenges and enforces the existing five-attempt primitive. PostgreSQL
+integration evidence covers these behaviors on disposable local services. A
+mockable Resend HTTPS adapter and provider-neutral transient-failure failover
+coordinator also exist with synthetic request tests; no second vendor was
+selected. These pieces are not wired into OTP HTTP endpoints and do not add
+request rate limits, account creation, session issuance or user-facing login.
+AUTH-01 and PROVIDER-01 remain incomplete.
 
 The session API's stale query for the retired authentication-phone column was
 removed; candidate profile phone remains independent profile data. Full serial

@@ -6,6 +6,8 @@ export * from './dispatch.js';
 export * from './jobs.js';
 export * from './auth.js';
 export * from './email-otp.js';
+export * from './email-otp-challenges.js';
+export * from './email-otp-delivery.js';
 export * from './test-users.js';
 export * from './runtime.js';
 export * from './profile.js';

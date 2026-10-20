@@ -141,6 +141,13 @@
       "when": 1792460257016,
       "tag": "0019_remove_legacy_external_identity",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792462427597,
+      "tag": "0020_email_otp_challenges",
+      "breakpoints": true
     }
   ]
 }
