@@ -32,3 +32,15 @@ Each implementation must replace relevant PLANNED/NOT_RUN entries with exact tes
 files/names, fixture, role, locale/channel/environment, expected result, command,
 run ID/SHA and actual result. Full source-item traceability remains incomplete
 until that happens; no unmapped item is silently waived.
+
+## AUTH-TEST-03 — isolated email OTP primitive
+
+`packages/core/src/email-otp.test.mjs` contains nine synthetic Node tests and is
+listed in the `test:unit` script. The file itself was run directly under isolated
+Node 24.21.0 and passed 9/9. Focused strict TypeScript, ESLint and Prettier checks
+also passed. This is narrow primitive evidence only; the complete `test:unit`
+script has not been run. The tests cover code shape, HMAC challenge binding,
+secret mismatch, malformed values, expiry, attempt metadata and the final
+allowed attempt. They do not establish atomic persistence, email/IP rate
+limiting, account enumeration resistance at the API boundary, delivery/failover,
+OTP login, refresh-token families, device management, staff MFA or recovery.

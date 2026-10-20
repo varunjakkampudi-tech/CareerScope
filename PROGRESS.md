@@ -175,6 +175,42 @@ no major downgrade, test weakening, or audit suppression was applied. The
 workflow remains unverified on GitHub because Actions is disabled. No push,
 merge to `main`, deployment, production change, or hosted evidence occurred.
 
+## Isolated validation runtime availability (2026-10-20)
+
+Resumed from clean `codex/dev` at `c2a9631599e125f363d9c6d0cf94f07a021783eb`;
+verified the external source bundle for this checkpoint (SHA256
+`A53AD6E1E92283F67DB5511E0CDD0BB1C136799B94C442A2653772DF744324FE`). A local
+task branch, `codex/task/email-otp-auth`, was created from this baseline. No
+production authentication flow was changed. A dependency-free OTP primitive
+and synthetic unit tests were added on the isolated task branch; no API,
+database, delivery, session, recovery or UI integration was added.
+
+The continuation inspected the approved v12 authentication contract and current
+API/domain/UI implementation. It confirmed the current implementation does not
+provide the approved email OTP, refresh-token family rotation, device inventory
+and revocation, or verified-signal account recovery. Resend's current official
+API documentation was checked for the documented email-send contract; no provider
+request was made. The approved source names Resend but does not name the fallback
+provider, so that integration remains owner/provider-gated rather than guessed.
+
+The isolated Node 24 container can validate dependency-free code but cannot run
+the repository's full toolchain: it lacks project dependencies; the prebuilt
+CareerScope image is Node 26 and its partial production dependency tree lacks
+`tsx` and `vitest`; the Windows host dependency tree is incompatible with Linux
+native modules and is not an OS-enforced sandbox. No dependencies were installed,
+no external network was used by a build/test, no secrets or `.env` file were read,
+and no API, browser, provider or production flow was run. `VALIDATION-ENV-01` records the exact
+remaining full-suite requirement. This environment limitation does not negate
+the narrower checks completed for the OTP primitive and is not evidence that the
+authentication requirement is complete.
+
+On Node 24.21.0 in a network-disabled bounded container, the isolated
+`packages/core/src/email-otp.test.mjs` suite passed 9/9 tests. A focused strict
+TypeScript check, focused ESLint check and Prettier check on changed files also
+passed. The test is listed in `test:unit`, but that full script, the complete
+workspace suite, auth/session integration, service-backed tests, browser tests,
+and full CI were NOT RUN in this continuation.
+
 ## Critical-path sequencing audit (2026-10-20)
 
 On `codex/task/critical-path-audit`, based on the locally integrated CI commit

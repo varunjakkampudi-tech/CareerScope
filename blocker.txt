@@ -238,10 +238,14 @@ Status: READY_FOR_OWNER
 Problem: No verified primary/fallback account/domain and independent test delivery
   evidence supplied. Mock tests cannot prove real provider integration.
 Verified root cause: Current API has no OTP provider integration; v12 external list.
-Current implementation: No production email login; no provider call made in audit.
+Current implementation: No production email login; a dependency-free OTP
+  primitive exists only on the unintegrated local task branch. No Resend or
+  fallback adapter/configuration, challenge persistence, or provider call exists.
 Impact: Production OTP/failover/deliverability cannot pass.
 What the agent already tried: Source review; no account creation, paid call or send.
-Work completed: Local adapters/outage/quota tests planned independently of accounts.
+Work completed: A local OTP code/digest/expiry/attempt primitive is implemented;
+  its isolated synthetic suite passes 9/9. Provider adapter/outage/quota tests
+  remain unimplemented. No real account or communication was used.
 Why autonomous resolution is unsafe or impossible: Accounts, DNS, secret values,
   spend limits and real communications are owner-controlled.
 Exact owner action required: Provide separately authorized staging provider access
@@ -298,3 +302,71 @@ Verification procedure: Trace review to current copy/data behavior and open find
 Tests to rerun: Privacy/deletion/consent, localization, accessibility and regression
 Affected tasks: Legal/trust launch acceptance; not safe technical implementation
 Evidence references: GAP_MATRIX.md 9/10; TEST_MATRIX.md HUMAN-TEST-01/LEGAL-TEST-01
+
+BLOCKER ID: VALIDATION-ENV-01
+Title: No isolated Node 24 validation runtime is available in this workspace
+Priority: High
+Module: Local engineering validation
+v12 requirement / checklist item: CareerScope Engineering Standards; Goal sections 7/16/17
+Status: OPEN
+Problem: The current execution environment does not provide a usable OS-enforced
+  sandbox with the full project's Node 24 dependency and service test toolchain.
+Verified root cause: Docker Desktop is Linux-only. The available Node 24 image has
+  no project dependencies. The prebuilt CareerScope runtime image is Node 26 and
+  its partial production dependency tree lacks the required `tsx` and `vitest`
+  test runners. The host's Windows-native dependency tree is not compatible with
+  the available Linux containers' native test/build modules. Running the full
+  repository suite directly on this unrestricted host would violate the
+  applicable execution safety policy.
+Current implementation: On `codex/task/email-otp-auth`, a dependency-free OTP
+  primitive is exported from core and its synthetic tests are registered in
+  `test:unit`. No API route, database challenge table, email adapter, session
+  lifecycle, recovery flow or UI was added.
+Impact: Full auth/session behavior and full-project integration/browser gates
+  cannot yet be safely validated; the standalone OTP primitive can be tested in
+  the bounded Node 24 container.
+What the agent already tried: Verified the current clean checkpoint and backup;
+  inspected local Docker runtime/image metadata, Node 24 image availability,
+  project dependency availability, and Windows sandbox command availability.
+Work completed: Ran 9/9 dependency-free OTP tests under Node 24.21.0 in a
+  network-disabled, read-only-source container; a strict focused TypeScript check,
+  changed-file ESLint and Prettier checks passed. Confirmed no existing image
+  combines Node 24 with the full locked integration/browser dependencies and a
+  strict isolated execution profile. No install, test/build network fetch,
+  provider call or secret access was performed.
+Why autonomous resolution is unsafe or impossible: Enabling Windows Sandbox or
+  modifying the host runtime is an OS-level change outside the repository and
+  requires an independently approved environment. Installing dependencies or
+  executing tests on the unrestricted host is not an acceptable substitute.
+Exact owner action required: Make an isolated validation runtime available to the
+  development session, or authorize an equivalent pre-provisioned disposable VM.
+Step-by-step resolution instructions:
+  1. Provide a Windows Sandbox/VM or equivalent disposable environment with Node
+     24 and the lockfile-resolved dependencies already available; do not install
+     or fetch dependencies during validation.
+  2. Disable external networking; permit isolated loopback only for disposable
+     test services when a test requires them.
+  3. Start each run with an empty allowlisted environment and synthetic values;
+     use scratch-local home/cache/temp directories.
+  4. Mount the source and toolchain read-only; provide a separate scratch directory
+     as the only writable path, with CPU, memory, process, file-size, disk and
+     wall-clock limits.
+  5. Rerun the targeted Node 24 tests, full auth/authorization suites, applicable
+     integration/browser checks and independent review before integrating any
+     sensitive changes.
+Required environment-variable names (no values): Only explicit synthetic test
+  values required by the selected test; never inherit the host environment.
+External dependencies: A provisioned, isolated validation runtime; no product
+  provider or production dependency.
+Expected result: Reproducible Node 24 validation with no secrets and no external
+  side effects.
+Verification procedure: Record the exact runtime image/build, Node version,
+  dependency lock hash, sandbox network/mount/resource limits and test command
+  results without retaining private payloads.
+Tests to rerun: Node policy, source/privacy/deploy gates, typecheck, unit,
+  integration, database, queue, recovery, browser/accessibility as applicable.
+Affected tasks: Full-workspace and service-backed checks requiring unavailable
+  Linux Node tooling, PostgreSQL/Redis integration and browser test dependencies;
+  the isolated OTP primitive checks are separately evidenced above.
+Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and current
+  isolated runtime/image capability inspection.

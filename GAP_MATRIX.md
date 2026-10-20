@@ -63,3 +63,14 @@ supersedes it. No unmapped criterion is treated as passed.
 This is the baseline before runtime implementation, not the final whole-codebase
 line-by-line audit. Full cleanup requires every tracked file and pre-existing
 finding dispositioned; an inventory or passing linter cannot certify that.
+
+### Authentication continuation note (2026-10-20)
+
+On `codex/task/email-otp-auth` only, a dependency-free six-digit challenge,
+digest, expiry and attempt-budget primitive was added after this baseline.
+Its isolated Node 24.21.0 tests pass 9/9; this does not establish an OTP login
+flow. There is still no atomic challenge persistence, email provider/failover,
+OTP API/login, refresh-token family rotation/reuse revocation, device
+inventory/revocation, recovery or staff MFA. See `TEST_MATRIX.md` AUTH-TEST-03
+and `blocker.txt` AUTH-01 / VALIDATION-ENV-01. This note does not change the
+baseline assessment into a completion claim.
