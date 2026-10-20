@@ -11,8 +11,16 @@ declare global {
 export type Session = {
   authenticated: boolean;
   csrf?: string;
+  sessionId?: string;
   email?: string;
   registrationEnabled?: boolean;
+  legalDocuments?: {
+    termsVersion: string;
+    termsUrl: string;
+    privacyVersion: string;
+    privacyUrl: string;
+  };
+  emailOtpEnabled?: boolean;
   testUsersEnabled?: boolean;
   testAccounts?: { email: string; role: 'candidate' | 'admin' }[];
   testUser?: 'candidate' | 'admin';

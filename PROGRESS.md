@@ -449,3 +449,420 @@ production build/CSP passes and covered all 12 generated inline-script hashes;
 external provider, shared database, independent auth review, push, merge, or
 deployment evidence is claimed. Auth flow, API abuse controls, recovery, and
 owner/provider configuration remain open.
+
+### Resend email OTP integration (2026-10-20)
+
+On the isolated local branch `codex/task/email-otp-auth` at unchanged base
+`f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56`, implemented the approved Resend
+email-code flow without modifying `.env` or exposing its values. The API uses
+the existing PostgreSQL identity and opaque-session architecture; it permits
+sign-in only for existing users and leaves registration disabled. Added a
+forward `email_verified_at` field and `0021_mushy_stepford_cuckoos.sql`, which
+has only been exercised in newly-created disposable integration databases.
+OTP challenge rows retain keyed address and code digests rather than raw email
+or code. Codes are six digits, five-minute, single-use, attempt-limited and
+replaced on resend. Redis request/verification limits are shared between two
+API instances and fail closed if unavailable. Resend is called through a fixed
+HTTPS endpoint with sanitized failure behavior and a bounded same-key retry.
+
+The sign-in UI requests, verifies, clears and does not persist the code; browser
+acceptance uses mocked HTTP only. `testHarnessPasswordLogin` is now opt-in and
+used only by legacy test fixtures; the OTP/runtime API composition does not
+enable it. The privacy scanner permits only the exact approved operational
+sender mailbox, while a test proves other addresses at the same domain remain
+flagged.
+
+Current local evidence on Node 24.19.0:
+
+- `npm run gates:test`: PASS; 4 Node-policy tests, 5 approved-source tests, 4
+  privacy tests, 9 deployment-gate tests, EOL/lint/typecheck (51 canonical test
+  files) and 65 unit tests all passed.
+- `npm run test:integration`: PASS 53/53 against the existing loopback-only
+  PostgreSQL 17.6 and Redis 7.4.5 services; OTP integration covers same-shaped
+  known/unknown requests, no account creation, shared cooldown across two API
+  instances, wrong/replayed/concurrent codes, session cookie and Redis failure.
+- `npm run test:domain`: PASS 30 files / 835 tests after isolating and rerunning
+  one initial 5-second PDF-parser timeout; the unchanged targeted case passed.
+- `npm run build`: PASS, both production CSP passes cover all 12 discovered
+  inline-script hashes. `npm run typecheck`, `npm run format:check`,
+  `npm run db:generate` (no schema drift), `npm run privacy:test`,
+  `npm run privacy:check`, and `git diff --check` passed.
+- `npm run test:ui`: NOT FULLY GREEN. A Node 24 all-engine run failed at the
+  existing request-settlement guard during the Chromium `/applications` route;
+  an earlier Node 22 run failed at Firefox cancellation settlement and is not
+  Node-24 acceptance. The focused Chromium run reached its success markers.
+  Subsequent targeted Firefox execution exited 0 after the existing workspace
+  and account-selector flows, responsive checks, keyboard assertions and axe.
+  A fresh-server targeted WebKit run reached both end-of-suite success markers,
+  including its axe/reflow checks, but the tool session disappeared before it
+  returned a process exit code. Therefore Firefox is verified; Chromium and
+  WebKit have success-marker evidence but no clean process-exit evidence here;
+  the full cross-browser suite remains incomplete.
+- `npm run security:check` reported the documented moderate `sprintf-js` path
+  through Mammoth; no breaking downgrade or advisory suppression was applied.
+
+No Resend network call or real mail was sent. The existing `.env` names were
+reused without reading their values; a separate `EMAIL_OTP_HMAC_SECRET` is not
+currently configured there. Domain/sender verification, provider-level
+open/click tracking state, a real staging mailbox test, and the v12-required
+fallback provider remain owner/external gates in `blocker.txt`. No shared
+database migration, Git commit, push, merge, hosted CI run or deployment took
+place. This is local implementation evidence, not production acceptance.
+
+### Cross-browser verification update (2026-10-20)
+
+The targeted Firefox browser run completed with exit code 0. The targeted
+WebKit run on a freshly restarted local Next server reached its end-of-suite
+success markers for the existing workspace flow and the two-account selector,
+keyboard, five-width reflow and axe checks; the tool no longer exposed the
+process handle when queried for its final exit code, so this is not recorded as
+a clean WebKit command pass. The complete multi-engine command remains blocked
+by the separately observed Chromium `/applications` request-settlement guard.
+No test assertion was relaxed and no provider email was sent.
+
+### Authentication hardening follow-up (2026-10-20)
+
+Shared Redis rate-limit failures now fail closed as a stable HTTP 503 before
+route side effects; the response omits limiter keys, identity data and internal
+error details. OpenAPI includes the shared-dependency 503 response, and tests
+cover registration refusal in OTP mode plus an unavailable limiter. Existing
+database/API tests were corrected to assert the explicit 503 contract (three
+previous 500 expectations across registration, session revocation and password
+change); no assertions were loosened.
+
+Node 24.19.0 local evidence for the current working tree: `npm run gates:test`
+passed (67 unit tests, 52 canonical test files type-checked, lint, privacy,
+requirements, deployment-gate and EOL checks); `npm run test:integration` passed
+54/54 against loopback PostgreSQL 17.6 and Redis 7.4.5; `npm run build` passed
+both CSP build/verification passes with 12 inline-script hashes; `npm run
+format:check` and `npm run db:generate` passed (no schema drift). The Chromium
+UI suite printed its application-flow and two-account/keyboard/five-width/axe
+success markers, but the command's final exit code was not captured, so this is
+not classified as a clean browser-suite PASS. The first UI attempt failed before
+browser execution because this workspace's ignored `.env` omits `APP_ORIGIN`;
+the retry supplied that setting only to the process environment and left `.env`
+unchanged. `npm run security:check` exited 0 at the configured high-severity
+threshold, while reporting three moderate `sprintf-js` advisories through
+Mammoth; the suggested forced breaking downgrade was not applied.
+
+The integration/UI test runner used disposable `test_*` databases and synthetic
+OTP mail delivery; the test process supplied synthetic service URLs, OTP-disabled
+runtime configuration and a synthetic Resend key, and did not call Resend. Node
+loads the ignored `.env` through the existing `--env-file` script options, but I
+did not inspect or print its secret values and the explicit shell overrides took
+precedence; the file was not modified. No real email, shared database migration,
+hosted CI, external provider configuration, commit, push, merge or deployment
+occurred. Signup
+remains disabled because no counsel-approved Terms/Privacy version or acceptance
+implementation exists; the files under `docs/legal/` are non-public drafts, not
+effective policies. Independent auth/security review, fallback provider,
+Resend-domain/tracking/inbox evidence, legal approval, production secrets and
+hosted acceptance remain open gates.
+
+### Current local rerun after readiness hardening (2026-10-20, Node 24.19.0)
+
+The first Chromium rerun encountered `ECONNRESET` while the test harness fetched
+`/api/session` through the Next.js dev proxy. The cause was not established. A
+subsequent clean Chromium-only run completed with process exit code 0; no retry
+was added to the test. The route-level issue did not reproduce. Chromium covered
+the existing workspace journeys, OTP UI, test-account selector, keyboard
+navigation, five viewport widths and axe. Firefox/WebKit were not rerun in this
+final pass, so a fresh all-engine pass is still pending.
+
+Final review found `/api/health` checked PostgreSQL but not the mandatory Redis
+limiter. Production composition now checks Redis `PING` as part of readiness and
+returns a sanitized 503 if PostgreSQL or Redis is unavailable. Four focused API
+tests cover limiter outage, password-registration refusal in OTP mode, Redis
+readiness failure and successful readiness. They pass 4/4.
+
+After this readiness change: Node 24 `npm run test:integration` passed 54/54;
+`npm run gates:test` passed with 69/69 unit tests; typecheck passed (52 canonical
+test files), lint passed, repository-wide formatting and EOL checks passed,
+`npm run build` passed both CSP build/verification passes (12 hashes),
+`npm run security:check` exited 0 at the configured high-severity threshold,
+and `git diff --check` passed. npm audit still reports three moderate
+`sprintf-js` advisories through Mammoth; no forced breaking downgrade was made.
+Database tests used disposable local databases and synthetic provider delivery.
+No Resend network call, live message, shared database, hosted CI, commit, push,
+merge or deployment occurred. Branch/HEAD are unchanged and the worktree remains
+intentionally dirty/uncommitted.
+
+### Focused cross-browser completion check (2026-10-20, Node 24.21.0)
+
+The three browser engines were rerun independently against the production-built
+local web app and isolated loopback PostgreSQL/Redis services using synthetic
+fixtures. The focused Chromium, Firefox and WebKit commands each exited 0 and
+reported their workspace flows, two-account selector, keyboard, five-width
+reflow and axe checks as passed. This closes the missing per-engine exit-code
+evidence from the prior entries. The earlier single all-engine invocation still
+failed its request-settlement guard before completing the full combined run; the
+successful focused runs do not erase that harness stability anomaly. No test
+assertion was weakened. Disposable test containers and the local web server
+started for validation were stopped afterward. No persistent project service,
+database, `.env`, provider or production configuration was changed.
+
+`npm run format:check`, `npm run eol:check`, `npm run privacy:test`,
+`npm run privacy:check` and `git diff --check` passed on the final working tree.
+The configured security check exited 0 at its high-severity threshold but
+reported three moderate `sprintf-js` findings via Mammoth. The full `npm audit`
+exited 1 with five high and seven moderate findings; no forced downgrade or
+suppression was applied. GitHub Actions remains disabled, so hosted CI is not
+evidenced. This is a local validation update, not release acceptance; external,
+owner and human gates in `blocker.txt` remain open. No commit, push, merge or
+deployment occurred.
+
+### Combined cross-browser rerun (2026-10-20, Node 24.21.0)
+
+After starting a fresh production-built web server and three disposable,
+loopback-only Postgres/Redis services, `CAREERSCOPE_UI_BROWSER=all node --import
+tsx scripts/check-ui.ts` completed with exit code 0. Chromium, Firefox and WebKit
+each completed the workspace and account-selector journeys, keyboard checks,
+five viewport widths, and axe scans. A first launch attempt was made after the
+prior test containers had already been stopped and therefore failed to connect;
+it was rerun only after verifying fresh service readiness. The successful
+combined run required no test changes or retries. All validation services were
+stopped afterward. This closes the previously open combined-browser local gate;
+it does not replace hosted CI, manual screen-reader, design acceptance, or
+production evidence.
+
+### Final local authentication-work checkpoint (2026-10-20, Node 24.21.0)
+
+The current working tree passed `npm run gates:test` with exit code 0: four Node
+policy tests, five approved-source tests, four privacy tests, nine deployment
+policy tests, lint, 52-file test typecheck, and 69/69 unit tests. The full
+`npm run test:integration` command passed 54/54 with exit code 0 against fresh
+loopback-only Postgres 17.6 and Redis 7.4.5 containers; both Redis instances
+used the required AOF/noeviction queue policy. The test stack had no persistent
+volumes and was removed after the run. OTP delivery used synthetic test
+configuration; no Resend request was made.
+
+Repository-wide formatting, EOL, privacy tests/scanner and `git diff --check`
+passed. Earlier ad-hoc integration attempts with mismatched Postgres credentials
+and Redis instances missing the queue persistence policy failed as test-harness
+setup errors; the correctly configured full suite then passed without test or
+application changes. The already recorded production build and combined
+Chromium/Firefox/WebKit browser passes remain local evidence. This does not
+close the full v12 goal: hosted CI, owner-controlled recovery/source decisions,
+security dependency findings, independent auth review, legal/provider acceptance
+and other external or human gates remain open. No commit, push, merge, live
+email, shared database change or deployment occurred.
+
+### OTP session-persistence failure regression (2026-10-20, Node 24.19.0)
+
+Added a service-backed regression to the current email OTP integration test.
+With a disposable PostgreSQL trigger refusing session insertion for one
+synthetic identity, valid-code verification returns the sanitized 503, leaves
+no session, and does not permit challenge replay. After removing the trigger and
+clearing only that fixture's Redis resend-cooldown key, a newly requested code
+successfully establishes the session. This proves the failure is recoverable by
+re-authentication without reusing an already consumed OTP; it does not make
+challenge consumption and session creation one transaction.
+
+Executed on bundled Node 24.19.0: the full serial `npm run test:integration`
+passed 54/54 against disposable loopback PostgreSQL 17.6 and two Redis 7.4.5
+instances (AOF/noeviction). `npm run gates:test` passed, including lint,
+52-file typecheck and 69/69 unit tests; targeted Prettier and `git diff --check`
+passed. A first gate command resolved nested scripts to host Node 22 and stopped
+at the version guard before tests; rerunning with the bundled Node directory at
+the front of `PATH` passed. Disposable services were removed; no Resend request,
+shared database change, commit, push, merge or deployment occurred.
+
+The broader approved v12 goal remains active. The current opaque eight-hour
+session is not equivalent to the required short-lived-access/rotating-refresh
+family. Refresh reuse detection, device listing/per-device revocation,
+verified-signal recovery, the D11 fallback provider and independent review are
+still outstanding. This regression only closes the OTP session-write failure
+recovery test gap; it does not claim authentication or launch completion.
+
+### Production build and full browser validation (2026-10-20, Node 24.19.0)
+
+The current uncommitted tree passed `npm run build`, including both Next.js
+production builds and second-pass CSP verification of all 12 inline-script
+hashes. `node --env-file=.env --import tsx scripts/check-ui.ts` exited 0 with
+`CAREERSCOPE_UI_BROWSER=all`; browser coverage included Chromium, Firefox,
+WebKit, the account selector and session switching, keyboard/reflow checks, and
+axe. The run used freshly created disposable PostgreSQL/Redis containers with
+loopback-only ephemeral port bindings and no persistent volumes. The exact test
+containers and local web server were stopped afterward; persistent Compose
+services and databases were untouched.
+
+The live read-only full npm audit still exits nonzero with 5 high and 7 moderate
+findings. Fresh registry checks found no `braces@3.0.4` release; npm's suggested
+Next ESLint config remediation is a major-version downgrade, so no forced
+change or suppression was made. This audit and the remaining v12 authentication
+gaps continue to block launch readiness. No commit, push, merge, production
+deployment, or real email send occurred.
+
+### OTP/security final local validation refresh (2026-10-20, Node 24.19.0)
+
+The current worktree passed the following local checks: `npm run gates:test`
+(73/73 unit tests, 53 canonical test files type-checked, plus source, privacy,
+deployment-policy, EOL and lint checks); `npm run test:integration` (55/55,
+zero skipped, against disposable loopback PostgreSQL/Redis); `npm run test:domain`
+(835/835 across 30 files); `npm run build` (both Next production builds and CSP
+verification of 12 inline-script hashes); and the full Chromium/Firefox/WebKit
+UI matrix (workspace/auth-selector journeys, keyboard, five widths and axe).
+`npm run format:check`, `npm run eol:check`, `npm run privacy:check`, and
+`git diff --check` passed. The browser/integration services were disposable;
+no shared Compose database was changed.
+
+This refresh added focused OTP request/verification tests proving Redis limiter
+outages return a sanitized 503 before database or email-provider side effects,
+and changed the Redis atomicity test to use two independent clients against the
+same shared keyspace. Refresh-token reuse logs now omit the session-row ID and
+the logger redacts session ID field names. Legal drafts were corrected to
+describe the guarded consent/registration implementation accurately while
+remaining explicitly unapproved and not for acceptance/publication.
+
+Configuration presence was checked without reading or printing values:
+`RESEND_API_KEY` and `RESEND_FROM_EMAIL` are present in the ignored `.env`; the
+separate OTP HMAC secret, OTP enable flag, registration enable flag, and legal
+version configuration are absent. No Resend request or email was sent. The
+production-only dependency audit reports three moderate Mammoth/argparse/
+sprintf-js findings; the full audit exits 1 with five high and seven moderate
+findings, including development-tooling chains. No breaking downgrade, override,
+suppression or waiver was applied. Current local checks do not establish
+provider-domain verification, legal approval, hosted CI, deployed configuration,
+or production readiness. No commit, push, merge or deployment occurred.
+
+### Authentication gap reconciliation and integration rerun (2026-10-20, Node 24.19.0)
+
+The first plain `npm run test:integration` invocation exited nonzero because
+the current `.env` intentionally has no database or Redis test endpoints; test
+guards refused to run integration cases, so no database connection or external
+provider call occurred. I then reran with process-only configuration against
+the already-running loopback PostgreSQL/Redis development test services. The
+suite passed 55/55 with zero skipped. It exercised OTP request/verification,
+session rotation and replay revocation, session migration, owner-scoped device
+listing/revocation, queue recovery, and the existing service-backed API cases.
+The tests create uniquely named disposable databases and use synthetic OTP
+delivery; no live Resend request was made. The local services themselves were
+left running and were not shut down or reconfigured. No `.env` values were
+printed or persisted by the test invocation.
+
+This rerun found the current AUTH-01 register stale: refresh-family rotation,
+reuse revocation and device-session inventory/revocation are implemented and
+locally tested. `GAP_MATRIX.md`, `blocker.txt` and `docs/security/THREAT_MODEL.md`
+now distinguish these implemented controls from remaining gaps: fallback
+provider selection/acceptance, recovery and email-change flows, new-device
+alerts, risk-based step-up, staff/admin MFA, and hosted/legal/provider
+acceptance. AUTH-01 remains open; no production-readiness claim is made.
+
+The same loopback-only process configuration also passed `npm run
+test:database-recovery` (one test; 17 table fingerprints plus encrypted resume
+object recovery, synthetic owner data only), `npm run test:crash-recovery`
+(publication crash, queue-publish crash, lease fencing and object-publication
+reconciliation scenarios), and `npm run test:queue-runtime` (isolated Redis
+restart/AOF restore and publisher/worker process lifecycle). These use local
+disposable test records/databases and do not prove off-host backups, hosted
+restore, production infrastructure or RPO/RTO.
+
+`npm run test:performance` passed on the same local synthetic database. For 60
+sequential samples per authenticated read route, p50/p95/max milliseconds were:
+searches 5.40/6.00/53.96; leads 6.64/8.97/28.78; profile
+4.21/5.02/5.40; preparation 4.57/7.18/8.70. Under eight concurrent
+readers for 30 seconds, the harness completed 13,578 requests (452.6/s), zero
+failures, p50/p95/p99 16.59/25.72/33.58 ms; RSS rose from about 299 MiB to
+410 MiB. These values pass the script's developer-machine regression ceilings;
+they are not production latency/SLO evidence and do not measure frontend web
+vitals or hosted worker backlog latency.
+
+### Dual-address email-change implementation and current local validation (2026-10-20, Node 24.19.0)
+
+Added owner-scoped email-change challenge persistence and authenticated
+`/api/account/email-change/request` and `/verify` routes. Codes are bound to the
+current and proposed address separately; only HMAC digests, challenge metadata
+and expiry are stored. The database email remains unchanged until both
+addresses verify. The current-address message is the request notice, and failed
+delivery cancels the pending request. Added the account-security UI and OpenAPI
+contracts. Migration `0025_spicy_vulture.sql` is additive and was tested only
+in disposable local PostgreSQL; it was not applied to a shared database.
+
+On the current uncommitted task branch, isolated `npm run test:integration`
+passed 55/55 with zero skips against pinned PostgreSQL 17.6 and Redis 7.4.5
+containers bound to ephemeral loopback ports and removed by the harness. The
+service-backed test covers separate deliveries, digest-only persistence,
+incorrect-code rejection, no change after one verification, change after both
+verifications, replay rejection, the updated session-facing address, and
+OpenAPI route registration. No live Resend call occurred. `npm run build`
+passed both Next.js production builds and verified all 12 inline-script CSP
+hashes. `npm run gates:test` passed: four Node policy tests, five approved-source
+tests, four privacy tests, nine deployment-policy tests, EOL, lint, 53-file
+strict test typecheck, and 74/74 unit tests. The first repository format check
+identified that Prettier cannot parse plain-text `blocker.txt`; `.prettierignore`
+now excludes only this operational text register, and the subsequent
+`npm run format:check` passed. Targeted formatting, privacy scan/tests and
+`git diff --check` also passed.
+
+The mocked browser-level email-change journey in `scripts/check-ui.ts` passed in
+Chromium and Firefox, including axe and responsive-width assertions; all API
+calls were intercepted and no email was sent. The full
+`CAREERSCOPE_UI_BROWSER=all` run exited 1 later in Firefox at the existing
+dashboard-quiescence assertion: repeated successful `GET /api/leads` requests
+prevented the 250ms quiet window for 15 seconds. WebKit did not run. The issue
+remains open; no retry was used to claim a pass. Only uniquely named temporary
+containers and the test web process were stopped; existing volume-backed
+services were untouched. Independent security review, provider/domain
+verification, hosted staging and live delivery remain pending; AUTH-01 and the
+broader v12 goal remain incomplete. No commit, push, merge, deployment,
+production change, or shared-service modification occurred.
+
+### OTP expiry and unavailable-state hardening (2026-10-20, Node 24.19.0)
+
+The verification path previously captured the OTP expiry clock before waiting
+for the challenge row lock. It now reads the clock only after the row is locked;
+a deterministic fake-pool regression advances time at lock acquisition and
+asserts that a code expiring at that boundary is rejected and consumed. The
+web API client now maps service-unavailable responses to safe actionable
+messages, with the approved sign-in-specific wording for OTP request/verification
+and a generic service message elsewhere. Tests assert server error details are
+not exposed.
+
+Validation on the current dirty task branch: `npm run test:unit` PASS (76/76);
+`npm run test:integration` PASS (55/55, zero skipped) using PostgreSQL 17.6
+with per-test scratch databases and two isolated Redis 7.4.5 containers on
+random loopback ports; all temporary Redis containers were removed. Also
+PASS: `npm run typecheck`, `npm run build` (both Next builds and 12 CSP inline
+hashes), `npm run lint`, `npm run format:check`, `npm run eol:check`,
+`npm run privacy:test` (4/4), `npm run privacy:check`, and `git diff --check`.
+`npm run security:check` and the complete browser matrix were not rerun in this
+checkpoint. Full dependency audit findings remain unresolved. No real provider
+request, email, shared migration, push, merge, or deployment occurred.
+
+Before editing, an external all-ref Git bundle and working-tree patch/archive
+were created and verified. SHA256 of the bundle:
+`CA61EE5B1F40EF224EC59F69A50C208A7C2946799108D3EB9BE18611D2B69BD9`.
+The all-ref restore clone passed `git fsck --full --strict` and exact ref
+comparison. The private backup location is intentionally not recorded here.
+Independent review of the current auth diff remains pending; no commit was made.
+
+### Autonomous-goal progress audit and current local checks (2026-10-20, Node 24.19.0)
+
+Read the approved source register, engineering contract, complete CareerScope
+Goal, standards, current gap/test/quality matrices, go/no-go ledger, blocker
+register and current branch state. The machine-readable v12 inventory still has
+319/319 source clauses `NOT_ASSESSED` and `NOT_RUN`; the 25/25 release go/no-go
+rows remain `NOT_VERIFIED`. These are evidence-accounting states, not a claim
+that no functionality exists. Consequently, no defensible aggregate product or
+autonomous-goal implementation percentage can be computed from the current
+authoritative assessment records. Production readiness is 0/25 verified
+go/no-go gates (0% of that release-gate checklist), not a measure of local code
+coverage.
+
+Fresh checks during this audit: `npm run test:domain` PASS, 835/835 across 30
+files (about 5 seconds); `npm run security:check` exit 0 at its configured
+high-severity threshold, while reporting three moderate `sprintf-js` findings;
+full `npm audit --json` exit 1 with 12 affected package nodes (5 high, 7
+moderate, 0 critical). The full browser matrix's latest recorded result remains
+FAIL/INCOMPLETE: Firefox dashboard request settlement observed repeated
+successful `/api/leads` requests, so WebKit was not reached. Do not treat the
+earlier successful all-browser run as current evidence.
+
+Audit reconciliation: corrected stale `VALIDATION-ENV-01` and
+`INDEPENDENT-REVIEW-01` descriptions in `blocker.txt`. Node 24 and the integrated
+OTP implementation/tests are present; independent review still does not cover
+the current dirty auth diff. No application source, migration, runtime data or
+Git history was changed as part of this audit. The existing 53-path dirty task
+worktree was preserved. No fetch, commit, push, merge, hosted run, real provider
+call, shared-database migration or deployment occurred. Separate UI evidence
+containers were left running untouched.

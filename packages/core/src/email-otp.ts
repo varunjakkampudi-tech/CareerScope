@@ -1,6 +1,6 @@
 import { createHmac, randomInt, timingSafeEqual } from 'node:crypto';
 
-export const emailOtpLifetimeMs = 10 * 60 * 1000;
+export const emailOtpLifetimeMs = 5 * 60 * 1000;
 export const emailOtpMaximumAttempts = 5;
 
 const otpPattern = /^\d{6}$/;

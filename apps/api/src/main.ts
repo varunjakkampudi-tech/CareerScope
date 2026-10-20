@@ -2,6 +2,7 @@ import {
   Database,
   configuration,
   configuredFileResumeStorage,
+  ResendEmailOtpProvider,
   logger,
   rateLimiter,
   shutdownSignal,
@@ -10,12 +11,37 @@ import {
 import { createApp } from './app.js';
 
 const env = configuration();
+const emailOtp =
+  env.EMAIL_OTP_ENABLED === 'true'
+    ? {
+        secret: Buffer.from(env.EMAIL_OTP_HMAC_SECRET!, 'utf8'),
+        provider: new ResendEmailOtpProvider(env.RESEND_API_KEY!, env.RESEND_FROM_EMAIL),
+      }
+    : undefined;
 const database = new Database(env.DATABASE_URL);
 const limiter = await rateLimiter(env.REDIS_URL);
 const resumeStorage = await configuredFileResumeStorage();
 const app = await createApp(database, env.APP_ORIGIN, limiter.consume, {
-  registrationEnabled: false,
+  registrationEnabled: env.REGISTRATION_ENABLED === 'true',
+  registrationPolicy:
+    env.LEGAL_TERMS_VERSION &&
+    env.LEGAL_TERMS_URL &&
+    env.LEGAL_PRIVACY_VERSION &&
+    env.LEGAL_PRIVACY_URL &&
+    env.LEGAL_MARKETING_VERSION
+      ? {
+          termsVersion: env.LEGAL_TERMS_VERSION,
+          termsUrl: env.LEGAL_TERMS_URL,
+          privacyVersion: env.LEGAL_PRIVACY_VERSION,
+          privacyUrl: env.LEGAL_PRIVACY_URL,
+          marketingVersion: env.LEGAL_MARKETING_VERSION,
+        }
+      : undefined,
   testAccess: testAccessConfiguration(process.env, env.APP_ORIGIN),
+  emailOtp,
+  readiness: async () => {
+    await limiter.client.ping();
+  },
   resumeStorage: resumeStorage
     ? {
         bucket: resumeStorage.bucket,

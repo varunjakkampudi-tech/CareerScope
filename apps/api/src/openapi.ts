@@ -179,10 +179,6 @@ const key = text({
   pattern: '^[a-zA-Z0-9_-]{8,128}$',
   description: 'Choose a new key for a new operation; reuse it only when retrying the same input.',
 });
-const credentials = object({
-  email: text({ format: 'email', maxLength: 254 }),
-  password: text({ minLength: 12, maxLength: 256, format: 'password' }),
-});
 const limit = (fallback: number) => ({
   type: 'number',
   default: fallback,
@@ -216,7 +212,9 @@ function operation(
     response: {
       [code]: { ...response, description: code === 204 ? 'No content' : summary },
       ...Object.fromEntries(
-        [...new Set([500, ...failures])].map((statusCode) => [
+        // Any route can fail closed when shared infrastructure such as Redis
+        // is unavailable; keep that stable dependency failure in every contract.
+        [...new Set([500, 503, ...failures])].map((statusCode) => [
           statusCode,
           { ...error, description: errors[statusCode] },
         ]),
@@ -227,7 +225,16 @@ function operation(
 
 function contracts(options: {
   testUsers?: boolean;
+  harnessPasswordLogin?: boolean;
+  emailOtpEnabled?: boolean;
   registrationEnabled?: boolean;
+  registrationPolicy?: {
+    termsVersion: string;
+    termsUrl: string;
+    privacyVersion: string;
+    privacyUrl: string;
+    marketingVersion: string;
+  };
   resumes: boolean;
   cancellation: boolean;
 }): Record<string, Documentation> {
@@ -243,7 +250,9 @@ function contracts(options: {
           {
             authenticated: { ...bool, enum: [true] },
             csrf: text(),
+            sessionId: uuid,
             email: nullable(text({ format: 'email' })),
+            emailOtpEnabled: bool,
             phone: nullable(text({ pattern: '^\\+[1-9][0-9]{7,14}$' })),
             testUser: text({ enum: ['candidate', 'admin'] }),
             // CS-61: a stable, opaque per-owner value for client cache keys.
@@ -251,13 +260,20 @@ function contracts(options: {
             owner: text({ pattern: '^[a-f0-9]{64}$' }),
             aiEnabled: bool,
           },
-          ['authenticated', 'csrf', 'owner', 'aiEnabled'],
+          ['authenticated', 'csrf', 'sessionId', 'owner', 'aiEnabled', 'emailOtpEnabled'],
         ),
         object(
           {
             authenticated: { ...bool, enum: [false] },
             registrationEnabled: bool,
+            emailOtpEnabled: bool,
             testUsersEnabled: bool,
+            legalDocuments: object({
+              termsVersion: text(),
+              termsUrl: text({ format: 'uri' }),
+              privacyVersion: text(),
+              privacyUrl: text({ format: 'uri' }),
+            }),
             testAccounts: {
               type: 'array',
               items: object({
@@ -266,33 +282,154 @@ function contracts(options: {
               }),
             },
           },
-          ['authenticated', 'registrationEnabled'],
+          ['authenticated', 'registrationEnabled', 'emailOtpEnabled'],
         ),
       ],
     }),
     'POST /api/register': operation(
-      'Register an account when enabled',
-      object({ message: text() }),
+      'Password registration unavailable',
+      object({ error: text(), requestId: uuid }),
       {
-        code: 202,
-        body: credentials,
-        failures: [400, 404, 429],
-        description: `Registration is ${options.registrationEnabled ? 'enabled' : 'disabled (404)'}. Origin is required; no CSRF token is required.`,
+        code: 404,
+        failures: [404],
+        description:
+          'Password-based account creation is unavailable. When signup is explicitly configured, new accounts can only be created through the email-OTP flow with versioned Terms and privacy notice acceptance finalized after successful email verification.',
       },
     ),
     'POST /api/login': operation(
-      'Sign in and set the HttpOnly session cookie',
+      options.testUsers
+        ? 'Select a development or protected staging test identity and set the HttpOnly session cookie'
+        : options.harnessPasswordLogin
+          ? 'Authenticate a synthetic account in the isolated API test harness'
+          : 'Test identity selection is disabled',
       object({ authenticated: { ...bool, enum: [true] } }),
       {
         body: options.testUsers
           ? object({ email: text({ format: 'email', maxLength: 254 }) })
-          : credentials,
-        failures: [400, 401, 403, 429],
+          : options.harnessPasswordLogin
+            ? object({ email: text({ format: 'email', maxLength: 254 }), password: text() })
+            : object({}),
+        failures: options.testUsers || options.harnessPasswordLogin ? [400, 401, 403, 429] : [404],
+        description: options.harnessPasswordLogin
+          ? 'Legacy password authentication exists only in the isolated API test harness; production composition explicitly disables this path.'
+          : `Test account selection is ${options.testUsers ? 'enabled in the configured non-production test boundary' : 'disabled'}.`,
+      },
+    ),
+    'POST /api/otp/request': operation(
+      options.emailOtpEnabled ? 'Request an email sign-in code' : 'Email OTP is disabled',
+      object({
+        message: text(),
+        expiresInSeconds: integer({ minimum: 1 }),
+        resendAfterSeconds: integer({ minimum: 1 }),
+      }),
+      {
+        code: 202,
+        body: {
+          oneOf: [
+            object({ email: text({ format: 'email', maxLength: 254 }) }, ['email']),
+            object(
+              {
+                email: text({ format: 'email', maxLength: 254 }),
+                intent: { type: 'string', enum: ['sign-up'] },
+                termsAccepted: { type: 'boolean', enum: [true] },
+                privacyAcknowledged: { type: 'boolean', enum: [true] },
+                marketingOptIn: bool,
+              },
+              ['email', 'intent', 'termsAccepted', 'privacyAcknowledged'],
+            ),
+          ],
+        },
+        failures: options.emailOtpEnabled ? [400, 403, 429, 503] : [404],
+        description: `Returns the same accepted response for known and unknown addresses. Sign-in establishes sessions only for existing accounts. Signup is ${options.registrationEnabled ? 'enabled with server-configured, versioned legal documents' : 'disabled'}; verified signup acceptance and account creation are finalized in one PostgreSQL transaction.`,
+      },
+    ),
+    'POST /api/otp/verify': operation(
+      options.emailOtpEnabled
+        ? 'Verify an email sign-in code and establish a session'
+        : 'Email OTP is disabled',
+      object({ authenticated: { ...bool, enum: [true] } }),
+      {
+        body: object({
+          email: text({ format: 'email', maxLength: 254 }),
+          code: text({ pattern: '^\\d{6}$' }),
+          intent: { type: 'string', enum: ['sign-in', 'sign-up'] },
+        }),
+        failures: options.emailOtpEnabled ? [400, 401, 403, 429, 503] : [404],
+        description:
+          'Codes are single-use and short-lived. The authenticated identity is resolved from the verified server-side account record.',
       },
     ),
     'POST /api/logout': operation(
       'Sign out and clear the session cookie',
       object({ authenticated: { ...bool, enum: [false] } }),
+    ),
+    'POST /api/session/refresh': operation(
+      'Rotate the browser refresh token and issue a short-lived access session',
+      object({ authenticated: { ...bool, enum: [true] }, csrf: text() }),
+      {
+        code: 200,
+        body: object({}),
+        failures: [401],
+        description:
+          'Uses only the HttpOnly refresh cookie, requires an exact same-origin Origin, and detects reuse of consumed refresh tokens by revoking the session family.',
+      },
+    ),
+    'GET /api/account/sessions': operation(
+      'List the authenticated owner’s active device sessions',
+      object({
+        sessions: array(
+          object({
+            id: uuid,
+            createdAt: nullable(timestamp),
+            lastUsedAt: nullable(timestamp),
+            deviceLabel: text(),
+            current: bool,
+          }),
+        ),
+      }),
+    ),
+    'POST /api/account/email-change/request': operation(
+      options.emailOtpEnabled ? 'Request a two-address email change' : 'Email change is disabled',
+      object({ message: text(), expiresInSeconds: integer({ minimum: 1 }) }),
+      {
+        code: 202,
+        body: object({ newEmail: text({ format: 'email', maxLength: 254 }) }, ['newEmail']),
+        failures: options.emailOtpEnabled ? [400, 401, 403, 429, 503] : [404],
+        description:
+          'Requires the authenticated owner session and CSRF token. Sends a five-minute, single-use code to the session-derived current address and the proposed address. The current address receives an email-change security notice; neither address nor owner id is accepted as identity input.',
+      },
+    ),
+    'POST /api/account/email-change/verify': operation(
+      options.emailOtpEnabled ? 'Verify one side of an email change' : 'Email change is disabled',
+      object({ verified: text({ enum: ['current', 'new'] }), emailChanged: bool }),
+      {
+        body: object(
+          { address: text({ enum: ['current', 'new'] }), code: text({ pattern: '^\\d{6}$' }) },
+          ['address', 'code'],
+        ),
+        failures: options.emailOtpEnabled ? [400, 401, 403, 409, 429, 503] : [404],
+        description:
+          'The owner and current email are derived from the authenticated session and locked in PostgreSQL. The email changes only after both distinct address-bound codes are accepted in transactions; one-time attempt budgets and expiry are enforced server-side.',
+      },
+    ),
+    'DELETE /api/account/sessions/:id': operation(
+      'Revoke one session owned by the authenticated account',
+      { type: 'null' },
+      { code: 204, failures: [400, 429] },
+    ),
+    'GET /api/account/marketing-consent': operation(
+      'Read the authenticated account’s current optional marketing preference',
+      object({ optedIn: bool, version: nullable(text()) }),
+    ),
+    'POST /api/account/marketing-consent': operation(
+      'Record or withdraw optional marketing consent for the authenticated account',
+      object({ optedIn: bool }),
+      {
+        body: object({ optIn: bool }),
+        failures: [400, 404, 429],
+        description:
+          'The setting is separate from service Terms/privacy acknowledgement. Withdrawal appends an immutable event; marketing delivery remains disabled unless a separate approved sender is configured.',
+      },
     ),
     'POST /api/account/sessions/revoke-others': operation(
       'Revoke other sessions, retaining this session',
@@ -617,7 +754,16 @@ export async function registerOpenApi(
   version: string,
   options: {
     testUsers?: boolean;
+    harnessPasswordLogin?: boolean;
+    emailOtpEnabled?: boolean;
     registrationEnabled?: boolean;
+    registrationPolicy?: {
+      termsVersion: string;
+      termsUrl: string;
+      privacyVersion: string;
+      privacyUrl: string;
+      marketingVersion: string;
+    };
     resumes: boolean;
     cancellation: boolean;
   },
@@ -640,6 +786,12 @@ export async function registerOpenApi(
             in: 'cookie',
             name: sessionCookie,
             description: 'Existing HttpOnly browser session; do not paste a token.',
+          },
+          refresh: {
+            type: 'apiKey',
+            in: 'cookie',
+            name: 'careerscope_v2_refresh',
+            description: 'HttpOnly rotating refresh cookie; do not paste a token.',
           },
           csrf: {
             type: 'apiKey',
@@ -672,8 +824,12 @@ export async function registerOpenApi(
         '/api/session',
         '/api/login',
         '/api/register',
+        '/api/otp/request',
+        '/api/otp/verify',
         '/api/logout',
+        '/api/session/refresh',
       ].includes(url);
+      const refreshEndpoint = url === '/api/session/refresh';
       const mutation = !['GET', 'HEAD', 'OPTIONS'].includes(method);
       const response = { ...metadata.response };
       if (!anonymous) response[401] = { ...error, description: errors[401] };
@@ -688,7 +844,11 @@ export async function registerOpenApi(
           response,
           operationId: `${method.toLowerCase()}_${url.replace(/[^a-zA-Z0-9]+/g, '_')}`,
           tags: [url.split('/')[2]!],
-          security: anonymous ? [] : [mutation ? { session: [], csrf: [] } : { session: [] }],
+          security: refreshEndpoint
+            ? [{ refresh: [] }]
+            : anonymous
+              ? []
+              : [mutation ? { session: [], csrf: [] } : { session: [] }],
           ...(url.includes('/:id') ? { params: object({ id: uuid }) } : {}),
           description:
             `${metadata.description ?? ''}${mutation ? ' Every write requires an exact Origin match; the browser supplies Origin automatically.' : ''}`.trim(),
@@ -729,7 +889,13 @@ export async function registerOpenApi(
           request.credentials = 'same-origin';
           if (
             !['GET', 'HEAD', 'OPTIONS'].includes(String(request.method ?? 'GET').toUpperCase()) &&
-            !['/api/login', '/api/register'].includes(target.pathname)
+            ![
+              '/api/login',
+              '/api/register',
+              '/api/otp/request',
+              '/api/otp/verify',
+              '/api/session/refresh',
+            ].includes(target.pathname)
           ) {
             const response = await fetch('/api/session', {
               credentials: 'same-origin',

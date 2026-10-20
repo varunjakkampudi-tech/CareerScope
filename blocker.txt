@@ -163,38 +163,80 @@ Affected tasks: Supply-chain affected integrations
 Evidence references: PROGRESS.md current executed evidence and current audit result
 
 BLOCKER ID: AUTH-01
-Title: Current test access is not production OTP authentication
+Title: Complete authentication launch acceptance beyond implemented email OTP
 Priority: Critical
 Module: Authentication
 v12 requirement / checklist item: D1/D11, section 4.1; checklist 1-3/7-8
 Status: OPEN
-Problem: No production OTP/fallback, refresh-family/device or verified-signal
-  recovery implementation. Production selector prohibition is locally implemented
-  and tested; hosted deployment remains unperformed.
-Verified root cause: test-users.ts, auth.ts, sessions schema and executable API read.
-Current implementation: Private two-account selector and opaque owned sessions;
-  an OTP primitive and PostgreSQL challenge store now exist locally. Production
-  OTP endpoints, account verification/creation and session issuance remain absent.
-Impact: Cannot be a public production identity system under v12.
-What the agent already tried: Source/config/test inventory; no host changes.
-Work completed: Independently reviewed production/staging/local startup guard;
-  six tests pass, guard module coverage 100% lines/branches/functions. Production
-  Compose pins disabled selectors; synthetic config validation passes. OTP core
-  and PostgreSQL challenge state have local unit and isolated service-backed
-  coverage; this is not a complete login flow.
-Why autonomous resolution is unsafe or impossible: Local work is authorized and
-  continuing after baseline audit; real provider acceptance needs owner configuration.
-Exact owner action required: None for local guard/mock implementation; see PROVIDER-01.
-Step-by-step resolution instructions: Agent implements approved OTP/session
-  contracts, isolated tests and review; owner later validates approved hosted
-  configuration. Do not enable a selector as an OTP substitute.
-Required environment-variable names (no values): Current TEST_ACCESS_MODE,
-  TEST_PROXY_SECRET, NODE_ENV, DEPLOYMENT_ENVIRONMENT.
-External dependencies: PROVIDER-01 for actual delivery; no real sends permitted now
-Expected result: Production cannot enable test selection; OTP and devices validated.
-Verification procedure: Production/staging/local matrix, denial/replay/concurrency
-  cases and isolated real DB/browser tests; real delivery reported separately.
-Tests to rerun: Auth, ownership, CSRF, cookie, provider outage, token-family regressions
+Problem: Local OTP and session controls are implemented and covered by tests,
+  but the full v12 authentication surface and production acceptance remain
+  incomplete. The remaining local gaps are lost-mailbox recovery, new-device
+  alerts, unusual-pattern step-up, and production
+  staff/admin MFA. A second delivery provider has not been selected. The
+  password-test compatibility route is opt-in to isolated fixtures and disabled
+  in OTP/runtime compositions.
+Verified root cause: Current API composition, auth/schema, runtime validation,
+  API/core integration tests, OTP tests and approved v12 checklist reviewed on
+  20 October 2026. Refresh rotation/reuse revocation and owner-scoped device
+  session listing/revocation are present; they are no longer classified as
+  missing implementation.
+Current implementation: With `EMAIL_OTP_ENABLED=true`, Fastify uses the existing
+  PostgreSQL identity/session architecture and Resend adapter. Existing-account
+  sign-in and a guarded OTP signup capability are implemented. Signup remains
+  disabled unless `REGISTRATION_ENABLED=true` and complete versioned legal
+  configuration are supplied; the repository's terms/privacy content is counsel
+  draft only, so it must not currently be configured for acceptance. Password
+  registration is always unavailable. Signup account creation, accepted Terms
+  and privacy records, optional marketing consent, initial session and OTP
+  challenge consumption share one transaction. Six-digit codes expire in five
+  minutes, are HMAC-verified and single-use, with Redis distributed limits.
+Impact: Existing-account OTP sign-in and session lifecycle controls have local
+  evidence, but fallback availability, recovery, risk-based authentication,
+  staff MFA, live delivery and hosted acceptance are not established.
+What the agent already tried: Added routes, existing-session establishment,
+  runtime fail-closed checks, user-facing OTP form and service-backed tests.
+Work completed: Existing OTP work has local unit, PostgreSQL/Redis integration,
+  build/CSP, typecheck, lint, privacy, formatting and browser evidence recorded
+  in PROGRESS.md. The current signup/legal-consent changes are being validated
+  separately; no live Resend delivery or legal approval is claimed.
+Why autonomous resolution is unsafe or impossible: Selecting a fallback vendor,
+  enabling a sender/domain, and performing real-recipient delivery require owner
+  and provider evidence. The approved v12 text requires recovery through verified
+  identity signals beyond email, but the current identity model exposes no such
+  second signal; implementing recovery without an approved factor/procedure
+  would weaken account takeover protections. Staff MFA needs a production staff
+  identity/role boundary, which the current test-only admin identity is not.
+Exact owner action required: Obtain qualified counsel/owner approval for effective
+  Terms, privacy notice, marketing language and retention/deletion policy before
+  enabling registration; complete PROVIDER-01 actions; review remaining
+  recovery factor/procedure and staff identity/MFA boundary before public
+  production acceptance. Refresh and device-session implementation is present;
+  its local regression suite passes, while hosted acceptance remains open.
+Step-by-step resolution instructions: Keep signup disabled while only counsel
+  drafts exist. After legal approval, publish the exact versioned texts at
+  approved HTTPS URLs, configure version/URL variables through the protected
+  environment (never Git/chat), validate fail-closed startup, and complete a
+  separate staging test. Keep OTP disabled until the staging sender, independent
+  HMAC key and provider domain are verified; complete one owner-approved mailbox
+  test in isolated staging; separately implement and verify approved recovery,
+  new-device alerting, risk-based step-up, and
+  staff/admin MFA without treating the test identity selector as production RBAC.
+Required environment-variable names (no values): EMAIL_OTP_ENABLED,
+  EMAIL_OTP_HMAC_SECRET, RESEND_API_KEY, RESEND_FROM_EMAIL,
+  TEST_ACCESS_MODE, TEST_PROXY_SECRET, NODE_ENV, DEPLOYMENT_ENVIRONMENT.
+External dependencies: PROVIDER-01 live sender and hosted acceptance; remaining
+  remaining recovery/alert/step-up/MFA requirements are local engineering work
+  after their security contracts are specified; no implementation is waived.
+Expected result: Existing users authenticate only after a real verified code and
+  all v12 session/recovery requirements have independent release evidence.
+Verification procedure: Node 24 unit/integration/browser gates; hosted staging
+  delivery/fallback and migration acceptance; separate tests for approved
+  recovery factors, new-device alert redaction, step-up policy, staff MFA,
+  session rotation and owner isolation. Dual-address email change is implemented
+  locally and covered by the isolated integration suite; independent review and
+  hosted acceptance remain pending.
+Tests to rerun: Auth, ownership, CSRF, cookies, abuse controls, provider outages,
+  refresh/device/recovery and the browser matrix.
 Affected tasks: Production sign-in acceptance; unrelated local engineering continues
 Evidence references: GAP_MATRIX.md 4.1; TEST_MATRIX.md AUTH-TEST-01/02
 
@@ -255,48 +297,57 @@ Affected tasks: Discovery activation/public pages; not deterministic fixture tes
 Evidence references: GAP_MATRIX.md 4.6/4.14; approved v12 D10/D13/D14
 
 BLOCKER ID: PROVIDER-01
-Title: Primary/fallback OTP and notification provider acceptance
+Title: Resend domain, live-delivery and fallback-provider acceptance
 Priority: Critical
 Module: Authentication/notifications
 v12 requirement / checklist item: D1/D9/D11; 4.1/4.15; checklist 1-3
 Status: READY_FOR_OWNER
-Problem: No verified primary/fallback account/domain and independent test delivery
-  evidence supplied. Mock tests cannot prove real provider integration.
-Verified root cause: Current API has no OTP provider integration; v12 external list.
-Current implementation: No production email login. The dependency-free OTP
-  primitive, HMAC-keyed PostgreSQL challenge store, Resend HTTP adapter and
-  generic fallback coordinator exist on the local task branch. They are not
-  wired into the API; no fallback vendor/configuration, session issuance or
-  provider call exists.
-Impact: Production OTP/failover/deliverability cannot pass.
-What the agent already tried: Source review; no account creation, paid call or send.
-Work completed: OTP code/digest/expiry/attempt primitive passes 9/9 unit tests;
-  PostgreSQL challenge replacement/consumption/concurrent-attempt behavior passes
-  isolated integration tests; the Resend adapter/fallback boundary passes 6/6
-  mocked unit tests. Fallback vendor/configuration and API outage/quota tests
-  remain unimplemented. No real account or communication was used.
-Why autonomous resolution is unsafe or impossible: Accounts, DNS, secret values,
-  spend limits and real communications are owner-controlled.
-Exact owner action required: Provide separately authorized staging provider access
-  through protected environment channels and choose/provision the fallback provider.
+Problem: Resend domain ownership/sender state, tracking configuration, live
+  delivery and inbox receipt have not been verified. No second email provider is
+  selected for the v12 fallback requirement. Mock tests cannot prove these facts.
+Verified root cause: Local source and tests show an integrated Resend API path;
+  no external provider console or DNS change was performed in this task.
+Current implementation: The server sends via fixed HTTPS Resend API endpoint with
+  bounded timeout and same-key idempotent retry. Existing `.env` already provides
+  Resend configuration; its values were not read or printed. No live call occurred.
+  `EMAIL_OTP_HMAC_SECRET` is separate and not present in the current local `.env`.
+Impact: API acceptance and mocks do not prove sender authorization, inbox receipt,
+  domain-level tracking state or fallback recovery.
+What the agent already tried: Validated required names and runtime guards without
+  reading secret values; mocked provider success/failure/retry and sanitized errors.
+Work completed: 7 delivery-adapter tests are in the unit suite; integrated OTP
+  API uses the provider and invalidates undelivered challenges. No real account,
+  recipient or communication was used.
+Why autonomous resolution is unsafe or impossible: Domain/DNS state, provider
+  dashboard settings, secret provisioning and real recipient authorization are
+  external owner-controlled actions. The fallback provider is a product/provider
+  decision and cannot be invented from local code.
+Exact owner action required: Verify the approved sending domain and sender in
+  Resend, confirm open/click tracking is disabled for auth mail at the account or
+  domain setting, provision a separate staging HMAC secret, choose/provision the
+  required fallback provider, and authorize one staging recipient for a live test.
 Step-by-step resolution instructions:
-  1. Owner signs into the approved Resend account and completes its domain ownership
-     and sender verification using the current provider-issued DNS instructions.
-     Do not paste DNS secret material or API keys into chat or Git.
-  2. Owner chooses/provisions a second email provider and independently verifies
-     required SPF/DKIM/DMARC and sending domain; no agent-created account.
-  3. After local adapter configuration is implemented, set its documented exact
-     variable names in isolated staging secrets, scoped only to sending test mail.
-     Provider credential names are not invented before the adapter exists.
-  4. Record explicit allowed recipients, test authorization and spend/quota cap
-     before any live verification. Current authorization permits mocks only.
-  5. Run approved single-provider/failover/both-down/restore tests and retain only
-     sanitized request IDs/statuses, not OTP codes, payloads or personal data.
-Required environment-variable names (no values): Pending implemented adapter contract
-External dependencies: Resend, fallback provider, DNS owner, separate staging
+  1. In Resend, confirm `careerscope.tech` is verified and the exact approved
+     sender is enabled; follow only provider-issued DNS instructions.
+  2. In the provider's domain/account settings, verify open and click tracking are
+     disabled for authentication email. The integration does not claim to override
+     provider-level tracking defaults per message.
+  3. Add `EMAIL_OTP_HMAC_SECRET` (random, independent, >=32 bytes) and
+     `EMAIL_OTP_ENABLED=true` to isolated staging secrets; never store values in
+     Git, chat, logs or screenshots. Keep production disabled pending acceptance.
+  4. Select/provision the fallback provider required by v12 and supply its owner-
+     approved adapter/configuration decision; do not send or enable it beforehand.
+  5. Authorize a specific staging mailbox and spend cap, then test inbox receipt,
+     verification, session, expiry, retry and fallback; retain only sanitized IDs.
+Required environment-variable names (no values): EMAIL_OTP_ENABLED,
+  EMAIL_OTP_HMAC_SECRET, RESEND_API_KEY, RESEND_FROM_EMAIL; fallback names only
+  after its provider and adapter contract are approved.
+External dependencies: Resend account/domain/DNS; provider tracking setting;
+  staging secret channel; fallback-provider decision; authorized test mailbox.
 Expected result: Actual OTP/fallback acceptance with no production test shortcut.
-Verification procedure: Provider sandbox/live test evidence distinct from mock runs.
-Tests to rerun: OTP/outage/abuse/notification delivery and production config guards
+Verification procedure: Separate provider acceptance, recipient receipt and OTP
+  session evidence from mock/local automated runs.
+Tests to rerun: OTP outage/abuse/delivery, staging browser acceptance and runtime guards.
 Affected tasks: Hosted sign-in/notification acceptance; local implementation unblocked
 Evidence references: TEST_MATRIX.md AUTH-TEST-02/MESSAGE-TEST-01
 
@@ -346,14 +397,18 @@ Verified root cause: The original Node 24 image did not contain project
   `next/font/google` at build time, so the production build requires network access
   to that font source; the offline-only build failure was environmental, and the
   bounded network-enabled build passed.
-Current implementation: On `codex/task/email-otp-auth`, a dependency-free OTP
-  primitive is exported from core and its synthetic tests are registered in
-  `test:unit`. No API route, database challenge table, email adapter, session
-  lifecycle, recovery flow or UI was added.
-Impact: No longer blocks local Node 24 validation. Passing repository tests do
-  not establish an OTP flow. OTP persistence, delivery, login and browser UX do
-  not exist and remain separate implementation work; existing shared services
-  were not queried or modified.
+Current implementation: Node 24.19.0 is available and has been used for the
+  current task-branch validation. The current uncommitted task branch includes
+  PostgreSQL-backed OTP challenges, request/verification routes, a Resend
+  adapter behind an injected provider boundary, session issuance/rotation,
+  rate limiting, OTP UI, dual-address email change and related migrations/tests.
+  These are local implementation claims supported by current source and
+  recorded tests, not live provider, hosted or production acceptance.
+Impact: No longer blocks local Node 24 validation. The latest local unit,
+  service-backed integration, typecheck, build, lint, formatting, EOL and privacy
+  checks are recorded in `PROGRESS.md` and `TEST_MATRIX.md`. The latest complete
+  cross-browser run remains failed/incomplete in Firefox at dashboard request
+  quiescence; hosted CI, live delivery and production validation remain absent.
 What the agent already tried: Verified the current clean checkpoint and backup;
   inspected local Docker runtime/image metadata, Node 24 image availability,
   project dependency availability, and Windows sandbox command availability.
@@ -370,9 +425,10 @@ Work completed: On a clean scratch checkout, lockfile dependency installation
   reported only the pre-existing formatting issue in `design/DESIGN-INDEX.json`;
   that design artifact was not rewritten. Targeted formatting and privacy checks
   for the updated evidence documents passed.
-Remaining action: None for isolated Node 24 test-toolchain availability. Browser
-  acceptance was not run for this core-only primitive and remains governed by the
-  separate UI test matrix; this status does not claim browser acceptance.
+Remaining action: None for isolated Node 24 toolchain availability. Diagnose
+  the current Firefox dashboard-quiescence failure and obtain a fresh complete
+  Chromium/Firefox/WebKit browser pass. Hosted CI, provider and production
+  acceptance remain unverified.
 Required environment-variable names (no values): Only explicit synthetic test
   values required by the selected check; never inherit the host environment.
 External dependencies: None for the validated local test suites. Hosted CI,
@@ -392,7 +448,7 @@ Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and the clean
   Node 24 validation scratch checkout.
 
 BLOCKER ID: INDEPENDENT-REVIEW-01
-Title: Independent review of the auth task commit has not completed
+Title: Independent review of the current auth worktree has not completed
 Priority: High
 Module: Authentication / change review
 v12 requirement / checklist item: Engineering contract; sensitive authentication review gate
@@ -403,8 +459,11 @@ Verified root cause: The isolated review checkout and review plan were prepared.
   The configured safe-mode Claude inspector returned `Not logged in`; no review
   verdict or code approval was produced. The CLI version alone does not prove an
   authenticated reviewer session.
-Current implementation: `f468643db8d602a8f07238939b66d3744fff04c6` remains on
-  `codex/task/email-otp-auth`; `codex/dev` has not received it.
+Current implementation: Task branch HEAD is
+  `f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56`, with additional uncommitted
+  authentication, migration, test and documentation changes. Neither the
+  current commit nor dirty diff has valid independent approval; the work remains
+  outside `codex/dev`.
 Impact: No independent review evidence exists for this sensitive auth change.
 What the agent already tried: Invoked the repository's isolated read-only
   `claudex-loop inspect` process from a detached clean worktree without exposing
@@ -421,23 +480,25 @@ Step-by-step resolution instructions:
      official `/login` flow. Do not paste credentials, codes or tokens into chat.
   2. Confirm the CLI session is authenticated locally; `claude --version` alone
      is not sufficient evidence.
-  3. Ask the agent to rerun the read-only inspection of commit
-     `f468643db8d602a8f07238939b66d3744fff04c6` against base
-     `c2a9631599e125f363d9c6d0cf94f07a021783eb`.
-  4. Address any findings, rerun affected tests, then request fresh review on the
-     new content hash. Keep auth changes on the task branch until review and
-     required owner review complete.
+  3. Request read-only review of the current task-branch commit and exact dirty
+     diff, including untracked migrations/tests, against its actual merge base
+     with `codex/dev`; provide a protected snapshot without `.env` or secrets.
+  4. Address findings, rerun affected tests, and obtain a fresh review bound to
+     the final content hash. Keep auth changes on the task branch until review
+     and required owner review complete.
 Required environment-variable names (no values): None
 External dependencies: Authenticated, read-only independent reviewer session.
 Expected result: A valid review receipt/verdict covering the exact diff snapshot.
 Verification procedure: Inspect runner `result.json`, snapshot hash, reviewer
   coverage and findings; a CLI exit code alone is not approval.
-Tests to rerun: Node 24 OTP tests, focused typecheck/lint/format, then full
-  workspace/auth/integration gates when `VALIDATION-ENV-01` is resolved.
+Tests to rerun: After review findings or source changes, rerun Node 24 OTP unit
+  and integration tests, typecheck, lint, format, privacy and the complete
+  browser matrix; the latest full matrix remains failed/incomplete.
 Affected tasks: Only promotion of the sensitive auth task commit; unrelated work
   may continue on separate task branches.
-Evidence references: `PROGRESS.md`, `docs/EMAIL-OTP-PRIMITIVE-PLAN.md`, and
-  external review attempt artifact `email-otp-f468643-retry`.
+Evidence references: `PROGRESS.md`, `TEST_MATRIX.md`, and the prior external
+  review attempt artifact `email-otp-f468643-retry` (historical; not evidence
+  for the current branch contents).
 
 BLOCKER ID: AUTH-LEGACY-IDENTITY-01
 Title: Preflight legacy identity values before applying migration 0019

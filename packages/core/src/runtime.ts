@@ -37,11 +37,29 @@ export function configuration(source: NodeJS.ProcessEnv = process.env) {
       REDIS_URL: z.string().min(1),
       QUEUE_REDIS_URL: z.string().min(1).default('redis://127.0.0.1:56480'),
       APP_ORIGIN: z.string().min(1),
+      NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+      DEPLOYMENT_ENVIRONMENT: z
+        .enum(['development', 'staging', 'production'])
+        .default('development'),
       REGISTRATION_ENABLED: z.enum(['true', 'false']).default('false'),
+      EMAIL_OTP_ENABLED: z.enum(['true', 'false']).default('false'),
+      EMAIL_OTP_HMAC_SECRET: z.string().optional(),
+      RESEND_API_KEY: z.string().optional(),
+      RESEND_FROM_EMAIL: z.string().default('CareerScope <noreply@careerscope.tech>'),
+      LEGAL_TERMS_VERSION: z.string().trim().max(128).optional(),
+      LEGAL_TERMS_URL: z.union([z.string().url(), z.literal('')]).optional(),
+      LEGAL_PRIVACY_VERSION: z.string().trim().max(128).optional(),
+      LEGAL_PRIVACY_URL: z.union([z.string().url(), z.literal('')]).optional(),
+      LEGAL_MARKETING_VERSION: z.string().trim().max(128).optional(),
       SEARCH_QUEUE_TRANSPORT: z.enum(['redis', 'bullmq']).default('redis'),
       SEARCH_QUEUE_REDIS_URL: z.string().min(1).optional(),
     })
-    .parse(source);
+    .parse({
+      ...source,
+      DEPLOYMENT_ENVIRONMENT:
+        source.DEPLOYMENT_ENVIRONMENT ??
+        (source.NODE_ENV === 'production' ? 'production' : 'development'),
+    });
   localUrl(env.DATABASE_URL, ['postgres:', 'postgresql:']);
   localUrl(env.REDIS_URL, ['redis:']);
   localEndpoint(env.QUEUE_REDIS_URL);
@@ -54,6 +72,33 @@ export function configuration(source: NodeJS.ProcessEnv = process.env) {
     localUrl(env.SEARCH_QUEUE_REDIS_URL, ['redis:']);
   }
   appOrigin(env.APP_ORIGIN);
+  if (env.REGISTRATION_ENABLED === 'true') {
+    if (env.EMAIL_OTP_ENABLED !== 'true') throw new Error('Registration requires email OTP');
+    if (
+      !env.LEGAL_TERMS_VERSION ||
+      !env.LEGAL_TERMS_URL ||
+      !env.LEGAL_PRIVACY_VERSION ||
+      !env.LEGAL_PRIVACY_URL ||
+      !env.LEGAL_MARKETING_VERSION
+    )
+      throw new Error('Registration requires versioned legal documents');
+    for (const [name, value] of [
+      ['LEGAL_TERMS_URL', env.LEGAL_TERMS_URL],
+      ['LEGAL_PRIVACY_URL', env.LEGAL_PRIVACY_URL],
+    ] as const) {
+      if (new URL(value).protocol !== 'https:') throw new Error(`${name} must use HTTPS`);
+    }
+  }
+  if (env.DEPLOYMENT_ENVIRONMENT === 'production' && env.EMAIL_OTP_ENABLED !== 'true')
+    throw new Error('Production requires email OTP sign-in to be enabled');
+  if (env.EMAIL_OTP_ENABLED === 'true') {
+    if (!env.EMAIL_OTP_HMAC_SECRET || env.EMAIL_OTP_HMAC_SECRET.trim().length < 32)
+      throw new Error('Email OTP requires a separate HMAC secret of at least 32 bytes');
+    if (!env.RESEND_API_KEY || env.RESEND_API_KEY.trim().length === 0)
+      throw new Error('Email OTP requires RESEND_API_KEY');
+    if (env.RESEND_FROM_EMAIL !== 'CareerScope <noreply@careerscope.tech>')
+      throw new Error('Email OTP requires the approved CareerScope sender address');
+  }
   return env;
 }
 

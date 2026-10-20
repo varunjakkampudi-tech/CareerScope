@@ -17,6 +17,11 @@ dist-types/
 .next/
 next-env.d.ts
 
+# The actionable dependency register is deliberately plain text rather than a
+# Prettier-supported document format; keep its structured operational wording
+# intact and validate its content through the blocker review process.
+blocker.txt
+
 # Runtime data: uploaded resumes and generated exports.
 data/
 

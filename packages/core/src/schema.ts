@@ -23,21 +23,84 @@ import type { parsedResumeSchema } from './resume-parser.js';
 export const users = pgTable('users', {
   id: uuid('id').primaryKey(),
   email: text('email').unique(),
-  passwordHash: text('password_hash').notNull(),
+  emailVerifiedAt: timestamp('email_verified_at', { withTimezone: true }),
+  passwordHash: text('password_hash'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 });
+
+export const accountAcceptances = pgTable(
+  'account_acceptances',
+  {
+    id: uuid('id').primaryKey(),
+    sequence: bigserial('sequence', { mode: 'bigint' }).notNull().unique(),
+    ownerId: uuid('owner_id')
+      .notNull()
+      .references(() => users.id),
+    document: text('document').notNull(),
+    version: text('version').notNull(),
+    accepted: boolean('accepted').notNull(),
+    recordedAt: timestamp('recorded_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    check(
+      'account_acceptance_document_valid',
+      sql`${table.document} IN ('terms', 'privacy_notice', 'marketing')`,
+    ),
+    check(
+      'account_acceptance_version_nonempty',
+      sql`length(btrim(${table.version})) BETWEEN 1 AND 128`,
+    ),
+    check(
+      'account_acceptance_required_grant',
+      sql`${table.document} = 'marketing' OR ${table.accepted}`,
+    ),
+    index('account_acceptance_owner_document_sequence').on(
+      table.ownerId,
+      table.document,
+      table.sequence,
+    ),
+  ],
+);
 
 export const sessions = pgTable(
   'sessions',
   {
     tokenHash: text('token_hash').primaryKey(),
+    id: uuid('id').notNull().unique(),
     ownerId: uuid('owner_id')
       .notNull()
       .references(() => users.id),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    accessExpiresAt: timestamp('access_expires_at', { withTimezone: true }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }),
+    lastUsedAt: timestamp('last_used_at', { withTimezone: true }),
+    deviceLabel: text('device_label'),
+    revokedAt: timestamp('revoked_at', { withTimezone: true }),
   },
-  // Revoking every other session and removing an owner both filter on owner_id.
-  (table) => [index('session_owner').on(table.ownerId)],
+  (table) => [
+    // Owner and expiration filters drive the account-session inventory and
+    // bounded cleanup; token_hash remains the current access-token digest.
+    index('session_owner').on(table.ownerId),
+    index('session_family_expiry').on(table.expiresAt),
+  ],
+);
+
+export const sessionRefreshTokens = pgTable(
+  'session_refresh_tokens',
+  {
+    tokenHash: text('token_hash').primaryKey(),
+    sessionId: uuid('session_id')
+      .notNull()
+      .references(() => sessions.id, { onDelete: 'cascade' }),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    consumedAt: timestamp('consumed_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    check('session_refresh_hash_hex', sql`${table.tokenHash} ~ '^[a-f0-9]{64}$'`),
+    index('session_refresh_family').on(table.sessionId),
+    index('session_refresh_expiry').on(table.expiresAt),
+  ],
 );
 
 export const emailOtpChallenges = pgTable(
@@ -47,6 +110,11 @@ export const emailOtpChallenges = pgTable(
     emailHash: text('email_hash').notNull(),
     digest: text('digest').notNull(),
     attempts: integer('attempts').notNull().default(0),
+    intent: text('intent').notNull().default('sign-in'),
+    termsVersion: text('terms_version'),
+    privacyVersion: text('privacy_version'),
+    marketingOptIn: boolean('marketing_opt_in').notNull().default(false),
+    marketingVersion: text('marketing_version'),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
@@ -55,8 +123,50 @@ export const emailOtpChallenges = pgTable(
     check('email_otp_email_hash_hex', sql`${table.emailHash} ~ '^[a-f0-9]{64}$'`),
     check('email_otp_digest_hex', sql`${table.digest} ~ '^[a-f0-9]{64}$'`),
     check('email_otp_attempts_bounded', sql`${table.attempts} BETWEEN 0 AND 5`),
+    check('email_otp_intent_valid', sql`${table.intent} IN ('sign-in', 'sign-up')`),
+    check(
+      'email_otp_signup_acceptance_complete',
+      sql`(${table.intent} = 'sign-in' AND ${table.termsVersion} IS NULL AND ${table.privacyVersion} IS NULL AND NOT ${table.marketingOptIn}) OR (${table.intent} = 'sign-up' AND ${table.termsVersion} IS NOT NULL AND ${table.privacyVersion} IS NOT NULL)`,
+    ),
+    check(
+      'email_otp_marketing_version_required',
+      sql`NOT ${table.marketingOptIn} OR ${table.marketingVersion} IS NOT NULL`,
+    ),
     check('email_otp_expiry_after_creation', sql`${table.expiresAt} > ${table.createdAt}`),
     index('email_otp_expiration').on(table.expiresAt),
+  ],
+);
+
+export const emailChangeRequests = pgTable(
+  'email_change_requests',
+  {
+    id: uuid('id').primaryKey(),
+    ownerId: uuid('owner_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    currentEmailHash: text('current_email_hash').notNull(),
+    newEmail: text('new_email').notNull(),
+    currentChallengeId: uuid('current_challenge_id').notNull().unique(),
+    currentDigest: text('current_digest').notNull(),
+    currentAttempts: integer('current_attempts').notNull().default(0),
+    currentVerifiedAt: timestamp('current_verified_at', { withTimezone: true }),
+    newChallengeId: uuid('new_challenge_id').notNull().unique(),
+    newDigest: text('new_digest').notNull(),
+    newAttempts: integer('new_attempts').notNull().default(0),
+    newVerifiedAt: timestamp('new_verified_at', { withTimezone: true }),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex('email_change_owner').on(table.ownerId),
+    check('email_change_current_hash_hex', sql`${table.currentEmailHash} ~ '^[a-f0-9]{64}$'`),
+    check('email_change_current_digest_hex', sql`${table.currentDigest} ~ '^[a-f0-9]{64}$'`),
+    check('email_change_new_digest_hex', sql`${table.newDigest} ~ '^[a-f0-9]{64}$'`),
+    check('email_change_current_attempts_bounded', sql`${table.currentAttempts} BETWEEN 0 AND 5`),
+    check('email_change_new_attempts_bounded', sql`${table.newAttempts} BETWEEN 0 AND 5`),
+    check('email_change_address_present', sql`length(btrim(${table.newEmail})) BETWEEN 3 AND 254`),
+    check('email_change_expiry_after_creation', sql`${table.expiresAt} > ${table.createdAt}`),
+    index('email_change_expiration').on(table.expiresAt),
   ],
 );
 

@@ -53,8 +53,9 @@ Applied by a single `onRequest` hook, in this order:
 3. **Origin check.** Any method other than `GET`, `HEAD` or `OPTIONS` must carry
    `Origin` exactly equal to the configured app origin, or the request is
    rejected `403 Origin denied`. A missing `Origin` fails this check.
-4. `/api/login` and `/api/register` short-circuit here — they are the two
-   unauthenticated mutating routes, and step 3 has already run.
+4. `/api/login`, `/api/register`, `/api/otp/request`, `/api/otp/verify` and
+   refresh short-circuit here — unauthenticated mutations still require Origin,
+   and step 3 has already run.
 5. **Session.** The opaque token in the `careerscope_CareerScope_session` cookie is looked up.
    `/api/session` returns whatever it found, including "nothing".
 6. Everything else requires a session, or `401 Authentication required`.
@@ -62,8 +63,9 @@ Applied by a single `onRequest` hook, in this order:
    matching the session's token, or `403 CSRF check failed`.
 
 Authenticated mutations require both a valid `Origin` and a valid CSRF token;
-login and registration require Origin but not CSRF. `ownerId` is taken from
-the session, never from the request body or path.
+login, OTP request/verification and the permanently unavailable legacy password
+registration route require Origin but not CSRF. `ownerId` is taken from the
+session, never from the request body or path.
 
 ### Server limits
 
@@ -96,13 +98,15 @@ Every error response carries `requestId`. Internal error detail is never returne
 
 ### Health and session
 
-| Method | Path            | Auth | CSRF        | Notes                                                      |
-| ------ | --------------- | ---- | ----------- | ---------------------------------------------------------- |
-| GET    | `/api/health`   | no   | no          | Exempt from every hook. Also exempt from maintenance mode. |
-| GET    | `/api/session`  | no   | no          | Returns the current session or absence of one              |
-| POST   | `/api/register` | no   | Origin only | Unavailable (404) in executable test-access mode           |
-| POST   | `/api/login`    | no   | Origin only |                                                            |
-| POST   | `/api/logout`   | yes  | yes         |                                                            |
+| Method | Path               | Auth | CSRF        | Notes                                                      |
+| ------ | ------------------ | ---- | ----------- | ---------------------------------------------------------- |
+| GET    | `/api/health`      | no   | no          | Exempt from every hook. Also exempt from maintenance mode. |
+| GET    | `/api/session`     | no   | no          | Returns the current session or absence of one              |
+| POST   | `/api/register`    | no   | Origin only | Always unavailable (404); signup uses guarded email OTP    |
+| POST   | `/api/login`       | no   | Origin only | Test-access account selection only                         |
+| POST   | `/api/otp/request` | no   | Origin only | Sign-in or explicitly configured signup challenge          |
+| POST   | `/api/otp/verify`  | no   | Origin only | Verifies a challenge and establishes an opaque session     |
+| POST   | `/api/logout`      | yes  | yes         |                                                            |
 
 ### Account
 

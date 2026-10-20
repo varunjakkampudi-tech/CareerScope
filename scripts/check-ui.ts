@@ -57,7 +57,15 @@ const filesQueueName = `test-files-${randomUUID()}`;
 const syntheticPermittedSources = new Set(['greenhouse', 'lever', 'ashby', 'workable']);
 let filesWorker: ReturnType<typeof spawn> | undefined;
 const app = await createApp(database, origin, async () => true, {
+  testHarnessPasswordLogin: true,
   registrationEnabled: true,
+  registrationPolicy: {
+    termsVersion: 'test-terms-1',
+    termsUrl: 'https://careerscope.test/terms',
+    privacyVersion: 'test-privacy-1',
+    privacyUrl: 'https://careerscope.test/privacy',
+    marketingVersion: 'test-marketing-1',
+  },
   // The browser fixture uses only synthetic source data; production does not
   // inject this approval bypass and remains bound to recorded profiles.
   sourcePermitted: (source) => syntheticPermittedSources.has(source),
@@ -360,6 +368,8 @@ try {
     // The public test selector and its real allowlist are verified separately.
     const accountEmail = `signup-${engine}@example.test`;
     await new Auth(database).register(accountEmail, password);
+    const otpEmail = `otp-${engine}@example.test`;
+    await new Auth(database).register(otpEmail, password);
     // Each browser engine runs the same end-to-end scenario against the shared
     // temporary database. The scenario intentionally creates a saved lead and
     // then exercises its failure/retry path; without resetting only this
@@ -371,6 +381,271 @@ try {
     await database.pool.query('DELETE FROM saved_leads WHERE owner_id = $1', [ownerId]);
     const browser = await browserType.launch();
     try {
+      const otpPage = await browser.newPage();
+      let otpRequestCount = 0;
+      let otpVerified = false;
+      let otpCurrentEmail = otpEmail;
+      let emailChangeRequestCount = 0;
+      const emailChangeVerifications: string[] = [];
+      const otpPageErrors: string[] = [];
+      otpPage.on('pageerror', (error) => otpPageErrors.push(error.message));
+      // Deterministic browser contract test: real CareerScope UI, while the
+      // network boundary is mocked so no real email or account is contacted.
+      await otpPage.route('**/api/**', (route) =>
+        route.fulfill({
+          status: 404,
+          contentType: 'application/json',
+          body: '{"error":"Not found"}',
+        }),
+      );
+      await otpPage.route('**/api/session', (route) =>
+        route.fulfill({
+          contentType: 'application/json',
+          json: otpVerified
+            ? {
+                authenticated: true,
+                csrf: 'synthetic-csrf-token',
+                email: otpCurrentEmail,
+                owner: 'a'.repeat(64),
+                aiEnabled: false,
+                emailOtpEnabled: true,
+              }
+            : {
+                authenticated: false,
+                registrationEnabled: true,
+                emailOtpEnabled: true,
+                testUsersEnabled: false,
+                testAccounts: [],
+                legalDocuments: {
+                  termsVersion: 'test-terms-1',
+                  termsUrl: 'https://careerscope.test/terms',
+                  privacyVersion: 'test-privacy-1',
+                  privacyUrl: 'https://careerscope.test/privacy',
+                },
+              },
+        }),
+      );
+      await otpPage.route('**/api/otp/request', (route) => {
+        otpRequestCount += 1;
+        return route.fulfill({
+          status: 202,
+          contentType: 'application/json',
+          json: {
+            message: 'If the request can be completed, check your inbox for a verification code.',
+            expiresInSeconds: 300,
+            resendAfterSeconds: 60,
+          },
+        });
+      });
+      await otpPage.route('**/api/otp/verify', async (route) => {
+        const body = route.request().postDataJSON() as { email: string; code: string };
+        if (body.email !== otpEmail || body.code !== '123456')
+          return route.fulfill({
+            status: 401,
+            contentType: 'application/json',
+            json: { error: 'Invalid or expired verification code', requestId: randomUUID() },
+          });
+        otpVerified = true;
+        return route.fulfill({ contentType: 'application/json', json: { authenticated: true } });
+      });
+      await otpPage.route('**/api/account/email-change/request', async (route) => {
+        emailChangeRequestCount += 1;
+        const body = route.request().postDataJSON() as { newEmail: string };
+        assert.equal(body.newEmail, 'updated@example.test');
+        return route.fulfill({
+          status: 202,
+          contentType: 'application/json',
+          json: { message: 'If the request can be completed, check both email inboxes.' },
+        });
+      });
+      await otpPage.route('**/api/account/email-change/verify', async (route) => {
+        const body = route.request().postDataJSON() as { address: string; code: string };
+        emailChangeVerifications.push(body.address);
+        const emailChanged = emailChangeVerifications.length === 2;
+        if (emailChanged) otpCurrentEmail = 'updated@example.test';
+        return route.fulfill({
+          contentType: 'application/json',
+          json: { verified: body.address, emailChanged },
+        });
+      });
+      await otpPage.goto(origin);
+      await otpPage.getByRole('heading', { level: 1, name: 'Sign in to CareerScope' }).waitFor();
+      await accessible(otpPage, engine, 'OTP request form', 'Sign in to CareerScope');
+      await otpPage.getByLabel('Email address').fill(otpEmail);
+      await otpPage.getByRole('button', { name: 'Send verification code' }).click();
+      await otpPage.getByLabel('Six-digit verification code').waitFor();
+      await accessible(otpPage, engine, 'OTP verification form', 'Sign in to CareerScope');
+      for (const width of [320, 390, 768, 1024, 1440]) {
+        await otpPage.setViewportSize({ width, height: 900 });
+        assert.equal(
+          await otpPage.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+          false,
+          `${engine} OTP form overflows horizontally at ${width}px`,
+        );
+      }
+      assert.equal(
+        await otpPage
+          .getByLabel('Six-digit verification code')
+          .evaluate((element) => element === document.activeElement),
+        true,
+      );
+      assert.equal(
+        await otpPage.getByRole('button', { name: /Resend code in/ }).isDisabled(),
+        true,
+      );
+      await otpPage.getByLabel('Six-digit verification code').fill('000000');
+      await otpPage.getByRole('button', { name: 'Verify and sign in' }).click();
+      await otpPage.getByRole('alert').filter({ hasText: 'invalid or expired' }).waitFor();
+      assert.equal(await otpPage.getByLabel('Six-digit verification code').inputValue(), '');
+      await otpPage.getByLabel('Six-digit verification code').fill('123456');
+      await otpPage.getByRole('button', { name: 'Verify and sign in' }).click();
+      await otpPage.waitForURL((url) => url.pathname === '/dashboard');
+      assert.equal(otpRequestCount, 1, 'one explicit send action must issue one code request');
+      assert.equal(
+        await otpPage
+          .evaluate(() => Object.values(localStorage).join(' '))
+          .then((value) => value.includes('123456')),
+        false,
+        'OTP must not be persisted in browser storage',
+      );
+      await otpPage.goto(`${origin}/settings`);
+      await otpPage.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+      await otpPage.getByLabel('New email address').fill('updated@example.test');
+      await otpPage.getByRole('button', { name: 'Send verification codes' }).click();
+      await otpPage.getByLabel('Code sent to current email').waitFor();
+      await otpPage.getByLabel('Code sent to current email').fill('111111');
+      await otpPage.getByRole('button', { name: 'Verify current email' }).click();
+      await otpPage.getByText('Current address verified. Now verify the new address.').waitFor();
+      await otpPage.getByLabel('Code sent to new email').fill('222222');
+      await otpPage.getByRole('button', { name: 'Verify new email' }).click();
+      await otpPage
+        .getByText('Email address updated. The previous address received a verification notice.')
+        .waitFor();
+      await otpPage.getByText('Current email: updated@example.test', { exact: true }).waitFor();
+      assert.equal(emailChangeRequestCount, 1);
+      assert.deepEqual(emailChangeVerifications, ['current', 'new']);
+      for (const width of [320, 390, 768, 1024, 1440]) {
+        await otpPage.setViewportSize({ width, height: 900 });
+        assert.equal(
+          await otpPage.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+          false,
+          `${engine} email-change form overflows horizontally at ${width}px`,
+        );
+      }
+      await accessible(otpPage, engine, 'dual-address email-change workflow', 'Account security');
+      assert.deepEqual(otpPageErrors, [], `${engine} email OTP UI produced browser errors`);
+      await otpPage.close();
+
+      const signupPage = await browser.newPage();
+      let signupAuthenticated = false;
+      let signupRequestCount = 0;
+      let signupVerificationCount = 0;
+      let signupRequestBody: Record<string, unknown> | undefined;
+      let signupVerificationBody: Record<string, unknown> | undefined;
+      await signupPage.route('**/api/**', (route) =>
+        route.fulfill({
+          status: 404,
+          contentType: 'application/json',
+          body: '{"error":"Not found"}',
+        }),
+      );
+      await signupPage.route('**/api/session', (route) =>
+        route.fulfill({
+          contentType: 'application/json',
+          json: signupAuthenticated
+            ? {
+                authenticated: true,
+                csrf: 'synthetic-signup-csrf',
+                email: otpEmail,
+                owner: 'b'.repeat(64),
+                aiEnabled: false,
+              }
+            : {
+                authenticated: false,
+                registrationEnabled: true,
+                emailOtpEnabled: true,
+                testUsersEnabled: false,
+                testAccounts: [],
+                legalDocuments: {
+                  termsVersion: 'test-terms-1',
+                  termsUrl: 'https://careerscope.test/terms',
+                  privacyVersion: 'test-privacy-1',
+                  privacyUrl: 'https://careerscope.test/privacy',
+                },
+              },
+        }),
+      );
+      await signupPage.route('**/api/otp/request', (route) => {
+        signupRequestCount += 1;
+        signupRequestBody = route.request().postDataJSON() as Record<string, unknown>;
+        return route.fulfill({
+          status: 202,
+          contentType: 'application/json',
+          json: {
+            message: 'If the request can be completed, check your inbox for a verification code.',
+            expiresInSeconds: 300,
+            resendAfterSeconds: 60,
+          },
+        });
+      });
+      await signupPage.route('**/api/otp/verify', (route) => {
+        signupVerificationCount += 1;
+        signupVerificationBody = route.request().postDataJSON() as Record<string, unknown>;
+        signupAuthenticated = true;
+        return route.fulfill({ contentType: 'application/json', json: { authenticated: true } });
+      });
+      await signupPage.goto(origin);
+      await signupPage.getByRole('button', { name: 'Create an account', exact: true }).click();
+      await accessible(
+        signupPage,
+        engine,
+        'signup acceptance form',
+        'Create your CareerScope account',
+      );
+      const signupEmail = `signup-${engine}@example.test`;
+      await signupPage.getByLabel('Email address').fill(signupEmail);
+      await signupPage.getByRole('button', { name: 'Send verification code', exact: true }).click();
+      assert.equal(
+        signupRequestCount,
+        0,
+        'signup cannot request a code without required acceptance',
+      );
+      await signupPage.getByLabel(/I accept the Terms of Service/).check();
+      await signupPage.getByLabel(/I acknowledge the Privacy Notice/).check();
+      assert.equal(
+        await signupPage.getByLabel(/optional CareerScope product updates/).isChecked(),
+        false,
+      );
+      for (const width of [320, 390, 768, 1024, 1440]) {
+        await signupPage.setViewportSize({ width, height: 900 });
+        assert.equal(
+          await signupPage.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+          false,
+          `${engine} signup acceptance form overflows at ${width}px`,
+        );
+      }
+      await signupPage.getByRole('button', { name: 'Send verification code', exact: true }).click();
+      await signupPage.getByLabel('Six-digit verification code').waitFor();
+      assert.deepEqual(signupRequestBody, {
+        email: signupEmail,
+        intent: 'sign-up',
+        termsAccepted: true,
+        privacyAcknowledged: true,
+        marketingOptIn: false,
+      });
+      await signupPage.getByLabel('Six-digit verification code').fill('123456');
+      await signupPage
+        .getByRole('button', { name: 'Verify and create account', exact: true })
+        .click();
+      await signupPage.waitForURL((url) => url.pathname === '/dashboard');
+      assert.equal(signupVerificationCount, 1);
+      assert.deepEqual(signupVerificationBody, {
+        email: signupEmail,
+        code: '123456',
+        intent: 'sign-up',
+      });
+      await signupPage.close();
+
       const page = await browser.newPage();
       let fixtureCredential = password;
       await page.route('**/api/session', async (route) => {
@@ -427,13 +702,35 @@ try {
       // progress feed) are excluded because they stay open by design and would
       // never let the page look idle.
       const inflight = new Set<import('playwright').Request>();
+      const recentRequestEvents: string[] = [];
+      const recordRequestEvent = (request: import('playwright').Request, event: string) => {
+        const rawPath = new URL(request.url()).pathname;
+        const path = rawPath
+          .replace(/\/[0-9a-f]{8}-[0-9a-f-]{27,}/gi, '/:id')
+          .replace(/\/[0-9a-f]{24,}/gi, '/:id');
+        recentRequestEvents.push(`${Date.now()} ${request.method()} ${path} ${event}`);
+        if (recentRequestEvents.length > 40) recentRequestEvents.shift();
+      };
       page.on('request', (request) => {
         const pathname = new URL(request.url()).pathname;
         const isSearchEventStream = /^\/api\/searches\/[^/]+\/events$/.test(pathname);
-        if (request.resourceType() !== 'eventsource' && !isSearchEventStream) inflight.add(request);
+        if (request.resourceType() !== 'eventsource' && !isSearchEventStream) {
+          inflight.add(request);
+          recordRequestEvent(request, 'started');
+        }
       });
-      page.on('requestfinished', (request) => inflight.delete(request));
-      page.on('requestfailed', (request) => inflight.delete(request));
+      page.on('response', (response) => {
+        const request = response.request();
+        if (inflight.has(request)) recordRequestEvent(request, `response-${response.status()}`);
+      });
+      page.on('requestfinished', (request) => {
+        inflight.delete(request);
+        recordRequestEvent(request, 'finished');
+      });
+      page.on('requestfailed', (request) => {
+        inflight.delete(request);
+        recordRequestEvent(request, 'failed');
+      });
       const settled = async (label: string) => {
         const deadline = Date.now() + 15000;
         let quietSince = Date.now();
@@ -442,7 +739,14 @@ try {
           else if (Date.now() - quietSince >= 250) return;
           await page.waitForTimeout(25);
         }
-        throw new Error(`${engine}: ${label} never stopped issuing requests`);
+        const pending = Array.from(inflight, (request) => {
+          const url = new URL(request.url());
+          return `${request.method()} ${url.pathname}`;
+        });
+        throw new Error(
+          `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'}); ` +
+            `recent request events: ${recentRequestEvents.join(' | ') || 'none'}`,
+        );
       };
       // CS-54: this block previously asserted that `script-src` did NOT carry
       // `'unsafe-inline'`, backed by a nonce-based middleware. That middleware
@@ -1219,9 +1523,39 @@ try {
       const securityAuth = new Auth(database);
       const secondSession = await securityAuth.login(accountEmail, password);
       assert.ok(secondSession);
+      const deviceSession = await securityAuth.loginSession(
+        accountEmail,
+        password,
+        undefined,
+        'Test device',
+      );
+      assert.ok(deviceSession);
       // Account security is the /settings route behind the shared nav now.
       await sidebarNav.getByRole('link', { name: 'Settings', exact: true }).click();
       await page.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+      await page
+        .getByText('You are not opted in to optional product updates.', { exact: true })
+        .waitFor();
+      await page.getByRole('button', { name: 'Opt in to product updates', exact: true }).click();
+      await page
+        .getByText(/You opted in to optional product updates under version test-marketing-1/)
+        .waitFor();
+      await page.getByRole('button', { name: 'Withdraw marketing consent', exact: true }).click();
+      await page
+        .getByText('You are not opted in to optional product updates.', { exact: true })
+        .waitFor();
+      const activeSessions = page.getByRole('list', { name: 'Active devices and sessions' });
+      await activeSessions.getByText('Test device', { exact: true }).waitFor();
+      assert.equal(await activeSessions.getByRole('listitem').count(), 3);
+      assert.equal(await activeSessions.getByRole('button').count(), 2);
+      page.once('dialog', (dialog) => dialog.accept());
+      await activeSessions
+        .getByRole('button', { name: 'Sign out Test device', exact: true })
+        .click();
+      await page.getByRole('status').filter({ hasText: 'Test device signed out.' }).waitFor();
+      assert.equal(await securityAuth.session(deviceSession.accessToken), null);
+      await activeSessions.getByText('Test device', { exact: true }).waitFor({ state: 'detached' });
+      assert.equal(await activeSessions.getByRole('listitem').count(), 2);
       page.once('dialog', (dialog) => dialog.dismiss());
       await page.getByRole('button', { name: 'Sign out other sessions', exact: true }).click();
       assert.ok(await securityAuth.session(secondSession));
@@ -2671,6 +3005,10 @@ try {
         ).__CAREERSCOPE_TEST_OWNER_AGNOSTIC_KEYS__ = false;
       });
       assert.deepEqual(errors, []);
+      // Let in-flight network handlers settle before disposing the browser
+      // context. Closing Chromium with a `route.fetch()` callback still active
+      // can reject against Playwright's already-disposed request context.
+      await page.unrouteAll({ behavior: 'wait' });
       process.stdout.write(
         `${engine}: search/export/cancellation, saved leads/notes/archive/conflicts, profile, logout, 320/390/1440px passed\n`,
       );

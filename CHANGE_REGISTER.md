@@ -66,3 +66,114 @@ review remain required before promotion.
 Recovery: keep the schema change additive and isolated to this task branch.
 Any migration rollback or account/auth flow decision requires fresh review;
 do not run migration 0020 against shared, staging or production databases.
+
+## Resend OTP HTTP and UI integration (2026-10-20, local uncommitted work)
+
+The previous challenge-only entry is historical and superseded by the current
+working-tree changes. Added `/api/otp/request` and `/api/otp/verify`, server-only
+Resend delivery, the existing-user session transaction and verification marker,
+distributed Redis request/attempt controls, fail-closed runtime configuration,
+OTP sign-in UI, OpenAPI contracts, and forward migration
+`0021_mushy_stepford_cuckoos.sql`. Password compatibility for legacy API tests
+is now behind explicit `testHarnessPasswordLogin`; production composition does
+not enable it. A narrow privacy-scanner exception permits only the exact
+operational `noreply@careerscope.tech` mailbox while same-domain personal
+addresses remain detectable.
+
+Node 24.19.0 local evidence: `npm run gates:test` passed, including 65 unit
+tests, lint, 51-file typecheck, policy/source/privacy/deployment gates and EOL;
+`npm run test:integration` passed 53/53 with disposable per-test databases and
+loopback Redis; `npm run test:domain` passed 30 files/835 tests; `npm run build`
+passed both CSP builds with all 12 inline script hashes; `npm run format:check`
+passed; `npm run db:generate` reported no schema drift. The isolated corrupt-PDF
+test that once exceeded its five-second limit passed on immediate rerun; the
+full domain suite then passed without a timeout. `npm run security:check`
+reported the known moderate `sprintf-js` production dependency path; no breaking
+upgrade was applied. The full multi-engine UI suite is not green yet; the
+request-settlement guard failed during Chromium route navigation. Focused
+Chromium emitted its end-of-suite success markers. A targeted Firefox run
+completed with exit code 0. A fresh-server WebKit run reached its end-of-suite
+success markers, including axe/reflow, but its process exit code was
+unavailable. The full multi-engine suite still has no clean exit.
+
+No live Resend request, actual email delivery, domain/tracking configuration,
+real mailbox verification, shared database migration, hosted CI, commit, push,
+merge or deployment occurred. No `.env` values were read, changed or displayed.
+Production remains on HOLD pending `AUTH-01` / `PROVIDER-01` and the browser
+acceptance follow-up. The entire feature change set remains uncommitted on the
+existing task branch; the tracked base SHA is unchanged.
+
+### Shared rate-limit outage contract (2026-10-20)
+
+The API now converts exceptions from the shared Redis rate limiter into a
+stable 503 before performing route side effects. It logs only request
+correlation metadata, not limiter keys or account/owner identifiers. OpenAPI
+declares 503 as a possible shared-dependency failure for operations, and unit
+plus service-backed regressions verify fail-closed behavior. The returned 503
+does not claim the limiter recovered; retry policy remains client-controlled.
+
+### Redis readiness probe and Chromium exit verification (2026-10-20)
+
+Production API composition now makes `/api/health` require both PostgreSQL
+`SELECT 1` and Redis `PING`; either critical dependency failure returns a safe 503. Four focused tests pass, including successful readiness and Redis outage.
+Node 24 canonical gates pass (69 unit tests), DB/Redis integration passes 54/54,
+production CSP build passes, and a fresh Chromium-only browser run exits 0. The
+earlier Chromium `ECONNRESET` did not reproduce; the cause is unknown, so no fix
+is claimed for that transient. Full cross-browser rerun, live Resend, approved
+legal/signup acceptance, fallback provider and independent security review
+remain incomplete.
+
+### Production-auth task validation follow-up (2026-10-20)
+
+- Added API regressions for sanitized fail-closed OTP request/verification
+  behavior when Redis rate limiting is unavailable.
+- Exercised the atomic limiter from two independent Redis clients and confirmed
+  the aggregate limit is shared.
+- Removed the refresh-reuse log's session-row identifier and added session ID
+  fields to structured-log redaction.
+- Corrected Terms and Privacy draft statements about the implemented but
+  default-disabled registration/consent capability. The documents remain
+  counsel drafts and are not active acceptance documents.
+- Final local evidence: gates 73/73 unit tests; integration 55/55; domain
+  835/835; Chromium/Firefox/WebKit plus axe; production build/CSP, formatting,
+  EOL, privacy scanner and `git diff --check` all pass.
+- Dependency audit remains unresolved (full graph 5 high/7 moderate; production
+  graph 3 moderate). Provider domain/tracking/inbox, OTP secret and legal
+  approval/configuration remain external/human gates. No live email, shared DB
+  mutation, commit, push, merge or deployment occurred.
+
+### Dual-address email-change follow-up (2026-10-20)
+
+- Added the `email_change_requests` table and migration 0025, owner-bound
+  current/new address challenges, digest-only persistence, five-attempt/expiry
+  handling, generic target-address conflict, CSRF-protected API routes, and
+  Account Security UI. Current-address delivery includes the change-request
+  notice. The account email changes only after both address codes verify.
+- Added service-backed integration coverage and a mocked browser journey. The
+  integration suite passed 55/55 with zero skips on disposable loopback
+  PostgreSQL 17.6 and Redis 7.4.5. The email-change browser journey passed in
+  Chromium and Firefox, including axe and five responsive widths; the full
+  all-browser run later failed in Firefox at the existing dashboard-quiescence
+  check after repeated successful `GET /api/leads` activity. WebKit did not
+  run, so the complete browser matrix remains FAIL. Provider delivery is
+  injected in tests; no Resend request or live email occurred.
+- `npm run build`, `npm run gates:test` (74/74 unit), `npm run test:domain`
+  (835/835), `npm run format:check`, privacy scan/tests, and `git diff --check`
+  passed. `.prettierignore` excludes only plain-text `blocker.txt`, which
+  Prettier cannot parse. Independent security review, hosted
+  migration/provider verification, and production acceptance remain pending.
+  No shared database change, commit, push, merge or deployment occurred.
+
+### OTP expiry and 503 error presentation (2026-10-20)
+
+- `packages/core/src/email-otp-challenges.ts`: sample verification time after
+  acquiring the challenge row lock to prevent stale expiry decisions.
+- `packages/core/src/email-otp-challenges.clock.test.ts`: deterministic
+  regression verifies expiry at the boundary after lock acquisition.
+- `apps/web/src/lib/api.ts` and `apps/web/src/lib/api.test.ts`: provide safe
+  status-specific 503 guidance, including approved sign-in outage wording;
+  assert server details remain hidden.
+- Validated on Node 24.19.0: 76/76 unit, 55/55 real-service integration,
+  typecheck, build/CSP, lint, format, EOL, privacy tests/scan, and diff check.
+- Work remains uncommitted and unintegrated pending independent auth review.
+  No provider request, shared migration, push, merge, or deployment occurred.

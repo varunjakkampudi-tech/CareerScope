@@ -37,11 +37,26 @@ import {
   resumeParseHandler,
 } from './resumes.js';
 import JSZip from 'jszip';
-import { createApp } from '../../../apps/api/src/app.js';
+import { createApp as createApiApp } from '../../../apps/api/src/app.js';
 import type { SourceOutcome } from './jobs.js';
 import { searchHandler } from '../../../apps/workers/search/src/collect.js';
 import { createRemoteOkProvider, createHimalayasProvider } from '@careerscope/providers';
 import { createSearchSchema } from './commands.js';
+
+// These legacy HTTP contract fixtures intentionally exercise password/session
+// behavior. Keep that compatibility path explicit and test-scoped; the API
+// factory itself now fails closed unless a runtime auth mode is configured.
+function createApp(
+  database: Database,
+  origin: string,
+  rateLimit: Parameters<typeof createApiApp>[2],
+  options: NonNullable<Parameters<typeof createApiApp>[3]> = {},
+) {
+  return createApiApp(database, origin, rateLimit, {
+    ...options,
+    testHarnessPasswordLogin: true,
+  });
+}
 
 function assertOpenApiRequiredDeclarations(document: unknown): void {
   assert.ok(document && typeof document === 'object' && !Array.isArray(document));
@@ -217,12 +232,21 @@ test('Swagger documents every runtime route without changing validation and prot
           assert.equal(schema?.params, undefined, route);
           assert.equal(schema?.querystring, undefined, route);
         }
-        for (const methods of Object.values(spec.paths)) {
-          for (const operation of Object.values(
+        for (const [path, methods] of Object.entries(spec.paths)) {
+          for (const [method, operation] of Object.entries(
             methods as Record<string, { summary: string; responses: Record<string, unknown> }>,
           )) {
             assert.ok(operation.summary.length > 5);
             assert.ok(operation.responses['500']);
+            if (method === 'post' && path === '/api/register') {
+              assert.ok(operation.responses['404']);
+              assert.equal(
+                Object.keys(operation.responses).some((code) => code.startsWith('2')),
+                false,
+                'permanently unavailable password registration must not document success',
+              );
+              continue;
+            }
             // Redirect-only authentication routes
             // truthfully document 302 rather than inventing a JSON 200. A
             // 2xx response is required for ordinary operations; a documented
@@ -270,7 +294,7 @@ test('Swagger documents every runtime route without changing validation and prot
         );
         assert.match(
           spec.paths['/api/register'].post.description,
-          capability === 'cancellation' ? /Registration is enabled/ : /Registration is disabled/,
+          /Password-based account creation is unavailable/,
         );
         for (const secret of [token, session.csrf, password, 'swagger@example.test'])
           assert.equal(result.body.includes(secret), false);
@@ -1081,7 +1105,7 @@ test('password changes revoke sessions and serialize with login and competing ch
       admission = 'deny';
       assert.equal((await revoke()).statusCode, 429);
       admission = 'offline';
-      assert.equal((await revoke()).statusCode, 500);
+      assert.equal((await revoke()).statusCode, 503);
       assert.ok(await auth.session(secondToken));
       admission = 'allow';
       assert.equal(await auth.revokeOtherSessions(randomUUID(), activeToken), false);
@@ -1108,9 +1132,9 @@ test('password changes revoke sessions and serialize with login and competing ch
         await database.pool.query(`
           CREATE FUNCTION test_session_barrier() RETURNS trigger LANGUAGE plpgsql AS $$
           BEGIN PERFORM pg_advisory_xact_lock(7654322);
-            IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF;
+            RETURN NEW;
           END $$;
-          CREATE TRIGGER test_session_barrier BEFORE ${firstOperation === 'revoke' ? 'DELETE' : 'INSERT'} ON sessions
+          CREATE TRIGGER test_session_barrier BEFORE ${firstOperation === 'revoke' ? 'UPDATE OF revoked_at' : 'INSERT'} ON sessions
           FOR EACH ROW EXECUTE FUNCTION test_session_barrier();
         `);
         try {
@@ -1189,7 +1213,7 @@ test('password changes revoke sessions and serialize with login and competing ch
       admission = 'deny';
       assert.equal((await send()).statusCode, 429);
       admission = 'offline';
-      assert.equal((await send()).statusCode, 500);
+      assert.equal((await send()).statusCode, 503);
       assert.ok(await auth.session(activeToken));
       admission = 'allow';
       const response = await send();
@@ -1212,7 +1236,7 @@ test('password changes revoke sessions and serialize with login and competing ch
   }
 });
 
-test('registration is atomic, normalizes email and cannot replace another account', async () => {
+test('password account compatibility is atomic while executable API registration stays OTP-only', async () => {
   const configured = process.env.DATABASE_URL;
   assert.ok(configured);
   const base = new URL(configured);
@@ -1267,99 +1291,45 @@ test('registration is atomic, normalizes email and cannot replace another accoun
     } finally {
       await disabled.close();
     }
-    let limitMode: 'allow' | 'deny' | 'offline' = 'allow';
-    const enabled = await createApp(
-      database,
-      origin,
-      async () => {
-        if (limitMode === 'offline') throw new Error('Synthetic limiter unavailable');
-        return limitMode === 'allow';
-      },
-      { registrationEnabled: true },
-    );
+    const configuredWithoutOtp = await createApp(database, origin, async () => true, {
+      registrationEnabled: true,
+    });
     try {
-      assert.equal((await enabled.inject('/api/session')).json().registrationEnabled, true);
+      assert.equal(
+        (await configuredWithoutOtp.inject('/api/session')).json().registrationEnabled,
+        false,
+        'the registration flag alone cannot activate an incomplete OTP/legal flow',
+      );
       const payload = { email: 'third@example.test', password };
       assert.equal(
-        (await enabled.inject({ method: 'POST', url: '/api/register', payload })).statusCode,
-        403,
-      );
-      assert.equal(
         (
-          await enabled.inject({
+          await configuredWithoutOtp.inject({
             method: 'POST',
             url: '/api/register',
             headers: { origin },
-            payload: { ...payload, ownerId: first.ownerId },
+            payload,
           })
         ).statusCode,
-        400,
+        404,
       );
-      const firstSignup = await enabled.inject({
-        method: 'POST',
-        url: '/api/register',
-        headers: { origin },
-        payload,
-      });
-      const duplicate = await enabled.inject({
-        method: 'POST',
-        url: '/api/register',
-        headers: { origin },
-        payload,
-      });
-      assert.equal(firstSignup.statusCode, 202);
-      assert.equal(duplicate.statusCode, 202);
-      assert.equal(firstSignup.body, duplicate.body);
-      assert.equal(firstSignup.headers['set-cookie'], undefined);
-      assert.equal((await enabled.inject('/api/profile')).statusCode, 401);
-      const login = await enabled.inject({
-        method: 'POST',
-        url: '/api/login',
-        headers: { origin },
-        payload,
-      });
-      assert.equal(login.statusCode, 200);
-      const cookie = String(login.headers['set-cookie']).split(';')[0]!;
-      assert.match(String(login.headers['set-cookie']), /HttpOnly/i);
-      assert.match(String(login.headers['set-cookie']), /SameSite=Strict/i);
       assert.equal(
         (
-          await enabled.inject({
+          await configuredWithoutOtp.inject({
             method: 'POST',
-            url: '/api/searches',
-            headers: { origin, cookie },
-            payload: {},
-          })
-        ).statusCode,
-        403,
-      );
-      limitMode = 'deny';
-      assert.equal(
-        (
-          await enabled.inject({
-            method: 'POST',
-            url: '/api/register',
+            url: '/api/otp/request',
             headers: { origin },
-            payload: { email: 'blocked@example.test', password },
+            payload: { email: 'third@example.test', intent: 'sign-up' },
           })
         ).statusCode,
-        429,
+        404,
       );
-      limitMode = 'offline';
       assert.equal(
-        (
-          await enabled.inject({
-            method: 'POST',
-            url: '/api/register',
-            headers: { origin },
-            payload: { email: 'offline@example.test', password },
-          })
-        ).statusCode,
-        500,
+        (await database.pool.query('SELECT id FROM users')).rowCount,
+        2,
+        'disabled API signup cannot create an account',
       );
-      assert.equal((await database.pool.query('SELECT id FROM users')).rowCount, 3);
     } finally {
-      await enabled.close();
+      await configuredWithoutOtp.close();
     }
     const directory = await mkdtemp(join(tmpdir(), 'careerscope-upload-api-'));
     const storage = new PrivateFileResumeStorage({ directory, encryptionKey: 'a'.repeat(64) });

@@ -18,6 +18,19 @@ test('privacy scanner permits synthetic documentation identities', () => {
   );
 });
 
+test('privacy scanner permits only the approved transactional sender mailbox', () => {
+  assert.deepEqual(
+    scanContent('CareerScope <noreply@careerscope.tech>', 'packages/core/src/runtime.ts'),
+    [],
+  );
+  assert.deepEqual(
+    scanContent('owner@careerscope.tech', 'packages/core/src/runtime.ts').map(
+      ({ type, severity }) => ({ type, severity }),
+    ),
+    [{ type: 'possible-personal-email', severity: 'P2' }],
+  );
+});
+
 test('current tracked tree has no privacy findings', () => {
   assert.deepEqual(scanTracked(), []);
 });
