@@ -315,6 +315,8 @@ was executed with explicit synthetic environment values against freshly created,
 network-isolated PostgreSQL 17.6 and Redis 7.4.5 containers and passed 49/49;
 those containers used tmpfs and were removed after the test. No shared local or
 production service was touched. Browser checks were not run for this core-only
-change. A fresh independent authentication review is still blocked because the
-local Claude CLI is unauthenticated; no independent verdict is claimed. No push,
-merge, deployment, provider call, secret access or production change occurred.
+change. The separate domain suite passed 30 test files / 835 tests in the
+network-disabled Node 24 scratch container. A fresh independent authentication
+review is still blocked because the local Claude CLI is unauthenticated; no
+independent verdict is claimed. No push, merge, deployment, provider call, secret
+access or production change occurred.

@@ -50,7 +50,9 @@ provider behavior exists. The full database/queue integration test list also
 passed 49/49 against newly created, disposable PostgreSQL 17.6 and Redis 7.4.5
 services with explicit synthetic configuration; the integration suite does not
 exercise OTP persistence because no such flow exists. Browser tests were not run
-for this core-only change. The OTP tests cover code shape, HMAC challenge
+for this core-only change. The independent matching/provider/resume domain suite
+passed 30 files / 835 tests in the clean Node 24 container. The OTP tests cover
+code shape, HMAC challenge
 binding, secret mismatch, malformed values, expiry, attempt metadata and the
 final allowed attempt. They do not establish atomic persistence, email/IP rate
 limiting, account enumeration resistance at the API boundary, delivery/failover,
