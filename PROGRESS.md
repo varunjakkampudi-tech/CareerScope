@@ -320,3 +320,12 @@ network-disabled Node 24 scratch container. A fresh independent authentication
 review is still blocked because the local Claude CLI is unauthenticated; no
 independent verdict is claimed. No push, merge, deployment, provider call, secret
 access or production change occurred.
+
+### Current dependency audit (2026-10-20)
+
+`npm audit` was rerun from the clean Node 24.21.0 scratch checkout with build
+network access, no credential environment, and no repository/dependency writes.
+It exited 1 with 12 findings: 5 high and 7 moderate, consistent with AUDIT-01.
+The reported automatic remedy requires `--force` and major downgrades, so no
+automatic fix was applied. These findings remain open; this command is current
+audit evidence, not a security-review completion or accepted risk waiver.

@@ -126,7 +126,10 @@ Current implementation: The production-only high-severity gate exits 0 but
   reports three moderate Mammoth/argparse/sprintf-js findings. No full-audit pass.
 Impact: Affected integrations cannot be marked done with a high finding ignored.
 What the agent already tried: Read-only full/production audits and registry
-  metadata inspection; no compatible patched braces or non-breaking audit fix found.
+  metadata inspection; no compatible patched braces or non-breaking audit fix
+  found. A fresh `npm audit` on 20 October 2026 in the disposable Node 24
+  checkout again exited 1 with 12 findings (5 high, 7 moderate); no dependency
+  was changed or waived.
 Work completed: Recorded affected chains; no major downgrade, suppression or waiver.
 Why autonomous resolution is unsafe or impossible: Local remediation pending activation;
   no owner waiver requested as substitute for safe supported remediation.
@@ -139,7 +142,7 @@ Expected result: Verified remediation or precise unresolved findings; no fake pa
 Verification procedure: Lockfile paths, current audits, lint/build/regression.
 Tests to rerun: Full dependency audit and applicable definition of done
 Affected tasks: Supply-chain affected integrations
-Evidence references: PROGRESS.md current executed evidence
+Evidence references: PROGRESS.md current executed evidence and current audit result
 
 BLOCKER ID: AUTH-01
 Title: Current test access is not production OTP authentication
