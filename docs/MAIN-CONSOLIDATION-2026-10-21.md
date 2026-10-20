@@ -124,3 +124,27 @@ Recovery from a source integration defect uses a reviewed corrective commit or
 the verified external recovery copy. Never reset published main or drop migrated
 personal data. Any schema issue requires an additive forward migration; this
 checkpoint does not authorize applying or rolling back shared database changes.
+
+## Post-remediation main synchronization update (2026-10-21)
+
+The findings and restrictions above describe the pre-remediation candidate at
+that point in the consolidation; they are retained as history. The dependency
+remediation was completed and integrated. At `94579da4d70d1e87d5e846832492236157e875ea`,
+local `main` and `origin/main` were observed at the same SHA. A fresh Node 24
+`npm run gates:test` passed 84/84, `npm run test:integration` passed 55/55 with
+zero skips against disposable PostgreSQL 17.6 and Redis 7.4.5 services, and
+`npm run test:domain` passed 835/835. The production build/CSP verification,
+format check, EOL check and `git diff --check` also passed. The earlier full-audit
+failure in this report is historical; the subsequent clean-install audit is
+recorded in `PROGRESS.md` and `blocker.txt` as zero findings for the current
+lockfile. GitHub Actions remains disabled, so hosted CI is still unverified.
+No production deployment, live provider request, shared database migration or
+infrastructure change occurred.
+
+The original email-OTP and application-evidence task branch tips are ancestors
+of `main`; their committed work is integrated. Their old worktrees remain
+preserved. The current dirty snapshots were not merged wholesale: their files
+include older contracts and conflicting unpublished migration paths, while
+canonical main contains later fixes and the additive application-evidence
+migration. See the current reconciliation entry in `PROGRESS.md` and
+`INDEPENDENT-REVIEW-01` in `blocker.txt`.

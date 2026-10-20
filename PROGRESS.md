@@ -964,3 +964,39 @@ retried away or weakened: the run was repeated once with all three service URLs
 explicitly set to the disposable services and passed in full. `.env` was not
 changed. This is a local test-environment mismatch, not evidence of a product
 queue defect.
+
+### Main synchronization and preserved-worktree reconciliation (2026-10-21)
+
+The owner-authorized main sync was completed without force-push or worktree
+cleanup. `e5281fa` (email OTP preservation), `b16c4ec` (application-evidence
+preservation), and `f836f66` (validated integration) are ancestors of main; the
+tips of `codex/task/email-otp-auth` and `codex/task/application-evidence` are
+also ancestors of main. At main `94579da4d70d1e87d5e846832492236157e875ea`,
+`git ls-remote origin refs/heads/main` matched local `main`; the working tree
+was clean after push.
+
+Both original dirty worktrees were preserved. At that comparison checkpoint,
+the email worktree had 53 Git status entries representing 54 files (the
+untracked legal-doc directory contains two files); 38 file contents matched
+main and 16 differed, with no file path absent from main. A read-only
+independent review of that stale content returned NEEDS WORK. The inspected
+differences include a registration gate regression when the test-access mode is
+disabled, removal of `emailVerifiedAt` from session/OpenAPI/client contracts,
+and removal of current dependency remediations. Canonical main already contains
+the corrected gate and verification signal; the dirty tree was not overlaid.
+
+The application-evidence worktree had 57 status entries representing 58 files:
+8 contents matched main, 42 differed, and 8 paths did not exist on main. The
+committed task tip is integrated; the preserved uncommitted residue includes
+alternate email-OTP/provider modules and migrations with numbers/contracts that
+conflict with the canonical main schema. Main has the application-evidence
+behavior in migration 0026 and a single account-consent implementation. No
+uncommitted file was deleted or copied. These counts are a checkpointed
+comparison, not a claim that all residual content has received whole-diff
+approval.
+
+This follow-up does not claim hosted CI: GitHub Actions is disabled. It does not
+claim live Resend delivery, counsel approval, production acceptance or release
+readiness. The latest exact-main local integration result is 55/55 with zero
+skips using disposable PostgreSQL 17.6 and Redis 7.4.5 services; no real provider
+request, deployment, or shared-database migration occurred.

@@ -235,10 +235,12 @@ Impact: Existing-account OTP sign-in and session lifecycle controls have local
   staff MFA, live delivery and hosted acceptance are not established.
 What the agent already tried: Added routes, existing-session establishment,
   runtime fail-closed checks, user-facing OTP form and service-backed tests.
-Work completed: Existing OTP work has local unit, PostgreSQL/Redis integration,
-  build/CSP, typecheck, lint, privacy, formatting and browser evidence recorded
-  in PROGRESS.md. The current signup/legal-consent changes are being validated
-  separately; no live Resend delivery or legal approval is claimed.
+Work completed: Canonical main includes the OTP routes/UI, PostgreSQL challenge
+  persistence, guarded signup, consent records, email-change flow, tests and
+  OpenAPI contracts. On exact main `94579da4d70d1e87d5e846832492236157e875ea`,
+  Node 24 gates pass 84/84, service-backed integration passes 55/55, domain tests
+  pass 835/835, production build/CSP and format checks pass. No live Resend
+  delivery, hosted CI, legal approval, or production acceptance is claimed.
 Why autonomous resolution is unsafe or impossible: Selecting a fallback vendor,
   enabling a sender/domain, and performing real-recipient delivery require owner
   and provider evidence. The approved v12 text requires recovery through verified
@@ -403,6 +405,13 @@ Problem: No counsel review/current official applicability evidence has been supp
 Verified root cause: Approved v12 marks these external dependencies To do; no legal
   approval record observed. This does not assert any legal commencement date.
 Current implementation: Existing privacy documentation, not compliance certification.
+  The dual-address email-change flow stores the normalized proposed address as
+  ordinary PostgreSQL text in `email_change_requests.new_email` until the row is
+  deleted. Five-minute expiry is enforced on verification, but there is no
+  scheduled cleanup for an abandoned expired row; deletion occurs on replacement,
+  cancellation, applicable verification outcomes, or owner deletion. This is
+  personal data and must be reflected in counsel-approved retention/deletion
+  terms. Do not describe this flow as HMAC-only or claim immediate expiry erasure.
 Impact: Published legal/consent/age/verification/outreach claims cannot be certified.
 What the agent already tried: Read approved requirements and current privacy docs.
 Work completed: Technical data-inventory/deletion/consent work can proceed locally.
@@ -490,57 +499,52 @@ Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and the clean
   Node 24 validation scratch checkout.
 
 BLOCKER ID: INDEPENDENT-REVIEW-01
-Title: Independent review of the current auth worktree has not completed
+Title: Reconcile preserved authentication worktrees without regressing main
 Priority: High
 Module: Authentication / change review
 v12 requirement / checklist item: Engineering contract; sensitive authentication review gate
-Status: READY_FOR_OWNER
-Problem: The authentication code must receive a fresh independent review before
-  any promotion from its task branch.
-Verified root cause: The isolated review checkout and review plan were prepared.
-  The configured safe-mode Claude inspector returned `Not logged in`; no review
-  verdict or code approval was produced. The CLI version alone does not prove an
-  authenticated reviewer session.
-Current implementation: Task branch HEAD is
-  `f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56`, with additional uncommitted
-  authentication, migration, test and documentation changes. Neither the
-  current commit nor dirty diff has valid independent approval; the work remains
-  outside `codex/dev`.
-Impact: No independent review evidence exists for this sensitive auth change.
-What the agent already tried: Invoked the repository's isolated read-only
-  `claudex-loop inspect` process from a detached clean worktree without exposing
-  ignored local files. The process stopped before review because Claude CLI was
-  unauthenticated.
-Work completed: The review attempt and exact limitation are recorded; no review
-  findings were simulated or inferred.
-Why autonomous resolution is unsafe or impossible: Authenticating an external
-  model CLI is a local account action; credentials must not enter chat or the repo.
-Exact owner action required: Authenticate the Claude Code CLI through its
-  official local login flow, or designate another authorized independent reviewer.
-Step-by-step resolution instructions:
-  1. In the local terminal, run the installed `claude` CLI and complete its
-     official `/login` flow. Do not paste credentials, codes or tokens into chat.
-  2. Confirm the CLI session is authenticated locally; `claude --version` alone
-     is not sufficient evidence.
-  3. Request read-only review of the current task-branch commit and exact dirty
-     diff, including untracked migrations/tests, against its actual merge base
-     with `codex/dev`; provide a protected snapshot without `.env` or secrets.
-  4. Address findings, rerun affected tests, and obtain a fresh review bound to
-     the final content hash. Keep auth changes on the task branch until review
-     and required owner review complete.
+Status: OPEN — preserved dirty deltas are not approved for re-integration.
+Problem: An older authentication worktree still contains uncommitted snapshots;
+  reapplying them wholesale would overwrite newer canonical files on `main`.
+Verified root cause: The task branch tip at
+  `f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56` is already an ancestor of main.
+  Main includes the committed email-OTP work (including `e5281fa`) and later
+  consolidation at `f836f66`. A current independent read-only review of the
+  preserved dirty source returned NEEDS WORK: that snapshot requires
+  `testAccess` to be undefined and thereby disables otherwise configured OTP
+  signup, drops `emailVerifiedAt` from session/OpenAPI/client contracts, and
+  removes the dependency-remediation test plus Vite and scoped overrides.
+Current implementation: Canonical main at `94579da4d70d1e87d5e846832492236157e875ea`
+  contains the compatible disabled-test-access signup condition, preserves the
+  verification signal and dependency protections, and is synchronized with
+  `origin/main`. The 53-status-entry email worktree remains untouched; its file
+  contents were compared with main, with 38 identical and 16 different.
+Impact: No blocker to the already-integrated main implementation. The stale
+  worktree must not be overlaid or deleted until its differing files are
+  individually reconciled; all owner work remains preserved.
+What the agent already tried: Read-only review of the dirty source, branch-tip
+  ancestry checks, and per-file content comparison against canonical main.
+Work completed: The committed OTP and application-evidence branch tips are
+  confirmed ancestors of main. Exact-main integration passed 55/55 local
+  service-backed tests. No source from the dirty worktree was copied or removed.
+Why autonomous resolution is unsafe or impossible: The remaining differing
+  snapshots mix stale docs, migration history and older contracts with main's
+  later application-evidence and security changes. Only a reviewed, non-regressive
+  specific change should be ported; a branch-wide merge would reintroduce defects.
+Exact owner action required: None for main synchronization. Any future request to
+  promote a specific remaining dirty change requires its exact scope and validation.
 Required environment-variable names (no values): None
-External dependencies: Authenticated, read-only independent reviewer session.
-Expected result: A valid review receipt/verdict covering the exact diff snapshot.
-Verification procedure: Inspect runner `result.json`, snapshot hash, reviewer
-  coverage and findings; a CLI exit code alone is not approval.
-Tests to rerun: After review findings or source changes, rerun Node 24 OTP unit
-  and integration tests, typecheck, lint, format, privacy and the complete
-  browser matrix; the latest full matrix remains failed/incomplete.
-Affected tasks: Only promotion of the sensitive auth task commit; unrelated work
-  may continue on separate task branches.
-Evidence references: `PROGRESS.md`, `TEST_MATRIX.md`, and the prior external
-  review attempt artifact `email-otp-f468643-retry` (historical; not evidence
-  for the current branch contents).
+External dependencies: None for preserving current state; hosted provider and CI
+  acceptance remain separately tracked in AUTH-01, PROVIDER-01 and GOV-02.
+Expected result: No stale snapshot overwrites canonical main; any useful unique
+  change is separately source-reviewed, tested and recorded before integration.
+Verification procedure: Compare each proposed path to current main, review the
+  exact content diff, run targeted checks, and verify a clean post-commit state.
+Tests to rerun: Targeted auth/contract tests for any future port; exact-main
+  `npm run test:integration` currently passes 55/55 with zero skips.
+Affected tasks: Only any future promotion from the preserved stale auth worktree.
+Evidence references: `PROGRESS.md`, the read-only independent review result, and
+  `git merge-base --is-ancestor` verification on 21 October 2026.
 
 BLOCKER ID: AUTH-LEGACY-IDENTITY-01
 Title: Preflight legacy identity values before applying migration 0019

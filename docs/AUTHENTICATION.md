@@ -110,11 +110,21 @@ server-side session and requires the normal Origin/CSRF checks. A five-minute
 challenge is bound to both the current verified address and the normalized new
 address. Separate, address-bound codes are sent to both addresses; the current
 address's message also serves as notice that a change was requested. The email
-is not updated until both codes are verified. Only HMAC digests, challenge IDs,
-attempt counts, and expiry are persisted. Replaced, expired, exhausted, completed,
-or unusable requests cannot be replayed. A target address already owned by
+is not updated until both codes are verified. The `email_change_requests` row
+persists the normalized proposed address in `new_email` as ordinary PostgreSQL
+text so it can be applied after both verifications. It also stores the current
+address HMAC, challenge IDs and code HMACs, attempt counts, verification times,
+and expiry; it does not store either OTP. There is at most one pending row per
+owner. Replacement, cancellation, successful completion, conflict, exhausted
+attempts, or an expiry observed during verification deletes the row. Expiry is
+enforced after five minutes, but there is no scheduled purge: an abandoned,
+expired row may remain until a later request or verification operation cleans
+it up, or the owner account is deleted. A target address already owned by
 another account returns a generic conflict and does not change the account. A
 failed delivery cancels the pending request; the owner must request a fresh one.
+The pending address is personal data and is subject to the still-unapproved
+retention/deletion policy; do not claim it is HMAC-only or immediately erased
+when its challenge expires.
 This is local implementation and synthetic-provider test evidence only; it is
 not live delivery, domain verification, or independent security approval.
 

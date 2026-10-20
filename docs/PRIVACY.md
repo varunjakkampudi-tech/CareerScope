@@ -13,6 +13,14 @@ raw email in the challenge row. Request/error logs contain only request IDs and
 route/status metadata. Resend is an external processor for this flow; its live
 configuration, retention/tracking settings and approved disclosure have not
 been validated here. Keep OTP disabled until provider and counsel gates pass.
+The separate dual-address email-change flow stores the normalized proposed
+address in `email_change_requests.new_email` as ordinary PostgreSQL text until
+the row is deleted. Its five-minute challenge expiry is enforced on
+verification, but no scheduled cleanup purges abandoned expired rows; they are
+removed on replacement, cancellation, qualifying verification outcomes, or
+owner deletion. This pending address is personal data and must be covered by
+the approved retention/deletion policy; do not infer immediate erasure from
+challenge expiry.
 Versioned Terms/Privacy acceptance records and append-only marketing-consent
 events are persisted. Marketing is optional and defaults off. Account deletion,
 retention periods and processor wording still require an approved legal policy;

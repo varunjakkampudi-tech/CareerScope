@@ -24,7 +24,14 @@ policy once that policy has been approved. `users.email_verified_at` is nullable
 and set only in the same transaction that successfully consumes an OTP. Password
 login and local/protected-staging test-account selection do not establish it.
 The signal applies to the account email, and the email-change flow verifies both
-current and proposed addresses before updating it. Migrations 0020–0025 preserve
+current and proposed addresses before updating it. A pending email change stores
+the normalized proposed address as ordinary text in
+`email_change_requests.new_email` so it can be applied after verification; the
+row also stores address/code HMACs, challenge metadata and expiry, never either
+OTP. Challenge expiry does not itself delete the row: expired abandoned requests
+are physically removed only when a later request/verification cleans them up or
+the owner is deleted. No scheduled purge or approved retention interval is
+currently implemented. Migrations 0020–0025 preserve
 the canonical OTP/session/consent/email-change schema. Migration
 `0026_application_evidence.sql` adds application evidence and history without
 reusing the conflicting unpublished migration numbers from the earlier branch.
