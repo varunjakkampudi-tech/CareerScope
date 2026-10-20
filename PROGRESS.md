@@ -290,3 +290,28 @@ CLI session (`Not logged in`); no reviewer verdict was produced. The auth code
 therefore remains on its task branch, with promotion pending independent review
 and owner review. No push, merge, deployment, provider call, secret access or
 production change occurred.
+
+### Email OTP primitive validation follow-up (2026-10-20)
+
+Validation was resumed in a disposable clean checkout at commit
+`8966c5f1a08e6ad0f8c5e2944669f0f4aea1b06a`. A lockfile-based Node 24.21.0
+dependency install with lifecycle scripts disabled succeeded. Under a bounded,
+network-disabled container, `npm run gates:test` passed end-to-end, including
+privacy, deploy-gate, EOL, lint, typecheck and the 58/58 root unit tests. The
+email OTP tests were included. No skips were reported.
+
+The first production build attempt correctly failed offline because Next's
+approved `next/font/google` Inter integration fetches the font at build time.
+The production build was then rerun in a bounded secret-free container with
+build networking enabled and passed: two optimized Next builds, TypeScript,
+all 13 static routes and the CSP hash-discovery/enforcement check covering all
+12 inline-script hashes. This is build-time font embedding; no runtime browser
+CDN font dependency was added.
+
+`npm run format:check` found only the existing format mismatch in the canonical
+`design/DESIGN-INDEX.json`; that unrelated design index was intentionally not
+rewritten. Service-backed integration/browser checks were not run in this
+follow-up. A fresh independent authentication review is still blocked because
+the local Claude CLI is unauthenticated; no independent verdict is claimed.
+No push, merge, deployment, provider call, secret access or production change
+occurred.

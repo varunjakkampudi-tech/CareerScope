@@ -36,10 +36,17 @@ until that happens; no unmapped item is silently waived.
 ## AUTH-TEST-03 — isolated email OTP primitive
 
 `packages/core/src/email-otp.test.mjs` contains nine synthetic Node tests and is
-listed in the `test:unit` script. The file itself was run directly under isolated
-Node 24.21.0 and passed 9/9. Focused strict TypeScript, ESLint and Prettier checks
-also passed. This is narrow primitive evidence only; the complete `test:unit`
-script has not been run. The tests cover code shape, HMAC challenge binding,
+listed in the `test:unit` script. It passed 9/9 directly, and also passed within
+the full `npm run gates:test` run on Node 24.21.0 in a disposable bounded
+container; the root unit suite completed 58/58 with no skips. Focused strict
+TypeScript, ESLint and Prettier checks passed. The network-isolated production
+build could not fetch the approved Inter font; the same `npm run build` then
+passed in a disposable secret-free container with build network access, including
+both CSP passes and coverage of all 12 inline-script hashes. A repository-wide
+`npm run format:check` found one unrelated pre-existing formatting failure in
+`design/DESIGN-INDEX.json`; no formatting change was made to that canonical
+design index. This is narrow primitive evidence only: no login/API/session or
+provider behavior exists. The tests cover code shape, HMAC challenge binding,
 secret mismatch, malformed values, expiry, attempt metadata and the final
 allowed attempt. They do not establish atomic persistence, email/IP rate
 limiting, account enumeration resistance at the API boundary, delivery/failover,

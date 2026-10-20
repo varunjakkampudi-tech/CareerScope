@@ -304,72 +304,59 @@ Affected tasks: Legal/trust launch acceptance; not safe technical implementation
 Evidence references: GAP_MATRIX.md 9/10; TEST_MATRIX.md HUMAN-TEST-01/LEGAL-TEST-01
 
 BLOCKER ID: VALIDATION-ENV-01
-Title: No isolated Node 24 validation runtime is available in this workspace
+Title: Service-backed and browser validation remains for the auth task
 Priority: High
 Module: Local engineering validation
 v12 requirement / checklist item: CareerScope Engineering Standards; Goal sections 7/16/17
 Status: OPEN
-Problem: The current execution environment does not provide a usable OS-enforced
-  sandbox with the full project's Node 24 dependency and service test toolchain.
-Verified root cause: Docker Desktop is Linux-only. The available Node 24 image has
-  no project dependencies. The prebuilt CareerScope runtime image is Node 26 and
-  its partial production dependency tree lacks the required `tsx` and `vitest`
-  test runners. The host's Windows-native dependency tree is not compatible with
-  the available Linux containers' native test/build modules. Running the full
-  repository suite directly on this unrestricted host would violate the
-  applicable execution safety policy.
+Problem: The isolated Node 24 unit/gate suite and production build are now proven,
+  but service-backed integration and browser acceptance were not run for this
+  auth primitive task.
+Verified root cause: The previously missing disposable Node 24 toolchain was
+  provisioned in a clean scratch checkout using the lockfile and lifecycle
+  scripts disabled. The full unit/gate suite passes offline. The approved Inter
+  font is fetched by `next/font/google` at build time, so the production build
+  requires network access to the font source; the isolated offline build failure
+  was environmental, and the network-enabled build passed.
 Current implementation: On `codex/task/email-otp-auth`, a dependency-free OTP
   primitive is exported from core and its synthetic tests are registered in
   `test:unit`. No API route, database challenge table, email adapter, session
   lifecycle, recovery flow or UI was added.
-Impact: Full auth/session behavior and full-project integration/browser gates
-  cannot yet be safely validated; the standalone OTP primitive can be tested in
-  the bounded Node 24 container.
+Impact: The OTP primitive has no persistence or browser integration, so these
+  unrun gates do not establish an OTP flow. Existing local services were not
+  queried or modified; service-backed validation still needs a disposable
+  isolated service stack before those checks can be claimed.
 What the agent already tried: Verified the current clean checkpoint and backup;
   inspected local Docker runtime/image metadata, Node 24 image availability,
   project dependency availability, and Windows sandbox command availability.
-Work completed: Ran 9/9 dependency-free OTP tests under Node 24.21.0 in a
-  network-disabled, read-only-source container; a strict focused TypeScript check,
-  changed-file ESLint and Prettier checks passed. Confirmed no existing image
-  combines Node 24 with the full locked integration/browser dependencies and a
-  strict isolated execution profile. No install, test/build network fetch,
-  provider call or secret access was performed.
-Why autonomous resolution is unsafe or impossible: Enabling Windows Sandbox or
-  modifying the host runtime is an OS-level change outside the repository and
-  requires an independently approved environment. Installing dependencies or
-  executing tests on the unrestricted host is not an acceptable substitute.
-Exact owner action required: Make an isolated validation runtime available to the
-  development session, or authorize an equivalent pre-provisioned disposable VM.
-Step-by-step resolution instructions:
-  1. Provide a Windows Sandbox/VM or equivalent disposable environment with Node
-     24 and the lockfile-resolved dependencies already available; do not install
-     or fetch dependencies during validation.
-  2. Disable external networking; permit isolated loopback only for disposable
-     test services when a test requires them.
-  3. Start each run with an empty allowlisted environment and synthetic values;
-     use scratch-local home/cache/temp directories.
-  4. Mount the source and toolchain read-only; provide a separate scratch directory
-     as the only writable path, with CPU, memory, process, file-size, disk and
-     wall-clock limits.
-  5. Rerun the targeted Node 24 tests, full auth/authorization suites, applicable
-     integration/browser checks and independent review before integrating any
-     sensitive changes.
+Work completed: On a clean scratch checkout, lockfile dependency installation
+  succeeded with lifecycle scripts disabled. `npm run gates:test` passed under
+  Node 24.21.0 in a bounded, network-disabled container; its final root unit suite
+  passed 58/58. `npm run build` passed in a bounded, secret-free container with
+  build networking, including two CSP builds and all 12 discovered script hashes.
+  Direct OTP tests passed 9/9. No application secrets, provider accounts,
+  candidate data or production services were accessed. `npm run format:check`
+  separately reported only the existing formatting issue in
+  `design/DESIGN-INDEX.json`; that design artifact was not rewritten.
+Remaining safe action: Run applicable integration/database/queue and browser
+  acceptance checks against newly created disposable services and synthetic
+  configuration only. Do not connect to already-running shared local containers
+  or read `.env` for this purpose.
 Required environment-variable names (no values): Only explicit synthetic test
-  values required by the selected test; never inherit the host environment.
-External dependencies: A provisioned, isolated validation runtime; no product
-  provider or production dependency.
-Expected result: Reproducible Node 24 validation with no secrets and no external
-  side effects.
-Verification procedure: Record the exact runtime image/build, Node version,
-  dependency lock hash, sandbox network/mount/resource limits and test command
-  results without retaining private payloads.
-Tests to rerun: Node policy, source/privacy/deploy gates, typecheck, unit,
-  integration, database, queue, recovery, browser/accessibility as applicable.
-Affected tasks: Full-workspace and service-backed checks requiring unavailable
-  Linux Node tooling, PostgreSQL/Redis integration and browser test dependencies;
-  the isolated OTP primitive checks are separately evidenced above.
-Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and current
-  isolated runtime/image capability inspection.
+  values required by the selected check; never inherit the host environment.
+External dependencies: None for creating isolated disposable test services;
+  hosted CI and real provider/production validation remain separately gated.
+Expected result: Exact Node 24 integration and browser evidence without secrets,
+  shared-service interference or external product side effects.
+Verification procedure: Record the disposable container image IDs, Node version,
+  lockfile hash, isolation limits, exact commands and test results; destroy only
+  the newly-created named test containers after verification.
+Tests to rerun: Relevant integration/database/queue/browser/accessibility checks;
+  full gate and build evidence remains in `PROGRESS.md` and `TEST_MATRIX.md`.
+Affected tasks: Only additional service/browser validation of this local auth
+  primitive; its deterministic unit and build gates are already proven.
+Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and the clean
+  Node 24 validation scratch checkout.
 
 BLOCKER ID: INDEPENDENT-REVIEW-01
 Title: Independent review of the auth task commit has not completed
