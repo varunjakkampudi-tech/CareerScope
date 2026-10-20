@@ -296,7 +296,9 @@
         "accessibility",
         "manual-UAT"
       ],
-      "notes": ["Existing root sign-in route; hosted Cognito acceptance remains separate."]
+      "notes": [
+        "Existing root sign-in route; approved production sign-in is email OTP through Resend, which is not yet implemented. Private test access is not production authentication."
+      ]
     },
     {
       "designId": "auth-recovery-verification",
@@ -317,7 +319,7 @@
       "route": {
         "state": "UNKNOWN",
         "path": null,
-        "evidence": "Local recovery endpoint absent; hosted Cognito flow conditional."
+        "evidence": "Local account-recovery endpoint absent; the approved v12 recovery contract is not implemented. Provider acceptance remains external evidence, not a Cognito dependency."
       },
       "dependencies": ["CS-59"],
       "acceptanceEvidenceRequirements": [

@@ -1,0 +1,611 @@
+# CareerScope canonical blocker register
+# Never include values, credentials, raw data, private paths or full transcripts.
+
+BLOCKER ID: SOURCE-REVISION-01
+Title: Newly supplied source amendments differ from hash-bound approval
+Priority: High
+Module: Product authority and requirement traceability
+v12 requirement / checklist item: Source precedence; D1/D11/D12; proposed A1/A2/A3 and CR-07
+Status: READY_FOR_OWNER
+Problem: All three newly supplied CareerScope source hashes differ from the
+  approved register. They explicitly retain pending-approval amendments and
+  conflicting hosting statements. General completion direction is not a specific
+  security exception or authorization for destructive credential removal.
+Verified root cause: Direct SHA256 comparison and amendment/contract text review.
+Current implementation: Approved immutable snapshots and existing work retained;
+  no pending amendment silently activated.
+Impact: Changed sign-in/provider/admin assurance/host/control requirements cannot
+  be treated as settled. Unrelated existing approved engineering may continue.
+What the agent already tried: Compared hashes, source differences, governance,
+  existing requirement inventory, routes, blockers and prior integration evidence.
+Work completed: docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md records exact
+  source identities, material conflicts and safe continuation order.
+Why autonomous resolution is unsafe or impossible: D1-D14 changes, accepting high
+  vulnerabilities and hosting decisions remain explicitly owner-controlled.
+Exact owner action required: Disposition the newly supplied amendments and host
+  conflict; do not supply secrets. No live action is requested by this entry.
+Step-by-step resolution instructions:
+  1. Review the source reconciliation's identities and delta table.
+  2. Explicitly disposition D1's removed post-launch phone method and A1/D11-R;
+     A1 incorrectly says D1 is unchanged. Separately disposition D12's change
+     from default fallback to exception-only fallback; A1 also calls D12 unchanged.
+     Retain historical clauses and identity data; require a separately reviewed
+     migration before legacy credential removal.
+  3. Approve or decline local mocked A2/OpenRouter work; live activation, budget
+     and private-data processing remain separate decisions.
+  4. Select dedicated or shared planned host; confirm ephemeral CI versus a named
+     separate staging host. No infrastructure change follows automatically.
+  5. Disposition the proposed CR-07 controls and admin step-up assurance. Resolve
+     HTTP 400 versus 422 and health-route compatibility before contract changes.
+  6. Record approved scope/versions/hashes through the governance transition;
+     retain original decisions and re-run requirements/privacy/format checks.
+Required environment-variable names (no values): None for source approval
+External dependencies: Owner decisions; referenced cleanup matrix review
+Expected result: One reconciled approved scope, without guessed policy or evidence.
+Verification procedure: Compare approval record, source hashes and affected matrices.
+Tests to rerun: requirements:check, requirements:test, privacy:check, format:check,
+  eol:check, plus affected contract tests after any separately approved implementation.
+Affected tasks: Changed/proposed requirements only; not all independent v12 work
+Evidence references: docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md;
+  docs/requirements/SOURCE-REGISTER.md; docs/decisions/OWNER_APPROVALS.md
+
+BLOCKER ID: GOV-01
+Title: Authoritative documents and activation approval
+Priority: Critical
+Module: Governance
+v12 requirement / checklist item: Goal prerequisites; global standard 2.4
+Status: VERIFIED
+Problem: Five sources and recorded activation authority were initially unavailable.
+Verified root cause: Initial search omitted Downloads; repository lacked approval.
+Current implementation: Five source hashes recorded; owner explicitly approved all
+  five on 20 October 2026 and authorized recording. Governance commit
+  2a1eb65d67151c485cddd417b6c249146c017a35 is reviewed and verified on codex/dev.
+Impact: Activation prerequisite satisfied; ordinary authorized implementation may
+  proceed after its required baseline audit and per-change gates.
+What the agent already tried: Read-only source searches, source reading, backup.
+Work completed: Full source read, hashes, OA-2026-10-20-01, canonical contract.
+Why autonomous resolution is unsafe or impossible: No remaining approval question;
+  actual independent review/commit verification completed, not inferred from this entry.
+Exact owner action required: None for recording the approved transition.
+Step-by-step resolution instructions: Agent validates, independently reviews,
+  commits and verifies development integration; main remains unchanged.
+Required environment-variable names (no values): None
+External dependencies: None for local transition
+Expected result: Verified dev commit includes current owner approval/governance.
+Verification procedure: git ancestry/status and review evidence, then activation.
+Tests to rerun: Documentation/privacy/EOL/gate checks applicable to transition.
+Affected tasks: All v12 implementation
+Evidence references: docs/decisions/OWNER_APPROVALS.md; PROGRESS.md
+
+BLOCKER ID: GOV-02
+Title: Main protection and CI settings are owner-controlled
+Priority: High
+Module: Repository governance
+v12 requirement / checklist item: Goal 4 and 16B; global categories 3/27
+Status: READY_FOR_OWNER
+Problem: Main has no observed GitHub protection/rules; GitHub Actions is disabled.
+Verified root cause: Read-only protection query 404; rules []; repository Actions
+  API reports enabled=false; no hosted run can execute. A local CI workflow now
+  exists at .github/workflows/ci.yml; its presence does not prove hosted behavior.
+Current implementation: The owner explicitly authorized local merge and a direct
+  normal main push on 21 October 2026. Local validation and independent review
+  support this repository checkpoint; hosted CI remains unavailable. Deployment
+  automation remains absent. This item does not block that authorized sync.
+Impact: Hosted protection/CI and production acceptance cannot be claimed from
+  local checks. Owner-directed main synchronization does not certify launch.
+What the agent already tried: Read repository docs and current hosted rule metadata.
+Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
+  task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
+Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
+Exact owner action required: Review intended main/dev rules and Actions permissions.
+Step-by-step resolution instructions:
+  1. GitHub repository > Settings > Rules > Rulesets: protect main against deletion,
+     force pushes and direct unreviewed promotion, preserving owner promotion controls.
+  2. Settings > Actions > General: review permitted Actions and token permissions;
+     after inspecting the local workflow and owner-approved budget, enable the
+     CI-only workflow. Do not enable or create a deployment workflow.
+  3. Settings > Environments: provide separate staging credentials/branch restriction
+     only when that independent host exists; never use production test secrets.
+  4. Check account billing/Actions usage before required nightly runs; provide the
+     approved budget/schedule. Do not disable mandatory suites to save minutes.
+  5. After the first hosted run, configure required check names from successful
+     exact-run evidence, not placeholders; test fail-closed behavior and workflow
+     dispatch before treating automation as accepted.
+Required environment-variable names (no values): None; CI uses synthetic service credentials only
+External dependencies: Owner GitHub settings/Actions budget; separate staging host; unaccepted high-severity dependency findings
+Expected result: Protected main and observed successful/negative-control dev runs.
+Verification procedure: Re-query rules and inspect exact-SHA hosted workflow runs.
+Tests to rerun: Goal 16B.11 trigger/failure/coverage/security/artifact checks
+Affected tasks: Hosted CI/staging/release certification; not unrelated local coding
+Evidence references: PROGRESS.md; docs/governance/ENGINEERING-CONTRACT.md
+
+BLOCKER ID: RECOVERY-01
+Title: Recovery objective clauses require owner reconciliation
+Priority: Critical
+Module: Disaster recovery
+v12 requirement / checklist item: D12, sections 6/7, checklist 9/10
+Status: READY_FOR_OWNER
+Problem: Approved v12 D12 and section 6 specify a 1-hour RPO with a disclosed
+  24-hour fallback; section 7's restore acceptance permits either the 1-hour
+  target or disclosed fallback, while section 15 critical go/no-go item 9 names
+  only the 1-hour WAL RPO.
+Verified root cause: All three clauses were compared in approved SRC-01; no
+  owner amendment clarifies whether the fallback satisfies the critical gate.
+Current implementation: Local backup/restore tooling; off-host WAL not verified.
+Impact: Recovery launch gate cannot pass through an agent-inferred fallback.
+What the agent already tried: Compared D12, v12 sections 6/7/15, the GO-NO-GO
+  ledger and current backup source/docs.
+Work completed: Kept the critical launch gate closed and recorded the three-way
+  inconsistency; no waiver or host change.
+Why autonomous resolution is unsafe or impossible: Deciding whether a disclosed
+  24-hour recovery point is acceptable at launch changes the approved risk posture.
+Exact owner action required: Confirm the accepted launch gate: strict 1-hour RPO,
+  or the v12 disclosed 24-hour fallback under owner-defined conditions; authorize
+  corresponding wording reconciliation without deleting the original clauses.
+Step-by-step resolution instructions:
+  1. Review D12, section 6's RPO clause, section 7's restore acceptance test,
+     and section 15 critical go/no-go item 9 together.
+  2. Recommended: keep the critical launch gate at one hour until the owner
+     explicitly confirms the fallback interpretation; do not claim a pass meanwhile.
+  3. If the fallback is accepted, record an exact owner amendment explaining when
+     24 hours is permitted, its required candidate disclosure and any go/no-go
+     wording change, with owner/date and re-evaluation; retain off-host copies.
+  4. Provide a separately approved off-host store/configuration through protected
+     environment channels, never chat/Git, then authorize a disposable restore drill.
+Required environment-variable names (no values): Determined by approved archive adapter
+External dependencies: Owner decision; off-host backup/WAL account; isolated drill host
+Expected result: Unambiguous approved RPO/RTO and observed restore evidence.
+Verification procedure: Compare backup horizon/recovered records and timed drill.
+Tests to rerun: WAL archive/replay, backup/restore, deletion reapplication, app smoke
+Affected tasks: Recovery release gate; not other local implementation
+Evidence references: SRC-01 D12, sections 6/7/15 row 9; SRC-03 section 15
+
+BLOCKER ID: AUDIT-01
+Title: Full dependency audit remediation evidence
+Priority: High
+Module: Development supply chain
+v12 requirement / checklist item: Engineering Standards 5/7; global 22/30
+Status: VERIFIED — current clean-install dependency tree reports no advisories.
+Historical baseline: On 20 October 2026, the then-current Node 24 lockfile had
+  12 affected package nodes (5 high, 7 moderate, 0 critical). Those are package
+  entries in dependency paths, not 12 independent attack paths. Preserve this
+  finding as the baseline; it is not the current audit result.
+Root causes: eslint-config-next 16.3.8 reached braces 3.0.3 through
+  @next/eslint-plugin-next, fast-glob and micromatch; Mammoth 1.13.0's CLI
+  reached sprintf-js through argparse 1.0.10; drizzle-kit 0.31.11 reached
+  esbuild 0.18.20 through the legacy @esbuild-kit loader. A fresh lockfile
+  update also exposed an advisory in Vite 8.3.1's Windows launch-editor path.
+Remediation: Scoped npm overrides now resolve Next's compatible glob API to
+  tinyglobby 0.2.17, Mammoth's parser to argparse 2.0.1, and the legacy loader's
+  esbuild to 0.25.12. The existing root Vite development tool is pinned to
+  8.3.4. No major framework downgrade, advisory suppression, audit threshold
+  change, or waiver was used. Regression tests exercise the actual Next lint
+  plugin/rule, Mammoth CLI and library, esbuild-kit transforms, Drizzle CLI and
+  migration-byte preservation, plus lockfile chain invariants.
+Verification: After a fresh Node 24 `npm ci`, `npm ls --all` exits 0 and
+  `npm audit --audit-level=low` reports 0 vulnerabilities. The clean Linux
+  Node 24 archive install also passes all 7 dependency regression tests and
+  reports 0 vulnerabilities. The current local full gate passes 84/84,
+  integration 55/55, domain 835/835, production build/CSP verification and
+  recovery checks; browser validation is recorded separately in PROGRESS.md.
+  Hosted GitHub Actions is disabled, so no hosted CI run is claimed.
+Impact: No currently reported npm advisory remains in the verified lockfile.
+  This does not establish that future dependency updates are safe; rerun the
+  full audit for each lockfile change and review upstream fixes before removing
+  scoped overrides.
+Owner action required: None for this local remediation. Hosted CI activation
+  remains governed by the separate CI blocker and is not represented as passed.
+External dependencies: npm registry was used for the clean install and metadata;
+  no paid provider or production service was called.
+Expected result: No unresolved advisory in the exact reviewed lockfile.
+Evidence: PROGRESS.md and docs/MAIN-CONSOLIDATION-2026-10-21.md record commands,
+  isolated service versions, outputs and remaining hosted/release limitations.
+Affected tasks: Dependency supply-chain gate.
+
+BLOCKER ID: AUTH-01
+Title: Complete authentication launch acceptance beyond implemented email OTP
+Priority: Critical
+Module: Authentication
+v12 requirement / checklist item: D1/D11, section 4.1; checklist 1-3/7-8
+Status: OPEN
+Problem: Local OTP and session controls are implemented and covered by tests,
+  but the full v12 authentication surface and production acceptance remain
+  incomplete. The remaining local gaps are lost-mailbox recovery, new-device
+  alerts, unusual-pattern step-up, and production
+  staff/admin MFA. A second delivery provider has not been selected. The
+  password-test compatibility route is opt-in to isolated fixtures and disabled
+  in OTP/runtime compositions.
+Verified root cause: Current API composition, auth/schema, runtime validation,
+  API/core integration tests, OTP tests and approved v12 checklist reviewed on
+  20 October 2026. Refresh rotation/reuse revocation and owner-scoped device
+  session listing/revocation are present; they are no longer classified as
+  missing implementation.
+Current implementation: With `EMAIL_OTP_ENABLED=true`, Fastify uses the existing
+  PostgreSQL identity/session architecture and Resend adapter. Existing-account
+  sign-in and a guarded OTP signup capability are implemented. Signup remains
+  disabled unless `REGISTRATION_ENABLED=true` and complete versioned legal
+  configuration are supplied; the repository's terms/privacy content is counsel
+  draft only, so it must not currently be configured for acceptance. Password
+  registration is always unavailable. Signup account creation, accepted Terms
+  and privacy records, optional marketing consent, initial session and OTP
+  challenge consumption share one transaction. Six-digit codes expire in five
+  minutes, are HMAC-verified and single-use, with Redis distributed limits.
+Impact: Existing-account OTP sign-in and session lifecycle controls have local
+  evidence, but fallback availability, recovery, risk-based authentication,
+  staff MFA, live delivery and hosted acceptance are not established.
+What the agent already tried: Added routes, existing-session establishment,
+  runtime fail-closed checks, user-facing OTP form and service-backed tests.
+Work completed: Existing OTP work has local unit, PostgreSQL/Redis integration,
+  build/CSP, typecheck, lint, privacy, formatting and browser evidence recorded
+  in PROGRESS.md. The current signup/legal-consent changes are being validated
+  separately; no live Resend delivery or legal approval is claimed.
+Why autonomous resolution is unsafe or impossible: Selecting a fallback vendor,
+  enabling a sender/domain, and performing real-recipient delivery require owner
+  and provider evidence. The approved v12 text requires recovery through verified
+  identity signals beyond email, but the current identity model exposes no such
+  second signal; implementing recovery without an approved factor/procedure
+  would weaken account takeover protections. Staff MFA needs a production staff
+  identity/role boundary, which the current test-only admin identity is not.
+Exact owner action required: Obtain qualified counsel/owner approval for effective
+  Terms, privacy notice, marketing language and retention/deletion policy before
+  enabling registration; complete PROVIDER-01 actions; review remaining
+  recovery factor/procedure and staff identity/MFA boundary before public
+  production acceptance. Refresh and device-session implementation is present;
+  its local regression suite passes, while hosted acceptance remains open.
+Step-by-step resolution instructions: Keep signup disabled while only counsel
+  drafts exist. After legal approval, publish the exact versioned texts at
+  approved HTTPS URLs, configure version/URL variables through the protected
+  environment (never Git/chat), validate fail-closed startup, and complete a
+  separate staging test. Keep OTP disabled until the staging sender, independent
+  HMAC key and provider domain are verified; complete one owner-approved mailbox
+  test in isolated staging; separately implement and verify approved recovery,
+  new-device alerting, risk-based step-up, and
+  staff/admin MFA without treating the test identity selector as production RBAC.
+Required environment-variable names (no values): EMAIL_OTP_ENABLED,
+  EMAIL_OTP_HMAC_SECRET, RESEND_API_KEY, RESEND_FROM_EMAIL,
+  TEST_ACCESS_MODE, TEST_PROXY_SECRET, NODE_ENV, DEPLOYMENT_ENVIRONMENT.
+External dependencies: PROVIDER-01 live sender and hosted acceptance; remaining
+  remaining recovery/alert/step-up/MFA requirements are local engineering work
+  after their security contracts are specified; no implementation is waived.
+Expected result: Existing users authenticate only after a real verified code and
+  all v12 session/recovery requirements have independent release evidence.
+Verification procedure: Node 24 unit/integration/browser gates; hosted staging
+  delivery/fallback and migration acceptance; separate tests for approved
+  recovery factors, new-device alert redaction, step-up policy, staff MFA,
+  session rotation and owner isolation. Dual-address email change is implemented
+  locally and covered by the isolated integration suite; independent review and
+  hosted acceptance remain pending.
+Tests to rerun: Auth, ownership, CSRF, cookies, abuse controls, provider outages,
+  refresh/device/recovery and the browser matrix.
+Affected tasks: Production sign-in acceptance; unrelated local engineering continues
+Evidence references: GAP_MATRIX.md 4.1; TEST_MATRIX.md AUTH-TEST-01/02
+
+BLOCKER ID: SOURCE-01
+Title: Launch-source policy and permitted-use evidence incomplete
+Priority: Critical
+Module: Discovery/public job pages
+v12 requirement / checklist item: D10/D13/D14, 4.6/4.14, checklist 4-6
+Status: READY_FOR_OWNER
+Problem: Runtime defaults include remote feeds; D14 launch set and per-source rights
+  must be explicit. Public access alone does not grant redistribution/AI rights.
+Verified root cause: No verified complete permitted-use/coverage record has been
+  supplied. Public availability is not authorization for collection, storage,
+  transformation, display, redistribution or AI processing.
+Current implementation: Source permission profiles fail closed by source and
+  capability; only the D14 ATS candidates Greenhouse, Lever, Ashby and Workable
+  can become eligible, and only with current, complete permission evidence.
+  API discovery, submission and worker execution enforce eligibility. If a
+  permission expires after queueing, the worker still runs other permitted
+  sources and records the denied source independently. No production profile is
+  currently approved, so discovery remains unavailable by default.
+Impact: No public discovery expansion or rights-cleared full-text claim is justified.
+What the agent already tried: Inspected the source enum, provider factories,
+  API, worker, UI and scheduled discovery. Implemented the fail-closed
+  source-capability gate, API contract, user-visible pending state, worker-time
+  revalidation and scheduled-discovery skip. Synthetic tests only; no job-source
+  calls were made.
+Work completed: Local source allowlist, capability-profile schema, no-profile
+  default, API/UI/worker/scheduler enforcement, and mixed-permission regression
+  coverage. This does not establish actual source rights or launch coverage.
+Why autonomous resolution is unsafe or impossible: Agent cannot accept terms,
+  contact providers/employers or invent collection/display/training rights.
+Exact owner action required: Supply permitted-use evidence and approve measured
+  launch city/role coverage thresholds when golden-set measurement is available.
+Step-by-step resolution instructions:
+  1. For each proposed source, provide the approved public ATS endpoint/company
+     permission or licensed agreement; exclude LinkedIn, keep portals gated.
+  2. Record collection, storage, transformation, AI, public display and redistribution
+     rights separately, including retention/attribution/expiry and review date.
+  3. Authorize only eligible source/fixture measurement; agent implements tests
+     without collecting real postings until that permission exists.
+  4. Review measured listing/stale/duplicate results by target city/role and record
+     thresholds. Unsupported coverage remains unavailable. Authorized postings or
+     candidate-supplied links are future alternatives requiring their own approved
+     contract; candidate-supplied links are not currently implemented.
+Required environment-variable names (no values): Provider-specific names only once
+  an approved adapter requires them; never attach tokens or agreements with secrets.
+External dependencies: Source permissions/licenses; owner coverage thresholds
+Expected result: Source allowlist and every data-use capability fail closed.
+  Current code verifies this using synthetic policy profiles; no source is
+  enabled without owner-recorded source-specific evidence.
+Verification procedure: Local denied-source no-call tests and mixed-permission
+  worker test; after owner supplies evidence, independently review every right,
+  then run authorized-source provenance, coverage and stale/duplicate golden-set
+  checks before enabling any profile. Public SSR/indexing requires its own
+  rights-gating acceptance and is not enabled by this policy alone.
+Tests to rerun: requirements, shared policy, worker/domain, API integration,
+  browser/axe, public SEO/right-gating suites
+Affected tasks: Discovery activation/public pages; not deterministic fixture tests
+Evidence references: GAP_MATRIX.md 4.6/4.14; approved v12 D10/D13/D14
+
+BLOCKER ID: PROVIDER-01
+Title: Resend domain, live-delivery and fallback-provider acceptance
+Priority: Critical
+Module: Authentication/notifications
+v12 requirement / checklist item: D1/D9/D11; 4.1/4.15; checklist 1-3
+Status: READY_FOR_OWNER
+Problem: Resend domain ownership/sender state, tracking configuration, live
+  delivery and inbox receipt have not been verified. No second email provider is
+  selected for the v12 fallback requirement. Mock tests cannot prove these facts.
+Verified root cause: Local source and tests show an integrated Resend API path;
+  no external provider console or DNS change was performed in this task.
+Current implementation: The server sends via fixed HTTPS Resend API endpoint with
+  bounded timeout and same-key idempotent retry. Existing `.env` already provides
+  Resend configuration; its values were not read or printed. No live call occurred.
+  `EMAIL_OTP_HMAC_SECRET` is separate and not present in the current local `.env`.
+Impact: API acceptance and mocks do not prove sender authorization, inbox receipt,
+  domain-level tracking state or fallback recovery.
+What the agent already tried: Validated required names and runtime guards without
+  reading secret values; mocked provider success/failure/retry and sanitized errors.
+Work completed: 7 delivery-adapter tests are in the unit suite; integrated OTP
+  API uses the provider and invalidates undelivered challenges. No real account,
+  recipient or communication was used.
+Why autonomous resolution is unsafe or impossible: Domain/DNS state, provider
+  dashboard settings, secret provisioning and real recipient authorization are
+  external owner-controlled actions. The fallback provider is a product/provider
+  decision and cannot be invented from local code.
+Exact owner action required: Verify the approved sending domain and sender in
+  Resend, confirm open/click tracking is disabled for auth mail at the account or
+  domain setting, provision a separate staging HMAC secret, choose/provision the
+  required fallback provider, and authorize one staging recipient for a live test.
+Step-by-step resolution instructions:
+  1. In Resend, confirm `careerscope.tech` is verified and the exact approved
+     sender is enabled; follow only provider-issued DNS instructions.
+  2. In the provider's domain/account settings, verify open and click tracking are
+     disabled for authentication email. The integration does not claim to override
+     provider-level tracking defaults per message.
+  3. Add `EMAIL_OTP_HMAC_SECRET` (random, independent, >=32 bytes) and
+     `EMAIL_OTP_ENABLED=true` to isolated staging secrets; never store values in
+     Git, chat, logs or screenshots. Keep production disabled pending acceptance.
+  4. Select/provision the fallback provider required by v12 and supply its owner-
+     approved adapter/configuration decision; do not send or enable it beforehand.
+  5. Authorize a specific staging mailbox and spend cap, then test inbox receipt,
+     verification, session, expiry, retry and fallback; retain only sanitized IDs.
+Required environment-variable names (no values): EMAIL_OTP_ENABLED,
+  EMAIL_OTP_HMAC_SECRET, RESEND_API_KEY, RESEND_FROM_EMAIL; fallback names only
+  after its provider and adapter contract are approved.
+External dependencies: Resend account/domain/DNS; provider tracking setting;
+  staging secret channel; fallback-provider decision; authorized test mailbox.
+Expected result: Actual OTP/fallback acceptance with no production test shortcut.
+Verification procedure: Separate provider acceptance, recipient receipt and OTP
+  session evidence from mock/local automated runs.
+Tests to rerun: OTP outage/abuse/delivery, staging browser acceptance and runtime guards.
+Affected tasks: Hosted sign-in/notification acceptance; local implementation unblocked
+Evidence references: TEST_MATRIX.md AUTH-TEST-02/MESSAGE-TEST-01
+
+BLOCKER ID: LEGAL-01
+Title: Privacy, rights and trust text require legal/human review
+Priority: High
+Module: Privacy/trust
+v12 requirement / checklist item: 9/10/12; checklist 23-25
+Status: READY_FOR_OWNER
+Problem: No counsel review/current official applicability evidence has been supplied.
+Verified root cause: Approved v12 marks these external dependencies To do; no legal
+  approval record observed. This does not assert any legal commencement date.
+Current implementation: Existing privacy documentation, not compliance certification.
+Impact: Published legal/consent/age/verification/outreach claims cannot be certified.
+What the agent already tried: Read approved requirements and current privacy docs.
+Work completed: Technical data-inventory/deletion/consent work can proceed locally.
+Why autonomous resolution is unsafe or impossible: Counsel and real-user acceptance
+  cannot be simulated; no agent may claim legal approval or accept terms.
+Exact owner action required: Arrange counsel and native-language review of the
+  versioned data inventory, notices, retention, processors, consent and terms.
+Step-by-step resolution instructions:
+  1. Provide counsel the completed technical data-flow/inventory and proposed copy.
+  2. Counsel verifies official applicable notifications, required grievance/breach
+     duties, retention exceptions and cross-border/provider disclosures.
+  3. Record approver/date/document or string versions and exact required changes.
+  4. Arrange Telugu/Hindi safety/legal/consent review and genuine manual accessibility
+     acceptance; preserve reviewer/tool/environment/SHA, never fabricate results.
+Required environment-variable names (no values): None
+External dependencies: Counsel; authorized human/native-language/device reviewers
+Expected result: Version-bound legal and human acceptance with technical retests.
+Verification procedure: Trace review to current copy/data behavior and open findings.
+Tests to rerun: Privacy/deletion/consent, localization, accessibility and regression
+Affected tasks: Legal/trust launch acceptance; not safe technical implementation
+Evidence references: GAP_MATRIX.md 9/10; TEST_MATRIX.md HUMAN-TEST-01/LEGAL-TEST-01
+
+BLOCKER ID: VALIDATION-ENV-01
+Title: Node 24 isolated validation environment
+Priority: High
+Module: Local engineering validation
+v12 requirement / checklist item: CareerScope Engineering Standards; Goal sections 7/16/17
+Status: VERIFIED
+Problem: Initially, the project lacked an isolated Node 24 toolchain capable of
+  running the locked unit, build and service-backed test suites.
+Verified root cause: The original Node 24 image did not contain project
+  dependencies. This was resolved in a clean scratch checkout using the lockfile
+  with lifecycle scripts disabled. The approved Inter font is fetched by
+  `next/font/google` at build time, so the production build requires network access
+  to that font source; the offline-only build failure was environmental, and the
+  bounded network-enabled build passed.
+Current implementation: Node 24.19.0 is available and has been used for the
+  current task-branch validation. The current uncommitted task branch includes
+  PostgreSQL-backed OTP challenges, request/verification routes, a Resend
+  adapter behind an injected provider boundary, session issuance/rotation,
+  rate limiting, OTP UI, dual-address email change and related migrations/tests.
+  These are local implementation claims supported by current source and
+  recorded tests, not live provider, hosted or production acceptance.
+Impact: No longer blocks local Node 24 validation. The latest local unit,
+  service-backed integration, typecheck, build, lint, formatting, EOL and privacy
+  checks are recorded in `PROGRESS.md` and `TEST_MATRIX.md`. The latest complete
+  cross-browser run remains failed/incomplete in Firefox at dashboard request
+  quiescence; hosted CI, live delivery and production validation remain absent.
+What the agent already tried: Verified the current clean checkpoint and backup;
+  inspected local Docker runtime/image metadata, Node 24 image availability,
+  project dependency availability, and Windows sandbox command availability.
+Work completed: On a clean scratch checkout, lockfile dependency installation
+  succeeded with lifecycle scripts disabled. `npm run gates:test` passed under
+  Node 24.21.0 in a bounded, network-disabled container; its root unit suite
+  passed 58/58. The `npm run test:integration` test list was executed serially
+  with explicit synthetic environment values against newly created PostgreSQL
+  17.6 and Redis 7.4.5 containers in a network-isolated namespace; 49/49 passed.
+  `npm run build` passed in a bounded, secret-free container with build networking,
+  including two CSP builds and all 12 discovered script hashes. Direct OTP tests
+  passed 9/9. No application secrets, provider accounts, candidate data, or
+  production/shared services were accessed. `npm run format:check` separately
+  reported only the pre-existing formatting issue in `design/DESIGN-INDEX.json`;
+  that design artifact was not rewritten. Targeted formatting and privacy checks
+  for the updated evidence documents passed.
+Remaining action: None for isolated Node 24 toolchain availability. Diagnose
+  the current Firefox dashboard-quiescence failure and obtain a fresh complete
+  Chromium/Firefox/WebKit browser pass. Hosted CI, provider and production
+  acceptance remain unverified.
+Required environment-variable names (no values): Only explicit synthetic test
+  values required by the selected check; never inherit the host environment.
+External dependencies: None for the validated local test suites. Hosted CI,
+  independent auth review and real provider/production validation remain
+  separately gated.
+Expected result: A reproducible isolated Node 24 environment with no production
+  or shared-service side effects — achieved for the executed gates.
+Verification procedure: Validate the recorded runtime, lockfile install,
+  isolation profile and exact test results in `PROGRESS.md` and `TEST_MATRIX.md`.
+  The named synthetic service containers were removed; they used tmpfs and left
+  no persistent data volumes.
+Tests to rerun: None for toolchain availability; rerun relevant gates after any
+  source/test changes. Browser and external acceptance remain separate.
+Affected tasks: Local unit/build/integration validation — verified; no claim for
+  unrun browser, hosted, provider or production evidence.
+Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and the clean
+  Node 24 validation scratch checkout.
+
+BLOCKER ID: INDEPENDENT-REVIEW-01
+Title: Independent review of the current auth worktree has not completed
+Priority: High
+Module: Authentication / change review
+v12 requirement / checklist item: Engineering contract; sensitive authentication review gate
+Status: READY_FOR_OWNER
+Problem: The authentication code must receive a fresh independent review before
+  any promotion from its task branch.
+Verified root cause: The isolated review checkout and review plan were prepared.
+  The configured safe-mode Claude inspector returned `Not logged in`; no review
+  verdict or code approval was produced. The CLI version alone does not prove an
+  authenticated reviewer session.
+Current implementation: Task branch HEAD is
+  `f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56`, with additional uncommitted
+  authentication, migration, test and documentation changes. Neither the
+  current commit nor dirty diff has valid independent approval; the work remains
+  outside `codex/dev`.
+Impact: No independent review evidence exists for this sensitive auth change.
+What the agent already tried: Invoked the repository's isolated read-only
+  `claudex-loop inspect` process from a detached clean worktree without exposing
+  ignored local files. The process stopped before review because Claude CLI was
+  unauthenticated.
+Work completed: The review attempt and exact limitation are recorded; no review
+  findings were simulated or inferred.
+Why autonomous resolution is unsafe or impossible: Authenticating an external
+  model CLI is a local account action; credentials must not enter chat or the repo.
+Exact owner action required: Authenticate the Claude Code CLI through its
+  official local login flow, or designate another authorized independent reviewer.
+Step-by-step resolution instructions:
+  1. In the local terminal, run the installed `claude` CLI and complete its
+     official `/login` flow. Do not paste credentials, codes or tokens into chat.
+  2. Confirm the CLI session is authenticated locally; `claude --version` alone
+     is not sufficient evidence.
+  3. Request read-only review of the current task-branch commit and exact dirty
+     diff, including untracked migrations/tests, against its actual merge base
+     with `codex/dev`; provide a protected snapshot without `.env` or secrets.
+  4. Address findings, rerun affected tests, and obtain a fresh review bound to
+     the final content hash. Keep auth changes on the task branch until review
+     and required owner review complete.
+Required environment-variable names (no values): None
+External dependencies: Authenticated, read-only independent reviewer session.
+Expected result: A valid review receipt/verdict covering the exact diff snapshot.
+Verification procedure: Inspect runner `result.json`, snapshot hash, reviewer
+  coverage and findings; a CLI exit code alone is not approval.
+Tests to rerun: After review findings or source changes, rerun Node 24 OTP unit
+  and integration tests, typecheck, lint, format, privacy and the complete
+  browser matrix; the latest full matrix remains failed/incomplete.
+Affected tasks: Only promotion of the sensitive auth task commit; unrelated work
+  may continue on separate task branches.
+Evidence references: `PROGRESS.md`, `TEST_MATRIX.md`, and the prior external
+  review attempt artifact `email-otp-f468643-retry` (historical; not evidence
+  for the current branch contents).
+
+BLOCKER ID: AUTH-LEGACY-IDENTITY-01
+Title: Preflight legacy identity values before applying migration 0019
+Priority: High
+Module: Authentication / database migration
+v12 requirement / checklist item: v12 D1; safe migration and account ownership
+Status: READY_FOR_OWNER
+Problem: Historical migrations added `users.external_subject` and the
+authentication `users.phone` column. A new forward migration removes those
+unused fields but intentionally refuses to run if either contains a non-null
+value.
+Verified root cause: The current source and tests do not establish whether any
+shared database contains legacy values. No shared database was inspected.
+Current implementation: Active schema and session API no longer depend on these
+identity fields. Migration 0019 takes an exclusive lock, checks for populated
+values, and fails before altering columns or indexes if any exist. Synthetic
+PostgreSQL coverage proves both preservation on refusal and removal after the
+test fixture clears synthetic values.
+Impact: A shared/staging/production migration will stop safely if identity data
+needs disposition. Email remains nullable; no account row or email is dropped.
+What the agent already tried: Local source-reference search and isolated
+PostgreSQL migration tests only; no shared database was accessed.
+Work completed: Removed the unused active schema/runtime references while
+preserving historical migration files and existing account rows.
+Why autonomous resolution is unsafe or impossible: Reading, exporting,
+reassigning or deleting real identity data requires protected owner-controlled
+access and could alter account recovery/ownership.
+Exact owner action required: Before applying migration 0019 to any shared
+database, authorize a protected data preflight and decide how any populated
+legacy identity records should be retained or reconciled. If no values remain,
+approve normal application of the guarded migration.
+Step-by-step resolution instructions:
+  1. Use a least-privilege, approved database operator session; do not paste
+     row values or query output into chat, logs, Git, screenshots or reports.
+  2. Run a privacy-preserving count of rows where `external_subject IS NOT NULL`
+     or `phone IS NOT NULL`; do not select or export the values for routine
+     preflight.
+  3. First deploy the application version that no longer queries the legacy
+     authentication-phone column and drain every older API instance. Verify the
+     new version works while the old nullable columns still exist. Then take
+     the approved backup and apply migration 0019 through the reviewed
+     deployment procedure; verify the columns/indexes are absent and existing
+     account/email rows remain. Do not run old application instances against
+     the removed schema.
+  4. If the count is nonzero, stop before migration, preserve the data, and
+     prepare an owner-approved account reconciliation/export plan through the
+     authorized protected process. Do not null, delete, reassign or expose
+     values merely to make the migration pass.
+  5. Rerun migration and account/session smoke checks only after disposition is
+     reviewed and independently verified. After successful removal, rollback
+     must not restore an old application binary; use a reviewed forward repair
+     if needed because any preflight-confirmed empty identity columns cannot
+     restore prior identity values.
+Required environment-variable names (no values): None
+External dependencies: Owner-authorized protected database operator access and
+an approved data disposition only if legacy values are present.
+Expected result: Either a zero-value preflight followed by the guarded schema
+removal, or an approved and auditable disposition before any populated identity
+value is changed.
+Verification procedure: Record the preflight count and migration result in the
+protected operational evidence system without storing identity values in this
+repository; verify schema and retained account rows afterward.
+Tests to rerun: Migration 0019 integration test, all database/session
+integration tests, and the authorized deployment smoke suite.
+Affected tasks: Only migration 0019 application to a shared database; local
+source work and unrelated tasks may proceed.
+Evidence references: `PROGRESS.md`, `QUALITY_AUDIT.md`, and migration
+`migrations/0019_remove_legacy_external_identity.sql`.

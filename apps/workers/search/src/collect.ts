@@ -14,6 +14,7 @@ import {
 import {
   createRemoteOkProvider,
   createHimalayasProvider,
+  createAshbyProvider,
   createGreenhouseProvider,
   createLeverProvider,
   createWorkableProvider,
@@ -24,12 +25,14 @@ import {
   type JobProvider,
 } from '@careerscope/providers';
 import { buildCandidateContext, scoreJob } from '@careerscope/matching';
+import { isJobSourcePermittedForCandidateDiscovery, type SourceId } from '@careerscope/shared';
 
 const providerFactories = {
   remoteok: createRemoteOkProvider,
   himalayas: createHimalayasProvider,
   greenhouse: createGreenhouseProvider,
   lever: createLeverProvider,
+  ashby: createAshbyProvider,
   workable: createWorkableProvider,
 };
 
@@ -236,18 +239,59 @@ export async function collect(
   };
 }
 
-export function searchHandler(database: Database, providers?: JobProvider[]): Handler {
+export function searchHandler(
+  database: Database,
+  providers?: JobProvider[],
+  sourcePermitted: (source: SourceId) => boolean = isJobSourcePermittedForCandidateDiscovery,
+): Handler {
   return async (command, fence, signal) => {
     if (command.type !== 'search.collect') throw new Error('Unsupported search command');
     const search = await database.getSearch(command.ownerId, command.aggregateId);
     if (!search || !['queued', 'running'].includes(search.status))
       throw new Error('Search cannot run');
+    const permissionBySource = new Map(
+      search.request.sources.map((source) => [source, sourcePermitted(source)]),
+    );
+    const permittedSources = search.request.sources.filter((source) =>
+      permissionBySource.get(source),
+    );
+    if (permittedSources.length === 0) {
+      const outcomes = search.request.sources.map((source) => ({
+        source,
+        status: 'failed' as const,
+        accepted: 0,
+        limited: false,
+        errorCode: 'source_permission_pending' as const,
+      }));
+      logger.warn(
+        { runId: command.aggregateId, sourceCount: outcomes.length },
+        'Search was not run because a source lacks a current permission profile',
+      );
+      return database.completeCollection(command, fence, [], outcomes);
+    }
     if (!(await database.startSearch(command, fence))) return false;
     const started = performance.now();
-    const result = await collect(search.request, signal, providers, undefined, {
+    const permittedRequest = { ...search.request, sources: permittedSources };
+    const permittedSourceSet = new Set<SourceId>(permittedSources);
+    const permittedProviders = providers?.filter((provider) => permittedSourceSet.has(provider.id));
+    const result = await collect(permittedRequest, signal, permittedProviders, undefined, {
       profile: search.matchingProfile,
       now: search.createdAt.getTime(),
     });
+    const deniedOutcome = (source: SourceId): SourceOutcome =>
+      sourceOutcomeSchema.parse({
+        source,
+        status: 'failed',
+        accepted: 0,
+        limited: false,
+        errorCode: 'source_permission_pending',
+      });
+    const outcomes = [
+      ...result.outcomes,
+      ...search.request.sources
+        .filter((source) => !permissionBySource.get(source))
+        .map(deniedOutcome),
+    ];
     // Per-source outcome so a failing or throttled provider is identifiable.
     logger.info(
       {
@@ -255,10 +299,10 @@ export function searchHandler(database: Database, providers?: JobProvider[]): Ha
         fence,
         durationMs: Math.round(performance.now() - started),
         accepted: result.jobs.length,
-        failedSources: result.outcomes.filter((outcome) => outcome.status === 'failed').length,
-        emptySources: result.outcomes.filter((outcome) => outcome.status === 'empty').length,
-        limitedSources: result.outcomes.filter((outcome) => outcome.limited).length,
-        sources: result.outcomes.map((outcome) => ({
+        failedSources: outcomes.filter((outcome) => outcome.status === 'failed').length,
+        emptySources: outcomes.filter((outcome) => outcome.status === 'empty').length,
+        limitedSources: outcomes.filter((outcome) => outcome.limited).length,
+        sources: outcomes.map((outcome) => ({
           source: outcome.source,
           status: outcome.status,
           accepted: outcome.accepted,
@@ -269,7 +313,7 @@ export function searchHandler(database: Database, providers?: JobProvider[]): Ha
       'Search collection finished',
     );
     signal.throwIfAborted();
-    const settled = await database.completeCollection(command, fence, result.jobs, result.outcomes);
+    const settled = await database.completeCollection(command, fence, result.jobs, outcomes);
     // Checked after the current outcome is itself on record, so a streak that
     // completes on this exact run is visible - not just streaks that were
     // already five deep before this run started. A source ran without error
@@ -284,7 +328,7 @@ export function searchHandler(database: Database, providers?: JobProvider[]): Ha
     // path (Independent Reviewer finding CS-23-B).
     try {
       const EMPTY_STREAK_THRESHOLD = 5;
-      for (const outcome of result.outcomes) {
+      for (const outcome of outcomes) {
         if (outcome.status !== 'empty') continue;
         const recent = await database.recentSourceStatuses(outcome.source, EMPTY_STREAK_THRESHOLD);
         if (recent.length >= EMPTY_STREAK_THRESHOLD && recent.every((status) => status === 'empty'))

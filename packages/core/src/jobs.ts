@@ -64,7 +64,9 @@ export const sourceOutcomeSchema = z
     status: z.enum(['completed', 'empty', 'failed']),
     accepted: z.number().int().min(0).max(100),
     limited: z.boolean(),
-    errorCode: z.enum(['source_failed', 'source_timeout', 'invalid_response']).nullable(),
+    errorCode: z
+      .enum(['source_failed', 'source_timeout', 'invalid_response', 'source_permission_pending'])
+      .nullable(),
   })
   .strict()
   .refine((value) => (value.status !== 'failed') === (value.errorCode === null))
@@ -73,7 +75,7 @@ export const sourceOutcomeSchema = z
 export const sourceOutcomesSchema = z
   .array(sourceOutcomeSchema)
   .min(1)
-  .max(5)
+  .max(6)
   .refine((values) => new Set(values.map((value) => value.source)).size === values.length);
 
 export type SourceOutcome = z.infer<typeof sourceOutcomeSchema>;

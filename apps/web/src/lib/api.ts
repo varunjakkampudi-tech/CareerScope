@@ -90,10 +90,68 @@ async function readConflict(
 // button that could only ever fail again). AuthenticatedShell is the one
 // listener, matching CS-6's "single auth boundary" design.
 export const SESSION_EXPIRED_EVENT = 'careerscope:session-expired';
+let csrfToken: string | undefined;
+let refreshInFlight: Promise<'refreshed' | 'expired' | 'unavailable'> | undefined;
+
+async function refreshSession(): Promise<'refreshed' | 'expired' | 'unavailable'> {
+  if (refreshInFlight) return refreshInFlight;
+  refreshInFlight = (async () => {
+    try {
+      const response = await fetch('/api/session/refresh', {
+        method: 'POST',
+        cache: 'no-store',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (response.status === 401) {
+        csrfToken = undefined;
+        await response.body?.cancel();
+        window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+        return 'expired';
+      }
+      if (!response.ok) {
+        await response.body?.cancel();
+        return 'unavailable';
+      }
+      const body: unknown = await response.json();
+      if (
+        typeof body !== 'object' ||
+        body === null ||
+        !('authenticated' in body) ||
+        body.authenticated !== true ||
+        !('csrf' in body) ||
+        typeof body.csrf !== 'string' ||
+        !/^[a-f0-9]{64}$/.test(body.csrf)
+      ) {
+        csrfToken = undefined;
+        window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+        return 'expired';
+      }
+      csrfToken = body.csrf;
+      return 'refreshed';
+    } catch {
+      return 'unavailable';
+    }
+  })();
+  try {
+    return await refreshInFlight;
+  } finally {
+    refreshInFlight = undefined;
+  }
+}
 
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
+  return request<T>(path, options, true);
+}
+
+async function request<T>(path: string, options: RequestInit, mayRefresh: boolean): Promise<T> {
   const headers = new Headers(options.headers);
   if (options.body && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+  const method = (options.method ?? 'GET').toUpperCase();
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(method) && csrfToken)
+    headers.set('x-csrf-token', csrfToken);
   const response = await fetch(`/api${path}`, {
     ...options,
     cache: 'no-store',
@@ -103,16 +161,64 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
       : AbortSignal.timeout(15_000),
     headers,
   });
+  if (
+    response.status === 401 &&
+    mayRefresh &&
+    typeof window !== 'undefined' &&
+    ![
+      '/session',
+      '/session/refresh',
+      '/login',
+      '/register',
+      '/otp/request',
+      '/otp/verify',
+    ].includes(path) &&
+    !(typeof ReadableStream !== 'undefined' && options.body instanceof ReadableStream)
+  ) {
+    await response.body?.cancel();
+    const refresh = await refreshSession();
+    if (refresh === 'refreshed') return request<T>(path, options, false);
+    throw new ApiError(
+      refresh === 'expired' ? 401 : 503,
+      refresh === 'expired'
+        ? 'Please sign in again.'
+        : 'Your session could not be refreshed. Check your connection and try again.',
+    );
+  }
+  if (response.ok && path === '/session') {
+    const body: unknown = await response.clone().json();
+    csrfToken =
+      typeof body === 'object' &&
+      body !== null &&
+      'authenticated' in body &&
+      body.authenticated === true &&
+      'csrf' in body &&
+      typeof body.csrf === 'string'
+        ? body.csrf
+        : undefined;
+  }
+  if (response.ok && ['/login', '/otp/verify', '/logout'].includes(path)) csrfToken = undefined;
   if (!response.ok) {
     const messages: Record<number, string> = {
       400: 'Check the fields and try again.',
-      401: path === '/login' ? 'Invalid email or password.' : 'Please sign in again.',
+      401:
+        path === '/otp/verify'
+          ? 'The code is invalid or expired. Request a new code and try again.'
+          : path === '/login'
+            ? 'Invalid email or password.'
+            : 'Please sign in again.',
       409: 'This record changed in another session. Your edits have not been saved.',
       413: 'The submitted data is too large.',
       429: 'Too many requests. Try again shortly.',
+      503: 'Service temporarily unavailable. Please try again shortly.',
       507: 'Resume storage capacity reached. Remove an unneeded completed resume or try again later.',
     };
-    if (response.status === 401 && path !== '/login' && typeof window !== 'undefined') {
+    if (
+      response.status === 401 &&
+      path !== '/login' &&
+      path !== '/otp/verify' &&
+      typeof window !== 'undefined'
+    ) {
       window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
     }
     const conflict = response.status === 409 ? await readConflict(response) : undefined;
@@ -122,7 +228,11 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     if (response.status !== 409) await response.body?.cancel();
     throw new ApiError(
       response.status,
-      conflict?.message ?? messages[response.status] ?? 'Request failed. Please try again.',
+      conflict?.message ??
+        (response.status === 503 && ['/otp/request', '/otp/verify'].includes(path)
+          ? 'Sign-in is temporarily unavailable. Please try again shortly.'
+          : messages[response.status]) ??
+        'Request failed. Please try again.',
       conflict?.code,
     );
   }

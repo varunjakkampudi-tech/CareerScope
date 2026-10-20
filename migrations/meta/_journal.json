@@ -134,6 +134,62 @@
       "when": 1790793600000,
       "tag": "0018_cognito_phone_identity",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792460257016,
+      "tag": "0019_remove_legacy_external_identity",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792462427597,
+      "tag": "0020_email_otp_challenges",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1792464299871,
+      "tag": "0021_mushy_stepford_cuckoos",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1792497238608,
+      "tag": "0022_cultured_surge",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1792499395644,
+      "tag": "0023_smooth_patch",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1792499811386,
+      "tag": "0024_cultured_warhawk",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1792504395033,
+      "tag": "0025_spicy_vulture",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1792522004256,
+      "tag": "0026_application_evidence",
+      "breakpoints": true
     }
   ]
 }

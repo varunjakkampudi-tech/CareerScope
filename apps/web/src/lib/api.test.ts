@@ -134,6 +134,7 @@ test('CS-35: non-conflict statuses keep their existing messages and carry no cod
     [400, 'Check the fields and try again.'],
     [413, 'The submitted data is too large.'],
     [429, 'Too many requests. Try again shortly.'],
+    [503, 'Service temporarily unavailable. Please try again shortly.'],
     [500, 'Request failed. Please try again.'],
   ] as [number, string][]) {
     const restore = stubFetch(JSON.stringify({ error: SERVER_DETAIL, code: 'UPLOAD_CANCELLED' }), {
@@ -151,6 +152,105 @@ test('CS-35: non-conflict statuses keep their existing messages and carry no cod
     } finally {
       restore();
     }
+  }
+});
+
+test('OTP outages use the approved sign-in unavailable message without exposing server details', async () => {
+  const restore = stubFetch(JSON.stringify({ error: SERVER_DETAIL }), { status: 503 });
+  try {
+    await assert.rejects(
+      api('/otp/request', { method: 'POST', body: '{}' }),
+      (error: unknown) =>
+        error instanceof ApiError &&
+        error.status === 503 &&
+        error.message === 'Sign-in is temporarily unavailable. Please try again shortly.' &&
+        !error.message.includes(SERVER_DETAIL),
+    );
+  } finally {
+    restore();
+  }
+});
+
+test('expired access session rotates once, retries with the new CSRF token, and preserves the request', async () => {
+  const originalFetch = globalThis.fetch;
+  const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  Object.defineProperty(globalThis, 'window', { configurable: true, value: globalThis });
+  const oldCsrf = 'a'.repeat(64);
+  const newCsrf = 'b'.repeat(64);
+  const requests: { url: string; csrf: string | null }[] = [];
+  let refreshCalls = 0;
+  globalThis.fetch = async (input, init) => {
+    const url = String(input);
+    const headers = new Headers(init?.headers);
+    requests.push({ url, csrf: headers.get('x-csrf-token') });
+    if (url === '/api/session') return Response.json({ authenticated: true, csrf: oldCsrf });
+    if (url === '/api/session/refresh') {
+      refreshCalls += 1;
+      return Response.json({ authenticated: true, csrf: newCsrf });
+    }
+    if (url === '/api/profile' && headers.get('x-csrf-token') === oldCsrf)
+      return Response.json({ error: 'expired' }, { status: 401 });
+    if (url === '/api/profile' && headers.get('x-csrf-token') === newCsrf)
+      return Response.json({ revision: 2 });
+    return Response.json({ error: 'unexpected request' }, { status: 500 });
+  };
+  try {
+    await api('/session');
+    const result = await api<{ revision: number }>('/profile', {
+      method: 'PUT',
+      headers: { 'x-csrf-token': oldCsrf },
+      body: JSON.stringify({ revision: 1 }),
+    });
+    assert.equal(result.revision, 2);
+    assert.equal(refreshCalls, 1);
+    assert.deepEqual(
+      requests.filter(({ url }) => url === '/api/profile').map(({ csrf }) => csrf),
+      [oldCsrf, newCsrf],
+    );
+  } finally {
+    globalThis.fetch = async () => Response.json({ authenticated: false });
+    await api('/session');
+    globalThis.fetch = originalFetch;
+    if (originalWindow) Object.defineProperty(globalThis, 'window', originalWindow);
+    else Reflect.deleteProperty(globalThis, 'window');
+  }
+});
+
+test('concurrent expired requests share one refresh operation', async () => {
+  const originalFetch = globalThis.fetch;
+  const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  Object.defineProperty(globalThis, 'window', { configurable: true, value: globalThis });
+  const oldCsrf = 'c'.repeat(64);
+  const newCsrf = 'd'.repeat(64);
+  let refreshCalls = 0;
+  globalThis.fetch = async (input, init) => {
+    const url = String(input);
+    const csrf = new Headers(init?.headers).get('x-csrf-token');
+    if (url === '/api/session') return Response.json({ authenticated: true, csrf: oldCsrf });
+    if (url === '/api/session/refresh') {
+      refreshCalls += 1;
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      return Response.json({ authenticated: true, csrf: newCsrf });
+    }
+    if (url === '/api/profile' && csrf === oldCsrf)
+      return Response.json({ error: 'expired' }, { status: 401 });
+    if (url === '/api/profile' && csrf === newCsrf) return Response.json({ ok: true });
+    return Response.json({ error: 'unexpected request' }, { status: 500 });
+  };
+  try {
+    await api('/session');
+    const [first, second] = await Promise.all([
+      api<{ ok: boolean }>('/profile', { method: 'POST', body: '{}' }),
+      api<{ ok: boolean }>('/profile', { method: 'POST', body: '{}' }),
+    ]);
+    assert.deepEqual([first.ok, second.ok], [true, true]);
+    assert.equal(refreshCalls, 1);
+  } finally {
+    globalThis.fetch = async () => Response.json({ authenticated: false });
+    await api('/session');
+    globalThis.fetch = originalFetch;
+    if (originalWindow) Object.defineProperty(globalThis, 'window', originalWindow);
+    else Reflect.deleteProperty(globalThis, 'window');
   }
 });
 

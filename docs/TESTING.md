@@ -32,7 +32,18 @@ cross-owner reads and registration/password mutations in test mode.
 ## Security and release evidence
 
 `npm run security:check` includes the privacy scan and production dependency
-audit. GitHub Actions workflows are disabled; run checks locally. The deployment
-decision tests remain available, but they do not prove hosted CI or deployment. Manual
+audit. The CI-only workflow additionally runs the full dependency audit, which
+currently reports known high-severity development dependency findings and must
+remain a blocking result until fixed or owner-disposed. GitHub Actions is
+disabled in repository settings; local tests cannot prove hosted CI. Manual
 accessibility, hosted provider, backup/restore and live smoke evidence remain
 separate acceptance gates.
+
+The Playwright harness runs all three engines when invoked locally without a
+browser selection and accepts
+`CAREERSCOPE_UI_BROWSER=chromium|firefox|webkit|all`. Unsupported values fail
+closed. The hosted workflow explicitly selects Chromium for manual browser runs
+unless another engine is chosen, and runs all three engines nightly. Its axe,
+keyboard, responsive and user-isolation checks are one browser acceptance
+suite; screenshots are local test outputs and must not be published as artifacts
+without a separate privacy review.

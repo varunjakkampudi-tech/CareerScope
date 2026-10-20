@@ -38,6 +38,7 @@ function statusLabel(status: Lead['status']): string {
       interviewing: 'Interviewing',
       offer: 'Offer',
       rejected: 'Rejected',
+      withdrawn: 'Withdrawn',
       archived: 'Archived',
     } satisfies Record<Lead['status'], string>
   )[status];
@@ -77,7 +78,7 @@ function absoluteDate(iso: string): string {
 // which would make "Applications" just a relabelled copy of "Saved".
 const SCOPE_STATUSES = {
   saved: ['saved', 'archived'],
-  applications: ['applied', 'interviewing', 'offer', 'rejected'],
+  applications: ['applied', 'interviewing', 'offer', 'rejected', 'withdrawn'],
 } satisfies Record<'saved' | 'applications', Lead['status'][]>;
 
 export function SaveJob({
@@ -233,16 +234,31 @@ function LeadEditor({
   // CS-61: owner-scoped query keys. Present exactly when authenticated.
   const owner = useOwner();
   const [notes, setNotes] = useState(record.notes);
+  const [applicationEvidenceOpen, setApplicationEvidenceOpen] = useState(false);
+  const [applicationMethod, setApplicationMethod] = useState('Employer website');
+  const [appliedAtLocal, setAppliedAtLocal] = useState(() => {
+    const now = new Date();
+    return new Date(now.getTime() - now.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
+  });
+  const [confirmation, setConfirmation] = useState<'unknown' | 'received' | 'not_received'>(
+    'unknown',
+  );
+  const [evidenceSource, setEvidenceSource] = useState('');
+  const [confidence, setConfidence] = useState<'unknown' | 'low' | 'medium' | 'high'>('unknown');
   const save = useMutation({
-    mutationFn: (status: Lead['status']) =>
+    mutationFn: (input: {
+      status: Lead['status'];
+      applicationEvidence?: NonNullable<Lead['applicationEvidence']>;
+    }) =>
       api<Lead>(`/leads/${record.id}`, {
         method: 'PUT',
         headers: { 'x-csrf-token': csrf },
-        body: JSON.stringify({ revision: record.revision, notes, status }),
+        body: JSON.stringify({ revision: record.revision, notes, ...input }),
       }),
     onSuccess: (lead) => {
       onDirty(false);
       onStatus(lead.status);
+      setApplicationEvidenceOpen(false);
       cache.setQueryData(ownerKey(owner, 'lead', record.id), lead);
       void cache.invalidateQueries({ queryKey: ['leads'] });
       void cache.invalidateQueries({ queryKey: ownerKey(owner, 'lead-history', record.id) });
@@ -410,12 +426,17 @@ function LeadEditor({
                   <p className={styles.timelineTitle}>
                     {entry.revision === 1
                       ? `Status recorded: ${statusLabel(entry.status)}`
-                      : `Changed to ${statusLabel(entry.status)}`}
+                      : entry.previousStatus
+                        ? `Changed from ${statusLabel(entry.previousStatus)} to ${statusLabel(entry.status)}`
+                        : `Changed to ${statusLabel(entry.status)}`}
                   </p>
                   <p className={styles.timelineTime}>{absoluteDate(entry.createdAt)}</p>
                   <p className={styles.timelineMeta}>
                     Revision {entry.revision}
                     {entry.notesChanged ? ' — Notes also changed' : ''}
+                    {entry.applicationEvidenceChanged
+                      ? ' — Candidate-reported application evidence updated'
+                      : ''}
                   </p>
                 </div>
               </li>
@@ -432,6 +453,46 @@ function LeadEditor({
             </button>
           )}
           <p className={styles.tzNote}>Times shown in your local timezone.</p>
+        </section>
+
+        <section className={styles.card} aria-label="Candidate-reported application evidence">
+          <h2>Application Evidence</h2>
+          {record.applicationEvidence ? (
+            <>
+              <p>
+                Candidate-reported only. This record does not confirm that an employer or ATS
+                received or acknowledged the application.
+              </p>
+              <dl className={styles.detailList}>
+                <dt>Method</dt>
+                <dd>{record.applicationEvidence.method}</dd>
+                <dt>Reported application time</dt>
+                <dd>{absoluteDate(record.applicationEvidence.appliedAt)}</dd>
+                <dt>Confirmation reported</dt>
+                <dd>
+                  {record.applicationEvidence.confirmation === 'unknown'
+                    ? 'Not recorded'
+                    : record.applicationEvidence.confirmation === 'received'
+                      ? 'Candidate reports receiving confirmation'
+                      : 'Candidate reports no confirmation'}
+                </dd>
+                <dt>Evidence source</dt>
+                <dd>{record.applicationEvidence.source || 'Not provided'}</dd>
+                <dt>Candidate confidence</dt>
+                <dd>
+                  {record.applicationEvidence.confidence === 'unknown'
+                    ? 'Not recorded'
+                    : record.applicationEvidence.confidence}
+                </dd>
+              </dl>
+            </>
+          ) : (
+            <EmptyState
+              variant="inline"
+              reason="awaiting-input"
+              message="No candidate-reported application evidence has been recorded."
+            />
+          )}
         </section>
 
         <section
@@ -463,26 +524,46 @@ function LeadEditor({
                       `Change status to "${statusLabel(next)}" and save current notes?`,
                     )
                   )
-                    save.mutate(next);
+                    if (next === 'applied' && !record.applicationEvidence)
+                      setApplicationEvidenceOpen(true);
+                    else save.mutate({ status: next });
                 }}
               >
-                {(allowedStatuses.includes(record.status)
-                  ? allowedStatuses
-                  : [...allowedStatuses, record.status]
-                ).map((value) => (
+                {[
+                  ...new Set([
+                    ...allowedStatuses.filter(
+                      (value) =>
+                        ['saved', 'archived', 'applied'].includes(value) ||
+                        record.applicationEvidence !== null,
+                    ),
+                    record.status,
+                  ]),
+                ].map((value) => (
                   <option key={value} value={value}>
                     {statusLabel(value)}
                   </option>
                 ))}
               </select>
             </label>
+            {!record.applicationEvidence && (
+              <button
+                type="button"
+                className={styles.btnSecondary}
+                disabled={pending}
+                onClick={() => setApplicationEvidenceOpen(true)}
+              >
+                {['saved', 'archived'].includes(record.status)
+                  ? 'Record application'
+                  : 'Add application evidence'}
+              </button>
+            )}
             <button
               type="button"
               className={styles.btnSecondary}
               disabled={pending || record.status === 'archived'}
               onClick={() => {
                 if (window.confirm('Archive this lead in CareerScope and save current notes?'))
-                  save.mutate('archived');
+                  save.mutate({ status: 'archived' });
               }}
             >
               <Archive size={16} aria-hidden="true" />
@@ -495,7 +576,7 @@ function LeadEditor({
                 disabled={pending}
                 onClick={() => {
                   if (window.confirm('Restore this lead to Saved and save current notes?'))
-                    save.mutate('saved');
+                    save.mutate({ status: 'saved' });
                 }}
               >
                 <Undo2 size={16} aria-hidden="true" />
@@ -527,6 +608,92 @@ function LeadEditor({
               </button>
             )}
           </div>
+          {applicationEvidenceOpen && (
+            <form
+              className={styles.evidenceForm}
+              onSubmit={(event) => {
+                event.preventDefault();
+                const appliedAt = new Date(appliedAtLocal);
+                if (Number.isNaN(appliedAt.getTime())) return;
+                save.mutate({
+                  status: ['saved', 'archived'].includes(record.status) ? 'applied' : record.status,
+                  applicationEvidence: {
+                    method: applicationMethod,
+                    appliedAt: appliedAt.toISOString(),
+                    confirmation,
+                    source: evidenceSource,
+                    confidence,
+                  },
+                });
+              }}
+            >
+              <h3>Record your application</h3>
+              <p>
+                This records your report only. CareerScope does not submit the application or verify
+                an employer response.
+              </p>
+              <label>
+                Application method
+                <input
+                  required
+                  maxLength={120}
+                  value={applicationMethod}
+                  onChange={(event) => setApplicationMethod(event.target.value)}
+                />
+              </label>
+              <label>
+                Date and time you applied
+                <input
+                  required
+                  type="datetime-local"
+                  value={appliedAtLocal}
+                  onChange={(event) => setAppliedAtLocal(event.target.value)}
+                />
+              </label>
+              <label>
+                Did you receive a confirmation?
+                <select
+                  value={confirmation}
+                  onChange={(event) => setConfirmation(event.target.value as typeof confirmation)}
+                >
+                  <option value="unknown">Not recorded</option>
+                  <option value="received">I received one</option>
+                  <option value="not_received">I did not receive one</option>
+                </select>
+              </label>
+              <label>
+                Evidence source (optional)
+                <input
+                  maxLength={160}
+                  value={evidenceSource}
+                  onChange={(event) => setEvidenceSource(event.target.value)}
+                />
+              </label>
+              <label>
+                Your confidence in this record
+                <select
+                  value={confidence}
+                  onChange={(event) => setConfidence(event.target.value as typeof confidence)}
+                >
+                  <option value="unknown">Not recorded</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </label>
+              <button type="submit" className={styles.btnPrimary} disabled={pending}>
+                {pending ? 'Recording…' : 'Record I applied'}
+              </button>
+              <button
+                type="button"
+                className={styles.btnSecondary}
+                disabled={pending}
+                onClick={() => setApplicationEvidenceOpen(false)}
+              >
+                Cancel
+              </button>
+            </form>
+          )}
         </section>
       </div>
 
@@ -570,7 +737,7 @@ function LeadEditor({
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              save.mutate(record.status);
+              save.mutate({ status: record.status });
             }}
           >
             <label className={styles.notesField}>

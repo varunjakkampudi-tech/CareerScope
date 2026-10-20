@@ -191,8 +191,8 @@ services:
     <<: *app
     environment:
       <<: *environment
-      TEST_ACCESS_MODE: proxy
-      TEST_PROXY_SECRET: ${CAREERSCOPE_STAGING_PROXY_KEY:?Private staging proxy assertion required}
+      DEPLOYMENT_ENVIRONMENT: production
+      TEST_ACCESS_MODE: disabled
     command: ['node', 'apps/api/dist/main.js']
     volumes: ['private:/private']
     healthcheck:

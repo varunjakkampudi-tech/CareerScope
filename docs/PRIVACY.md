@@ -6,6 +6,18 @@ data. They belong in the protected PostgreSQL/storage services and never in
 Git, public artifacts, issues, pull requests, screenshots,
 fixtures, logs or CI artifacts.
 
+When the feature flag is explicitly enabled, the OTP flow sends a normalized
+email address and one-time code to the configured Resend service. PostgreSQL
+stores an HMAC-derived address identifier and HMAC code digest, not the code or
+raw email in the challenge row. Request/error logs contain only request IDs and
+route/status metadata. Resend is an external processor for this flow; its live
+configuration, retention/tracking settings and approved disclosure have not
+been validated here. Keep OTP disabled until provider and counsel gates pass.
+Versioned Terms/Privacy acceptance records and append-only marketing-consent
+events are persisted. Marketing is optional and defaults off. Account deletion,
+retention periods and processor wording still require an approved legal policy;
+the repository legal documents are drafts, not published notices.
+
 ## Engineering and agent boundary
 
 The shared [agent security contract](AGENT-SECURITY.md) applies to

@@ -67,15 +67,81 @@ test('private test selection enforces the edge boundary, allowlist, rotation and
       payload: { email: testUsers[0].email },
     });
     assert.equal(candidate.statusCode, 200);
-    const cookie = candidate.headers['set-cookie'] as string;
-    assert.match(cookie, /HttpOnly/i);
-    assert.match(cookie, /Secure/i);
-    assert.match(cookie, /SameSite=Strict/i);
+    const candidateCookies = candidate.headers['set-cookie'];
+    const candidateSetCookies = Array.isArray(candidateCookies)
+      ? candidateCookies
+      : [String(candidateCookies)];
+    assert.equal(candidateSetCookies.length, 2);
+    assert.ok(candidateSetCookies.every((value) => /HttpOnly/i.test(value)));
+    assert.ok(candidateSetCookies.every((value) => /Secure/i.test(value)));
+    assert.ok(candidateSetCookies.every((value) => /SameSite=Strict/i.test(value)));
+    const cookie = candidateSetCookies
+      .find((value) => value.startsWith('careerscope_v2_session='))!
+      .split(';', 1)[0]!;
     const session = (
       await app.inject({ url: '/api/session', headers: { ...headers, cookie } })
     ).json();
     assert.equal(session.email, testUsers[0].email);
+    assert.equal('phone' in session, false);
     assert.equal(session.testUser, 'candidate');
+    const secondDevice = await app.inject({
+      method: 'POST',
+      url: '/api/login',
+      headers,
+      payload: { email: testUsers[0].email },
+    });
+    assert.equal(secondDevice.statusCode, 200);
+    const secondDeviceSetCookies = secondDevice.headers['set-cookie'];
+    const secondDeviceCookie = (
+      Array.isArray(secondDeviceSetCookies)
+        ? secondDeviceSetCookies
+        : [String(secondDeviceSetCookies)]
+    )
+      .find((value) => value.startsWith('careerscope_v2_session='))!
+      .split(';', 1)[0]!;
+    const secondDeviceSession = (
+      await app.inject({ url: '/api/session', headers: { ...headers, cookie: secondDeviceCookie } })
+    ).json();
+    const inventory = await app.inject({
+      url: '/api/account/sessions',
+      headers: { ...headers, cookie },
+    });
+    assert.equal(inventory.statusCode, 200);
+    assert.equal(inventory.json().sessions.length, 2);
+    const otherDevice = inventory
+      .json()
+      .sessions.find((item: { id: string }) => item.id === secondDeviceSession.sessionId);
+    assert.ok(otherDevice);
+    assert.equal(otherDevice.current, false);
+    assert.equal(
+      (
+        await app.inject({
+          method: 'DELETE',
+          url: `/api/account/sessions/${otherDevice.id}`,
+          headers: { ...headers, cookie, 'x-csrf-token': session.csrf },
+        })
+      ).statusCode,
+      204,
+    );
+    assert.equal(
+      (
+        await app.inject({
+          url: '/api/session',
+          headers: { ...headers, cookie: secondDeviceCookie },
+        })
+      ).json().authenticated,
+      false,
+      'revoking one device invalidates that device access token',
+    );
+    assert.equal(
+      (
+        await app.inject({
+          url: '/api/account/sessions',
+          headers: { ...headers, cookie },
+        })
+      ).json().sessions.length,
+      1,
+    );
     const rotated = await app.inject({
       method: 'POST',
       url: '/api/login',
@@ -83,6 +149,15 @@ test('private test selection enforces the edge boundary, allowlist, rotation and
       payload: { email: testUsers[0].email },
     });
     assert.equal(rotated.statusCode, 200);
+    const rotatedSetCookies = rotated.headers['set-cookie'];
+    const rotatedCookie = (
+      Array.isArray(rotatedSetCookies) ? rotatedSetCookies : [String(rotatedSetCookies)]
+    )
+      .find((value) => value.startsWith('careerscope_v2_session='))!
+      .split(';', 1)[0]!;
+    const currentCandidateSession = (
+      await app.inject({ url: '/api/session', headers: { ...headers, cookie: rotatedCookie } })
+    ).json();
     assert.equal(
       (await app.inject({ url: '/api/session', headers: { ...headers, cookie } })).json()
         .authenticated,
@@ -95,12 +170,35 @@ test('private test selection enforces the edge boundary, allowlist, rotation and
       payload: { email: testUsers[1].email },
     });
     assert.equal(adminSession.statusCode, 200);
-    const adminCookie = adminSession.headers['set-cookie'] as string;
+    const adminSetCookies = adminSession.headers['set-cookie'];
+    const adminCookie = (
+      Array.isArray(adminSetCookies) ? adminSetCookies : [String(adminSetCookies)]
+    )
+      .find((value) => value.startsWith('careerscope_v2_session='))!
+      .split(';', 1)[0]!;
     const adminIdentity = (
       await app.inject({ url: '/api/session', headers: { ...headers, cookie: adminCookie } })
     ).json();
     assert.equal(adminIdentity.testUser, 'admin');
     assert.notEqual(adminIdentity.owner, session.owner);
+    assert.equal(
+      (
+        await app.inject({
+          method: 'DELETE',
+          url: `/api/account/sessions/${currentCandidateSession.sessionId}`,
+          headers: { ...headers, cookie: adminCookie, 'x-csrf-token': adminIdentity.csrf },
+        })
+      ).statusCode,
+      204,
+      'a cross-owner session revoke is indistinguishable from a missing session',
+    );
+    assert.equal(
+      (
+        await app.inject({ url: '/api/session', headers: { ...headers, cookie: rotatedCookie } })
+      ).json().authenticated,
+      true,
+      'an admin cannot revoke another owner session',
+    );
     const run = await database.createSearch(testUsers[0].id, 'private-test-selection', {
       query: 'Private candidate search',
       sources: ['remoteok'],

@@ -64,12 +64,27 @@ sequenceDiagram
   participant C as Caddy staging gate
   participant A as Fastify
   participant S as Session store
-  B->>C: Shared staging password over HTTPS
-  C->>A: Verified private proxy assertion
-  B->>A: Select an allowlisted test account
-  A->>S: Create opaque hashed session
-  A-->>B: HttpOnly Secure SameSite cookie
+  participant R as Resend
+  B->>C: HTTPS request (staging gate only on protected staging)
+  B->>A: Request six-digit email code
+  A->>Redis: Atomic per-email/IP rate limits
+  A->>DB: Replace HMAC-keyed expiring challenge
+  A->>R: Send minimal OTP message (Resend primary)
+  B->>A: Verify email and code
+  A->>DB: Atomically consume one-time challenge
+  A->>DB: Establish session family for existing user
+  A-->>B: 15-minute HttpOnly access + 30-day absolute refresh cookies
+  B->>A: Refresh after access expiry (refresh cookie only, exact Origin)
+  A->>DB: Lock, consume and rotate refresh token
+  A-->>B: New access/refresh cookies and CSRF token
+  A->>DB: Reuse of consumed refresh token revokes the family
 ```
+
+Non-production test account selection remains a separate, fail-closed mode.
+Registration is disabled. OTP values and raw email addresses are not stored in
+challenge records; the Resend API key and separate OTP HMAC secret are server-only.
+Real delivery, sender-domain verification/tracking settings and a configured
+secondary provider remain external/owner validation gates.
 
 ## Trust boundaries
 

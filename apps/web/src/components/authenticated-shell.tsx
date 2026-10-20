@@ -110,12 +110,12 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
       <a className={styles.skipLink} href="#main-content">
         Skip to content
       </a>
-      <DashboardSidebar active={active} identity={session.data?.email ?? session.data?.phone} />
+      <DashboardSidebar active={active} identity={session.data?.email} />
       <div className={styles.main}>
         <DashboardTopbar
           theme={theme}
           onToggleTheme={toggle}
-          identity={session.data?.email ?? session.data?.phone}
+          identity={session.data?.email}
           onSignOut={() => {
             if (!logout.isPending && window.confirm('Sign out?')) logout.mutate();
           }}

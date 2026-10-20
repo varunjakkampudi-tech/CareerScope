@@ -41,6 +41,10 @@ const allowlistedEmailDomains = new Set([
   'localhost',
   'gserviceaccount.com',
 ]);
+// Exact, non-personal application role mailbox approved for transactional auth.
+// Keep this address-level instead of allowlisting the product domain so a
+// future personal address at that domain still triggers review.
+const allowlistedOperationalEmails = new Set(['noreply@careerscope.tech']);
 const fixturePath =
   /(?:\.test\.|\.test\b|__fixtures__|^infra\/|^design\/|^packages\/core\/src\/test-users\.ts$)/i;
 
@@ -75,6 +79,7 @@ export function scanContent(content, path = '<memory>') {
   for (const match of content.matchAll(emailPattern)) {
     const domain = match[1].toLowerCase();
     if (
+      !allowlistedOperationalEmails.has(match[0].toLowerCase()) &&
       !allowlistedEmailDomains.has(domain) &&
       !domain.endsWith('.invalid') &&
       !domain.endsWith('.gserviceaccount.com') &&

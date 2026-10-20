@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Tests the retained CI decision policy. If deployment workflows are restored,
-// validate their wiring as well. No workflow means deployment automation is disabled.
+// Tests the CI decision policy independently of deployment. A safe validation
+// workflow does not require a staging or production deployment workflow.
 
 import { existsSync, readFileSync } from 'node:fs';
 import { decide, PASS, REFUSE, WAIT } from './require-ci-success.mjs';
+import { isAlias, isMap, isScalar, isSeq, parseDocument } from 'yaml';
 
 let failures = 0;
 
@@ -13,6 +14,83 @@ function check(name, actual, expected) {
   console.log(
     `${ok ? 'PASS' : 'FAIL'} ${name}${ok ? '' : ` (got ${actual}, expected ${expected})`}`,
   );
+}
+
+function hasReadOnlyPermissions(workflow) {
+  const allowedScopes = new Set([
+    'actions',
+    'attestations',
+    'checks',
+    'contents',
+    'deployments',
+    'discussions',
+    'id-token',
+    'issues',
+    'packages',
+    'pages',
+    'pull-requests',
+    'repository-projects',
+    'security-events',
+    'statuses',
+  ]);
+  function containsAlias(node) {
+    if (isAlias(node)) return true;
+    if (isMap(node))
+      return node.items.some((entry) => containsAlias(entry.key) || containsAlias(entry.value));
+    if (isSeq(node)) return node.items.some(containsAlias);
+    return false;
+  }
+
+  function valueFor(map, key) {
+    if (!isMap(map)) return undefined;
+    return map.items.find((entry) => isScalar(entry.key) && entry.key.value === key)?.value;
+  }
+
+  function isReadOnlyPermissionMap(node, requireContentsRead = false) {
+    if (!isMap(node) || containsAlias(node)) return false;
+    const scopes = new Map();
+    for (const entry of node.items) {
+      if (!isScalar(entry.key) || typeof entry.key.value !== 'string' || !isScalar(entry.value)) {
+        return false;
+      }
+      const scope = entry.key.value;
+      const permission = entry.value.value;
+      if (
+        !allowedScopes.has(scope) ||
+        scopes.has(scope) ||
+        (permission !== 'read' && permission !== 'none')
+      ) {
+        return false;
+      }
+      scopes.set(scope, permission);
+    }
+    return scopes.size > 0 && (!requireContentsRead || scopes.get('contents') === 'read');
+  }
+
+  const document = parseDocument(workflow);
+  if (document.errors.length > 0 || !isMap(document.contents)) return false;
+  const rootPermissions = valueFor(document.contents, 'permissions');
+  const jobs = valueFor(document.contents, 'jobs');
+  if (!isReadOnlyPermissionMap(rootPermissions, true) || !isMap(jobs)) return false;
+
+  return jobs.items.every((job) => {
+    if (!isScalar(job.key) || typeof job.key.value !== 'string' || !isMap(job.value)) return false;
+    const permissions = valueFor(job.value, 'permissions');
+    return permissions === undefined || isReadOnlyPermissionMap(permissions);
+  });
+}
+
+function hasGitHubSecretExpression(workflow) {
+  const expressionStart = '${{';
+  let offset = 0;
+  while (true) {
+    const start = workflow.indexOf(expressionStart, offset);
+    if (start === -1) return false;
+    const end = workflow.indexOf('}}', start + expressionStart.length);
+    if (end === -1) return true;
+    if (/\bsecrets\b/i.test(workflow.slice(start + expressionStart.length, end))) return true;
+    offset = end + 2;
+  }
 }
 
 const run = (over = {}) => ({
@@ -86,14 +164,14 @@ check(
   REFUSE,
 );
 
-// A partially restored deployment must fail validation. When both workflows are
-// absent there is no automation to authorize; the decision policy above still runs.
+// CI and deployment have independent lifecycles. Deployment requires CI, while
+// CI remains valid without any deployment workflow (for example before the owner
+// provides a separate staging target).
 const deployExists = existsSync('.github/workflows/deploy.yml');
 const ciExists = existsSync('.github/workflows/ci.yml');
-check('CI and deployment workflows are restored together', deployExists, ciExists);
-if (deployExists && ciExists) {
+check('deployment requires a CI workflow', !deployExists || ciExists, true);
+if (deployExists) {
   const workflow = readFileSync('.github/workflows/deploy.yml', 'utf8');
-  const ciWorkflow = readFileSync('.github/workflows/ci.yml', 'utf8');
   check(
     'deploy.yml runs the gate script',
     workflow.includes('node scripts/require-ci-success.mjs'),
@@ -120,9 +198,43 @@ if (deployExists && ciExists) {
     ),
     false,
   );
+}
+if (ciExists) {
+  const ciWorkflow = readFileSync('.github/workflows/ci.yml', 'utf8');
+  const actionReferences = [...ciWorkflow.matchAll(/^\s*(?:-\s*)?uses:\s*([^\s#]+)/gm)].map(
+    (match) => match[1],
+  );
   check('CI does not publish Pages', ciWorkflow.includes('actions/deploy-pages@'), false);
-} else if (!deployExists && !ciExists) {
-  console.log('Deployment automation disabled: CI and deploy workflows are absent.');
+  check(
+    'CI and job permission blocks are explicit and read-only',
+    hasReadOnlyPermissions(ciWorkflow),
+    true,
+  );
+  check(
+    'CI does not select a production environment',
+    /^\s{4}environment:\s*production\s*$/m.test(ciWorkflow),
+    false,
+  );
+  check(
+    'CI does not invoke deployment workflow',
+    /(?:workflow_dispatch|gh workflow run).*deploy/i.test(ciWorkflow),
+    false,
+  );
+  check(
+    'CI third-party actions are pinned to full commit SHAs',
+    actionReferences.length > 0 &&
+      actionReferences.every(
+        (reference) => reference.startsWith('./') || /@[a-f0-9]{40}$/i.test(reference),
+      ),
+    true,
+  );
+  check(
+    'CI contains no GitHub secret-context references',
+    hasGitHubSecretExpression(ciWorkflow),
+    false,
+  );
+} else if (!deployExists) {
+  console.log('No CI workflow exists; deployment automation is disabled.');
 }
 
 console.log(failures === 0 ? '\ndeploy CI gate behaves' : `\n${failures} check(s) failed`);

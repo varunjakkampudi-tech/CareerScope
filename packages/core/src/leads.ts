@@ -10,14 +10,33 @@ export const leadStatusSchema = z.enum([
   'interviewing',
   'offer',
   'rejected',
+  'withdrawn',
   'archived',
 ]);
+// This is a candidate-reported claim, not an employer/ATS acknowledgement.
+// Free-text method/source labels preserve what the candidate actually enters
+// without asserting a provider capability or a verified submission event.
+export const applicationEvidenceSchema = z
+  .object({
+    method: z.string().trim().min(1).max(120),
+    appliedAt: z.string().datetime({ offset: true }),
+    confirmation: z.enum(['unknown', 'received', 'not_received']),
+    source: z.string().trim().max(160),
+    confidence: z.enum(['unknown', 'low', 'medium', 'high']),
+  })
+  .strict()
+  .refine((value) => new Date(value.appliedAt).getTime() <= Date.now(), {
+    path: ['appliedAt'],
+    message: 'Application time cannot be in the future',
+  });
+export type ApplicationEvidence = z.infer<typeof applicationEvidenceSchema>;
 export const saveLeadSchema = z.object({ jobId: z.string().uuid() }).strict();
 export const updateLeadSchema = z
   .object({
     revision: z.number().int().min(1).max(2_147_483_646),
     notes: z.string().max(10000),
     status: leadStatusSchema,
+    applicationEvidence: applicationEvidenceSchema.nullable().optional(),
   })
   .strict();
 const listSchema = z
@@ -40,6 +59,7 @@ export type LeadRecord = {
   data: CollectedJob;
   notes: string;
   status: z.infer<typeof leadStatusSchema>;
+  applicationEvidence: ApplicationEvidence | null;
   // CS-27: a real, checked fact - distinct from status (the owner's own
   // pipeline stage) and from createdAt/updatedAt (age). 'unknown' until an
   // actual HTTP check has run; only ever 'live'/'stale' after a genuinely
@@ -52,8 +72,11 @@ export type LeadRecord = {
 };
 export type LeadHistoryRecord = {
   revision: number;
+  previousStatus: LeadRecord['status'] | null;
   status: LeadRecord['status'];
   notesChanged: boolean;
+  applicationEvidenceChanged: boolean;
+  applicationEvidence: LeadRecord['applicationEvidence'];
   createdAt: Date;
 };
 export class LeadRevisionConflict extends Conflict {
@@ -62,10 +85,10 @@ export class LeadRevisionConflict extends Conflict {
   }
 }
 const columns =
-  'id, data, notes, status, revision, created_at AS "createdAt", updated_at AS "updatedAt",' +
+  'id, data, notes, status, application_evidence AS "applicationEvidence", revision, created_at AS "createdAt", updated_at AS "updatedAt",' +
   ' liveness_status AS "livenessStatus", liveness_checked_at AS "livenessCheckedAt"';
 const qualifiedColumns = (alias: string) =>
-  `${alias}.id, ${alias}.data, ${alias}.notes, ${alias}.status, ${alias}.revision,` +
+  `${alias}.id, ${alias}.data, ${alias}.notes, ${alias}.status, ${alias}.application_evidence AS "applicationEvidence", ${alias}.revision,` +
   ` ${alias}.created_at AS "createdAt", ${alias}.updated_at AS "updatedAt",` +
   ` ${alias}.liveness_status AS "livenessStatus", ${alias}.liveness_checked_at AS "livenessCheckedAt"`;
 
@@ -80,7 +103,28 @@ const qualifiedColumns = (alias: string) =>
 // already did, rather than leaving detail/list/save/update as the two
 // (now: none) read surfaces relying on trust alone.
 function hydrate(row: LeadRecord): LeadRecord {
-  return { ...row, data: collectedJobSchema.strip().parse(row.data) };
+  return {
+    ...row,
+    data: collectedJobSchema.strip().parse(row.data),
+    applicationEvidence:
+      row.applicationEvidence === null
+        ? null
+        : applicationEvidenceSchema.parse(row.applicationEvidence),
+  };
+}
+
+function sameApplicationEvidence(
+  left: ApplicationEvidence | null,
+  right: ApplicationEvidence | null,
+): boolean {
+  if (left === null || right === null) return left === right;
+  return (
+    left.method === right.method &&
+    left.appliedAt === right.appliedAt &&
+    left.confirmation === right.confirmation &&
+    left.source === right.source &&
+    left.confidence === right.confidence
+  );
 }
 
 export class LeadRepository {
@@ -127,12 +171,20 @@ export class LeadRepository {
     const { before } = historySchema.parse(input);
     if (!(await this.get(ownerId, id))) return null;
     const result = await this.database.pool.query<LeadHistoryRecord>(
-      `SELECT revision, status, notes_changed = 1 AS "notesChanged", created_at AS "createdAt"
+      `SELECT revision, previous_status AS "previousStatus", status,
+       notes_changed = 1 AS "notesChanged", application_evidence_changed AS "applicationEvidenceChanged",
+       application_evidence AS "applicationEvidence", created_at AS "createdAt"
        FROM lead_history WHERE owner_id = $1 AND lead_id = $2
        AND ($3::integer IS NULL OR revision < $3) ORDER BY revision DESC LIMIT 26`,
       [ownerId, id, before ?? null],
     );
-    const items = result.rows.slice(0, 25);
+    const items = result.rows.slice(0, 25).map((item) => ({
+      ...item,
+      applicationEvidence:
+        item.applicationEvidence === null
+          ? null
+          : applicationEvidenceSchema.parse(item.applicationEvidence),
+    }));
     return { items, nextCursor: result.rows.length > 25 ? items.at(-1)!.revision : null };
   }
 
@@ -159,8 +211,9 @@ export class LeadRepository {
       let lead = inserted.rows[0];
       if (lead) {
         await client.query(
-          `INSERT INTO lead_history (id, owner_id, lead_id, revision, status, notes_changed)
-           VALUES ($1, $2, $3, 1, 'saved', 0)`,
+          `INSERT INTO lead_history (id, owner_id, lead_id, revision, status, notes_changed,
+           previous_status, application_evidence_changed, application_evidence)
+           VALUES ($1, $2, $3, 1, 'saved', 0, NULL, false, NULL)`,
           [randomUUID(), ownerId, lead.id],
         );
       } else {
@@ -198,21 +251,84 @@ export class LeadRepository {
       }
       if (current.revision !== changes.revision)
         throw new LeadRevisionConflict('Lead revision changed');
-      if (current.notes === changes.notes && current.status === changes.status) {
+      const applicationEvidence =
+        changes.applicationEvidence === undefined
+          ? current.applicationEvidence
+          : changes.applicationEvidence;
+      if (current.applicationEvidence && changes.applicationEvidence === null) {
+        throw new z.ZodError([
+          {
+            code: 'custom',
+            path: ['applicationEvidence'],
+            message: 'Candidate-reported application evidence cannot be removed from history',
+          },
+        ]);
+      }
+      const progressedStatuses: LeadRecord['status'][] = [
+        'applied',
+        'interviewing',
+        'offer',
+        'rejected',
+        'withdrawn',
+      ];
+      // Archiving or restoring a lead is an organizational action, not a claim
+      // that the candidate never applied. Preserve an existing application
+      // report across those status changes; only a newly supplied claim must
+      // accompany an application lifecycle status.
+      if (
+        !current.applicationEvidence &&
+        applicationEvidence &&
+        !progressedStatuses.includes(changes.status)
+      ) {
+        throw new z.ZodError([
+          {
+            code: 'custom',
+            path: ['status'],
+            message: 'Candidate-reported application evidence requires an application status',
+          },
+        ]);
+      }
+      if (
+        progressedStatuses.includes(changes.status) &&
+        !current.applicationEvidence &&
+        !applicationEvidence &&
+        current.status !== changes.status
+      ) {
+        throw new z.ZodError([
+          {
+            code: 'custom',
+            path: ['applicationEvidence'],
+            message: 'Candidate-reported application evidence is required for this status',
+          },
+        ]);
+      }
+      if (
+        current.notes === changes.notes &&
+        current.status === changes.status &&
+        sameApplicationEvidence(current.applicationEvidence, applicationEvidence)
+      ) {
         await client.query('COMMIT');
         return hydrate(current);
       }
       const updated = await client.query<LeadRecord>(
-        `UPDATE saved_leads SET notes = $3, status = $4, revision = revision + 1, updated_at = now(),
+        `UPDATE saved_leads SET notes = $3, status = $4, application_evidence = $5::jsonb,
+         revision = revision + 1, updated_at = now(),
          -- Only moved when the stage actually changes, so editing a note does
          -- not make a cold application look freshly worked.
          status_changed_at = CASE WHEN status <> $4 THEN now() ELSE status_changed_at END
          WHERE owner_id = $1 AND id = $2 RETURNING ${columns}`,
-        [ownerId, id, changes.notes, changes.status],
+        [
+          ownerId,
+          id,
+          changes.notes,
+          changes.status,
+          applicationEvidence === null ? null : JSON.stringify(applicationEvidence),
+        ],
       );
       await client.query(
-        `INSERT INTO lead_history (id, owner_id, lead_id, revision, status, notes_changed)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
+        `INSERT INTO lead_history (id, owner_id, lead_id, revision, status, notes_changed,
+         previous_status, application_evidence_changed, application_evidence)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb)`,
         [
           randomUUID(),
           ownerId,
@@ -220,6 +336,9 @@ export class LeadRepository {
           updated.rows[0]!.revision,
           changes.status,
           Number(current.notes !== changes.notes),
+          current.status,
+          Number(!sameApplicationEvidence(current.applicationEvidence, applicationEvidence)),
+          applicationEvidence === null ? null : JSON.stringify(applicationEvidence),
         ],
       );
       await client.query('COMMIT');

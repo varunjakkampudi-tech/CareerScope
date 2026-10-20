@@ -8,14 +8,28 @@ export const testUsers = [
 export type TestAccess = { mode: 'disabled' | 'local' | 'proxy'; proxySecret?: string };
 
 export function testAccessConfiguration(source: NodeJS.ProcessEnv, origin: string): TestAccess {
+  const environment =
+    source.DEPLOYMENT_ENVIRONMENT ??
+    (source.NODE_ENV === 'production' ? 'production' : 'development');
+  if (!['development', 'staging', 'production'].includes(environment))
+    throw new Error('Invalid DEPLOYMENT_ENVIRONMENT');
   const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(origin).hostname);
   const mode =
     source.TEST_ACCESS_MODE ??
-    (loopback && source.NODE_ENV !== 'production' ? 'local' : 'disabled');
+    (environment === 'development' && loopback && source.NODE_ENV !== 'production'
+      ? 'local'
+      : 'disabled');
   if (!['disabled', 'local', 'proxy'].includes(mode)) throw new Error('Invalid TEST_ACCESS_MODE');
-  if (mode === 'local' && (!loopback || source.NODE_ENV === 'production'))
+  if (environment === 'production' && mode !== 'disabled')
+    throw new Error('Test access is prohibited in production');
+  if (
+    mode === 'local' &&
+    (environment !== 'development' || !loopback || source.NODE_ENV === 'production')
+  )
     throw new Error('Local test access requires a development loopback origin');
   if (mode === 'proxy') {
+    if (environment !== 'staging')
+      throw new Error('Hosted test access requires an explicit staging environment');
     if (new URL(origin).protocol !== 'https:') throw new Error('Hosted test access requires HTTPS');
     if (!source.TEST_PROXY_SECRET || !/^[a-f0-9]{64}$/.test(source.TEST_PROXY_SECRET))
       throw new Error('Hosted test access requires a private 32-byte proxy secret');

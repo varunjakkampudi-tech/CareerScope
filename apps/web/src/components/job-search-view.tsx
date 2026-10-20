@@ -14,6 +14,11 @@ import {
   Square,
 } from 'lucide-react';
 import type { CollectedJob, CreateSearch, SourceOutcome } from '@careerscope/core';
+import {
+  JOB_SOURCE_PERMISSION_PENDING_MESSAGE,
+  LAUNCH_JOB_SOURCE_CANDIDATES,
+  SOURCE_LABELS,
+} from '@careerscope/shared';
 import { api, SESSION_EXPIRED_EVENT } from '@/lib/api';
 import { ownerKey, useSession } from '@/lib/session';
 import { SaveJob } from '@/components/saved-leads';
@@ -25,7 +30,17 @@ const sourceNames = {
   himalayas: 'Himalayas',
   greenhouse: 'Greenhouse',
   lever: 'Lever',
+  ashby: 'Ashby',
   workable: 'Workable',
+};
+type LaunchSource = (typeof LAUNCH_JOB_SOURCE_CANDIDATES)[number];
+type JobSourceCatalog = {
+  items: {
+    id: LaunchSource;
+    label: string;
+    available: boolean;
+    unavailableReason: string | null;
+  }[];
 };
 type Run = { id: string; status: string; createdAt: string; request: { query: string } };
 type Job = { id: string; data: CollectedJob };
@@ -66,8 +81,18 @@ function JobSearchWorkspace() {
   const owner = session.data?.owner;
   const [selected, setSelected] = useState<string | null>(null);
   const [filter, setFilter] = useState('');
-  const [sources, setSources] = useState<CreateSearch['sources']>(['remoteok']);
+  const [sourceSelection, setSourceSelection] = useState<CreateSearch['sources'] | null>(null);
   const [useProfileTitles, setUseProfileTitles] = useState(false);
+
+  const sourceCatalog = useQuery({
+    queryKey: ownerKey(owner, 'job-sources'),
+    queryFn: ({ signal }) => api<JobSourceCatalog>('/job-sources', { signal }),
+    enabled: !!owner && session.data?.authenticated === true,
+    retry: 1,
+  });
+  const firstAvailableSource = sourceCatalog.data?.items.find((source) => source.available)?.id;
+  const sources =
+    sourceSelection ?? (firstAvailableSource ? [firstAvailableSource] : ([] as LaunchSource[]));
 
   const runs = useQuery({
     queryKey: ownerKey(owner, 'searches'),
@@ -201,6 +226,12 @@ function JobSearchWorkspace() {
   }
 
   const filtered = filter.toLowerCase();
+  const availableSources = new Set(
+    sourceCatalog.data?.items.filter((source) => source.available).map((source) => source.id) ?? [],
+  );
+  const hasAvailableSelection = sources.some((source) =>
+    availableSources.has(source as LaunchSource),
+  );
   const jobs = (
     detail.data?.jobs.filter(({ data }) =>
       `${data.title} ${data.company} ${data.location}`.toLowerCase().includes(filtered),
@@ -251,25 +282,66 @@ function JobSearchWorkspace() {
             <h1>Find Your Next Role</h1>
           </div>
         </div>
-        <fieldset className="source-options" disabled={search.isPending}>
+        <fieldset
+          className="source-options"
+          disabled={search.isPending || sourceCatalog.isPending || !!sourceCatalog.error}
+          aria-describedby="source-availability"
+        >
           <legend>Sources</legend>
-          {(['remoteok', 'himalayas', 'greenhouse', 'lever', 'workable'] as const).map((source) => (
-            <label key={source}>
-              <input
-                type="checkbox"
-                checked={sources.includes(source)}
-                onChange={(event) =>
-                  setSources((current) =>
-                    event.target.checked
-                      ? [...current, source]
-                      : current.filter((selectedSource) => selectedSource !== source),
-                  )
-                }
-              />
-              {sourceNames[source]}
-            </label>
-          ))}
+          {LAUNCH_JOB_SOURCE_CANDIDATES.map((source) => {
+            const entry = sourceCatalog.data?.items.find((item) => item.id === source);
+            const reasonId = `job-source-${source}-reason`;
+            return (
+              <label key={source}>
+                <input
+                  type="checkbox"
+                  aria-label={sourceNames[source] ?? SOURCE_LABELS[source]}
+                  checked={sources.includes(source as CreateSearch['sources'][number])}
+                  disabled={!entry?.available || search.isPending || sourceCatalog.isPending}
+                  aria-describedby={!entry?.available ? reasonId : undefined}
+                  onChange={(event) =>
+                    setSourceSelection((current) => {
+                      const currentSelection =
+                        current ?? (firstAvailableSource ? [firstAvailableSource] : []);
+                      return event.target.checked
+                        ? [...currentSelection, source as CreateSearch['sources'][number]]
+                        : currentSelection.filter((selectedSource) => selectedSource !== source);
+                    })
+                  }
+                />
+                <span className="source-option-copy">
+                  <span>{sourceNames[source] ?? SOURCE_LABELS[source]}</span>
+                  {entry && !entry.available && (
+                    <span id={reasonId} className="source-unavailable-reason">
+                      {entry.unavailableReason}
+                    </span>
+                  )}
+                </span>
+              </label>
+            );
+          })}
         </fieldset>
+        <p id="source-availability" role="status" aria-live="polite">
+          {sourceCatalog.isPending
+            ? 'Checking approved job sources…'
+            : sourceCatalog.error
+              ? 'Job-source availability could not be checked. Retry after the connection is restored.'
+              : availableSources.size === 0
+                ? JOB_SOURCE_PERMISSION_PENDING_MESSAGE
+                : undefined}
+        </p>
+        {sourceCatalog.error && (
+          <ErrorState
+            variant="inline"
+            what="Could not load job sources."
+            detail={sourceCatalog.error.message}
+            action={
+              <button type="button" onClick={() => void sourceCatalog.refetch()}>
+                Retry
+              </button>
+            }
+          />
+        )}
         <form className="search-form" onSubmit={startSearch}>
           <label className="discovery-mode">
             <span className="sr-only">Discovery mode</span>
@@ -295,7 +367,7 @@ function JobSearchWorkspace() {
               disabled={useProfileTitles || search.isPending}
             />
           </label>
-          <button className="primary" disabled={search.isPending || sources.length === 0}>
+          <button className="primary" disabled={search.isPending || !hasAvailableSelection}>
             {search.isPending ? <LoaderCircle className="spin" size={18} /> : <Search size={18} />}
             Search
           </button>
@@ -411,13 +483,19 @@ function JobSearchWorkspace() {
                             ? 'timed out'
                             : outcome.errorCode === 'invalid_response'
                               ? 'invalid response'
-                              : 'source failed'}
+                              : outcome.errorCode === 'source_permission_pending'
+                                ? 'permission review pending'
+                                : 'source failed'}
                       {outcome.limited ? '; collection limit reached' : ''}
                     </li>
                   ))}
                 </ul>
               )}
-              {detail.data.sourceOutcomes?.some((outcome) => outcome.status === 'failed') && (
+              {detail.data.sourceOutcomes?.some(
+                (outcome) =>
+                  outcome.status === 'failed' &&
+                  availableSources.has(outcome.source as LaunchSource),
+              ) && (
                 <button
                   type="button"
                   disabled={search.isPending}
@@ -427,7 +505,11 @@ function JobSearchWorkspace() {
                       origin: 'manual',
                       ...(detail.data!.request.useProfileTitles ? { useProfileTitles: true } : {}),
                       sources: detail
-                        .data!.sourceOutcomes!.filter((outcome) => outcome.status === 'failed')
+                        .data!.sourceOutcomes!.filter(
+                          (outcome) =>
+                            outcome.status === 'failed' &&
+                            availableSources.has(outcome.source as LaunchSource),
+                        )
                         .map((outcome) => outcome.source),
                     })
                   }

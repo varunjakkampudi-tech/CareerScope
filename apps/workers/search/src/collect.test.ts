@@ -1,8 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { setTimeout as delay } from 'node:timers/promises';
-import { collect } from './collect.js';
-import { matchingProfile, writableProfileSchema } from '@careerscope/core';
+import { collect, searchHandler } from './collect.js';
+import {
+  matchingProfile,
+  writableProfileSchema,
+  type Database,
+  type Command,
+} from '@careerscope/core';
 import { LOW_CONFIDENCE_SCORE_CEILING } from '@careerscope/shared';
 import {
   createRemoteOkProvider,
@@ -975,4 +980,151 @@ test('malformed source rows are excluded while successful empty sources are mark
   assert.equal(successfulEmpty.outcomes[0]!.status, 'empty');
   assert.deepEqual(successfulEmpty.jobs, []);
   await assert.rejects(collect(request, signal, [invalid, invalid]), /Providers must match/);
+});
+
+test('search worker does not start or call a provider without a current source permission profile', async () => {
+  let providerCalls = 0;
+  let startCalls = 0;
+  let settled: { jobs: unknown[]; outcomes: unknown[] } | undefined;
+  const database = {
+    async getSearch() {
+      return {
+        status: 'queued',
+        request: { query: 'React', origin: 'manual', sources: ['remoteok'] },
+      };
+    },
+    async startSearch() {
+      startCalls += 1;
+      return true;
+    },
+    async completeCollection(
+      _command: unknown,
+      _fence: number,
+      jobs: unknown[],
+      outcomes: unknown[],
+    ) {
+      settled = { jobs, outcomes };
+      return true;
+    },
+  } as unknown as Database;
+  const provider = {
+    ...createRemoteOkProvider(),
+    async *search() {
+      providerCalls += 1;
+      yield* [];
+    },
+  };
+  const command = {
+    id: '00000000-0000-4000-8000-000000000001',
+    type: 'search.collect',
+    version: 1,
+    aggregateId: '00000000-0000-4000-8000-000000000002',
+    ownerId: '00000000-0000-4000-8000-000000000003',
+    occurredAt: '2026-10-20T00:00:00.000Z',
+    correlationId: '00000000-0000-4000-8000-000000000004',
+  } as const satisfies Command;
+
+  assert.equal(
+    await searchHandler(database, [provider])(command, 1, new AbortController().signal),
+    true,
+  );
+  assert.equal(providerCalls, 0);
+  assert.equal(startCalls, 0);
+  assert.deepEqual(settled, {
+    jobs: [],
+    outcomes: [
+      {
+        source: 'remoteok',
+        status: 'failed',
+        accepted: 0,
+        limited: false,
+        errorCode: 'source_permission_pending',
+      },
+    ],
+  });
+});
+
+test('search worker collects currently permitted sources and records only denied sources as pending', async () => {
+  const providerCalls = { greenhouse: 0, lever: 0 };
+  let startCalls = 0;
+  let settled: { jobs: unknown[]; outcomes: unknown[] } | undefined;
+  const database = {
+    async getSearch() {
+      return {
+        status: 'queued',
+        request: { query: 'React', origin: 'manual', sources: ['greenhouse', 'lever'] },
+        createdAt: new Date('2026-10-20T00:00:00.000Z'),
+        matchingProfile: null,
+      };
+    },
+    async startSearch() {
+      startCalls += 1;
+      return true;
+    },
+    async completeCollection(
+      _command: unknown,
+      _fence: number,
+      jobs: unknown[],
+      outcomes: unknown[],
+    ) {
+      settled = { jobs, outcomes };
+      return true;
+    },
+    async recentSourceStatuses() {
+      return [];
+    },
+  } as unknown as Database;
+  const greenhouse = {
+    ...createGreenhouseProvider(),
+    async *search() {
+      providerCalls.greenhouse += 1;
+      yield* [];
+    },
+  };
+  const lever = {
+    ...createLeverProvider(),
+    async *search() {
+      providerCalls.lever += 1;
+      yield* [];
+    },
+  };
+  const command = {
+    id: '00000000-0000-4000-8000-000000000011',
+    type: 'search.collect',
+    version: 1,
+    aggregateId: '00000000-0000-4000-8000-000000000012',
+    ownerId: '00000000-0000-4000-8000-000000000013',
+    occurredAt: '2026-10-20T00:00:00.000Z',
+    correlationId: '00000000-0000-4000-8000-000000000014',
+  } as const satisfies Command;
+
+  assert.equal(
+    await searchHandler(database, [greenhouse, lever], (source) => source === 'greenhouse')(
+      command,
+      1,
+      new AbortController().signal,
+    ),
+    true,
+  );
+  assert.equal(startCalls, 1);
+  assert.deepEqual(providerCalls, { greenhouse: 1, lever: 0 });
+  assert.deepEqual(settled, {
+    jobs: [],
+    outcomes: [
+      {
+        source: 'greenhouse',
+        status: 'empty',
+        accepted: 0,
+        limited: false,
+        errorCode: null,
+      },
+      {
+        source: 'lever',
+        status: 'failed',
+        accepted: 0,
+        limited: false,
+        errorCode: 'source_permission_pending',
+      },
+    ],
+  });
 });

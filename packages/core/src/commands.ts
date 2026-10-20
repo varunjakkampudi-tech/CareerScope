@@ -28,6 +28,7 @@ export const searchSourceSchema = z.enum([
   'himalayas',
   'greenhouse',
   'lever',
+  'ashby',
   'workable',
 ]);
 
@@ -45,7 +46,7 @@ export const createSearchSchema = z
     sources: z
       .array(searchSourceSchema)
       .min(1)
-      .max(5)
+      .max(6)
       .refine((sources) => new Set(sources).size === sources.length, 'Duplicate sources')
       .transform((sources) => sources.sort()),
   })
