@@ -75,6 +75,7 @@ test('private test selection enforces the edge boundary, allowlist, rotation and
       await app.inject({ url: '/api/session', headers: { ...headers, cookie } })
     ).json();
     assert.equal(session.email, testUsers[0].email);
+    assert.equal('phone' in session, false);
     assert.equal(session.testUser, 'candidate');
     const rotated = await app.inject({
       method: 'POST',

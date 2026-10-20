@@ -373,3 +373,36 @@ That file was normalized with Prettier, then parsed and deep-compared against
 the committed JSON object; the content is semantically identical. The full
 repository Prettier check now passes. No design references, screens, or
 implementation mappings were added, removed, or changed.
+
+### Legacy external-identity schema retirement (2026-10-20)
+
+On `codex/task/email-otp-auth`, the active Drizzle `users` model no longer
+declares the unused `externalSubject` or `phone` fields. Historical migrations
+`0017_cognito_external_subject` and `0018_cognito_phone_identity` remain
+unchanged. Forward migration `0019_remove_legacy_external_identity` acquires an
+exclusive table lock and aborts before dropping either field if any row still
+contains a value; it never deletes or exports account data. Operators must
+resolve any populated legacy values through an owner-reviewed data process
+before applying the migration. Email remains nullable to avoid invalidating
+legacy phone-only accounts, and no OTP/login/provider behavior is added.
+
+The new migration was tested against an isolated loopback PostgreSQL database:
+it rejected synthetic populated legacy identity values without changing them,
+then succeeded after the test fixture explicitly cleared those synthetic values
+and verified that the account/email remained and the legacy fields/indexes were
+removed. Full service-backed integration initially exposed a stale `/api/session`
+query that also selected `users.phone`; that reference caused the observed 500
+and downstream test failures. The endpoint now selects only account email, the
+web session no longer models authentication phone, and a regression assertion
+proves the session response omits that field. The complete serial integration
+command then exited 0 against disposable PostgreSQL 17.6 and three Redis 7.4.5
+services on loopback, using AOF/noeviction and synthetic development settings.
+The migration has not been run against any shared, staging, or production
+database. This result is not independent review or authorization to promote the
+auth/schema change.
+
+The Node 24.19.0 production build completed successfully after this session
+response change, including the repository's two-pass CSP verification (12 inline
+script hashes covered). Full `npm run gates:test` also passed (58 unit tests,
+including lint and the complete typecheck pipeline). These local results do not
+substitute for hosted CI or independent review.

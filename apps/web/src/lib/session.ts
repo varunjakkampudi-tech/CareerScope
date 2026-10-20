@@ -12,7 +12,6 @@ export type Session = {
   authenticated: boolean;
   csrf?: string;
   email?: string;
-  phone?: string;
   registrationEnabled?: boolean;
   testUsersEnabled?: boolean;
   testAccounts?: { email: string; role: 'candidate' | 'admin' }[];

@@ -20,24 +20,12 @@ import type { WritableProfile, MatchingProfile } from './profile.js';
 import type { z } from 'zod';
 import type { parsedResumeSchema } from './resume-parser.js';
 
-export const users = pgTable(
-  'users',
-  {
-    id: uuid('id').primaryKey(),
-    // Password accounts always have an email. External phone-only accounts do
-    // not necessarily expose one, so the external identity may use phone as
-    // its verified contact instead.
-    email: text('email').unique(),
-    passwordHash: text('password_hash').notNull(),
-    phone: text('phone'),
-    // External subject for passwordless/OIDC sign-in. Nullable keeps existing
-    // password accounts intact; the unique index prevents one external identity
-    // from being attached to two local owners.
-    externalSubject: text('external_subject'),
-    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-  },
-  (table) => [uniqueIndex('users_external_subject_unique').on(table.externalSubject)],
-);
+export const users = pgTable('users', {
+  id: uuid('id').primaryKey(),
+  email: text('email').unique(),
+  passwordHash: text('password_hash').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+});
 
 export const sessions = pgTable(
   'sessions',

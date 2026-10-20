@@ -262,8 +262,8 @@ export async function createApp(
     // not a privacy leak (never used for anything but a real initials
     // avatar on the Dashboard, CS-49) - deliberately not joined into
     // Auth.session() itself, which many other routes rely on staying minimal.
-    const owner = await database.pool.query<{ email: string | null; phone: string | null }>(
-      'SELECT email, phone FROM users WHERE id = $1',
+    const owner = await database.pool.query<{ email: string | null }>(
+      'SELECT email FROM users WHERE id = $1',
       [session.ownerId],
     );
     return {
@@ -273,7 +273,6 @@ export async function createApp(
       testUser: options.testAccess
         ? testUsers.find((user) => user.id === session.ownerId)?.role
         : undefined,
-      phone: owner.rows[0]?.phone,
       // CS-61: a stable per-owner value the client can put INSIDE its cache
       // keys. React Query keys such as ['leads', status] carry no owner, which
       // is precisely why one owner's cached response can be handed to the next

@@ -60,3 +60,25 @@ The migrations are retained as immutable history; removing an unused active
 schema declaration or dropping persisted data is a separate reviewed database
 change and has not been performed. AUTH-01 remains open; no OTP or provider
 behavior is claimed as implemented by this source-document correction.
+
+### Legacy identity schema follow-up (2026-10-20)
+
+The active schema declaration has now been removed in a new forward migration,
+`0019_remove_legacy_external_identity.sql`; migrations 0017 and 0018 remain
+unchanged. Migration 0019 takes an exclusive lock and refuses to drop the
+columns if any stored row has a non-null external subject or phone. The
+synthetic integration test verified both fail-closed preservation and successful
+removal after the fixture's explicit cleanup. No real/shared database was
+queried or changed. The historical finding is therefore RESOLVED for source
+schema alignment, but production application remains unverified and requires a
+reviewed legacy-data disposition before migration if populated records exist.
+OTP, provider delivery, session-family/device controls and account recovery
+remain outside this change and AUTH-01 remains open.
+
+The full serial integration run also found and corrected a runtime session
+query that still selected the retired `users.phone` column. `/api/session` now
+returns only the owner email for that identity presentation; candidate profile
+phone data remains a distinct profile field. The regression suite asserts the
+authentication session does not expose a phone identity. Current service-backed
+integration exited successfully on disposable local services; this does not
+verify a shared or production migration.

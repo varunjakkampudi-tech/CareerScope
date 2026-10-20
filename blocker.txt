@@ -430,3 +430,71 @@ Affected tasks: Only promotion of the sensitive auth task commit; unrelated work
   may continue on separate task branches.
 Evidence references: `PROGRESS.md`, `docs/EMAIL-OTP-PRIMITIVE-PLAN.md`, and
   external review attempt artifact `email-otp-f468643-retry`.
+
+BLOCKER ID: AUTH-LEGACY-IDENTITY-01
+Title: Preflight legacy identity values before applying migration 0019
+Priority: High
+Module: Authentication / database migration
+v12 requirement / checklist item: v12 D1; safe migration and account ownership
+Status: READY_FOR_OWNER
+Problem: Historical migrations added `users.external_subject` and the
+authentication `users.phone` column. A new forward migration removes those
+unused fields but intentionally refuses to run if either contains a non-null
+value.
+Verified root cause: The current source and tests do not establish whether any
+shared database contains legacy values. No shared database was inspected.
+Current implementation: Active schema and session API no longer depend on these
+identity fields. Migration 0019 takes an exclusive lock, checks for populated
+values, and fails before altering columns or indexes if any exist. Synthetic
+PostgreSQL coverage proves both preservation on refusal and removal after the
+test fixture clears synthetic values.
+Impact: A shared/staging/production migration will stop safely if identity data
+needs disposition. Email remains nullable; no account row or email is dropped.
+What the agent already tried: Local source-reference search and isolated
+PostgreSQL migration tests only; no shared database was accessed.
+Work completed: Removed the unused active schema/runtime references while
+preserving historical migration files and existing account rows.
+Why autonomous resolution is unsafe or impossible: Reading, exporting,
+reassigning or deleting real identity data requires protected owner-controlled
+access and could alter account recovery/ownership.
+Exact owner action required: Before applying migration 0019 to any shared
+database, authorize a protected data preflight and decide how any populated
+legacy identity records should be retained or reconciled. If no values remain,
+approve normal application of the guarded migration.
+Step-by-step resolution instructions:
+  1. Use a least-privilege, approved database operator session; do not paste
+     row values or query output into chat, logs, Git, screenshots or reports.
+  2. Run a privacy-preserving count of rows where `external_subject IS NOT NULL`
+     or `phone IS NOT NULL`; do not select or export the values for routine
+     preflight.
+  3. First deploy the application version that no longer queries the legacy
+     authentication-phone column and drain every older API instance. Verify the
+     new version works while the old nullable columns still exist. Then take
+     the approved backup and apply migration 0019 through the reviewed
+     deployment procedure; verify the columns/indexes are absent and existing
+     account/email rows remain. Do not run old application instances against
+     the removed schema.
+  4. If the count is nonzero, stop before migration, preserve the data, and
+     prepare an owner-approved account reconciliation/export plan through the
+     authorized protected process. Do not null, delete, reassign or expose
+     values merely to make the migration pass.
+  5. Rerun migration and account/session smoke checks only after disposition is
+     reviewed and independently verified. After successful removal, rollback
+     must not restore an old application binary; use a reviewed forward repair
+     if needed because any preflight-confirmed empty identity columns cannot
+     restore prior identity values.
+Required environment-variable names (no values): None
+External dependencies: Owner-authorized protected database operator access and
+an approved data disposition only if legacy values are present.
+Expected result: Either a zero-value preflight followed by the guarded schema
+removal, or an approved and auditable disposition before any populated identity
+value is changed.
+Verification procedure: Record the preflight count and migration result in the
+protected operational evidence system without storing identity values in this
+repository; verify schema and retained account rows afterward.
+Tests to rerun: Migration 0019 integration test, all database/session
+integration tests, and the authorized deployment smoke suite.
+Affected tasks: Only migration 0019 application to a shared database; local
+source work and unrelated tasks may proceed.
+Evidence references: `PROGRESS.md`, `QUALITY_AUDIT.md`, and migration
+`migrations/0019_remove_legacy_external_identity.sql`.

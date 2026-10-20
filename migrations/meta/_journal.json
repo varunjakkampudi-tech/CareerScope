@@ -134,6 +134,13 @@
       "when": 1790793600000,
       "tag": "0018_cognito_phone_identity",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792460257016,
+      "tag": "0019_remove_legacy_external_identity",
+      "breakpoints": true
     }
   ]
 }
