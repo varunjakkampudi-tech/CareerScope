@@ -7,6 +7,9 @@
 - Governance transition: `2a1eb65d67151c485cddd417b6c249146c017a35`, independently
   reviewed, committed and fast-forward integrated into `codex/dev`. Verified
   baseline ancestry and clean worktree before beginning this audit task.
+- GOV-01's stale future-facing resolution instructions were corrected on
+  20 October 2026 and passed a fresh independent review; the entry now records
+  the completed activation prerequisite without clearing separate release gates.
 - Existing baseline: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
 - Development integration: `codex/dev`; current task: production test-access guard.
 - Main is not modified, pushed or merged. No production/provider actions performed.
