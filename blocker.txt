@@ -1,6 +1,54 @@
 # CareerScope canonical blocker register
 # Never include values, credentials, raw data, private paths or full transcripts.
 
+BLOCKER ID: SOURCE-REVISION-01
+Title: Newly supplied source amendments differ from hash-bound approval
+Priority: High
+Module: Product authority and requirement traceability
+v12 requirement / checklist item: Source precedence; D1/D11/D12; proposed A1/A2/A3 and CR-07
+Status: READY_FOR_OWNER
+Problem: All three newly supplied CareerScope source hashes differ from the
+  approved register. They explicitly retain pending-approval amendments and
+  conflicting hosting statements. General completion direction is not a specific
+  security exception or authorization for destructive credential removal.
+Verified root cause: Direct SHA256 comparison and amendment/contract text review.
+Current implementation: Approved immutable snapshots and existing work retained;
+  no pending amendment silently activated.
+Impact: Changed sign-in/provider/admin assurance/host/control requirements cannot
+  be treated as settled. Unrelated existing approved engineering may continue.
+What the agent already tried: Compared hashes, source differences, governance,
+  existing requirement inventory, routes, blockers and prior integration evidence.
+Work completed: docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md records exact
+  source identities, material conflicts and safe continuation order.
+Why autonomous resolution is unsafe or impossible: D1-D14 changes, accepting high
+  vulnerabilities and hosting decisions remain explicitly owner-controlled.
+Exact owner action required: Disposition the newly supplied amendments and host
+  conflict; do not supply secrets. No live action is requested by this entry.
+Step-by-step resolution instructions:
+  1. Review the source reconciliation's identities and delta table.
+  2. Explicitly disposition D1's removed post-launch phone method and A1/D11-R;
+     A1 incorrectly says D1 is unchanged. Separately disposition D12's change
+     from default fallback to exception-only fallback; A1 also calls D12 unchanged.
+     Retain historical clauses and identity data; require a separately reviewed
+     migration before legacy credential removal.
+  3. Approve or decline local mocked A2/OpenRouter work; live activation, budget
+     and private-data processing remain separate decisions.
+  4. Select dedicated or shared planned host; confirm ephemeral CI versus a named
+     separate staging host. No infrastructure change follows automatically.
+  5. Disposition the proposed CR-07 controls and admin step-up assurance. Resolve
+     HTTP 400 versus 422 and health-route compatibility before contract changes.
+  6. Record approved scope/versions/hashes through the governance transition;
+     retain original decisions and re-run requirements/privacy/format checks.
+Required environment-variable names (no values): None for source approval
+External dependencies: Owner decisions; referenced cleanup matrix review
+Expected result: One reconciled approved scope, without guessed policy or evidence.
+Verification procedure: Compare approval record, source hashes and affected matrices.
+Tests to rerun: requirements:check, requirements:test, privacy:check, format:check,
+  eol:check, plus affected contract tests after any separately approved implementation.
+Affected tasks: Changed/proposed requirements only; not all independent v12 work
+Evidence references: docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md;
+  docs/requirements/SOURCE-REGISTER.md; docs/decisions/OWNER_APPROVALS.md
+
 BLOCKER ID: GOV-01
 Title: Authoritative documents and activation approval
 Priority: Critical

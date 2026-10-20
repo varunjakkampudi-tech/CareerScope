@@ -894,3 +894,18 @@ completion of the full v12 goal. The full-tree high dependency audit blocks the
 main update until remediation or an explicit owner exception under the contract.
 No such exception is inferred from direct-push permission. No deployment, live
 provider call or shared migration occurred.
+
+### Updated document reconciliation (2026-10-21)
+
+The newly supplied v12, Engineering Standards and Goal documents have different
+SHA256 identities from SRC-01 through SRC-03. The source reconciliation at
+`docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md` records the exact delta,
+pending A1/A2/A3/CR-07 authority, hosting contradiction, contract compatibility
+questions and dependency-aware continuation. SOURCE-REVISION-01 contains owner
+steps; it blocks changed proposals, not independent approved engineering.
+Original source snapshots, approvals, source inventory and go/no-go results
+remain unchanged. No blanket amendment approval or security waiver is inferred.
+Executed on the local consolidation candidate: source integrity PASS, five source
+regression tests PASS, privacy scan PASS, EOL PASS, git diff check PASS. This
+documentation review did not rerun the entire product suite or implement runtime
+features. The prior checkpoint's functional results remain separately scoped.
