@@ -32,6 +32,8 @@ import {
   InvalidResumeUpload,
   ResumeStorageLimit,
   maximumResumeBytes,
+  OtpAuth,
+  type OtpAuthOptions,
   MarketRepository,
   type UploadStorage,
   type Database,
@@ -69,10 +71,13 @@ declare module 'fastify' {
 export async function createApp(
   database: Database,
   origin: string,
-  rateLimit: RateLimit,
+  rateLimitDependency: RateLimit,
   options: {
     testAccess?: TestAccess;
     registrationEnabled?: boolean;
+    otp?: OtpAuthOptions;
+    legalLinks?: { terms: string; privacy: string };
+    readinessCheck?: () => Promise<void>;
     /** Test-only policy injection for isolated synthetic browser/integration fixtures. */
     sourcePermitted?: (source: SourceId) => boolean;
     resumeStorage?: UploadStorage & {
@@ -89,6 +94,14 @@ export async function createApp(
   } = {},
 ) {
   const auth = new Auth(database);
+  const otp = options.otp ? new OtpAuth(database, options.otp) : undefined;
+  const rateLimit: RateLimit = async (key, limit, seconds) => {
+    try {
+      return await rateLimitDependency(key, limit, seconds);
+    } catch {
+      throw new HttpError(503, 'Authentication service temporarily unavailable');
+    }
+  };
   const market = new MarketRepository(database.pool);
   const profiles = new ProfileRepository(database);
   const leads = new LeadRepository(database);
@@ -127,12 +140,28 @@ export async function createApp(
   app.addHook('preClose', async () => {
     for (const controller of streams.keys()) controller.abort();
   });
+  if (otp) {
+    const cleanupExpiredOtpChallenges = async () => {
+      try {
+        const removed = await otp.purgeExpired();
+        if (removed > 0) app.log.info({ removed }, 'Expired OTP challenges removed');
+      } catch {
+        // Never include database errors or challenge metadata in logs.
+        app.log.error('OTP challenge cleanup failed');
+      }
+    };
+    const cleanupTimer = setInterval(() => void cleanupExpiredOtpChallenges(), 15 * 60 * 1000);
+    cleanupTimer.unref();
+    app.addHook('onReady', cleanupExpiredOtpChallenges);
+    app.addHook('onClose', async () => clearInterval(cleanupTimer));
+  }
   app.addHook('onRequest', async (request, reply) => {
     reply.header('Cache-Control', 'no-store');
     const path = request.routeOptions.url;
-    if (path === '/api/health') return;
+    if (path === '/api/health' || path === '/api/ready') return;
     if (
       options.testAccess &&
+      options.testAccess.mode !== 'disabled' &&
       !testAccessAllowed(
         options.testAccess,
         request.raw.socket.remoteAddress ?? '',
@@ -143,7 +172,12 @@ export async function createApp(
     if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method) && request.headers.origin !== origin) {
       throw new HttpError(403, 'Origin denied');
     }
-    if (path === '/api/login' || path === '/api/register') return;
+    if (
+      ['/api/login', '/api/register', '/api/auth/otp/request', '/api/auth/otp/verify'].includes(
+        path ?? '',
+      )
+    )
+      return;
     const session = await auth.session(request.cookies[sessionCookie]);
     if (path === '/api/session') return;
     // CS-57: logging out is the one mutation that must succeed with no
@@ -215,9 +249,11 @@ export async function createApp(
               ? error.statusCode
               : frameworkStatus === 413
                 ? 413
-                : frameworkStatus === 400
-                  ? 400
-                  : 500;
+                : frameworkStatus === 503
+                  ? 503
+                  : frameworkStatus === 400
+                    ? 400
+                    : 500;
     if (status === 500) request.log.error({ requestId: request.id }, 'Request failed');
     const messages: Record<number, string> = {
       400: 'Invalid request',
@@ -227,6 +263,7 @@ export async function createApp(
           : 'Idempotency conflict',
       413: 'Request too large',
       500: 'Service unavailable',
+      503: 'Authentication service temporarily unavailable',
       507: 'Resume storage capacity reached',
     };
     const fallbackMessage = messages[status] ?? 'Request failed';
@@ -235,21 +272,34 @@ export async function createApp(
     reply.code(status).send({ error: message, ...(code ? { code } : {}), requestId: request.id });
   });
   await registerOpenApi(app, version, {
-    testUsers: options.testAccess !== undefined,
-    registrationEnabled: options.registrationEnabled,
+    testUsers: options.testAccess?.mode === 'local' || options.testAccess?.mode === 'proxy',
+    registrationEnabled: otp !== undefined && options.registrationEnabled === true,
     resumes: !!coordinator,
     cancellation: !!options.resumeStorage?.cancelUpload,
   });
   app.get('/api/health', async () => {
-    await database.pool.query('SELECT 1');
     return { status: 'ok', version };
+  });
+  app.get('/api/ready', async () => {
+    try {
+      await database.pool.query('SELECT 1');
+      await options.readinessCheck?.();
+      return { status: 'ready', version };
+    } catch {
+      throw new HttpError(503, 'Service temporarily unavailable');
+    }
   });
   app.get('/api/session', async (request) => {
     const session = await auth.session(request.cookies[sessionCookie]);
     if (!session) {
       return {
         authenticated: false,
-        registrationEnabled: options.registrationEnabled === true,
+        registrationEnabled: otp !== undefined && options.registrationEnabled === true,
+        otpEnabled: otp !== undefined,
+        legalLinks:
+          otp !== undefined && options.registrationEnabled === true
+            ? options.legalLinks
+            : undefined,
         testUsersEnabled:
           options.testAccess?.mode === 'local' || options.testAccess?.mode === 'proxy',
         testAccounts:
@@ -262,14 +312,21 @@ export async function createApp(
     // not a privacy leak (never used for anything but a real initials
     // avatar on the Dashboard, CS-49) - deliberately not joined into
     // Auth.session() itself, which many other routes rely on staying minimal.
-    const owner = await database.pool.query<{ email: string | null; phone: string | null }>(
-      'SELECT email, phone FROM users WHERE id = $1',
+    const owner = await database.pool.query<{
+      email: string | null;
+      email_verified_at: Date | null;
+      phone: string | null;
+      password_enabled: boolean;
+    }>(
+      'SELECT email, email_verified_at, phone, password_hash IS NOT NULL AS password_enabled FROM users WHERE id = $1',
       [session.ownerId],
     );
     return {
       authenticated: true,
       csrf: session.csrf,
       email: owner.rows[0]?.email,
+      emailVerifiedAt: owner.rows[0]?.email_verified_at?.toISOString() ?? null,
+      passwordEnabled: owner.rows[0]?.password_enabled ?? false,
       testUser: options.testAccess
         ? testUsers.find((user) => user.id === session.ownerId)?.role
         : undefined,
@@ -294,7 +351,7 @@ export async function createApp(
     };
   });
   app.post('/api/register', async (request, reply) => {
-    if (options.testAccess || options.registrationEnabled !== true)
+    if (options.testAccess || !otp || options.registrationEnabled !== true)
       throw new HttpError(404, 'Registration unavailable');
     const key = createHash('sha256').update(request.ip).digest('hex');
     if (!(await rateLimit(`register:${key}`, 5, 3600)))
@@ -310,9 +367,11 @@ export async function createApp(
     const key = createHash('sha256').update(request.ip).digest('hex');
     if (!(await rateLimit(`login:${key}`, 10, 60))) throw new HttpError(429, 'Too many attempts');
     let token: string | null;
-    if (options.testAccess) {
+    if (options.testAccess && options.testAccess.mode !== 'disabled') {
       const { email } = loginSchema.parse(request.body);
       token = await auth.testLogin(email, request.cookies[sessionCookie]);
+    } else if (otp || options.testAccess?.mode === 'disabled') {
+      throw new HttpError(404, 'Password sign-in unavailable');
     } else {
       // Existing password-account checks are retained for migration and isolated
       // regression harnesses. The executable API always supplies testAccess.
@@ -341,6 +400,74 @@ export async function createApp(
       maxAge: 8 * 3600,
     });
     return { authenticated: true };
+  });
+  app.post('/api/auth/otp/request', async (request, reply) => {
+    if (!otp) throw new HttpError(503, 'Authentication service temporarily unavailable');
+    const input = z
+      .object({ email: z.string().trim().email().max(254) })
+      .strict()
+      .parse(request.body);
+    const ipKey = createHash('sha256').update(request.ip).digest('hex');
+    const emailKey = otp.rateLimitIdentity(input.email);
+    if (!(await rateLimit(`otp-request-ip:${ipKey}`, 20, 3600)))
+      throw new HttpError(429, 'Too many attempts');
+    if (!(await rateLimit(`otp-request-email:${emailKey}`, 5, 3600)))
+      throw new HttpError(429, 'Too many attempts');
+    try {
+      await otp.request(input.email);
+    } catch {
+      request.log.warn({ requestId: request.id }, 'OTP delivery unavailable');
+      throw new HttpError(503, 'Authentication service temporarily unavailable');
+    }
+    return reply.code(202).send({ message: 'If the address is eligible, a code will be sent.' });
+  });
+  app.post('/api/auth/otp/verify', async (request, reply) => {
+    if (!otp) throw new HttpError(503, 'Authentication service temporarily unavailable');
+    const input = z
+      .object({
+        email: z.string().trim().email().max(254),
+        code: z.string().regex(/^\d{6}$/),
+        termsAccepted: z.boolean().optional(),
+        privacyAcknowledged: z.boolean().optional(),
+        marketingOptIn: z.boolean().optional().default(false),
+      })
+      .strict()
+      .parse(request.body);
+    const ipKey = createHash('sha256').update(request.ip).digest('hex');
+    const emailKey = otp.rateLimitIdentity(input.email);
+    if (!(await rateLimit(`otp-verify-ip:${ipKey}`, 30, 3600)))
+      throw new HttpError(429, 'Too many attempts');
+    if (!(await rateLimit(`otp-verify-email:${emailKey}`, 10, 3600)))
+      throw new HttpError(429, 'Too many attempts');
+    let result;
+    try {
+      result = await otp.verify(input, request.cookies[sessionCookie]);
+    } catch {
+      request.log.error({ requestId: request.id }, 'OTP verification unavailable');
+      throw new HttpError(503, 'Authentication service temporarily unavailable');
+    }
+    if (result.kind === 'acceptance_required')
+      return reply.send({ authenticated: false, requiresLegalAcceptance: true });
+    if (result.kind === 'invalid') throw new HttpError(401, 'Invalid or expired code');
+    reply.setCookie(sessionCookie, result.token, {
+      httpOnly: true,
+      secure: new URL(origin).protocol === 'https:',
+      sameSite: 'strict',
+      path: '/api',
+      maxAge: 8 * 3600,
+    });
+    return reply.send({ authenticated: true, createdAccount: result.createdAccount });
+  });
+  app.get('/api/account/marketing-consent', async (request) => {
+    if (!otp) throw new HttpError(503, 'Account preferences temporarily unavailable');
+    return { optedIn: await otp.marketingPreference(request.ownerId!) };
+  });
+  app.put('/api/account/marketing-consent', async (request) => {
+    if (!otp) throw new HttpError(503, 'Account preferences temporarily unavailable');
+    if (!(await rateLimit(`marketing-consent:${request.ownerId!}`, 10, 3600)))
+      throw new HttpError(429, 'Too many attempts');
+    const input = z.object({ optedIn: z.boolean() }).strict().parse(request.body);
+    return otp.setMarketingPreference(request.ownerId!, input.optedIn);
   });
   app.post('/api/logout', async (request, reply) => {
     // CS-57: the onRequest hook does not guarantee a cookie on this path, so

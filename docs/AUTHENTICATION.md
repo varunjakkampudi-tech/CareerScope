@@ -1,10 +1,46 @@
+# Authentication
+
+## Current source behavior
+
+The executable API supports the private test-account selector only in its
+explicit local or protected staging mode. It is rejected in production.
+Production email OTP code exists behind `AUTH_OTP_ENABLED`; code availability is
+not provider acceptance or production readiness. OTP and account registration
+default off. Registration additionally fails closed unless approved, published
+Terms and Privacy versions and URLs are configured. The repository's legal
+files are counsel-review drafts and must not be published as approved policy.
+
+When enabled, OTP codes are six digits, expire after five minutes, are single
+use, allow at most five invalid attempts, and have a 60-second resend cooldown.
+The API applies shared Redis limits by IP and HMAC-derived email identity. A
+successful OTP records a server-owned `email_verified_at` timestamp and the
+authenticated session returns that timestamp for the Account Security view.
+Password authentication and the local/protected-staging test-account selector
+do not create verification evidence. The timestamp is valid only for the
+unchanged account email; no email-change route is currently implemented, so an
+email-change flow must re-verify the old and new addresses and update this
+evidence before it is added. OTP
+challenge storage persists only an HMAC digest and normalized-address HMAC, not
+the code or raw email. Verification creates the existing opaque server-side
+session; its cookie remains HttpOnly, SameSite=Strict, scoped to `/api`, Secure
+for HTTPS, and expires after eight hours. This implementation does not provide
+refresh-token rotation/reuse detection, device sessions/revocation, verified-
+signal account recovery, or the approved email-change flows.
+
+The current adapter sends through Resend only. Provider failures return a
+generic temporary-unavailability response. No real provider request, delivery,
+sender domain, DNS record, deliverability, or tracking configuration has been
+verified in this repository session. Approved v12 D11 also requires a separately
+configured second provider behind a switch before launch; that fallback is not
+implemented. Production sign-in therefore remains a launch blocker.
+
 # Private test access
 
 The application offers two configured test identities through the account
 selector. Their identifiers and roles are defined once in
 `packages/core/src/test-users.ts`. These are test identities, not verified
-email addresses. There is no signup, OTP, OAuth or hosted identity-provider
-integration in the executable API.
+email addresses. There is no OAuth or hosted identity-provider integration in
+the executable API.
 
 Local development defaults to loopback access. `TEST_ACCESS_MODE=local` is
 refused with a public origin or production runtime. Public origins default to
@@ -61,6 +97,9 @@ removed. A separately reviewed private staging configuration must supply the
 explicit staging environment and the existing password/assertion safeguards.
 No hosted configuration or deployment was changed by this code update.
 
-Until the approved email OTP implementation is delivered and verified, production
-candidate sign-in remains unavailable. Do not restore a test shortcut to make
-production appear operational. This guard alone does not complete authentication.
+Production OTP must remain disabled until the owner has verified the Resend
+domain/sender, approved and configured the required fallback, protected secrets,
+obtained counsel approval for published legal text and versioned consent, and
+authorized isolated provider acceptance. Do not restore a test shortcut to make
+production appear operational. Local code and mocked tests do not complete the
+approved authentication launch gate.

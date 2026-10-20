@@ -76,6 +76,7 @@ test('private test selection enforces the edge boundary, allowlist, rotation and
     ).json();
     assert.equal(session.email, testUsers[0].email);
     assert.equal(session.testUser, 'candidate');
+    assert.equal(session.emailVerifiedAt, null, 'test-account selection is not mailbox evidence');
     const rotated = await app.inject({
       method: 'POST',
       url: '/api/login',

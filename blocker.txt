@@ -123,9 +123,9 @@ Priority: High
 Module: Development supply chain
 v12 requirement / checklist item: Engineering Standards 5/7; global 22/30
 Status: OPEN
-Problem: The last recorded full npm audit (20 October 2026, documented in
-  PROGRESS.md) reported five high and seven moderate findings. Those counts are
-  historical evidence, not a fresh audit of the current commit.
+Problem: A fresh `npm audit --audit-level=high` on the current dirty worktree
+  (Node v24.21.0, 20 October 2026) exits 1 with five high and seven moderate
+  findings. This is current local evidence, not hosted exact-commit evidence.
 Verified root cause: Static inspection of the current `codex/dev` lockfile at
   `b63780ad0dd005ac879b55587a0163ccd334bfc4` confirms the high-advisory path is
   `eslint-config-next@16.3.8 > @next/eslint-plugin-next > fast-glob@3.3.1 >
@@ -144,51 +144,48 @@ Verified root cause: Static inspection of the current `codex/dev` lockfile at
   confirmed remote exploit or a waiver. The historical audit also identified
   an esbuild loader advisory under `drizzle-kit`; its current reachability and
   status have not been revalidated.
-Current implementation: The last recorded production-only audit reported
-  three moderate findings and no high/critical findings; it is not a fresh
-  result for this SHA. No audit command was executed during this checkpoint.
+Current implementation: The fresh full audit reports the three advisory paths
+  above. `npm run security:check` also ran and exits 0 only because its configured
+  threshold is high; its production-only output still reports three moderate
+  findings. Neither result is a security-review waiver or an exact committed SHA.
 Impact: The full dependency/security gate remains unresolved. No high finding
   is waived, and no production exploitability claim is made without a reachable
   affected path.
-What the agent already tried: Historical full/production audits and registry
-  metadata inspection are recorded in PROGRESS.md. In this checkpoint, only the
-  current lockfile and application source import were inspected; public GitHub
-  Advisory Database records were checked. No install, audit, build, or test was
-  run.
-Work completed: Clarified evidence age and dependency paths; retained all audit
-  findings as open. No downgrade, override, suppression, test weakening, or waiver.
-Why autonomous resolution is unsafe or impossible: The required local execution
-  boundary is unavailable in this environment: target-controlled commands may
-  only run under an OS-enforced sandbox with isolated environment, no external
-  network, bounded resources, and restricted writes. Without that control, a
-  compatible fix cannot be validated safely under the applicable audit
-  procedure. This is an engineering validation blocker, not a product decision.
+What the agent already tried: Fresh full `npm audit --audit-level=high` and
+  `npm run security:check` were run with Node v24.21.0; current local reports
+  and exit status are recorded in PROGRESS.md. No package change, blanket
+  override, suppression, or waiver was made.
+Work completed: Refreshed advisory counts and paths; all findings remain open.
+Why autonomous resolution is unsafe or impossible: The audit proposes fixes
+  that force breaking major downgrades of `eslint-config-next`, `drizzle-kit`,
+  or `mammoth`. No compatible patched path is demonstrated by the current lock
+  report. Replacing mature tools or applying a blanket override without
+  compatibility and call-path evidence could break the product or hide a
+  reachable issue. Keep the gate open until a supported fix is identified and
+  independently validated; this is not a product decision.
 Exact owner action required: None currently. Resume remediation in an approved
   isolated validation environment; if the supported fix requires a policy
   exception, prepare the exact evidence and request owner review rather than
   self-waiving the gate.
 Step-by-step resolution instructions:
-  1. In an OS-enforced disposable workspace, use only the already-available
-     Node 24 toolchain and dependencies; do not expose secrets or production
-     services and do not fetch/install packages during the audit.
-  2. Re-run the full and production-only audits against the exact reviewed lock
-     SHA and capture package paths, advisory IDs, affected ranges and exit codes.
-  3. Trace each advisory to an actual CareerScope call path and principal; keep
+  1. Preserve the current reports as baseline evidence and identify an
+     evidence-supported compatible package path before changing dependencies.
+  2. Trace each advisory to an actual CareerScope call path and principal; keep
      development-toolchain exposure distinct from deployed runtime exposure.
-  4. Select only a maintained, compatible remediation supported by package and
+  3. Select only a maintained, compatible remediation supported by package and
      source evidence. Do not use `npm audit --force`, blanket overrides, audit
      suppression, or major downgrades without compatibility proof.
-  5. Add a regression check for each reachable path; run the applicable full
+  4. Add a regression check for each reachable path; run the applicable full
      quality gates and independent review. If no supported fix exists, keep the
      finding open and document precise residual impact and owner-only exception
      evidence needed.
 Required environment-variable names (no values): None
-External dependencies: None required for source review; an OS-enforced isolated
-  validation environment is required before executing package tooling. No paid provider.
+External dependencies: None required for local package/source review. No paid provider.
 Expected result: Verified remediation or precise unresolved findings; no fake pass.
 Verification procedure: Exact-SHA lockfile audit, source reachability review,
   applicable regression tests, lint/build, and independent review; current audit
-  remains NOT RUN until the required sandbox is available.
+  is currently FAIL (5 high/7 moderate); do not call the configured thresholded
+  production audit a clean full dependency gate.
 Tests to rerun: Full dependency audit and applicable definition of done
 Affected tasks: Supply-chain affected integrations
 Evidence references: PROGRESS.md (historical executed audit); current lockfile
@@ -197,34 +194,60 @@ Evidence references: PROGRESS.md (historical executed audit); current lockfile
   https://github.com/advisories/GHSA-hp3w-g68c-fv3c
 
 BLOCKER ID: AUTH-01
-Title: Current test access is not production OTP authentication
+Title: Email OTP exists locally but the v12 authentication launch contract is incomplete
 Priority: Critical
 Module: Authentication
 v12 requirement / checklist item: D1/D11, section 4.1; checklist 1-3/7-8
 Status: OPEN
-Problem: No production OTP/fallback, refresh-family/device or verified-signal
-  recovery implementation. Production selector prohibition is locally implemented
-  and tested; hosted deployment remains unperformed.
-Verified root cause: test-users.ts, auth.ts, sessions schema and executable API read.
-Current implementation: Private two-account selector and opaque owned sessions.
+Problem: The local Resend OTP path is feature-gated and has not passed provider,
+  staging, or production acceptance. v12 also requires fallback delivery,
+  refresh-family rotation/reuse detection, device revocation, verified-signal
+  recovery and email-change flows, which are not implemented here.
+Verified root cause: Current OTP/session implementation and approved v12 D1/D11,
+  section 4.1, checklist 1-3/7-8 compared directly.
+  The latest v12 text also requires an outage-state status link; the approved
+  source/operations records do not define a public status destination or the
+  authoritative health/incident signal it would represent. The current UI uses
+  safe temporary-unavailability wording without inventing a link or restoration
+  promise.
+Current implementation: Private test selector plus optional, disabled-by-default
+  OTP using digest-only challenges, legal acceptance and opaque 8-hour sessions.
 Impact: Cannot be a public production identity system under v12.
-What the agent already tried: Source/config/test inventory; no host changes.
-Work completed: Independently reviewed production/staging/local startup guard;
-  six tests pass, guard module coverage 100% lines/branches/functions. Production
-  Compose pins disabled selectors; synthetic config validation passes.
-Why autonomous resolution is unsafe or impossible: Local work is authorized and
-  continuing after baseline audit; real provider acceptance needs owner configuration.
-Exact owner action required: None for local guard/mock implementation; see PROVIDER-01.
-Step-by-step resolution instructions: Agent implements approved OTP/session
-  contracts, isolated tests and review; owner later validates approved hosted
-  configuration. Do not enable a selector as an OTP substitute.
-Required environment-variable names (no values): Current TEST_ACCESS_MODE,
-  TEST_PROXY_SECRET, NODE_ENV, DEPLOYMENT_ENVIRONMENT.
-External dependencies: PROVIDER-01 for actual delivery; no real sends permitted now
-Expected result: Production cannot enable test selection; OTP and devices validated.
-Verification procedure: Production/staging/local matrix, denial/replay/concurrency
-  cases and isolated real DB/browser tests; real delivery reported separately.
-Tests to rerun: Auth, ownership, CSRF, cookie, provider outage, token-family regressions
+What the agent already tried: Implemented and locally validated the source path
+  with synthetic provider/database fixtures; no real provider call or host change.
+Work completed: OTP challenge HMAC/expiry/attempt/cooldown/single-use behavior,
+  session issuance, explicit legal acceptance and optional consent, API routes,
+  Resend adapter, health/readiness distinction, UI states and configuration guards.
+  Local PostgreSQL/Redis integration (58/58) and production-build Chromium,
+  Firefox and WebKit acceptance with axe now pass. Independent review, hosted
+  evidence and live delivery remain unproven; this does not complete v12 auth.
+Why autonomous resolution is unsafe or impossible: Real delivery/configuration is
+  prohibited in this task; remaining session/recovery features require separate
+  implementation and independent review under the approved v12 scope.
+Exact owner action required: Provider and legal acceptance tracked by PROVIDER-01
+  and LEGAL-01; after those, authorize isolated staging delivery. No production
+  configuration change is requested here. Separately, approve the public status
+  destination and the operational source of truth before implementing the
+  required outage link.
+Step-by-step resolution instructions: Keep `AUTH_OTP_ENABLED=false` and
+  `REGISTRATION_ENABLED=false`. Complete remaining v12 session/device/recovery
+  contracts on a separately reviewed change, then follow PROVIDER-01 and LEGAL-01.
+  For the outage link, identify/approve the public status URL and its monitored
+  incident source; then configure the link, test provider/Redis outage and
+  recovery presentation, and verify that it makes no unsupported availability
+  or restoration-time claim. Do not use an arbitrary provider status URL as a
+  substitute for CareerScope service status.
+Required environment-variable names (no values): `AUTH_OTP_ENABLED`,
+  `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `OTP_HMAC_SECRET`,
+  `LEGAL_POLICIES_APPROVED`, `LEGAL_TERMS_VERSION`, `LEGAL_PRIVACY_VERSION`,
+  `LEGAL_TERMS_URL`, `LEGAL_PRIVACY_URL`, `REGISTRATION_ENABLED`.
+External dependencies: PROVIDER-01 and LEGAL-01; no real sends permitted now.
+Expected result: Full approved v12 sign-in/session/recovery contract plus exact-SHA
+  test and authorized staging/provider acceptance; production remains fail-closed.
+Verification procedure: Local configuration denial matrix, isolated PostgreSQL
+  tests, browser security tests and later separate provider/session acceptance.
+Tests to rerun: OTP, ownership, CSRF, cookie, outage, replay/concurrency, device
+  revocation and token-family regression suites.
 Affected tasks: Production sign-in acceptance; unrelated local engineering continues
 Evidence references: GAP_MATRIX.md 4.1; TEST_MATRIX.md AUTH-TEST-01/02
 
@@ -285,36 +308,48 @@ Affected tasks: Discovery activation/public pages; not deterministic fixture tes
 Evidence references: GAP_MATRIX.md 4.6/4.14; approved v12 D10/D13/D14
 
 BLOCKER ID: PROVIDER-01
-Title: Primary/fallback OTP and notification provider acceptance
+Title: Resend acceptance, required OTP fallback, and live delivery evidence
 Priority: Critical
 Module: Authentication/notifications
 v12 requirement / checklist item: D1/D9/D11; 4.1/4.15; checklist 1-3
 Status: READY_FOR_OWNER
-Problem: No verified primary/fallback account/domain and independent test delivery
-  evidence supplied. Mock tests cannot prove real provider integration.
-Verified root cause: Current API has no OTP provider integration; v12 external list.
-Current implementation: No production email login; no provider call made in audit.
+Problem: A Resend-only local adapter now exists, but no sender/domain, delivery,
+  provider settings or independent live acceptance evidence is available. v12 D11
+  requires a second provider behind a switch before launch; the current attachment
+  requested Resend-only, so this product-scope conflict must not be silently resolved.
+Verified root cause: Current adapter/config and approved v12 D11 differ from the
+  Resend-only scope in the later task attachment.
+Current implementation: Resend HTTP adapter and mocked tests; OTP remains disabled
+  by default. No real provider call was made.
 Impact: Production OTP/failover/deliverability cannot pass.
-What the agent already tried: Source review; no account creation, paid call or send.
-Work completed: Local adapters/outage/quota tests planned independently of accounts.
+What the agent already tried: Implemented and tested a bounded Resend adapter with
+  synthetic fetch responses; reviewed current API behavior; no account creation,
+  paid call or send.
+Work completed: Sender/key runtime validation, fixed sender, disabled redirects,
+  stable idempotency key, bounded timeout/retries, generic API errors and mocked
+  provider failure tests. Domain tracking policy cannot be set per-message by this
+  adapter and must be reviewed in the provider domain configuration.
 Why autonomous resolution is unsafe or impossible: Accounts, DNS, secret values,
   spend limits and real communications are owner-controlled.
-Exact owner action required: Provide separately authorized staging provider access
-  through protected environment channels and choose/provision the fallback provider.
+Exact owner action required: Verify the sending domain/sender and configure protected
+  staging credentials only after deciding how to reconcile Resend-only task scope
+  with approved v12's required second provider. Authorize any real test recipient
+  and spend/quota only when ready.
 Step-by-step resolution instructions:
   1. Owner signs into the approved Resend account and completes its domain ownership
      and sender verification using the current provider-issued DNS instructions.
      Do not paste DNS secret material or API keys into chat or Git.
-  2. Owner chooses/provisions a second email provider and independently verifies
-     required SPF/DKIM/DMARC and sending domain; no agent-created account.
-  3. After local adapter configuration is implemented, set its documented exact
-     variable names in isolated staging secrets, scoped only to sending test mail.
-     Provider credential names are not invented before the adapter exists.
+  2. Reconcile D11's required fallback with the Resend-only task directive; no
+     second adapter/account is added without that scope decision.
+  3. Only after approval, place `RESEND_API_KEY` and the dedicated
+     `OTP_HMAC_SECRET` in isolated protected staging configuration; never share
+     values in chat/Git. Keep `AUTH_OTP_ENABLED=false` until acceptance.
   4. Record explicit allowed recipients, test authorization and spend/quota cap
      before any live verification. Current authorization permits mocks only.
   5. Run approved single-provider/failover/both-down/restore tests and retain only
      sanitized request IDs/statuses, not OTP codes, payloads or personal data.
-Required environment-variable names (no values): Pending implemented adapter contract
+Required environment-variable names (no values): `AUTH_OTP_ENABLED`,
+  `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `OTP_HMAC_SECRET`.
 External dependencies: Resend, fallback provider, DNS owner, separate staging
 Expected result: Actual OTP/fallback acceptance with no production test shortcut.
 Verification procedure: Provider sandbox/live test evidence distinct from mock runs.
@@ -323,7 +358,7 @@ Affected tasks: Hosted sign-in/notification acceptance; local implementation unb
 Evidence references: TEST_MATRIX.md AUTH-TEST-02/MESSAGE-TEST-01
 
 BLOCKER ID: LEGAL-01
-Title: Privacy, rights and trust text require legal/human review
+Title: OTP registration policy drafts require counsel and owner approval
 Priority: High
 Module: Privacy/trust
 v12 requirement / checklist item: 9/10/12; checklist 23-25
@@ -331,22 +366,34 @@ Status: READY_FOR_OWNER
 Problem: No counsel review/current official applicability evidence has been supplied.
 Verified root cause: Approved v12 marks these external dependencies To do; no legal
   approval record observed. This does not assert any legal commencement date.
-Current implementation: Existing privacy documentation, not compliance certification.
+Current implementation: Technical versioned Terms/Privacy acceptance and separate
+  optional marketing consent are implemented locally. `docs/legal/*-DRAFT.md`
+  are unapproved drafts; registration defaults off and refuses startup unless
+  explicit approval/version/HTTPS canonical URLs are configured. No compliance
+  certification is asserted.
 Impact: Published legal/consent/age/verification/outreach claims cannot be certified.
-What the agent already tried: Read approved requirements and current privacy docs.
-Work completed: Technical data-inventory/deletion/consent work can proceed locally.
+What the agent already tried: Read approved v12 and data-flow docs; wrote marked
+  counsel-review drafts and added consent persistence/UI semantics without
+  publishing the drafts or enabling registration.
+Work completed: Local acceptance records bind the account to configured Terms
+  and Privacy versions; marketing is optional/off by default with an event history.
 Why autonomous resolution is unsafe or impossible: Counsel and real-user acceptance
   cannot be simulated; no agent may claim legal approval or accept terms.
-Exact owner action required: Arrange counsel and native-language review of the
-  versioned data inventory, notices, retention, processors, consent and terms.
+Exact owner action required: Arrange counsel and human review of the versioned
+  data inventory, notices, retention, Resend processor disclosure, consent and
+  Terms/Privacy drafts. Then explicitly approve publication/versioning.
 Step-by-step resolution instructions:
-  1. Provide counsel the completed technical data-flow/inventory and proposed copy.
+  1. Provide counsel the technical data-flow, consent/schema behavior and
+     `docs/legal/TERMS-OF-SERVICE-DRAFT.md` plus
+     `docs/legal/PRIVACY-POLICY-DRAFT.md`.
   2. Counsel verifies official applicable notifications, required grievance/breach
      duties, retention exceptions and cross-border/provider disclosures.
   3. Record approver/date/document or string versions and exact required changes.
   4. Arrange Telugu/Hindi safety/legal/consent review and genuine manual accessibility
      acceptance; preserve reviewer/tool/environment/SHA, never fabricate results.
-Required environment-variable names (no values): None
+Required environment-variable names (no values): `LEGAL_POLICIES_APPROVED`,
+  `LEGAL_TERMS_VERSION`, `LEGAL_PRIVACY_VERSION`, `LEGAL_TERMS_URL`,
+  `LEGAL_PRIVACY_URL`, `REGISTRATION_ENABLED`.
 External dependencies: Counsel; authorized human/native-language/device reviewers
 Expected result: Version-bound legal and human acceptance with technical retests.
 Verification procedure: Trace review to current copy/data behavior and open findings.

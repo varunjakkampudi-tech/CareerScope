@@ -296,7 +296,9 @@
         "accessibility",
         "manual-UAT"
       ],
-      "notes": ["Existing root sign-in route; approved production sign-in is email OTP through Resend, which is not yet implemented. Private test access is not production authentication."]
+      "notes": [
+        "Existing root sign-in route; approved production sign-in is email OTP through Resend, which is not yet implemented. Private test access is not production authentication."
+      ]
     },
     {
       "designId": "auth-recovery-verification",

@@ -16,6 +16,32 @@ The following controls remain in source:
 - strict CSP, frame/object/base restrictions and redacted structured request logs;
 - private network topology with only the intended edge ports published.
 
+The optional email OTP implementation is disabled by default and fails closed
+when enabled without a Resend key, fixed sender or dedicated 32-byte HMAC key.
+Challenge rows contain only HMAC-derived identifiers/digests, have expiry and
+attempt bounds, and are consumed transactionally. Request/verification have
+shared Redis limits and generic responses; if the limiter is unavailable,
+authentication is unavailable rather than unthrottled. The Resend adapter uses
+a fixed HTTPS endpoint, disables redirects, bounds requests and uses a stable
+idempotency key for its bounded retry. No live delivery/provider behavior was
+tested. The required v12 fallback provider, refresh-token family/reuse controls,
+device revocation and verified-signal account recovery remain incomplete.
+
+`GET /api/health` is process liveness only. `GET /api/ready` checks PostgreSQL
+and the mandatory shared Redis limiter and returns only a generic status/version
+or generic 503, not dependency details. No live proxy topology, firewall or
+external-port scan was performed in this change.
+
+## Webhook ingress
+
+Source review found no inbound provider webhook/callback handler in the API,
+packages, or operational scripts. `scripts/run-scheduled-discovery.ts` has an
+optional outbound HTTPS monitoring notification; it is not an inbound event
+acceptance path. Any future inbound integration must validate authenticity and
+freshness before processing, enforce schema/replay/idempotency controls, persist
+durably before acknowledging, and return a retryable failure if durable
+acceptance fails. No webhook integration or live notification was exercised.
+
 The proxy removes Basic Authorization before forwarding and overwrites the
 staging assertion header. Cookie, Authorization, assertion, password and token
 fields are redacted. Never log provider bodies, resumes or environment values.
@@ -28,12 +54,12 @@ Do not replace applied migrations with a new baseline on a deployed database.
 
 Run `npm run gates:test`, `npm run test:integration`, `npm run test:domain`,
 browser checks and `npm run security:check` against the current source.
-The production dependency audit currently reports three moderate entries in the
-DOCX parser chain (mammoth/argparse/sprintf-js), with no high/critical findings.
-The full development dependency audit additionally reports five high and four
-moderate entries in lint/schema tooling. These are unresolved audit findings,
-not a clean bill of health. npm's proposed fixes include breaking downgrades;
-none are applied automatically to silence the report.
+The latest full dependency audit exits 1 with five high and seven moderate
+findings; the production-only audit has three moderate findings in the DOCX
+parser chain (`mammoth`/`argparse`/`sprintf-js`). The configured production
+security command exits 0 only because its threshold is high; that is not a clean
+all-severity audit or security waiver. These findings remain unresolved. No
+force-fix, suppression, threshold change or waiver was applied.
 
 Local tests are separate from live TLS/firewall validation, hosted staging
 password acceptance, restore drills and manual screen-reader review. No current

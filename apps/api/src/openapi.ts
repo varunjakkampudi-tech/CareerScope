@@ -22,6 +22,13 @@ const object = (
 });
 const nullable = (schema: Schema): Schema => ({ ...schema, nullable: true });
 const status = text({ enum: leadStatusSchema.options });
+const applicationEvidence = object({
+  method: text({ minLength: 1, maxLength: 120 }),
+  appliedAt: timestamp,
+  confirmation: text({ enum: ['unknown', 'received', 'not_received'] }),
+  source: text({ maxLength: 160 }),
+  confidence: text({ enum: ['unknown', 'low', 'medium', 'high'] }),
+});
 const sources = ['remoteok', 'himalayas', 'greenhouse', 'lever', 'ashby', 'workable'];
 const searchStatus = text({
   enum: ['queued', 'running', 'completed', 'partial', 'failed', 'cancelled'],
@@ -146,6 +153,7 @@ const lead = object({
   data: job,
   notes: text({ maxLength: 10000 }),
   status,
+  applicationEvidence: nullable(applicationEvidence),
   livenessStatus: text({ enum: ['unknown', 'live', 'stale'] }),
   livenessCheckedAt: nullable(timestamp),
   revision,
@@ -234,8 +242,13 @@ function contracts(options: {
   const resumeDescription = `Uploads ${options.resumes ? 'enabled' : 'disabled (503 for storage operations)'}. Cancellation ${options.cancellation ? 'enabled' : 'disabled (503)'}. PDF/DOCX only, maximum ${maximumResumeBytes} bytes. Parsed proposals never automatically update the profile.`;
   return {
     'GET /api/health': operation(
-      'Database health and package version',
+      'Process liveness and package version; does not assert dependency readiness',
       object({ status: text({ enum: ['ok'] }), version: text() }),
+    ),
+    'GET /api/ready': operation(
+      'Database and mandatory shared limiter readiness',
+      object({ status: text({ enum: ['ready'] }), version: text() }),
+      { failures: [503] },
     ),
     'GET /api/session': operation('Current browser session', {
       oneOf: [
@@ -244,8 +257,10 @@ function contracts(options: {
             authenticated: { ...bool, enum: [true] },
             csrf: text(),
             email: nullable(text({ format: 'email' })),
+            emailVerifiedAt: nullable(text({ format: 'date-time' })),
             phone: nullable(text({ pattern: '^\\+[1-9][0-9]{7,14}$' })),
             testUser: text({ enum: ['candidate', 'admin'] }),
+            passwordEnabled: bool,
             // CS-61: a stable, opaque per-owner value for client cache keys.
             // Not the owner id — see the handler for why it is a digest.
             owner: text({ pattern: '^[a-f0-9]{64}$' }),
@@ -257,6 +272,10 @@ function contracts(options: {
           {
             authenticated: { ...bool, enum: [false] },
             registrationEnabled: bool,
+            otpEnabled: bool,
+            legalLinks: nullable(
+              object({ terms: text({ format: 'uri' }), privacy: text({ format: 'uri' }) }),
+            ),
             testUsersEnabled: bool,
             testAccounts: {
               type: 'array',
@@ -290,6 +309,44 @@ function contracts(options: {
         failures: [400, 401, 403, 429],
       },
     ),
+    'POST /api/auth/otp/request': operation(
+      'Request an email verification code without revealing whether the address has an account',
+      object({ message: text() }),
+      {
+        code: 202,
+        body: object({ email: text({ format: 'email', maxLength: 254 }) }),
+        failures: [400, 429, 503],
+        description:
+          'The response is the same for registered and unregistered addresses. Codes are single-use and expire after five minutes. A new request is subject to email and IP limits and a 60-second resend cooldown.',
+      },
+    ),
+    'POST /api/auth/otp/verify': operation(
+      'Verify an email code and establish an opaque server-side session',
+      {
+        oneOf: [
+          object({ authenticated: { ...bool, enum: [true] }, createdAccount: bool }),
+          object({
+            authenticated: { ...bool, enum: [false] },
+            requiresLegalAcceptance: { ...bool, enum: [true] },
+          }),
+        ],
+      },
+      {
+        body: object(
+          {
+            email: text({ format: 'email', maxLength: 254 }),
+            code: text({ pattern: '^\\d{6}$' }),
+            termsAccepted: bool,
+            privacyAcknowledged: bool,
+            marketingOptIn: { ...bool, default: false },
+          },
+          ['email', 'code'],
+        ),
+        failures: [400, 401, 429, 503],
+        description:
+          'A valid code can be consumed once. New accounts require explicit Terms and Privacy acknowledgment when registration is enabled; marketing remains optional and defaults off.',
+      },
+    ),
     'POST /api/logout': operation(
       'Sign out and clear the session cookie',
       object({ authenticated: { ...bool, enum: [false] } }),
@@ -310,6 +367,16 @@ function contracts(options: {
         }),
         failures: [400, 429],
       },
+    ),
+    'GET /api/account/marketing-consent': operation(
+      'Read the current marketing opt-in state for the signed-in account',
+      object({ optedIn: bool }),
+      { failures: [401, 503] },
+    ),
+    'PUT /api/account/marketing-consent': operation(
+      'Record an explicit marketing opt-in or opt-out event',
+      object({ optedIn: bool }),
+      { body: object({ optedIn: bool }), failures: [400, 401, 429, 503] },
     ),
     'GET /api/profile': operation(
       'Read the saved profile (revision zero when absent)',
@@ -455,14 +522,36 @@ function contracts(options: {
       { failures: [400, 429] },
     ),
     'GET /api/leads/:id': operation('Read a saved lead', lead, { failures: [400, 404, 429] }),
-    'PUT /api/leads/:id': operation('Update notes and stage using optimistic concurrency', lead, {
-      body: object({ revision, notes: text({ maxLength: 10000 }), status }),
-      failures: [400, 404, 409, 429],
-    }),
+    'PUT /api/leads/:id': operation(
+      'Update candidate-owned notes, stage, and candidate-reported application evidence using optimistic concurrency',
+      lead,
+      {
+        body: object(
+          {
+            revision,
+            notes: text({ maxLength: 10000 }),
+            status,
+            applicationEvidence,
+          },
+          ['revision', 'notes', 'status'],
+        ),
+        failures: [400, 404, 409, 429],
+      },
+    ),
     'GET /api/leads/:id/history': operation(
       'List lead revisions, newest first (25 per page)',
       object({
-        items: array(object({ revision, status, notesChanged: bool, createdAt: timestamp })),
+        items: array(
+          object({
+            revision,
+            previousStatus: nullable(status),
+            status,
+            notesChanged: bool,
+            applicationEvidenceChanged: bool,
+            applicationEvidence: nullable(applicationEvidence),
+            createdAt: timestamp,
+          }),
+        ),
         nextCursor: nullable(integer()),
       }),
       {
@@ -669,8 +758,11 @@ export async function registerOpenApi(
       // path that keeps forced-logout CSRF blocked.
       const anonymous = [
         '/api/health',
+        '/api/ready',
         '/api/session',
         '/api/login',
+        '/api/auth/otp/request',
+        '/api/auth/otp/verify',
         '/api/register',
         '/api/logout',
       ].includes(url);
@@ -729,7 +821,12 @@ export async function registerOpenApi(
           request.credentials = 'same-origin';
           if (
             !['GET', 'HEAD', 'OPTIONS'].includes(String(request.method ?? 'GET').toUpperCase()) &&
-            !['/api/login', '/api/register'].includes(target.pathname)
+            ![
+              '/api/login',
+              '/api/register',
+              '/api/auth/otp/request',
+              '/api/auth/otp/verify',
+            ].includes(target.pathname)
           ) {
             const response = await fetch('/api/session', {
               credentials: 'same-origin',

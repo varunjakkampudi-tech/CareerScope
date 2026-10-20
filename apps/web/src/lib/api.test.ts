@@ -135,6 +135,7 @@ test('CS-35: non-conflict statuses keep their existing messages and carry no cod
     [413, 'The submitted data is too large.'],
     [429, 'Too many requests. Try again shortly.'],
     [500, 'Request failed. Please try again.'],
+    [503, 'Request failed. Please try again.'],
   ] as [number, string][]) {
     const restore = stubFetch(JSON.stringify({ error: SERVER_DETAIL, code: 'UPLOAD_CANCELLED' }), {
       status,
@@ -151,6 +152,21 @@ test('CS-35: non-conflict statuses keep their existing messages and carry no cod
     } finally {
       restore();
     }
+  }
+});
+
+test('authentication 503s use sign-in guidance without changing general service errors', async () => {
+  const restore = stubFetch('{}', { status: 503 });
+  try {
+    await assert.rejects(api('/auth/otp/request'), (error: unknown) => {
+      return (
+        error instanceof ApiError &&
+        error.status === 503 &&
+        error.message === 'Sign-in is temporarily unavailable. Please try again later.'
+      );
+    });
+  } finally {
+    restore();
   }
 });
 

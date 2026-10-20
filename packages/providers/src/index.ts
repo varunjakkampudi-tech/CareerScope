@@ -106,6 +106,13 @@ export { createJoobleProvider, type JoobleOptions } from './keyed/jooble.js';
 export { createJSearchProvider, type JSearchOptions } from './keyed/jsearch.js';
 export { createGmailVerificationReader, type VerificationRequest } from './email/verification.js';
 export {
+  createResendOtpSender,
+  EmailDeliveryUnavailable,
+  verificationEmail,
+  type OtpEmail,
+  type OtpEmailSender,
+} from './email/resend.js';
+export {
   createKeyedProvider,
   type KeyedAdapter,
   type KeyedPage,

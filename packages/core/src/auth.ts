@@ -50,13 +50,13 @@ export class Auth {
   }
 
   async login(email: string, password: string, previous?: string) {
-    const result = await this.database.pool.query<{ id: string; password_hash: string }>(
+    const result = await this.database.pool.query<{ id: string; password_hash: string | null }>(
       'SELECT id, password_hash FROM users WHERE email = $1',
       [email.toLowerCase().trim()],
     );
     const user = result.rows[0];
     const valid = await verify(user?.password_hash ?? (await this.dummyHash), password);
-    if (!user || !valid) return null;
+    if (!user?.password_hash || !valid) return null;
     const token = randomBytes(32).toString('hex');
     const client = await this.database.pool.connect();
     try {

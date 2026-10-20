@@ -426,23 +426,67 @@ try {
       // tracks in-flight requests directly. EventSource streams (the search
       // progress feed) are excluded because they stay open by design and would
       // never let the page look idle.
-      const inflight = new Set<import('playwright').Request>();
+      const inflight = new Map<
+        import('playwright').Request,
+        { startedAt: number; routeEpoch: number; status?: number }
+      >();
+      let routeEpoch = 0;
+      page.on('framenavigated', (frame) => {
+        if (frame === page.mainFrame()) routeEpoch += 1;
+      });
       page.on('request', (request) => {
         const pathname = new URL(request.url()).pathname;
         const isSearchEventStream = /^\/api\/searches\/[^/]+\/events$/.test(pathname);
-        if (request.resourceType() !== 'eventsource' && !isSearchEventStream) inflight.add(request);
+        // Active search runs are intentionally refreshed by React Query every
+        // five seconds. Their list/detail data is asserted at the individual
+        // search interactions; treating that independent poll as page-idle
+        // work makes unrelated settings/dashboard checks fail indefinitely.
+        const isSearchStatusPoll =
+          request.method() === 'GET' && /^\/api\/searches(?:\/[^/]+)?$/.test(pathname);
+        if (request.resourceType() !== 'eventsource' && !isSearchEventStream && !isSearchStatusPoll)
+          inflight.set(request, { startedAt: Date.now(), routeEpoch });
+      });
+      page.on('response', (response) => {
+        const state = inflight.get(response.request());
+        if (state) state.status = response.status();
       });
       page.on('requestfinished', (request) => inflight.delete(request));
       page.on('requestfailed', (request) => inflight.delete(request));
+      // The authenticated layout may retain cached saved-job reads briefly
+      // across a client-side route change. They matter to the settlement
+      // barrier only while a Saved Jobs/Applications surface is active; decide
+      // from the route at settlement time so a read started just before the
+      // URL transition does not remain incorrectly classified as foreground
+      // work after that surface has unmounted. Mutations remain tracked.
+      const inactiveSavedLeadRead = (
+        request: import('playwright').Request,
+        state: { routeEpoch: number },
+      ) => {
+        const pathname = new URL(request.url()).pathname;
+        const activePath = new URL(page.url()).pathname;
+        return (
+          request.method() === 'GET' &&
+          (pathname === '/api/leads' || /^\/api\/leads\/[^/]+\/history$/.test(pathname)) &&
+          (!['/saved', '/applications'].includes(activePath) || state.routeEpoch !== routeEpoch)
+        );
+      };
+      const activeRequests = () =>
+        Array.from(inflight).filter(([request, state]) => !inactiveSavedLeadRead(request, state));
       const settled = async (label: string) => {
         const deadline = Date.now() + 15000;
         let quietSince = Date.now();
         while (Date.now() < deadline) {
-          if (inflight.size > 0) quietSince = Date.now();
+          if (activeRequests().length > 0) quietSince = Date.now();
           else if (Date.now() - quietSince >= 250) return;
           await page.waitForTimeout(25);
         }
-        throw new Error(`${engine}: ${label} never stopped issuing requests`);
+        const pending = activeRequests().map(([request, state]) => {
+          const url = new URL(request.url());
+          return `${request.method()} ${url.pathname} (${Math.round((Date.now() - state.startedAt) / 1000)}s, ${request.resourceType()}, status ${state.status ?? 'none'})`;
+        });
+        throw new Error(
+          `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'})`,
+        );
       };
       // CS-54: this block previously asserted that `script-src` did NOT carry
       // `'unsafe-inline'`, backed by a nonce-based middleware. That middleware
@@ -519,7 +563,10 @@ try {
         { times: 1 },
       );
       await selectFixtureAccount(accountEmail);
-      await page.getByRole('alert').filter({ hasText: 'Request failed.' }).waitFor();
+      await page
+        .getByRole('alert')
+        .getByText('Sign-in is temporarily unavailable. Please try again later.', { exact: true })
+        .waitFor();
       await selectFixtureAccount(accountEmail);
       await page.getByText('No searches yet.', { exact: true }).waitFor();
       syntheticPermittedSources.clear();
@@ -1166,12 +1213,25 @@ try {
           fullPage: true,
         });
       }
-      await page.route(
-        '**/api/preparation',
-        (route) => route.fulfill({ status: 503, contentType: 'application/json', body: '{}' }),
-        { times: 1 },
+      let preparationFailureRequests = 0;
+      const failPreparationOnce = async (route: import('playwright').Route) => {
+        preparationFailureRequests += 1;
+        await route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
+      };
+      await page.route('**/api/preparation**', failPreparationOnce, { times: 1 });
+      const preparationFailure = page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === '/api/preparation' &&
+          response.request().method() === 'GET' &&
+          response.status() === 503,
       );
       await page.getByRole('button', { name: 'Refresh', exact: true }).click();
+      await preparationFailure;
+      assert.equal(
+        preparationFailureRequests,
+        1,
+        `${engine} the preparation failure fixture must intercept exactly one refresh request`,
+      );
       // CS-13 F-1: this was a `hasText: 'Request failed.'` substring match,
       // and the old bare text is a SUBSTRING of the new prefixed text — so it
       // passed before the CS-13 rollout, passed after it, and would keep
@@ -1762,6 +1822,116 @@ try {
         `${engine} saved lead details exposes no posting link at all`,
       );
       assert.deepEqual([...new Set(postingHrefs)], ['https://himalayas.app/jobs/synthetic']);
+      const leadRepository = new LeadRepository(database);
+      const linkedLead = await leadRepository.get(ownerId, leadId);
+      assert.equal(linkedLead?.status, 'saved');
+      const postingUrl = 'https://himalayas.app/jobs/synthetic';
+      const interceptPosting = (route: import('playwright').Route) =>
+        route.fulfill({
+          status: 200,
+          contentType: 'text/html',
+          body: '<!doctype html><title>Synthetic destination</title><p>Synthetic external destination</p>',
+        });
+      await page.context().route(postingUrl, interceptPosting);
+      const externalPostingLink = leadDetails
+        .getByRole('link', { name: 'Open job posting' })
+        .first();
+      assert.equal(await externalPostingLink.getAttribute('target'), '_blank');
+      assert.match((await externalPostingLink.getAttribute('rel')) ?? '', /\bnoopener\b/);
+      await externalPostingLink.click();
+      await page.waitForTimeout(100);
+      // A target=_blank/noopener destination is a separate context page. Close
+      // only this synthetic page after its exact destination has been
+      // intercepted; retaining the route until context teardown means no
+      // external request can escape if that page loads more slowly here.
+      for (const destination of page.context().pages())
+        if (destination !== page) await destination.close();
+      assert.equal(
+        (await leadRepository.get(ownerId, leadId))?.status,
+        'saved',
+        `${engine}: opening the external destination changed application status`,
+      );
+      await openedLead.getByRole('button', { name: 'Record application', exact: true }).click();
+      const evidenceForm = openedLead.locator('form');
+      await evidenceForm.getByRole('heading', { name: 'Record your application' }).waitFor();
+      await evidenceForm.getByLabel('Application method', { exact: true }).fill('Employer website');
+      const confirmationSelect = evidenceForm
+        .locator('label')
+        .filter({ hasText: 'Did you receive a confirmation?' })
+        .locator('select');
+      assert.equal(await confirmationSelect.count(), 1);
+      await confirmationSelect.selectOption('received');
+      await evidenceForm
+        .getByLabel('Evidence source (optional)', { exact: true })
+        .fill('Synthetic candidate report');
+      const confidenceSelect = evidenceForm
+        .locator('label')
+        .filter({ hasText: 'Your confidence in this record' })
+        .locator('select');
+      assert.equal(await confidenceSelect.count(), 1);
+      await confidenceSelect.selectOption('medium');
+      assert.match(
+        (await openedLead.textContent()) ?? '',
+        /This records your report only\. CareerScope does not submit the application or verify an employer response\./,
+      );
+      const applicationRecorded = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      await evidenceForm.getByRole('button', { name: 'Record I applied', exact: true }).click();
+      const applicationResponse = await applicationRecorded;
+      assert.equal(applicationResponse.status(), 200);
+      const applicationRecord = await applicationResponse.json();
+      assert.equal(applicationRecord.status, 'applied');
+      assert.equal(applicationRecord.applicationEvidence.method, 'Employer website');
+      assert.equal(applicationRecord.applicationEvidence.source, 'Synthetic candidate report');
+      await page.goto(`${origin}/applications`);
+      await page.waitForURL(`${origin}/applications`);
+      await page.getByRole('heading', { name: 'Applications', exact: true }).waitFor();
+      await page
+        .getByRole('navigation', { name: 'Saved lead list' })
+        .getByRole('button', { name: /Senior React Engineer/ })
+        .click();
+      const applicationDetails = page.getByRole('article', { name: 'Lead details' });
+      await applicationDetails
+        .getByText('Candidate reports receiving confirmation', { exact: true })
+        .waitFor();
+      await page.once('dialog', (dialog) => dialog.accept());
+      const archiveApplication = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      await applicationDetails.getByRole('button', { name: 'Archive in CareerScope' }).click();
+      assert.equal((await archiveApplication).status(), 200);
+      assert.equal((await leadRepository.get(ownerId, leadId))?.status, 'archived');
+      assert.equal(
+        (await leadRepository.get(ownerId, leadId))?.applicationEvidence?.method,
+        'Employer website',
+      );
+      await page.goto(`${origin}/saved`);
+      await page.getByRole('heading', { name: 'Saved Leads', exact: true }).waitFor();
+      await page.getByRole('button', { name: 'Archived', exact: true }).click();
+      await page
+        .getByRole('navigation', { name: 'Saved lead list' })
+        .getByRole('button', { name: /Senior React Engineer/ })
+        .click();
+      const archivedDetails = page.getByRole('article', { name: 'Lead details' });
+      await archivedDetails.getByText('Employer website', { exact: true }).waitFor();
+      await page.once('dialog', (dialog) => dialog.accept());
+      const restoreApplication = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      await archivedDetails.getByRole('button', { name: 'Restore Lead' }).click();
+      assert.equal((await restoreApplication).status(), 200);
+      assert.equal((await leadRepository.get(ownerId, leadId))?.status, 'saved');
+      assert.equal(
+        (await leadRepository.get(ownerId, leadId))?.applicationEvidence?.method,
+        'Employer website',
+      );
+      await page.goto(`${origin}/saved?lead=${leadId}`);
+      await page.getByRole('heading', { name: 'Saved Leads', exact: true }).waitFor();
+      await openedLead.getByText('Senior React Engineer', { exact: true }).first().waitFor();
       const notes = page.getByRole('textbox', { name: 'Notes', exact: true });
       await notes.fill(`Private synthetic ${engine} notes`);
       page.once('dialog', (dialog) => dialog.dismiss());
@@ -1792,7 +1962,11 @@ try {
         .getByRole('button', { name: 'Save Notes', exact: true })
         .and(page.locator(':disabled'))
         .waitFor();
-      await settled('saved lead notes');
+      // Search progress is intentionally polled every five seconds while an
+      // earlier synthetic search remains active. The note mutation, list
+      // refresh, history refresh and disabled save button above are the exact
+      // completion conditions for this interaction; global network-idle would
+      // incorrectly wait on that unrelated background polling.
       await page.reload();
       // /saved is its own route now: a reload lands straight back on the
       // saved-leads workspace, so the old "Saved Leads" view-switch button no
@@ -1804,7 +1978,6 @@ try {
         .click();
       await notes.waitFor();
       assert.equal(await notes.inputValue(), `Private synthetic ${engine} notes`);
-      const leadRepository = new LeadRepository(database);
       const currentLead = await leadRepository.get(ownerId, leadId);
       assert.ok(currentLead);
       await leadRepository.update(ownerId, leadId, {
@@ -1955,25 +2128,17 @@ try {
       // commit and stranded both /api/resumes fetches (reproduced on webkit in
       // 5 of 17 runs, always here, always exactly two errors, stack: api ->
       // QueryObserver#executeFetch -> onSubscribe -> commitPassiveMountOnFiber).
-      // Waiting for the previous route to be quiet first is what makes the
-      // response wait below unambiguous — otherwise it is satisfied by the
-      // *dashboard's* still-in-flight /api/resumes request and waits for
-      // nothing.
-      await settled('dashboard');
-      const resumeViewLoaded = page
-        .waitForResponse(
-          (response) =>
-            response.url().endsWith('/api/resumes') && response.request().method() === 'GET',
-          { timeout: 5000 },
-        )
-        .catch(() => undefined);
       await sidebarNav.getByRole('link', { name: 'Resume', exact: true }).click();
       await page.getByRole('heading', { name: 'Candidate Profile', exact: true }).waitFor();
-      const resumeResponse = await resumeViewLoaded;
-      if (resumeResponse) assert.equal(resumeResponse.status(), 200);
-      await settled('resume');
+      await page.getByLabel('Full Name', { exact: true }).waitFor();
+      const resumeReload = page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === '/api/resumes' &&
+          response.request().method() === 'GET',
+      );
       await page.reload();
       await page.getByLabel('Full Name', { exact: true }).waitFor();
+      assert.equal((await resumeReload).status(), 200);
       assert.equal(
         await page.getByLabel('Full Name', { exact: true }).inputValue(),
         'Example Candidate',
@@ -2114,7 +2279,11 @@ try {
           exact: true,
         })
         .waitFor();
-      await settled('empty search results');
+      // The run's API response, terminal status and both empty-state messages
+      // above are the relevant completion assertions. Do not globally wait for
+      // unrelated cached lead/history reads left by the preceding saved-job
+      // workflow; they are not part of this search result and can be retried
+      // by React Query when the browser regains focus.
       await page.reload();
       await page.getByRole('heading', { name: /^Saved target roles/ }).waitFor();
       for (const width of [1440, 390, 320]) {
@@ -2185,7 +2354,10 @@ try {
         .getByRole('status')
         .filter({ hasText: /^completed$/ })
         .waitFor();
-      await settled('completed search');
+      // The terminal status is driven by the persisted search snapshot; the
+      // subsequent source-outcome assertions after reload verify that this
+      // exact run is durable. Global quiet is not a valid prerequisite while
+      // React Query can still own unrelated cached saved-job reads.
       await page.reload();
       await page
         .getByRole('list', { name: 'Source outcomes' })
@@ -2738,8 +2910,152 @@ try {
             false,
           );
         }
+        // OTP UI contract coverage uses synthetic API responses only. The
+        // routes below are intercepted in the browser, so this scenario cannot
+        // send email or create/alter an account in the test database.
+        const otpPage = await browser.newPage();
+        let otpAuthenticated = false;
+        let verificationAttempts = 0;
+        const verificationBodies: Record<string, unknown>[] = [];
+        await otpPage.route('**/api/session', (route) =>
+          route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            json: {
+              authenticated: otpAuthenticated,
+              csrf: 'synthetic-csrf-token',
+              testUsersEnabled: false,
+              otpEnabled: true,
+              registrationEnabled: true,
+              legalLinks: { terms: '/terms', privacy: '/privacy' },
+            },
+          }),
+        );
+        let requestedAddress = '';
+        await otpPage.route('**/api/auth/otp/request', async (route) => {
+          requestedAddress = String(route.request().postDataJSON().email ?? '');
+          await route.fulfill({
+            status: 202,
+            contentType: 'application/json',
+            json: { requested: true },
+          });
+        });
+        await otpPage.route('**/api/auth/otp/verify', async (route) => {
+          verificationAttempts += 1;
+          verificationBodies.push(route.request().postDataJSON() as Record<string, unknown>);
+          if (verificationAttempts === 1) {
+            await route.fulfill({ status: 401, contentType: 'application/json', body: '{}' });
+          } else if (verificationAttempts === 2) {
+            await route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              json: { authenticated: false, requiresLegalAcceptance: true },
+            });
+          } else {
+            otpAuthenticated = true;
+            await route.fulfill({
+              status: 200,
+              contentType: 'application/json',
+              json: { authenticated: true },
+            });
+          }
+        });
+        await otpPage.goto(`${origin}/?next=https%3A%2F%2Fevil.example`);
+        await otpPage.getByRole('heading', { name: 'Sign in to CareerScope' }).waitFor();
+        await accessible(otpPage, engine, 'OTP sign-in form', 'Sign in to CareerScope');
+        for (const width of [320, 390, 768, 1024, 1440]) {
+          await otpPage.setViewportSize({ width, height: 900 });
+          assert.equal(
+            await otpPage.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+            false,
+            `${engine} OTP form overflows at ${width}px`,
+          );
+        }
+        await otpPage.getByLabel('Email address').fill('candidate@example.test');
+        await otpPage.getByRole('button', { name: 'Continue with email' }).click();
+        await otpPage
+          .getByRole('status')
+          .getByText(/If the address is eligible, a verification code has been sent/)
+          .waitFor();
+        assert.equal(requestedAddress, 'candidate@example.test');
+        const resendButton = otpPage.getByRole('button', { name: /Request another code in \d+s/ });
+        await resendButton.waitFor();
+        assert.equal(
+          await resendButton.isDisabled(),
+          true,
+          `${engine} resend must respect cooldown`,
+        );
+        const codeInput = otpPage.getByLabel('Six-digit verification code');
+        assert.equal(await codeInput.getAttribute('inputmode'), 'numeric');
+        assert.equal(await codeInput.getAttribute('autocomplete'), 'one-time-code');
+        await codeInput.fill('111111');
+        await otpPage.getByRole('button', { name: 'Verify code' }).click();
+        await otpPage
+          .getByRole('alert')
+          .getByText('That code is invalid or expired. Request a new code and try again.')
+          .waitFor();
+        await codeInput.fill('123456');
+        await otpPage.getByRole('button', { name: 'Verify code' }).click();
+        await otpPage.getByRole('checkbox', { name: /I accept the Terms of Service/ }).waitFor();
+        assert.equal(
+          await otpPage
+            .getByRole('checkbox', { name: /Send me optional product updates/ })
+            .isChecked(),
+          false,
+          `${engine} marketing opt-in must default off`,
+        );
+        assert.equal(
+          await otpPage.getByRole('link', { name: 'Terms of Service' }).getAttribute('href'),
+          '/terms',
+        );
+        assert.equal(
+          await otpPage.getByRole('link', { name: 'Privacy Policy' }).getAttribute('href'),
+          '/privacy',
+        );
+        await otpPage.getByRole('button', { name: 'Accept and create account' }).click();
+        assert.equal(
+          verificationAttempts,
+          2,
+          `${engine} registration verification must not submit before required legal acceptance`,
+        );
+        assert.equal(
+          await otpPage
+            .getByRole('checkbox', { name: /I accept the Terms of Service/ })
+            .evaluate((element) => (element as HTMLInputElement).validity.valueMissing),
+          true,
+        );
+        await otpPage.getByRole('checkbox', { name: /I accept the Terms of Service/ }).check();
+        await otpPage.getByRole('checkbox', { name: /I acknowledge the Privacy Policy/ }).check();
+        await codeInput.fill('');
+        await codeInput.focus();
+        await otpPage.keyboard.insertText('123456');
+        assert.equal(
+          await codeInput.inputValue(),
+          '123456',
+          `${engine} code paste-style entry failed`,
+        );
+        await otpPage.getByRole('button', { name: 'Accept and create account' }).click();
+        await otpPage.waitForURL(`${origin}/dashboard`);
+        assert.equal(otpAuthenticated, true);
+        assert.equal(verificationAttempts, 3);
+        assert.deepEqual(verificationBodies[2], {
+          email: 'candidate@example.test',
+          code: '123456',
+          termsAccepted: true,
+          privacyAcknowledged: true,
+          marketingOptIn: false,
+        });
+        assert.deepEqual(
+          await otpPage.evaluate(() => ({
+            local: Object.values(localStorage),
+            session: Object.values(sessionStorage),
+          })),
+          { local: [], session: [] },
+          `${engine} OTP data must not be persisted in browser storage`,
+        );
+        await otpPage.close();
         process.stdout.write(
-          `${engine}: real two-account selector, session switching, keyboard, five-width reflow and axe passed\n`,
+          `${engine}: real two-account selector plus mocked OTP request/error/legal acceptance/redirect, keyboard, five-width reflow and axe passed\n`,
         );
       } finally {
         await browser.close();

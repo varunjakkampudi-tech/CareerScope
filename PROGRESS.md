@@ -274,3 +274,180 @@ high-severity threshold, but the raw current audits still report 12 findings
 production deployment,
 external provider, credential, or live source validation is claimed. SOURCE-01
 remains `READY_FOR_OWNER` for source-rights evidence and measured launch coverage.
+
+## Application-evidence task checkpoint (2026-10-20)
+
+The documentation-only source review was independently re-reviewed and
+checkpointed on `codex/dev` as `e0ee60af6531b112a29101a9f8dbd1f4cc6e2332`.
+The four changed matrices/audits distinguish existing partial database coverage
+from unverified v12 capabilities; no runtime behavior or tests are claimed.
+Fresh independent review PASS and `git diff --check` PASS.
+
+Before implementation, recorded baseline `e0ee60af6531b112a29101a9f8dbd1f4cc6e2332`
+on `codex/task/application-evidence`; working tree was clean. Local heads and
+tags were inventoried (15 local branches, 0 tags; `origin/main` is present, no
+other remote heads). Created and verified
+`C:\Users\Admin\Documents\Codex\backups\careerscope-baseline-e0ee60af6531b112a29101a9f8dbd1f4cc6e2332.bundle`;
+SHA256 `49448A8C32C08FE314601CF341B73DA6F0956EA54EF9D93823E4BF7BAFBDD28D`.
+`git bundle create --all`, `git bundle verify`, mirror recovery clone, target
+branch resolution and `git fsck --full` succeeded. The mirror recovery clone is
+retained at a temporary local path because the environment rejected the cleanup
+operation; this is source recovery only, not database or production backup.
+
+The scoped v12 Stage E implementation adds candidate-reported application
+evidence and the `withdrawn` status, with an additive PostgreSQL migration,
+owner-scoped API/history integration and a shared Applications/Saved UI flow.
+The report is explicitly not employer/ATS verification; opening an external
+link remains a no-op on application state.
+
+At this application-evidence checkpoint, before the later OTP and browser
+harness edits, validation on Node 24.21.0 in the isolated evidence runner used
+synthetic PostgreSQL/Redis and no `.env`: `npm run gates:test` PASS (including
+lint, typecheck, privacy, deployment-gate checks, EOL and 49/49 unit tests);
+PostgreSQL/Redis integration PASS (49/49); domain suite PASS (30 files, 835
+tests); production build and CSP hash verification PASS; browser acceptance
+PASS in Chromium, Firefox and WebKit, including axe, keyboard interaction and
+the five configured viewport widths; `git diff --check` PASS. This is
+historical checkpoint evidence, not the result after subsequent browser-harness
+changes. Repository-wide formatting at that checkpoint reported the unchanged
+`design/DESIGN-INDEX.json` and the then-edited harness; the harness was formatted
+and rechecked, while the design index was left untouched to avoid unrelated
+design-artifact churn.
+
+No hosted CI, production deployment, real provider, credential, external job
+source or live environment validation is claimed. No `.env` was read. No
+commit, push, merge or deployment was performed. Resend OTP and the separately
+attached authentication/security/legal follow-up remain deferred until this
+active implementation/validation scope is complete and reviewed.
+
+## Local email OTP, consent and readiness implementation (2026-10-20)
+
+This follow-up was implemented in the existing `codex/task/application-evidence`
+worktree without touching the separate Desktop checkout, reading `.env`, or
+making provider/remote/production changes. It adds a disabled-by-default OTP
+contract with HMAC-only challenge persistence, expiry/attempt/cooldown and
+single-use controls, shared Redis IP/email throttles, explicit versioned Terms
+and Privacy acceptance for registration, separate optional marketing consent,
+opaque eight-hour sessions, and public liveness/readiness distinction. The
+Resend adapter uses the fixed product sender, HTTPS endpoint, disabled redirects,
+bounded request/retry timeouts and stable idempotency; it contains no live
+credential. Counsel-only Terms/Privacy drafts are explicitly marked
+unapproved/unpublishable. API/data/security/privacy/secret docs and the blocker
+register now distinguish local code/tests from launch acceptance.
+
+Fresh local validation on bundled Node 24.19.0: `npm run gates:test` PASS after
+the exact product-sender privacy allowlist regression (49/49 unit tests, privacy,
+deployment-gate tests, EOL, lint and 49-file typecheck included). `npm run
+test:domain` PASS (31 files / 840 tests). Focused OTP PostgreSQL integration
+PASS (7 tests) against a disposable PostgreSQL 17.6 container; runtime/rate-limit
+tests PASS (5 tests) against disposable Redis 7.4.5 configured for local rate
+limit testing. `npm run build` PASS with both CSP discovery/verification passes.
+`npm run security:check` exits 0 at its configured high-severity threshold, but
+reports 3 moderate production dependency findings in the `mammoth -> argparse ->
+sprintf-js` chain; `AUDIT-01` remains open and no downgrade/waiver was made.
+Second Drizzle generation produced zero migration drift. After final docs and
+test-harness edits, changed-file Prettier, EOL, privacy and `git diff --check`
+passed. Repository-wide `npm run format:check` still fails only on the
+unchanged `design/DESIGN-INDEX.json`; it was not reformatted to avoid unrelated
+design-artifact churn.
+
+The existing browser acceptance harness was attempted in Chromium with a fresh
+local production build and disposable PostgreSQL/Redis. The first attempt found
+and corrected a stale 503 sign-in assertion to match the API's established
+user-facing message. The next run progressed through sign-in, dashboard,
+accessibility sampling and resume/profile work, but failed at the pre-existing
+preparation 503 mock expectation: the expected mocked alert was not observed
+and the API returned HTTP 200. The full browser journey is therefore NOT PASS;
+the unrelated fixture/refresh path requires investigation before browser
+acceptance is green. This harness does not yet exercise the OTP UI itself.
+
+No independent separate-session review, real Resend call/delivery, sender-domain
+or tracking-settings verification, hosted provider acceptance, legal approval,
+deployment validation, CI run or production smoke test is claimed. The approved
+v12 D11 still requires a second provider fallback; the attached Resend-only scope
+does not resolve that conflict, and no fallback adapter was invented. Keep
+`AUTH_OTP_ENABLED=false` and `REGISTRATION_ENABLED=false`. `AUTH-01`,
+`PROVIDER-01` and `LEGAL-01` remain open; refresh/device recovery requirements,
+domain/provider evidence, counsel review, human approvals and live validation
+remain incomplete. No commit, push, merge, external configuration change or
+deployment was performed.
+
+## OTP/application-evidence validation refresh (2026-10-20)
+
+Supersedes the preceding browser and repository-format conclusions for the
+current dirty worktree. No source was read from `.env`; all tests used explicit
+synthetic local values. The system Node installation was not changed. The gate
+runtime was a temporary official Node v24.21.0 Windows archive whose SHA-256
+matched the checksum published by nodejs.org.
+
+Current local validation: `npm run gates:test` PASS (policy/source/privacy/deploy
+checks, EOL, lint, typecheck of 49 canonical test files, and unit suite 50/50);
+`npm run format:check` PASS; `npm run test:domain` PASS (31 files / 840 tests);
+production `npm run build` PASS (both CSP discovery/verification builds, all 12
+generated inline-script hashes verified); `npm run test:full-disk` PASS. The
+complete registered integration command was run directly without `.env` against
+fresh disposable loopback-only PostgreSQL 17.6 and Redis 7.4.5 services: 58/58
+tests passed, zero skipped, including database/API, OTP/legal acceptance,
+BullMQ/queue, storage and scheduled discovery. Chromium, Firefox and WebKit
+production-build browser runs all passed, including the real two-account
+selector, session switching, keyboard checks, axe and five-width responsive
+acceptance. Integration/browser services were synthetic and have since been
+removed.
+
+Additional production-recovery scripts also passed with ephemeral local
+services: `scripts/check-database-recovery.ts` (17 tables compared, synthetic
+database restore and encrypted file recovery), `scripts/check-queue-runtime.ts`
+(Redis AOF restore and publisher/worker process lifecycle),
+`scripts/check-crash-recovery.ts` (upload publication, outbox/queue redelivery,
+lease fencing and orphan recovery), and `npm run test:full-disk`. Initial
+recovery attempts were rejected because the test container name did not satisfy
+the harness prefix and because a synthetic queue Redis endpoint was not started;
+both were environment-fixture errors, not assertion failures, and the corrected
+runs passed. All temporary containers and labelled test volumes were removed.
+
+`npm run security:check` exited 0 under its configured high-severity threshold
+and the privacy scanner passed. The audit still reported three moderate
+production findings in `mammoth -> argparse -> sprintf-js` (GHSA-hp3w-g68c-fv3c);
+the offered forced fix is breaking, so no upgrade, waiver or scan weakening was
+made. The current full dependency audit was also run and exits 1 with 5 high and
+7 moderate findings; no safe remediation or waiver is claimed. Independent
+security review, second-provider fallback, live Resend delivery/domain
+acceptance, legal approval, hosted CI, deployment,
+and production smoke remain distinct and unproven. Keep OTP and registration
+disabled until their required provider/legal gates are met. No commit, push,
+merge, deployment, external configuration change, or real message was made.
+
+## OTP browser acceptance refresh (2026-10-20)
+
+Added a synthetic, intercepted OTP browser journey to the existing
+`scripts/check-ui.ts` acceptance harness. It covers generic request confirmation,
+resend cooldown disablement, invalid-code feedback, paste-style code entry,
+blocked submission until required Terms and Privacy acknowledgments, marketing
+opt-in defaulting off, no OTP/email persistence in browser storage, and a
+same-origin dashboard redirect even when an untrusted `next` parameter is
+present. The scenario is registered in the existing `test:ui` command and
+exercises the sign-in screen at 320, 390, 768, 1024 and 1440 CSS pixels plus
+axe at 320 and 1440. Session and OTP endpoints in this scenario are
+Playwright-mocked; no OTP request or registration reaches the backend. It sends
+no email and does not establish real OTP/session persistence. Unrelated
+post-redirect workspace reads remain against the local synthetic API/database.
+
+Executed under Node 24.21.0 against the current production Next build, a
+disposable loopback PostgreSQL 17.6 database, and disposable Redis 7.4.5
+instances. The initial harness attempt stopped before browser assertions because
+the synthetic queue Redis instance lacked the required AOF setting. Recreated
+only the labeled disposable containers with the required `appendonly yes` and
+`noeviction` policy; the complete `node --import tsx scripts/check-ui.ts` run
+then exited 0 for all selected Chromium, Firefox and WebKit checks. Containers
+and the Next process were stopped afterward. Fresh `npm run typecheck`,
+`npm run lint`, `npm run format:check`, `npm run eol:check`, `npm run
+privacy:check`, and `git diff --check` all passed after this test change.
+
+A fresh read-only independent review passed the scope of the new browser
+scenario, `docs/SECURITY.md` and the `AUTH-01` blocker update. The reviewer
+explicitly did not execute tests or verify live/provider behavior and returned
+NEEDS WORK for production authentication readiness. Remaining blockers are
+unchanged: the approved v12 fallback/session/recovery requirements, status-link
+decision, sender-domain and real Resend verification, counsel approval, hosted
+CI and production acceptance. No `.env` read, real provider call, external
+change, commit, push, merge or deployment was made.

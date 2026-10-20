@@ -41,6 +41,9 @@ const allowlistedEmailDomains = new Set([
   'localhost',
   'gserviceaccount.com',
 ]);
+// The one product-owned sender is public configuration, not an individual's
+// contact detail. Keep this an exact-address exception, not a domain exemption.
+const allowlistedEmails = new Set(['noreply@careerscope.tech']);
 const fixturePath =
   /(?:\.test\.|\.test\b|__fixtures__|^infra\/|^design\/|^packages\/core\/src\/test-users\.ts$)/i;
 
@@ -73,6 +76,7 @@ export function scanContent(content, path = '<memory>') {
     if (pattern.test(content)) findings.push({ type, path, severity: 'P1' });
   const emailPattern = /\b[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,})\b/gi;
   for (const match of content.matchAll(emailPattern)) {
+    if (allowlistedEmails.has(match[0].toLowerCase())) continue;
     const domain = match[1].toLowerCase();
     if (
       !allowlistedEmailDomains.has(domain) &&

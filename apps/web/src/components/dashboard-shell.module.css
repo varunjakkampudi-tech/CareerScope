@@ -47,6 +47,8 @@
   --dash-status-rejected-fg: #a3293c;
   --dash-status-archived-bg: #eef0f4;
   --dash-status-archived-fg: #555f70;
+  --dash-status-withdrawn-bg: #eef0f4;
+  --dash-status-withdrawn-fg: #555f70;
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
@@ -76,6 +78,8 @@
   --dash-status-rejected-fg: #f6b3bf;
   --dash-status-archived-bg: #292e3d;
   --dash-status-archived-fg: #b9c1d0;
+  --dash-status-withdrawn-bg: #292e3d;
+  --dash-status-withdrawn-fg: #b9c1d0;
 }
 
 .sidebar {

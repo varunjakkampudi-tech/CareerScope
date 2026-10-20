@@ -39,7 +39,11 @@ function SignIn() {
       </a>
       <header className="topbar">
         <BrandLogo />
-        <span className="brand-version">Test mode — select a role to continue</span>
+        <span className="brand-version">
+          {session.data?.testUsersEnabled
+            ? 'Test mode — select a role to continue'
+            : 'Candidate sign in'}
+        </span>
       </header>
       <main id="workspace-content" tabIndex={-1}>
         {session.isPending ? (
@@ -56,8 +60,10 @@ function SignIn() {
         ) : authenticated ? null : (
           <AccountForm
             testUsersEnabled={session.data?.testUsersEnabled === true}
+            otpEnabled={session.data?.otpEnabled === true}
             accounts={session.data?.testAccounts}
             registrationEnabled={session.data?.registrationEnabled === true}
+            legalLinks={session.data?.legalLinks}
             expired={expired}
             notice={notice}
             onAuthenticated={async () => {

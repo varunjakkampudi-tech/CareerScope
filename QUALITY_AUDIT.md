@@ -61,6 +61,25 @@ schema declaration or dropping persisted data is a separate reviewed database
 change and has not been performed. AUTH-01 remains open; no OTP or provider
 behavior is claimed as implemented by this source-document correction.
 
+## OTP/application-evidence local implementation and validation (2026-10-20)
+
+The earlier read-only authentication finding above is preserved as a baseline
+observation and is superseded for current source state by the implementation
+record in `PROGRESS.md`. Current code has disabled-by-default, digest-only OTP
+challenge persistence, bounded attempts/cooldown/expiry, shared Redis limiting,
+legal acceptance, explicit verification timestamp, and a bounded mocked Resend
+adapter. Fresh local Node 24 validation passed gates (including 50 unit tests),
+domain (31 files/840 tests), full PostgreSQL/Redis integration (58/58), fresh
+PostgreSQL restore (17 tables compared), Redis AOF queue restart, crash recovery,
+full-disk behavior, production build with both CSP hash passes, and production-browser acceptance in
+Chromium/Firefox/WebKit with axe and responsive/keyboard checks. These results
+do not close production authentication: second-provider failover, refresh/device
+revocation and recovery flows remain incomplete; real delivery and domain
+acceptance, counsel review, and production validation remain owner/external
+gates. The current production-only audit reports three moderate
+`mammoth -> argparse -> sprintf-js` findings. No finding was suppressed or
+waived; see `blocker.txt`.
+
 ## Candidate application-evidence contract review (2026-10-20)
 
 Static source review at `codex/dev` commit
@@ -91,6 +110,25 @@ were not proven during this focused review. These are concrete local
 implementation gaps, not a basis to infer external ATS capability or fabricate
 application events.
 
+## OTP/application-evidence local implementation and validation (2026-10-20)
+
+The earlier read-only authentication finding above is preserved as a baseline
+observation and is superseded for current source state by the implementation
+record in `PROGRESS.md`. Current code has disabled-by-default, digest-only OTP
+challenge persistence, bounded attempts/cooldown/expiry, shared Redis limiting,
+legal acceptance, explicit verification timestamp, and a bounded mocked Resend
+adapter. Fresh local Node 24 validation passed gates (including 50 unit tests),
+domain (31 files/840 tests), full PostgreSQL/Redis integration (58/58), production
+build with both CSP hash passes, and production-browser acceptance in
+Chromium/Firefox/WebKit with axe and responsive/keyboard checks. These results
+do not close production authentication: second-provider failover, refresh/device
+revocation and recovery flows remain incomplete; real delivery and domain
+acceptance, counsel review, and production validation remain owner/external
+gates. A fresh full dependency audit exits 1 with 5 high and 7 moderate findings;
+the production-only audit exits 0 at the configured high threshold but still
+reports three moderate findings. No finding was suppressed or waived; see
+`blocker.txt`.
+
 Existing evidence is partial: `packages/core/src/database.test.ts` contains the
 `market and pipeline HTTP routes preserve evidence, query bounds and owner
 isolation` integration test, including lead ownership, duplicate-save,
@@ -100,3 +138,18 @@ application-evidence tests, migration/recovery checks, and current browser/DB
 execution remain outstanding. No runtime files or migrations were modified; no
 application state or external link was opened and no test was executed in this
 review.
+
+## Application evidence and recovery execution refresh (2026-10-20)
+
+The static gap review above is retained as historical evidence and superseded
+for the current dirty worktree by the Stage E implementation recorded in
+`PROGRESS.md`: additive migration `0019_application_evidence.sql`, candidate-
+reported evidence and withdrawn status, owner-scoped API/history behavior, and
+shared Applications/Saved UI. Fresh local PostgreSQL/Redis integration (58/58)
+and Chromium/Firefox/WebKit browser acceptance passed. The run also passed a
+17-table synthetic database restore, Redis AOF publisher/worker restart,
+process/file/lease crash recovery, and full-disk checks. These are local
+synthetic results; hosted restore, off-host disaster recovery, candidate claims
+versus employer acknowledgement in production, and release acceptance remain
+unproven. External-link opening remains separate from any application-state
+mutation.

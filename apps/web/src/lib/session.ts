@@ -12,8 +12,13 @@ export type Session = {
   authenticated: boolean;
   csrf?: string;
   email?: string;
+  /** Server evidence timestamp; null means no email-verification evidence exists. */
+  emailVerifiedAt?: string | null;
   phone?: string;
   registrationEnabled?: boolean;
+  otpEnabled?: boolean;
+  passwordEnabled?: boolean;
+  legalLinks?: { terms: string; privacy: string };
   testUsersEnabled?: boolean;
   testAccounts?: { email: string; role: 'candidate' | 'admin' }[];
   testUser?: 'candidate' | 'admin';

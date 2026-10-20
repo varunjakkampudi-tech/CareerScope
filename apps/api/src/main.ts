@@ -6,16 +6,39 @@ import {
   rateLimiter,
   shutdownSignal,
   testAccessConfiguration,
+  otpSecretFromHex,
 } from '@careerscope/core';
+import { createResendOtpSender } from '@careerscope/providers';
 import { createApp } from './app.js';
 
 const env = configuration();
 const database = new Database(env.DATABASE_URL);
 const limiter = await rateLimiter(env.REDIS_URL);
 const resumeStorage = await configuredFileResumeStorage();
+const otp =
+  env.AUTH_OTP_ENABLED === 'true'
+    ? {
+        secret: otpSecretFromHex(env.OTP_HMAC_SECRET!),
+        sender: createResendOtpSender({
+          apiKey: env.RESEND_API_KEY!,
+          from: env.RESEND_FROM_EMAIL!,
+        }),
+        registrationEnabled: env.REGISTRATION_ENABLED === 'true',
+        termsVersion: env.LEGAL_TERMS_VERSION,
+        privacyVersion: env.LEGAL_PRIVACY_VERSION,
+      }
+    : undefined;
 const app = await createApp(database, env.APP_ORIGIN, limiter.consume, {
-  registrationEnabled: false,
+  registrationEnabled: otp?.registrationEnabled === true,
   testAccess: testAccessConfiguration(process.env, env.APP_ORIGIN),
+  readinessCheck: async () => {
+    await limiter.client.ping();
+  },
+  otp,
+  legalLinks:
+    otp?.registrationEnabled === true
+      ? { terms: env.LEGAL_TERMS_URL!, privacy: env.LEGAL_PRIVACY_URL! }
+      : undefined,
   resumeStorage: resumeStorage
     ? {
         bucket: resumeStorage.bucket,

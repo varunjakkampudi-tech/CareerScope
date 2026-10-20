@@ -15,7 +15,9 @@ export default function AccountSecurity({
   onChanged: () => void;
   onBack: () => void;
 }) {
-  const testMode = useSession().data?.testUser !== undefined;
+  const session = useSession();
+  const testMode = session.data?.testUser !== undefined;
+  const passwordEnabled = session.data?.passwordEnabled === true;
   const [pending, setPending] = useState(false);
   // CS-13 re-review: this component makes two real network calls but imports
   // no react-query hook, so the F-4 census — which proxied "async-bearing" as
@@ -121,11 +123,28 @@ export default function AccountSecurity({
         />
       )}
       {notice && <p role="status">{notice}</p>}
+      <section aria-labelledby="email-verification-heading">
+        <h2 id="email-verification-heading">Email verification</h2>
+        {session.data?.emailVerifiedAt ? (
+          <p role="status">
+            Email address verified on{' '}
+            <time dateTime={session.data.emailVerifiedAt}>
+              {new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(
+                new Date(session.data.emailVerifiedAt),
+              )}
+            </time>
+          </p>
+        ) : (
+          <p role="status">No email-verification evidence is recorded for this account.</p>
+        )}
+      </section>
       {testMode ? (
         <p>
           Test accounts do not use application passwords. Hosted access is protected by the staging
           proxy.
         </p>
+      ) : !passwordEnabled ? (
+        <p>Sign-in uses a one-time code sent to the account email address.</p>
       ) : (
         <form onSubmit={submit} aria-busy={pending}>
           <label>

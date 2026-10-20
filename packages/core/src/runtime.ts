@@ -38,10 +38,41 @@ export function configuration(source: NodeJS.ProcessEnv = process.env) {
       QUEUE_REDIS_URL: z.string().min(1).default('redis://127.0.0.1:56480'),
       APP_ORIGIN: z.string().min(1),
       REGISTRATION_ENABLED: z.enum(['true', 'false']).default('false'),
+      AUTH_OTP_ENABLED: z.enum(['true', 'false']).default('false'),
+      RESEND_API_KEY: z.string().min(1).optional(),
+      RESEND_FROM_EMAIL: z.string().optional(),
+      OTP_HMAC_SECRET: z.string().optional(),
+      LEGAL_TERMS_VERSION: z.string().min(1).max(80).optional(),
+      LEGAL_PRIVACY_VERSION: z.string().min(1).max(80).optional(),
+      LEGAL_TERMS_URL: z.string().url().optional(),
+      LEGAL_PRIVACY_URL: z.string().url().optional(),
+      LEGAL_POLICIES_APPROVED: z.enum(['true', 'false']).default('false'),
       SEARCH_QUEUE_TRANSPORT: z.enum(['redis', 'bullmq']).default('redis'),
       SEARCH_QUEUE_REDIS_URL: z.string().min(1).optional(),
     })
     .parse(source);
+  if (env.AUTH_OTP_ENABLED === 'true') {
+    if (
+      !env.RESEND_API_KEY ||
+      env.RESEND_FROM_EMAIL !== 'CareerScope <noreply@careerscope.tech>' ||
+      !env.OTP_HMAC_SECRET ||
+      !/^[a-f0-9]{64}$/i.test(env.OTP_HMAC_SECRET)
+    )
+      throw new Error('Email OTP configuration is incomplete');
+  }
+  if (env.REGISTRATION_ENABLED === 'true') {
+    if (
+      env.AUTH_OTP_ENABLED !== 'true' ||
+      env.LEGAL_POLICIES_APPROVED !== 'true' ||
+      !env.LEGAL_TERMS_VERSION ||
+      !env.LEGAL_PRIVACY_VERSION ||
+      !env.LEGAL_TERMS_URL ||
+      !env.LEGAL_PRIVACY_URL ||
+      new URL(env.LEGAL_TERMS_URL).origin !== 'https://careerscope.tech' ||
+      new URL(env.LEGAL_PRIVACY_URL).origin !== 'https://careerscope.tech'
+    )
+      throw new Error('Registration requires enabled OTP and approved legal versions');
+  }
   localUrl(env.DATABASE_URL, ['postgres:', 'postgresql:']);
   localUrl(env.REDIS_URL, ['redis:']);
   localEndpoint(env.QUEUE_REDIS_URL);

@@ -18,6 +18,14 @@ test('privacy scanner permits synthetic documentation identities', () => {
   );
 });
 
+test('privacy scanner permits only the exact product sender address', () => {
+  assert.deepEqual(scanContent('noreply@careerscope.tech'), []);
+  assert.deepEqual(
+    scanContent('varun@careerscope.tech').map(({ type, severity }) => ({ type, severity })),
+    [{ type: 'possible-personal-email', severity: 'P2' }],
+  );
+});
+
 test('current tracked tree has no privacy findings', () => {
   assert.deepEqual(scanTracked(), []);
 });

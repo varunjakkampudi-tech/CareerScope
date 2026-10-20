@@ -19,6 +19,7 @@ import type { CollectedJob, SourceOutcome } from './jobs.js';
 import type { WritableProfile, MatchingProfile } from './profile.js';
 import type { z } from 'zod';
 import type { parsedResumeSchema } from './resume-parser.js';
+import type { ApplicationEvidence } from './leads.js';
 
 export const users = pgTable(
   'users',
@@ -28,7 +29,13 @@ export const users = pgTable(
     // not necessarily expose one, so the external identity may use phone as
     // its verified contact instead.
     email: text('email').unique(),
-    passwordHash: text('password_hash').notNull(),
+    // Null for accounts created through the email-OTP identity flow. Existing
+    // password-account rows remain readable while the legacy verifier is kept
+    // for migration-only compatibility.
+    passwordHash: text('password_hash'),
+    // Set only after successful email OTP. Test-account selection and password
+    // authentication are not evidence of mailbox control.
+    emailVerifiedAt: timestamp('email_verified_at', { withTimezone: true }),
     phone: text('phone'),
     // External subject for passwordless/OIDC sign-in. Nullable keeps existing
     // password accounts intact; the unique index prevents one external identity
@@ -36,7 +43,74 @@ export const users = pgTable(
     externalSubject: text('external_subject'),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
-  (table) => [uniqueIndex('users_external_subject_unique').on(table.externalSubject)],
+  (table) => [
+    uniqueIndex('users_external_subject_unique').on(table.externalSubject),
+    // Preserve the existing partial uniqueness contract from migration 0018.
+    uniqueIndex('users_phone_unique')
+      .on(table.phone)
+      .where(sql`${table.phone} IS NOT NULL`),
+  ],
+);
+
+export const emailOtpChallenges = pgTable(
+  'email_otp_challenges',
+  {
+    id: uuid('id').primaryKey(),
+    // Keyed digest of the normalized address; the transient challenge table
+    // never needs to retain an additional copy of a user's email address.
+    emailHash: text('email_hash').notNull(),
+    codeDigest: text('code_digest').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    attempts: integer('attempts').notNull().default(0),
+    consumedAt: timestamp('consumed_at', { withTimezone: true }),
+  },
+  (table) => [
+    uniqueIndex('email_otp_email_hash_unique').on(table.emailHash),
+    index('email_otp_expires').on(table.expiresAt),
+    check('email_otp_attempts_valid', sql`${table.attempts} BETWEEN 0 AND 5`),
+  ],
+);
+
+export const legalAcceptances = pgTable(
+  'legal_acceptances',
+  {
+    id: uuid('id').primaryKey(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id),
+    termsVersion: text('terms_version').notNull(),
+    privacyVersion: text('privacy_version').notNull(),
+    acceptedAt: timestamp('accepted_at', { withTimezone: true }).notNull(),
+    privacyAcknowledgedAt: timestamp('privacy_acknowledged_at', { withTimezone: true }).notNull(),
+    marketingOptIn: boolean('marketing_opt_in').notNull().default(false),
+    marketingRecordedAt: timestamp('marketing_recorded_at', { withTimezone: true }),
+  },
+  (table) => [
+    index('legal_acceptance_user_time').on(table.userId, table.acceptedAt),
+    check(
+      'legal_acceptance_versions_valid',
+      sql`length(btrim(${table.termsVersion})) BETWEEN 1 AND 80 AND length(btrim(${table.privacyVersion})) BETWEEN 1 AND 80`,
+    ),
+    check(
+      'legal_marketing_timestamp_valid',
+      sql`(${table.marketingOptIn} = false AND ${table.marketingRecordedAt} IS NULL) OR (${table.marketingOptIn} = true AND ${table.marketingRecordedAt} IS NOT NULL)`,
+    ),
+  ],
+);
+
+export const marketingConsentEvents = pgTable(
+  'marketing_consent_events',
+  {
+    sequence: bigserial('sequence', { mode: 'number' }).primaryKey(),
+    id: uuid('id').notNull().unique(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id),
+    optedIn: boolean('opted_in').notNull(),
+    recordedAt: timestamp('recorded_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index('marketing_consent_user_sequence').on(table.userId, table.sequence)],
 );
 
 export const sessions = pgTable(
@@ -209,9 +283,12 @@ export const leads = pgTable(
     // A job search is a pipeline, not a bookmark list. Widening this is additive:
     // every existing row is 'saved' or 'archived' and stays valid.
     status: text('status')
-      .$type<'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'archived'>()
+      .$type<
+        'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'archived'
+      >()
       .notNull()
       .default('saved'),
+    applicationEvidence: jsonb('application_evidence').$type<ApplicationEvidence | null>(),
     // Stamped on every status change so "nothing has moved in three weeks" is a
     // question the data can answer.
     statusChangedAt: timestamp('status_changed_at', { withTimezone: true }).defaultNow().notNull(),
@@ -239,7 +316,24 @@ export const leads = pgTable(
     check('lead_revision_positive', sql`${table.revision} > 0`),
     check(
       'lead_status_valid',
-      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'archived')`,
+      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived')`,
+    ),
+    check(
+      'lead_application_evidence_valid',
+      sql`${table.applicationEvidence} IS NULL OR (
+        jsonb_typeof(${table.applicationEvidence}) = 'object'
+        AND ${table.applicationEvidence} ?& ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']
+        AND (${table.applicationEvidence} - ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']::text[]) = '{}'::jsonb
+        AND jsonb_typeof(${table.applicationEvidence}->'method') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'method')) BETWEEN 1 AND 120
+        AND jsonb_typeof(${table.applicationEvidence}->'appliedAt') = 'string'
+        AND jsonb_typeof(${table.applicationEvidence}->'confirmation') = 'string'
+        AND ${table.applicationEvidence}->>'confirmation' IN ('unknown', 'received', 'not_received')
+        AND jsonb_typeof(${table.applicationEvidence}->'source') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'source')) <= 160
+        AND jsonb_typeof(${table.applicationEvidence}->'confidence') = 'string'
+        AND ${table.applicationEvidence}->>'confidence' IN ('unknown', 'low', 'medium', 'high')
+      )`,
     ),
     check(
       'lead_liveness_status_valid',
@@ -257,9 +351,16 @@ export const leadHistory = pgTable(
     leadId: uuid('lead_id').notNull(),
     revision: integer('revision').notNull(),
     status: text('status')
-      .$type<'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'archived'>()
+      .$type<
+        'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'archived'
+      >()
       .notNull(),
     notesChanged: integer('notes_changed').notNull(),
+    previousStatus: text('previous_status').$type<
+      'saved' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'archived' | null
+    >(),
+    applicationEvidenceChanged: boolean('application_evidence_changed').notNull().default(false),
+    applicationEvidence: jsonb('application_evidence').$type<ApplicationEvidence | null>(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
@@ -270,9 +371,30 @@ export const leadHistory = pgTable(
     uniqueIndex('lead_history_revision').on(table.ownerId, table.leadId, table.revision),
     check(
       'lead_history_status_valid',
-      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'archived')`,
+      sql`${table.status} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived')`,
+    ),
+    check(
+      'lead_history_previous_status_valid',
+      sql`${table.previousStatus} IS NULL OR ${table.previousStatus} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived')`,
     ),
     check('lead_history_notes_changed_valid', sql`${table.notesChanged} IN (0, 1)`),
+    check(
+      'lead_history_application_evidence_valid',
+      sql`${table.applicationEvidence} IS NULL OR (
+        jsonb_typeof(${table.applicationEvidence}) = 'object'
+        AND ${table.applicationEvidence} ?& ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']
+        AND (${table.applicationEvidence} - ARRAY['method', 'appliedAt', 'confirmation', 'source', 'confidence']::text[]) = '{}'::jsonb
+        AND jsonb_typeof(${table.applicationEvidence}->'method') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'method')) BETWEEN 1 AND 120
+        AND jsonb_typeof(${table.applicationEvidence}->'appliedAt') = 'string'
+        AND jsonb_typeof(${table.applicationEvidence}->'confirmation') = 'string'
+        AND ${table.applicationEvidence}->>'confirmation' IN ('unknown', 'received', 'not_received')
+        AND jsonb_typeof(${table.applicationEvidence}->'source') = 'string'
+        AND length(btrim(${table.applicationEvidence}->>'source')) <= 160
+        AND jsonb_typeof(${table.applicationEvidence}->'confidence') = 'string'
+        AND ${table.applicationEvidence}->>'confidence' IN ('unknown', 'low', 'medium', 'high')
+      )`,
+    ),
   ],
 );
 

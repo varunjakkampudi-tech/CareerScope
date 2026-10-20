@@ -47,7 +47,7 @@ https://{$CAREERSCOPE_DOMAIN} {
 
 	# Hosted test account selection is private. Only a password hash belongs in
 	# proxy configuration. The private assertion is replaced on every request.
-	@workspace not path /api/health
+	@workspace not path /api/health /api/ready
 	basic_auth @workspace {
 		{$CAREERSCOPE_STAGING_USER} {$CAREERSCOPE_STAGING_PASSWORD_HASH}
 	}
@@ -59,7 +59,7 @@ https://{$CAREERSCOPE_DOMAIN} {
 
 	# Health stays reachable during maintenance so deploys and monitors can still
 	# see the truth. It exposes no infrastructure detail.
-	handle /api/health {
+	handle /api/health /api/ready {
 		reverse_proxy {$CAREERSCOPE_UPSTREAM} {
 			# The API trusts this only from its loopback proxy peer. Caddy replaces
 			# any inbound value with the actual TCP peer address, so clients cannot
