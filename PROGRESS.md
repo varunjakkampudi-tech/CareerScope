@@ -178,6 +178,26 @@ no major downgrade, test weakening, or audit suppression was applied. The
 workflow remains unverified on GitHub because Actions is disabled. No push,
 merge to `main`, deployment, production change, or hosted evidence occurred.
 
+## Dependency-advisory evidence age and execution boundary (2026-10-20)
+
+At `codex/dev` commit `b63780ad0dd005ac879b55587a0163ccd334bfc4`, the lockfile
+still contains the recorded Next ESLint plugin → fast-glob → micromatch →
+braces 3.0.3 path and Mammoth 1.13.0 → argparse 1.0.10 → sprintf-js 1.0.3.
+Static inspection confirmed CareerScope calls Mammoth's `extractRawText` API;
+it did not establish that the CLI-only argparse path is reachable through that
+API. The official advisories currently list braces through 3.0.3 and
+sprintf-js through 1.1.3 as affected, with no patched version published in
+those records. This classification does not establish runtime exploitability
+or clear the full dependency gate. The last recorded npm audit totals in this
+file are historical and were not rerun against this SHA.
+
+No npm audit, install, build, test, or other target-controlled command was run
+for this checkpoint. The applicable security-audit execution policy requires an
+OS-enforced sandbox with network isolation, allowlisted environment, read-only
+source/toolchain, bounded resources, and scratch-only writes; that capability
+was unavailable. `AUDIT-01` remains OPEN. No dependency, production code,
+configuration, or audit policy was changed.
+
 ## Critical-path sequencing audit (2026-10-20)
 
 On `codex/task/critical-path-audit`, based on the locally integrated CI commit

@@ -123,31 +123,78 @@ Priority: High
 Module: Development supply chain
 v12 requirement / checklist item: Engineering Standards 5/7; global 22/30
 Status: OPEN
-Problem: The current full npm audit reports five high and seven moderate findings.
-Verified root cause: On 20 October 2026 under Node 24, the high findings follow
-  eslint-config-next 16.3.8 > @next/eslint-plugin-next > fast-glob > micromatch
-  > braces 3.0.3. npm audit offers only --force with an eslint-config-next 14
-  major downgrade; npm metadata reports braces 3.0.3 is still latest. Moderate
-  findings include the legacy esbuild loader under drizzle-kit and sprintf-js
-  through Mammoth's argparse dependency.
-Current implementation: The production-only high-severity gate exits 0 but
-  reports three moderate Mammoth/argparse/sprintf-js findings. No full-audit pass.
-Impact: Affected integrations cannot be marked done with a high finding ignored.
-What the agent already tried: Read-only full/production audits and registry
-  metadata inspection; no compatible patched braces or non-breaking audit fix found.
-Work completed: Recorded affected chains; no major downgrade, suppression or waiver.
-Why autonomous resolution is unsafe or impossible: Local remediation pending activation;
-  no owner waiver requested as substitute for safe supported remediation.
-Exact owner action required: None unless a true unresolved exception is later needed.
-Step-by-step resolution instructions: Agent identifies reachable dependency paths,
-  chooses compatible fixes, adds regression checks, reruns full audit and tests.
+Problem: The last recorded full npm audit (20 October 2026, documented in
+  PROGRESS.md) reported five high and seven moderate findings. Those counts are
+  historical evidence, not a fresh audit of the current commit.
+Verified root cause: Static inspection of the current `codex/dev` lockfile at
+  `b63780ad0dd005ac879b55587a0163ccd334bfc4` confirms the high-advisory path is
+  `eslint-config-next@16.3.8 > @next/eslint-plugin-next > fast-glob@3.3.1 >
+  micromatch@4.0.8 > braces@3.0.3`. The current GitHub-reviewed advisory lists
+  braces versions through 3.0.3 as affected and no patched version
+  (GHSA-vfj7-8cjw-p6xm, CVE-2026-93687). This lock path is development tooling;
+  whether a reachable CareerScope runtime boundary is affected has not been
+  established, and the repository-wide dependency gate still requires
+  remediation or accepted, independently verified evidence.
+  The lockfile also contains `mammoth@1.13.0 > argparse@1.0.10 >
+  sprintf-js@1.0.3`; the current advisory lists versions through 1.1.3 as
+  affected with no patched version (GHSA-hp3w-g68c-fv3c, CVE-2026-97058).
+  CareerScope imports Mammoth's library API for resume extraction; source-level
+  reachability from that API into the CLI-only argparse path has not been
+  independently established. Do not treat this uncertainty as either a
+  confirmed remote exploit or a waiver. The historical audit also identified
+  an esbuild loader advisory under `drizzle-kit`; its current reachability and
+  status have not been revalidated.
+Current implementation: The last recorded production-only audit reported
+  three moderate findings and no high/critical findings; it is not a fresh
+  result for this SHA. No audit command was executed during this checkpoint.
+Impact: The full dependency/security gate remains unresolved. No high finding
+  is waived, and no production exploitability claim is made without a reachable
+  affected path.
+What the agent already tried: Historical full/production audits and registry
+  metadata inspection are recorded in PROGRESS.md. In this checkpoint, only the
+  current lockfile and application source import were inspected; public GitHub
+  Advisory Database records were checked. No install, audit, build, or test was
+  run.
+Work completed: Clarified evidence age and dependency paths; retained all audit
+  findings as open. No downgrade, override, suppression, test weakening, or waiver.
+Why autonomous resolution is unsafe or impossible: The required local execution
+  boundary is unavailable in this environment: target-controlled commands may
+  only run under an OS-enforced sandbox with isolated environment, no external
+  network, bounded resources, and restricted writes. Without that control, a
+  compatible fix cannot be validated safely under the applicable audit
+  procedure. This is an engineering validation blocker, not a product decision.
+Exact owner action required: None currently. Resume remediation in an approved
+  isolated validation environment; if the supported fix requires a policy
+  exception, prepare the exact evidence and request owner review rather than
+  self-waiving the gate.
+Step-by-step resolution instructions:
+  1. In an OS-enforced disposable workspace, use only the already-available
+     Node 24 toolchain and dependencies; do not expose secrets or production
+     services and do not fetch/install packages during the audit.
+  2. Re-run the full and production-only audits against the exact reviewed lock
+     SHA and capture package paths, advisory IDs, affected ranges and exit codes.
+  3. Trace each advisory to an actual CareerScope call path and principal; keep
+     development-toolchain exposure distinct from deployed runtime exposure.
+  4. Select only a maintained, compatible remediation supported by package and
+     source evidence. Do not use `npm audit --force`, blanket overrides, audit
+     suppression, or major downgrades without compatibility proof.
+  5. Add a regression check for each reachable path; run the applicable full
+     quality gates and independent review. If no supported fix exists, keep the
+     finding open and document precise residual impact and owner-only exception
+     evidence needed.
 Required environment-variable names (no values): None
-External dependencies: Package registry for metadata/install, no paid provider
+External dependencies: None required for source review; an OS-enforced isolated
+  validation environment is required before executing package tooling. No paid provider.
 Expected result: Verified remediation or precise unresolved findings; no fake pass.
-Verification procedure: Lockfile paths, current audits, lint/build/regression.
+Verification procedure: Exact-SHA lockfile audit, source reachability review,
+  applicable regression tests, lint/build, and independent review; current audit
+  remains NOT RUN until the required sandbox is available.
 Tests to rerun: Full dependency audit and applicable definition of done
 Affected tasks: Supply-chain affected integrations
-Evidence references: PROGRESS.md current executed evidence
+Evidence references: PROGRESS.md (historical executed audit); current lockfile
+  at the recorded `codex/dev` SHA; GitHub Advisory Database
+  https://github.com/advisories/GHSA-vfj7-8cjw-p6xm and
+  https://github.com/advisories/GHSA-hp3w-g68c-fv3c
 
 BLOCKER ID: AUTH-01
 Title: Current test access is not production OTP authentication
