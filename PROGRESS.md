@@ -355,3 +355,13 @@ reachability but does not remove the packages from the production dependency
 tree or clear the advisory. The upstream advisory currently lists no patched
 `sprintf-js` release. `AUDIT-01` remains OPEN pending a compatible upstream fix
 or a separately reviewed mitigation with regression evidence.
+
+### Remote main synchronization check (2026-10-20)
+
+After the request to use the latest main, `git fetch --no-tags origin main`
+completed successfully. Both local `main` and `origin/main` resolve to
+`45d6d35691bd5d41257da4f3988acd9a89c7d2ea` (the repository's initial
+CareerScope codebase commit). Current task HEAD is a descendant, 18 commits
+ahead, with no remote-main-only commits to integrate. The development work
+remains isolated on `codex/task/email-otp-auth`; neither `main` nor the remote
+branch was modified.
