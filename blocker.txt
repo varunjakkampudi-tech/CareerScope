@@ -370,3 +370,51 @@ Affected tasks: Full-workspace and service-backed checks requiring unavailable
   the isolated OTP primitive checks are separately evidenced above.
 Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and current
   isolated runtime/image capability inspection.
+
+BLOCKER ID: INDEPENDENT-REVIEW-01
+Title: Independent review of the auth task commit has not completed
+Priority: High
+Module: Authentication / change review
+v12 requirement / checklist item: Engineering contract; sensitive authentication review gate
+Status: READY_FOR_OWNER
+Problem: The authentication code must receive a fresh independent review before
+  any promotion from its task branch.
+Verified root cause: The isolated review checkout and review plan were prepared.
+  The configured safe-mode Claude inspector returned `Not logged in`; no review
+  verdict or code approval was produced. The CLI version alone does not prove an
+  authenticated reviewer session.
+Current implementation: `f468643db8d602a8f07238939b66d3744fff04c6` remains on
+  `codex/task/email-otp-auth`; `codex/dev` has not received it.
+Impact: No independent review evidence exists for this sensitive auth change.
+What the agent already tried: Invoked the repository's isolated read-only
+  `claudex-loop inspect` process from a detached clean worktree without exposing
+  ignored local files. The process stopped before review because Claude CLI was
+  unauthenticated.
+Work completed: The review attempt and exact limitation are recorded; no review
+  findings were simulated or inferred.
+Why autonomous resolution is unsafe or impossible: Authenticating an external
+  model CLI is a local account action; credentials must not enter chat or the repo.
+Exact owner action required: Authenticate the Claude Code CLI through its
+  official local login flow, or designate another authorized independent reviewer.
+Step-by-step resolution instructions:
+  1. In the local terminal, run the installed `claude` CLI and complete its
+     official `/login` flow. Do not paste credentials, codes or tokens into chat.
+  2. Confirm the CLI session is authenticated locally; `claude --version` alone
+     is not sufficient evidence.
+  3. Ask the agent to rerun the read-only inspection of commit
+     `f468643db8d602a8f07238939b66d3744fff04c6` against base
+     `c2a9631599e125f363d9c6d0cf94f07a021783eb`.
+  4. Address any findings, rerun affected tests, then request fresh review on the
+     new content hash. Keep auth changes on the task branch until review and
+     required owner review complete.
+Required environment-variable names (no values): None
+External dependencies: Authenticated, read-only independent reviewer session.
+Expected result: A valid review receipt/verdict covering the exact diff snapshot.
+Verification procedure: Inspect runner `result.json`, snapshot hash, reviewer
+  coverage and findings; a CLI exit code alone is not approval.
+Tests to rerun: Node 24 OTP tests, focused typecheck/lint/format, then full
+  workspace/auth/integration gates when `VALIDATION-ENV-01` is resolved.
+Affected tasks: Only promotion of the sensitive auth task commit; unrelated work
+  may continue on separate task branches.
+Evidence references: `PROGRESS.md`, `docs/EMAIL-OTP-PRIMITIVE-PLAN.md`, and
+  external review attempt artifact `email-otp-f468643-retry`.

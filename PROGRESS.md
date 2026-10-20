@@ -8,7 +8,8 @@
   reviewed, committed and fast-forward integrated into `codex/dev`. Verified
   baseline ancestry and clean worktree before beginning this audit task.
 - Existing baseline: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
-- Development integration: `codex/dev`; current task: production test-access guard.
+- Development integration: `codex/dev`; current task: isolated email OTP primitive
+  on `codex/task/email-otp-auth`; separate review pending.
 - Main is not modified, pushed or merged. No production/provider actions performed.
 - Existing GitHub main protection query returned HTTP 404 (not protected); branch
   rules query returned an empty array. No repository setting was changed.
@@ -271,3 +272,21 @@ high-severity threshold, but the raw current audits still report 12 findings
 production deployment,
 external provider, credential, or live source validation is claimed. SOURCE-01
 remains `READY_FOR_OWNER` for source-rights evidence and measured launch coverage.
+
+## Email OTP primitive task checkpoint (2026-10-20)
+
+Local task commit: `f468643db8d602a8f07238939b66d3744fff04c6` on
+`codex/task/email-otp-auth`, based on `c2a9631599e125f363d9c6d0cf94f07a021783eb`.
+The tracked change adds a challenge-bound HMAC OTP digest primitive with a
+minimum 32-byte key input, six-digit random code, 10-minute expiry and five
+attempt budget; callers still must enforce persistence, attempt consumption and
+single-use atomically. No login/API/session/provider/UI behavior was integrated.
+
+Isolated Node 24.21.0 suite: 9/9 PASS. Focused strict TypeScript, changed-file
+ESLint and Prettier checks: PASS. These do not establish `npm run test:unit`,
+full auth/security/integration/browser gates or production acceptance. The
+independent inspector could not run because Claude Code has no authenticated
+CLI session (`Not logged in`); no reviewer verdict was produced. The auth code
+therefore remains on its task branch, with promotion pending independent review
+and owner review. No push, merge, deployment, provider call, secret access or
+production change occurred.
