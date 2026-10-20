@@ -944,3 +944,23 @@ CI result to claim. These are local integration checks; they do not establish
 production readiness, external-provider acceptance, or a deployment. No
 production deployment, shared database migration, real email/provider call, or
 DNS/infrastructure change occurred.
+
+### Exact-main integration rerun (2026-10-21)
+
+At `f836f66d5f634789d76a67eea42fa949921d6655`, the complete serial
+`npm run test:integration` command passed 55/55 tests with zero skips using
+PostgreSQL 17.6 and Redis 7.4.5 in disposable containers, published only on
+loopback with tmpfs data and synthetic credentials. The test process received
+explicit URLs for the database, cache Redis, and persistent queue Redis; the
+Resend key was unset, so no provider request or real message was sent. The
+containers were removed after the run and existing project containers/volumes
+were not touched.
+
+The earlier attempt in this validation session failed because the checked-in
+`.env` points to unused local ports 58380–58382, while the isolated test
+services were published on different ephemeral ports. The resulting Redis
+connection failure caused teardown errors in dependent queue tests. No test was
+retried away or weakened: the run was repeated once with all three service URLs
+explicitly set to the disposable services and passed in full. `.env` was not
+changed. This is a local test-environment mismatch, not evidence of a product
+queue defect.
