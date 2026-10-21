@@ -203,3 +203,6 @@ remain incomplete.
   does not currently define this period; no duration was invented. See
   `blocker.txt`; no other actionable defect was identified in the reviewed
   implementation.
+- Integrated directly on `main` as `3b9f23946a41bf3dbc504e58127d5080a2858591`;
+  normal push succeeded and local `main` matched `origin/main`. No deployment
+  occurred. The separate dirty OTP worktree was preserved unchanged.

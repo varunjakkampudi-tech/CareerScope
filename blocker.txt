@@ -535,21 +535,25 @@ Verified root cause: The task branch tip at
   `testAccess` to be undefined and thereby disables otherwise configured OTP
   signup, drops `emailVerifiedAt` from session/OpenAPI/client contracts, and
   removes the dependency-remediation test plus Vite and scoped overrides.
-Current implementation: Canonical main at `0ba52be7aa43828593bf5a2b9174e07e547944fe`
-  contains the compatible disabled-test-access signup condition, preserves the
-  verification signal and dependency protections, and was synchronized with
-  `origin/main` before the focused retention change. The 53-status-entry email worktree remains untouched; its file
-  contents were compared with main, with 38 identical and 16 different.
+Current implementation: Canonical main at
+  `3b9f23946a41bf3dbc504e58127d5080a2858591` contains the compatible
+  disabled-test-access signup condition, preserves the verification signal and
+  dependency protections, and is synchronized with `origin/main`. The preserved
+  email worktree remains at `f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56` and has
+  53 dirty status entries: 38 current file contents are byte-identical to main;
+  15 differ. It remains untouched.
 Impact: No blocker to the already-integrated main implementation. The stale
   worktree must not be overlaid or deleted until its differing files are
   individually reconciled; all owner work remains preserved.
 What the agent already tried: Read-only review of the dirty source, branch-tip
   ancestry checks, and per-file content comparison against canonical main.
 Work completed: The committed OTP and application-evidence branch tips are
-  confirmed ancestors of main. Integration passed 55/55 at the earlier main
-  checkpoint and 56/56 after adding the retention regression, using local
-  disposable PostgreSQL/Redis services. No source from the dirty worktree was
-  copied or removed.
+  confirmed ancestors of main. The main reminder checkpoint is locally
+  validated and pushed; its complete service-backed integration suite passed
+  57/57 with zero skips on disposable PostgreSQL/Redis. The 84/84 gate suite,
+  835/835 domain suite, cross-browser/axe checks, build, security/privacy,
+  typecheck, lint, format, and migration checks passed locally. No source from
+  the dirty worktree was copied or removed.
 Why autonomous resolution is unsafe or impossible: The remaining differing
   snapshots mix stale docs, migration history and older contracts with main's
   later application-evidence and security changes. Only a reviewed, non-regressive
@@ -563,11 +567,13 @@ Expected result: No stale snapshot overwrites canonical main; any useful unique
   change is separately source-reviewed, tested and recorded before integration.
 Verification procedure: Compare each proposed path to current main, review the
   exact content diff, run targeted checks, and verify a clean post-commit state.
-Tests to rerun: Targeted auth/contract tests for any future port; the current
-  main-worktree `npm run test:integration` result is 56/56 with zero skips.
+Tests to rerun: Targeted auth/contract tests for any future port; current
+  reminder-checkpoint integration result is 57/57 with zero skips. Hosted CI is
+  unavailable while Actions remains disabled.
 Affected tasks: Only any future promotion from the preserved stale auth worktree.
 Evidence references: `PROGRESS.md`, the read-only independent review result, and
-  `git merge-base --is-ancestor` verification on 21 October 2026.
+  current `git merge-base --is-ancestor` / blob-hash comparison on 21 October
+  2026.
 
 BLOCKER ID: AUTH-LEGACY-IDENTITY-01
 Title: Preflight legacy identity values before applying migration 0019

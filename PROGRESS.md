@@ -1149,3 +1149,10 @@ idempotency tombstones have no bounded retention/purge. The approved retention
 schedule does not define a period for this data class, so none was invented; see
 `blocker.txt` for the owner action. No live message or production change
 occurred. GitHub Actions is disabled, so hosted CI is unavailable.
+
+Repository checkpoint: this reminder slice was committed and pushed directly
+to `main` as `3b9f23946a41bf3dbc504e58127d5080a2858591`. The normal push
+succeeded; a fresh `git ls-remote` check matched local `HEAD`, and the main
+worktree was clean. This does not include the separate 53-entry dirty OTP
+worktree or constitute production deployment. The P2 notification-retention
+policy remains open.
