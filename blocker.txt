@@ -150,6 +150,13 @@ What the agent already tried: Read repository docs and current hosted rule metad
   `security:check` (zero production dependency vulnerabilities),
   `format:check`, and `build` (both Next builds and all 13 CSP hashes).
   These local results do not replace hosted CI or production acceptance.
+  Rechecked exact current `main` at
+  `4f71d64816dc17fc8b4ac4d2962eb84d088ce2ba` on 21 October 2026: GitHub
+  Actions permissions still report `enabled=false`, the exact commit status
+  contains zero checks, and `gh run list --commit` returns no runs. The commits
+  after `ac38587` are documentation-only; the listed local test results apply
+  to the unchanged implementation at `ac38587`, not a newly rerun full suite on
+  `4f71d64`. Local `HEAD` and `origin/main` match `4f71d64`.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
