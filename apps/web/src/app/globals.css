@@ -742,6 +742,31 @@ h3 {
   overflow-wrap: anywhere;
   line-height: 1.7;
 }
+.job-feedback {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.job-feedback label {
+  display: grid;
+  gap: 6px;
+  min-width: min(100%, 240px);
+  color: var(--muted);
+  font-size: 13px;
+}
+.job-feedback select,
+.job-feedback button {
+  min-height: 40px;
+}
+.job-feedback [role='status'],
+.job-feedback [role='alert'] {
+  flex-basis: 100%;
+  margin: 0;
+}
 .state {
   min-height: 220px;
   display: flex;

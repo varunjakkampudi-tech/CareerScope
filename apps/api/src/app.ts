@@ -11,6 +11,7 @@ import {
   LAUNCH_JOB_SOURCE_CANDIDATES,
   SOURCE_LABELS,
   isJobSourcePermittedForCandidateDiscovery,
+  jobFeedbackReasonSchema,
   type SourceId,
 } from '@careerscope/shared';
 import { registerOpenApi } from './openapi.js';
@@ -119,6 +120,7 @@ const emailChangeRequestSchema = z
 const emailChangeVerifySchema = z
   .object({ address: z.enum(['current', 'new']), code: z.string().regex(/^\d{6}$/) })
   .strict();
+const jobFeedbackSchema = z.object({ reason: jobFeedbackReasonSchema }).strict();
 
 const deviceName = (userAgent: string | undefined) => {
   if (!userAgent) return 'Unknown device';
@@ -1355,6 +1357,22 @@ export async function createApp(
     );
     return { items: result.rows };
   });
+  app.put('/api/search-jobs/:id/feedback', async (request, reply) => {
+    if (!(await consumeRateLimit(request, `job-feedback:${request.ownerId!}`, 20, 3600)))
+      throw new HttpError(429, 'Too many feedback updates');
+    const { id } = identifier.parse(request.params);
+    const { reason } = jobFeedbackSchema.parse(request.body);
+    const result = await database.pool.query<{ id: string; reason: string; updatedAt: Date }>(
+      `INSERT INTO job_feedback (id, owner_id, job_id, reason)
+       SELECT $1, owner_id, id, $3 FROM search_jobs WHERE owner_id = $2 AND id = $4
+       ON CONFLICT (owner_id, job_id) DO UPDATE
+       SET reason = EXCLUDED.reason, updated_at = now()
+       RETURNING id, reason, updated_at AS "updatedAt"`,
+      [randomUUID(), request.ownerId, reason, id],
+    );
+    if (!result.rowCount) throw new HttpError(404, 'Job not found');
+    return reply.code(200).send({ reason: result.rows[0]!.reason });
+  });
   app.post('/api/searches/:id/cancel', async (request) => {
     const { id } = identifier.parse(request.params);
     if (!(await consumeRateLimit(request, `cancel:${request.ownerId!}`, 30, 60)))
@@ -1523,8 +1541,11 @@ export async function createApp(
     const search = await database.getSearch(request.ownerId!, id);
     if (!search) throw new HttpError(404, 'Search not found');
     const jobs = await database.pool.query(
-      `SELECT id, data FROM search_jobs WHERE owner_id = $1 AND run_id = $2
-       ORDER BY (data->'match'->>'score')::double precision DESC NULLS LAST, id LIMIT 100`,
+      `SELECT j.id, j.data, f.reason AS "feedbackReason"
+       FROM search_jobs j
+       LEFT JOIN job_feedback f ON f.owner_id = j.owner_id AND f.job_id = j.id
+       WHERE j.owner_id = $1 AND j.run_id = $2
+       ORDER BY (j.data->'match'->>'score')::double precision DESC NULLS LAST, j.id LIMIT 100`,
       [request.ownerId, id],
     );
     const events = await database.pool.query(
@@ -1551,6 +1572,7 @@ export async function createApp(
       jobs: jobs.rows.map((row) => ({
         id: row.id,
         data: collectedJobSchema.strip().parse(row.data),
+        feedbackReason: row.feedbackReason,
       })),
       events: events.rows,
     };

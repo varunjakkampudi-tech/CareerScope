@@ -2127,6 +2127,71 @@ try {
         .getByText('Limited description — score capped, treat as low-confidence', { exact: true })
         .waitFor();
       await page.getByText('Do Not Apply', { exact: true }).waitFor();
+      const scoredJobCard = page
+        .locator('details.job')
+        .filter({ has: page.getByRole('heading', { name: 'Scored React Engineer', exact: true }) });
+      const feedbackReason = scoredJobCard.getByLabel('Report a posting issue');
+      const priorFeedbackReason = resultBody.jobs[0].feedbackReason;
+      const firstFeedbackReason =
+        priorFeedbackReason === 'suspicious' ? 'irrelevant' : 'suspicious';
+      await feedbackReason.selectOption(firstFeedbackReason);
+      const firstFeedbackResponse = page.waitForResponse(
+        (response) =>
+          response.url().includes(`/api/search-jobs/${resultBody.jobs[0].id}/feedback`) &&
+          response.request().method() === 'PUT',
+      );
+      await scoredJobCard
+        .getByRole('button', {
+          name: priorFeedbackReason ? 'Update feedback' : 'Send feedback',
+          exact: true,
+        })
+        .click();
+      const firstFeedbackResult = await firstFeedbackResponse;
+      assert.equal(firstFeedbackResult.status(), 200);
+      assert.deepEqual(firstFeedbackResult.request().postDataJSON(), {
+        reason: firstFeedbackReason,
+      });
+      await scoredJobCard
+        .getByRole('status')
+        .filter({ hasText: 'Your feedback was recorded.' })
+        .waitFor();
+      let feedbackRows = await database.pool.query(
+        'SELECT owner_id, job_id, reason FROM job_feedback WHERE owner_id = $1 AND job_id = $2',
+        [ownerId, resultBody.jobs[0].id],
+      );
+      assert.deepEqual(feedbackRows.rows, [
+        { owner_id: ownerId, job_id: resultBody.jobs[0].id, reason: firstFeedbackReason },
+      ]);
+      const secondFeedbackReason = firstFeedbackReason === 'suspicious' ? 'incorrect' : 'duplicate';
+      await feedbackReason.selectOption(secondFeedbackReason);
+      const secondFeedbackResponse = page.waitForResponse(
+        (response) =>
+          response.url().includes(`/api/search-jobs/${resultBody.jobs[0].id}/feedback`) &&
+          response.request().method() === 'PUT',
+      );
+      await scoredJobCard.getByRole('button', { name: 'Update feedback', exact: true }).click();
+      const secondFeedbackResult = await secondFeedbackResponse;
+      assert.equal(secondFeedbackResult.status(), 200);
+      assert.deepEqual(secondFeedbackResult.request().postDataJSON(), {
+        reason: secondFeedbackReason,
+      });
+      await scoredJobCard
+        .getByRole('status')
+        .filter({ hasText: 'Your feedback was recorded.' })
+        .waitFor();
+      feedbackRows = await database.pool.query(
+        'SELECT owner_id, job_id, reason FROM job_feedback WHERE owner_id = $1 AND job_id = $2',
+        [ownerId, resultBody.jobs[0].id],
+      );
+      assert.deepEqual(feedbackRows.rows, [
+        { owner_id: ownerId, job_id: resultBody.jobs[0].id, reason: secondFeedbackReason },
+      ]);
+      assert.equal(
+        (await database.pool.query('SELECT id FROM job_feedback WHERE owner_id = $1', [ownerId]))
+          .rowCount,
+        1,
+        'changing feedback updates the existing owner/job row instead of creating a duplicate',
+      );
       await page.getByText('Senior React Engineer', { exact: true }).click();
       assert.equal(
         await page

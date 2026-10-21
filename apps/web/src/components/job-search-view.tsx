@@ -18,6 +18,8 @@ import {
   JOB_SOURCE_PERMISSION_PENDING_MESSAGE,
   LAUNCH_JOB_SOURCE_CANDIDATES,
   SOURCE_LABELS,
+  jobFeedbackReasons,
+  type JobFeedbackReason,
 } from '@careerscope/shared';
 import { api, SESSION_EXPIRED_EVENT } from '@/lib/api';
 import { ownerKey, useSession } from '@/lib/session';
@@ -43,7 +45,14 @@ type JobSourceCatalog = {
   }[];
 };
 type Run = { id: string; status: string; createdAt: string; request: { query: string } };
-type Job = { id: string; data: CollectedJob };
+type Job = { id: string; data: CollectedJob; feedbackReason: JobFeedbackReason | null };
+const feedbackLabels: Record<JobFeedbackReason, string> = {
+  irrelevant: 'Not relevant to me',
+  duplicate: 'Duplicate posting',
+  incorrect: 'Posting details are incorrect',
+  unavailable: 'Posting is no longer available',
+  suspicious: 'Posting seems suspicious',
+};
 type Detail = {
   runId: string;
   status: string;
@@ -62,6 +71,65 @@ function relativeTime(iso: string | null): string | null {
   if (days < 30) return `${days} days ago`;
   const months = Math.floor(days / 30);
   return months === 1 ? '1 month ago' : `${months} months ago`;
+}
+
+function JobFeedback({
+  jobId,
+  csrf,
+  reason: initialReason,
+  onSaved,
+}: {
+  jobId: string;
+  csrf: string;
+  reason: JobFeedbackReason | null;
+  onSaved: (reason: JobFeedbackReason) => void;
+}) {
+  const [reason, setReason] = useState<JobFeedbackReason | ''>(initialReason ?? '');
+  const feedback = useMutation({
+    mutationFn: (nextReason: JobFeedbackReason) =>
+      api<{ reason: JobFeedbackReason }>(`/search-jobs/${jobId}/feedback`, {
+        method: 'PUT',
+        headers: { 'x-csrf-token': csrf },
+        body: JSON.stringify({ reason: nextReason }),
+      }),
+    onSuccess: (result) => {
+      onSaved(result.reason);
+    },
+  });
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (reason) feedback.mutate(reason);
+  }
+
+  return (
+    <form className="job-feedback" onSubmit={submit}>
+      <label>
+        <span>Report a posting issue</span>
+        <select
+          value={reason}
+          onChange={(event) => setReason(event.target.value as JobFeedbackReason | '')}
+          disabled={feedback.isPending}
+        >
+          <option value="">Choose a reason</option>
+          {jobFeedbackReasons.map((value) => (
+            <option key={value} value={value}>
+              {feedbackLabels[value]}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button type="submit" disabled={!reason || feedback.isPending || reason === initialReason}>
+        {feedback.isPending ? 'Saving…' : initialReason ? 'Update feedback' : 'Send feedback'}
+      </button>
+      {feedback.error && <p role="alert">Could not save feedback. Please try again.</p>}
+      {initialReason && !feedback.error && (
+        <p role="status">
+          Your feedback was recorded. It does not change the posting or application status.
+        </p>
+      )}
+    </form>
+  );
 }
 
 // The search/discovery workspace, mechanically extracted from the former
@@ -549,7 +617,7 @@ function JobSearchWorkspace() {
                 />
               )}
               <div className="job-list">
-                {jobs.map(({ id, data }) => (
+                {jobs.map(({ id, data, feedbackReason }) => (
                   <details className="job" key={id}>
                     <summary>
                       <div>
@@ -614,6 +682,26 @@ function JobSearchWorkspace() {
                       <p className="description">
                         {data.description || 'Description not available.'}
                       </p>
+                      <JobFeedback
+                        key={`${id}:${feedbackReason ?? 'none'}`}
+                        jobId={id}
+                        csrf={session.data?.csrf ?? ''}
+                        reason={feedbackReason}
+                        onSaved={(reason) => {
+                          cache.setQueryData<Detail>(
+                            ownerKey(owner, 'searches', selectedId),
+                            (current) =>
+                              current
+                                ? {
+                                    ...current,
+                                    jobs: current.jobs.map((job) =>
+                                      job.id === id ? { ...job, feedbackReason: reason } : job,
+                                    ),
+                                  }
+                                : current,
+                          );
+                        }}
+                      />
                     </div>
                   </details>
                 ))}

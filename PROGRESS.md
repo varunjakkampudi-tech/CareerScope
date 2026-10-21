@@ -1,5 +1,40 @@
 # CareerScope v12 engineering progress
 
+## Candidate job-posting feedback slice (2026-10-21)
+
+Local, uncommitted work on `main` based on `197f8548eb854cefae7df2a0fc36da67f7118773`
+adds an owner-scoped reason-code report for a job result. It persists at most one
+reason per candidate/job, rejects cross-owner and malformed writes, rate-limits
+submissions, exposes the selected value in the candidate's own search result,
+documents the API response/mutation, and does not change listing visibility or
+application state. This is only candidate feedback capture. It does not satisfy
+v12's end-to-end reporting/moderation requirement; staff authorization, report
+queues, audited investigations, outcomes and approved outcome semantics remain
+unimplemented. No outcome or moderation behavior was invented.
+
+Independent source review found no authorization, CSRF, injection, ownership or
+sensitive-logging blocker. It did flag the new migration's composite unique-index
+build on existing `search_jobs` as an operational rollout risk whose duration
+depends on production table size and traffic. Production migration impact has
+not been tested; assess it in an approved staging/maintenance window before any
+production application.
+
+Executed on Node v24.19.0 against the exact current source (local synthetic
+fixtures and disposable/loopback services only): `npm run build` passed both
+production build/CSP passes (13 inline-script hashes); `npm run gates:test`
+passed its policy/source/privacy/deploy/EOL/lint/typecheck gates and 91/91 unit
+tests; `npm run test:integration` passed 59/59 with zero skips; `npm run
+test:domain` passed 839/839 across 30 files; and `npm run test:ui` exited 0 on
+Chromium, Firefox and WebKit, including the feedback flow, axe, keyboard, and
+eight responsive widths. `npm run security:check` reported zero production
+dependency vulnerabilities; `npm run db:generate` reported no schema drift;
+formatting, line endings and `git diff --check` passed. Test-registration/type
+checking found two issues before final pass; both were corrected and the gates
+rerun. The UI form now follows the persisted parent value rather than setting
+state in an effect. No hosted CI exists for these uncommitted changes (GitHub
+Actions is disabled); no commit, push, deployment, provider call or production
+change occurred.
+
 ## Main browser/runtime validation follow-up (2026-10-21)
 
 At code SHA `7bc55ef6d75db17261b1a773a26b1b9d4dd0b95d`, the committed Playwright

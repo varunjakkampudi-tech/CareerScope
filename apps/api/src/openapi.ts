@@ -2,6 +2,7 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import type { FastifyInstance, FastifySchema } from 'fastify';
 import { leadStatusSchema, maximumResumeBytes, sessionCookie } from '@careerscope/core';
+import { jobFeedbackReasons } from '@careerscope/shared';
 
 type Schema = Record<string, unknown>;
 type Documentation = FastifySchema & { response: Record<string, Schema> };
@@ -668,6 +669,16 @@ function contracts(options: {
       object({ lead: nullable(lead) }),
       { failures: [400, 429] },
     ),
+    'PUT /api/search-jobs/:id/feedback': operation(
+      'Record or update the authenticated candidate’s reason-coded feedback for an owned search result',
+      object({ reason: text({ enum: [...jobFeedbackReasons] }) }),
+      {
+        body: object({ reason: text({ enum: [...jobFeedbackReasons] }) }),
+        failures: [400, 401, 403, 404, 429, 503],
+        description:
+          'Stores only a reason code scoped to the authenticated owner and search result. Repeated updates replace that owner’s prior reason. The action does not change the job posting or application lifecycle.',
+      },
+    ),
     'GET /api/leads/:id': operation('Read a saved lead', lead, { failures: [400, 404, 429] }),
     'GET /api/applications/export': operation(
       'Download the authenticated candidate’s application records as privacy-scoped CSV',
@@ -780,7 +791,13 @@ function contracts(options: {
         request: searchInput,
         profileRevision: nullable(integer()),
         sourceOutcomes,
-        jobs: array(object({ id: uuid, data: job })),
+        jobs: array(
+          object({
+            id: uuid,
+            data: job,
+            feedbackReason: nullable(text({ enum: [...jobFeedbackReasons] })),
+          }),
+        ),
         events: array(object({ cursor, type: text(), createdAt: timestamp })),
       }),
       { failures: [400, 404, 429] },

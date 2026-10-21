@@ -313,7 +313,32 @@ export const jobs = pgTable(
       foreignColumns: [searches.ownerId, searches.id],
     }),
     uniqueIndex('run_job_fingerprint').on(table.runId, table.fingerprint),
+    uniqueIndex('job_owner_id').on(table.ownerId, table.id),
     index('job_owner_run').on(table.ownerId, table.runId),
+  ],
+);
+
+export const jobFeedback = pgTable(
+  'job_feedback',
+  {
+    id: uuid('id').primaryKey(),
+    ownerId: uuid('owner_id').notNull(),
+    jobId: uuid('job_id').notNull(),
+    reason: text('reason').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.ownerId, table.jobId],
+      foreignColumns: [jobs.ownerId, jobs.id],
+    }).onDelete('cascade'),
+    uniqueIndex('job_feedback_owner_job').on(table.ownerId, table.jobId),
+    index('job_feedback_created').on(table.createdAt),
+    check(
+      'job_feedback_reason_valid',
+      sql`${table.reason} IN ('irrelevant', 'duplicate', 'incorrect', 'unavailable', 'suspicious')`,
+    ),
   ],
 );
 

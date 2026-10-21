@@ -225,6 +225,13 @@
       "when": 1792566331478,
       "tag": "0031_peaceful_gauntlet",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1792593820188,
+      "tag": "0032_black_hobgoblin",
+      "breakpoints": true
     }
   ]
 }

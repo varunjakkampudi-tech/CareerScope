@@ -449,3 +449,23 @@ required responsive widths. Exact pushed SHA: `444a832569ffae6da4e308b8e68bd5740
 This is browser-test harness behavior, not a product-runtime relaxation. The
 run used synthetic users and disposable loopback PostgreSQL/Redis. Hosted CI is
 unavailable while GitHub Actions is disabled.
+
+### Candidate job-feedback capture slice (2026-10-21, local uncommitted source)
+
+| Check                                                           | Result                                           | Scope / evidence limit                                                                                                                             |
+| --------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run gates:test`                                            | PASS; 91/91 unit tests and policy gates          | Node v24.19.0; includes strict production/test type checking, lint, source, privacy, deployment-policy and EOL checks.                             |
+| `npm run test:integration`                                      | PASS; 59/59, zero skips                          | Local synthetic, disposable PostgreSQL/Redis; includes ownership, CSRF, validation, upsert, rate limit, hydration, OpenAPI and retention behavior. |
+| `npm run test:domain`                                           | PASS; 839/839 across 30 files                    | Existing provider/matching/resume/shared unit coverage.                                                                                            |
+| `npm run test:ui`                                               | PASS; Chromium, Firefox, WebKit                  | Candidate feedback flow, axe, keyboard and eight responsive widths.                                                                                |
+| `npm run build`                                                 | PASS                                             | Production builds; CSP verification covered all 13 generated inline-script hashes.                                                                 |
+| `npm run security:check`                                        | PASS; zero production dependency vulnerabilities | Local dependency audit and privacy scan, not a hosted/container scan.                                                                              |
+| `npm run db:generate`                                           | PASS; no schema drift                            | Generation check only; no shared/live migration was run.                                                                                           |
+| `npm run format:check`, `npm run eol:check`, `git diff --check` | PASS                                             | Local formatting, line-ending and whitespace checks.                                                                                               |
+
+These results apply to the local source tree, not a commit or hosted CI run.
+No production migration, external provider, deployment or live acceptance was
+performed. Candidate feedback is only an unverified report signal; v12's staff
+moderation/investigation workflow remains incomplete. Review also identified
+that the migration's non-concurrent index build requires staging/maintenance
+impact assessment against real table size and traffic before production use.
