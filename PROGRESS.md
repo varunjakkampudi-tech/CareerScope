@@ -1281,3 +1281,17 @@ process started for the run were stopped afterward. Hosted CI remains
 unavailable while GitHub Actions is disabled. These source and test changes are
 committed and pushed to `main` as `81b2371`. The separate OTP and
 application-evidence worktrees were left untouched.
+
+### Main synchronization confirmation (2026-10-21)
+
+After the Account Security change and its documentation checkpoint, local
+`main`, `origin/main`, and the remote `refs/heads/main` all matched at
+`174f8a33da7914be7c40bdbafcf0592a6919f5ce`. The Resend OTP implementation
+committed at `f23d33f` is an ancestor of this SHA. Later uncommitted changes
+remain preserved in the separate OTP worktree (53 current Git status entries)
+and application-evidence worktree (57 current Git status entries); they were not
+included because they have not been validated as coherent integration
+candidates. The earlier email snapshot inventory described 53 status entries
+as 54 files because one untracked directory contained two files. No other
+worktree was modified. GitHub Actions remains disabled; no hosted run exists for
+this SHA. No deployment or production change occurred.

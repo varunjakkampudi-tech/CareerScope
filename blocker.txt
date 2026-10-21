@@ -615,6 +615,15 @@ Evidence references: `PROGRESS.md`, the read-only independent review result, and
   current `git merge-base --is-ancestor` / blob-hash comparison on 21 October
   2026.
 
+Latest synchronization check (21 October 2026): local `main`, `origin/main`,
+and `git ls-remote` all resolve to `174f8a33da7914be7c40bdbafcf0592a6919f5ce`.
+The committed Resend OTP implementation remains included in main. The preserved
+email worktree currently has 53 dirty status entries; the preserved
+application-evidence worktree has 57. Their branch tips are ancestors of main,
+but those uncommitted deltas are not part of main. The earlier 54-file email
+comparison and 58-file application-evidence comparison are historical inventory
+counts, not approved integration scope. Neither dirty worktree was changed.
+
 BLOCKER ID: AUTH-LEGACY-IDENTITY-01
 Title: Preflight legacy identity values before applying migration 0019
 Priority: High
