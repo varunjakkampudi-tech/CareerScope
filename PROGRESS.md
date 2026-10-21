@@ -1725,3 +1725,17 @@ and 2 external-evidence items. A machine comparison confirmed 22/22 exact ID
 coverage with no missing or extra disposition rows. The historical 319-item
 inventory and source hash were left unchanged; the complete R1 inventory and
 new-clause mapping remain open. No runtime or provider behavior changed.
+
+### OTP distributed IP-limit regression coverage (2026-10-21)
+
+Added integration coverage for the already-implemented Redis-backed OTP
+request limit: ten distinct synthetic-email requests from one untrusted peer
+are accepted across two API instances, while the eleventh is rejected before
+provider delivery. Rotating synthetic `X-Forwarded-For` values do not alter the
+untrusted peer identity. The test uses disposable local PostgreSQL/Redis and a
+synthetic delivery provider; it does not send email or claim pending A1.2/CR-07
+LB8 semantics are approved. `npm run test:integration` passed 59/59 with zero
+skips; the focused OTP integration test, `npm run typecheck`, `npm run lint`,
+`npm run format:check`, and `git diff --check` passed locally on Node v24.19.0.
+This is regression evidence for current code, not proof of hosted Redis,
+production proxy trust configuration, or production rate-limit behavior.

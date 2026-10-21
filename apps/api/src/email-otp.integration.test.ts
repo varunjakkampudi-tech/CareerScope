@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import test from 'node:test';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { fileURLToPath } from 'node:url';
@@ -106,11 +106,12 @@ test(
         email: string,
         extra: Record<string, unknown> = {},
         remoteAddress?: string,
+        forwardedFor?: string,
       ) =>
         app.inject({
           method: 'POST',
           url: '/api/otp/request',
-          headers: { origin },
+          headers: { origin, ...(forwardedFor ? { 'x-forwarded-for': forwardedFor } : {}) },
           payload: { email, ...extra },
           remoteAddress,
         });
@@ -174,6 +175,40 @@ test(
         delivered.length,
         2,
         'shared Redis cooldown must suppress a second instance send',
+      );
+
+      // Regression coverage for the existing IP-keyed request limit. Use an
+      // untrusted peer address and rotate X-Forwarded-For to verify that only a
+      // trusted proxy may supply the effective client address. This test does
+      // not claim the pending A1.2/CR-07 LB8 acceptance contract is approved.
+      const syntheticPeer = '198.51.100.23';
+      const ipKey = `${redisPrefix}otp:request:ip:${createHash('sha256')
+        .update(syntheticPeer)
+        .digest('hex')}`;
+      await limiterOne.client.del(ipKey);
+      const deliveryCountBeforeIpBudget = delivered.length;
+      for (let attempt = 0; attempt < 10; attempt += 1) {
+        const response = await requestCode(
+          attempt % 2 === 0 ? appOne! : appTwo!,
+          `ip-budget-${attempt}@example.test`,
+          {},
+          syntheticPeer,
+          `203.0.113.${attempt + 1}`,
+        );
+        assert.equal(response.statusCode, 202, `IP request ${attempt + 1} is within the budget`);
+      }
+      const overBudget = await requestCode(
+        appOne!,
+        'ip-budget-over@example.test',
+        {},
+        syntheticPeer,
+        '203.0.113.250',
+      );
+      assert.equal(overBudget.statusCode, 429, 'the eleventh request from one peer is rejected');
+      assert.equal(
+        delivered.length,
+        deliveryCountBeforeIpBudget + 10,
+        'the over-budget request must not reach the delivery provider',
       );
 
       const challenge = delivered[0]!;

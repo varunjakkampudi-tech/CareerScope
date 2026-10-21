@@ -480,3 +480,15 @@ impact assessment against real table size and traffic before production use.
 All source blocks remain NOT_ASSESSED/NOT_RUN. This does not complete source-to-
 requirement/test traceability; SOURCE-REVISION-01 remains open. No source approval,
 pending amendment, implementation evidence or external validation was fabricated.
+
+### OTP distributed IP-limit regression (2026-10-21)
+
+| Check                                                                           | Result                  | Scope / evidence limit                                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `apps/api/src/email-otp.integration.test.ts`                                    | PASS, focused case      | Existing Redis-backed IP budget: ten requests across two API instances accepted; request eleven returns 429 and does not call the synthetic delivery provider. Rotating forwarded headers from an untrusted peer do not change the bucket. |
+| `npm run test:integration`                                                      | PASS, 59/59; zero skips | Disposable local PostgreSQL/Redis, synthetic provider; no Resend call or production service.                                                                                                                                               |
+| `npm run typecheck`, `npm run lint`, `npm run format:check`, `git diff --check` | PASS                    | Local Node v24.19.0 checks.                                                                                                                                                                                                                |
+
+This is regression coverage for existing code, not approval or verification of
+the pending A1.2/CR-07 LB8 contract, hosted Redis, production proxy trust, or
+production rate-limit behavior.
