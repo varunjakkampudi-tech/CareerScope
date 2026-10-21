@@ -12,7 +12,7 @@ scope-reconciliation, source-conflict, owner/external-gate and unavailable
 reference content; it does not represent features/tests or completion.
 
 The inventory generator/checker/tests are registered under the canonical
-requirements gates. Ten inventory tests pass, including stale-source rejection,
+requirements gates. Eleven inventory tests pass, including stale-source rejection,
 exact (not substring) lineage matching, duplicate/unknown disposition rejection,
 immutable legacy lineage checks, explicit pending/conflict classification and
 deterministic output. Independent review verified the current 518/297/22 census

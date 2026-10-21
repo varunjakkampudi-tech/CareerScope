@@ -154,6 +154,37 @@ test('the scope parser excludes historical change log and positioning while reta
   assert.ok(parsed.every((item) => !['3', null].includes(item.section)));
 });
 
+test('the source parser retains the independently reviewed per-section census', () => {
+  const sectionCounts = Object.groupBy(parseContentBlocks(source), (item) => item.section);
+  assert.deepEqual(
+    Object.fromEntries(
+      Object.entries(sectionCounts).map(([section, items]) => [section, items.length]),
+    ),
+    {
+      1: 16,
+      2: 23,
+      4: 161,
+      5: 9,
+      6: 24,
+      7: 23,
+      8: 10,
+      9: 8,
+      10: 13,
+      11: 4,
+      12: 13,
+      13: 13,
+      14: 5,
+      15: 27,
+      A1: 52,
+      A2: 26,
+      A3: 30,
+      PCA: 10,
+      'CR-07': 47,
+      'CLEANUP-REFERENCE': 4,
+    },
+  );
+});
+
 test('the registered checker runs from the repository without printing source text', () => {
   const child = spawnSync(
     process.execPath,
