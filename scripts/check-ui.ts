@@ -30,6 +30,12 @@ import { selectUiBrowsers } from './ui-browsers.js';
 import { staleSavedRead } from './ui-requests.js';
 import { JOB_SOURCE_PERMISSION_PENDING_MESSAGE } from '@careerscope/shared';
 
+const requiredResponsiveWidths = [320, 360, 390, 768, 1024, 1280, 1440, 1920] as const;
+const responsiveWidthsEndingAt = (lastWidth: (typeof requiredResponsiveWidths)[number]) => [
+  ...requiredResponsiveWidths.filter((width) => width !== lastWidth),
+  lastWidth,
+];
+
 const configured = process.env.DATABASE_URL;
 assert.ok(configured);
 const uiBrowsers = selectUiBrowsers(
@@ -326,7 +332,7 @@ try {
     // fails loudly here (Playwright's 30s default) rather than inside axe.
     await page.getByRole('heading', { level: 1, name: heading }).waitFor({ state: 'visible' });
     await page.waitForFunction(() => document.title.trim().length > 0);
-    for (const width of [320, 1440]) {
+    for (const width of responsiveWidthsEndingAt(1440)) {
       await page.setViewportSize({ width, height: 900 });
       await page.evaluate(axeSource);
       const audit = await page.evaluate(async () => {
@@ -496,7 +502,7 @@ try {
       await otpPage.getByRole('button', { name: 'Send verification code' }).click();
       await otpPage.getByLabel('Six-digit verification code').waitFor();
       await accessible(otpPage, engine, 'OTP verification form', 'Sign in to CareerScope');
-      for (const width of [320, 390, 768, 1024, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await otpPage.setViewportSize({ width, height: 900 });
         assert.equal(
           await otpPage.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -547,7 +553,7 @@ try {
       await otpPage.getByText('Current email: updated@example.test', { exact: true }).waitFor();
       assert.equal(emailChangeRequestCount, 1);
       assert.deepEqual(emailChangeVerifications, ['current', 'new']);
-      for (const width of [320, 390, 768, 1024, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await otpPage.setViewportSize({ width, height: 900 });
         assert.equal(
           await otpPage.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -640,7 +646,7 @@ try {
         await signupPage.getByLabel(/optional CareerScope product updates/).isChecked(),
         false,
       );
-      for (const width of [320, 390, 768, 1024, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await signupPage.setViewportSize({ width, height: 900 });
         assert.equal(
           await signupPage.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -854,7 +860,7 @@ try {
         true,
       );
       await accessible(page, engine, 'test account selector', 'Select test account');
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -1073,7 +1079,7 @@ try {
       // `<a href="#main-content"></a>` would satisfy every part of this
       // contract while being a real WCAG 2.4.4 / 4.1.2 defect; axe's link-name
       // rule on the same page mitigates that but does not eliminate it.
-      for (const width of [1440, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         const shellSkip = page.getByRole('link', { name: 'Skip to content', exact: true });
         const shellHidden = await shellSkip.boundingBox();
@@ -1198,7 +1204,7 @@ try {
       );
       await page.setViewportSize({ width: 1440, height: 900 });
       await accessible(page, engine, 'dashboard', /^Good (morning|afternoon|evening)!$/);
-      for (const width of [320, 390, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
@@ -1226,7 +1232,7 @@ try {
       assert.equal(await page.getByText('Applied', { exact: true }).count(), 1);
       assert.equal(await page.getByText('Not available yet', { exact: true }).count(), 1);
       await accessible(page, engine, 'dashboard route', /^Good (morning|afternoon|evening)!$/);
-      for (const width of [320, 768, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
@@ -1329,7 +1335,7 @@ try {
         .waitFor();
       await page.getByLabel('Find resources', { exact: true }).fill('');
       await accessible(page, engine, 'career links', 'Career Links');
-      for (const width of [320, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
@@ -1456,7 +1462,7 @@ try {
         .getByRole('status')
         .filter({ hasText: 'Resume ready for review.' })
         .waitFor({ timeout: 45000 });
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -1509,7 +1515,7 @@ try {
         `${engine} the AI coaching trigger renders while the server reports no AI provider`,
       );
       assert.ok((await page.locator('.preparation-evidence').count()) > 0);
-      for (const width of [320, 390, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
@@ -1693,7 +1699,7 @@ try {
       assert.equal(await securityAuth.session(secondSession), null);
       const passwordSession = await securityAuth.login(accountEmail, password);
       assert.ok(passwordSession);
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -1861,7 +1867,7 @@ try {
           .getAttribute('href'),
         'https://example.test/apply',
       );
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -2019,7 +2025,7 @@ try {
         .waitFor({ timeout: 5000 });
       assert.equal(await exportButton.count(), 0);
       const cancellation = page.getByRole('button', { name: 'Cancel search', exact: true });
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -2088,7 +2094,7 @@ try {
         .getByRole('status')
         .filter({ hasText: /^cancelled$/ })
         .waitFor();
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -2405,7 +2411,7 @@ try {
         .waitFor();
       assert.equal((await restoredLeadHistory).status(), 200);
       assert.equal((await leadRepository.get(ownerId, leadId))?.status, 'saved');
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -2540,7 +2546,7 @@ try {
           (document.querySelector('input[name="fullName"]') as HTMLInputElement)?.value ===
           'Updated In Another Session',
       );
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -2649,7 +2655,7 @@ try {
       await settledSearchPage('empty search results');
       await page.reload();
       await page.getByRole('heading', { name: /^Saved target roles/ }).waitFor();
-      for (const width of [1440, 390, 320]) {
+      for (const width of responsiveWidthsEndingAt(320)) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -2911,7 +2917,7 @@ try {
         'No leads with status “Saved” yet. Save a job from Search to add one here.';
       const cs13FilteredEmpty =
         'No leads with status “Archived”. That is this status filter only — “Saved” has leads; choose it above to see them.';
-      for (const width of [320, 768, 1440]) {
+      for (const width of responsiveWidthsEndingAt(1440)) {
         await page.setViewportSize({ width, height: 900 });
 
         // AC3, "nothing yet": no status on this screen holds anything, so the
@@ -3210,7 +3216,7 @@ try {
       // can reject against Playwright's already-disposed request context.
       await page.unrouteAll({ behavior: 'wait' });
       process.stdout.write(
-        `${engine}: search/export/cancellation, saved leads/notes/archive/conflicts, profile, logout, 320/390/1440px passed\n`,
+        `${engine}: search/export/cancellation, saved leads/notes/archive/conflicts, profile, logout, required responsive-width checks passed\n`,
       );
     } finally {
       await browser.close();
@@ -3239,7 +3245,7 @@ try {
           assert.equal(await page.getByRole('button').filter({ hasText: user.email }).count(), 1);
         }
         await accessible(page, engine, 'real test selector', 'Select test account');
-        for (const width of [320, 390, 768, 1024, 1440]) {
+        for (const width of responsiveWidthsEndingAt(1440)) {
           await page.setViewportSize({ width, height: 900 });
           assert.equal(
             await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -3277,7 +3283,7 @@ try {
           );
         }
         process.stdout.write(
-          `${engine}: real two-account selector, session switching, keyboard, five-width reflow and axe passed\n`,
+          `${engine}: real two-account selector, session switching, keyboard, eight-width reflow and axe passed\n`,
         );
       } finally {
         await browser.close();

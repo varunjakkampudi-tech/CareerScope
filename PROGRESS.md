@@ -1046,3 +1046,21 @@ hosted CI, or production checks. The latest recorded service-backed integration
 result remains 56/56 with zero skips from the earlier isolated PostgreSQL 17.6 /
 Redis 7.4.5 run. GitHub Actions remains unavailable, and these local checks do
 not establish production readiness or live Resend delivery.
+
+### Responsive browser acceptance and exact-main follow-up (2026-10-21)
+
+Extended only the existing `scripts/check-ui.ts` responsive checks to exercise
+the eight widths required by the approved engineering standard: 320, 360, 390,
+768, 1024, 1280, 1440 and 1920px. Application runtime behavior and assertions
+were not weakened. `npm run test:ui` passed with `CAREERSCOPE_UI_BROWSER=all` on
+Chromium, Firefox and WebKit, including axe and keyboard checks. Temporary
+loopback-only PostgreSQL/Redis containers and the local web process started for
+the run were stopped afterward. This does not satisfy hosted CI, manual screen-
+reader, visual/design, live-provider or production acceptance.
+
+After the test change, `npm run gates:test` passed (84/84), including current
+lint, typecheck, privacy, deployment-policy and EOL/unit gates. `npm run lint`
+and `npm run typecheck` also passed directly. The UI result is local and is not
+hosted CI evidence. The stale current-state UI failure in `TEST_MATRIX.md` was
+updated while retaining earlier dated failure history. Service-backed
+integration/recovery and production checks were not rerun in this follow-up.

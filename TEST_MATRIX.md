@@ -6,6 +6,9 @@ journeys pass with axe/keyboard/reflow. Recovery, full-disk, build/CSP, formatti
 lint/typecheck and privacy checks pass. Exact commands and evidence limits are
 in [the consolidation report](docs/MAIN-CONSOLIDATION-2026-10-21.md). Hosted CI,
 live provider, legal and production acceptance remain separate unverified gates.
+The 21 October local browser rerun additionally covers the eight viewport widths
+required by the approved engineering standard (320, 360, 390, 768, 1024, 1280,
+1440 and 1920px). Older dated failures below remain historical evidence.
 The source inventory below retains its baseline assessment state.
 
 Baseline SHA: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
@@ -30,7 +33,7 @@ never represented as existing/executed merely because a test name is proposed.
 | MESSAGE-TEST-01   | D4/D9/D11, 4.11/4.15            | Durable outbox tests exist, not channel delivery proof                                                                                                                  | PLANNED                                                                                                                                                                      | Mock sends only: caps, recipients, disclosure/reply-to, selected/scanned attachments, quiet hours/digest/three locales, duplicate callbacks/suppression; real delivery owner-gated                       |
 | TRUST-TEST-01     | D6/D7, 4.4/4.5                  | No full verification/age/photo model identified                                                                                                                         | PLANNED                                                                                                                                                                      | Screen-only age storage/no raw DOB; exact tick evidence/date/expiry/revocation/appeal; optional-photo consent and role visibility if enabled                                                             |
 | ADMIN-TEST-01     | 4.16/4.17                       | Admin test identity isolation, not control-plane RBAC                                                                                                                   | PLANNED                                                                                                                                                                      | Staff MFA/step-up, deny-by-default actions, reasons/dual approval, audit immutable/manual+automatic events, masked/time-limited exports and kill switches                                                |
-| UX-TEST-01        | 4.18, CR-01, global 16–21/25–26 | `scripts/check-ui.ts` real Playwright/axe harness                                                                                                                       | Latest current-worktree full matrix FAIL in Firefox at dashboard request settlement; email-change path passed Chromium/Firefox; WebKit not reached                           | Diagnose `/api/leads` activity without relaxing settlement; rerun the full Chromium/Firefox/WebKit matrix, axe/keyboard and required viewports; leakage and visual acceptance remain separate gates      |
+| UX-TEST-01        | 4.18, CR-01, global 16–21/25–26 | `scripts/check-ui.ts` real Playwright/axe harness                                                                                                                       | 21 Oct 2026 local full matrix PASS on Chromium/Firefox/WebKit; axe/keyboard checks pass; required eight viewport widths exercised                                            | Hosted browser CI, manual screen-reader and visual acceptance remain separate gates; synthetic fixtures do not establish live-provider behavior                                                          |
 | HUMAN-TEST-01     | 4.18, checklist 16/24           | No current manual acceptance result                                                                                                                                     | MANUAL_REQUIRED                                                                                                                                                              | NVDA/VoiceOver/TalkBack/real device, native-language safety/legal/consent, visual acceptance; owner/counsel evidence                                                                                     |
 | OPS-TEST-01       | D12, 6/7, checklist 9–10/18–21  | Compose/backup/monitor/recovery/load scripts                                                                                                                            | NOT_RUN in this audit                                                                                                                                                        | Dedicated disposable fault/load/restore; owner targets, WAL/off-host, independent alerts and staging identities; no production test target                                                               |
 | CI-TEST-01        | Goal 16B.11/global 27           | Workflows currently absent                                                                                                                                              | BLOCKED / GOV-02                                                                                                                                                             | Every required trigger and selector uses real command; deliberate failure/coverage/secret/runtime/leakage/migration negatives prevent promotion, exact SHA artifacts                                     |
@@ -152,9 +155,8 @@ configuration, and a synthetic Resend key took precedence for this test process.
 No live mail, shared database, hosted CI, provider/DNS validation, commit, push,
 merge, or deployment occurred.
 
-Current rerun correction: the earlier Chromium exit-code gap is closed for the
-Chromium-only command; it completed with exit 0. This does not establish a new
-all-engine run. The final readiness addition is covered by four focused API
+Historical rerun correction: the earlier Chromium exit-code gap was closed for
+the Chromium-only command; it completed with exit 0. The final readiness addition is covered by four focused API
 tests: limiter outage is fail-closed, OTP cannot expose password registration,
 Redis readiness failure returns 503, and healthy readiness awaits both database
 and configured critical-dependency checks.
@@ -263,8 +265,24 @@ Node 24.19.0:
 The test process used ephemeral loopback Redis endpoints and removed both test
 containers afterward; persistent application Redis and browser evidence
 services were not used or stopped. The 55/55 integration result is current-run
-evidence; the prior browser failure remains the latest full browser result.
+evidence for that checkpoint; the browser failure described above was the latest
+full browser result at that historical checkpoint and was superseded by the
+21 October all-engine pass below.
 Hosted CI, provider, and production evidence remain absent.
+
+### Responsive browser acceptance refresh (2026-10-21, Node 24.19.0)
+
+`npm run test:ui` PASS, exit 0 with `CAREERSCOPE_UI_BROWSER=all` on Chromium,
+Firefox and WebKit. The run exercised the existing synthetic workspace, OTP
+screens and test-account selector, keyboard checks, axe scans, and responsive
+overflow checks at 320, 360, 390, 768, 1024, 1280, 1440 and 1920px. The existing
+Playwright harness was extended to use those approved engineering-standard
+widths without changing application runtime behavior or relaxing assertions.
+The test used fresh loopback-only disposable PostgreSQL/Redis containers and a
+local web process; the exact resources started for the run were stopped afterward.
+This is local automated evidence only: hosted browser CI, manual assistive-
+technology review, visual/design acceptance, live provider behavior and
+production acceptance remain unverified.
 
 ### Expired email-change request retention regression (2026-10-21)
 
