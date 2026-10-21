@@ -1279,5 +1279,5 @@ keyboard and eight-width responsive checks. The browser stack used disposable
 loopback PostgreSQL/Redis and synthetic data; the containers and local web
 process started for the run were stopped afterward. Hosted CI remains
 unavailable while GitHub Actions is disabled. These source and test changes are
-currently uncommitted; the separate OTP and application-evidence worktrees were
-left untouched.
+committed and pushed to `main` as `81b2371`. The separate OTP and
+application-evidence worktrees were left untouched.
