@@ -85,8 +85,10 @@ v12 requirement / checklist item: Goal 4 and 16B; global categories 3/27
 Status: READY_FOR_OWNER
 Problem: Main has no observed GitHub protection/rules; GitHub Actions is disabled.
 Verified root cause: Read-only protection query 404; rules []; repository Actions
-  API reports enabled=false; no hosted run can execute. A local CI workflow now
-  exists at .github/workflows/ci.yml; its presence does not prove hosted behavior.
+  API reports enabled=false, and `gh run list --commit
+  a41eea792ea416a04d7b543f0fdb89757a0e4e8e` returned no runs; no hosted run can
+  execute. A local CI workflow exists at `.github/workflows/ci.yml`; its presence
+  does not prove hosted behavior.
 Current implementation: The owner explicitly authorized local merge and a direct
   normal main push on 21 October 2026. Local validation and independent review
   support this repository checkpoint; hosted CI remains unavailable. Deployment
@@ -94,6 +96,8 @@ Current implementation: The owner explicitly authorized local merge and a direct
 Impact: Hosted protection/CI and production acceptance cannot be claimed from
   local checks. Owner-directed main synchronization does not certify launch.
 What the agent already tried: Read repository docs and current hosted rule metadata.
+  Rechecked the exact pushed SHA using the read-only GitHub Actions permissions API
+  and commit-filtered workflow-run query on 21 October 2026.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.

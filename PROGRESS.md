@@ -1156,3 +1156,11 @@ succeeded; a fresh `git ls-remote` check matched local `HEAD`, and the main
 worktree was clean. This does not include the separate 53-entry dirty OTP
 worktree or constitute production deployment. The P2 notification-retention
 policy remains open.
+
+### Exact-SHA hosted CI recheck (2026-10-21)
+
+After the documentation-only checkpoint `a41eea792ea416a04d7b543f0fdb89757a0e4e8e`
+was pushed, a read-only GitHub API query reported repository Actions
+`enabled: false`; `gh run list --commit` for that exact SHA returned `[]`. No
+hosted check is available for this commit. Repository settings were not changed;
+the precise owner action remains in `blocker.txt` GOV-02.
