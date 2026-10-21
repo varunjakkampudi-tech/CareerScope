@@ -1483,3 +1483,15 @@ main. Both remain untouched pending per-file review and validation. Main does
 include committed Resend OTP provider and authentication routes, but no live
 delivery or production acceptance is claimed. GitHub Actions remains disabled,
 so there is no hosted CI result for this SHA.
+
+### Exact-main service-backed integration rerun (2026-10-21)
+
+At main source SHA `6657e1ecf17722f42dabfd6eea7216fdcc20c01f`, Node v24.19.0
+`npm run test:integration` passed 58/58 with zero skipped tests. This reruns the
+registered PostgreSQL/Redis integration suite after the worktree-ledger update;
+the interview organizer scenario passed, covering its owner-scoped round,
+revision, scheduling, preparation, linked parsed-resume and in-app reminder
+paths. Test providers were synthetic; no real email or production service was
+used. This result is local service-backed evidence, not hosted Actions or live
+provider acceptance. The 4.15 notification preference, email/push delivery,
+deliverability and retention gaps remain open.
