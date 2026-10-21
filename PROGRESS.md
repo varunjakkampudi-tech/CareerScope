@@ -1024,3 +1024,25 @@ disposable PostgreSQL 17.6 container with tmpfs data and synthetic identities.
 The container was removed after the test. This does not verify that a production
 host has the weekly timer installed/running or establish counsel-approved
 retention terms.
+
+### Exact-main local validation refresh (2026-10-21)
+
+Validation was run against clean local `main` at
+`76b838b41b56f87358fe6d32a7fa23cf736df439`, matching `origin/main` before the
+run. The default shell Node was v22.23.2 and correctly failed the repository's
+Node 24 floor check; rerunning with the bundled Node v24.19.0 resolved the
+environment mismatch without changing project configuration.
+
+`npm run gates:test` PASS (84/84 unit/gate tests; includes requirements, privacy,
+deployment-gate, EOL, lint, typecheck and root unit checks). `npm run test:domain`
+PASS (835/835 across 30 files). `npm run build` PASS (Next.js production build,
+12 prerendered routes, CSP verification covers all 12 generated inline-script
+hashes). `npm run format:check` PASS. `npm run privacy:check` PASS. `npm audit
+--audit-level=low` PASS (zero reported vulnerabilities). `git diff --check` PASS;
+the working tree was clean before this evidence entry was added.
+
+This refresh did not rerun service-backed integration, recovery, browser/axe,
+hosted CI, or production checks. The latest recorded service-backed integration
+result remains 56/56 with zero skips from the earlier isolated PostgreSQL 17.6 /
+Redis 7.4.5 run. GitHub Actions remains unavailable, and these local checks do
+not establish production readiness or live Resend delivery.
