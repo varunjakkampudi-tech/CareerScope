@@ -1217,3 +1217,11 @@ local `.env` credentials were applied to the synthetic disposable database; the
 rerun used the CI-only synthetic configuration and did not modify `.env`.
 GitHub Actions remains disabled, so hosted CI is unverified. This does not close
 matching golden-set/eligibility proof or production release gates.
+
+### Exact-main dependency/privacy refresh (2026-10-21)
+
+At pushed `main` SHA `1d3f85429000496f788324c7a9e1ac9a842d20df`, Node 24.19.0
+`npm audit --audit-level=low` reported zero vulnerabilities. `npm run
+security:check` passed, including the tracked-file privacy scan and production
+dependency audit. These checks do not replace hosted CI or the remaining
+security, privacy, provider, legal, and production acceptance gates.
