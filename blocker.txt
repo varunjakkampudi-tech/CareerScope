@@ -22,20 +22,32 @@ Impact: Approval of the source documents is resolved. Source-derived inventories
   do not treat approval of document identity as amendment approval.
 What the agent already tried: Recomputed supplied-file hashes and reconciled the
   approval with the historical source register and prior review.
+  A read-only exact-text comparison of the 319 inventory entries against the
+  approved 20 October v12 R1 snapshot found 297 verbatim matches and 22 entries
+  without an exact current-source match. The 22 include revised D1/D11/D12,
+  fallback/outage and recovery clauses, and related launch gates. This is a
+  mismatch count only; it does not establish completeness or current assessment.
 Work completed: No further owner approval is required for the source documents
   covered by OA-2026-10-20-02. Any amendment explicitly marked pending in those
   sources must be evaluated against the owner's specific approval language;
   separate provider, CI, hosting, legal, backup and production gates remain
-  independently tracked.
+  independently tracked. The source reconciliation table was corrected to
+  distinguish approved base D1/D12 from pending D11-R and unverified recovery
+  operations.
 Why this remains open: The approved source revision has not yet been fully mapped
-  to the source-derived requirement inventory and tests.
+  to the source-derived requirement inventory and tests. The inventory also needs
+  a reviewed disposition for newly added R1 clauses and the 22 changed/superseded
+  entries; do not simply replace the source hash or carry forward the old 319
+  count as though it described R1.
 Exact owner action required: None for source approval. Do not ask the owner to
   re-approve documents covered by OA-2026-10-20-02.
 Step-by-step resolution instructions:
   1. Add immutable hash-verified snapshots for the newly approved documents while
      retaining the historical snapshots.
   2. Reconcile the v12 inventory and affected requirement/test matrices against
-     the approved revision; report added, changed and retired requirements.
+     the approved revision; map exact unchanged clauses, review all 22 nonmatching
+     entries, identify newly introduced approved base clauses separately from
+     pending amendments, and report added, changed and retired requirements.
   3. Identify amendment clauses still marked proposed/pending and keep them
      distinct from approved base requirements unless specifically authorized.
   4. Keep unimplemented requirements and external acceptance gates open.

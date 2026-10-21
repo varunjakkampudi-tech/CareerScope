@@ -27,6 +27,12 @@ backup, or recovery behavior was changed or represented as validated. The source
 register remains open because the 319-item inventory and related traceability
 still require reconciliation against the revised source.
 
+The follow-up comparison found 297 of 319 existing item texts verbatim in the
+approved R1 snapshot and 22 without an exact match. This is not a completeness
+score: the R1 document also adds clauses and explicitly pending amendments that
+must be distinguished from approved base scope. Exact next steps and this
+limitation are recorded under `SOURCE-REVISION-01` in `blocker.txt`.
+
 Validation on the documentation-only change: `npm run requirements:check`,
 `npm run requirements:test` (5/5), `npm run format:check`, `npm run eol:check`,
 `npm run privacy:check`, and `git diff --check` passed. This does not establish
