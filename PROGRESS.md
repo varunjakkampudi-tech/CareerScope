@@ -15,6 +15,23 @@ provider, hosted CI, production, or launch-completion claim follows from the
 approval. `SOURCE-REVISION-01` remains open as local engineering/reconciliation
 work, not a request to approve the source files again.
 
+### Source reconciliation ledger correction (2026-10-21)
+
+During the continuation audit, the source-delta table was found to retain
+pre-approval dispositions for revised base D1 and D12 even though
+OA-2026-10-20-02 explicitly approves revised D1–D14. The table now distinguishes
+that resolved base-source approval from the still-pending D11-R/A1 proposal
+wording and the uncompleted D12 off-host recovery evidence. The A1 inconsistency
+and 24-hour exception requirement remain visible; no authentication fallback,
+backup, or recovery behavior was changed or represented as validated. The source
+register remains open because the 319-item inventory and related traceability
+still require reconciliation against the revised source.
+
+Validation on the documentation-only change: `npm run requirements:check`,
+`npm run requirements:test` (5/5), `npm run format:check`, `npm run eol:check`,
+`npm run privacy:check`, and `git diff --check` passed. This does not establish
+hosted CI, production, provider, or launch acceptance.
+
 ## Activation checkpoint
 
 - Owner approval: OA-2026-10-20-01, dated 20 October 2026.
