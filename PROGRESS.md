@@ -1203,3 +1203,17 @@ The evidence update was committed locally and pushed normally to `main` as
 `git ls-remote origin refs/heads/main` all matched that SHA; the main worktree
 is clean. A post-push GitHub query for that exact commit returned no statuses or
 workflow runs, and the Actions permissions API still reports `enabled: false`.
+
+## Deterministic match-version provenance (2026-10-21)
+
+The v12 section 4.7 match-version requirement was missing from the result
+contract. New score breakdowns now record `deterministic-v1`; legacy stored
+breakdowns remain `null`/unknown, with OpenAPI documentation and a regression
+test. Scoring behavior is unchanged. On Node 24.19.0, score tests passed 30/30,
+domain tests 836/836 (30 files), root gates 84/84, integration 57/57 with zero
+skips against disposable PostgreSQL 17.6/Redis 7.4.5, production build/CSP,
+lint, format and privacy checks passed. Integration initially failed because
+local `.env` credentials were applied to the synthetic disposable database; the
+rerun used the CI-only synthetic configuration and did not modify `.env`.
+GitHub Actions remains disabled, so hosted CI is unverified. This does not close
+matching golden-set/eligibility proof or production release gates.

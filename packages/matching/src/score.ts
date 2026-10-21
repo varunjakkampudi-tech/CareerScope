@@ -21,6 +21,9 @@ import {
   scoreTitle,
 } from './dimensions.js';
 
+/** Increment when the deterministic scoring rules or weights materially change. */
+export const MATCH_SCORING_VERSION = 'deterministic-v1';
+
 /**
  * Turning seven dimension scores into one number, with the gates and clamps that
  * make that number mean something.
@@ -81,6 +84,7 @@ export function scoreJob(
   const resumeSkillSet = new Set(candidate.resumeSkills.map((skill) => skill.toLowerCase()));
 
   return {
+    scoringVersion: MATCH_SCORING_VERSION,
     score,
     heuristicScore,
     dimensions,
@@ -216,6 +220,7 @@ function excludedBreakdown(
   resumeConsidered: boolean,
 ): MatchBreakdown {
   return {
+    scoringVersion: MATCH_SCORING_VERSION,
     score: 0,
     heuristicScore: 0,
     dimensions: notScoredDimensions(),

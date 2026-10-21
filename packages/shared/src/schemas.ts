@@ -265,6 +265,8 @@ export const matchDimensionsSchema = z.object(dimensionShape);
 export type MatchDimensions = z.infer<typeof matchDimensionsSchema>;
 
 export const matchBreakdownSchema = z.object({
+  /** Null only for historical match records created before scoring was versioned. */
+  scoringVersion: z.string().min(1).nullable().default(null),
   /** Final 0..1 score after weighting, gates, clamps and any LLM blend. */
   score: z.number().min(0).max(1),
   /** Score from the deterministic engine alone, before any LLM blend. */

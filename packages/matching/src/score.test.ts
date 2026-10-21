@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_MATCH_THRESHOLD, LOW_CONFIDENCE_SCORE_CEILING } from '@careerscope/shared';
+import {
+  DEFAULT_MATCH_THRESHOLD,
+  LOW_CONFIDENCE_SCORE_CEILING,
+  matchBreakdownSchema,
+} from '@careerscope/shared';
 import {
   applyRerank,
   hardGate,
   hasReadableDescription,
   isFlaggedCompany,
+  MATCH_SCORING_VERSION,
   scoreJob,
 } from './score.js';
 import {
@@ -110,6 +115,14 @@ describe('scoreJob — score bands', () => {
 /* -------------------------------------------------------------------------- */
 
 describe('scoreJob — breakdown', () => {
+  it('records the deterministic scoring version and leaves legacy version unknown', () => {
+    const current = scoreJob(job({ descriptionText: NEAR_EXACT_JD }), candidate(), opts);
+    expect(current.scoringVersion).toBe(MATCH_SCORING_VERSION);
+
+    const { scoringVersion: _scoringVersion, ...legacy } = current;
+    expect(matchBreakdownSchema.strict().parse(legacy).scoringVersion).toBeNull();
+  });
+
   it('returns all seven dimensions with their weights and reasons', () => {
     const breakdown = scoreJob(job({ descriptionText: NEAR_EXACT_JD }), candidate(), opts);
     const keys = Object.keys(breakdown.dimensions).sort();

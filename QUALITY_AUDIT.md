@@ -224,3 +224,16 @@ all-browser command failed in Firefox at dashboard request quiescence; WebKit
 was not reached. The full dependency audit remains open (five high and seven
 moderate across the full graph; three moderate production findings). No test
 was weakened and no waiver was applied.
+
+### Matching version provenance follow-up (2026-10-21)
+
+Resolved one concrete part of approved v12 section 4.7: new deterministic score
+breakdowns now identify `deterministic-v1`, including gated listings. Legacy
+breakdowns without the field remain explicitly unknown (`null`) during strict
+parsing. The API contract documents this compatibility rule. The change does
+not alter score calculation or prove the separate golden-set, hard-eligibility,
+or missing-data acceptance requirements; those remain open in `GAP_MATRIX.md`.
+Validation: score tests 30/30, domain 836/836, root gate 84/84, integration
+57/57 (zero skips) using disposable local services, production build/CSP,
+lint, formatting and privacy check passed on Node 24.19.0. Hosted Actions is
+disabled; no hosted or production evidence was obtained.

@@ -337,3 +337,22 @@ compared), four crash boundaries, and full-disk exhaustion/retry. The synthetic
 synthetic results only, not hosted CI, production performance/SLO, live Resend,
 or production restore evidence. GitHub Actions is disabled and the tested SHA
 has no hosted status/workflow run.
+
+### Deterministic match scoring-version contract (2026-10-21, Node 24.19.0)
+
+The approved v12 requirement says each score records its scoring version. New
+`scoreJob` outputs (including excluded listings) now carry
+`deterministic-v1`. The strict shared match schema preserves pre-versioned
+stored records as `scoringVersion: null`; it does not infer a version for old
+scores. The API's OpenAPI contract documents the field. No score weights,
+ranking, gating or persisted legacy data were changed.
+
+Executed against the local change: focused score tests 30/30; domain suite
+836/836 across 30 files; `npm run gates:test` PASS (84/84); `npm run build`
+PASS including CSP verification; `npm run lint`, `npm run format:check`, and
+`npm run privacy:check` PASS. The first integration attempt used local `.env`
+credentials against a synthetic database and failed authentication; after
+switching to disposable CI-matched PostgreSQL 17.6/Redis 7.4.5 services with
+synthetic test credentials, `npm run test:integration` passed 57/57 with zero
+skips. The failure was test-environment configuration, not an application
+failure. No hosted CI or production evidence is implied.

@@ -44,6 +44,7 @@ export {
   hasReadableDescription,
   isFlaggedCompany,
   scoreJob,
+  MATCH_SCORING_VERSION,
   LLM_BLEND_WEIGHT,
   MIN_FULL_DESCRIPTION_CHARS,
 } from './score.js';

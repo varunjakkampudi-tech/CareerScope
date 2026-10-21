@@ -132,7 +132,18 @@ const job = object(
       type: 'object',
       nullable: true,
       additionalProperties: true,
-      description: 'Deterministic match breakdown; null when no matching profile was used.',
+      properties: {
+        scoringVersion: nullable(
+          text({
+            minLength: 1,
+            description:
+              'Deterministic scoring rules used; null only for historical records created before scoring was versioned.',
+          }),
+        ),
+      },
+      required: ['scoringVersion'],
+      description:
+        'Deterministic match breakdown; null when no matching profile was used. A present breakdown records its deterministic scoring version.',
     },
   },
   [

@@ -221,6 +221,18 @@ test('Swagger documents every runtime route without changing validation and prot
         assert.equal(spec.info.version, (await app.inject('/api/health')).json().version);
         assert.deepEqual(spec.servers, [{ url: '/' }]);
         assert.equal(spec.components.securitySchemes.session.name, 'careerscope_v2_session');
+        const scoringVersion =
+          spec.paths['/api/leads'].get.responses['200'].content['application/json'].schema
+            .properties.items.items.properties.data.properties.match.properties.scoringVersion;
+        assert.equal(scoringVersion.type, 'string');
+        assert.equal(scoringVersion.nullable, true);
+        assert.ok(
+          spec.paths['/api/leads'].get.responses['200'].content[
+            'application/json'
+          ].schema.properties.items.items.properties.data.properties.match.required.includes(
+            'scoringVersion',
+          ),
+        );
         const documented = Object.entries(spec.paths).flatMap(([url, methods]) =>
           Object.keys(methods as object).map((method) => `${method} ${url}`),
         );
