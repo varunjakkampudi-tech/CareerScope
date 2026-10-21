@@ -1751,3 +1751,27 @@ lost-mailbox recovery, inaccessible-mailbox support, new-device/risk step-up,
 progressive lockout backoff, or D11-R as activated. The global 518-block
 inventory remains NOT_ASSESSED/NOT_RUN and SOURCE-REVISION-01 remains OPEN; this
 vertical slice is partial progress, not a source-to-test completion percentage.
+
+### Monitoring privacy and backup outcome hardening (2026-10-21)
+
+Local operations scripts now avoid logging the configured health URL, remote
+health-response bytes, webhook URL prefixes, or a configurable database
+container name in monitor diagnostics. The stubbed monitor test injects
+synthetic URL/body/webhook credential canaries and verifies they are absent from
+stdout, stderr, and the captured webhook payload. `infra/backup.sh` now rejects
+non-positive/non-integer retention configuration before touching backup state,
+and returns nonzero after recording and alerting a failed dump/restore so the
+oneshot systemd service result is visible to scheduler health. The backup test
+asserts invalid-config no-mutation and nonzero failure behavior while preserving
+the last known-good dump. `infra/check-monitoring.sh` passed; the complete
+`infra/check-scheduler-health.sh` fixture passed, including its failed-service
+case; Bash syntax checks passed for all four changed scripts. The real
+disposable-PostgreSQL `infra/check-backup.sh` exercised dump, restore, invalid
+retention and failed-dump behavior, but exited 1 on the two documented Git
+Bash/MSYS permission assertions (`0644`/`0755` observed instead of POSIX
+`0600`/`0700`); the harness and permission gates were not weakened, and a full
+Linux-native run remains unverified. Node v24.19.0 `npm run gates:test` passed
+(91/91 unit tests, all source/privacy/deployment/EOL gates, lint and typecheck);
+`format:check`, `privacy:check`, `eol:check`, and `git diff --check` passed.
+This changes local monitoring/backup behavior only; no live host, scheduled
+service, webhook, off-host destination, production data, or deployment was used.

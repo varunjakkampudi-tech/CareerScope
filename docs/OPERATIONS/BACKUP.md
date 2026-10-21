@@ -66,10 +66,14 @@ Unlike `check-monitoring.sh`, this is **not** stub-based: it starts a
 disposable `postgres:17.6-alpine` container, seeds it with real tables and
 rows, and runs the actual `pg_dump`/`pg_restore`/sanity-query pipeline
 against it end to end — proving the restore really works, not just that the
-bash control flow branches correctly. It also proves: a failing dump leaves
-the last good file byte-identical and untouched; retention removes only
-genuinely old dumps; and alerting fires exactly once per failure, never on
-success. Runs in CI (GitHub-hosted runners have Docker preinstalled).
+bash control flow branches correctly. It also proves: failed dumps and invalid
+retention configuration return nonzero; a failing dump leaves the last good
+file byte-identical and untouched; invalid retention settings do not change
+backup state; retention removes only genuinely old dumps; and alerting fires
+exactly once per failure, never on success. A failed backup is therefore
+visible both in `last-status` and the oneshot systemd service result consumed
+by scheduler health. Run it with a Linux shell and Docker. Hosted execution has
+not been verified in this checkout because GitHub Actions is disabled.
 
 ### A note on the two permission checks, if you run this on Windows
 

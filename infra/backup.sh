@@ -31,6 +31,11 @@ DOCKER_BIN=${BACKUP_DOCKER_BIN:-docker}
 CURL_BIN=${BACKUP_CURL_BIN:-curl}
 CURL_TIMEOUT=${BACKUP_CURL_TIMEOUT:-10}
 
+if [[ ! "$BACKUP_RETENTION_DAYS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "BACKUP_RETENTION_DAYS must be a positive integer; refusing to run" >&2
+  exit 1
+fi
+
 # BACKUP_VERIFY_DB is interpolated directly into SQL (Postgres identifiers
 # cannot be bind-parameterized the way values can). It is root-config-only
 # today, so there is no reachable injection path, but validating it removes
@@ -81,10 +86,9 @@ AT=$stamp
 REASON=$1
 EOF
   send_alert "CareerScope backup FAILED: $1"
-  exit 0
-  # Exit 0 deliberately: this is an observability tool. A failed dump is
-  # reported through the alert and the status file (AC3), not through the
-  # exit code of a systemd unit nobody is watching for that specifically.
+  # Preserve the failed status/alert while letting the oneshot systemd unit
+  # report failure to the independent scheduler-health monitor.
+  exit 1
 }
 
 json_escape() {

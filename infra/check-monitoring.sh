@@ -28,11 +28,27 @@ for arg in "$@"; do
 done
 if [ "$is_post" = 1 ]; then
   echo "post" >>"$FAKE_CALLS_FILE"
+  capture_next_arg=0
+  for arg in "$@"; do
+    if [ "$capture_next_arg" = 1 ]; then
+      printf '%s' "$arg" >"$FAKE_ALERT_PAYLOAD_FILE"
+      capture_next_arg=0
+    elif [ "$arg" = "-d" ]; then
+      capture_next_arg=1
+    fi
+  done
   [ "${FAKE_WEBHOOK_MODE:-ok}" = ok ] && exit 0 || exit 1
 fi
 case "${FAKE_HEALTH_MODE:-ok}" in
   unreachable) exit 7 ;;
-  unhealthy) echo '{"status":"degraded"}'; exit 0 ;;
+  unhealthy)
+    if [ -n "${FAKE_HEALTH_BODY:-}" ]; then
+      printf '%s\n' "$FAKE_HEALTH_BODY"
+    else
+      echo '{"status":"degraded"}'
+    fi
+    exit 0
+    ;;
   ok) echo '{"status":"ok","version":"test"}'; exit 0 ;;
 esac
 EOF
@@ -76,6 +92,7 @@ run_monitor() {
   MONITOR_STATE_DIR="$work/state" \
   MONITOR_WEBHOOK_URL="${MONITOR_WEBHOOK_URL_OVERRIDE:-https://hooks.example.test/alert}" \
   FAKE_CALLS_FILE="$calls_file" \
+  FAKE_ALERT_PAYLOAD_FILE="$work/alert-payload" \
   bash "$dir/monitor.sh" 2>"$work/stderr" | tee "$work/stdout"
 }
 
@@ -90,6 +107,35 @@ echo "== classification: unhealthy (bad health body)"
 reset_state
 FAKE_HEALTH_MODE=unhealthy run_monitor >/dev/null
 check "unhealthy reported" "$(grep -o 'unhealthy' "$work/stdout" | head -1)" "unhealthy"
+
+echo "== security: remote health URL and response bytes never reach logs or alert payload"
+reset_state
+url_canary='https://health.example.test/api/health?token=synthetic-health-url-secret'
+body_canary='synthetic-health-response-secret'
+MONITOR_URL="$url_canary" FAKE_HEALTH_MODE=unhealthy \
+  FAKE_HEALTH_BODY="{\"status\":\"degraded\",\"detail\":\"$body_canary\"}" run_monitor >/dev/null
+check "health URL canary absent from stdout" "$(grep -cF 'synthetic-health-url-secret' "$work/stdout" || true)" "0"
+check "health body canary absent from stdout" "$(grep -cF "$body_canary" "$work/stdout" || true)" "0"
+check "health URL canary absent from stderr" "$(grep -cF 'synthetic-health-url-secret' "$work/stderr" || true)" "0"
+check "health body canary absent from stderr" "$(grep -cF "$body_canary" "$work/stderr" || true)" "0"
+check "health URL canary absent from webhook payload" "$(grep -cF 'synthetic-health-url-secret' "$work/alert-payload" || true)" "0"
+check "health body canary absent from webhook payload" "$(grep -cF "$body_canary" "$work/alert-payload" || true)" "0"
+check "unhealthy detail is a fixed category" "$(grep -cF 'health endpoint returned an unexpected status or payload' "$work/alert-payload" || true)" "1"
+
+echo "== security: unreachable health URL is not copied into diagnostics"
+reset_state
+MONITOR_URL="$url_canary" FAKE_HEALTH_MODE=unreachable run_monitor >/dev/null
+check "unreachable health URL canary absent from stdout" "$(grep -cF 'synthetic-health-url-secret' "$work/stdout" || true)" "0"
+check "unreachable health URL canary absent from stderr" "$(grep -cF 'synthetic-health-url-secret' "$work/stderr" || true)" "0"
+check "unreachable detail is a fixed category" "$(grep -cF 'could not reach health endpoint within' "$work/alert-payload" || true)" "1"
+
+echo "== security: database container configuration is not copied into diagnostics"
+reset_state
+MONITOR_DB_CONTAINER='synthetic-database-config-secret' FAKE_HEALTH_MODE=ok \
+  FAKE_PSQL_FAIL=1 run_monitor >/dev/null
+check "database config canary absent from stdout" "$(grep -cF 'synthetic-database-config-secret' "$work/stdout" || true)" "0"
+check "database config canary absent from stderr" "$(grep -cF 'synthetic-database-config-secret' "$work/stderr" || true)" "0"
+check "database failure detail is fixed" "$(grep -cF 'could not query durable-work backlog' "$work/alert-payload" || true)" "1"
 
 echo "== classification: stopped (a worker container is not running)"
 reset_state
@@ -147,6 +193,13 @@ echo "== security: the webhook URL is never printed in full"
 reset_state
 FAKE_HEALTH_MODE=unreachable run_monitor >/dev/null
 check "full webhook URL absent from stdout" "$(grep -c '/alert' "$work/stdout")" "0"
+
+echo "== security: webhook URL credentials are never printed"
+reset_state
+MONITOR_WEBHOOK_URL_OVERRIDE='https://synthetic-webhook-secret@hooks.example.test/secret-path' \
+  FAKE_HEALTH_MODE=unreachable run_monitor >/dev/null
+check "webhook URL canary absent from stdout" "$(grep -cF 'synthetic-webhook-secret' "$work/stdout" || true)" "0"
+check "webhook URL canary absent from stderr" "$(grep -cF 'synthetic-webhook-secret' "$work/stderr" || true)" "0"
 
 if [ "$failures" -gt 0 ]; then
   echo "$failures check(s) failed" >&2

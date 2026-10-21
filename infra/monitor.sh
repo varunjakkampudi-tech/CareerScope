@@ -45,13 +45,12 @@ detail=""
 health_body=""
 if ! health_body=$("$CURL_BIN" -fsS --max-time "$MONITOR_CURL_TIMEOUT" "$MONITOR_URL" 2>/dev/null); then
   status=unreachable
-  detail="could not reach $MONITOR_URL within ${MONITOR_CURL_TIMEOUT}s"
+  detail="could not reach health endpoint within ${MONITOR_CURL_TIMEOUT}s"
 elif ! printf '%s' "$health_body" | grep -q '"status"[[:space:]]*:[[:space:]]*"ok"'; then
   status=unhealthy
-  # Health responses never carry secrets (see app.ts's /api/health handler),
-  # but cap it anyway - this is the one field in this script sourced from a
-  # network response rather than from a value we generated ourselves.
-  detail="unexpected response: $(printf '%s' "$health_body" | head -c 200)"
+  # Do not copy remote response bytes into logs or alert payloads. Proxies and
+  # unexpected upstreams can return diagnostics, request details, or secrets.
+  detail="health endpoint returned an unexpected status or payload"
 fi
 
 # -- 2. worker containers actually running -------------------------------
@@ -98,7 +97,7 @@ if [ "$status" = ok ]; then
     # Cannot read the backlog signal at all - report it as unhealthy rather
     # than silently treating "could not check" the same as "checked and fine".
     status=unhealthy
-    detail="could not query durable-work backlog via $MONITOR_DB_CONTAINER"
+    detail="could not query durable-work backlog"
   fi
 fi
 
@@ -125,9 +124,8 @@ message="CareerScope monitor: $status${detail:+ - $detail}"
 echo "$message"
 
 # Minimal JSON string escaping (backslash, quote, control chars). $message is
-# built entirely from fixed keywords, container names and numbers this script
-# itself produced - never raw network input - except the capped health body
-# snippet, which goes through this same escape before being embedded.
+# built from fixed keywords, container names and numbers this script produced;
+# remote URL and response-body values are deliberately excluded.
 json_escape() {
   local s=$1
   s=${s//\\/\\\\}
@@ -150,8 +148,8 @@ if [ "$should_notify" = true ]; then
       payload="{\"text\":\"$escaped_message\",\"content\":\"$escaped_message\"}"
       "$CURL_BIN" -fsS --max-time "$MONITOR_CURL_TIMEOUT" -X POST -H 'Content-Type: application/json' \
         -d "$payload" "$MONITOR_WEBHOOK_URL" >/dev/null \
-        && echo "alert sent to webhook (${MONITOR_WEBHOOK_URL:0:20}...)" \
-        || echo "alert webhook POST failed (${MONITOR_WEBHOOK_URL:0:20}...)" >&2
+        && echo "alert sent to configured webhook" \
+        || echo "alert webhook POST failed" >&2
     fi
   else
     echo "no MONITOR_WEBHOOK_URL configured; alert only recorded to this log" >&2

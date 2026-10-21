@@ -229,7 +229,13 @@ What the agent already tried: Compared D12, v12 sections 6/7/15, the GO-NO-GO
 Work completed: Reconciled the baseline to the approved 1-hour RPO / 4-hour RTO,
   clarified that the 24-hour RPO is an optional, separately approved and disclosed
   exception, and retained the gate as NOT_VERIFIED. No waiver, host change or
-  restore claim was made.
+  restore claim was made. Local backup hardening now rejects malformed retention
+  configuration before state mutation and returns nonzero for failed dump/restore
+  runs, allowing the independent scheduler-health unit-result check to detect
+  failures. The monitor and scheduler-health stub harnesses passed on 21 October
+  2026. The real disposable-PostgreSQL backup harness exercised restore and the
+  new failure/configuration cases, but its full Git Bash run exited 1 on the two
+  pre-existing MSYS/NTFS mode assertions; no POSIX-native full run is claimed.
 Why autonomous resolution is unsafe or impossible: The repository has no
   authorized off-host WAL destination or isolated restore host, and production
   backup configuration must not be guessed or changed by an agent. Choosing the

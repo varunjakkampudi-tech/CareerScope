@@ -97,10 +97,26 @@ row_count=$(docker exec "$pg_name" psql -U careerscope -d careerscope_recheck -t
 check "the dump this test produced restores the real seeded rows elsewhere" "$row_count" "3"
 docker exec "$pg_name" psql -U careerscope -d postgres -tAc "DROP DATABASE careerscope_recheck" >/dev/null 2>&1 || true
 
+echo "== invalid retention configuration fails before changing backup state"
+touch -d '30 days ago' "$work/backups/careerscope-invalid-retention.dump" 2>/dev/null \
+  || touch -t "$(date -v-30d +%Y%m%d0000 2>/dev/null || date -d '30 days ago' +%Y%m%d0000)" "$work/backups/careerscope-invalid-retention.dump"
+status_before=$(sha256sum "$work/backups/last-status" | cut -d' ' -f1)
+dump_count_before=$(find "$work/backups" -maxdepth 1 -name 'careerscope-*.dump' | wc -l | tr -d ' ')
+retention_exit=0
+BACKUP_RETENTION_DAYS="1;touch $work/retention-canary" run_backup >"$work/invalid-retention-output" 2>&1 || retention_exit=$?
+check "invalid retention config returns nonzero" "$retention_exit" "1"
+check "invalid retention config fails closed" "$(grep -c 'must be a positive integer' "$work/invalid-retention-output")" "1"
+check "invalid retention config preserves dump count" "$(find "$work/backups" -maxdepth 1 -name 'careerscope-*.dump' | wc -l | tr -d ' ')" "$dump_count_before"
+check "invalid retention config leaves prior status unchanged" "$(sha256sum "$work/backups/last-status" | cut -d' ' -f1)" "$status_before"
+[ ! -e "$work/retention-canary" ] || { echo "FAIL invalid retention executed shell content"; failures=$((failures + 1)); }
+rm -f "$work/backups/careerscope-invalid-retention.dump"
+
 echo "== a failing dump does not touch the last good file or promote a new one"
 sleep 1.1 # ensure the next timestamp-stamped filename actually differs
 : >"$work/webhook-calls"
-out=$(BACKUP_DB_NAME=does_not_exist run_backup 2>&1 || true)
+backup_exit=0
+out=$(BACKUP_DB_NAME=does_not_exist run_backup 2>&1) || backup_exit=$?
+check "failed backup returns nonzero to systemd" "$backup_exit" "1"
 check "reports failure" "$(printf '%s' "$out" | grep -c 'backup FAILED')" "1"
 check "still exactly one promoted dump (the first one, untouched)" "$(find "$work/backups" -maxdepth 1 -name 'careerscope-*.dump' | wc -l | tr -d ' ')" "1"
 check "the untouched dump is byte-identical to the earlier good one" "$(sha256sum "$(find "$work/backups" -maxdepth 1 -name 'careerscope-*.dump')" | cut -d' ' -f1)" "$first_dump_sum"
