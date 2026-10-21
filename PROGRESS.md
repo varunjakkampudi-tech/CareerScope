@@ -1775,3 +1775,17 @@ Linux-native run remains unverified. Node v24.19.0 `npm run gates:test` passed
 `format:check`, `privacy:check`, `eol:check`, and `git diff --check` passed.
 This changes local monitoring/backup behavior only; no live host, scheduled
 service, webhook, off-host destination, production data, or deployment was used.
+
+### Performance harness measurement refresh (2026-10-21)
+
+Using Node v24.19.0, `scripts/check-performance.ts` passed against a disposable
+local PostgreSQL database. At concurrency 8 over 30 seconds it completed 20,086
+authenticated reads (669.5 requests/second), zero failures, p50/p95/p99 of
+11.23/17.39/22.85 ms, and RSS from 323,227,648 to 440,623,104 bytes. The four
+sequential read routes each passed 60 samples; their p95 values were 6.26 ms
+(`/api/searches`), 7.17 ms (`/api/leads`), 4.35 ms (`/api/profile`), and 4.60 ms
+(`/api/preparation`). These are local synthetic measurements, not production
+latency, Core Web Vitals, or an approved service-level objective. The benchmark
+now silences only its in-process synthetic Fastify logger so request-log output
+does not contaminate measurement; production logging is unchanged. A first run
+on host Node v22 also passed but is not counted as required-runtime evidence.

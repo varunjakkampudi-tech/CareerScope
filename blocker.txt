@@ -1099,3 +1099,39 @@ Tests to rerun: `npm run test:ui`, `npm run gates:test`, `npm run format:check`,
 Affected tasks: CR-01 browser runtime diagnostics only.
 Evidence references: `scripts/check-ui.ts`, `QUALITY_AUDIT.md`, and
   `TEST_MATRIX.md`.
+
+BLOCKER ID: PERF-TARGETS-01
+Title: Approve measurable performance and load targets
+Priority: Medium
+Module: Performance / release acceptance
+v12 requirement / checklist item: CareerScope Goal section 16A.5; v12 load and
+  performance acceptance
+Status: READY_FOR_OWNER
+Problem: Local synthetic performance measurements exist, but the approved
+  product requirements do not define the production workload profile or latency
+  targets required to decide whether the load-test criterion is met.
+Verified evidence: On Node v24.19.0, the local disposable-PostgreSQL harness
+  completed 20,086 authenticated reads over 30 seconds at concurrency 8 with
+  zero failures, throughput 669.5 requests/second, p50/p95/p99 of
+  11.23/17.39/22.85 ms, and RSS 323,227,648/440,623,104 bytes before/peak.
+  Route p95 values were 6.26 ms for `/api/searches`, 7.17 ms for `/api/leads`,
+  4.35 ms for `/api/profile`, and 4.60 ms for `/api/preparation`. This is a
+  synthetic local in-process result, not a production measurement. The
+  benchmark's 500/1000 ms assertions are regression guards in that test only;
+  they are not owner-approved SLOs.
+Impact: Until workload and target values are approved, engineering can report
+  measurements and investigate regressions but cannot claim the production
+  performance/load acceptance criterion has passed.
+Owner action required: Approve or revise targets for the intended launch
+  workload, including request mix, sustained duration, concurrency, permitted
+  error rate, p95/p99 latency, and memory/resource ceiling. Keep production
+  targets distinct from local synthetic regression guards.
+Recommended next step: Review the measurement in `PROGRESS.md`, specify
+  representative production traffic and resource limits, then record explicit
+  measurable thresholds. No target is inferred from the local run.
+Verification after approval: Add or adjust the isolated load-test acceptance
+  profile without weakening existing checks; run the approved local/CI load
+  suite and retain raw metrics without personal or secret data. Hosted/live
+  evidence remains a separate gate.
+Evidence references: `PROGRESS.md` performance harness measurement refresh;
+  `scripts/check-performance.ts`; CareerScope Goal section 16A.5.

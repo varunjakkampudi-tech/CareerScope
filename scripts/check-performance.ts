@@ -30,6 +30,10 @@ const origin = 'http://localhost:5280';
 const ownerId = randomUUID();
 const password = randomUUID();
 const app = await createApp(database, origin, async () => true);
+// Keep request-log serialization and terminal I/O out of the measured workload.
+// The application logger remains unchanged; this applies only to the synthetic
+// in-process benchmark instance.
+app.log.level = 'silent';
 
 const percentile = (values: number[], fraction: number) =>
   values.slice().sort((a, b) => a - b)[
