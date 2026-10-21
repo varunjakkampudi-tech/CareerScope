@@ -29,8 +29,9 @@ export const MATCH_SCORING_VERSION = 'deterministic-v1';
  * make that number mean something.
  *
  * Three rules keep the headline honest:
- *   1. Hard gates zero a listing outright and say why, rather than letting a
- *      disqualifying detail get averaged away by six good dimensions.
+ *   1. Hard eligibility gives a listing zero and says why, rather than letting
+ *      a disqualifying detail get averaged away by six good dimensions. The
+ *      listing remains visible; eligibility is advice, not a discovery filter.
  *   2. A listing whose description was never fetched is capped, so crossing the
  *      user's threshold always implies the JD was actually read.
  *   3. The full breakdown ships with every lead, so any score can be audited.
@@ -133,8 +134,9 @@ export function hasReadableDescription(job: Job): boolean {
 /* -------------------------------------------------------------------------- */
 
 /**
- * Reasons to drop a listing outright, or null to keep it. Kept ahead of scoring
- * so an excluded job never pays for skill extraction over a full JD.
+ * Reasons a listing receives no match score, or null when no hard constraint
+ * applies. This does not remove listings from discovery. Kept ahead of scoring
+ * so an ineligible job never pays for skill extraction over a full JD.
  */
 export function hardGate(job: Job, candidate: CandidateContext): string | null {
   const haystack = `${job.title}\n${job.company.name}\n${job.descriptionText}`.toLowerCase();

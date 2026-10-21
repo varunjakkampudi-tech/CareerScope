@@ -356,3 +356,17 @@ switching to disposable CI-matched PostgreSQL 17.6/Redis 7.4.5 services with
 synthetic test credentials, `npm run test:integration` passed 57/57 with zero
 skips. The failure was test-environment configuration, not an application
 failure. No hosted CI or production evidence is implied.
+
+### Hard-eligibility visibility regression (2026-10-21, Node 24.19.0)
+
+`apps/workers/search/src/collect.ts` previously discarded a posting when its
+deterministic match had `excludedReason`. v12 section 4.7 requires those
+criteria to be advice, not filters. The worker collection test now asserts that
+employment-type and excluded-keyword postings remain in the result with score
+zero and the exact explanation. `node --import tsx --test
+apps/workers/search/src/collect.test.ts` passed 19/19. `npm run gates:test`
+passed 84/84, `npm run test:domain` passed 836/836, and service-backed
+`npm run test:integration` passed 57/57 with zero skips against disposable
+PostgreSQL 17.6/Redis 7.4.5. `npm run build` passed both production builds and
+CSP verification. No real job sources were contacted; hosted CI remains
+unavailable because Actions is disabled.

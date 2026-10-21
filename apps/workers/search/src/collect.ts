@@ -191,7 +191,8 @@ export async function collect(
   }
   for (const normalized of dedupeJobs(normalizedJobs)) {
     const match = candidate ? scoreJob(normalized, candidate, { now, windowDays: 30 }) : null;
-    if (match?.excludedReason) continue;
+    // Hard-eligibility results are advice, not discovery filters: keep the
+    // posting visible with its zero score and exact explanation.
     // A fingerprint that no longer matches this job's own title/company/city
     // was reassigned by dedup because the fingerprint was ambiguous; read the
     // links back from the narrower per-(source, id) bucket in that case, not

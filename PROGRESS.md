@@ -1225,3 +1225,20 @@ At pushed `main` SHA `1d3f85429000496f788324c7a9e1ac9a842d20df`, Node 24.19.0
 security:check` passed, including the tracked-file privacy scan and production
 dependency audit. These checks do not replace hosted CI or the remaining
 security, privacy, provider, legal, and production acceptance gates.
+
+### Hard-eligibility visibility correction (2026-10-21)
+
+Review against approved v12 section 4.7 found that the search worker discarded
+jobs whenever deterministic hard-eligibility guidance was present, contradicting
+the requirement that such criteria be advice and never hide a listing. The
+worker now returns the posting with score zero and the exact reason; soft
+matching, provider permissions, and ranking are otherwise unchanged. A search
+worker regression covers employment-type and excluded-keyword cases.
+
+On Node 24.19.0, the worker collection suite passed 19/19; `npm run gates:test`
+passed 84/84 (including lint, strict typecheck and unit tests); `npm run
+test:domain` passed 836/836; service-backed `npm run test:integration` passed
+57/57 with zero skips against disposable PostgreSQL 17.6 and Redis 7.4.5;
+`npm run build` passed both production builds and CSP verification. Formatting,
+EOL, privacy and diff checks passed. All three disposable containers were
+stopped. No actual job sources were contacted. Hosted Actions remains disabled.

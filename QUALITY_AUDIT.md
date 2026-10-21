@@ -225,6 +225,20 @@ was not reached. The full dependency audit remains open (five high and seven
 moderate across the full graph; three moderate production findings). No test
 was weakened and no waiver was applied.
 
+### Matching eligibility visibility correction (2026-10-21)
+
+Resolved a concrete v12 section 4.7 contradiction: `apps/workers/search/src/collect.ts`
+previously discarded collected listings with a hard-eligibility reason. The
+worker now keeps those listings and returns a zero score plus the deterministic
+reason, matching the approved rule that hard eligibility is advice, not a
+discovery filter. Regression evidence covers excluded employment type and
+keyword listings. Scoring/ranking weights and source-permission gates were not
+changed. Local verification on Node 24.19.0: collection tests 19/19, root gates
+84/84, domain 836/836, service-backed integration 57/57 with zero skips,
+production build/CSP, lint, formatting, EOL and privacy checks passed. Hosted CI,
+rights-cleared source collection, golden-set quality and release acceptance
+remain unverified.
+
 ### Matching version provenance follow-up (2026-10-21)
 
 Resolved one concrete part of approved v12 section 4.7: new deterministic score

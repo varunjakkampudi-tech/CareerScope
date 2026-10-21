@@ -772,7 +772,7 @@ test('combined collection bounds each provider and returns at most 100 unique re
   assert.equal(new Set(result.map((job) => job.fingerprint)).size, 100);
 });
 
-test('profile matching preserves exclusions, confidence ceilings and company flags', async () => {
+test('profile matching preserves hard-eligibility advice, confidence ceilings and company flags', async () => {
   const now = Date.parse('2026-09-13T12:00:00Z');
   const profile = matchingProfile(
     writableProfileSchema.parse({
@@ -827,7 +827,7 @@ test('profile matching preserves exclusions, confidence ceilings and company fla
     },
   };
   const { jobs: results } = await collect(request, signal, provider, undefined, { profile, now });
-  assert.equal(results.length, 2);
+  assert.equal(results.length, 4);
   const full = results.find((job) => job.company === 'Example')!;
   const snippet = results.find((job) => job.company === 'Flagged Inc')!;
   assert.equal(full.match?.confidence, 'high');
@@ -836,6 +836,12 @@ test('profile matching preserves exclusions, confidence ceilings and company fla
   assert.equal(snippet.match?.flaggedCompany, true);
   assert.equal(full.match?.llmScore, null);
   assert.ok(full.match!.matchedSkills.includes('React'));
+  const contract = results.find((job) => job.sourceJobId === 'contract')!;
+  assert.equal(contract.match?.score, 0);
+  assert.match(contract.match?.excludedReason ?? '', /employment type/i);
+  const excludedKeyword = results.find((job) => job.sourceJobId === 'excluded')!;
+  assert.equal(excludedKeyword.match?.score, 0);
+  assert.match(excludedKeyword.match?.excludedReason ?? '', /excluded keyword/i);
   assert.deepEqual(
     (await collect(request, signal, provider, undefined, { profile, now })).jobs,
     results,
