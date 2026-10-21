@@ -28,7 +28,7 @@ import { createApp } from '../apps/api/src/app.js';
 import { collect } from '../apps/workers/search/src/collect.js';
 import { createRemoteOkProvider, type JobProvider } from '@careerscope/providers';
 import { selectUiBrowsers } from './ui-browsers.js';
-import { staleSavedRead } from './ui-requests.js';
+import { staleSavedRead, staleSearchRead } from './ui-requests.js';
 import { JOB_SOURCE_PERMISSION_PENDING_MESSAGE } from '@careerscope/shared';
 
 const requiredResponsiveWidths = [320, 360, 390, 768, 1024, 1280, 1440, 1920] as const;
@@ -781,7 +781,8 @@ try {
       const activeRequests = () =>
         [...inflight].filter(
           ([request, epoch]) =>
-            !staleSavedRead(request.method(), new URL(request.url()).pathname, epoch, routeEpoch),
+            !staleSavedRead(request.method(), new URL(request.url()).pathname, epoch, routeEpoch) &&
+            !staleSearchRead(request.method(), new URL(request.url()).pathname, epoch, routeEpoch),
         );
       const recentRequestEvents: string[] = [];
       const recordRequestEvent = (request: import('playwright').Request, event: string) => {
