@@ -1036,32 +1036,43 @@ Problem: The committed browser harness fails on unexpected console errors,
   uncaught page exceptions, page crashes, and unhandled promise rejections in
   its OTP, signup, authenticated-candidate, and test-account-selector journeys,
   but it does not yet assert on console warnings.
-Verified root cause: Not established. A local experimental warning assertion
-  under Node v24.19.0 observed unclassified Firefox warnings in the
-  authenticated-candidate journey. No raw warning text was promoted to a broad
-  allowlist, and the experimental assertion was removed rather than weakening
-  or destabilizing the passing committed gate.
+Verified root cause: Not established. Repeated Node v24.19.0 Firefox journeys
+  emitted warning-level messages naming local `/_next/static/chunks/*.js`
+  resources while the authenticated journey was on `/dashboard` or `/saved`.
+  Direct GET checks for four observed chunk paths returned HTTP 200. Some
+  matching Playwright request-failure events were classified as cancellations,
+  but repeated runs did not consistently correlate every warning to a matching
+  cancellation event (one warning path had HTTP 200 and no corresponding
+  failure event in the listener). The warnings therefore cannot yet be called
+  harmless navigation cancellations. No raw warning text was written to logs,
+  committed, or allowlisted; the fail-closed experimental assertion was removed.
 Impact: A warning-level browser regression could currently escape the CR-01 UI
   gate. The existing all-browser test remains green for its implemented error,
   exception, crash, and rejection policies; warning behavior is not certified.
-What was done: Reproduced the non-empty warning observation on the current local
-  harness, kept the unhandled-rejection guard, and recorded the exact remaining
-  gap. No product runtime code changed.
+What was done: Reproduced the warning in focused Firefox runs and a full
+  Chromium/Firefox/WebKit run. Diagnostics exposed only warning category,
+  normalized route and local chunk path. Four direct local asset requests
+  returned HTTP 200; cancellation correlation was inconsistent, so the cause
+  remains open. The canonical browser harness was restored after the
+  experimental checks; no product runtime code changed.
 Why this remains open: Firefox warning messages must be classified to a safe,
   stable category and tied to a verified source/route before deciding whether to
   fix the cause or permit a narrowly justified expected fixture warning.
 Exact owner action required: None. This is local engineering work.
 Step-by-step resolution instructions:
-  1. Re-run the Firefox authenticated journey under Node 24 with a diagnostic
-     that emits only sanitized categories and normalized local paths; never log
-     raw warning text, query values, email addresses, tokens, or request bodies.
-  2. Trace each category to its source and determine whether it is an actual
-     browser/runtime defect or an expected negative fixture response.
-  3. Fix genuine defects. Permit only exact source/path/status cases whose
-     corresponding negative behavior is asserted by the same journey; do not
-     add a blanket warning exemption.
-  4. Add a synthetic warning-listener self-test, then run the full three-engine
-     UI/axe/keyboard/eight-width suite and the relevant quality gates.
+  1. Instrument a per-request correlation key locally (never log request
+     headers, query values, bodies, emails, credentials or raw warning text) so
+     each Firefox warning for a local Next chunk can be tied to that exact
+     Playwright request and its response/failure event.
+  2. Determine why some warning targets had HTTP 200 responses but no matching
+     `requestfailed` event, and whether the warning is a browser cancellation,
+     execution/runtime warning, or another condition.
+  3. Fix a genuine defect. Permit only an exact, evidence-backed benign case
+     whose same-journey behavior is explicitly asserted; do not add a blanket
+     warning exemption.
+  4. Add a synthetic warning-listener self-test and repeat the Firefox
+     diagnosis. Then run the full three-engine UI/axe/keyboard/eight-width
+     suite and relevant quality gates against the final change.
 Required environment-variable names (no values): None.
 External dependencies: None for local diagnosis; hosted CI remains separately
   unavailable while GitHub Actions is disabled.

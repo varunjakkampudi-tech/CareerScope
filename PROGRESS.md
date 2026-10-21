@@ -20,6 +20,16 @@ reported zero production dependency vulnerabilities. Formatting, privacy and
 EOL checks passed. A separate experimental console-warning assertion produced
 unclassified Firefox warnings; it was not retained or allowlisted. Warning
 classification and critical-network-error policy remain open engineering work.
+Follow-up diagnosis on 2026-10-21 used the same Node 24 code SHA
+`7bc55ef6d75db17261b1a773a26b1b9d4dd0b95d`: the
+three-engine journey passed with diagnostics enabled, and focused Firefox runs
+reproduced warning-level messages naming local Next.js static chunks. Four
+direct GET checks for observed chunks returned HTTP 200. Some Playwright
+request-failure events were cancellations, but a later fail-closed correlation
+probe found a warning with no matching failure event; this is insufficient to
+classify every warning as harmless navigation cancellation. The probe was
+removed, no warning was allowlisted, and the root cause remains open. No raw
+warning text or runtime product changes were retained.
 GitHub returned no status checks for this SHA and Actions remains unavailable;
 local checks are not hosted CI or release acceptance. No provider, shared
 database, production environment or deployment was used.
