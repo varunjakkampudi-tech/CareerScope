@@ -1,5 +1,33 @@
 # CareerScope v12 engineering progress
 
+## Main synchronization and exact-checkpoint validation (2026-10-22)
+
+Validated local `main` at `4dd977f71726a5fa24037e4930db7d8a00f3d200` and
+normally pushed the two local commits `5ab8239af45fe81886a4450761af9bd6a5aec950`
+and `4dd977f71726a5fa24037e4930db7d8a00f3d200`. After fetching, local `main`
+and `origin/main` resolve to the same SHA; the worktree is clean. Node 24
+validation on this candidate: `npm run gates:test` passed, including 94/94 unit
+tests, source-integrity, privacy, deploy-policy, EOL, lint and typecheck;
+`npm run test:integration` passed 59/59 with zero skips; `npm run test:domain`
+passed 839/839; `npm run build` passed both Next.js builds and CSP verification
+for 13 hashes; `npm run security:check` found zero production dependency
+vulnerabilities; `npm run format:check` passed; and `npm run test:ui` completed
+Chromium, Firefox and WebKit journeys with axe, keyboard and eight responsive
+widths. These are local checks only. GitHub Actions remains disabled and the
+exact-SHA run query returned no runs; production, hosted-provider, human
+accessibility and launch acceptance were not performed.
+
+Progress accounting correction: the external audit's 44% is explicitly
+approximate and cannot be reproduced from the current source-of-truth. The
+approved R1 inventory enumerates 518 overlapping source-content blocks, not
+independent features; all 518 are still `NOT_ASSESSED`/`NOT_RUN`. The formal
+go/no-go ledger remains 0/25 verified. Therefore no defensible aggregate
+implementation-completion percentage is currently available. Report 0/25 only
+as formal release-gate verification, not as overall product completion; do not
+substitute source inventory counts or local test totals for a product progress
+percentage. See `docs/requirements/SOURCE-REGISTER.md`,
+`docs/requirements/V12-R1-REQUIREMENT-INVENTORY.json`, and `docs/GO-NO-GO.md`.
+
 ## Reduced-motion accessibility preference (2026-10-22)
 
 Added a candidate-owned `reducedMotion` boolean to the existing profile JSON
