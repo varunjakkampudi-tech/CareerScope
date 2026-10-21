@@ -1197,3 +1197,9 @@ status and commit workflow-run queries for the tested main SHA returned no
 hosted checks. This documentation-only evidence refresh does not change runtime
 behavior or close the hosted CI, live provider, human validation, or production
 acceptance gates. The separate dirty OTP task worktree was left untouched.
+
+The evidence update was committed locally and pushed normally to `main` as
+`914830fbf966acb47692289f9c09ec598190cced`. Local `HEAD`, `origin/main`, and
+`git ls-remote origin refs/heads/main` all matched that SHA; the main worktree
+is clean. A post-push GitHub query for that exact commit returned no statuses or
+workflow runs, and the Actions permissions API still reports `enabled: false`.

@@ -102,6 +102,10 @@ What the agent already tried: Read repository docs and current hosted rule metad
   `5e6ca2d7de2592ea5f675ec3fd479d1038d0a5f0`: the Actions permissions API still
   returned `enabled=false`; the combined commit status and workflow-run query
   returned no hosted checks. Local `main` matched `origin/main` after fetch.
+  After pushing the documentation-only evidence checkpoint
+  `914830fbf966acb47692289f9c09ec598190cced`, a post-push query for that exact
+  SHA again returned no statuses or workflow runs and Actions remained disabled.
+  Local `HEAD`, `origin/main`, and the remote `main` ref match `914830f`.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
