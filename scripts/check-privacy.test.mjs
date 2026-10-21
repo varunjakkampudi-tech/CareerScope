@@ -24,6 +24,13 @@ test('privacy scanner permits only the approved transactional sender mailbox', (
     [],
   );
   assert.deepEqual(
+    scanContent(
+      'CareerScope <noreply@mail.careerscope.tech>',
+      'docs/requirements/source-revisions/2026-10-20/CareerScope-v12.md',
+    ),
+    [],
+  );
+  assert.deepEqual(
     scanContent('owner@careerscope.tech', 'packages/core/src/runtime.ts').map(
       ({ type, severity }) => ({ type, severity }),
     ),

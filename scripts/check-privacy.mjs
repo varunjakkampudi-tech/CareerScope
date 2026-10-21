@@ -41,10 +41,14 @@ const allowlistedEmailDomains = new Set([
   'localhost',
   'gserviceaccount.com',
 ]);
-// Exact, non-personal application role mailbox approved for transactional auth.
+// Exact, non-personal role mailboxes named for transactional auth in the
+// approved source set; this does not claim that either sender is live or verified.
 // Keep this address-level instead of allowlisting the product domain so a
 // future personal address at that domain still triggers review.
-const allowlistedOperationalEmails = new Set(['noreply@careerscope.tech']);
+const allowlistedOperationalEmails = new Set([
+  'noreply@careerscope.tech',
+  'noreply@mail.careerscope.tech',
+]);
 const fixturePath =
   /(?:\.test\.|\.test\b|__fixtures__|^infra\/|^design\/|^packages\/core\/src\/test-users\.ts$)/i;
 

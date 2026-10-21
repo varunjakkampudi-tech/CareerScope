@@ -70,3 +70,7 @@ Caddyfile.* text eol=lf
 .nvmrc text eol=lf
 .env.example text eol=lf
 *.timer text eol=lf
+
+# Exact owner-approved source bytes are retained; Markdown hard-break trailing
+# spaces in this immutable reference are meaningful source formatting.
+docs/requirements/source-revisions/2026-10-20/CareerScope-Goal.md whitespace=-blank-at-eol

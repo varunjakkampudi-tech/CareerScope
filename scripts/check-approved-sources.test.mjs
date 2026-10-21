@@ -14,11 +14,11 @@ test('the registered source-integrity CLI executes successfully from the reposit
     { encoding: 'utf8' },
   );
   assert.equal(result.status, 0, result.stderr);
-  assert.equal(result.stdout.trim(), 'PASS 3 approved source snapshots unchanged');
+  assert.equal(result.stdout.trim(), 'PASS 6 approved source snapshots unchanged');
   assert.equal(result.stderr, '');
 });
 
-test('all three canonical product sources retain the approved content identities', () => {
+test('all historical and revised approved source snapshots retain their content identities', () => {
   assert.deepEqual(checkApprovedSources(read), []);
 });
 

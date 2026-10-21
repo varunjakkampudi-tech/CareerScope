@@ -1,5 +1,20 @@
 # CareerScope v12 engineering progress
 
+## Owner-approved source revision follow-up (2026-10-21)
+
+The owner explicitly approved the supplied revised CareerScope v12, Engineering
+Standards and Goal, plus the global Viswatra standards v1.1. The approval is
+recorded additively as OA-2026-10-20-02 with recomputed source hashes in
+`docs/decisions/OWNER_APPROVALS.md` and `docs/requirements/SOURCE-REGISTER.md`.
+Original approvals and immutable snapshots are preserved. This resolves the
+source-document approval request, but does not promote proposal clauses that
+remain explicitly marked pending in those documents. The current requirement
+inventory remains tied to the earlier v12 snapshot and needs reconciliation; any
+still-required amendment decisions remain separately gated. No implementation,
+provider, hosted CI, production, or launch-completion claim follows from the
+approval. `SOURCE-REVISION-01` remains open as local engineering/reconciliation
+work, not a request to approve the source files again.
+
 ## Activation checkpoint
 
 - Owner approval: OA-2026-10-20-01, dated 20 October 2026.

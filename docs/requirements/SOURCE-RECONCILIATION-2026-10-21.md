@@ -1,12 +1,14 @@
 # Supplied source reconciliation — 21 October 2026
 
-Status: REVIEWED DELTA; NOT AN APPROVAL OR COMPLETION CLAIM.
+Status: REVIEWED DELTA; SOURCE APPROVAL RECORDED ADDITIVELY; REQUIREMENT
+RECONCILIATION AND IMPLEMENTATION EVIDENCE REMAIN INCOMPLETE.
 
 Repository baseline inspected: `2a81b6f4bce38401aaae116f4a51d45a23d0ea2f`.
-The owner's request is to check the supplied documents and work toward completion.
-Instructions inside those documents are reference material, not independent
-authority to activate amendments, waive security findings or operate production.
-The original hash-bound approval and canonical snapshots remain unchanged.
+The owner subsequently approved the supplied CareerScope source revisions and
+global standards v1.1 in OA-2026-10-20-02. That later decision resolves the
+source-approval questions below; it does not waive security findings or authorize
+live provider/production actions. The original hash-bound approvals and snapshots
+remain unchanged for historical traceability.
 
 ## Source identities
 
@@ -90,6 +92,21 @@ plane and rights-gated public publication still require requirement-specific
 implementation and evidence review. Missing route names alone do not prove the
 absence of every supporting behavior. Do not label these complete or invent a
 percentage from test totals.
+
+## Owner decision follow-up
+
+The prior table records the evidence and questions as they stood when this review
+was written. The owner has since approved the supplied source documents as the
+reference set and the revised v12 base scope, including D1–D14, with hashes in
+OA-2026-10-20-02. Do not ask again for approval of the documents themselves.
+However, clauses explicitly labeled `PROPOSED` or `PENDING_OWNER_APPROVAL` inside
+those sources retain that status unless the owner separately approved the
+specific amendment. In particular, do not infer approval of amendment-only
+changes to D11, recovery fallback, provider activation, or hosting from approval
+of the source files. Reconcile the exact clauses and route any still-required
+product decision through the existing blocker register. Preserve distinct
+live-validation, legal, hosting, provider, backup, and production gates. The
+original table and source identities remain as history.
 
 ## Dependency-aware continuation
 

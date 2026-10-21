@@ -23,6 +23,31 @@ does not replace the documents. A hash change requires reconciliation, not silen
 inheritance of approval. Product decisions, legal/provider permissions, actual CI,
 hosted evidence and production GO are separate from this approval.
 
+## Later owner-approved CareerScope revisions
+
+OA-2026-10-20-02 records the owner's subsequent explicit approval of revised
+CareerScope source documents. The source bytes were available in the owner-supplied
+document set and SHA256 was recomputed on 21 October 2026. These are additive
+source identities; the original SRC-01 through SRC-05 entries and snapshots remain
+unchanged historical evidence.
+
+| Revision  | Approved document                                                | SHA256                                                           |
+| --------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| SRC-01-R1 | source-revisions/2026-10-20/CareerScope-v12.md                   | ECB3A40AC0E8BC532BAFF6E6897D9C4FE962C9B25516B65449814B83B2A25214 |
+| SRC-02-R1 | source-revisions/2026-10-20/CareerScope-Engineering-Standards.md | 52F78F94123091DFAD411D9DD0662635834DBBF381561AFE937ADBC72EABD25F |
+| SRC-03-R1 | source-revisions/2026-10-20/CareerScope-Goal.md                  | AA0EA656B12FA62DA2AA64AC5D5A455542B964A56BFDA0B055133E1EACA69112 |
+
+CareerScope v12 R1 is the currently approved product reference and base scope,
+including D1–D14. Clauses inside any approved document that are explicitly marked
+`PROPOSED` or `PENDING_OWNER_APPROVAL` are not silently promoted by approval of
+the document identity. SRC-04/05 remain approved global v1.1 controls under
+OA-2026-10-20-02. Both the original sources and R1 CareerScope revisions are
+retained as repository snapshots. The `requirements:check` verifies all six
+CareerScope snapshots. The requirement inventory still traces to the original
+v12 snapshot and requires reconciliation against R1; unresolved proposal clauses
+must remain separately classified. See SOURCE-REVISION-01 in blocker.txt. Do not
+infer implementation or launch readiness from source approval.
+
 The three CareerScope documents now have immutable canonical snapshots beside this
 register. v12 and Engineering Standards retain the exact supplied SHA256. Goal's
 CRLF line endings were normalized to repository LF and Markdown two-space hard

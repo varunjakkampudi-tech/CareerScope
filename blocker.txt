@@ -2,50 +2,53 @@
 # Never include values, credentials, raw data, private paths or full transcripts.
 
 BLOCKER ID: SOURCE-REVISION-01
-Title: Newly supplied source amendments differ from hash-bound approval
+Title: Reconcile approved source revisions with requirement inventory
 Priority: High
 Module: Product authority and requirement traceability
 v12 requirement / checklist item: Source precedence; D1/D11/D12; proposed A1/A2/A3 and CR-07
-Status: READY_FOR_OWNER
-Problem: All three newly supplied CareerScope source hashes differ from the
-  approved register. They explicitly retain pending-approval amendments and
-  conflicting hosting statements. General completion direction is not a specific
-  security exception or authorization for destructive credential removal.
-Verified root cause: Direct SHA256 comparison and amendment/contract text review.
-Current implementation: Approved immutable snapshots and existing work retained;
-  no pending amendment silently activated.
-Impact: Changed sign-in/provider/admin assurance/host/control requirements cannot
-  be treated as settled. Unrelated existing approved engineering may continue.
-What the agent already tried: Compared hashes, source differences, governance,
-  existing requirement inventory, routes, blockers and prior integration evidence.
-Work completed: docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md records exact
-  source identities, material conflicts and safe continuation order.
-Why autonomous resolution is unsafe or impossible: D1-D14 changes, accepting high
-  vulnerabilities and hosting decisions remain explicitly owner-controlled.
-Exact owner action required: Disposition the newly supplied amendments and host
-  conflict; do not supply secrets. No live action is requested by this entry.
+Status: OPEN_ENGINEERING
+Problem: The owner has approved the revised CareerScope source documents, but the
+  requirement inventory and traceability still reflect earlier source snapshots.
+Verified root cause: OA-2026-10-20-02 records the owner's explicit approval and
+  the supplied hashes, independently recomputed on 21 October 2026. The original
+  source identities remain preserved.
+Current implementation: The source decision is recorded additively in
+  docs/decisions/OWNER_APPROVALS.md and reconciled in
+  docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md. No historical snapshot,
+  runtime behavior, identity data, or production configuration was overwritten.
+Impact: Approval of the source documents is resolved. Source-derived inventories,
+  affected matrices and acceptance traceability still need engineering
+  reconciliation. Clauses explicitly marked proposed/pending retain that status;
+  do not treat approval of document identity as amendment approval.
+What the agent already tried: Recomputed supplied-file hashes and reconciled the
+  approval with the historical source register and prior review.
+Work completed: No further owner approval is required for the source documents
+  covered by OA-2026-10-20-02. Any amendment explicitly marked pending in those
+  sources must be evaluated against the owner's specific approval language;
+  separate provider, CI, hosting, legal, backup and production gates remain
+  independently tracked.
+Why this remains open: The approved source revision has not yet been fully mapped
+  to the source-derived requirement inventory and tests.
+Exact owner action required: None for source approval. Do not ask the owner to
+  re-approve documents covered by OA-2026-10-20-02.
 Step-by-step resolution instructions:
-  1. Review the source reconciliation's identities and delta table.
-  2. Explicitly disposition D1's removed post-launch phone method and A1/D11-R;
-     A1 incorrectly says D1 is unchanged. Separately disposition D12's change
-     from default fallback to exception-only fallback; A1 also calls D12 unchanged.
-     Retain historical clauses and identity data; require a separately reviewed
-     migration before legacy credential removal.
-  3. Approve or decline local mocked A2/OpenRouter work; live activation, budget
-     and private-data processing remain separate decisions.
-  4. Select dedicated or shared planned host; confirm ephemeral CI versus a named
-     separate staging host. No infrastructure change follows automatically.
-  5. Disposition the proposed CR-07 controls and admin step-up assurance. Resolve
-     HTTP 400 versus 422 and health-route compatibility before contract changes.
-  6. Record approved scope/versions/hashes through the governance transition;
-     retain original decisions and re-run requirements/privacy/format checks.
+  1. Add immutable hash-verified snapshots for the newly approved documents while
+     retaining the historical snapshots.
+  2. Reconcile the v12 inventory and affected requirement/test matrices against
+     the approved revision; report added, changed and retired requirements.
+  3. Identify amendment clauses still marked proposed/pending and keep them
+     distinct from approved base requirements unless specifically authorized.
+  4. Keep unimplemented requirements and external acceptance gates open.
+  5. Run requirements, privacy, formatting, EOL and affected contract checks.
 Required environment-variable names (no values): None for source approval
-External dependencies: Owner decisions; referenced cleanup matrix review
-Expected result: One reconciled approved scope, without guessed policy or evidence.
-Verification procedure: Compare approval record, source hashes and affected matrices.
+External dependencies: None for local source-to-requirement reconciliation
+Expected result: Active approved scope and engineering traceability agree while
+  historical source identities remain auditable.
+Verification procedure: Verify approved hashes against immutable snapshots and
+  every inventory item against its source clause.
 Tests to rerun: requirements:check, requirements:test, privacy:check, format:check,
   eol:check, plus affected contract tests after any separately approved implementation.
-Affected tasks: Changed/proposed requirements only; not all independent v12 work
+Affected tasks: Source-derived requirement inventory and related matrices
 Evidence references: docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md;
   docs/requirements/SOURCE-REGISTER.md; docs/decisions/OWNER_APPROVALS.md
 
