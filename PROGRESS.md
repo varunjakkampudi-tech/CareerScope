@@ -1562,3 +1562,18 @@ routes, but the separate `codex/task/email-otp-auth` worktree still has 54 dirty
 paths that have not been integrated. The source inventory mismatch under
 `SOURCE-REVISION-01` remains open; these test results do not close it or establish
 a 90% product-completion score.
+
+### Main synchronization follow-up (2026-10-21)
+
+Clarified historical baseline rows in `TEST_MATRIX.md` and recorded the latest
+local evidence in `blocker.txt`. Commit `4957949d91324ade3a61dc9ed37bfe88736e7826`
+was pushed normally to `main`; after fetch, local `HEAD`, `origin/main`, and the
+remote ref matched, and the main worktree was clean. Node v24.21.0
+`npm run format:check`, `npm run eol:check`, `npm run privacy:check`,
+`npm run requirements:check`, `npm run requirements:test` (5/5), and
+`git diff --check` passed for the documentation update. Full runtime suites were
+last run on its code parent SHA `f126dd7c2f0421aa1ccda7f8af5ad4270edb6ff7`;
+this commit changes documentation only. The Actions API still reports disabled
+and the exact new commit has no hosted workflow run. The separate OTP worktree
+still has 54 uncommitted paths and remains untouched. Live Resend, production
+validation, and the broader 90% v12 completion target remain open.

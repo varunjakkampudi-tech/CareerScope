@@ -954,3 +954,15 @@ application-evidence delta requires per-file scope review and exact-source
 validation. Both dirty worktrees were left untouched. Main includes the
 committed Resend OTP provider and authentication routes; this does not establish
 live delivery or production acceptance.
+
+Latest continuation verification (21 October 2026): local `main`,
+`origin/main`, and `git ls-remote origin refs/heads/main` agree at
+`4957949d91324ade3a61dc9ed37bfe88736e7826`; the main worktree is clean.
+The `codex/task/email-otp-auth` checkout remains at
+`f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56`; full porcelain enumeration with
+`--untracked-files=all` reports 54 dirty paths. Its committed tip is an ancestor
+of main, but those dirty changes remain unreviewed and unintegrated; that
+worktree was not modified. For `4957949d91324ade3a61dc9ed37bfe88736e7826`,
+`gh run list --commit` returned `[]` and the GitHub Actions permissions API
+reported `enabled=false`. The documentation-only main commit was pushed normally;
+no deployment or live Resend delivery occurred.
