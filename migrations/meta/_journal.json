@@ -218,6 +218,13 @@
       "when": 1792550018120,
       "tag": "0030_third_stephen_strange",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1792566331478,
+      "tag": "0031_peaceful_gauntlet",
+      "breakpoints": true
     }
   ]
 }

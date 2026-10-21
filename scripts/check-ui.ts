@@ -659,6 +659,8 @@ try {
       );
       const signupEmail = `signup-${engine}@example.test`;
       await signupPage.getByLabel('Email address').fill(signupEmail);
+      await signupPage.getByLabel('Date of birth').fill('1990-01-01');
+      await signupPage.getByText(/We use this only to check age eligibility/).waitFor();
       await signupPage.getByRole('button', { name: 'Send verification code', exact: true }).click();
       assert.equal(
         signupRequestCount,
@@ -687,7 +689,17 @@ try {
         termsAccepted: true,
         privacyAcknowledged: true,
         marketingOptIn: false,
+        dateOfBirth: '1990-01-01',
       });
+      assert.equal(
+        await signupPage
+          .evaluate(() =>
+            [...Object.values(localStorage), ...Object.values(sessionStorage)].join('\n'),
+          )
+          .then((stored) => stored.includes('1990-01-01')),
+        false,
+        'age input is not persisted in browser storage',
+      );
       await signupPage.getByLabel('Six-digit verification code').fill('123456');
       await signupPage
         .getByRole('button', { name: 'Verify and create account', exact: true })
@@ -699,6 +711,11 @@ try {
         code: '123456',
         intent: 'sign-up',
       });
+      assert.equal(
+        Object.hasOwn(signupVerificationBody, 'dateOfBirth'),
+        false,
+        'the birth date is not sent to OTP verification',
+      );
       await signupPage.close();
 
       const page = await browser.newPage();

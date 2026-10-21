@@ -442,6 +442,10 @@ Problem: No counsel review/current official applicability evidence has been supp
 Verified root cause: Approved v12 marks these external dependencies To do; no legal
   approval record observed. This does not assert any legal commencement date.
 Current implementation: Existing privacy documentation, not compliance certification.
+  Signup now performs a locally tested self-reported 18+ screen before OTP
+  delivery and retains only a boolean pass result; it does not verify identity
+  or age and is not legal approval. See the 21 October 2026 age-screen evidence
+  in PROGRESS.md and TRUST-TEST-01 in TEST_MATRIX.md.
   The dual-address email-change flow stores the normalized proposed address as
   ordinary PostgreSQL text in `email_change_requests.new_email` until the row is
   deleted. Five-minute challenge expiry is enforced during verification. The
@@ -457,7 +461,9 @@ What the agent already tried: Read approved requirements and current privacy doc
   host-native retention job; reproduced that the previous job left expired rows.
 Work completed: The existing retention job now removes expired email-change
   requests without adding a service or changing unexpired request behavior.
-  Disposable PostgreSQL test passed 3/3; this is not live host evidence.
+  Disposable PostgreSQL test passed 3/3; this is not live host evidence. The
+  signup age-screen implementation also has local API, database, browser and
+  privacy regression evidence, but no legal/counsel determination has been made.
 Why autonomous resolution is unsafe or impossible: Counsel and real-user acceptance
   cannot be simulated; no agent may claim legal approval or accept terms.
 Exact owner action required: Arrange counsel and native-language review of the

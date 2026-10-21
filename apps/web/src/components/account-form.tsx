@@ -34,6 +34,7 @@ export default function AccountForm({
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
   const [codeSent, setCodeSent] = useState(false);
   const [intent, setIntent] = useState<'sign-in' | 'sign-up'>('sign-in');
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -76,7 +77,7 @@ export default function AccountForm({
         method: 'POST',
         body: JSON.stringify(
           intent === 'sign-up'
-            ? { email, intent, termsAccepted, privacyAcknowledged, marketingOptIn }
+            ? { email, intent, termsAccepted, privacyAcknowledged, marketingOptIn, dateOfBirth }
             : { email },
         ),
       });
@@ -88,6 +89,7 @@ export default function AccountForm({
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : 'Could not request a code. Try again.');
     } finally {
+      if (intent === 'sign-up') setDateOfBirth('');
       setPending(null);
     }
   }
@@ -256,6 +258,24 @@ export default function AccountForm({
                 onChange={(event) => setEmail(event.target.value)}
                 required
               />
+              {registrationEnabled && intent === 'sign-up' && (
+                <>
+                  <label htmlFor="signup-date-of-birth">Date of birth</label>
+                  <input
+                    id="signup-date-of-birth"
+                    type="date"
+                    autoComplete="bday"
+                    aria-describedby="signup-age-screen-help"
+                    value={dateOfBirth}
+                    onChange={(event) => setDateOfBirth(event.target.value)}
+                    required
+                  />
+                  <small id="signup-age-screen-help">
+                    We use this only to check age eligibility. We do not retain your date of birth;
+                    only the screening result is kept.
+                  </small>
+                </>
+              )}
               {registrationEnabled && intent === 'sign-up' && legalDocuments && (
                 <fieldset className="form-options">
                   <legend>Legal notices</legend>

@@ -402,13 +402,18 @@ function contracts(options: {
                 termsAccepted: { type: 'boolean', enum: [true] },
                 privacyAcknowledged: { type: 'boolean', enum: [true] },
                 marketingOptIn: bool,
+                dateOfBirth: text({
+                  format: 'date',
+                  description:
+                    'Used only for the self-reported age-eligibility screen; the raw date is not retained.',
+                }),
               },
-              ['email', 'intent', 'termsAccepted', 'privacyAcknowledged'],
+              ['email', 'intent', 'termsAccepted', 'privacyAcknowledged', 'dateOfBirth'],
             ),
           ],
         },
         failures: options.emailOtpEnabled ? [400, 403, 429, 503] : [404],
-        description: `Returns the same accepted response for known and unknown addresses. Sign-in establishes sessions only for existing accounts. Signup is ${options.registrationEnabled ? 'enabled with server-configured, versioned legal documents' : 'disabled'}; verified signup acceptance and account creation are finalized in one PostgreSQL transaction.`,
+        description: `Returns the same accepted response for known and unknown addresses. Sign-in establishes sessions only for existing accounts. Signup is ${options.registrationEnabled ? 'enabled with server-configured, versioned legal documents' : 'disabled'}; signup also requires a self-reported age screen and only the result is retained. Verified signup acceptance and account creation are finalized in one PostgreSQL transaction.`,
       },
     ),
     'POST /api/otp/verify': operation(

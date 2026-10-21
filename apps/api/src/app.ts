@@ -15,6 +15,7 @@ import {
 } from '@careerscope/shared';
 import { registerOpenApi } from './openapi.js';
 import { applicationsCsv } from './application-export.js';
+import { isIsoCalendarDate, passesAgeScreen } from './age-screen.js';
 import {
   Auth,
   createEmailOtp,
@@ -70,6 +71,7 @@ const otpRequestSchema = z
     termsAccepted: z.boolean().optional(),
     privacyAcknowledged: z.boolean().optional(),
     marketingOptIn: z.boolean().optional(),
+    dateOfBirth: z.string().refine(isIsoCalendarDate, 'Enter a valid date').optional(),
   })
   .strict()
   .superRefine((input, context) => {
@@ -87,11 +89,19 @@ const otpRequestSchema = z
         message: 'Required',
       });
     }
+    if (input.intent === 'sign-up' && input.dateOfBirth === undefined) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['dateOfBirth'],
+        message: 'Required',
+      });
+    }
     if (
       input.intent !== 'sign-up' &&
       (input.termsAccepted !== undefined ||
         input.privacyAcknowledged !== undefined ||
-        input.marketingOptIn !== undefined)
+        input.marketingOptIn !== undefined ||
+        input.dateOfBirth !== undefined)
     ) {
       context.addIssue({ code: z.ZodIssueCode.custom, message: 'Signup acceptance is invalid' });
     }
@@ -512,6 +522,8 @@ export async function createApp(
     const intent = input.intent ?? 'sign-in';
     if (intent === 'sign-up' && !registrationAvailable)
       throw new HttpError(404, 'Registration unavailable');
+    if (intent === 'sign-up' && !passesAgeScreen(input.dateOfBirth!))
+      throw new HttpError(400, 'You must be at least 18 to create an account');
     const email = input.email.toLowerCase();
     const emailHash = hashOtpEmail(email, options.emailOtp.secret);
     const ipHash = createHash('sha256').update(request.ip).digest('hex');
@@ -561,6 +573,7 @@ export async function createApp(
             ? {
                 termsVersion: registrationPolicy!.termsVersion,
                 privacyVersion: registrationPolicy!.privacyVersion,
+                ageScreenPassed: true,
                 marketingOptIn: input.marketingOptIn === true,
                 ...(input.marketingOptIn
                   ? { marketingVersion: registrationPolicy!.marketingVersion }
@@ -640,6 +653,7 @@ export async function createApp(
             if (
               !challenge.termsVersion ||
               !challenge.privacyVersion ||
+              challenge.ageScreenPassed !== true ||
               challenge.termsVersion !== registrationPolicy?.termsVersion ||
               challenge.privacyVersion !== registrationPolicy?.privacyVersion ||
               (challenge.marketingOptIn &&
@@ -652,6 +666,7 @@ export async function createApp(
               {
                 termsVersion: challenge.termsVersion,
                 privacyVersion: challenge.privacyVersion,
+                ageScreenPassed: true,
                 marketingOptIn: challenge.marketingOptIn === true,
                 marketingVersion: challenge.marketingVersion,
               },

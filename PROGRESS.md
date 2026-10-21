@@ -1374,3 +1374,32 @@ change was involved. The validated export was committed and normally pushed to
 remains disabled, so this commit has local validation but no hosted CI run. PDF
 export and the other v12 section 4.9 capabilities remain out of scope for this
 change.
+
+### Self-reported signup age screen (2026-10-21, Node 24.19.0)
+
+On `main` after `bad50e78cf0d2f605912e778b7e167682e745882`, implemented a
+signup-only self-reported 18+ screen before OTP challenge creation/delivery.
+The server validates strict ISO calendar dates and evaluates age using UTC
+calendar dates (including a deterministic Feb-29 rule). Only a boolean pass
+result is retained with the signup challenge/account; raw date of birth is not
+persisted, included in OTP verification, or stored in browser storage. Sign-in
+requests reject signup-only DOB input, and legacy signup challenges without a
+pass result fail closed. OpenAPI and UI disclosure were updated. This is an
+eligibility screen, not identity/age verification or legal approval.
+
+An independent read-only review of the exact implementation diff returned
+PASS with no blocking correctness, privacy or security findings. On the current
+uncommitted source tree, `npm run gates:test` passed (88/88 unit tests plus
+strict typecheck, lint, privacy, deployment-policy, source-integrity and EOL
+gates); `npm run test:integration` passed 58/58 with zero skips using disposable
+loopback PostgreSQL/Redis and a synthetic OTP sender; `npm run test:domain`
+passed 836/836 across 30 files; `CAREERSCOPE_UI_BROWSER=all npm run test:ui`
+passed on Chromium, Firefox and WebKit with axe, keyboard and eight approved
+responsive widths; `npm run build` passed both Next builds and CSP hash
+verification; `npm run format:check`, `npm run eol:check`,
+`npm run security:check` and `git diff --check` passed. The first UI invocation
+could not connect because the harness requires a separately started web server;
+after starting the local web app, the full three-engine command passed. That
+server was stopped after the run. No live email, hosted CI, deployment, shared
+database or production change occurred. GitHub Actions remains disabled, so
+there is no hosted run for this change. Commit/push verification is pending.

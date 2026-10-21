@@ -196,6 +196,7 @@ export class Auth {
     acceptance: {
       termsVersion: string;
       privacyVersion: string;
+      ageScreenPassed: true;
       marketingOptIn: boolean;
       marketingVersion?: string;
     },
@@ -219,11 +220,11 @@ export class Auth {
     }
 
     const inserted = await client.query<{ id: string }>(
-      `INSERT INTO users (id, email, email_verified_at, password_hash)
-       VALUES ($1, $2, now(), NULL)
+      `INSERT INTO users (id, email, email_verified_at, age_screen_passed, password_hash)
+       VALUES ($1, $2, now(), $3, NULL)
        ON CONFLICT (email) DO NOTHING
        RETURNING id`,
-      [randomUUID(), normalized],
+      [randomUUID(), normalized, acceptance.ageScreenPassed],
     );
     if (!inserted.rows[0]) {
       // A concurrent account creator won the unique-email race. Treat it as an

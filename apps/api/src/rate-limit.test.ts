@@ -78,6 +78,7 @@ test('email OTP signup remains unavailable without complete legal policy configu
         termsAccepted: true,
         privacyAcknowledged: true,
         marketingOptIn: false,
+        dateOfBirth: '1990-01-01',
       },
     });
 

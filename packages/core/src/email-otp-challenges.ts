@@ -27,12 +27,14 @@ export type NewEmailOtpChallenge = {
   privacyVersion?: string;
   marketingOptIn?: boolean;
   marketingVersion?: string;
+  ageScreenPassed?: boolean;
 };
 
 export type EmailOtpChallengeContext = Pick<
   NewEmailOtpChallenge,
   'intent' | 'termsVersion' | 'privacyVersion' | 'marketingOptIn' | 'marketingVersion'
->;
+> &
+  Pick<NewEmailOtpChallenge, 'ageScreenPassed'>;
 
 /**
  * PostgreSQL-backed one-time challenge state. The code itself is never stored.
@@ -50,6 +52,10 @@ export class EmailOtpChallenges {
     const emailHash = hashOtpEmail(input.email, secret);
     if (!Number.isSafeInteger(input.expiresAt) || input.expiresAt <= Date.now())
       throw new Error('Invalid OTP expiration time');
+    if (input.intent === 'sign-up' && input.ageScreenPassed !== true)
+      throw new Error('Signup OTP requires a passed age screen');
+    if (input.intent !== 'sign-up' && input.ageScreenPassed !== undefined)
+      throw new Error('Age-screen result is valid only for signup OTP');
 
     const client = await this.pool.connect();
     try {
@@ -72,8 +78,8 @@ export class EmailOtpChallenges {
       await client.query(
         `INSERT INTO email_otp_challenges
            (id, email_hash, digest, expires_at, intent, terms_version, privacy_version,
-            marketing_opt_in, marketing_version)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            marketing_opt_in, marketing_version, age_screen_passed)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
         [
           id,
           emailHash,
@@ -84,6 +90,7 @@ export class EmailOtpChallenges {
           input.privacyVersion ?? null,
           input.marketingOptIn ?? false,
           input.marketingVersion ?? null,
+          input.ageScreenPassed ?? null,
         ],
       );
       await client.query('COMMIT');
@@ -159,9 +166,10 @@ export class EmailOtpChallenges {
         privacy_version: string | null;
         marketing_opt_in: boolean;
         marketing_version: string | null;
+        age_screen_passed: boolean | null;
       }>(
         `SELECT digest, attempts, expires_at, intent, terms_version, privacy_version,
-                marketing_opt_in, marketing_version
+                marketing_opt_in, marketing_version, age_screen_passed
          FROM email_otp_challenges
          WHERE id = $1 AND email_hash = $2
          FOR UPDATE`,
@@ -173,6 +181,13 @@ export class EmailOtpChallenges {
         return 'invalid';
       }
       if (input.expectedIntent && input.expectedIntent !== challenge.intent) {
+        await client.query('COMMIT');
+        return 'invalid';
+      }
+      if (input.expectedIntent === 'sign-up' && challenge.age_screen_passed !== true) {
+        // Expire pre-screen signup challenges safely after this contract is
+        // deployed; a fresh request must pass the age screen before delivery.
+        await client.query('DELETE FROM email_otp_challenges WHERE id = $1', [id.data]);
         await client.query('COMMIT');
         return 'invalid';
       }
@@ -206,6 +221,7 @@ export class EmailOtpChallenges {
             privacyVersion: challenge.privacy_version ?? undefined,
             marketingOptIn: challenge.marketing_opt_in,
             marketingVersion: challenge.marketing_version ?? undefined,
+            ageScreenPassed: challenge.age_screen_passed ?? undefined,
           });
         }
         await client.query('DELETE FROM email_otp_challenges WHERE id = $1', [id.data]);

@@ -7,6 +7,7 @@ import type { FastifyInstance } from 'fastify';
 import {
   Database,
   EmailOtpProviderError,
+  createEmailOtp,
   hashOtpEmail,
   rateLimiter,
   type EmailOtpDeliveryMessage,
@@ -403,6 +404,7 @@ test(
         termsAccepted: true,
         privacyAcknowledged: true,
         marketingOptIn: true,
+        dateOfBirth: '1990-01-01',
       };
       const missingAcceptance = await requestCode(
         appOne!,
@@ -418,15 +420,108 @@ test(
         '192.0.2.48',
       );
       assert.equal(signinAcceptanceInjection.statusCode, 400);
+      const missingBirthDate = await requestCode(
+        appOne!,
+        signupEmail,
+        {
+          intent: 'sign-up',
+          termsAccepted: true,
+          privacyAcknowledged: true,
+          marketingOptIn: false,
+        },
+        '192.0.2.51',
+      );
+      assert.equal(missingBirthDate.statusCode, 400, 'signup requires a date for age screening');
+      const signinBirthDateInjection = await requestCode(
+        appOne!,
+        signupEmail,
+        { dateOfBirth: '1990-01-01' },
+        '192.0.2.52',
+      );
+      assert.equal(signinBirthDateInjection.statusCode, 400, 'sign-in rejects signup-only data');
+      const legacySignupEmail = 'legacy-signup-challenge@example.test';
+      const legacySignupId = randomUUID();
+      const legacySignupCode = createEmailOtp(legacySignupId, secret);
+      await database.pool.query(
+        `INSERT INTO email_otp_challenges
+          (id, email_hash, digest, expires_at, intent, terms_version, privacy_version)
+         VALUES ($1, $2, $3, $4, 'sign-up', 'terms-test-1', 'privacy-test-1')`,
+        [
+          legacySignupId,
+          hashOtpEmail(legacySignupEmail, secret),
+          legacySignupCode.digest,
+          new Date(legacySignupCode.expiresAt),
+        ],
+      );
+      const legacySignupVerify = await verifyCode(
+        appOne!,
+        legacySignupEmail,
+        legacySignupCode.code,
+        { intent: 'sign-up' },
+        '192.0.2.53',
+      );
+      assert.equal(
+        legacySignupVerify.statusCode,
+        401,
+        'legacy challenges without a screen fail closed',
+      );
+      assert.equal(
+        (await database.pool.query('SELECT id FROM users WHERE email = $1', [legacySignupEmail]))
+          .rowCount,
+        0,
+        'legacy signup challenges cannot create accounts without a passed age screen',
+      );
       assert.equal(
         (await database.pool.query('SELECT id FROM users WHERE email = $1', [signupEmail]))
           .rowCount,
         0,
         'invalid/missing acceptance cannot create an account',
       );
+      const deliveredBeforeAgeScreen = delivered.length;
+      const underageEmail = 'underage-candidate@example.test';
+      const minorDate = new Date();
+      minorDate.setUTCFullYear(minorDate.getUTCFullYear() - 17);
+      const underageRequest = await requestCode(
+        appOne!,
+        underageEmail,
+        {
+          ...signupRequest,
+          dateOfBirth: minorDate.toISOString().slice(0, 10),
+        },
+        '192.0.2.49',
+      );
+      assert.equal(underageRequest.statusCode, 400);
+      assert.equal(delivered.length, deliveredBeforeAgeScreen, 'underage signup sends no OTP');
+      assert.equal(
+        (await database.pool.query('SELECT id FROM users WHERE email = $1', [underageEmail]))
+          .rowCount,
+        0,
+        'underage signup creates no account',
+      );
+      assert.equal(
+        (
+          await database.pool.query('SELECT id FROM email_otp_challenges WHERE email_hash = $1', [
+            hashOtpEmail(underageEmail, secret),
+          ])
+        ).rowCount,
+        0,
+        'underage signup persists no OTP challenge',
+      );
+      const malformedDate = await requestCode(
+        appOne!,
+        'malformed-birthdate@example.test',
+        { ...signupRequest, dateOfBirth: '2001-02-29' },
+        '192.0.2.50',
+      );
+      assert.equal(malformedDate.statusCode, 400, 'invalid calendar dates are rejected');
       const signupSent = await requestCode(appOne!, signupEmail, signupRequest, '192.0.2.44');
       assert.equal(signupSent.statusCode, 202);
       assert.deepEqual(signupSent.json(), acceptedBody);
+      const ageScreenChallenge = await database.pool.query<{ age_screen_passed: boolean | null }>(
+        `SELECT age_screen_passed FROM email_otp_challenges WHERE email_hash = $1`,
+        [hashOtpEmail(signupEmail, secret)],
+      );
+      assert.equal(ageScreenChallenge.rows[0]?.age_screen_passed, true);
       const signupChallenge = delivered.at(-1)!;
       const signupVerified = await verifyCode(
         appOne!,
@@ -451,10 +546,25 @@ test(
       const newAccount = await database.pool.query<{
         email_verified_at: Date | null;
         password_hash: string | null;
-      }>('SELECT email_verified_at, password_hash FROM users WHERE email = $1', [signupEmail]);
+        age_screen_passed: boolean | null;
+      }>('SELECT email_verified_at, password_hash, age_screen_passed FROM users WHERE email = $1', [
+        signupEmail,
+      ]);
       assert.equal(newAccount.rowCount, 1);
       assert.ok(newAccount.rows[0]!.email_verified_at instanceof Date);
       assert.equal(newAccount.rows[0]!.password_hash, null);
+      assert.equal(newAccount.rows[0]!.age_screen_passed, true);
+      assert.equal(
+        (
+          await database.pool.query(
+            `SELECT table_name FROM information_schema.columns
+             WHERE table_schema = 'public' AND column_name = 'date_of_birth'
+               AND table_name IN ('users', 'email_otp_challenges')`,
+          )
+        ).rowCount,
+        0,
+        'raw birth dates are not part of persistent account or challenge schema',
+      );
       const signupAcceptances = await database.pool.query<{
         document: string;
         version: string;
@@ -766,6 +876,17 @@ test(
       assert.ok(openapi.paths['/api/account/sessions']?.get);
       assert.ok(openapi.paths['/api/account/sessions/{id}']?.delete);
       assert.deepEqual(openapi.paths['/api/otp/request'].post.security, []);
+      const requestVariants = openapi.paths['/api/otp/request'].post.requestBody.content[
+        'application/json'
+      ].schema.oneOf as Array<{
+        properties: Record<string, { format?: string }>;
+        required?: string[];
+      }>;
+      const signupContract = requestVariants.find((variant) =>
+        variant.required?.includes('dateOfBirth'),
+      );
+      assert.equal(signupContract?.properties.dateOfBirth?.format, 'date');
+      assert.ok(signupContract?.required?.includes('dateOfBirth'));
       assert.deepEqual(openapi.paths['/api/otp/verify'].post.security, []);
       assert.deepEqual(openapi.paths['/api/session/refresh'].post.security, [{ refresh: [] }]);
       const replayedRefresh = await appOne!.inject({

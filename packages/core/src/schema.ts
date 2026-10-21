@@ -25,6 +25,7 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey(),
   email: text('email').unique(),
   emailVerifiedAt: timestamp('email_verified_at', { withTimezone: true }),
+  ageScreenPassed: boolean('age_screen_passed'),
   passwordHash: text('password_hash'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 });
@@ -116,6 +117,7 @@ export const emailOtpChallenges = pgTable(
     privacyVersion: text('privacy_version'),
     marketingOptIn: boolean('marketing_opt_in').notNull().default(false),
     marketingVersion: text('marketing_version'),
+    ageScreenPassed: boolean('age_screen_passed'),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },

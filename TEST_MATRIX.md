@@ -391,3 +391,27 @@ unavailable because Actions is disabled.
 All fixtures were synthetic and services loopback-only. No Resend or other live
 provider call was made; these local checks do not imply hosted CI or production
 acceptance.
+
+### Signup age-screen regression (2026-10-21, Node 24.19.0)
+
+On the current local `main` change, `npm run gates:test` passed, including the
+registered `apps/api/src/age-screen.test.ts` cases and signup API unit tests;
+the suite reported 88/88 unit tests and completed strict typecheck, lint,
+privacy, deployment-policy, source-integrity and EOL checks. The service-backed
+`npm run test:integration` passed 58/58 with zero skips using disposable,
+loopback-only PostgreSQL/Redis and a synthetic OTP sender. It verifies missing,
+malformed, future and under-18 DOB rejection before challenge persistence or
+delivery; legacy signup challenges without a pass result fail closed; successful
+signup stores only `age_screen_passed=true`; and neither user nor challenge
+schema contains a raw DOB column. OpenAPI documents the signup-only date field.
+
+`CAREERSCOPE_UI_BROWSER=all npm run test:ui` passed on Chromium, Firefox and
+WebKit. The signup journey checks the field/help text, confirms DOB is not sent
+to OTP verification or browser storage, and runs existing keyboard, axe and
+320/360/390/768/1024/1280/1440/1920px responsive checks. `npm run test:domain`
+passed 836/836 across 30 files; `npm run build` passed both Next.js builds and
+the 12-hash CSP verification; `npm run format:check`, `npm run eol:check`,
+`npm run security:check` (zero production dependency vulnerabilities), and
+`git diff --check` passed. These are local synthetic checks, not legal approval,
+age/identity verification, hosted CI or production evidence. GitHub Actions is
+disabled; no hosted run exists for the candidate SHA.
