@@ -1583,6 +1583,9 @@ try {
       await page.getByLabel('Full Name', { exact: true }).fill('Synthetic Candidate');
       await page.getByLabel('Email', { exact: true }).fill(accountEmail);
       await page.getByLabel('Location', { exact: true }).fill('Hyderabad');
+      await page
+        .getByRole('combobox', { name: 'Career stage', exact: true })
+        .selectOption('experienced');
       await page.locator('textarea[name="titles"]').fill('React Engineer');
       await page.getByRole('button', { name: 'Save Profile', exact: true }).click();
       await page.getByText('Profile saved.', { exact: true }).waitFor();
@@ -1596,6 +1599,7 @@ try {
         'the reviewed profile must exist before the preparation screen is driven',
       );
       assert.ok(reviewed?.profile.preferences.techStack.includes('React'));
+      assert.equal(reviewed?.profile.candidate.segment, 'experienced');
       // The sidebar is hidden below 768px and the screenshot loop above left
       // the viewport at 320px, so widen before navigating through it.
       await page.setViewportSize({ width: 1440, height: 900 });

@@ -1,5 +1,44 @@
 import { describe, expect, it } from 'vitest';
-import { preferencesSchema } from './schemas.js';
+import { preferencesSchema, profileSchema, profileUpdateSchema } from './schemas.js';
+
+describe('candidate career segment', () => {
+  const profile = {
+    candidate: {
+      fullName: 'Synthetic Candidate',
+      email: 'candidate@example.test',
+      phone: '',
+      location: 'Hyderabad',
+      linkedin: '',
+      github: '',
+      portfolio: '',
+    },
+    preferences: { titles: ['Engineer'], techStack: ['TypeScript'] },
+    application: {},
+  };
+
+  it('preserves each explicitly selected segment through the canonical profile schema', () => {
+    for (const segment of ['student', 'fresher', 'experienced'] as const) {
+      expect(
+        profileSchema.parse({ ...profile, candidate: { ...profile.candidate, segment } }).candidate
+          .segment,
+      ).toBe(segment);
+      expect(profileUpdateSchema.parse({ candidate: { segment } }).candidate?.segment).toBe(
+        segment,
+      );
+    }
+  });
+
+  it('rejects unsupported values and leaves legacy profiles unclassified', () => {
+    expect(
+      profileSchema.safeParse({
+        ...profile,
+        candidate: { ...profile.candidate, segment: 'intern' },
+      }).success,
+    ).toBe(false);
+    expect(profileUpdateSchema.safeParse({ candidate: { segment: 'intern' } }).success).toBe(false);
+    expect(profileSchema.parse(profile).candidate.segment).toBeUndefined();
+  });
+});
 
 /**
  * F-66-3. Every free-text array an owner types bounded its LENGTH and left

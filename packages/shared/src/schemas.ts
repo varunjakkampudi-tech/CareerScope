@@ -20,6 +20,8 @@ export const candidateSchema = z.object({
   email: z.string().trim().email('Enter a valid email'),
   phone: z.string().trim().max(40).default(''),
   location: z.string().trim().min(1, 'Location is required').max(120),
+  /** Owner-declared career stage; optional for legacy profiles and never inferred. */
+  segment: z.enum(['student', 'fresher', 'experienced']).optional(),
   linkedin: z.string().trim().url().or(z.literal('')).default(''),
   github: z.string().trim().url().or(z.literal('')).default(''),
   portfolio: z.string().trim().url().or(z.literal('')).default(''),

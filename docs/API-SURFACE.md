@@ -131,6 +131,11 @@ requires the staging password and private proxy assertion.
 `PUT /api/profile` carries a revision. A stale revision is a 409, not a
 last-write-wins overwrite.
 
+The candidate profile may include the explicitly selected career segment
+`student`, `fresher`, or `experienced`. It is optional for legacy profiles and
+is not inferred from age or experience; it does not independently establish
+education, identity, eligibility or verification.
+
 Preparation is deterministic. External AI elaboration has been removed.
 
 ### Resumes

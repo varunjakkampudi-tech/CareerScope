@@ -19,6 +19,11 @@ const employmentOptions = [
   ['internship', 'Internship'],
   ['temporary', 'Temporary'],
 ] as const;
+const careerSegments = [
+  ['student', 'Student'],
+  ['fresher', 'Fresher'],
+  ['experienced', 'Experienced'],
+] as const;
 
 function ProfileForm({
   record,
@@ -98,6 +103,7 @@ function ProfileForm({
     const employmentTypes = employmentOptions
       .map(([value]) => value)
       .filter((value) => data.has(`employment:${value}`));
+    const segment = careerSegments.find(([value]) => value === text('segment'))?.[0];
     if (!employmentTypes.length) {
       const field = form.elements.namedItem('employment:fulltime') as HTMLInputElement;
       field.setCustomValidity('Select at least one employment type.');
@@ -110,6 +116,7 @@ function ProfileForm({
         email: text('email'),
         phone: text('phone'),
         location: text('location'),
+        ...(segment ? { segment } : {}),
         linkedin: text('linkedin'),
         github: text('github'),
         portfolio: text('portfolio'),
@@ -189,6 +196,17 @@ function ProfileForm({
               maxLength={120}
               defaultValue={candidate?.location ?? ''}
             />
+          </label>
+          <label>
+            Career stage
+            <select name="segment" defaultValue={candidate?.segment ?? ''}>
+              <option value="">Choose a stage</option>
+              {careerSegments.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
           </label>
           {(['linkedin', 'github', 'portfolio'] as const).map((name) => (
             <label key={name}>

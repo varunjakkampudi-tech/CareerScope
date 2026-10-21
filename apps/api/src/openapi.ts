@@ -48,6 +48,7 @@ const profile = object({
       email: text({ format: 'email', maxLength: 254 }),
       phone: text({ maxLength: 40, default: '' }),
       location: text({ minLength: 1, maxLength: 120 }),
+      segment: text({ enum: ['student', 'fresher', 'experienced'] }),
       linkedin: link,
       github: link,
       portfolio: link,

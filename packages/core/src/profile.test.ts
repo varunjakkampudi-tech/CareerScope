@@ -57,6 +57,25 @@ test('profile reuses domain defaults without inventing qualifications', () => {
   assert.equal(parsed.application.yearsOfExperience, 4);
   assert.equal(parsed.application.expectedCtc, '');
   assert.equal(parsed.candidate.portfolio, '');
+  assert.equal(parsed.candidate.segment, undefined);
+});
+
+test('candidate segment is owner-declared, bounded to the approved options and never inferred', () => {
+  for (const segment of ['student', 'fresher', 'experienced'] as const) {
+    const parsed = writableProfileSchema.parse({
+      ...syntheticProfile,
+      application: { yearsOfExperience: 0 },
+      candidate: { ...syntheticProfile.candidate, segment },
+    });
+    assert.equal(parsed.candidate.segment, segment);
+  }
+  assert.equal(
+    writableProfileSchema.safeParse({
+      ...syntheticProfile,
+      candidate: { ...syntheticProfile.candidate, segment: 'intern' },
+    }).success,
+    false,
+  );
 });
 
 test('profile rejects unknown ownership fields, unsafe links and malformed revisions', () => {
