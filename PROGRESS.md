@@ -1417,3 +1417,29 @@ with `found 0 vulnerabilities`. No dependency files changed during this check.
 `QUALITY_AUDIT.md` now distinguishes the historical result from the current
 lockfile audit. GitHub Actions remains disabled; this local audit is not hosted
 CI or production security acceptance.
+
+### Candidate profile education and projects (2026-10-21)
+
+On the current `main` checkout based at `bd8097123a5224966c0e9fe807a10d571200dee3`,
+extended the existing owner-scoped profile with self-reported education entries,
+graduation year and project summaries. Shared schema and OpenAPI bounds agree:
+up to 20 entries per list, each 1–200 characters, and graduation year 1900–2100.
+The values stay private, are not treated as verified evidence or deterministic
+matching inputs, and use the existing JSON profile storage (no database
+migration). Existing profile reads are not backfilled: absent legacy keys show
+as blank in the editor and are normalized on the first successful save.
+
+An independent read-only review of the current profile changes returned PASS.
+On Node v24.19.0, `npm run gates:test` passed (90/90 unit tests, strict
+typecheck, lint, source-integrity, privacy, deployment-gate and EOL checks);
+`npm run test:integration` passed 58/58 with zero skips against disposable
+loopback services; `npm run test:ui` passed Chromium, Firefox and WebKit,
+including the profile boundary/legacy-row checks, axe, keyboard and responsive
+checks; `npm run build` passed with both CSP builds and all 12 generated script
+hashes verified; `npm run format:check`, `npm run security:check` (zero
+production dependency vulnerabilities) and `git diff --check` passed. The first
+fresh UI attempt exposed a test setup issue: required role/skill fields were
+empty, so native form validation prevented the submit handler from running.
+The harness now fills those fields first; the complete three-engine rerun passed.
+No runtime deployment, provider call, live data change or production action was
+performed. Hosted GitHub Actions remains disabled, so no hosted result exists.

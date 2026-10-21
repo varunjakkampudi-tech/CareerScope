@@ -22,6 +22,11 @@ export const candidateSchema = z.object({
   location: z.string().trim().min(1, 'Location is required').max(120),
   /** Owner-declared career stage; optional for legacy profiles and never inferred. */
   segment: z.enum(['student', 'fresher', 'experienced']).optional(),
+  /** Candidate-entered education details; private profile data, not verified evidence. */
+  education: z.array(z.string().trim().min(1).max(200)).max(20).default([]),
+  graduationYear: z.number().int().min(1900).max(2100).optional(),
+  /** Candidate-entered project summaries; private profile data, not matching evidence. */
+  projects: z.array(z.string().trim().min(1).max(200)).max(20).default([]),
   linkedin: z.string().trim().url().or(z.literal('')).default(''),
   github: z.string().trim().url().or(z.literal('')).default(''),
   portfolio: z.string().trim().url().or(z.literal('')).default(''),

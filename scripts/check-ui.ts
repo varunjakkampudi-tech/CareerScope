@@ -2650,8 +2650,40 @@ try {
       await page.getByLabel('Full Name', { exact: true }).fill('Example Candidate');
       await page.getByLabel('Email', { exact: true }).fill('candidate@example.test');
       await page.getByLabel('Location', { exact: true }).fill('Hyderabad');
+      await page.getByLabel('Graduation Year', { exact: true }).fill('2024');
+      await page
+        .getByRole('textbox', { name: 'Education', exact: true })
+        .fill('B.Tech, Computer Science');
+      await page
+        .getByRole('textbox', { name: 'Projects', exact: true })
+        .fill('Accessible job search prototype');
+      // Satisfy the profile form's existing required preference fields so the
+      // submit handler reaches the education/project length validation below.
       await page.getByRole('textbox', { name: 'Target Roles', exact: true }).fill('React Engineer');
       await page.getByRole('textbox', { name: 'Skills', exact: true }).fill('React\nTypeScript');
+      const educationField = page.getByRole('textbox', { name: 'Education', exact: true });
+      const projectsField = page.getByRole('textbox', { name: 'Projects', exact: true });
+      const profiles = new ProfileRepository(database);
+      const profileBeforeInvalidInput = await profiles.get(ownerId);
+      for (const [field, value] of [
+        [educationField, 'B.Tech, Computer Science'],
+        [projectsField, 'Accessible job search prototype'],
+      ] as const) {
+        await field.fill('x'.repeat(201));
+        await page.getByRole('button', { name: 'Save Profile', exact: true }).click();
+        assert.equal(
+          await field.evaluate((element) => (element as HTMLTextAreaElement).validity.customError),
+          true,
+          `${engine}: profile list entries over 200 characters must show field validation`,
+        );
+        const profileAfterInvalidInput = await profiles.get(ownerId);
+        assert.equal(
+          profileAfterInvalidInput?.revision ?? 0,
+          profileBeforeInvalidInput?.revision ?? 0,
+          `${engine}: invalid profile list entry must not persist`,
+        );
+        await field.fill(value);
+      }
       await page.getByLabel('Years of Experience', { exact: true }).fill('4');
       // The real unsaved-work guard on this screen today: the profile
       // editor's own "Back to Search" confirms before discarding, and the
@@ -2685,6 +2717,38 @@ try {
       );
       await page.getByRole('button', { name: 'Save Profile', exact: true }).click();
       await page.getByText('Profile saved.', { exact: true }).waitFor();
+      const savedProfile = await new ProfileRepository(database).get(ownerId);
+      assert.deepEqual(savedProfile?.profile.candidate.education, ['B.Tech, Computer Science']);
+      assert.equal(savedProfile?.profile.candidate.graduationYear, 2024);
+      assert.deepEqual(savedProfile?.profile.candidate.projects, [
+        'Accessible job search prototype',
+      ]);
+      await database.pool.query(
+        `UPDATE candidate_profiles
+         SET data = data #- '{candidate,education}'
+                    #- '{candidate,projects}'
+                    #- '{candidate,graduationYear}'
+         WHERE owner_id = $1`,
+        [ownerId],
+      );
+      await page.reload();
+      await page.getByLabel('Full Name', { exact: true }).waitFor();
+      assert.equal(await page.getByLabel('Graduation Year', { exact: true }).inputValue(), '');
+      assert.equal(await educationField.inputValue(), '');
+      assert.equal(await projectsField.inputValue(), '');
+      await page.getByLabel('Graduation Year', { exact: true }).fill('2024');
+      await educationField.fill('B.Tech, Computer Science');
+      await projectsField.fill('Accessible job search prototype');
+      await page.getByRole('button', { name: 'Save Profile', exact: true }).click();
+      await page.getByText('Profile saved.', { exact: true }).waitFor();
+      const normalizedProfile = await profiles.get(ownerId);
+      assert.deepEqual(normalizedProfile?.profile.candidate.education, [
+        'B.Tech, Computer Science',
+      ]);
+      assert.equal(normalizedProfile?.profile.candidate.graduationYear, 2024);
+      assert.deepEqual(normalizedProfile?.profile.candidate.projects, [
+        'Accessible job search prototype',
+      ]);
       assert.equal(
         await page.evaluate(() => {
           const event = new Event('beforeunload', { cancelable: true });
@@ -2726,11 +2790,19 @@ try {
       await settled('resume');
       await page.reload();
       await page.getByLabel('Full Name', { exact: true }).waitFor();
+      assert.equal(await page.getByLabel('Graduation Year', { exact: true }).inputValue(), '2024');
+      assert.equal(
+        await page.getByRole('textbox', { name: 'Education', exact: true }).inputValue(),
+        'B.Tech, Computer Science',
+      );
+      assert.equal(
+        await page.getByRole('textbox', { name: 'Projects', exact: true }).inputValue(),
+        'Accessible job search prototype',
+      );
       assert.equal(
         await page.getByLabel('Full Name', { exact: true }).inputValue(),
         'Example Candidate',
       );
-      const profiles = new ProfileRepository(database);
       const current = await profiles.get(ownerId);
       assert.ok(current);
       await profiles.save(ownerId, {

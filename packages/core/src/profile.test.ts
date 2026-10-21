@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { writableProfileSchema, saveProfileSchema } from './profile.js';
+import { matchingProfile, writableProfileSchema, saveProfileSchema } from './profile.js';
 import { prepareProfile, preparationReportSchema } from './preparation.js';
 
 const syntheticProfile = {
@@ -58,6 +58,9 @@ test('profile reuses domain defaults without inventing qualifications', () => {
   assert.equal(parsed.application.expectedCtc, '');
   assert.equal(parsed.candidate.portfolio, '');
   assert.equal(parsed.candidate.segment, undefined);
+  assert.deepEqual(parsed.candidate.education, []);
+  assert.deepEqual(parsed.candidate.projects, []);
+  assert.equal(parsed.candidate.graduationYear, undefined);
 });
 
 test('candidate segment is owner-declared, bounded to the approved options and never inferred', () => {
@@ -76,6 +79,48 @@ test('candidate segment is owner-declared, bounded to the approved options and n
     }).success,
     false,
   );
+});
+
+test('education, graduation year, and projects are bounded candidate claims and never matching inputs', () => {
+  const profile = writableProfileSchema.parse({
+    ...syntheticProfile,
+    candidate: {
+      ...syntheticProfile.candidate,
+      education: ['B.Tech, Computer Science'],
+      graduationYear: 2024,
+      projects: ['Accessible job search prototype'],
+    },
+  });
+  assert.deepEqual(profile.candidate.education, ['B.Tech, Computer Science']);
+  assert.equal(profile.candidate.graduationYear, 2024);
+  assert.deepEqual(profile.candidate.projects, ['Accessible job search prototype']);
+  assert.deepEqual(matchingProfile(profile), {
+    candidate: { location: 'Hyderabad' },
+    preferences: profile.preferences,
+    application: {
+      expectedCtc: '',
+      yearsOfExperience: 4,
+      willingToRelocate: true,
+    },
+    derived: null,
+  });
+  for (const candidate of [
+    { education: ['x'.repeat(201)] },
+    { education: Array.from({ length: 21 }, (_, index) => `School ${index}`) },
+    { graduationYear: 1899 },
+    { graduationYear: 2101 },
+    { graduationYear: 2024.5 },
+    { projects: ['x'.repeat(201)] },
+    { projects: Array.from({ length: 21 }, (_, index) => `Project ${index}`) },
+  ]) {
+    assert.equal(
+      writableProfileSchema.safeParse({
+        ...syntheticProfile,
+        candidate: { ...syntheticProfile.candidate, ...candidate },
+      }).success,
+      false,
+    );
+  }
 });
 
 test('profile rejects unknown ownership fields, unsafe links and malformed revisions', () => {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { preferencesSchema, profileSchema, profileUpdateSchema } from './schemas.js';
 
-describe('candidate career segment', () => {
+describe('candidate-declared profile fields', () => {
   const profile = {
     candidate: {
       fullName: 'Synthetic Candidate',
@@ -37,6 +37,37 @@ describe('candidate career segment', () => {
     ).toBe(false);
     expect(profileUpdateSchema.safeParse({ candidate: { segment: 'intern' } }).success).toBe(false);
     expect(profileSchema.parse(profile).candidate.segment).toBeUndefined();
+  });
+
+  it('accepts bounded education, graduation year, and project entries without changing legacy profiles', () => {
+    const expanded = profileSchema.parse({
+      ...profile,
+      candidate: {
+        ...profile.candidate,
+        education: ['B.Tech, Computer Science'],
+        graduationYear: 2024,
+        projects: ['Accessible job search prototype'],
+      },
+    });
+    expect(expanded.candidate.education).toEqual(['B.Tech, Computer Science']);
+    expect(expanded.candidate.graduationYear).toBe(2024);
+    expect(expanded.candidate.projects).toEqual(['Accessible job search prototype']);
+    expect(profileSchema.parse(profile).candidate.education).toEqual([]);
+    expect(profileSchema.parse(profile).candidate.projects).toEqual([]);
+    for (const invalid of [
+      { education: ['x'.repeat(201)] },
+      { education: Array.from({ length: 21 }, (_, index) => `School ${index}`) },
+      { graduationYear: 1899 },
+      { graduationYear: 2101 },
+      { graduationYear: 2024.5 },
+      { projects: ['x'.repeat(201)] },
+      { projects: Array.from({ length: 21 }, (_, index) => `Project ${index}`) },
+    ]) {
+      expect(
+        profileSchema.safeParse({ ...profile, candidate: { ...profile.candidate, ...invalid } })
+          .success,
+      ).toBe(false);
+    }
   });
 });
 

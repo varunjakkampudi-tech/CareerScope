@@ -86,6 +86,14 @@ function ProfileForm({
           .filter(Boolean),
       ),
     ];
+    const lines = (name: string) => [
+      ...new Set(
+        text(name)
+          .split('\n')
+          .map((value) => value.trim())
+          .filter(Boolean),
+      ),
+    ];
     for (const [name, limit] of Object.entries({
       titles: 25,
       techStack: 120,
@@ -100,10 +108,25 @@ function ProfileForm({
         return;
       }
     }
+    for (const name of ['education', 'projects']) {
+      const entries = lines(name);
+      const field = form.elements.namedItem(name) as HTMLTextAreaElement;
+      if (entries.length > 20) {
+        field.setCustomValidity('Enter no more than 20 entries.');
+        field.reportValidity();
+        return;
+      }
+      if (entries.some((entry) => entry.length > 200)) {
+        field.setCustomValidity('Each entry must be 200 characters or fewer.');
+        field.reportValidity();
+        return;
+      }
+    }
     const employmentTypes = employmentOptions
       .map(([value]) => value)
       .filter((value) => data.has(`employment:${value}`));
     const segment = careerSegments.find(([value]) => value === text('segment'))?.[0];
+    const graduationYear = text('graduationYear');
     if (!employmentTypes.length) {
       const field = form.elements.namedItem('employment:fulltime') as HTMLInputElement;
       field.setCustomValidity('Select at least one employment type.');
@@ -117,6 +140,9 @@ function ProfileForm({
         phone: text('phone'),
         location: text('location'),
         ...(segment ? { segment } : {}),
+        education: lines('education'),
+        ...(graduationYear ? { graduationYear: Number(graduationYear) } : {}),
+        projects: lines('projects'),
         linkedin: text('linkedin'),
         github: text('github'),
         portfolio: text('portfolio'),
@@ -207,6 +233,46 @@ function ProfileForm({
                 </option>
               ))}
             </select>
+          </label>
+          <label>
+            Graduation Year
+            <input
+              name="graduationYear"
+              type="number"
+              min={1900}
+              max={2100}
+              step={1}
+              defaultValue={candidate?.graduationYear ?? ''}
+            />
+          </label>
+          <label>
+            <span id="education-label">Education</span>
+            <textarea
+              name="education"
+              rows={3}
+              maxLength={5000}
+              aria-labelledby="education-label"
+              aria-describedby="education-help"
+              defaultValue={candidate?.education?.join('\n') ?? ''}
+            />
+            <span id="education-help">
+              Add up to 20 schools, qualifications, or courses; each line is limited to 200
+              characters.
+            </span>
+          </label>
+          <label>
+            <span id="projects-label">Projects</span>
+            <textarea
+              name="projects"
+              rows={3}
+              maxLength={5000}
+              aria-labelledby="projects-label"
+              aria-describedby="projects-help"
+              defaultValue={candidate?.projects?.join('\n') ?? ''}
+            />
+            <span id="projects-help">
+              Add up to 20 project summaries; each line is limited to 200 characters.
+            </span>
           </label>
           {(['linkedin', 'github', 'portfolio'] as const).map((name) => (
             <label key={name}>
