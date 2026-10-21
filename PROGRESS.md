@@ -1295,3 +1295,26 @@ candidates. The earlier email snapshot inventory described 53 status entries
 as 54 files because one untracked directory contained two files. No other
 worktree was modified. GitHub Actions remains disabled; no hosted run exists for
 this SHA. No deployment or production change occurred.
+
+### Missing email-verification status regression (2026-10-21)
+
+Added a browser regression for an authenticated account whose existing session
+does not contain `emailVerifiedAt`, confirming Account Security renders the
+neutral “Email verification is not recorded” status and restores the verified
+date when the fixture signal is present. This preserves the existing API and
+does not claim another identity-verification property.
+
+On Node 24.19.0, `npm run gates:test` passed on the exact source tree (including
+privacy/deployment checks, lint, strict typecheck and 84/84 unit/gate tests).
+`npm run test:ui` passed on Chromium, Firefox and WebKit, including axe,
+keyboard checks and all eight required responsive widths. The browser run used
+synthetic data and disposable loopback PostgreSQL/Redis services, which were
+stopped after the run. After formatting the test file, `npm run format:check`,
+`npm run privacy:check`, `npm run eol:check` and `git diff --check` passed.
+The parent source SHA `9eeffec4d59b3db2019fb3e976abc7d58064df33` had already
+passed `npm run build`, `npm run security:check` and `npm audit
+--audit-level=low`; the only code change here is test coverage. The regression
+was committed and pushed to `main` as `136c91666faa09b8b4cadefb15de151b26d40ecf`.
+After fetch, local `main` and `origin/main` matched. The exact SHA has no hosted
+Actions run because repository Actions remains disabled. No deployment or
+production change occurred.

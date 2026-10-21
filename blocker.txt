@@ -624,6 +624,23 @@ but those uncommitted deltas are not part of main. The earlier 54-file email
 comparison and 58-file application-evidence comparison are historical inventory
 counts, not approved integration scope. Neither dirty worktree was changed.
 
+Verification at code checkpoint `136c91666faa09b8b4cadefb15de151b26d40ecf`
+on 21 October 2026: local `main`, `origin/main`, and the remote `refs/heads/main`
+matched.
+The email-OTP worktree now has 54 dirty Git entries and the application-evidence
+worktree has 58; both were re-counted read-only and left unchanged. The email
+worktree's committed tip remains an ancestor of main, but its current working
+tree is not an integration candidate: comparison with main identifies stale
+removals/reversions as well as modifications, while its dirty-only patch needs
+per-file reconciliation and fresh independent auth review. Do not overlay it.
+Node 24 `npm run gates:test` passed 84/84 on the exact source tree before the
+test-only commit; `npm run test:ui` passed on all three browsers with the new
+missing-verification-state assertion, axe, keyboard and eight responsive widths.
+Formatting, privacy, EOL and diff checks passed. The exact pushed SHA has no
+hosted Actions run because repository Actions remains disabled. This is an
+evidence/hosted-validation blocker, not a reason to lose or delete either
+worktree; no production action occurred.
+
 BLOCKER ID: AUTH-LEGACY-IDENTITY-01
 Title: Preflight legacy identity values before applying migration 0019
 Priority: High
