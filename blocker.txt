@@ -106,6 +106,11 @@ What the agent already tried: Read repository docs and current hosted rule metad
   `914830fbf966acb47692289f9c09ec598190cced`, a post-push query for that exact
   SHA again returned no statuses or workflow runs and Actions remained disabled.
   Local `HEAD`, `origin/main`, and the remote `main` ref match `914830f`.
+  After the scoring-version change was pushed as
+  `33400b825f5ea4d2a797f42fc016ee97a807e79e`, a fresh exact-commit query again
+  returned no workflow runs (`gh run list --commit` returned `[]`) and the
+  repository Actions API returned `enabled=false`. Local and remote `main` match
+  `33400b8`; local green checks do not substitute for the unavailable hosted run.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
@@ -256,7 +261,12 @@ Work completed: Canonical main includes the OTP routes/UI, PostgreSQL challenge
   the retention regression brings integration to 56/56; gates pass 84/84,
   domain tests 835/835, and build/CSP, formatting, lint, typecheck, EOL and
   privacy checks pass. No live Resend delivery, hosted CI, legal approval, or
-  production acceptance is claimed.
+  production acceptance is claimed. At pushed `main` SHA
+  `33400b825f5ea4d2a797f42fc016ee97a807e79e`, the deterministic match-version
+  contract addition was validated locally on Node 24.19.0: integration 57/57,
+  domain 836/836, root gates 84/84, production build/CSP, lint, formatting,
+  EOL and privacy checks passed. This adds no live provider, hosted CI, legal,
+  or production evidence.
 Why autonomous resolution is unsafe or impossible: Selecting a fallback vendor,
   enabling a sender/domain, and performing real-recipient delivery require owner
   and provider evidence. The approved v12 text requires recovery through verified
