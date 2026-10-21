@@ -1164,3 +1164,36 @@ was pushed, a read-only GitHub API query reported repository Actions
 `enabled: false`; `gh run list --commit` for that exact SHA returned `[]`. No
 hosted check is available for this commit. Repository settings were not changed;
 the precise owner action remains in `blocker.txt` GOV-02.
+
+### Exact-main validation refresh (2026-10-21, Node 24.19.0)
+
+This run began on clean local `main` at `5e6ca2d7de2592ea5f675ec3fd479d1038d0a5f0`,
+matching `origin/main` after `git fetch origin main`. `npm run gates:test` passed
+84/84 tests and included the Node/source/privacy/deployment/EOL checks, lint,
+workspace and test typechecks, and unit suite. `npm run test:integration` passed
+57/57 with zero skips against the isolated local PostgreSQL/Redis test stack;
+`npm run test:domain` passed 835/835 across 30 files. The full responsive UI
+suite passed in Chromium, Firefox and WebKit, including axe, keyboard and eight
+viewport widths.
+
+`npm run build` passed both Next.js production builds and verified all 12 CSP
+inline-script hashes. `npm run format:check`, `npm run security:check`,
+`npm audit --audit-level=low`, and `git diff --check` passed; the full dependency
+audit reported zero vulnerabilities. Queue restart/AOF recovery passed 1/1;
+database restore passed 1/1 and compared 21 tables while restoring an encrypted
+resume object; all four crash-recovery boundaries passed; full-disk behavior
+passed with no stranded temporaries or leaked reservations.
+
+The synthetic 30-second performance test at concurrency 8 passed with 18,079
+requests, zero failures, 602.6 requests/second, p50 12.56 ms, p95 19.19 ms and
+p99 23.68 ms (baseline RSS 301,371,392 bytes; peak RSS 433,549,312 bytes).
+These are local synthetic measurements, not production SLOs. Test data was
+synthetic and services loopback-only; the disposable recovery source container
+was removed. Existing local service containers were not stopped. No live Resend
+delivery, shared/production database, deployment or production change occurred.
+
+The GitHub Actions permissions API still reports Actions disabled; combined
+status and commit workflow-run queries for the tested main SHA returned no
+hosted checks. This documentation-only evidence refresh does not change runtime
+behavior or close the hosted CI, live provider, human validation, or production
+acceptance gates. The separate dirty OTP task worktree was left untouched.

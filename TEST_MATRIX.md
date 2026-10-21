@@ -315,3 +315,25 @@ retention implementation and passed after the fix. The full
 `npm run test:integration` command passed 56/56 with zero skips against disposable
 PostgreSQL 17.6 and Redis 7.4.5. The focused retention test file passed 3/3.
 No live provider, shared database, or production timer was contacted or changed.
+
+### Exact-main full validation refresh (2026-10-21, Node 24.19.0)
+
+The validation run started from clean local `main` at
+`5e6ca2d7de2592ea5f675ec3fd479d1038d0a5f0`, matching `origin/main` after fetch.
+Results: `npm run gates:test` PASS (84/84); `npm run test:integration` PASS
+(57/57, zero skips); `npm run test:domain` PASS (835/835, 30 files);
+`CAREERSCOPE_UI_BROWSER=all npm run test:ui` PASS on Chromium, Firefox and
+WebKit with axe, keyboard checks and 320/360/390/768/1024/1280/1440/1920px
+reflow coverage; `npm run build` PASS with both Next builds and CSP verification
+for 12 inline-script hashes; `npm run format:check`, `npm run security:check`,
+`npm audit --audit-level=low`, and `git diff --check` PASS (zero vulnerabilities
+in the full npm audit).
+
+Recovery checks also passed: queue restart/AOF and worker lifecycle (1/1),
+PostgreSQL backup/restore and encrypted-object recovery (1/1; 21 tables
+compared), four crash boundaries, and full-disk exhaustion/retry. The synthetic
+30-second concurrency-8 run completed 18,079 requests with zero failures
+(602.6 req/s; p50 12.56 ms, p95 19.19 ms, p99 23.68 ms). These are local,
+synthetic results only, not hosted CI, production performance/SLO, live Resend,
+or production restore evidence. GitHub Actions is disabled and the tested SHA
+has no hosted status/workflow run.

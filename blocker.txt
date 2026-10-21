@@ -98,6 +98,10 @@ Impact: Hosted protection/CI and production acceptance cannot be claimed from
 What the agent already tried: Read repository docs and current hosted rule metadata.
   Rechecked the exact pushed SHA using the read-only GitHub Actions permissions API
   and commit-filtered workflow-run query on 21 October 2026.
+  On 21 October 2026, rechecked current `main` at
+  `5e6ca2d7de2592ea5f675ec3fd479d1038d0a5f0`: the Actions permissions API still
+  returned `enabled=false`; the combined commit status and workflow-run query
+  returned no hosted checks. Local `main` matched `origin/main` after fetch.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
@@ -499,6 +503,16 @@ Work completed: On a clean scratch checkout, lockfile dependency installation
   widths. These current local results are recorded in `PROGRESS.md` and
   `TEST_MATRIX.md`; they supersede the prior Firefox-browser failure for the
   tested source. All disposable services were stopped.
+  A subsequent exact-main validation on `5e6ca2d7de2592ea5f675ec3fd479d1038d0a5f0`
+  passed gates 84/84, integration 57/57 (zero skips), domain 835/835, the
+  Chromium/Firefox/WebKit axe/keyboard/eight-width UI matrix, both production
+  builds with all 12 CSP hashes, formatting, privacy, security and the full npm
+  audit (zero vulnerabilities). Queue/AOF passed 1/1; restore passed 1/1 and
+  compared 21 tables plus encrypted-object recovery; all four crash boundaries,
+  full-disk handling, and the 30-second concurrency-8 performance run passed.
+  The exact commands and synthetic metrics are recorded in the latest sections
+  of `PROGRESS.md` and `TEST_MATRIX.md`. The temporary recovery source container
+  was removed; pre-existing local test service containers were left untouched.
 Remaining action: None for local Node 24 validation, service-backed integration,
   automated browser acceptance, queue/database/crash recovery or full-disk
   checks in this evidence context. Future source/test changes require relevant
