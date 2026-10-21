@@ -43,7 +43,11 @@ Work completed: No further owner approval is required for the source documents
   overwritten and no pending amendment was promoted. An additive deterministic
   R1 source-content inventory now records 518 blocks with exact source pointers,
   authority classifications, 297 exact legacy links, and all 22 reviewed
-  non-exact legacy dispositions. All content remains NOT_ASSESSED/NOT_RUN.
+  non-exact legacy dispositions. A bounded supplemental crosswalk now assesses
+  approved D1 and selected §4.1 auth clauses against code and registered tests
+  (`docs/requirements/V12-R1-AUTH-TRACEABILITY.md`); non-implemented behavior,
+  unregistered checks, source conflicts and external evidence remain explicit.
+  All generated inventory content remains NOT_ASSESSED/NOT_RUN.
 Why this remains open: The source-content inventory is not requirement-to-test
   traceability or implementation evidence. Its 47 CR-07 scope-reconciliation
   blocks, 6 explicit source-conflict blocks, 120 pending-amendment blocks, and 4

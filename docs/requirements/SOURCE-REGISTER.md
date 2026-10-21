@@ -58,6 +58,13 @@ implementation, or completion counts. Generated inventory validation is part of
 traceability remains open under SOURCE-REVISION-01; do not infer implementation
 or launch readiness from source approval.
 
+A bounded source-to-code/test assessment for approved D1 and selected §4.1
+authentication blocks is recorded in
+[`V12-R1-AUTH-TRACEABILITY.md`](V12-R1-AUTH-TRACEABILITY.md). It explicitly
+retains non-implemented recovery/device-risk behavior and the D11/D11-R source
+conflict; it is not a change to generated inventory dispositions, full
+traceability, or release status.
+
 The three CareerScope documents now have immutable canonical snapshots beside this
 register. v12 and Engineering Standards retain the exact supplied SHA256. Goal's
 CRLF line endings were normalized to repository LF and Markdown two-space hard

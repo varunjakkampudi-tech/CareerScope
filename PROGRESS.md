@@ -1739,3 +1739,15 @@ skips; the focused OTP integration test, `npm run typecheck`, `npm run lint`,
 `npm run format:check`, and `git diff --check` passed locally on Node v24.19.0.
 This is regression evidence for current code, not proof of hosted Redis,
 production proxy trust configuration, or production rate-limit behavior.
+
+### Bounded approved-source authentication traceability (2026-10-21)
+
+Added `docs/requirements/V12-R1-AUTH-TRACEABILITY.md`, a source-block-level
+crosswalk for approved D1 and selected §4.1 authentication clauses. It maps
+observed API/domain boundaries to currently registered verification, while
+distinguishing local implementation, missing behavior, pending/source-conflict
+clauses and production/provider evidence. In particular, it does not claim
+lost-mailbox recovery, inaccessible-mailbox support, new-device/risk step-up,
+progressive lockout backoff, or D11-R as activated. The global 518-block
+inventory remains NOT_ASSESSED/NOT_RUN and SOURCE-REVISION-01 remains OPEN; this
+vertical slice is partial progress, not a source-to-test completion percentage.
