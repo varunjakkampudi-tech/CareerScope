@@ -11,6 +11,7 @@ import {
   ResumeUploadRepository,
   sessionCookie,
   InAppNotificationRepository,
+  ProfileRepository,
   publishDueInterviewReminders,
 } from '@careerscope/core';
 import { createApp } from './app.js';
@@ -70,9 +71,51 @@ test(
       assert.ok(otherSession);
       const cookie = `${sessionCookie}=${credentials.accessToken}; ${refreshCookie}=${credentials.refreshToken}`;
       const otherCookie = `${sessionCookie}=${otherCredentials.accessToken}; ${refreshCookie}=${otherCredentials.refreshToken}`;
+      let deletedObjects = 0;
       app = await createApp(database, origin, async () => true, {
         testAccess: { mode: 'disabled' },
+        resumeStorage: {
+          bucket: 'careerscope-private',
+          initialize: async () => {},
+          put: async () => 'synthetic-version',
+          get: async () => Buffer.alloc(0),
+          recoverVersion: async () => null,
+          delete: async () => {
+            deletedObjects += 1;
+          },
+        },
       });
+
+      await new ProfileRepository(database).save(ownerId, {
+        revision: 0,
+        profile: {
+          candidate: {
+            fullName: 'Synthetic Owner Profile',
+            email: `${ownerId}@example.test`,
+            location: 'Hyderabad',
+          },
+          preferences: { titles: ['Synthetic Role'], techStack: ['TypeScript'] },
+          application: { yearsOfExperience: 2 },
+        },
+      });
+      const foreignProfile = await app.inject({
+        url: '/api/profile',
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignProfile.statusCode, 200);
+      assert.equal(foreignProfile.json().profile, null);
+      assert.doesNotMatch(foreignProfile.body, /Synthetic Owner Profile|Synthetic Role/);
+
+      const foreignLeadRead = await app.inject({
+        url: `/api/leads/${ownLeadId}`,
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignLeadRead.statusCode, 404);
+      const foreignLeadHistory = await app.inject({
+        url: `/api/leads/${ownLeadId}/history`,
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignLeadHistory.statusCode, 404);
 
       const uploadId = randomUUID();
       const parseCommandId = randomUUID();
@@ -108,6 +151,36 @@ test(
       };
       const unauthenticated = await app.inject({ url: `/api/leads/${ownLeadId}/interviews` });
       assert.equal(unauthenticated.statusCode, 401);
+
+      const foreignResumeRead = await app.inject({
+        url: `/api/resumes/${uploadId}`,
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignResumeRead.statusCode, 404);
+      assert.doesNotMatch(foreignResumeRead.body, /Synthetic Owner Profile|resume_results|parsed/);
+      const foreignResumeList = await app.inject({
+        url: '/api/resumes',
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignResumeList.statusCode, 200);
+      assert.deepEqual(foreignResumeList.json().items, []);
+      const foreignResumeDelete = await app.inject({
+        method: 'DELETE',
+        url: `/api/resumes/${uploadId}`,
+        headers: { origin, cookie: otherCookie, 'x-csrf-token': otherSession.csrf },
+      });
+      assert.equal(foreignResumeDelete.statusCode, 204);
+      assert.equal(deletedObjects, 0, 'foreign-owner deletion must never call storage');
+      assert.equal(
+        (
+          await database.pool.query(
+            'SELECT id FROM resume_uploads WHERE owner_id = $1 AND id = $2',
+            [ownerId, uploadId],
+          )
+        ).rowCount,
+        1,
+        'a foreign-owner request must leave the owner upload untouched',
+      );
 
       const create = await app.inject({
         method: 'POST',

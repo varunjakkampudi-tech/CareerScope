@@ -1789,3 +1789,77 @@ latency, Core Web Vitals, or an approved service-level objective. The benchmark
 now silences only its in-process synthetic Fastify logger so request-log output
 does not contaminate measurement; production logging is unchanged. A first run
 on host Node v22 also passed but is not counted as required-runtime evidence.
+
+### Firefox warning investigation update (2026-10-21, Node 24.19.0)
+
+Added opt-in Firefox-only test-harness diagnostics that retain fixed warning
+categories, normalized same-origin chunk paths, route epochs and Playwright
+request lifecycle metadata, while dropping raw console/error text and URL query
+values. Unknown route segments are redacted. Path/time/epoch matches are
+candidate correlations only, not causal attribution. Focused helper tests pass
+4/4. The production-preview UI run completed successfully in Chromium, Firefox
+and WebKit under Node 24.19.0, including axe, keyboard and eight-width responsive
+checks. A separate Firefox diagnostic run exited 0 and observed 13
+`loading-failed` warning rows for Next chunks; several candidate matches were
+non-navigation script requests ending `failed-aborted` within 0–5 ms, one
+candidate request completed HTTP 200, and some warning rows had no candidate
+request match. Installed Next.js client code cancels pending link-prefetch work
+when links unmount, a plausible explanation for some aborts but not proof of
+cause for the unmatched/HTTP-200 warnings. No warning was allowlisted and no
+product runtime code changed. The root-cause blocker remains open; the next
+step is to explain the unmatched/success-response cases, not to rerun the now-
+passing three-engine matrix without a code change.
+
+### Firefox warning correlation rerun (2026-10-21, Node 24.19.0)
+
+The first Firefox-only attempt was not counted: the required local production
+preview was not running and the browser could not connect. After starting the
+documented preview, the full Firefox UI journey passed. The opt-in diagnostic
+captured 11 `loading-failed` warning rows: several same-path candidate script
+requests ended `failed-aborted`, two had no candidate request event, and one
+matching candidate completed HTTP 200. Separate loopback `HEAD` checks for the
+four referenced Next chunk assets returned HTTP 200 with JavaScript content
+types. These checks do not identify which request emitted a warning or prove
+that execution succeeded. No raw warning text was retained, no warning was
+allowlisted, and the root-cause blocker remains open.
+
+### Current local service-backed suite refresh (2026-10-21, Node 24.19.0)
+
+`npm run test:integration` passed 59/59 with zero skips; `npm run test:domain`
+passed 839/839 across 30 files. `npm run gates:test` passed, including 93/93
+unit tests with no skips, source-integrity, privacy, deployment-policy, EOL,
+lint and strict typechecking. `npm run build` passed both Next.js production
+builds and verified all 13 CSP script hashes. `npm run security:check` passed
+with a clean privacy scan and zero production dependency findings; the full
+`npm audit --audit-level=high` also found zero findings. The three-engine
+`npm run test:ui` rerun passed Chromium, Firefox and WebKit candidate journeys,
+axe, keyboard interactions and all eight responsive widths against the local
+production preview; the preview was stopped after the run. The integration output included BullMQ's
+expected warning during the negative configuration test: that test deliberately
+passes the cache Redis endpoint to the queue adapter and asserts rejection.
+Read-only `CONFIG GET` checks confirmed the configured cache endpoint is
+`allkeys-lru`/AOF-off while the separate queue endpoint is `noeviction`/AOF-on.
+This is the intended cache-versus-durable-queue separation, not evidence that
+the queue service is misconfigured. No Redis setting was changed.
+
+### Candidate record-isolation evidence refresh (2026-10-22, Node 24.19.0)
+
+Extended the existing isolated PostgreSQL interview/API integration fixture to
+exercise cross-candidate profile, saved-lead detail/history, and resume
+boundaries. A foreign resume read returns 404; a foreign resume list is empty;
+the existing non-enumerating foreign-delete response remains 204 while the
+storage delete callback is not invoked and the owner row remains present. These
+are synthetic candidate-to-candidate checks; the application-export test also
+continues to exclude another candidate's application data. The targeted
+integration test passed 1/1, then the complete local integration command passed
+59/59 with zero skips on Node 24.19.0. `TEST_MATRIX.md` records the evidence as
+PARTIAL only: photos have no implemented domain, and role escalation/recruiter/
+admin isolation plus complete route/resource inventory remain unverified, so
+critical go/no-go gate 11 remains NOT_VERIFIED. No runtime implementation,
+production data, shared database or external service was changed.
+
+The same review corrected stale `TEST_MATRIX.md` entries: APPLY-TEST-01 now
+points to the executed three-engine manual-application journey and is still
+PARTIAL; DATA-TEST-01 and INTERVIEW-TEST-01 now cite the current 59/59 local
+integration run rather than an earlier 58/58 result. The matrix explicitly
+keeps hosted, live-provider, human and production evidence outstanding.

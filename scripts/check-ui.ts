@@ -28,7 +28,14 @@ import { createApp } from '../apps/api/src/app.js';
 import { collect } from '../apps/workers/search/src/collect.js';
 import { createRemoteOkProvider, type JobProvider } from '@careerscope/providers';
 import { selectUiBrowsers } from './ui-browsers.js';
-import { staleSavedRead, staleSearchRead } from './ui-requests.js';
+import {
+  browserRequestFailureCategory,
+  browserWarningCategory,
+  browserWarningPaths,
+  sameOriginBrowserPath,
+  staleSavedRead,
+  staleSearchRead,
+} from './ui-requests.js';
 import { JOB_SOURCE_PERMISSION_PENDING_MESSAGE } from '@careerscope/shared';
 
 const requiredResponsiveWidths = [320, 360, 390, 768, 1024, 1280, 1440, 1920] as const;
@@ -880,8 +887,31 @@ try {
         await page.getByRole('button').filter({ hasText: email }).click();
       };
       const errors: string[] = [];
+      const warningDiagnostics =
+        engine === 'firefox' && process.env.CAREERSCOPE_UI_WARNING_DIAGNOSTICS === '1';
+      const observedWarnings: {
+        at: number;
+        epoch: number;
+        category: string;
+        locationPath: string | null;
+        pagePath: string | null;
+        paths: string[];
+      }[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') errors.push(browserConsoleErrorKind(message));
+        if (warningDiagnostics && message.type() === 'warning') {
+          const paths = browserWarningPaths(message.text(), message.location().url, origin);
+          if (paths.length > 0) {
+            observedWarnings.push({
+              at: Date.now(),
+              epoch: routeEpoch,
+              category: browserWarningCategory(message.text()),
+              locationPath: sameOriginBrowserPath(message.location().url, origin),
+              pagePath: sameOriginBrowserPath(page.url(), origin),
+              paths,
+            });
+          }
+        }
       });
       page.on('pageerror', (error) => {
         // WebKit can report an in-flight same-host fetch cancelled by a
@@ -914,6 +944,20 @@ try {
       // never let the page look idle.
       const inflight = new Map<import('playwright').Request, number>();
       let routeEpoch = 0;
+      let nextDiagnosticRequestId = 0;
+      const diagnosticRequests = new Map<
+        import('playwright').Request,
+        {
+          id: number;
+          method: string;
+          path: string;
+          resourceType: string;
+          isNavigation: boolean;
+          epoch: number;
+          pagePath: string | null;
+          events: { kind: string; at: number }[];
+        }
+      >();
       page.on('framenavigated', (frame) => {
         if (frame === page.mainFrame()) routeEpoch += 1;
       });
@@ -931,12 +975,27 @@ try {
           .replace(/\/[0-9a-f]{24,}/gi, '/:id');
         recentRequestEvents.push(`${Date.now()} ${request.method()} ${path} ${event}`);
         if (recentRequestEvents.length > 40) recentRequestEvents.shift();
+        const diagnostic = diagnosticRequests.get(request);
+        if (diagnostic) diagnostic.events.push({ kind: event, at: Date.now() });
       };
       page.on('request', (request) => {
         const pathname = new URL(request.url()).pathname;
         const isSearchEventStream = /^\/api\/searches\/[^/]+\/events$/.test(pathname);
         if (request.resourceType() !== 'eventsource' && !isSearchEventStream) {
           inflight.set(request, routeEpoch);
+          const sameOriginPath = sameOriginBrowserPath(request.url(), origin);
+          if (warningDiagnostics && sameOriginPath?.startsWith('/_next/static/chunks/')) {
+            diagnosticRequests.set(request, {
+              id: ++nextDiagnosticRequestId,
+              method: request.method(),
+              path: sameOriginPath,
+              resourceType: request.resourceType(),
+              isNavigation: request.isNavigationRequest(),
+              epoch: routeEpoch,
+              pagePath: sameOriginBrowserPath(page.url(), origin),
+              events: [],
+            });
+          }
           recordRequestEvent(request, 'started');
         }
       });
@@ -950,7 +1009,10 @@ try {
       });
       page.on('requestfailed', (request) => {
         inflight.delete(request);
-        recordRequestEvent(request, 'failed');
+        recordRequestEvent(
+          request,
+          `failed-${browserRequestFailureCategory(request.failure()?.errorText ?? '')}`,
+        );
       });
       const settled = async (label: string) => {
         const deadline = Date.now() + 15000;
@@ -3749,6 +3811,36 @@ try {
         [],
         `${engine} authenticated UI journey produced unexpected browser runtime errors`,
       );
+      if (warningDiagnostics) {
+        const correlation = observedWarnings.map((warning) => ({
+          category: warning.category,
+          paths: warning.paths,
+          locationPath: warning.locationPath,
+          pagePath: warning.pagePath,
+          candidateRequests: [...diagnosticRequests.values()]
+            .filter(
+              (request) => request.epoch === warning.epoch && warning.paths.includes(request.path),
+            )
+            .map((request) => {
+              const nearestEventDeltaMs = Math.min(
+                ...request.events.map((event) => Math.abs(event.at - warning.at)),
+              );
+              return {
+                id: request.id,
+                method: request.method,
+                path: request.path,
+                resourceType: request.resourceType,
+                isNavigation: request.isNavigation,
+                pagePath: request.pagePath,
+                samePageRoute: request.pagePath === warning.pagePath,
+                correlatedWithin10s: nearestEventDeltaMs <= 10000,
+                nearestEventDeltaMs,
+                events: request.events.map((event) => event.kind),
+              };
+            }),
+        }));
+        process.stdout.write(`Firefox warning diagnostic: ${JSON.stringify(correlation)}\n`);
+      }
       assert.deepEqual(
         await unhandledRejections(page),
         [],

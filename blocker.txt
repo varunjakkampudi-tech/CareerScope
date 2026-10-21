@@ -1068,24 +1068,43 @@ What was done: Reproduced the warning in focused Firefox runs and a full
   returned HTTP 200; cancellation correlation was inconsistent, so the cause
   remains open. The canonical browser harness was restored after the
   experimental checks; no product runtime code changed.
+  Follow-up on the current local main worktree (Node v24.19.0): an opt-in,
+  Firefox-only diagnostic now records same-origin Next chunk paths, fixed
+  warning categories, route epochs, and request resource type/response/failure
+  candidate correlation without printing raw console text, query strings, or network
+  error details. The authenticated Firefox UI journey exited 0. It observed 13
+  warning rows, all categorized as `loading-failed`, for chunks associated with
+  routes such as `/jobs`, `/applications`, and `/dashboard` while the current
+  page was `/saved`. Several candidate request records were non-navigation script
+  requests ending `failed-aborted` within 0–5 ms; one matching request completed
+  HTTP 200, and several warning rows had no matching request event. This is
+  stronger correlation evidence but does not explain the unmatched or 200
+  cases. Path/time/epoch matches are candidate correlation, not proof of which
+  request emitted a warning. Unknown route segments are redacted. Root cause
+  remains unproven; no warning was allowlisted and the diagnostic remains
+  opt-in test tooling only.
+  A follow-up run first confirmed that the diagnostic requires the documented
+  local production preview; after starting it, the Firefox UI journey passed
+  and recorded 11 warning rows. Four same-origin chunk `HEAD` requests returned
+  HTTP 200 with JavaScript content types; warning-to-request correlation still
+  included aborts, missing request events, and one HTTP-200 candidate. This does
+  not establish the browser warning's cause or justify suppressing it.
 Why this remains open: Firefox warning messages must be classified to a safe,
   stable category and tied to a verified source/route before deciding whether to
   fix the cause or permit a narrowly justified expected fixture warning.
 Exact owner action required: None. This is local engineering work.
 Step-by-step resolution instructions:
-  1. Instrument a per-request correlation key locally (never log request
-     headers, query values, bodies, emails, credentials or raw warning text) so
-     each Firefox warning for a local Next chunk can be tied to that exact
-     Playwright request and its response/failure event.
-  2. Determine why some warning targets had HTTP 200 responses but no matching
-     `requestfailed` event, and whether the warning is a browser cancellation,
-     execution/runtime warning, or another condition.
-  3. Fix a genuine defect. Permit only an exact, evidence-backed benign case
+  1. Determine why warning rows without a candidate Playwright request event
+     occur, and why a matching HTTP 200 can coexist with the warning. Distinguish
+     browser cancellation, script execution/runtime warning, and other causes
+     using a bounded local reproduction without recording raw warning text.
+  2. Fix a genuine defect. Permit only an exact, evidence-backed benign case
      whose same-journey behavior is explicitly asserted; do not add a blanket
      warning exemption.
-  4. Add a synthetic warning-listener self-test and repeat the Firefox
-     diagnosis. Then run the full three-engine UI/axe/keyboard/eight-width
-     suite and relevant quality gates against the final change.
+  3. Add/retain synthetic diagnostic self-tests and continue bounded Firefox
+     correlation on the unmatched/success-response cases. The full Node 24
+     three-engine UI/axe/keyboard/eight-width suite passed on 21 October 2026;
+     rerun it after any code change that affects the harness or runtime.
 Required environment-variable names (no values): None.
 External dependencies: None for local diagnosis; hosted CI remains separately
   unavailable while GitHub Actions is disabled.
