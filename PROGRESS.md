@@ -1470,3 +1470,16 @@ remote `refs/heads/main` match, and the worktree is clean. No hosted Actions run
 is available for this SHA while Actions is disabled. No production deployment,
 live provider request or shared-data change occurred. The separate dirty
 email-OTP worktree remains preserved and was not modified.
+
+### Current main and preserved-worktree inventory (2026-10-21)
+
+Read-only verification found local `main`, `origin/main`, and the remote
+`refs/heads/main` synchronized at `9572dcc73576c1c9d13ddeb3d2c1909f92e8d602`;
+the main worktree is clean. All six registered worktree HEADs are ancestors of
+main, so no committed worktree commit is missing. The separate
+`codex/task/email-otp-auth` worktree has 54 uncommitted paths and
+`codex/task/application-evidence` has 58; neither dirty delta is included in
+main. Both remain untouched pending per-file review and validation. Main does
+include committed Resend OTP provider and authentication routes, but no live
+delivery or production acceptance is claimed. GitHub Actions remains disabled,
+so there is no hosted CI result for this SHA.
