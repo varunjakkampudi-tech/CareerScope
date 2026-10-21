@@ -1534,3 +1534,31 @@ documentation. Earlier UI evidence on unchanged runtime code passed Chromium,
 Firefox, WebKit, axe, keyboard and eight responsive widths. No current hosted
 Actions run exists because Actions remains disabled; no live provider or
 production validation is claimed.
+
+### Current exact-main validation refresh (2026-10-21)
+
+On local `main` SHA `f126dd7c2f0421aa1ccda7f8af5ad4270edb6ff7`, using Node
+v24.19.0, the following were rerun after the source-ledger updates:
+
+- `npm run gates:test`: PASS, including 91/91 unit tests, lint, strict typecheck
+  (59 canonical test files), privacy, source-integrity, deploy-policy and EOL.
+- `npm run test:domain`: PASS, 839/839 across 30 files.
+- `npm run test:integration`: PASS, 58/58, zero skips, against disposable local
+  PostgreSQL/Redis fixtures.
+- `npm run build`: PASS, production Next build and CSP verification (12 inline
+  script hashes).
+- `npm run test:ui`: PASS on Chromium, Firefox and WebKit, with axe, keyboard
+  checks and eight responsive widths. The first invocation failed before page
+  tests because the documented production preview on port 5280 was not running;
+  after starting that local preview as documented, the rerun exited 0. The
+  preview was stopped after the suite.
+- `npm run security:check`: PASS; privacy scan clean and zero production
+  dependency vulnerabilities.
+
+No hosted GitHub Actions run is available because Actions remains disabled. No
+real Resend message, production service, migration, deployment or live acceptance
+was performed. Current `main` contains the committed Resend adapter and OTP
+routes, but the separate `codex/task/email-otp-auth` worktree still has 54 dirty
+paths that have not been integrated. The source inventory mismatch under
+`SOURCE-REVISION-01` remains open; these test results do not close it or establish
+a 90% product-completion score.
