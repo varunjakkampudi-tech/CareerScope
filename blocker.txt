@@ -40,13 +40,18 @@ Work completed: No further owner approval is required for the source documents
   operations. The individual mismatch review classified 5 approved-base
   replacements, 2 D1 supersessions, 12 rows retained pending D11-R/A1, 1 open
   owner decision, and 2 external evidence rows. The historical inventory was not
-  overwritten and no pending amendment was promoted.
-Why this remains open: The approved source revision has not yet been fully mapped
-  into the source-derived requirement inventory and tests. The inventory still
-  identifies the older source snapshot; newly introduced approved R1 base clauses
-  have not all been enumerated or mapped, and pending amendment rows need to stay
-  distinct from effective requirements. Do not simply replace the source hash or
-  carry forward the old 319 count as though it described R1.
+  overwritten and no pending amendment was promoted. An additive deterministic
+  R1 source-content inventory now records 518 blocks with exact source pointers,
+  authority classifications, 297 exact legacy links, and all 22 reviewed
+  non-exact legacy dispositions. All content remains NOT_ASSESSED/NOT_RUN.
+Why this remains open: The source-content inventory is not requirement-to-test
+  traceability or implementation evidence. Its 47 CR-07 scope-reconciliation
+  blocks, 6 explicit source-conflict blocks, 120 pending-amendment blocks, and 4
+  unavailable-matrix reference blocks are deliberately not active approved-base
+  requirements. Affected requirement/test matrices still need row-level
+  reconciliation, and the absent cleanup matrix remains owner-provided only if
+  its 156-item scope is intended to be active. Do not treat 518 source blocks as
+  518 features, tests, or completion units.
 Exact owner action required: No further approval is required for the five
   recorded source identities or revised v12 D1-D14. The approved v12 snapshot
   references `Viswatra-Cleanup-Requirement-Matrix-v1.2.md` as delivered with its
@@ -57,11 +62,9 @@ Exact owner action required: No further approval is required for the five
 Step-by-step resolution instructions:
   1. Add immutable hash-verified snapshots for the newly approved documents while
      retaining the historical snapshots.
-  2. Create a complete R1 inventory without overwriting the historical inventory;
-     carry over exact unchanged clauses, apply approved-base dispositions for the
-     22 reviewed mismatches, retain pending/external/owner-decision rows with
-     classifications, enumerate newly introduced approved base clauses, and
-     reconcile affected requirement/test matrices.
+  2. Preserve the generated R1 content inventory and its fail-closed tests.
+     Continue mapping approved-base clauses to active requirement/test rows and
+     reconcile the affected matrices without turning source text into test proof.
   3. Identify amendment clauses still marked proposed/pending and keep them
      distinct from approved base requirements unless specifically authorized.
   4. Request/store the referenced matrix with its exact provenance only if the

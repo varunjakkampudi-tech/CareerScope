@@ -43,10 +43,20 @@ including D1–D14. Clauses inside any approved document that are explicitly mar
 the document identity. SRC-04/05 remain approved global v1.1 controls under
 OA-2026-10-20-02. Both the original sources and R1 CareerScope revisions are
 retained as repository snapshots. The `requirements:check` verifies all six
-CareerScope snapshots. The requirement inventory still traces to the original
-v12 snapshot and requires reconciliation against R1; unresolved proposal clauses
-must remain separately classified. See SOURCE-REVISION-01 in blocker.txt. Do not
-infer implementation or launch readiness from source approval.
+CareerScope snapshots. `V12-REQUIREMENT-INVENTORY.json` remains the historical
+319-item inventory tied to the original v12 snapshot. The additive
+`V12-R1-REQUIREMENT-INVENTORY.json` is hash-bound to SRC-01-R1 and deterministically
+enumerates 518 substantive Markdown content blocks across the approved sections
+and supplemental material. It exact-text-links 297 historical items and points
+to the reviewed reconciliation for the remaining 22. It classifies 340 blocks
+as approved-base text, 120 as pending amendments, 47 as scope-reconciliation
+required, 6 as source conflicts requiring reconciliation, 1 as an owner/external
+gate, and 4 under an unavailable source reference. All remain
+NOT_ASSESSED/NOT_RUN; these are source-content counts, not feature, test,
+implementation, or completion counts. Generated inventory validation is part of
+`requirements:check` and `requirements:test`. Requirement-to-test/implementation
+traceability remains open under SOURCE-REVISION-01; do not infer implementation
+or launch readiness from source approval.
 
 The three CareerScope documents now have immutable canonical snapshots beside this
 register. v12 and Engineering Standards retain the exact supplied SHA256. Goal's

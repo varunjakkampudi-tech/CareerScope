@@ -1,5 +1,26 @@
 # CareerScope v12 engineering progress
 
+## Additive approved-source inventory reconciliation (2026-10-21)
+
+The historical 319-item inventory remains unchanged and tied to its original
+v12 source hash. Added deterministic `V12-R1-REQUIREMENT-INVENTORY.json`, bound
+to the approved SRC-01-R1 snapshot. It enumerates 518 substantive source blocks,
+exact-text-links 297 legacy items, and associates the remaining 22 with the
+reviewed per-item reconciliation dispositions. All 518 remain NOT_ASSESSED and
+NOT_RUN. The inventory distinguishes approved-base text from pending amendment,
+scope-reconciliation, source-conflict, owner/external-gate and unavailable
+reference content; it does not represent features/tests or completion.
+
+The inventory generator/checker/tests are registered under the canonical
+requirements gates. Ten inventory tests pass, including stale-source rejection,
+exact (not substring) lineage matching, duplicate/unknown disposition rejection,
+immutable legacy lineage checks, explicit pending/conflict classification and
+deterministic output. Independent review verified the current 518/297/22 census
+and prompted these fail-closed drift checks. This is partial SOURCE-REVISION-01 remediation only:
+requirement-to-test/implementation matrices remain unreconciled, and the absent
+156-item cleanup matrix is still an owner dependency only if that source scope
+is intended to apply. No runtime behavior changed and no proposal was activated.
+
 ## Candidate job-posting feedback slice (2026-10-21)
 
 Local, uncommitted work on `main` based on `197f8548eb854cefae7df2a0fc36da67f7118773`
