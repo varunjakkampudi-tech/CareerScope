@@ -754,3 +754,73 @@ Tests to rerun: queue/outbox integration, delivery contract tests, privacy/log
 Affected tasks: Interview organizer reminder portion of D8 / sections 4.10 and
   4.15; retention requirement D6 / section 9.
 Evidence references: `GAP_MATRIX.md`, `TEST_MATRIX.md`, `PROGRESS.md`.
+
+BLOCKER ID: RESUME-VERSIONS-01
+Title: Role-specific resume lineage and matching selection are not defined end to end
+Priority: High
+Module: Candidate resume / deterministic matching
+v12 requirement / checklist item: section 4.3, “Multiple versions by target role, with version lineage”
+Status: READY_FOR_OWNER
+Problem: Current resume uploads and parse results are owner-scoped, but records
+  have no target-role or lineage metadata. Search currently selects the owner's
+  globally newest parsed resume, so adding role labels alone could use a
+  different role's resume when deriving matching context.
+Verified root cause: `resume_uploads` has no role/lineage fields; the resume
+  panel uploads without role context; `Database.createSearch()` selects the
+  globally newest parsed result. Existing integration coverage asserts this
+  behavior. See `packages/core/src/schema.ts`, `packages/core/src/resumes.ts`,
+  `packages/core/src/database.ts`, `apps/api/src/app.ts`, and
+  `apps/web/src/components/resume-panel.tsx`.
+Impact: The explicit v12 role-version capability is incomplete. No incorrect
+  role selection is introduced by the current implementation, but an isolated
+  metadata-only implementation would create that risk.
+Recommended minimal product behavior: Associate each upload only with an exact
+  target title already saved in the candidate's profile; preserve historical
+  uploads as unassigned rather than inferring a role. Keep parsed uploads as
+  proposals until the candidate explicitly reviews/accepts them. Maintain
+  role-specific version history, and require an explicit role/version selection
+  for matching rather than silently using the globally latest parsed resume.
+  Preserve application/interview references to the exact upload version. Reject
+  cross-owner lineage and prevent deletion while a retained child/reference
+  requires the upload, unless the existing user-controlled deletion contract
+  can safely remove those references.
+Why implementation is paused: The recommendation changes product semantics
+  around selection, lineage, matching snapshots and deletion. A small schema/UI
+  change would not complete section 4.3 safely. No role, lineage, review or
+  matching behavior has been changed and no data has been reclassified.
+Exact owner action required: Confirm or amend the recommended behavior above,
+  specifically (1) whether target role must be one of the saved profile titles,
+  (2) candidate action that makes a version selectable for matching, (3) whether
+  history is a linear predecessor chain or role-grouped chronological versions,
+  and (4) deletion behavior for referenced versions.
+Step-by-step resolution instructions:
+  1. Approve the recommended behavior or specify changes to those four points.
+  2. Keep legacy uploads unassigned and preserve their existing parse state.
+  3. Implement one additive owner-safe role/history contract with migration,
+     API/OpenAPI and UI integration; do not add a separate service or queue.
+  4. Update search snapshot selection to require the selected role/version and
+     keep the current behavior only for legacy/unassigned resumes until the
+     candidate makes an explicit selection.
+  5. Add PostgreSQL tests for cross-owner, cross-role, concurrency, retries,
+     retention/deletion and application/interview references; add browser tests
+     for role grouping, explicit selection and accessible state announcements.
+  6. Obtain independent review because this changes personal-data persistence,
+     candidate control and matching behavior. Run the exact-SHA local suite;
+     hosted CI remains unavailable while Actions is disabled.
+Required environment-variable names (no values): None
+External dependencies: No external dependency for implementation after product
+  semantics are confirmed; hosted CI and production acceptance remain separate
+  owner-controlled release gates.
+Expected result: Candidate can distinguish versions by saved target role,
+  review parsed output before it becomes selectable, explicitly choose the
+  resume version used for matching, and preserve exact version references.
+Verification procedure: Use synthetic accounts and role titles with isolated
+  PostgreSQL/Redis; verify owner isolation, role/version selection, no implicit
+  Applied or profile-state changes, safe deletion, retry idempotency and privacy
+  redaction; verify the browser flow with keyboard and accessibility checks.
+Tests to rerun: resume repository/API integration, search snapshot integration,
+  interview/document reference integration, resume UI browser and privacy tests.
+Affected tasks: v12 section 4.3, matching inputs, application/interview document
+  references, migration and deletion semantics.
+Evidence references: `docs/requirements/CareerScope-v12.md`,
+  `GAP_MATRIX.md`, `packages/core/src/database.test.ts`, and current schema/API/UI.
