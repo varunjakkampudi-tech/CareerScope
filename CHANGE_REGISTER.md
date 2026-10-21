@@ -244,5 +244,7 @@ remain incomplete.
   dependency vulnerabilities. Typecheck, lint, format, privacy, EOL and
   `git diff --check` also passed.
 - GitHub Actions remains disabled, so no hosted CI evidence exists. No deployment
-  or production change occurred. The local commit and direct normal push are
-  pending; the separate dirty email-OTP worktree remains untouched.
+  or production change occurred. The validated change was committed and normally
+  pushed directly to `main` as `bad50e78cf0d2f605912e778b7e167682e745882`; local,
+  tracked remote, and GitHub-advertised `main` SHAs matched. The separate dirty
+  email-OTP worktree remains untouched.

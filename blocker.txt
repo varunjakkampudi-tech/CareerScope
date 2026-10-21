@@ -888,8 +888,10 @@ What was done: Corrected the OpenAPI response media type, added an exact generat
 Verification procedure: Compare the reviewer fingerprint and base to the reviewed
   export diff; verify the recorded Node 24 test/build/security outputs. Any
   material source change invalidates the review and requires another pass.
-Next action: Commit the validated export change to `main`, push normally, and
-  verify local and remote `main` agree. Do not deploy production.
+Completion: The validated export change was committed and normally pushed to
+  `main` as `bad50e78cf0d2f605912e778b7e167682e745882`. Local `main`,
+  `origin/main`, and `git ls-remote` agreed at that SHA after push. Do not deploy
+  production. Hosted CI remains unavailable while Actions is disabled.
 Required environment-variable names (no values): None
 External dependencies: None for the completed local review. Hosted CI remains
   disabled under owner-controlled GitHub settings.

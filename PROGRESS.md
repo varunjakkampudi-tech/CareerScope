@@ -1368,5 +1368,9 @@ passed 86/86 unit tests, `npm run build` passed with CSP verification,
 typecheck, lint, formatting, privacy, EOL and diff checks passed. Prior exact-tree
 evidence includes three-browser UI/axe/eight-width checks and domain tests
 (836/836). No live data, provider call, hosted CI, deployment or production
-change was involved. The local commit and normal push are pending; PDF export and
-the other v12 section 4.9 capabilities remain out of scope for this change.
+change was involved. The validated export was committed and normally pushed to
+`main` as `bad50e78cf0d2f605912e778b7e167682e745882`; local `main`,
+`origin/main`, and the remote advertised SHA matched after push. GitHub Actions
+remains disabled, so this commit has local validation but no hosted CI run. PDF
+export and the other v12 section 4.9 capabilities remain out of scope for this
+change.
