@@ -585,7 +585,7 @@ Verified root cause: The task branch tip at
   signup, drops `emailVerifiedAt` from session/OpenAPI/client contracts, and
   removes the dependency-remediation test plus Vite and scoped overrides.
 Current implementation: Canonical main at
-  `3b9f23946a41bf3dbc504e58127d5080a2858591` contains the compatible
+  `5b95a72601c12dcbed7d29749df05fb18f1454a7` contains the compatible
   disabled-test-access signup condition, preserves the verification signal and
   dependency protections, and is synchronized with `origin/main`. The preserved
   email worktree remains at `f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56` and has
@@ -649,6 +649,18 @@ Formatting, privacy, EOL and diff checks passed. The exact pushed SHA has no
 hosted Actions run because repository Actions remains disabled. This is an
 evidence/hosted-validation blocker, not a reason to lose or delete either
 worktree; no production action occurred.
+
+Recheck after the signup age-screen push (21 October 2026): local `main`,
+`origin/main`, and remote `refs/heads/main` all match
+`5b95a72601c12dcbed7d29749df05fb18f1454a7`; the main worktree is clean. The
+preserved email-OTP worktree is still at `f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56`
+with 53 current status entries (37 tracked-diff paths); the application-evidence
+worktree is at `e0ee60af6531b112a29101a9f8dbd1f4cc6e2332` with 57 status entries
+(45 tracked-diff paths). Both committed tips are ancestors of main; neither dirty
+working tree was modified or included. The earlier “54” refers to a historical
+file inventory, not 54 currently validated changes. The existing independent
+review finding against the dirty OTP snapshot remains unresolved for any proposed
+port; no wholesale overlay is safe.
 
 BLOCKER ID: AUTH-LEGACY-IDENTITY-01
 Title: Preflight legacy identity values before applying migration 0019
