@@ -139,6 +139,17 @@ What the agent already tried: Read repository docs and current hosted rule metad
   `a4df59a2d24b365f39d8321554ec5c967b3bfd15`, the exact-commit run query again
   returned `[]`, Actions remained disabled, and local/remote `main` matched
   `a4df59a`.
+  On 21 October 2026, verified exact current main `ac38587c30d8087ce32898504048198b33f90585`:
+  Actions permissions API returned `enabled=false`; the commit status contained
+  zero checks and the exact-SHA workflow-run query returned zero runs. After
+  fetching, local `HEAD` and `origin/main` matched. Local Node 24 checks on this
+  revision passed: `gates:test` (91/91 unit tests, lint, typecheck, source,
+  privacy, deploy-policy and EOL checks), `test:domain` (839/839),
+  `test:integration` (58/58, zero skips; disposable local services),
+  `test:ui` (Chromium/Firefox/WebKit, axe, keyboard and eight widths),
+  `security:check` (zero production dependency vulnerabilities),
+  `format:check`, and `build` (both Next builds and all 13 CSP hashes).
+  These local results do not replace hosted CI or production acceptance.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
@@ -157,7 +168,7 @@ Step-by-step resolution instructions:
      exact-run evidence, not placeholders; test fail-closed behavior and workflow
      dispatch before treating automation as accepted.
 Required environment-variable names (no values): None; CI uses synthetic service credentials only
-External dependencies: Owner GitHub settings/Actions budget; separate staging host; unaccepted high-severity dependency findings
+External dependencies: Owner GitHub settings/Actions budget; separate staging host
 Expected result: Protected main and observed successful/negative-control dev runs.
 Verification procedure: Re-query rules and inspect exact-SHA hosted workflow runs.
 Tests to rerun: Goal 16B.11 trigger/failure/coverage/security/artifact checks
