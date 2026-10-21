@@ -19,6 +19,7 @@ import type { LeadRecord, LeadHistoryRecord } from '@careerscope/core';
 import { api, offersDiscardAndReload } from '../lib/api';
 import { useOwner, ownerKey } from '../lib/session';
 import MatchEvidence from './match-evidence';
+import InterviewOrganizer from './interview-organizer';
 import { EmptyState, ErrorState, LoadingState } from './ui-states';
 import styles from './application-details.module.css';
 
@@ -765,6 +766,10 @@ function LeadEditor({
           </form>
         </section>
       </div>
+
+      {!['saved', 'archived'].includes(record.status) && (
+        <InterviewOrganizer leadId={record.id} csrf={csrf} />
+      )}
 
       <section className={styles.aiPanel} aria-label="AI insights">
         <div className={styles.aiPanelHeader}>

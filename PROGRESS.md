@@ -1097,3 +1097,28 @@ the full v12 concurrency target. All temporary test containers were stopped.
 No shared/production database, live provider or production infrastructure was
 accessed. GitHub Actions remains disabled; hosted CI and live/owner acceptance
 gates remain unresolved.
+
+### Interview organizer implementation checkpoint (2026-10-21)
+
+On the main worktree, added candidate-owned interview-round persistence/API and
+an Application Details organizer for round time/time zone, format, status,
+contacts, preparation checklist, notes, optional parsed-resume references and
+optimistic revision updates. The feature does not change application lifecycle
+status. Reminder times are persisted only; no reminder notification is sent.
+
+Validation on Node 24.19.0: core build, typecheck, lint, formatting and production
+build passed. The new integration test passed 1/1 against disposable loopback
+PostgreSQL 17.6. The browser suite was rerun against isolated PostgreSQL/Redis;
+the final output included completed Chromium, Firefox and WebKit workflows, with
+axe, keyboard and eight-width responsive checks. An initial run exposed a fixture
+teardown FK-order defect; teardown now removes interview documents/rounds before
+the saved application. Test containers and the temporary web server were removed.
+The complete service-backed integration suite passed 57/57. The repository gate
+passed 84/84 unit/gate tests; the domain suite passed 835/835. An independent
+read-only review found two contract issues and a resume-deletion FK hazard; the
+specific conflict message, 401/403 OpenAPI responses and cascading removal of
+resume references were added and covered by the final integration run. The
+reviewer found no remaining actionable defect in scope.
+This is local evidence only: hosted CI, production migration and smoke validation,
+manual product/accessibility review, and reminder delivery remain outstanding.
+The main worktree changes are not yet committed or pushed.

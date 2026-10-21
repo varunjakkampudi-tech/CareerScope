@@ -384,6 +384,10 @@ try {
     // already saved and the assertion that starts from "Save Job" becomes
     // order-dependent. Keep the unrelated foreign-owner fixture intact so the
     // authorization checks still exercise a real cross-owner record.
+    await database.pool.query('DELETE FROM interview_round_documents WHERE owner_id = $1', [
+      ownerId,
+    ]);
+    await database.pool.query('DELETE FROM interview_rounds WHERE owner_id = $1', [ownerId]);
     await database.pool.query('DELETE FROM lead_history WHERE owner_id = $1', [ownerId]);
     await database.pool.query('DELETE FROM saved_leads WHERE owner_id = $1', [ownerId]);
     const browser = await browserType.launch();
@@ -2254,6 +2258,76 @@ try {
       await applicationDetails
         .getByText('Candidate reports receiving confirmation', { exact: true })
         .waitFor();
+      const interviewOrganizer = applicationDetails.getByRole('region', {
+        name: 'Interview organizer',
+      });
+      await interviewOrganizer.getByRole('heading', { name: 'Interview rounds' }).waitFor();
+      await interviewOrganizer.getByRole('button', { name: 'Add round' }).click();
+      const interviewForm = interviewOrganizer.locator('form');
+      await interviewForm.getByLabel('Round name').fill('Technical interview');
+      await interviewForm.getByLabel('Date and time').fill('2030-05-10T15:00');
+      await interviewForm.getByLabel('Time zone (IANA)').fill('Asia/Kolkata');
+      await interviewForm.getByLabel('Format').selectOption('video');
+      await interviewForm.getByLabel('Status').selectOption('scheduled');
+      await interviewForm.getByRole('button', { name: 'Add contact' }).click();
+      await interviewForm.getByLabel('Name', { exact: true }).fill('Synthetic interviewer');
+      await interviewForm.getByLabel('Role', { exact: true }).fill('Engineering');
+      await interviewForm
+        .getByRole('textbox', { name: 'New preparation item' })
+        .fill('Review system design notes');
+      await interviewForm.getByRole('button', { name: 'Add item' }).click();
+      await interviewForm.getByLabel('Reminder time (optional)').fill('2030-05-10T14:00');
+      await interviewForm.getByLabel('Notes', { exact: true }).fill('Prepare examples.');
+      assert.match(
+        (await interviewOrganizer.textContent()) ?? '',
+        /does not currently send email or push notifications/,
+      );
+      const interviewCreated = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}/interviews`) &&
+          response.request().method() === 'POST',
+      );
+      await interviewForm.getByRole('button', { name: 'Save round' }).click();
+      const interviewCreateResponse = await interviewCreated;
+      assert.equal(interviewCreateResponse.status(), 200);
+      const createdRound = await interviewCreateResponse.json();
+      assert.equal(createdRound.title, 'Technical interview');
+      assert.equal(createdRound.timeZone, 'Asia/Kolkata');
+      assert.equal(createdRound.startsAt, '2030-05-10T09:30:00.000Z');
+      assert.equal(createdRound.contacts[0].name, 'Synthetic interviewer');
+      assert.equal(createdRound.checklist[0].label, 'Review system design notes');
+      assert.equal(createdRound.notes, 'Prepare examples.');
+      assert.ok(createdRound.reminderAt);
+      await interviewOrganizer.getByText('Technical interview', { exact: true }).waitFor();
+      await interviewOrganizer
+        .getByText('To do: Review system design notes', { exact: true })
+        .waitFor();
+      await interviewOrganizer.getByRole('button', { name: 'Edit round' }).click();
+      const editInterviewForm = interviewOrganizer.locator('form');
+      await editInterviewForm.getByLabel('Status').selectOption('completed');
+      const interviewUpdated = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/interviews/${createdRound.id}`) &&
+          response.request().method() === 'PUT',
+      );
+      await editInterviewForm.getByRole('button', { name: 'Save round' }).click();
+      assert.equal((await interviewUpdated).status(), 200);
+      await interviewOrganizer.getByText('completed', { exact: true }).waitFor();
+      assert.equal(
+        (await leadRepository.get(ownerId, leadId))?.status,
+        'applied',
+        `${engine}: interview completion must not synthesize a lifecycle transition`,
+      );
+      await page.reload();
+      await page
+        .getByRole('navigation', { name: 'Saved lead list' })
+        .getByRole('button', { name: /Senior React Engineer/ })
+        .click();
+      const persistedOrganizer = page
+        .getByRole('article', { name: 'Lead details' })
+        .getByRole('region', { name: 'Interview organizer' });
+      await persistedOrganizer.getByText('Technical interview', { exact: true }).waitFor();
+      await persistedOrganizer.getByText('completed', { exact: true }).waitFor();
       await page.once('dialog', (dialog) => dialog.accept());
       const archiveApplication = page.waitForResponse(
         (response) =>

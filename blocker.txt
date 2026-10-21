@@ -636,3 +636,52 @@ Affected tasks: Only migration 0019 application to a shared database; local
 source work and unrelated tasks may proceed.
 Evidence references: `PROGRESS.md`, `QUALITY_AUDIT.md`, and migration
 `migrations/0019_remove_legacy_external_identity.sql`.
+
+BLOCKER ID: INTERVIEW-REMINDER-DELIVERY
+Title: Interview reminder delivery is not implemented
+Priority: High
+Module: Candidate application tracking / interview organizer
+v12 requirement / checklist item: D8; sections 4.10 and 15
+Status: OPEN_ENGINEERING
+Problem: Interview rounds can persist an optional reminder timestamp, but no
+  scheduled notification event, in-app notification, email delivery, or dispatch
+  status exists. The UI explicitly states that no notification is sent.
+Verified root cause: The organizer implementation is persistence/UI only; no
+  reminder producer or approved delivery contract is present in this change.
+Impact: Scheduling and tracking rounds are supported, but the v12 claim that
+  reminders work is not yet satisfied.
+What the agent already tried: Implemented and validated round scheduling,
+  contacts, preparation checklist, notes, optional parsed resume association,
+  status edits and reminder timestamp storage. No message was sent.
+Work completed: None for dispatch; saved timestamps are deliberately not
+  represented as delivered reminders.
+Why autonomous resolution is unsafe or impossible: Delivery channel, timing,
+  notification consent, idempotency, opt-out and operational evidence must follow
+  existing product and privacy policy; do not infer email/push permission from
+  the existence of a timestamp.
+Exact owner action required: None to continue local contract/implementation work;
+  any outbound channel must use an already approved delivery policy/provider.
+Step-by-step resolution instructions:
+  1. Review the existing notification/consent contract and decide which approved
+     channel(s), if any, may deliver candidate interview reminders.
+  2. Implement an idempotent scheduled event and delivery state using the
+     canonical async/outbox architecture; honor cancellation, edits, time zone,
+     consent and retries without logging contact details or message content.
+  3. Add unit, Postgres/queue integration, duplicate/retry, consent, cancellation,
+     failure and browser coverage; verify no lifecycle state is inferred.
+  4. Record hosted delivery-provider evidence and manual candidate UX acceptance
+     separately. Do not claim a reminder is delivered before provider evidence.
+Required environment-variable names (no values): Only those already defined by
+  the approved delivery integration, if applicable; none introduced here.
+External dependencies: Approved notification channel/policy and hosted delivery
+  evidence if outbound delivery is required for launch.
+Expected result: A scheduled reminder is delivered once through an authorized
+  channel, or is clearly shown as scheduled-but-not-delivered where dispatch fails.
+Verification procedure: Exercise due, future, cancelled, edited, duplicate,
+  consent-disabled, provider-failure and retry paths with synthetic recipients;
+  verify safe audit/log output and no application-status mutation.
+Tests to rerun: queue/outbox integration, delivery contract tests, privacy/log
+  redaction checks, browser notification state and hosted provider smoke only
+  after approved configuration exists.
+Affected tasks: Interview organizer reminder portion of D8 / section 4.10.
+Evidence references: `GAP_MATRIX.md`, `TEST_MATRIX.md`, `PROGRESS.md`.

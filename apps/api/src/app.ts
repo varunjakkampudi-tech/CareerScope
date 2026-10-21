@@ -35,6 +35,7 @@ import {
   ProfileRepository,
   prepareProfile,
   LeadRepository,
+  InterviewRepository,
   ResumeUploadRepository,
   ResumeUploadCoordinator,
   InvalidResumeUpload,
@@ -263,6 +264,7 @@ export async function createApp(
   const market = new MarketRepository(database.pool);
   const profiles = new ProfileRepository(database);
   const leads = new LeadRepository(database);
+  const interviews = new InterviewRepository(database);
   const uploads = new ResumeUploadRepository(database);
   const coordinator = options.resumeStorage
     ? new ResumeUploadCoordinator(uploads, options.resumeStorage)
@@ -375,6 +377,7 @@ export async function createApp(
   const conflictMessages: Record<string, string> = {
     PROFILE_REVISION_CONFLICT: 'Record changed; reload before saving',
     LEAD_REVISION_CONFLICT: 'Record changed; reload before saving',
+    INTERVIEW_REVISION_CONFLICT: 'Interview round changed; reload before saving',
     PROFILE_NOT_SAVED: 'Save your profile before enabling this option',
     MISSING_TARGET_ROLES: 'Add target roles to your profile before starting this search',
     IDEMPOTENCY_KEY_REUSED: 'This request already completed with different details; try again',
@@ -1242,6 +1245,29 @@ export async function createApp(
     const lead = await leads.update(request.ownerId!, id, request.body);
     if (!lead) throw new HttpError(404, 'Lead not found');
     return lead;
+  });
+  app.get('/api/leads/:id/interviews', async (request) => {
+    await readBudget(request, 'interviews-read', 120);
+    const { id } = identifier.parse(request.params);
+    const items = await interviews.listForLead(request.ownerId!, id);
+    if (!items) throw new HttpError(404, 'Application not found');
+    return { items };
+  });
+  app.post('/api/leads/:id/interviews', async (request) => {
+    const { id } = identifier.parse(request.params);
+    if (!(await consumeRateLimit(request, `interviews:${request.ownerId!}`, 30, 60)))
+      throw new HttpError(429, 'Too many interview updates');
+    const round = await interviews.create(request.ownerId!, id, request.body);
+    if (!round) throw new HttpError(404, 'Application not found');
+    return round;
+  });
+  app.put('/api/interviews/:id', async (request) => {
+    const { id } = identifier.parse(request.params);
+    if (!(await consumeRateLimit(request, `interviews:${request.ownerId!}`, 30, 60)))
+      throw new HttpError(429, 'Too many interview updates');
+    const round = await interviews.update(request.ownerId!, id, request.body);
+    if (!round) throw new HttpError(404, 'Interview round not found');
+    return round;
   });
   app.get('/api/job-sources', async (request) => {
     await readBudget(request, 'job-sources-read', 120);

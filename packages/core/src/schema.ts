@@ -443,6 +443,65 @@ export const leadHistory = pgTable(
   ],
 );
 
+export type InterviewContact = {
+  name: string;
+  role: string | null;
+  email: string | null;
+};
+
+export type InterviewChecklistItem = {
+  id: string;
+  label: string;
+  completed: boolean;
+};
+
+export const interviewRounds = pgTable(
+  'interview_rounds',
+  {
+    id: uuid('id').primaryKey(),
+    ownerId: uuid('owner_id').notNull(),
+    leadId: uuid('lead_id').notNull(),
+    title: text('title').notNull(),
+    startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
+    timeZone: text('time_zone').notNull(),
+    format: text('format').$type<'video' | 'phone' | 'onsite' | 'other'>().notNull(),
+    status: text('status').$type<'scheduled' | 'completed' | 'cancelled'>().notNull(),
+    contacts: jsonb('contacts').$type<InterviewContact[]>().notNull().default([]),
+    checklist: jsonb('checklist').$type<InterviewChecklistItem[]>().notNull().default([]),
+    notes: text('notes').notNull().default(''),
+    reminderAt: timestamp('reminder_at', { withTimezone: true }),
+    revision: integer('revision').notNull().default(1),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.ownerId, table.leadId],
+      foreignColumns: [leads.ownerId, leads.id],
+    }),
+    uniqueIndex('interview_round_owner_id').on(table.ownerId, table.id),
+    index('interview_round_owner_lead_start').on(table.ownerId, table.leadId, table.startsAt),
+    check('interview_round_title_bounded', sql`length(btrim(${table.title})) BETWEEN 1 AND 120`),
+    check('interview_round_timezone_bounded', sql`length(${table.timeZone}) BETWEEN 1 AND 128`),
+    check(
+      'interview_round_format_valid',
+      sql`${table.format} IN ('video', 'phone', 'onsite', 'other')`,
+    ),
+    check(
+      'interview_round_status_valid',
+      sql`${table.status} IN ('scheduled', 'completed', 'cancelled')`,
+    ),
+    check('interview_round_contacts_array', sql`jsonb_typeof(${table.contacts}) = 'array'`),
+    check('interview_round_checklist_array', sql`jsonb_typeof(${table.checklist}) = 'array'`),
+    check('interview_round_notes_bounded', sql`length(${table.notes}) <= 10000`),
+    check('interview_round_revision_positive', sql`${table.revision} > 0`),
+    check(
+      'interview_round_reminder_before_start',
+      sql`${table.reminderAt} IS NULL OR ${table.reminderAt} < ${table.startsAt}`,
+    ),
+  ],
+);
+
 export const resumeUploads = pgTable(
   'resume_uploads',
   {
@@ -485,6 +544,28 @@ export const resumeUploads = pgTable(
         AND length(${table.objectVersion}) BETWEEN 1 AND 1024 AND ${table.objectVersion} <> 'null'
         AND ${table.commandId} IS NOT NULL)`,
     ),
+  ],
+);
+
+export const interviewRoundDocuments = pgTable(
+  'interview_round_documents',
+  {
+    ownerId: uuid('owner_id').notNull(),
+    roundId: uuid('round_id').notNull(),
+    uploadId: uuid('upload_id').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.ownerId, table.roundId],
+      foreignColumns: [interviewRounds.ownerId, interviewRounds.id],
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [table.ownerId, table.uploadId],
+      foreignColumns: [resumeUploads.ownerId, resumeUploads.id],
+    }).onDelete('cascade'),
+    uniqueIndex('interview_round_document_unique').on(table.ownerId, table.roundId, table.uploadId),
+    index('interview_document_owner_upload').on(table.ownerId, table.uploadId),
   ],
 );
 

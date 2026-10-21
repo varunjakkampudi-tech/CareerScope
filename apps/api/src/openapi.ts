@@ -160,6 +160,47 @@ const lead = object({
   createdAt: timestamp,
   updatedAt: timestamp,
 });
+const interviewContact = object({
+  name: text({ minLength: 1, maxLength: 120 }),
+  role: nullable(text({ maxLength: 120 })),
+  email: nullable(text({ format: 'email', maxLength: 254 })),
+});
+const interviewChecklistItem = object({
+  id: uuid,
+  label: text({ minLength: 1, maxLength: 200 }),
+  completed: bool,
+});
+const interviewRoundInputFields = {
+  title: text({ minLength: 1, maxLength: 120 }),
+  startsAt: timestamp,
+  timeZone: text({ minLength: 1, maxLength: 128 }),
+  format: text({ enum: ['video', 'phone', 'onsite', 'other'] }),
+  status: text({ enum: ['scheduled', 'completed', 'cancelled'] }),
+  contacts: array(interviewContact, { maxItems: 10 }),
+  checklist: array(interviewChecklistItem, { maxItems: 30 }),
+  notes: text({ maxLength: 10000 }),
+  reminderAt: nullable(timestamp),
+  resumeUploadIds: array(uuid, { maxItems: 10, uniqueItems: true }),
+};
+const interviewRoundInput = object(interviewRoundInputFields);
+const interviewRoundUpdateInput = object({ ...interviewRoundInputFields, revision });
+const interviewRound = object({
+  id: uuid,
+  leadId: uuid,
+  title: text({ maxLength: 120 }),
+  startsAt: timestamp,
+  timeZone: text({ maxLength: 128 }),
+  format: text({ enum: ['video', 'phone', 'onsite', 'other'] }),
+  status: text({ enum: ['scheduled', 'completed', 'cancelled'] }),
+  contacts: array(interviewContact),
+  checklist: array(interviewChecklistItem),
+  notes: text({ maxLength: 10000 }),
+  reminderAt: nullable(timestamp),
+  resumeUploadIds: array(uuid),
+  revision,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+});
 const run = object({ runId: uuid, status: searchStatus });
 const upload = object({ id: uuid, status: uploadStatus });
 const posting = object({
@@ -636,6 +677,27 @@ function contracts(options: {
       {
         querystring: object({ before: integer({ minimum: 1, maximum: 2147483647 }) }, []),
         failures: [400, 404, 429],
+      },
+    ),
+    'GET /api/leads/:id/interviews': operation(
+      'List candidate-owned interview rounds for an application',
+      object({ items: array(interviewRound) }),
+      { failures: [400, 401, 403, 404, 429] },
+    ),
+    'POST /api/leads/:id/interviews': operation(
+      'Schedule a candidate-owned interview round without changing application status',
+      interviewRound,
+      {
+        body: interviewRoundInput,
+        failures: [400, 401, 403, 404, 429],
+      },
+    ),
+    'PUT /api/interviews/:id': operation(
+      'Update a candidate-owned interview round with optimistic concurrency',
+      interviewRound,
+      {
+        body: interviewRoundUpdateInput,
+        failures: [400, 401, 403, 404, 409, 429],
       },
     ),
     'GET /api/job-sources': operation(
