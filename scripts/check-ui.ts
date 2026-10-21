@@ -438,6 +438,7 @@ try {
                 authenticated: true,
                 csrf: 'synthetic-csrf-token',
                 email: otpCurrentEmail,
+                emailVerifiedAt: '2026-10-20T12:00:00.000Z',
                 owner: 'a'.repeat(64),
                 aiEnabled: false,
                 emailOtpEnabled: true,
@@ -543,6 +544,10 @@ try {
       );
       await otpPage.goto(`${origin}/settings`);
       await otpPage.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+      await otpPage
+        .getByRole('status')
+        .filter({ hasText: /^Email verified on / })
+        .waitFor();
       await settleOtpRequests('account security route after sign-in');
       await otpPage.getByLabel('New email address').fill('updated@example.test');
       await otpPage.getByRole('button', { name: 'Send verification codes' }).click();

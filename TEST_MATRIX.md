@@ -285,6 +285,11 @@ This is local automated evidence only: hosted browser CI, manual assistive-
 technology review, visual/design acceptance, live provider behavior and
 production acceptance remain unverified.
 
+The same browser run additionally verifies that the authenticated Account
+Security page displays the session's recorded email verification date. The
+fixture timestamp is synthetic and does not represent a live user or provider
+delivery result.
+
 ### Current main service, recovery and performance rerun (2026-10-21)
 
 On canonical `main` source at `5ce8410eb371c6b94de785d89389760a85c1009e`,

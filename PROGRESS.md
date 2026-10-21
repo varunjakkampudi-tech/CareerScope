@@ -1263,3 +1263,21 @@ and normally pushed to `main` as `aa6aa1ebb017418a62c91a03f1c35aabaafc4bfb`;
 after fetch, local `main` and `origin/main` matched and the worktree was clean.
 No hosted CI run exists while Actions is disabled. The separate dirty email OTP
 worktree was not accessed or modified.
+
+### Account Security email-verification status (2026-10-21)
+
+The authenticated Account Security surface now displays the verification date
+from the existing server session contract, or clearly states when verification
+is not recorded. The browser fixture supplies a synthetic timestamp and asserts
+the user-visible status. This is only a display of the existing email signal;
+it does not add identity, employment, education, or other verification claims.
+
+On Node 24.19.0, `npm run gates:test`, `npm run format:check`, and `npm run
+build` passed before the browser run. `npm run test:ui` then passed with
+`CAREERSCOPE_UI_BROWSER=all` on Chromium, Firefox and WebKit, including axe,
+keyboard and eight-width responsive checks. The browser stack used disposable
+loopback PostgreSQL/Redis and synthetic data; the containers and local web
+process started for the run were stopped afterward. Hosted CI remains
+unavailable while GitHub Actions is disabled. These source and test changes are
+currently uncommitted; the separate OTP and application-evidence worktrees were
+left untouched.

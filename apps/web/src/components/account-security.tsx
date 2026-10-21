@@ -258,6 +258,13 @@ export default function AccountSecurity({
         Back to search
       </button>
       <h1 id="security-heading">Account security</h1>
+      {session.data?.authenticated && !testMode && (
+        <p role="status">
+          {session.data.emailVerifiedAt
+            ? `Email verified on ${dateLabel(session.data.emailVerifiedAt)}.`
+            : 'Email verification is not recorded.'}
+        </p>
+      )}
       {!testMode && session.data?.emailOtpEnabled && (
         <section aria-labelledby="email-change-heading">
           <h2 id="email-change-heading">Change sign-in email</h2>
