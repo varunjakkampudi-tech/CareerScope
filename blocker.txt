@@ -1025,3 +1025,53 @@ worktree was not modified. For `4957949d91324ade3a61dc9ed37bfe88736e7826`,
 `gh run list --commit` returned `[]` and the GitHub Actions permissions API
 reported `enabled=false`. The documentation-only main commit was pushed normally;
 no deployment or live Resend delivery occurred.
+
+BLOCKER ID: UI-CONSOLE-WARNINGS-01
+Title: Classify Firefox console warnings in the authenticated browser journey
+Priority: Medium
+Module: Browser quality / CR-01
+v12 requirement / checklist item: CareerScope Goal CR-01; browser runtime diagnostics
+Status: OPEN_ENGINEERING
+Problem: The committed browser harness fails on unexpected console errors,
+  uncaught page exceptions, page crashes, and unhandled promise rejections in
+  its OTP, signup, authenticated-candidate, and test-account-selector journeys,
+  but it does not yet assert on console warnings.
+Verified root cause: Not established. A local experimental warning assertion
+  under Node v24.19.0 observed unclassified Firefox warnings in the
+  authenticated-candidate journey. No raw warning text was promoted to a broad
+  allowlist, and the experimental assertion was removed rather than weakening
+  or destabilizing the passing committed gate.
+Impact: A warning-level browser regression could currently escape the CR-01 UI
+  gate. The existing all-browser test remains green for its implemented error,
+  exception, crash, and rejection policies; warning behavior is not certified.
+What was done: Reproduced the non-empty warning observation on the current local
+  harness, kept the unhandled-rejection guard, and recorded the exact remaining
+  gap. No product runtime code changed.
+Why this remains open: Firefox warning messages must be classified to a safe,
+  stable category and tied to a verified source/route before deciding whether to
+  fix the cause or permit a narrowly justified expected fixture warning.
+Exact owner action required: None. This is local engineering work.
+Step-by-step resolution instructions:
+  1. Re-run the Firefox authenticated journey under Node 24 with a diagnostic
+     that emits only sanitized categories and normalized local paths; never log
+     raw warning text, query values, email addresses, tokens, or request bodies.
+  2. Trace each category to its source and determine whether it is an actual
+     browser/runtime defect or an expected negative fixture response.
+  3. Fix genuine defects. Permit only exact source/path/status cases whose
+     corresponding negative behavior is asserted by the same journey; do not
+     add a blanket warning exemption.
+  4. Add a synthetic warning-listener self-test, then run the full three-engine
+     UI/axe/keyboard/eight-width suite and the relevant quality gates.
+Required environment-variable names (no values): None.
+External dependencies: None for local diagnosis; hosted CI remains separately
+  unavailable while GitHub Actions is disabled.
+Expected result: The browser harness catches unexpected warnings without raw
+  message leakage or unexplained allowlisting.
+Verification procedure: Exact-source review plus Node 24 Firefox diagnosis and
+  full Chromium/Firefox/WebKit UI success, then verify exact-SHA hosted CI once
+  Actions is enabled by the owner.
+Tests to rerun: `npm run test:ui`, `npm run gates:test`, `npm run format:check`,
+  `npm run typecheck`, `npm run lint`, and `git diff --check`.
+Affected tasks: CR-01 browser runtime diagnostics only.
+Evidence references: `scripts/check-ui.ts`, `QUALITY_AUDIT.md`, and
+  `TEST_MATRIX.md`.

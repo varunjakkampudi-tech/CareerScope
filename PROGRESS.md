@@ -1,5 +1,29 @@
 # CareerScope v12 engineering progress
 
+## Main browser/runtime validation follow-up (2026-10-21)
+
+At code SHA `7bc55ef6d75db17261b1a773a26b1b9d4dd0b95d`, the committed Playwright
+harness now captures browser `unhandledrejection` events on OTP, signup,
+authenticated candidate and test-account-selector journeys. It records only
+bounded error categories, suppresses raw rejection text from browser console
+output, and a synthetic `TypeError` probe verifies the guard is active. No
+runtime product code changed.
+
+Node v24.19.0 local validation on that exact code SHA passed: `npm run test:ui`
+exited 0 for Chromium, Firefox and WebKit, including axe, keyboard checks and
+eight responsive widths; `npm run gates:test` passed 91/91 unit tests and its
+Node/source/privacy/deployment/EOL/lint/typecheck gates; `npm run test:integration`
+passed 58/58 with zero skips against disposable local PostgreSQL/Redis;
+`npm run test:domain` passed 839/839; `npm run build` passed both production
+build/CSP passes with all 13 inline-script hashes; `npm run security:check`
+reported zero production dependency vulnerabilities. Formatting, privacy and
+EOL checks passed. A separate experimental console-warning assertion produced
+unclassified Firefox warnings; it was not retained or allowlisted. Warning
+classification and critical-network-error policy remain open engineering work.
+GitHub returned no status checks for this SHA and Actions remains unavailable;
+local checks are not hosted CI or release acceptance. No provider, shared
+database, production environment or deployment was used.
+
 ## Browser runtime-error gate follow-up (2026-10-21)
 
 On the local `main` working tree based on `aa67c199250ecd73145349a6c6954cafd47659a8`,
