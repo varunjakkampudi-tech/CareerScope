@@ -562,12 +562,236 @@ test(
       const afterCompletion = await notificationRepository.list(ownerId);
       assert.equal(afterCompletion.unreadCount, 50);
 
+      const defaultPreference = await app.inject({
+        url: '/api/notifications/preferences',
+        headers: { cookie },
+      });
+      assert.equal(defaultPreference.statusCode, 200);
+      assert.deepEqual(defaultPreference.json(), { interviewRemindersInAppEnabled: true });
+      const foreignDefaultPreference = await app.inject({
+        url: '/api/notifications/preferences',
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignDefaultPreference.statusCode, 200);
+      assert.deepEqual(foreignDefaultPreference.json(), {
+        interviewRemindersInAppEnabled: true,
+      });
+      assert.equal((await app.inject({ url: '/api/notifications/preferences' })).statusCode, 401);
+      const missingCsrf = await app.inject({
+        method: 'PUT',
+        url: '/api/notifications/preferences',
+        headers: { origin, cookie },
+        payload: { interviewRemindersInAppEnabled: false },
+      });
+      assert.equal(missingCsrf.statusCode, 403);
+      const malformedPreference = await app.inject({
+        method: 'PUT',
+        url: '/api/notifications/preferences',
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: { interviewRemindersInAppEnabled: 'false', ownerId: otherOwnerId },
+      });
+      assert.equal(malformedPreference.statusCode, 400);
+      const otherOwnerUpdate = await app.inject({
+        method: 'PUT',
+        url: '/api/notifications/preferences',
+        headers: { origin, cookie: otherCookie, 'x-csrf-token': otherSession.csrf },
+        payload: { interviewRemindersInAppEnabled: false },
+      });
+      assert.equal(otherOwnerUpdate.statusCode, 200);
+      assert.deepEqual(
+        (await app.inject({ url: '/api/notifications/preferences', headers: { cookie } })).json(),
+        { interviewRemindersInAppEnabled: true },
+        "one owner cannot change another owner's preference",
+      );
+
+      const reminderCountBeforePreferenceChange = await database.pool
+        .query<{ count: string }>('SELECT count(*) FROM in_app_notifications WHERE owner_id = $1', [
+          ownerId,
+        ])
+        .then((result) => Number(result.rows[0]?.count));
+      const disabledPreference = await app.inject({
+        method: 'PUT',
+        url: '/api/notifications/preferences',
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: { interviewRemindersInAppEnabled: false },
+      });
+      assert.equal(disabledPreference.statusCode, 200);
+      assert.deepEqual(disabledPreference.json(), { interviewRemindersInAppEnabled: false });
+      assert.equal(
+        await database.pool
+          .query<{ count: string }>(
+            'SELECT count(*) FROM in_app_notifications WHERE owner_id = $1',
+            [ownerId],
+          )
+          .then((result) => Number(result.rows[0]?.count)),
+        reminderCountBeforePreferenceChange,
+        'disabling the preference preserves already materialized notification history',
+      );
+      const preferenceControlledRound = await app.inject({
+        method: 'POST',
+        url: `/api/leads/${ownLeadId}/interviews`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: { ...dueInput, title: 'Preference-controlled upcoming interview' },
+      });
+      assert.equal(preferenceControlledRound.statusCode, 200, preferenceControlledRound.body);
+      const preferenceControlledRoundId = (preferenceControlledRound.json() as { id: string }).id;
+      assert.equal(await publishDueInterviewReminders(database), 0);
+      assert.equal(
+        await database.pool
+          .query('SELECT id FROM in_app_notifications WHERE owner_id = $1 AND round_id = $2', [
+            ownerId,
+            preferenceControlledRoundId,
+          ])
+          .then((result) => result.rowCount),
+        0,
+        'disabled preferences prevent new reminder rows for upcoming rounds',
+      );
+      const enabledPreference = await app.inject({
+        method: 'PUT',
+        url: '/api/notifications/preferences',
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: { interviewRemindersInAppEnabled: true },
+      });
+      assert.equal(enabledPreference.statusCode, 200);
+      assert.equal(await publishDueInterviewReminders(database), 1);
+      assert.equal(
+        await database.pool
+          .query('SELECT id FROM in_app_notifications WHERE owner_id = $1 AND round_id = $2', [
+            ownerId,
+            preferenceControlledRoundId,
+          ])
+          .then((result) => result.rowCount),
+        1,
+        're-enabling materializes one reminder only while its interview remains upcoming',
+      );
+
+      const racingPreferenceRound = await app.inject({
+        method: 'POST',
+        url: `/api/leads/${ownLeadId}/interviews`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: { ...dueInput, title: 'Preference disable serialization regression' },
+      });
+      assert.equal(racingPreferenceRound.statusCode, 200, racingPreferenceRound.body);
+      const racingRoundId = (racingPreferenceRound.json() as { id: string }).id;
+      const disablingTransaction = await database.pool.connect();
+      await disablingTransaction.query('BEGIN');
+      await disablingTransaction.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [
+        ownerId,
+      ]);
+      let completionSequence = 0;
+      let disableCompletionOrder = 0;
+      let publisherCompletionOrder = 0;
+      const disableRequest = app
+        .inject({
+          method: 'PUT',
+          url: '/api/notifications/preferences',
+          headers: { origin, cookie, 'x-csrf-token': session.csrf },
+          payload: { interviewRemindersInAppEnabled: false },
+        })
+        .then((response) => {
+          disableCompletionOrder = ++completionSequence;
+          return response;
+        });
+      let publisher: Promise<number> | undefined;
+      try {
+        let disableWaitingForOwnerLock = false;
+        const deadline = Date.now() + 5000;
+        while (Date.now() < deadline) {
+          const waiting = await database.pool.query<{ pid: number }>(
+            `SELECT pid FROM pg_stat_activity
+             WHERE datname = current_database()
+               AND wait_event_type = 'Lock' AND wait_event = 'advisory'
+               AND query LIKE 'SELECT pg_advisory_xact_lock(hashtextextended(%'`,
+          );
+          if (waiting.rowCount === 1) {
+            disableWaitingForOwnerLock = true;
+            break;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 20));
+        }
+        assert.equal(
+          disableWaitingForOwnerLock,
+          true,
+          'the authenticated preference update must use the owner serialization lock',
+        );
+        publisher = publishDueInterviewReminders(database).then((created) => {
+          publisherCompletionOrder = ++completionSequence;
+          return created;
+        });
+        const publisherDeadline = Date.now() + 5000;
+        let bothOperationsWaitingForOwnerLock = false;
+        while (Date.now() < publisherDeadline) {
+          const waiting = await database.pool.query<{ pid: number }>(
+            `SELECT pid FROM pg_stat_activity
+             WHERE datname = current_database()
+               AND wait_event_type = 'Lock' AND wait_event = 'advisory'
+               AND query LIKE 'SELECT pg_advisory_xact_lock(hashtextextended(%'`,
+          );
+          if (waiting.rowCount === 2) {
+            bothOperationsWaitingForOwnerLock = true;
+            break;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 20));
+        }
+        assert.equal(
+          bothOperationsWaitingForOwnerLock,
+          true,
+          'the publisher must serialize on the same owner lock as the authenticated preference update',
+        );
+      } catch (error) {
+        await disablingTransaction.query('ROLLBACK');
+        disablingTransaction.release();
+        await disableRequest.catch(() => undefined);
+        if (publisher) await publisher.catch(() => undefined);
+        throw error;
+      }
+      try {
+        await disablingTransaction.query('COMMIT');
+      } finally {
+        disablingTransaction.release();
+      }
+      assert.ok(publisher, 'the publisher race must be started before releasing the lock');
+      const [disableResult, publisherResult] = await Promise.allSettled([
+        disableRequest,
+        publisher,
+      ]);
+      if (disableResult.status === 'rejected') throw disableResult.reason;
+      if (publisherResult.status === 'rejected') throw publisherResult.reason;
+      const disableResponse = disableResult.value;
+      const publishedCount = publisherResult.value;
+      assert.equal(disableResponse.statusCode, 200, disableResponse.body);
+      assert.deepEqual(disableResponse.json(), { interviewRemindersInAppEnabled: false });
+      const racingNotificationCount = await database.pool
+        .query<{ count: string }>(
+          'SELECT count(*) FROM in_app_notifications WHERE owner_id = $1 AND round_id = $2',
+          [ownerId, racingRoundId],
+        )
+        .then((result) => Number(result.rows[0]?.count));
+      assert.ok(racingNotificationCount === 0 || racingNotificationCount === 1);
+      if (racingNotificationCount === 1)
+        assert.ok(
+          publisherCompletionOrder < disableCompletionOrder,
+          'any reminder materialized by a race must commit before the preference-disable response succeeds',
+        );
+      assert.equal(
+        await notificationRepository.interviewReminderPreference(ownerId),
+        false,
+        'the actual owner-scoped API writer must persist the disabled setting',
+      );
+      assert.ok(Number.isInteger(publishedCount));
+      /*
+       * The publisher may win the shared lock and create the reminder first,
+       * or the preference update may win and suppress it. The contract is that
+       * disable never returns ahead of an insert that is still in flight.
+       */
       const docs = await app.inject({ url: '/api/docs/json', headers: { cookie } });
       assert.equal(docs.statusCode, 200);
       assert.ok(docs.json().paths['/api/leads/{id}/interviews']?.get);
       assert.ok(docs.json().paths['/api/leads/{id}/interviews']?.post);
       assert.ok(docs.json().paths['/api/interviews/{id}']?.put);
       assert.ok(docs.json().paths['/api/notifications']?.get);
+      assert.ok(docs.json().paths['/api/notifications/preferences']?.get);
+      assert.ok(docs.json().paths['/api/notifications/preferences']?.put);
       assert.ok(docs.json().paths['/api/notifications/{id}/read']?.put);
       const listResponses = docs.json().paths['/api/leads/{id}/interviews']?.get.responses;
       assert.ok(listResponses?.['401']);

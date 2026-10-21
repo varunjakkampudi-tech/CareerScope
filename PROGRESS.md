@@ -1,5 +1,56 @@
 # CareerScope v12 engineering progress
 
+## In-app interview reminder preference (2026-10-22)
+
+Implemented a candidate-owned switch on the existing `/settings` screen for
+whether future due interview reminders are materialized in-app. The preference
+defaults to enabled, is stored separately from matching/profile data, and is
+session-owner scoped behind the existing Origin/CSRF checks and rate limiting.
+Disabling prevents new reminder rows without deleting prior notifications;
+re-enabling can materialize a still-upcoming due reminder once. Email/push and
+other message types are explicitly outside this switch. See
+`docs/decisions/IN-APP-INTERVIEW-REMINDER-PREFERENCE.md`.
+
+Node 24.19.0 evidence to date: full serial PostgreSQL/Redis integration passed
+59/59 with zero skips, including migration, default, strict validation, CSRF,
+owner isolation, off/on materialization, preservation, and a real-PostgreSQL
+serialization regression that drives the authenticated preference `PUT` while
+the publisher contends for the same owner lock. A fresh read-only independent
+review approved the current lock protocol and the regression test. `npm run
+gates:test` passed (93/93 unit tests, source/privacy/deployment/EOL checks, lint,
+and typecheck including 60 canonical test files); `npm run test:domain` passed
+839/839; `npm run security:check` found no high-confidence privacy findings or
+production dependency vulnerabilities; `npm run build` passed both production
+builds and CSP verification of all 13 inline-script hashes. The production-mode
+`npm run test:ui` run passed Chromium, Firefox and WebKit, including axe,
+keyboard, session-selector, and eight-width responsive checks. An earlier
+development-mode UI attempt failed on React's development-only `eval()`/CSP
+diagnostic; it was not allowlisted and is not counted as the final UI result.
+`npm run db:generate` reports no schema drift after migration generation. Hosted
+GitHub Actions remains disabled. No commit, push, deployment, provider call, or
+production change has occurred for this slice.
+
+Final review follow-up (22 October): independent review found that a failed
+preference refresh could leave stale cached state editable, and that test
+cleanup needed to await both racing operations even if one rejects first. The
+Settings UI now hides the preference until a successful refetch and offers a
+retry; the integration regression waits for both operations to settle before
+propagating failure. The exact final tree passed the focused PostgreSQL race
+test (1/1), full typecheck (60 canonical test files), lint, format, EOL and
+`git diff --check`. The full integration run (59/59) and three-engine UI/axe
+suite passed before this final test-cleanup-only adjustment; the focused race
+test was rerun afterward. A fresh read-only independent review approved the
+final diff. No hosted or production evidence is implied.
+
+Progress reporting note (2026-10-22): the previously repeated 44% value has no
+documented, reproducible whole-goal denominator in the current repository and
+is not reaffirmed as a current measurement. The approved-source inventory still
+has 518 blocks marked `NOT_ASSESSED/NOT_RUN`; matrices and release gates also
+contain open items. This reminder-preference vertical slice is verified local
+progress, not a valid percentage for the entire v12 goal. A goal-wide percentage
+must be recomputed from a documented requirement-level rubric rather than
+incremented by feature count or repeated unchanged.
+
 ## Additive approved-source inventory reconciliation (2026-10-21)
 
 The historical 319-item inventory remains unchanged and tied to its original

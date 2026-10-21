@@ -627,6 +627,19 @@ export const inAppNotifications = pgTable(
   ],
 );
 
+// Notification channel/type preferences are separate from the candidate
+// profile so they can evolve without changing matching inputs or profile
+// revision semantics. A missing row means the launch default: enabled.
+export const notificationPreferences = pgTable('notification_preferences', {
+  ownerId: uuid('owner_id')
+    .primaryKey()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  interviewRemindersInAppEnabled: boolean('interview_reminders_in_app_enabled')
+    .notNull()
+    .default(true),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+});
+
 export const resumeResults = pgTable(
   'resume_results',
   {

@@ -748,6 +748,19 @@ function contracts(options: {
       object({ items: array(inAppNotification, { maxItems: 50 }), unreadCount: integer() }),
       { failures: [401, 403, 429] },
     ),
+    'GET /api/notifications/preferences': operation(
+      'Read the authenticated candidate’s in-app interview reminder preference; enabled by default',
+      object({ interviewRemindersInAppEnabled: bool }),
+      { failures: [401, 403, 429] },
+    ),
+    'PUT /api/notifications/preferences': operation(
+      'Set whether future due in-app interview reminders are materialized for the authenticated candidate',
+      object({ interviewRemindersInAppEnabled: bool }),
+      {
+        body: object({ interviewRemindersInAppEnabled: bool }),
+        failures: [400, 401, 403, 429],
+      },
+    ),
     'PUT /api/notifications/:id/read': operation(
       'Mark an owned current in-app notification as read',
       object({}, []),

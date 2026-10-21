@@ -836,18 +836,26 @@ What the agent already tried: Implemented idempotent due-reminder materializatio
 Work completed: In-app channel only. The notification does not copy round title,
   interviewer contact, notes or resume details; stale notifications are hidden
   and retained as non-visible idempotency tombstones until the owning interview
-  round is deleted.
+  round is deleted. A separate owner-scoped setting now controls future in-app
+  interview-reminder materialization (default enabled), with candidate Settings
+  UI, strict API/OpenAPI contract, additive PostgreSQL storage, and integration
+  coverage. Existing notifications are preserved when the preference is disabled.
+  The publisher and preference API serialize on a per-owner transaction lock;
+  the authenticated-API race regression passed against local PostgreSQL and a
+  fresh independent review found no concurrency blocker.
 Independent review finding (P2): Read rows and retired tombstones currently have
   no bounded retention/purge; they can accumulate while an interview round is
   retained. The existing legal/privacy materials explicitly leave per-data-class
   retention periods unresolved. No period was invented and no purge was added,
   because deleting a deduplication tombstone can re-enable a reminder and the
   repository has no approved notification-retention rule.
-Why autonomous resolution is unsafe or impossible: Live channel configuration,
-  provider evidence, human UX acceptance, and an approved retention schedule are
-  not established. Further local channel-preference, quiet-hour, digest/cap,
-  localization and delivery-failure engineering remains possible under v12,
-  but retention duration and deletion behavior need an approved data-class rule.
+Why this remains open: The one in-app interview-reminder preference is a partial
+  local implementation, not the full v12 channel/type preference and delivery
+  contract. Live channel configuration, provider evidence, human UX acceptance,
+  and an approved retention schedule are not established. Further local
+  quiet-hour, digest/cap, localization and delivery-failure engineering remains
+  possible under v12, but retention duration and deletion behavior need an
+  approved data-class rule.
 Exact owner action required: Approve, with counsel as appropriate, a retention
   period and deletion behavior for read notifications and retired reminder
   tombstones, or identify an existing approved policy that applies. Owner
@@ -860,9 +868,9 @@ Step-by-step resolution instructions:
   2. Implement a bounded cleanup using the existing operational architecture
      only after the policy is approved, preserving reminder idempotency within
      the approved window; add real-Postgres retention and re-publication tests.
-  3. Extend the existing in-app record/event with canonical notification
-     preferences, quiet-hour, per-user cap and digest behavior before adding
-     another channel.
+  3. Extend the implemented in-app interview-reminder preference to the
+     approved per-channel/per-type matrix; then specify and validate quiet-hour,
+     per-user cap and digest behavior before adding another channel.
   4. Add any email/push delivery through the existing transactional outbox and
      publisher architecture only, with retry/DLQ, suppression and privacy-safe
      templates; do not add a separate process or duplicate queue architecture.
@@ -1154,3 +1162,42 @@ Verification after approval: Add or adjust the isolated load-test acceptance
   evidence remains a separate gate.
 Evidence references: `PROGRESS.md` performance harness measurement refresh;
   `scripts/check-performance.ts`; CareerScope Goal section 16A.5.
+
+BLOCKER ID: MAIN-PUSH-AUTHORITY-01
+Title: Current push instruction conflicts with the supplied AGENTS policy
+Priority: High
+Module: Repository governance
+v12 requirement / checklist item: Goal's direct-main synchronization objective
+Status: READY_FOR_OWNER
+Problem: The active goal requests normal pushes to `main`, while the current
+  owner-supplied AGENTS instructions say no agent push or merge to `main` is
+  authorized. The repository's checked-in AGENTS.md and engineering contract
+  separately record the 21 October owner authorization for validated direct
+  pushes. These instructions cannot safely be reconciled by an agent.
+Verified state: Local `main`, `origin/main`, and `git ls-remote` agree at
+  `19cc322626e299cde2212959526db2574cae48aa`. The validated interview-reminder
+  preference work is still uncommitted in this worktree. The existing dirty
+  email-OTP and application-evidence worktrees remain unchanged; their branch
+  tips are ancestors of `main`.
+Impact: No push has been performed for the current uncommitted change. Further
+  local implementation and validation may continue, but remote synchronization
+  must wait for one unambiguous current authorization.
+Owner action required: Either confirm in a direct instruction that the current
+  AGENTS push prohibition is superseded for validated CareerScope `main`
+  synchronization, or retain the prohibition and have an authorized human
+  perform the eventual push.
+Step-by-step resolution instructions:
+  1. Review the supplied AGENTS rule against OA-2026-10-21-01 in
+     `docs/decisions/OWNER_APPROVALS.md`.
+  2. State which rule controls the pending validated main change.
+  3. If direct agent push is allowed, the agent will rerun required exact-tree
+     checks, commit the reviewed change, recheck remote `main`, and use only a
+     normal non-force push. If not, leave the change preserved locally for an
+     authorized human to publish.
+Required environment-variable names (no values): None.
+External dependencies: None; this is an instruction-authority conflict.
+Expected result: A single unambiguous push rule for this synchronization.
+Verification procedure: Re-read the governing owner instruction and verify
+  local/remote main refs before any authorized push.
+Affected tasks: Publishing validated CareerScope work to `main`; no product
+  implementation or production deployment is blocked.

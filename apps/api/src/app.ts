@@ -121,6 +121,9 @@ const emailChangeVerifySchema = z
   .object({ address: z.enum(['current', 'new']), code: z.string().regex(/^\d{6}$/) })
   .strict();
 const jobFeedbackSchema = z.object({ reason: jobFeedbackReasonSchema }).strict();
+const notificationPreferencesUpdateSchema = z
+  .object({ interviewRemindersInAppEnabled: z.boolean() })
+  .strict();
 
 const deviceName = (userAgent: string | undefined) => {
   if (!userAgent) return 'Unknown device';
@@ -1302,6 +1305,24 @@ export async function createApp(
   app.get('/api/notifications', async (request) => {
     await readBudget(request, 'notifications-read', 120);
     return notifications.list(request.ownerId!);
+  });
+  app.get('/api/notifications/preferences', async (request) => {
+    await readBudget(request, 'notification-preferences-read', 60);
+    return {
+      interviewRemindersInAppEnabled: await notifications.interviewReminderPreference(
+        request.ownerId!,
+      ),
+    };
+  });
+  app.put('/api/notifications/preferences', async (request) => {
+    const input = notificationPreferencesUpdateSchema.parse(request.body);
+    if (!(await consumeRateLimit(request, `notification-preferences:${request.ownerId!}`, 20, 60)))
+      throw new HttpError(429, 'Too many notification preference updates');
+    await notifications.setInterviewReminderPreference(
+      request.ownerId!,
+      input.interviewRemindersInAppEnabled,
+    );
+    return input;
   });
   app.put('/api/notifications/:id/read', async (request, reply) => {
     const { id } = identifier.parse(request.params);

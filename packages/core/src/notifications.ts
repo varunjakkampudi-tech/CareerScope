@@ -73,10 +73,23 @@ export async function publishDueInterviewReminders(database: Database): Promise<
              AND notification.round_id = round.id
              AND notification.reminder_at = round.reminder_at
          )
+         AND COALESCE((
+           SELECT preference.interview_reminders_in_app_enabled
+           FROM notification_preferences preference
+           WHERE preference.owner_id = round.owner_id
+         ), true)
        ORDER BY round.reminder_at, round.id
        LIMIT 100
        FOR UPDATE OF round SKIP LOCKED`,
     );
+    // Preference writes take this same transaction-scoped owner lock. Acquire
+    // locks in stable order so concurrent publisher batches cannot deadlock.
+    // The insert below rechecks the preference in a new READ COMMITTED
+    // statement after any waiting writer commits.
+    const owners = [...new Set(due.rows.map((reminder) => reminder.ownerId))].sort();
+    for (const ownerId of owners) {
+      await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [ownerId]);
+    }
     let created = 0;
     for (const reminder of due.rows) {
       const inserted = await client.query(
@@ -86,6 +99,11 @@ export async function publishDueInterviewReminders(database: Database): Promise<
          WHERE round.owner_id = $2 AND round.id = $3
            AND round.status = 'scheduled' AND round.reminder_at <= now()
            AND round.starts_at > now()
+           AND COALESCE((
+             SELECT preference.interview_reminders_in_app_enabled
+             FROM notification_preferences preference
+             WHERE preference.owner_id = round.owner_id
+           ), true)
          ON CONFLICT (owner_id, round_id, reminder_at) DO NOTHING
          RETURNING id`,
         [randomUUID(), reminder.ownerId, reminder.roundId],
@@ -146,5 +164,39 @@ export class InAppNotificationRepository {
       [ownerId, id],
     );
     return result.rowCount === 1;
+  }
+
+  async interviewReminderPreference(ownerId: string): Promise<boolean> {
+    const result = await this.database.pool.query<{ enabled: boolean }>(
+      `SELECT interview_reminders_in_app_enabled AS enabled
+       FROM notification_preferences WHERE owner_id = $1`,
+      [ownerId],
+    );
+    return result.rows[0]?.enabled ?? true;
+  }
+
+  async setInterviewReminderPreference(ownerId: string, enabled: boolean): Promise<void> {
+    const client = await this.database.pool.connect();
+    try {
+      await client.query('BEGIN');
+      // This lock also covers the absent-row/default-enabled case, which a
+      // row-level lock cannot protect.
+      await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [ownerId]);
+      await client.query(
+        `INSERT INTO notification_preferences
+          (owner_id, interview_reminders_in_app_enabled, updated_at)
+         VALUES ($1, $2, now())
+         ON CONFLICT (owner_id) DO UPDATE SET
+           interview_reminders_in_app_enabled = EXCLUDED.interview_reminders_in_app_enabled,
+           updated_at = now()`,
+        [ownerId, enabled],
+      );
+      await client.query('COMMIT');
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 }

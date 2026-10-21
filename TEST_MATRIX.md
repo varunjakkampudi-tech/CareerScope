@@ -1,5 +1,22 @@
 # CareerScope v12 test evidence matrix
 
+22 October, notification preference slice (Node v24.19.0): `npm run
+test:integration` passed 59/59 with zero skips against disposable local
+PostgreSQL/Redis, including the additive preference migration, owner/CSRF/input
+validation, suppression/re-enable, preservation, and an API-driven concurrent
+disable-vs-publisher serialization test. `npm run gates:test` passed (93/93 unit
+tests plus approved-source/privacy/deploy/EOL checks, lint and typecheck),
+`npm run test:domain` passed 839/839, `npm run security:check` passed with zero
+production dependency vulnerabilities, and `npm run build` passed both
+production builds with CSP verification of all 13 script hashes. The production
+preview UI suite passed Chromium, Firefox and WebKit with axe, keyboard and all
+eight responsive widths. A first development-server UI attempt failed the
+strict console gate on React's development-only eval/CSP diagnostic; it was not
+allowlisted and is not counted as the final UI result. `npm run db:generate`
+reports no schema drift. Independent review approved the reminder preference's
+owner-lock protocol and concurrency regression test. No hosted Actions,
+production service, or deployment evidence is claimed.
+
 Previously pushed main checkpoint (21 October 2026): 84 root unit/gate, 56 real-service
 integration and 835 domain tests pass; all three browser engines and selector
 journeys pass with axe/keyboard and all eight required responsive widths. Queue

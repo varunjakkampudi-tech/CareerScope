@@ -232,6 +232,13 @@
       "when": 1792593820188,
       "tag": "0032_black_hobgoblin",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1792608496042,
+      "tag": "0033_acoustic_jocasta",
+      "breakpoints": true
     }
   ]
 }

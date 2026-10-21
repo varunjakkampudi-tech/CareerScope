@@ -1,5 +1,16 @@
 # CareerScope v12 baseline gap matrix
 
+22 October update: one part of `INTERVIEW-REMINDER-DELIVERY` now has a
+candidate-owned in-app interview-reminder preference, an additive preference
+table, API/OpenAPI contract, and Settings UI. It does not close the broad v12
+notification capability: email/push, other types/channels, quiet hours,
+cap/digest, localization, suppression/deliverability, retention, and hosted/live
+evidence remain open. The toggle preserves old alerts and suppresses future
+materialization only. Local integration is 59/59; production-mode three-browser
+UI validation passed with axe, keyboard and eight responsive widths. The
+API-driven concurrency regression is independently reviewed. See the dated decision in
+`docs/decisions/IN-APP-INTERVIEW-REMINDER-PREFERENCE.md`.
+
 21 October consolidation delta: candidate-reported application evidence,
 withdrawal and history/revision/ownership behavior are now implemented and
 covered by local API/database/browser checks. Canonical OTP/session/email-change

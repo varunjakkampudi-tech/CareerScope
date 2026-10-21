@@ -93,6 +93,8 @@ const unhandledRejections = (page: import('playwright').Page) =>
   });
 const expectedOtpFixtureConsoleErrors = new Set([
   'resource HTTP 401 at /api/otp/verify',
+  'resource HTTP 502 at /api/notifications/preferences',
+  'resource HTTP 503 at /api/notifications/preferences',
   // This browser flow intentionally stubs only authentication and email-change
   // contracts. Other authenticated-page reads use the fixture's explicit 404
   // fallback; a new API path is not silently allowlisted.
@@ -584,6 +586,37 @@ try {
               },
         }),
       );
+      let otpInterviewRemindersEnabled = true;
+      let loseNextPreferenceResponse = false;
+      let failNextPreferenceRead = false;
+      await otpPage.route('**/api/notifications/preferences', (route) => {
+        if (route.request().method() === 'GET') {
+          if (failNextPreferenceRead) {
+            failNextPreferenceRead = false;
+            return route.fulfill({ status: 503, contentType: 'application/json', json: {} });
+          }
+          return route.fulfill({
+            contentType: 'application/json',
+            json: { interviewRemindersInAppEnabled: otpInterviewRemindersEnabled },
+          });
+        }
+        if (route.request().method() !== 'PUT')
+          return route.fulfill({ status: 405, contentType: 'application/json', json: {} });
+        const body = route.request().postDataJSON() as {
+          interviewRemindersInAppEnabled: boolean;
+        };
+        otpInterviewRemindersEnabled = body.interviewRemindersInAppEnabled;
+        if (loseNextPreferenceResponse) {
+          loseNextPreferenceResponse = false;
+          // Model a gateway failure after the origin committed the write. The
+          // UI must refresh instead of claiming the old value is still active.
+          return route.fulfill({ status: 502, contentType: 'application/json', json: {} });
+        }
+        return route.fulfill({
+          contentType: 'application/json',
+          json: { interviewRemindersInAppEnabled: otpInterviewRemindersEnabled },
+        });
+      });
       await otpPage.route('**/api/otp/request', (route) => {
         otpRequestCount += 1;
         return route.fulfill({
@@ -670,6 +703,44 @@ try {
       );
       await otpPage.goto(`${origin}/settings`);
       await otpPage.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+      const otpReminderPreference = otpPage.getByRole('checkbox', {
+        name: 'Show upcoming interview reminders in CareerScope',
+      });
+      await otpReminderPreference.waitFor();
+      assert.equal(await otpReminderPreference.isChecked(), true);
+      const otpPreferenceSaved = otpPage.waitForResponse(
+        (response) =>
+          response.url().endsWith('/api/notifications/preferences') &&
+          response.request().method() === 'PUT',
+      );
+      await otpReminderPreference.evaluate((element: HTMLInputElement) => element.click());
+      assert.equal((await otpPreferenceSaved).status(), 200);
+      await otpPage.getByRole('status').getByText('Notification preference saved.').waitFor();
+      assert.equal(await otpReminderPreference.isChecked(), false);
+      assert.equal(otpInterviewRemindersEnabled, false);
+      loseNextPreferenceResponse = true;
+      failNextPreferenceRead = true;
+      await otpReminderPreference.evaluate((element: HTMLInputElement) => element.click());
+      await otpPage
+        .getByRole('alert')
+        .getByText('The saved value is not confirmed. Reload it before making another change.', {
+          exact: true,
+        })
+        .waitFor();
+      assert.equal(await otpReminderPreference.count(), 0);
+      await otpPage.getByRole('button', { name: 'Try again' }).click();
+      await otpPage
+        .getByRole('checkbox', {
+          name: 'Show upcoming interview reminders in CareerScope',
+        })
+        .waitFor();
+      assert.equal(
+        await otpPage
+          .getByRole('checkbox', { name: 'Show upcoming interview reminders in CareerScope' })
+          .isChecked(),
+        true,
+      );
+      assert.equal(otpInterviewRemindersEnabled, true);
       await otpPage
         .getByRole('status')
         .filter({ hasText: /^Email verified on / })
@@ -1937,6 +2008,11 @@ try {
       // Account security is the /settings route behind the shared nav now.
       await sidebarNav.getByRole('link', { name: 'Settings', exact: true }).click();
       await page.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+      const reminderPreference = page.getByRole('checkbox', {
+        name: 'Show upcoming interview reminders in CareerScope',
+      });
+      await reminderPreference.waitFor();
+      assert.equal(await reminderPreference.isChecked(), true);
       await page
         .getByText('You are not opted in to optional product updates.', { exact: true })
         .waitFor();
