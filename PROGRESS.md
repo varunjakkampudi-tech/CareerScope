@@ -1495,3 +1495,19 @@ paths. Test providers were synthetic; no real email or production service was
 used. This result is local service-backed evidence, not hosted Actions or live
 provider acceptance. The 4.15 notification preference, email/push delivery,
 deliverability and retention gaps remain open.
+
+### Current-main local gates (2026-10-21)
+
+After the documentation-only evidence update, local `main` at
+`113c89834a480e405152f3f96a5c14f01d33248c` passed on Node v24.19.0:
+`npm run gates:test` (including 91/91 unit tests, lint, strict typecheck, source,
+privacy, deploy-policy and EOL gates), `npm run test:domain` (839/839 across 30
+files), `npm run security:check` (zero production dependency vulnerabilities),
+and `npm run build` (production Next build and CSP verification for all 12
+inline-script hashes). The service-backed integration suite separately passed
+58/58 with zero skips on parent code SHA `6657e1ecf17722f42dabfd6eea7216fdcc20c01f`;
+the only source changes between that integration run and this SHA were evidence
+documentation. Earlier UI evidence on unchanged runtime code passed Chromium,
+Firefox, WebKit, axe, keyboard and eight responsive widths. No current hosted
+Actions run exists because Actions remains disabled; no live provider or
+production validation is claimed.
