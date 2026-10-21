@@ -63,6 +63,27 @@ const browserConsoleErrorKind = (message: { text(): string; location(): { url: s
   }
   return 'unclassified console error';
 };
+const installUnhandledRejectionGuard = (page: import('playwright').Page) =>
+  page.addInitScript(() => {
+    const target = window as Window & { __CAREERSCOPE_UNHANDLED_REJECTIONS__?: string[] };
+    target.__CAREERSCOPE_UNHANDLED_REJECTIONS__ = [];
+    window.addEventListener('unhandledrejection', (event) => {
+      const reason = event.reason;
+      const knownErrorNames = new Set(['Error', 'TypeError', 'ReferenceError', 'SyntaxError']);
+      const category =
+        reason instanceof Error && knownErrorNames.has(reason.name) ? reason.name : typeof reason;
+      target.__CAREERSCOPE_UNHANDLED_REJECTIONS__?.push(category);
+      // The harness reports a bounded category rather than a potentially
+      // sensitive rejection message; suppress the browser's raw console copy.
+      event.preventDefault();
+    });
+  });
+const unhandledRejections = (page: import('playwright').Page) =>
+  page.evaluate(() => {
+    const values = (window as Window & { __CAREERSCOPE_UNHANDLED_REJECTIONS__?: string[] })
+      .__CAREERSCOPE_UNHANDLED_REJECTIONS__;
+    return values ? [...values] : [];
+  });
 const expectedOtpFixtureConsoleErrors = new Set([
   'resource HTTP 401 at /api/otp/verify',
   // This browser flow intentionally stubs only authentication and email-change
@@ -79,6 +100,10 @@ const expectedOtpFixtureConsoleErrors = new Set([
 const expectedAuthenticatedJourneyConsoleErrors = new Set([
   // These are deliberate negative API cases asserted by this browser suite:
   // outage, rate-limit, stale/deleted resource, validation, and conflict UX.
+  // Changing the password invalidates every session; a request already in
+  // flight during that explicit session revocation can therefore receive 401
+  // while the authenticated shell clears private state and redirects.
+  'resource HTTP 401 at /api/leads',
   'resource HTTP 503 at /api/login',
   'resource HTTP 507 at /api/resumes',
   'resource HTTP 500 at /api/resumes',
@@ -457,7 +482,22 @@ try {
     await database.pool.query('DELETE FROM saved_leads WHERE owner_id = $1', [ownerId]);
     const browser = await browserType.launch();
     try {
+      const rejectionGuardProbe = await browser.newPage();
+      await installUnhandledRejectionGuard(rejectionGuardProbe);
+      await rejectionGuardProbe.goto('about:blank');
+      await rejectionGuardProbe.evaluate(() => {
+        void Promise.reject(new TypeError('synthetic guard probe'));
+      });
+      await rejectionGuardProbe.waitForFunction(
+        () =>
+          (window as Window & { __CAREERSCOPE_UNHANDLED_REJECTIONS__?: string[] })
+            .__CAREERSCOPE_UNHANDLED_REJECTIONS__?.length === 1,
+      );
+      assert.deepEqual(await unhandledRejections(rejectionGuardProbe), ['TypeError']);
+      await rejectionGuardProbe.close();
+
       const otpPage = await browser.newPage();
+      await installUnhandledRejectionGuard(otpPage);
       let otpRequestCount = 0;
       let otpVerified = false;
       let otpCurrentEmail = otpEmail;
@@ -672,9 +712,15 @@ try {
         [],
         `${engine} email OTP UI produced unexpected console errors`,
       );
+      assert.deepEqual(
+        await unhandledRejections(otpPage),
+        [],
+        `${engine} email OTP UI produced an unhandled promise rejection`,
+      );
       await otpPage.close();
 
       const signupPage = await browser.newPage();
+      await installUnhandledRejectionGuard(signupPage);
       let signupAuthenticated = false;
       let signupRequestCount = 0;
       let signupVerificationCount = 0;
@@ -799,9 +845,15 @@ try {
         false,
         'the birth date is not sent to OTP verification',
       );
+      assert.deepEqual(
+        await unhandledRejections(signupPage),
+        [],
+        `${engine} signup UI produced an unhandled promise rejection`,
+      );
       await signupPage.close();
 
       const page = await browser.newPage();
+      await installUnhandledRejectionGuard(page);
       let fixtureCredential = password;
       await page.route('**/api/session', async (route) => {
         const response = await route.fetch();
@@ -3632,6 +3684,11 @@ try {
         [],
         `${engine} authenticated UI journey produced unexpected browser runtime errors`,
       );
+      assert.deepEqual(
+        await unhandledRejections(page),
+        [],
+        `${engine} authenticated UI journey produced an unhandled promise rejection`,
+      );
       // Let in-flight network handlers settle before disposing the browser
       // context. Closing Chromium with a `route.fetch()` callback still active
       // can reject against Playwright's already-disposed request context.
@@ -3655,6 +3712,7 @@ try {
       const browser = await browserType.launch();
       try {
         const page = await browser.newPage();
+        await installUnhandledRejectionGuard(page);
         const runtimeErrors: string[] = [];
         page.on('console', (message) => {
           if (message.type() === 'error') {
@@ -3720,6 +3778,11 @@ try {
             false,
           );
         }
+        assert.deepEqual(
+          await unhandledRejections(page),
+          [],
+          `${engine} test-account selector produced an unhandled promise rejection`,
+        );
         assert.deepEqual(
           runtimeErrors,
           [],
