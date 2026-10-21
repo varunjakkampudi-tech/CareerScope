@@ -1405,3 +1405,15 @@ database or production change occurred. GitHub Actions remains disabled, so
 there is no hosted run for this change. The implementation was committed on
 `main` as `3a93fda` after confirming remote `main` matched its parent SHA;
 final push and synchronization verification are recorded by the Git result.
+
+### Current dependency-audit reconciliation (2026-10-21)
+
+The old 20 October quality-audit finding of five high/seven moderate advisories
+is retained as historical evidence and superseded by the remediation recorded
+above and in `blocker.txt` under AUDIT-01. I reran
+`npm audit --audit-level=low` against the current `main` checkout at
+`d96ece59ad30df8c8eb3397c344f7761949c6815` using Node v24.19.0; it exited 0
+with `found 0 vulnerabilities`. No dependency files changed during this check.
+`QUALITY_AUDIT.md` now distinguishes the historical result from the current
+lockfile audit. GitHub Actions remains disabled; this local audit is not hosted
+CI or production security acceptance.

@@ -3,9 +3,11 @@
 21 October integration update: independent auth, application-evidence and
 browser-harness reviews passed after fixing signup's disabled-selector capability
 check, popup proof, exact 503 text and route/request-settlement assertions.
-Current executed local evidence and the unchanged full-audit dependency findings
-are recorded in [the consolidation report](docs/MAIN-CONSOLIDATION-2026-10-21.md).
-This update does not replace the baseline audit or certify the full v12 scope.
+Current executed local evidence is recorded in
+[the consolidation report](docs/MAIN-CONSOLIDATION-2026-10-21.md). The historical
+dependency finding below was remediated after the baseline and is not the current
+audit result; see the dated dependency follow-up at the end of this report. This
+update does not replace the baseline audit or certify the full v12 scope.
 
 Baseline runtime: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
 Governance: `2a1eb65d67151c485cddd417b6c249146c017a35`.
@@ -18,7 +20,7 @@ No fabricated review count or percentage is assigned.
 | Authority/Git            | Owner approval and governance commit independently reviewed; main unchanged                                                      | PASS for activation only                            | Main protections/hosted settings owner-controlled                                                                                                                            |
 | Type/lint/format/EOL     | Baseline `gates:test` includes lint, 45-file test typecheck, EOL                                                                 | PASS local                                          | Full unused/complexity/duplication/cycle inventory not established                                                                                                           |
 | Unit/privacy             | 42 unit + 4 Node policy + 3 privacy tests, scan                                                                                  | PASS local                                          | Full v12 leakage/coverage/mutation/role requirements not certified                                                                                                           |
-| Dependencies             | Current full audit 5 high/7 moderate; production 3 moderate                                                                      | FAIL                                                | Determine compatible safe remediation and actual reachability; no waiver inferred                                                                                            |
+| Dependencies             | Baseline audit recorded 5 high/7 moderate; exact current main audit reports 0 vulnerabilities                                    | PASS local lockfile audit                           | Re-run after lockfile changes; hosted supply-chain workflow remains unverified                                                                                               |
 | Auth/security            | Opaque rotating sessions, OTP challenge/delivery path, device-session controls, ownership and fail-closed production/test guards | FAIL v12 contract                                   | Fallback provider, recovery/email change, new-device alerts, unusual-pattern step-up, production staff MFA, hosted/provider/legal acceptance and remaining adversarial tests |
 | Source rights            | Runtime feeds differ from D14; inactive portal adapters remain library code                                                      | BLOCKED acceptance                                  | Permissions/default policy/golden set; no source network traffic authorized                                                                                                  |
 | Database/storage         | Existing constraints/outbox/encrypted files and recovery tests inspected                                                         | NOT_ASSESSED execution                              | Full schemas/migrations/query plans/service-backed v12 and deletion/recovery audit                                                                                           |
@@ -43,9 +45,9 @@ The initial CI row above is preserved as a baseline finding. A SHA-pinned,
 least-privilege CI-only workflow has since been authored at
 `.github/workflows/ci.yml`; local workflow-policy fixtures, Node 24 gates, and
 format/EOL/privacy checks pass. It has not run on GitHub because Actions is
-disabled. Full `npm audit --audit-level=high` is intentionally a blocking
-workflow step and currently fails on unaccepted high-severity development
-dependency advisories. No staging or production workflow was added. Hosted
+disabled. At the time of this 20 October entry, full `npm audit --audit-level=high`
+failed on development dependency advisories; the later dependency remediation
+below supersedes that result. No staging or production workflow was added. Hosted
 trigger/failure/coverage/artifact acceptance remains NOT VERIFIED; see GOV-02
 in `blocker.txt` and `docs/runbooks/ci-cd.md`.
 
@@ -179,12 +181,23 @@ return safe 503 responses on simulated shared-limiter failure; separate Redis
 clients share the same limiter keyspace. The session-row identifier was removed
 from refresh-reuse logs and is covered by structured logger redaction.
 
-The current full dependency audit remains OPEN: 5 high and 7 moderate findings
-across the full graph; production-only audit has 3 moderate findings. Automated
-security check exits zero only because its configured threshold is high, not
-because the moderate findings are resolved. No vulnerability was waived or
-dependency forcibly downgraded. No Resend request, domain verification, public
-policy approval, hosted CI, shared migration, or production validation occurred.
+At the time of this 20 October entry, the full dependency audit remained OPEN:
+5 high and 7 moderate findings across the graph, with 3 moderate production
+findings. This is historical evidence and is superseded by the 21 October
+remediation and the current exact-main audit recorded below. No Resend request,
+domain verification, public policy approval, hosted CI, shared migration, or
+production validation occurred in that earlier run.
+
+### Dependency audit reconciliation (2026-10-21, current main)
+
+The earlier 5-high/7-moderate result is retained above as an accurate historical
+finding, not a current blocker. At `d96ece59ad30df8c8eb3397c344f7761949c6815`,
+Node v24.19.0 with the repository lockfile, `npm audit --audit-level=low` exited
+0 and reported `found 0 vulnerabilities`. The audited dependency tree was not
+modified during this check. The exact remediation and regression evidence are
+recorded in `PROGRESS.md` and `blocker.txt` under AUDIT-01. This local registry
+audit does not establish hosted CI, future dependency safety, or production
+readiness; rerun after any lockfile change.
 
 ### Current-worktree email-change browser result (2026-10-20, Node 24.19.0)
 
