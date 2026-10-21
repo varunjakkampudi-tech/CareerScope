@@ -130,3 +130,72 @@ test('enforceRetention deletes only old, settled runs and their jobs - never lea
     await admin.close();
   }
 });
+
+test('enforceRetention deletes expired email-change addresses but retains live requests', async () => {
+  const configured = process.env.DATABASE_URL;
+  assert.ok(configured, 'Integration tests require the isolated CareerScope DATABASE_URL');
+  const base = new URL(configured);
+  assert.ok(['127.0.0.1', 'localhost'].includes(base.hostname), 'Tests require local PostgreSQL');
+  const admin = new Database(configured);
+  const name = `test_${randomUUID().replaceAll('-', '')}`;
+  await admin.pool.query(`CREATE DATABASE "${name}"`);
+  base.pathname = `/${name}`;
+  const database = new Database(base.href);
+  try {
+    await migrate(database.db, {
+      migrationsFolder: fileURLToPath(new URL('../migrations', import.meta.url)),
+    });
+    const expiredOwnerId = randomUUID();
+    const activeOwnerId = randomUUID();
+    for (const ownerId of [expiredOwnerId, activeOwnerId]) {
+      await database.db.insert(users).values({
+        id: ownerId,
+        email: `${ownerId}@example.test`,
+        passwordHash: 'synthetic-not-a-login',
+      });
+    }
+    const insertPendingChange = async (ownerId: string, address: string, expiresIn: string) => {
+      const id = randomUUID();
+      await database.pool.query(
+        `INSERT INTO email_change_requests
+           (id, owner_id, current_email_hash, new_email,
+            current_challenge_id, current_digest, new_challenge_id, new_digest, expires_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now() + $9::interval, now() - $10::interval)`,
+        [
+          id,
+          ownerId,
+          'a'.repeat(64),
+          address,
+          randomUUID(),
+          'b'.repeat(64),
+          randomUUID(),
+          'c'.repeat(64),
+          expiresIn,
+          expiresIn === '-1 second' ? '10 minutes' : '1 minute',
+        ],
+      );
+      return id;
+    };
+
+    const expiredAddress = 'expired-proposed-address@example.test';
+    const liveAddress = 'live-proposed-address@example.test';
+    await insertPendingChange(expiredOwnerId, expiredAddress, '-1 second');
+    await insertPendingChange(activeOwnerId, liveAddress, '1 hour');
+
+    const result = await enforceRetention(database, 30);
+    assert.equal(result.deletedEmailChangeRequests, 1);
+    const remaining = await database.pool.query<{ owner_id: string; new_email: string }>(
+      'SELECT owner_id, new_email FROM email_change_requests',
+    );
+    assert.deepEqual(remaining.rows, [{ owner_id: activeOwnerId, new_email: liveAddress }]);
+    const unchangedOwner = await database.pool.query<{ email: string }>(
+      'SELECT email FROM users WHERE id = $1',
+      [expiredOwnerId],
+    );
+    assert.equal(unchangedOwner.rows[0]?.email, `${expiredOwnerId}@example.test`);
+  } finally {
+    await database.close();
+    await admin.pool.query(`DROP DATABASE "${name}"`);
+    await admin.close();
+  }
+});

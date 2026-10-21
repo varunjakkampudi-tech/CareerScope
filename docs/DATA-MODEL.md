@@ -28,10 +28,11 @@ current and proposed addresses before updating it. A pending email change stores
 the normalized proposed address as ordinary text in
 `email_change_requests.new_email` so it can be applied after verification; the
 row also stores address/code HMACs, challenge metadata and expiry, never either
-OTP. Challenge expiry does not itself delete the row: expired abandoned requests
-are physically removed only when a later request/verification cleans them up or
-the owner is deleted. No scheduled purge or approved retention interval is
-currently implemented. Migrations 0020–0025 preserve
+OTP. Challenge expiry makes a request unusable; the existing weekly host-native
+retention job deletes rows whose `expires_at` has passed and preserves unexpired
+requests. If that timer runs as configured, an abandoned address is removed by
+the next weekly sweep after its five-minute challenge expiry. Live timer
+operation and the legal retention policy remain unverified. Migrations 0020–0025 preserve
 the canonical OTP/session/consent/email-change schema. Migration
 `0026_application_evidence.sql` adds application evidence and history without
 reusing the conflicting unpublished migration numbers from the earlier branch.

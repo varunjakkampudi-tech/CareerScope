@@ -265,3 +265,15 @@ containers afterward; persistent application Redis and browser evidence
 services were not used or stopped. The 55/55 integration result is current-run
 evidence; the prior browser failure remains the latest full browser result.
 Hosted CI, provider, and production evidence remain absent.
+
+### Expired email-change request retention regression (2026-10-21)
+
+`scripts/enforce-search-retention.test.ts` now includes
+`enforceRetention deletes expired email-change addresses but retains live requests`.
+The test creates an isolated scratch PostgreSQL database with synthetic owners
+and requests, then verifies one expired request is deleted, one unexpired request
+remains, and the owning account email is unchanged. It failed against the prior
+retention implementation and passed after the fix. The full
+`npm run test:integration` command passed 56/56 with zero skips against disposable
+PostgreSQL 17.6 and Redis 7.4.5. The focused retention test file passed 3/3.
+No live provider, shared database, or production timer was contacted or changed.

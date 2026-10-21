@@ -94,6 +94,14 @@ removed — computed once as a shared subquery, not defined separately for
 drifting apart is how a still-running run's own jobs could be deleted out
 from under it.
 
+The same weekly job also deletes `email_change_requests` whose `expires_at` is
+at or before PostgreSQL `now()`. These short-lived requests contain the
+proposed address in ordinary text so it can be applied only after both
+addresses are verified. Expiry makes the request unusable; the next successful
+weekly sweep removes the abandoned row, while unexpired requests are preserved.
+This bounds post-expiry retention to the next weekly sweep when the host timer
+is operating, but does not replace the still-pending legal retention review.
+
 ## Install
 
 ```sh

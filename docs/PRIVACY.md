@@ -16,9 +16,12 @@ been validated here. Keep OTP disabled until provider and counsel gates pass.
 The separate dual-address email-change flow stores the normalized proposed
 address in `email_change_requests.new_email` as ordinary PostgreSQL text until
 the row is deleted. Its five-minute challenge expiry is enforced on
-verification, but no scheduled cleanup purges abandoned expired rows; they are
-removed on replacement, cancellation, qualifying verification outcomes, or
-owner deletion. This pending address is personal data and must be covered by
+verification. They are removed on replacement, cancellation, qualifying
+verification outcomes, owner deletion, or the existing weekly host-native
+retention job once expired. If that timer runs as configured, an abandoned
+address is removed by the next weekly sweep after its five-minute challenge
+expiry; live timer operation has not been verified. This pending address is
+personal data and must be covered by
 the approved retention/deletion policy; do not infer immediate erasure from
 challenge expiry.
 Versioned Terms/Privacy acceptance records and append-only marketing-consent

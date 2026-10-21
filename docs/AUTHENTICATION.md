@@ -117,14 +117,16 @@ address HMAC, challenge IDs and code HMACs, attempt counts, verification times,
 and expiry; it does not store either OTP. There is at most one pending row per
 owner. Replacement, cancellation, successful completion, conflict, exhausted
 attempts, or an expiry observed during verification deletes the row. Expiry is
-enforced after five minutes, but there is no scheduled purge: an abandoned,
-expired row may remain until a later request or verification operation cleans
-it up, or the owner account is deleted. A target address already owned by
+enforced after five minutes. The existing weekly host-native retention job also
+deletes requests whose `expires_at` has passed and preserves unexpired requests.
+If that job runs as configured, an abandoned address is removed by the next
+weekly sweep after expiry; live host-timer operation has not been verified. A
+target address already owned by
 another account returns a generic conflict and does not change the account. A
 failed delivery cancels the pending request; the owner must request a fresh one.
 The pending address is personal data and is subject to the still-unapproved
-retention/deletion policy; do not claim it is HMAC-only or immediately erased
-when its challenge expires.
+legal retention/deletion policy; do not describe it as HMAC-only or claim it is
+erased exactly at challenge expiry.
 This is local implementation and synthetic-provider test evidence only; it is
 not live delivery, domain verification, or independent security approval.
 

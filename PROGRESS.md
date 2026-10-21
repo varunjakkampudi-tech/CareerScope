@@ -997,6 +997,30 @@ approval.
 
 This follow-up does not claim hosted CI: GitHub Actions is disabled. It does not
 claim live Resend delivery, counsel approval, production acceptance or release
-readiness. The latest exact-main local integration result is 55/55 with zero
-skips using disposable PostgreSQL 17.6 and Redis 7.4.5 services; no real provider
-request, deployment, or shared-database migration occurred.
+readiness. Before the retention regression was added, exact-main integration was
+55/55 with zero skips. After the change, the complete local integration command
+passed 56/56 with zero skips using disposable PostgreSQL 17.6 and Redis 7.4.5
+services. No real provider request, deployment, or shared-database migration
+occurred.
+
+### Expired email-change request cleanup (2026-10-21)
+
+Root cause: the existing weekly `careerscope-retention.timer` called a retention
+script that removed aged search records but never deleted expired
+`email_change_requests`, leaving an unusable proposed email address in
+PostgreSQL until further account activity/deletion. The script now removes rows
+where `expires_at <= now()` in the same transaction and reports the deletion
+count. No service, timer, schema, or retention policy setting was added. The
+existing `expires_at` index supports locating
+expired rows; planner use and deletion workload remain data-dependent. Live
+requests and the owning account's email are not changed.
+
+Regression evidence: the new real-PostgreSQL test failed before the fix because
+the expired request was not removed, then passed after the fix. The first
+test-fixture attempt violated the database's creation-before-expiry constraint;
+the corrected fixture models a valid request that subsequently expired. The
+targeted retention integration file passed 3/3 on Node 24.19.0 against a
+disposable PostgreSQL 17.6 container with tmpfs data and synthetic identities.
+The container was removed after the test. This does not verify that a production
+host has the weekly timer installed/running or establish counsel-approved
+retention terms.

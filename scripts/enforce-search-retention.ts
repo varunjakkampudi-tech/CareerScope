@@ -1,5 +1,5 @@
 /**
- * CS-27 (part 2 of 2): "search results have no retention."
+ * CS-27 (part 2 of 2): search-result retention and expired email-change cleanup.
  *
  * search_jobs carries no timestamp of its own (a known, separately-recorded
  * limitation - see docs/KNOWN-LIMITATIONS.md), so retention is enforced via
@@ -8,6 +8,12 @@
  * design - a lead stores its own independent data snapshot (saved_leads.data
  * is not a foreign key to search_jobs), so this never removes anything the
  * owner explicitly kept.
+ *
+ * Expired email-change requests are also removed here. They contain the
+ * proposed address in plaintext so it can be applied after both codes are
+ * verified; once expires_at passes, the request can no longer be used. The
+ * the existing expiry index supports locating expired requests without adding
+ * a new service; actual planner use depends on the data distribution.
  *
  * Invoked by careerscope-retention.timer (host-native systemd, matching
  * CS-24/25/26) via `docker exec` into the api container.
@@ -19,7 +25,7 @@ const RETENTION_DAYS = Number(process.env.SEARCH_RETENTION_DAYS ?? 30);
 export async function enforceRetention(
   database: Database,
   retentionDays: number,
-): Promise<{ deletedJobs: number; deletedRuns: number }> {
+): Promise<{ deletedJobs: number; deletedRuns: number; deletedEmailChangeRequests: number }> {
   if (!Number.isFinite(retentionDays) || retentionDays < 1) {
     throw new Error(`Invalid retention window: ${retentionDays}`);
   }
@@ -63,8 +69,15 @@ export async function enforceRetention(
        DELETE FROM search_runs WHERE id IN (SELECT id FROM eligible_runs)`,
       [retentionDays],
     );
+    const emailChanges = await client.query(
+      'DELETE FROM email_change_requests WHERE expires_at <= now()',
+    );
     await client.query('COMMIT');
-    return { deletedJobs: jobs.rowCount ?? 0, deletedRuns: runs.rowCount ?? 0 };
+    return {
+      deletedJobs: jobs.rowCount ?? 0,
+      deletedRuns: runs.rowCount ?? 0,
+      deletedEmailChangeRequests: emailChanges.rowCount ?? 0,
+    };
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;
@@ -77,10 +90,13 @@ async function main() {
   const env = configuration();
   const database = new Database(env.DATABASE_URL);
   try {
-    const { deletedJobs, deletedRuns } = await enforceRetention(database, RETENTION_DAYS);
+    const { deletedJobs, deletedRuns, deletedEmailChangeRequests } = await enforceRetention(
+      database,
+      RETENTION_DAYS,
+    );
     logger.info(
-      { deletedJobs, deletedRuns, retentionDays: RETENTION_DAYS },
-      'Search retention enforced',
+      { deletedJobs, deletedRuns, deletedEmailChangeRequests, retentionDays: RETENTION_DAYS },
+      'Retention enforced',
     );
   } finally {
     await database.close();
