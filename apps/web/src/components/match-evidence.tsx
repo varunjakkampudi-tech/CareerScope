@@ -1,4 +1,5 @@
 import type { CollectedJob } from '@careerscope/core';
+import Link from 'next/link';
 
 export default function MatchEvidence({ match }: { match: NonNullable<CollectedJob['match']> }) {
   return (
@@ -56,6 +57,9 @@ export default function MatchEvidence({ match }: { match: NonNullable<CollectedJ
           </dd>
         </div>
       </dl>
+      <Link className="match-transparency-link" href="/matching">
+        How matching works
+      </Link>
     </section>
   );
 }

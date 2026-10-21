@@ -927,6 +927,47 @@ try {
         .waitFor();
       await selectFixtureAccount(accountEmail);
       await page.getByText('No searches yet.', { exact: true }).waitFor();
+      await page.goto(`${origin}/matching`);
+      await page.getByRole('heading', { name: 'How job matching works', exact: true }).waitFor();
+      const matchingDimensions = page.getByTestId('matching-dimension');
+      assert.deepEqual(
+        await matchingDimensions.evaluateAll((elements) =>
+          elements.map((element) => {
+            const label = element.querySelector('dt span')?.textContent?.trim();
+            const weight = element.querySelector('dt strong')?.textContent?.trim();
+            return `${label}:${weight}`;
+          }),
+        ),
+        [
+          'Skills:40%',
+          'Role title:15%',
+          'Seniority:12%',
+          'Experience:10%',
+          'Location:10%',
+          'Compensation:8%',
+          'Freshness:5%',
+        ],
+        `${engine} matching transparency does not reflect the canonical scoring dimensions`,
+      );
+      await page.getByText(/missing information stays unknown/i).waitFor();
+      await page.getByText(/capped at 80%/i).waitFor();
+      await page.getByText(/does not change these scores/i).waitFor();
+      await accessible(page, engine, 'matching transparency', 'How job matching works');
+      await page.getByRole('button', { name: 'Switch to dark theme' }).click();
+      await page.locator('[data-theme="dark"]').waitFor();
+      await accessible(page, engine, 'matching transparency dark theme', 'How job matching works');
+      await page.getByRole('button', { name: 'Switch to light theme' }).click();
+      await page.locator('[data-theme="light"]').waitFor();
+      for (const width of requiredResponsiveWidths) {
+        await page.setViewportSize({ width, height: 900 });
+        assert.equal(
+          await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+          false,
+          `${engine} matching transparency overflows at ${width}px`,
+        );
+      }
+      await page.goto(`${origin}/dashboard`);
+      await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
       syntheticPermittedSources.clear();
       syntheticPermittedSources.add('greenhouse');
       const jobSources = await page.request.get(`${origin}/api/job-sources`);

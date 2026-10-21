@@ -264,6 +264,14 @@
   margin-bottom: 18px;
   padding-bottom: 18px;
 }
+.match-transparency-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
 .match-evidence p.match-evidence-title {
   font-size: 14px;
   font-weight: 700;
