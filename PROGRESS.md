@@ -1235,6 +1235,10 @@ worker now returns the posting with score zero and the exact reason; soft
 matching, provider permissions, and ranking are otherwise unchanged. A search
 worker regression covers employment-type and excluded-keyword cases.
 
+The implementation and regression are committed on `main` as
+`a4df59a2d24b365f39d8321554ec5c967b3bfd15`; validation above ran against the
+identical source tree before commit.
+
 On Node 24.19.0, the worker collection suite passed 19/19; `npm run gates:test`
 passed 84/84 (including lint, strict typecheck and unit tests); `npm run
 test:domain` passed 836/836; service-backed `npm run test:integration` passed

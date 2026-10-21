@@ -111,6 +111,10 @@ What the agent already tried: Read repository docs and current hosted rule metad
   returned no workflow runs (`gh run list --commit` returned `[]`) and the
   repository Actions API returned `enabled=false`. Local and remote `main` match
   `33400b8`; local green checks do not substitute for the unavailable hosted run.
+  After hard-eligibility visibility was fixed and pushed as
+  `a4df59a2d24b365f39d8321554ec5c967b3bfd15`, the exact-commit run query again
+  returned `[]`, Actions remained disabled, and local/remote `main` matched
+  `a4df59a`.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
@@ -266,7 +270,11 @@ Work completed: Canonical main includes the OTP routes/UI, PostgreSQL challenge
   contract addition was validated locally on Node 24.19.0: integration 57/57,
   domain 836/836, root gates 84/84, production build/CSP, lint, formatting,
   EOL and privacy checks passed. This adds no live provider, hosted CI, legal,
-  or production evidence.
+  or production evidence. The subsequent hard-eligibility visibility fix at
+  `a4df59a2d24b365f39d8321554ec5c967b3bfd15` also passed the Node 24 root gates
+  84/84, service-backed integration 57/57, domain suite 836/836, production
+  build/CSP, lint, formatting, EOL and privacy checks. It does not resolve the
+  remaining authentication/provider, legal, or production-acceptance gaps.
 Why autonomous resolution is unsafe or impossible: Selecting a fallback vendor,
   enabling a sender/domain, and performing real-recipient delivery require owner
   and provider evidence. The approved v12 text requires recovery through verified
