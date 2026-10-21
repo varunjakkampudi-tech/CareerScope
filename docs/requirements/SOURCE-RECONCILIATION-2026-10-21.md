@@ -98,15 +98,23 @@ percentage from test totals.
 The prior table records the evidence and questions as they stood when this review
 was written. The owner has since approved the supplied source documents as the
 reference set and the revised v12 base scope, including D1–D14, with hashes in
-OA-2026-10-20-02. Do not ask again for approval of the documents themselves.
-However, clauses explicitly labeled `PROPOSED` or `PENDING_OWNER_APPROVAL` inside
-those sources retain that status unless the owner separately approved the
-specific amendment. In particular, do not infer approval of amendment-only
-changes to D11, recovery fallback, provider activation, or hosting from approval
-of the source files. Reconcile the exact clauses and route any still-required
-product decision through the existing blocker register. Preserve distinct
-live-validation, legal, hosting, provider, backup, and production gates. The
-original table and source identities remain as history.
+OA-2026-10-20-02. Do not ask again for approval of the documents themselves or
+the revised base D1/D12 text. The source-delta questions about D1 and D12 in the
+original table are resolved by that explicit approval: revised D1 says no other
+sign-in method is planned; revised D12 sets a one-hour target and makes the
+24-hour fallback an explicitly approved, disclosed exception only.
+
+This does not approve every appended proposal. Clauses explicitly labeled
+`PROPOSED` or `PENDING_OWNER_APPROVAL` retain that status unless the owner
+separately approved the specific amendment. In particular, revised D11-R is
+explicitly pending in A1 and is not one of D1–D14; do not remove the existing
+second-provider contract or change sign-in routing on the basis of file approval
+alone. A1's claim that D1–D10 are unchanged conflicts with revised base D1;
+preserve this inconsistency as a specification finding rather than guessing.
+The proposed step-up, AI-provider activation, A3 hosting/CI additions and
+Production Completeness Amendment also remain gated where marked pending. The
+original table and source identities remain as history. Preserve distinct
+live-validation, legal, hosting, provider, backup, and production gates.
 
 ## Dependency-aware continuation
 
