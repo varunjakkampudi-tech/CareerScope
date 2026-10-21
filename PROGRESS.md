@@ -1577,3 +1577,14 @@ this commit changes documentation only. The Actions API still reports disabled
 and the exact new commit has no hosted workflow run. The separate OTP worktree
 still has 54 uncommitted paths and remains untouched. Live Resend, production
 validation, and the broader 90% v12 completion target remain open.
+
+### Approved-source mismatch disposition (2026-10-21)
+
+Reviewed the 22 legacy inventory entries whose exact text does not occur in the
+approved v12 R1 snapshot. `SOURCE-RECONCILIATION-2026-10-21.md` now records an
+individual disposition for every ID: 5 approved-base replacements, 2 D1
+supersessions, 12 items retained until D11-R/A1 approval, 1 owner-decision item,
+and 2 external-evidence items. A machine comparison confirmed 22/22 exact ID
+coverage with no missing or extra disposition rows. The historical 319-item
+inventory and source hash were left unchanged; the complete R1 inventory and
+new-clause mapping remain open. No runtime or provider behavior changed.

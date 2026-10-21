@@ -27,27 +27,36 @@ What the agent already tried: Recomputed supplied-file hashes and reconciled the
   without an exact current-source match. The 22 include revised D1/D11/D12,
   fallback/outage and recovery clauses, and related launch gates. This is a
   mismatch count only; it does not establish completeness or current assessment.
+  A follow-up review listed all 22 IDs and dispositions in
+  `docs/requirements/SOURCE-RECONCILIATION-2026-10-21.md`; a machine comparison
+  verified exactly 22 source-mismatch IDs, 22 disposition rows, no missing IDs,
+  and no extra IDs.
 Work completed: No further owner approval is required for the source documents
   covered by OA-2026-10-20-02. Any amendment explicitly marked pending in those
   sources must be evaluated against the owner's specific approval language;
   separate provider, CI, hosting, legal, backup and production gates remain
   independently tracked. The source reconciliation table was corrected to
   distinguish approved base D1/D12 from pending D11-R and unverified recovery
-  operations.
+  operations. The individual mismatch review classified 5 approved-base
+  replacements, 2 D1 supersessions, 12 rows retained pending D11-R/A1, 1 open
+  owner decision, and 2 external evidence rows. The historical inventory was not
+  overwritten and no pending amendment was promoted.
 Why this remains open: The approved source revision has not yet been fully mapped
-  to the source-derived requirement inventory and tests. The inventory also needs
-  a reviewed disposition for newly added R1 clauses and the 22 changed/superseded
-  entries; do not simply replace the source hash or carry forward the old 319
-  count as though it described R1.
+  into the source-derived requirement inventory and tests. The inventory still
+  identifies the older source snapshot; newly introduced approved R1 base clauses
+  have not all been enumerated or mapped, and pending amendment rows need to stay
+  distinct from effective requirements. Do not simply replace the source hash or
+  carry forward the old 319 count as though it described R1.
 Exact owner action required: None for source approval. Do not ask the owner to
   re-approve documents covered by OA-2026-10-20-02.
 Step-by-step resolution instructions:
   1. Add immutable hash-verified snapshots for the newly approved documents while
      retaining the historical snapshots.
-  2. Reconcile the v12 inventory and affected requirement/test matrices against
-     the approved revision; map exact unchanged clauses, review all 22 nonmatching
-     entries, identify newly introduced approved base clauses separately from
-     pending amendments, and report added, changed and retired requirements.
+  2. Create a complete R1 inventory without overwriting the historical inventory;
+     carry over exact unchanged clauses, apply approved-base dispositions for the
+     22 reviewed mismatches, retain pending/external/owner-decision rows with
+     classifications, enumerate newly introduced approved base clauses, and
+     reconcile affected requirement/test matrices.
   3. Identify amendment clauses still marked proposed/pending and keep them
      distinct from approved base requirements unless specifically authorized.
   4. Keep unimplemented requirements and external acceptance gates open.

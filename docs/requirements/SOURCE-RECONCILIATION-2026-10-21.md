@@ -118,6 +118,50 @@ Production Completeness Amendment also remain gated where marked pending. The
 original table and source identities remain as history. Preserve distinct
 live-validation, legal, hosting, provider, backup, and production gates.
 
+## Exact disposition of the 22 nonmatching legacy inventory entries
+
+A literal source-text comparison against the owner-approved v12 R1 snapshot
+found 297 exact matches and these 22 nonmatches in the original 319-item
+inventory. The dispositions below close the review of each mismatch without
+rewriting the historical inventory or promoting a pending amendment. When the
+R1 inventory is prepared, approved-base replacements should use the R1 wording;
+pending and external rows must remain separately identified rather than being
+silently deleted or treated as accepted.
+
+| Legacy inventory ID | Disposition                       | Basis and required handling                                                                                                                                                                                                                                                |
+| ------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `V12-1-001`         | `REPLACE_WITH_APPROVED_BASE`      | Replace the old D1 text with the exact owner-approved R1 D1: Resend email OTP is the sole planned sign-in method; the test-only shortcut is restricted to development/staging and blocked in production. Preserve the conflicting A1 sentence as a proposal-level finding. |
+| `V12-1-011`         | `RETAIN_UNTIL_AMENDMENT_APPROVED` | The old D11 fallback remains the current approved contract. R1 labels D11-R as pending; its “superseded” wording does not make that amendment effective.                                                                                                                   |
+| `V12-1-012`         | `REPLACE_WITH_APPROVED_BASE`      | Replace with approved R1 D12: one-hour off-host WAL target; 24-hour fallback only under a separately approved, disclosed exception. Operational evidence remains open.                                                                                                     |
+| `V12-2-001`         | `RETAIN_UNTIL_AMENDMENT_APPROVED` | The two-provider acceptance wording follows D11. Do not replace it with the proposed Resend-only outage test until D11-R is approved.                                                                                                                                      |
+| `V12-4.1-001`       | `RETAIN_UNTIL_AMENDMENT_APPROVED` | The provider-fallback contract remains linked to current D11; R1's replacement text is inside the pending amendment.                                                                                                                                                       |
+| `V12-4.1-006`       | `RETAIN_UNTIL_AMENDMENT_APPROVED` | R1 changes password/device revocation wording to device/sign-out. Keep the approved baseline requirement until the amendment is effective; do not infer a credential or revocation policy from implementation alone.                                                       |
+| `V12-4.1-009`       | `RETAIN_UNTIL_AMENDMENT_APPROVED` | Resend-only outage behavior is proposed by D11-R/A1; preserve the currently approved two-provider outage requirement for now.                                                                                                                                              |
+| `V12-4.1-010`       | `REPLACE_WITH_APPROVED_BASE`      | Use approved D1's test-only shortcut wording, including startup refusal in production; this is a wording/precision update, not evidence that the deployment test ran.                                                                                                      |
+| `V12-4.1-011`       | `SUPERSEDED_BY_APPROVED_D1`       | Remove phone OTP from active planned scope because approved D1 states no other sign-in method is planned. Retain this inventory row only as historical source lineage.                                                                                                     |
+| `V12-4.1-012`       | `OWNER_DECISION_REQUIRED`         | R1 proposes same-channel Resend step-up but explicitly leaves whether it satisfies the existing admin two-factor requirement open. Do not equate same-channel OTP with an independent factor or activate privileged operations on that assumption.                         |
+| `V12-6-007`         | `REPLACE_WITH_APPROVED_BASE`      | Replace with approved R1 D12 recovery text; one-hour remains the target, and 24 hours is only a separately approved/disclosed exception. No RPO is met without a restore drill.                                                                                            |
+| `V12-6-013`         | `RETAIN_UNTIL_AMENDMENT_APPROVED` | The second-provider failover behavior remains the D11 contract until D11-R is approved.                                                                                                                                                                                    |
+| `V12-6-014`         | `RETAIN_UNTIL_AMENDMENT_APPROVED` | Resend-unavailable behavior and no deferred OTP delivery are A1/D11-R proposals; preserve the approved baseline outage contract meanwhile.                                                                                                                                 |
+| `V12-7-003`         | `RETAIN_UNTIL_AMENDMENT_APPROVED` | The Resend-only outage test replaces the existing two-provider test only if D11-R becomes effective.                                                                                                                                                                       |
+| `V12-7-019`         | `REPLACE_WITH_APPROVED_BASE`      | Update to the revised D12 acceptance: meet the one-hour/four-hour targets, or use the 24-hour fallback only under a separate approved and disclosed exception.                                                                                                             |
+| `V12-11-001`        | `SUPERSEDED_BY_APPROVED_D1`       | Remove phone OTP from active post-launch sign-in scope under D1; preserve the old row as history.                                                                                                                                                                          |
+| `V12-12-001`        | `EXTERNAL_EVIDENCE_REQUIRED`      | The R1 row adds a caveat that DNS state was not verified. Keep SPF/DKIM/DMARC as an owner action until current DNS evidence is supplied; do not infer completion.                                                                                                          |
+| `V12-12-002`        | `EXTERNAL_EVIDENCE_REQUIRED`      | R1 records an owner-reported Resend setup but explicitly says verification evidence and live OTP remain unverified. Preserve both facts; no provider call was made.                                                                                                        |
+| `V12-12-003`        | `RETAIN_UNTIL_AMENDMENT_APPROVED` | The second-provider account requirement is removed only by pending D11-R; do not close the dependency yet.                                                                                                                                                                 |
+| `V12-13-007`        | `RETAIN_UNTIL_AMENDMENT_APPROVED` | The Resend-only failure test is proposed; the current two-provider test remains the accepted requirement until amendment approval.                                                                                                                                         |
+| `V12-15-003`        | `RETAIN_UNTIL_AMENDMENT_APPROVED` | Keep the second-provider failover go/no-go criterion; its “superseded” R1 label is not effective while D11-R is pending.                                                                                                                                                   |
+| `V12-15-004`        | `RETAIN_UNTIL_AMENDMENT_APPROVED` | Keep the both-providers-down acceptance gate until the Resend-only amendment is explicitly approved.                                                                                                                                                                       |
+
+Disposition totals: 7 approved-base replacements/supersessions, 12 rows
+retained pending D11-R/A1 approval, 1 owner-decision row, and 2 external status
+rows requiring evidence. All 22 IDs are accounted for exactly once. This resolves
+the mismatch-review subtask only; the legacy inventory still has the old source
+hash and is not the active R1 inventory. A complete R1 source-item inventory,
+classification of newly introduced base clauses, and traceability update remain
+open. No ticket assessment, runtime behavior, provider status, or launch gate was
+changed by this disposition.
+
 ## Dependency-aware continuation
 
 1. Preserve the verified consolidation and original dirty worktrees. Resolve
