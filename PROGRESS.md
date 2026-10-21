@@ -1246,3 +1246,20 @@ test:domain` passed 836/836; service-backed `npm run test:integration` passed
 `npm run build` passed both production builds and CSP verification. Formatting,
 EOL, privacy and diff checks passed. All three disposable containers were
 stopped. No actual job sources were contacted. Hosted Actions remains disabled.
+
+### Resume role-versioning contract gap (2026-10-21)
+
+Continued on clean `main` at `7a90012a4bfeb48f4d4e9df45f503cb5e378fd6`.
+Read-only contract review confirmed v12 section 4.3 is not implemented end to
+end: uploads have no target-role/lineage fields, while search currently selects
+the globally newest parsed resume. A metadata-only change could therefore use
+the wrong role's resume. No runtime behavior or personal data was changed. The
+specific semantics requiring owner confirmation and the recommended minimal
+behavior are recorded as `RESUME-VERSIONS-01` in `blocker.txt`.
+
+The blocker-only update was checked with Node 24.19.0 `npm run privacy:check`
+and `npm run eol:check`, plus `git diff --check`; all passed. It was committed
+and normally pushed to `main` as `aa6aa1ebb017418a62c91a03f1c35aabaafc4bfb`;
+after fetch, local `main` and `origin/main` matched and the worktree was clean.
+No hosted CI run exists while Actions is disabled. The separate dirty email OTP
+worktree was not accessed or modified.
