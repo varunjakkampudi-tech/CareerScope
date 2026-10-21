@@ -36,6 +36,7 @@ import {
   prepareProfile,
   LeadRepository,
   InterviewRepository,
+  InAppNotificationRepository,
   ResumeUploadRepository,
   ResumeUploadCoordinator,
   InvalidResumeUpload,
@@ -265,6 +266,7 @@ export async function createApp(
   const profiles = new ProfileRepository(database);
   const leads = new LeadRepository(database);
   const interviews = new InterviewRepository(database);
+  const notifications = new InAppNotificationRepository(database);
   const uploads = new ResumeUploadRepository(database);
   const coordinator = options.resumeStorage
     ? new ResumeUploadCoordinator(uploads, options.resumeStorage)
@@ -1268,6 +1270,18 @@ export async function createApp(
     const round = await interviews.update(request.ownerId!, id, request.body);
     if (!round) throw new HttpError(404, 'Interview round not found');
     return round;
+  });
+  app.get('/api/notifications', async (request) => {
+    await readBudget(request, 'notifications-read', 120);
+    return notifications.list(request.ownerId!);
+  });
+  app.put('/api/notifications/:id/read', async (request, reply) => {
+    const { id } = identifier.parse(request.params);
+    if (!(await consumeRateLimit(request, `notifications:${request.ownerId!}`, 60, 60)))
+      throw new HttpError(429, 'Too many notification updates');
+    if (!(await notifications.markRead(request.ownerId!, id)))
+      throw new HttpError(404, 'Notification not found');
+    return reply.code(204).send();
   });
   app.get('/api/job-sources', async (request) => {
     await readBudget(request, 'job-sources-read', 120);

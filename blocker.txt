@@ -638,50 +638,73 @@ Evidence references: `PROGRESS.md`, `QUALITY_AUDIT.md`, and migration
 `migrations/0019_remove_legacy_external_identity.sql`.
 
 BLOCKER ID: INTERVIEW-REMINDER-DELIVERY
-Title: Interview reminder delivery is not implemented
+Title: Full notification capability remains incomplete
 Priority: High
 Module: Candidate application tracking / interview organizer
 v12 requirement / checklist item: D8; sections 4.10 and 15
 Status: OPEN_ENGINEERING
-Problem: Interview rounds can persist an optional reminder timestamp, but no
-  scheduled notification event, in-app notification, email delivery, or dispatch
-  status exists. The UI explicitly states that no notification is sent.
-Verified root cause: The organizer implementation is persistence/UI only; no
-  reminder producer or approved delivery contract is present in this change.
-Impact: Scheduling and tracking rounds are supported, but the v12 claim that
-  reminders work is not yet satisfied.
-What the agent already tried: Implemented and validated round scheduling,
-  contacts, preparation checklist, notes, optional parsed resume association,
-  status edits and reminder timestamp storage. No message was sent.
-Work completed: None for dispatch; saved timestamps are deliberately not
-  represented as delivered reminders.
-Why autonomous resolution is unsafe or impossible: Delivery channel, timing,
-  notification consent, idempotency, opt-out and operational evidence must follow
-  existing product and privacy policy; do not infer email/push permission from
-  the existence of a timestamp.
-Exact owner action required: None to continue local contract/implementation work;
-  any outbound channel must use an already approved delivery policy/provider.
+Problem: A due interview reminder can now create an owner-scoped in-app alert,
+  but the complete v12 notification contract remains absent: per-channel/type
+  preferences, quiet hours, daily cap/digest, localized templates, email/push
+  dispatch, suppression/deliverability management and notification DLQ handling.
+Verified root cause: This change intentionally implements only in-app reminder
+  materialization through the existing publisher loop; it does not send email or
+  push and does not claim full notification-channel delivery.
+Impact: Candidate-owned scheduled reminders are visible in-app when due. The
+  wider 4.15 notification requirement and its launch evidence remain incomplete.
+What the agent already tried: Implemented idempotent due-reminder materialization,
+  owner-scoped list/read routes, a privacy-minimized notification row, dashboard
+  notification center, stale-reminder retirement after edit/completion/start,
+  and local browser/service tests. No email or push message was sent.
+Work completed: In-app channel only. The notification does not copy round title,
+  interviewer contact, notes or resume details; stale notifications are hidden
+  and retained as non-visible idempotency tombstones until the owning interview
+  round is deleted.
+Independent review finding (P2): Read rows and retired tombstones currently have
+  no bounded retention/purge; they can accumulate while an interview round is
+  retained. The existing legal/privacy materials explicitly leave per-data-class
+  retention periods unresolved. No period was invented and no purge was added,
+  because deleting a deduplication tombstone can re-enable a reminder and the
+  repository has no approved notification-retention rule.
+Why autonomous resolution is unsafe or impossible: Live channel configuration,
+  provider evidence, human UX acceptance, and an approved retention schedule are
+  not established. Further local channel-preference, quiet-hour, digest/cap,
+  localization and delivery-failure engineering remains possible under v12,
+  but retention duration and deletion behavior need an approved data-class rule.
+Exact owner action required: Approve, with counsel as appropriate, a retention
+  period and deletion behavior for read notifications and retired reminder
+  tombstones, or identify an existing approved policy that applies. Owner
+  acceptance is also required before live email/push/provider validation or
+  production delivery.
 Step-by-step resolution instructions:
-  1. Review the existing notification/consent contract and decide which approved
-     channel(s), if any, may deliver candidate interview reminders.
-  2. Implement an idempotent scheduled event and delivery state using the
-     canonical async/outbox architecture; honor cancellation, edits, time zone,
-     consent and retries without logging contact details or message content.
-  3. Add unit, Postgres/queue integration, duplicate/retry, consent, cancellation,
-     failure and browser coverage; verify no lifecycle state is inferred.
-  4. Record hosted delivery-provider evidence and manual candidate UX acceptance
-     separately. Do not claim a reminder is delivered before provider evidence.
+  1. Record the approved retention duration and whether read/retired notification
+     metadata is deleted, anonymized, or retained for deduplication; include how
+     the policy interacts with account and interview-round deletion.
+  2. Implement a bounded cleanup using the existing operational architecture
+     only after the policy is approved, preserving reminder idempotency within
+     the approved window; add real-Postgres retention and re-publication tests.
+  3. Extend the existing in-app record/event with canonical notification
+     preferences, quiet-hour, per-user cap and digest behavior before adding
+     another channel.
+  4. Add any email/push delivery through the existing transactional outbox and
+     publisher architecture only, with retry/DLQ, suppression and privacy-safe
+     templates; do not add a separate process or duplicate queue architecture.
+  5. Obtain hosted provider evidence and manual candidate UX acceptance only
+     after local implementation is validated; no live delivery has occurred.
 Required environment-variable names (no values): Only those already defined by
   the approved delivery integration, if applicable; none introduced here.
-External dependencies: Approved notification channel/policy and hosted delivery
-  evidence if outbound delivery is required for launch.
-Expected result: A scheduled reminder is delivered once through an authorized
-  channel, or is clearly shown as scheduled-but-not-delivered where dispatch fails.
+External dependencies: Provider-domain validation, hosted delivery evidence,
+  and owner acceptance for live email/push tests; none is required for further
+  local contract implementation.
+Expected result: In-app reminders remain idempotent and owner-scoped. Every
+  additional enabled channel respects stored preference, quiet hours, caps and
+  suppression, and exposes only safe delivery state on failure.
 Verification procedure: Exercise due, future, cancelled, edited, duplicate,
   consent-disabled, provider-failure and retry paths with synthetic recipients;
   verify safe audit/log output and no application-status mutation.
 Tests to rerun: queue/outbox integration, delivery contract tests, privacy/log
   redaction checks, browser notification state and hosted provider smoke only
   after approved configuration exists.
-Affected tasks: Interview organizer reminder portion of D8 / section 4.10.
+Affected tasks: Interview organizer reminder portion of D8 / sections 4.10 and
+  4.15; retention requirement D6 / section 9.
 Evidence references: `GAP_MATRIX.md`, `TEST_MATRIX.md`, `PROGRESS.md`.

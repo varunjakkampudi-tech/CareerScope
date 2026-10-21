@@ -9,6 +9,7 @@ import {
   reconcileDeadLetter,
   shutdownSignal,
   ResumeUploadRepository,
+  publishDueInterviewReminders,
 } from '@careerscope/core';
 
 const env = configuration();
@@ -35,6 +36,14 @@ try {
   while (!shutdown.signal.aborted) {
     try {
       await publishPending(database, { 'search.collect': queue, 'resume.parse': filesQueue });
+      try {
+        const created = await publishDueInterviewReminders(database);
+        if (created > 0) logger.info({ created }, 'due interview reminders made available in-app');
+      } catch {
+        // The durable interview schedule is the retry source. Never log the
+        // owner, round title, contacts, or notes when a reminder scan fails.
+        logger.error('Due interview reminders could not be materialized; they remain retryable');
+      }
       if (filesQueue) {
         const failedResume = await filesQueue.receiveDeadLetter();
         if (failedResume)

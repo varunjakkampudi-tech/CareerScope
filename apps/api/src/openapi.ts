@@ -201,6 +201,13 @@ const interviewRound = object({
   createdAt: timestamp,
   updatedAt: timestamp,
 });
+const inAppNotification = object({
+  id: uuid,
+  roundId: uuid,
+  leadId: uuid,
+  createdAt: timestamp,
+  readAt: nullable(timestamp),
+});
 const run = object({ runId: uuid, status: searchStatus });
 const upload = object({ id: uuid, status: uploadStatus });
 const posting = object({
@@ -699,6 +706,16 @@ function contracts(options: {
         body: interviewRoundUpdateInput,
         failures: [400, 401, 403, 404, 409, 429],
       },
+    ),
+    'GET /api/notifications': operation(
+      'List the authenticated candidate’s current in-app interview reminders',
+      object({ items: array(inAppNotification, { maxItems: 50 }), unreadCount: integer() }),
+      { failures: [401, 403, 429] },
+    ),
+    'PUT /api/notifications/:id/read': operation(
+      'Mark an owned current in-app notification as read',
+      object({}, []),
+      { code: 204, failures: [400, 401, 403, 404, 429] },
     ),
     'GET /api/job-sources': operation(
       'List launch discovery sources and whether each has a current approved permission profile',

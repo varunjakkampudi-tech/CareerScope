@@ -10,6 +10,8 @@ import {
   refreshCookie,
   ResumeUploadRepository,
   sessionCookie,
+  InAppNotificationRepository,
+  publishDueInterviewReminders,
 } from '@careerscope/core';
 import { createApp } from './app.js';
 
@@ -192,11 +194,308 @@ test(
         'a scheduled/completed round is not an application event',
       );
 
+      const now = Date.now();
+      const dueInput = {
+        ...input,
+        startsAt: new Date(now + 2 * 60 * 60_000).toISOString(),
+        reminderAt: new Date(now - 60_000).toISOString(),
+        resumeUploadIds: [],
+        contacts: [],
+      };
+      const dueRounds = await Promise.all(
+        ['Due interview A', 'Due interview B'].map(async (title) => {
+          const response = await app!.inject({
+            method: 'POST',
+            url: `/api/leads/${ownLeadId}/interviews`,
+            headers: { origin, cookie, 'x-csrf-token': session.csrf },
+            payload: { ...dueInput, title },
+          });
+          assert.equal(response.statusCode, 200, response.body);
+          return response.json() as { id: string };
+        }),
+      );
+      const expiredRoundResponse = await app.inject({
+        method: 'POST',
+        url: `/api/leads/${ownLeadId}/interviews`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: {
+          ...dueInput,
+          title: 'Interview that has already started',
+          startsAt: new Date(now - 60 * 60_000).toISOString(),
+          reminderAt: new Date(now - 2 * 60 * 60_000).toISOString(),
+        },
+      });
+      assert.equal(expiredRoundResponse.statusCode, 200, expiredRoundResponse.body);
+      const expiredRound = expiredRoundResponse.json() as { id: string };
+      const publishCounts = await Promise.all([
+        publishDueInterviewReminders(database),
+        publishDueInterviewReminders(database),
+      ]);
+      assert.equal(
+        publishCounts.reduce((sum, count) => sum + count, 0),
+        2,
+      );
+      assert.equal(await publishDueInterviewReminders(database), 0);
+      const notificationRepository = new InAppNotificationRepository(database);
+      const ownerNotifications = await notificationRepository.list(ownerId);
+      assert.equal(ownerNotifications.items.length, 2);
+      assert.equal(ownerNotifications.unreadCount, 2);
+      assert.ok(ownerNotifications.items.every((item) => item.leadId === ownLeadId));
+      assert.equal(Object.hasOwn(ownerNotifications.items[0]!, 'title'), false);
+      assert.equal(Object.hasOwn(ownerNotifications.items[0]!, 'notes'), false);
+
+      const notificationRead = await app.inject({
+        url: '/api/notifications',
+        headers: { cookie },
+      });
+      assert.equal(notificationRead.statusCode, 200);
+      assert.equal(notificationRead.json().items.length, 2);
+      assert.equal(notificationRead.json().unreadCount, 2);
+      const foreignNotifications = await app.inject({
+        url: '/api/notifications',
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignNotifications.statusCode, 200);
+      assert.equal(foreignNotifications.json().items.length, 0);
+      assert.equal(foreignNotifications.json().unreadCount, 0);
+      const unauthenticatedNotifications = await app.inject({ url: '/api/notifications' });
+      assert.equal(unauthenticatedNotifications.statusCode, 401);
+
+      const notificationToRead = ownerNotifications.items[0]!;
+      const foreignNotificationRead = await app.inject({
+        method: 'PUT',
+        url: `/api/notifications/${notificationToRead.id}/read`,
+        headers: { origin, cookie: otherCookie, 'x-csrf-token': otherSession.csrf },
+      });
+      assert.equal(foreignNotificationRead.statusCode, 404);
+      const read = await app.inject({
+        method: 'PUT',
+        url: `/api/notifications/${notificationToRead.id}/read`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+      });
+      assert.equal(read.statusCode, 204);
+      const readAgain = await app.inject({
+        method: 'PUT',
+        url: `/api/notifications/${notificationToRead.id}/read`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+      });
+      assert.equal(readAgain.statusCode, 204);
+
+      const movedReminderRound = dueRounds[1]!;
+      const movedReminder = {
+        ...dueInput,
+        startsAt: new Date(now + 4 * 60 * 60_000).toISOString(),
+        reminderAt: new Date(now + 3 * 60 * 60_000).toISOString(),
+        revision: 1,
+      };
+      const reschedule = await app.inject({
+        method: 'PUT',
+        url: `/api/interviews/${movedReminderRound.id}`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: movedReminder,
+      });
+      assert.equal(reschedule.statusCode, 200, reschedule.body);
+      assert.equal(
+        (await notificationRepository.list(ownerId)).items.length,
+        1,
+        'a changed reminder schedule retires the obsolete notification',
+      );
+      assert.equal(
+        await database.pool
+          .query('SELECT retired_at FROM in_app_notifications WHERE round_id = $1', [
+            movedReminderRound.id,
+          ])
+          .then((result) => result.rows.length === 1 && result.rows[0]?.retired_at !== null),
+        true,
+      );
+      const staleNotificationRead = await app.inject({
+        method: 'PUT',
+        url: `/api/notifications/${ownerNotifications.items.find((item) => item.roundId === movedReminderRound.id)!.id}/read`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+      });
+      assert.equal(staleNotificationRead.statusCode, 404);
+
+      const startedRoundUpdate = await app.inject({
+        method: 'PUT',
+        url: `/api/interviews/${dueRounds[0]!.id}`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: {
+          ...dueInput,
+          startsAt: new Date(now - 30_000).toISOString(),
+          revision: 1,
+        },
+      });
+      assert.equal(startedRoundUpdate.statusCode, 200, startedRoundUpdate.body);
+      assert.equal(
+        (await notificationRepository.list(ownerId)).items.length,
+        0,
+        'an interview that has started retires its stale reminder',
+      );
+      const startedRoundNotification = ownerNotifications.items.find(
+        (item) => item.roundId === dueRounds[0]!.id,
+      )!;
+      assert.equal(
+        await notificationRepository.markRead(ownerId, startedRoundNotification.id),
+        false,
+      );
+      assert.equal(
+        await database.pool
+          .query('SELECT id FROM in_app_notifications WHERE round_id = $1', [expiredRound.id])
+          .then((result) => result.rowCount),
+        0,
+        'a scheduled round whose start time has passed does not create a late reminder',
+      );
+
+      const elapsedRoundResponse = await app.inject({
+        method: 'POST',
+        url: `/api/leads/${ownLeadId}/interviews`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: { ...dueInput, title: 'Naturally elapsed interview' },
+      });
+      assert.equal(elapsedRoundResponse.statusCode, 200, elapsedRoundResponse.body);
+      const elapsedRound = elapsedRoundResponse.json() as { id: string };
+      assert.equal(await publishDueInterviewReminders(database), 1);
+      await database.pool.query(
+        `UPDATE interview_rounds SET starts_at = now() - interval '1 minute'
+         WHERE owner_id = $1 AND id = $2`,
+        [ownerId, elapsedRound.id],
+      );
+      await publishDueInterviewReminders(database);
+      const retiredElapsedReminder = await database.pool.query(
+        'SELECT retired_at FROM in_app_notifications WHERE owner_id = $1 AND round_id = $2',
+        [ownerId, elapsedRound.id],
+      );
+      assert.equal(retiredElapsedReminder.rows.length, 1);
+      assert.ok(retiredElapsedReminder.rows[0]?.retired_at);
+      await database.pool.query(
+        `UPDATE interview_rounds SET starts_at = now() + interval '1 hour'
+         WHERE owner_id = $1 AND id = $2`,
+        [ownerId, elapsedRound.id],
+      );
+      assert.equal(await publishDueInterviewReminders(database), 0);
+      assert.equal(
+        (await notificationRepository.list(ownerId)).items.some(
+          (item) => item.roundId === elapsedRound.id,
+        ),
+        false,
+        'a retired reminder does not resurface when its round is moved back into the future',
+      );
+
+      const precisionRoundResponse = await app.inject({
+        method: 'POST',
+        url: `/api/leads/${ownLeadId}/interviews`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: {
+          ...dueInput,
+          title: 'Timestamp precision interview',
+          startsAt: '2030-05-10T15:00:00.000Z',
+          reminderAt: '2030-05-10T14:00:00.123456Z',
+        },
+      });
+      assert.equal(precisionRoundResponse.statusCode, 200, precisionRoundResponse.body);
+      const precisionRound = precisionRoundResponse.json() as { id: string; revision: number };
+      await database.pool.query(
+        `INSERT INTO in_app_notifications (id, owner_id, round_id, reminder_at)
+         SELECT $1, owner_id, id, reminder_at FROM interview_rounds
+         WHERE owner_id = $2 AND id = $3`,
+        [randomUUID(), ownerId, precisionRound.id],
+      );
+      const preciseReminderUpdate = await app.inject({
+        method: 'PUT',
+        url: `/api/interviews/${precisionRound.id}`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: {
+          ...dueInput,
+          title: 'Timestamp precision interview',
+          startsAt: '2030-05-10T15:00:00.000Z',
+          reminderAt: '2030-05-10T14:00:00.123Z',
+          revision: precisionRound.revision,
+        },
+      });
+      assert.equal(preciseReminderUpdate.statusCode, 200, preciseReminderUpdate.body);
+      const precisionRetirement = await database.pool.query(
+        'SELECT retired_at FROM in_app_notifications WHERE owner_id = $1 AND round_id = $2',
+        [ownerId, precisionRound.id],
+      );
+      assert.ok(
+        precisionRetirement.rows[0]?.retired_at,
+        'the database detects a microsecond-level reminder change even when JavaScript Dates compare equal',
+      );
+
+      const overflowRoundIds = Array.from({ length: 51 }, () => randomUUID());
+      await database.pool.query(
+        `INSERT INTO interview_rounds
+          (id, owner_id, lead_id, title, starts_at, time_zone, format, status,
+           contacts, checklist, notes, reminder_at)
+         SELECT id, $2, $3, 'Upcoming interview', now() + interval '1 hour', 'UTC',
+                'video', 'scheduled', '[]'::jsonb, '[]'::jsonb, '', now() - interval '1 minute'
+         FROM unnest($1::uuid[]) AS id`,
+        [overflowRoundIds, ownerId, ownLeadId],
+      );
+      assert.equal(await publishDueInterviewReminders(database), 51);
+      const persistedNotificationCounts = await database.pool.query<{
+        total: string;
+        scheduledRounds: string;
+        visiblePairs: string;
+      }>(
+        `SELECT
+           (SELECT count(*) FROM in_app_notifications
+            WHERE owner_id = $1 AND retired_at IS NULL) AS total,
+           count(*) FILTER (
+             WHERE notification.retired_at IS NULL
+               AND round.status = 'scheduled' AND round.starts_at > now()
+           ) AS "scheduledRounds",
+           count(*) FILTER (
+             WHERE notification.retired_at IS NULL
+               AND round.status = 'scheduled' AND round.starts_at > now()
+               AND round.reminder_at = notification.reminder_at
+           ) AS "visiblePairs"
+         FROM in_app_notifications notification
+         JOIN interview_rounds round
+           ON round.owner_id = notification.owner_id AND round.id = notification.round_id
+         WHERE notification.owner_id = $1`,
+        [ownerId],
+      );
+      assert.equal(Number(persistedNotificationCounts.rows[0]?.total), 51);
+      assert.equal(Number(persistedNotificationCounts.rows[0]?.scheduledRounds), 51);
+      assert.equal(Number(persistedNotificationCounts.rows[0]?.visiblePairs), 51);
+      const overflowOwnerList = await notificationRepository.list(ownerId);
+      assert.equal(overflowOwnerList.items.length, 50);
+      assert.equal(overflowOwnerList.unreadCount, 51);
+      const overflowNotifications = await app.inject({
+        url: '/api/notifications',
+        headers: { cookie },
+      });
+      assert.equal(overflowNotifications.statusCode, 200);
+      assert.equal(overflowNotifications.json().items.length, 50);
+      assert.equal(overflowNotifications.json().unreadCount, 51);
+
+      const completedReminderUpdate = await app.inject({
+        method: 'PUT',
+        url: `/api/interviews/${overflowRoundIds[0]}`,
+        headers: { origin, cookie, 'x-csrf-token': session.csrf },
+        payload: { ...dueInput, status: 'completed', revision: 1 },
+      });
+      assert.equal(completedReminderUpdate.statusCode, 200, completedReminderUpdate.body);
+      assert.equal(
+        await database.pool
+          .query('SELECT retired_at FROM in_app_notifications WHERE round_id = $1', [
+            overflowRoundIds[0],
+          ])
+          .then((result) => result.rows.length === 1 && result.rows[0]?.retired_at !== null),
+        true,
+        'changing a round out of scheduled status retires its reminder notification',
+      );
+      const afterCompletion = await notificationRepository.list(ownerId);
+      assert.equal(afterCompletion.unreadCount, 50);
+
       const docs = await app.inject({ url: '/api/docs/json', headers: { cookie } });
       assert.equal(docs.statusCode, 200);
       assert.ok(docs.json().paths['/api/leads/{id}/interviews']?.get);
       assert.ok(docs.json().paths['/api/leads/{id}/interviews']?.post);
       assert.ok(docs.json().paths['/api/interviews/{id}']?.put);
+      assert.ok(docs.json().paths['/api/notifications']?.get);
+      assert.ok(docs.json().paths['/api/notifications/{id}/read']?.put);
       const listResponses = docs.json().paths['/api/leads/{id}/interviews']?.get.responses;
       assert.ok(listResponses?.['401']);
       assert.ok(listResponses?.['403']);

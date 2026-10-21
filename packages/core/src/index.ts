@@ -15,6 +15,7 @@ export * from './profile.js';
 export * from './preparation.js';
 export * from './leads.js';
 export * from './interviews.js';
+export * from './notifications.js';
 export * from './bull-queue.js';
 export * from './storage.js';
 export * from './file-storage.js';

@@ -22,6 +22,7 @@ import {
   PrivateFileResumeStorage,
   LocalQueue,
   publishPending,
+  publishDueInterviewReminders,
 } from '@careerscope/core';
 import { createApp } from '../apps/api/src/app.js';
 import { collect } from '../apps/workers/search/src/collect.js';
@@ -2280,7 +2281,7 @@ try {
       await interviewForm.getByLabel('Notes', { exact: true }).fill('Prepare examples.');
       assert.match(
         (await interviewOrganizer.textContent()) ?? '',
-        /does not currently send email or push notifications/,
+        /email and push notifications are not sent/i,
       );
       const interviewCreated = page.waitForResponse(
         (response) =>
@@ -2298,6 +2299,49 @@ try {
       assert.equal(createdRound.checklist[0].label, 'Review system design notes');
       assert.equal(createdRound.notes, 'Prepare examples.');
       assert.ok(createdRound.reminderAt);
+      await database.pool.query(
+        `UPDATE interview_rounds
+         SET reminder_at = now() - interval '1 minute'
+         WHERE owner_id = $1 AND id = $2`,
+        [ownerId, createdRound.id],
+      );
+      assert.equal(await publishDueInterviewReminders(database), 1);
+      const notificationToggle = page.locator('summary[aria-label^="Notifications"]');
+      await notificationToggle.waitFor({ state: 'visible' });
+      const notificationsResponse = page.waitForResponse(
+        (response) =>
+          response.url().endsWith('/api/notifications') && response.request().method() === 'GET',
+      );
+      await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+      const notificationResult = await notificationsResponse;
+      assert.equal(notificationResult.status(), 200);
+      const notificationBody = await notificationResult.json();
+      assert.equal(
+        notificationBody.items.length,
+        1,
+        `The authenticated UI owner did not receive the due reminder: ${JSON.stringify(notificationBody)}`,
+      );
+      assert.equal(notificationBody.unreadCount, 1);
+      const notificationPanel = page.getByRole('region', { name: 'Notifications' });
+      await page.waitForFunction(
+        () =>
+          document
+            .querySelector('summary[aria-label^="Notifications"]')
+            ?.getAttribute('aria-label') === 'Notifications, 1 unread',
+      );
+      await notificationToggle.click();
+      await notificationPanel.getByText('You have an upcoming interview round.').waitFor();
+      const notificationText = (await notificationPanel.textContent()) ?? '';
+      assert.equal(notificationText.includes('Synthetic interviewer'), false);
+      assert.equal(notificationText.includes('Prepare examples.'), false);
+      await notificationPanel.getByRole('button', { name: 'Mark as read' }).click();
+      await page.waitForFunction(
+        () =>
+          document
+            .querySelector('summary[aria-label^="Notifications"]')
+            ?.getAttribute('aria-label') === 'Notifications',
+      );
+      await notificationToggle.click();
       await interviewOrganizer.getByText('Technical interview', { exact: true }).waitFor();
       await interviewOrganizer
         .getByText('To do: Review system design notes', { exact: true })

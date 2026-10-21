@@ -205,6 +205,20 @@ export class InterviewRepository {
         'DELETE FROM interview_round_documents WHERE owner_id = $1 AND round_id = $2',
         [ownerId, id],
       );
+      await client.query(
+        `UPDATE in_app_notifications notification SET retired_at = now()
+         WHERE notification.owner_id = $1 AND notification.round_id = $2
+           AND notification.retired_at IS NULL
+           AND NOT EXISTS (
+             SELECT 1 FROM interview_rounds round
+             WHERE round.owner_id = notification.owner_id
+               AND round.id = notification.round_id
+               AND round.status = 'scheduled'
+               AND round.starts_at > now()
+               AND round.reminder_at = notification.reminder_at
+           )`,
+        [ownerId, id],
+      );
       await insertDocuments(client, ownerId, id, input.resumeUploadIds);
       const result = await client.query<InterviewRound>(
         `SELECT ${columns}, $3::uuid[]::text[] AS "resumeUploadIds"

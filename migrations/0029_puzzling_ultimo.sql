@@ -1,0 +1,1 @@
+CREATE INDEX "interview_round_due_reminder" ON "interview_rounds" USING btree ("reminder_at","id") WHERE "interview_rounds"."status" = 'scheduled' AND "interview_rounds"."reminder_at" IS NOT NULL;

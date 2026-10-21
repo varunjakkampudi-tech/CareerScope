@@ -186,3 +186,20 @@ remain incomplete.
   typecheck, build/CSP, lint, format, EOL, privacy tests/scan, and diff check.
 - Work remains uncommitted and unintegrated pending independent auth review.
   No provider request, shared migration, push, merge, or deployment occurred.
+
+### 2026-10-21 — In-app interview reminders
+
+- Added idempotent owner-scoped due-reminder notifications through the existing
+  publisher and queue, with a dashboard notification center and safe generic
+  text. Stale notifications are retired on schedule/status changes; unread
+  counts remain accurate beyond the display limit. No application lifecycle
+  state is inferred or changed.
+- Local verification: integration 57/57, gates 84/84, domain 835/835,
+  Chromium/Firefox/WebKit UI with axe/keyboard/eight viewports, production build,
+  lint/typecheck/format/privacy/security and migration checks passed. This does
+  not establish hosted CI, live delivery, or production acceptance.
+- Independent review found one P2 privacy/retention gap: read rows and retired
+  idempotency tombstones have no bounded purge. The approved data-class schedule
+  does not currently define this period; no duration was invented. See
+  `blocker.txt`; no other actionable defect was identified in the reviewed
+  implementation.

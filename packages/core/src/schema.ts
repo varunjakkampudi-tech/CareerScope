@@ -481,6 +481,9 @@ export const interviewRounds = pgTable(
     }),
     uniqueIndex('interview_round_owner_id').on(table.ownerId, table.id),
     index('interview_round_owner_lead_start').on(table.ownerId, table.leadId, table.startsAt),
+    index('interview_round_due_reminder')
+      .on(table.reminderAt, table.id)
+      .where(sql`${table.status} = 'scheduled' AND ${table.reminderAt} IS NOT NULL`),
     check('interview_round_title_bounded', sql`length(btrim(${table.title})) BETWEEN 1 AND 120`),
     check('interview_round_timezone_bounded', sql`length(${table.timeZone}) BETWEEN 1 AND 128`),
     check(
@@ -566,6 +569,34 @@ export const interviewRoundDocuments = pgTable(
     }).onDelete('cascade'),
     uniqueIndex('interview_round_document_unique').on(table.ownerId, table.roundId, table.uploadId),
     index('interview_document_owner_upload').on(table.ownerId, table.uploadId),
+  ],
+);
+
+// In-app interview reminders contain no copied interview title, contact, or
+// note. The owning round remains the source of truth; this row is only the
+// durable, idempotent notification event and its read state.
+export const inAppNotifications = pgTable(
+  'in_app_notifications',
+  {
+    id: uuid('id').primaryKey(),
+    ownerId: uuid('owner_id').notNull(),
+    roundId: uuid('round_id').notNull(),
+    reminderAt: timestamp('reminder_at', { withTimezone: true }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    readAt: timestamp('read_at', { withTimezone: true }),
+    retiredAt: timestamp('retired_at', { withTimezone: true }),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.ownerId, table.roundId],
+      foreignColumns: [interviewRounds.ownerId, interviewRounds.id],
+    }).onDelete('cascade'),
+    uniqueIndex('in_app_notification_reminder_unique').on(
+      table.ownerId,
+      table.roundId,
+      table.reminderAt,
+    ),
+    index('in_app_notification_owner_created').on(table.ownerId, table.createdAt, table.id),
   ],
 );
 

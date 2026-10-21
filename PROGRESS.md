@@ -1122,3 +1122,30 @@ reviewer found no remaining actionable defect in scope.
 This is local evidence only: hosted CI, production migration and smoke validation,
 manual product/accessibility review, and reminder delivery remain outstanding.
 The main worktree changes are not yet committed or pushed.
+
+### In-app interview reminder delivery (2026-10-21)
+
+Completed the in-app portion of interview reminders using the existing publisher
+loop and queue architecture. Due reminders materialize as idempotent,
+owner-scoped notification records; the dashboard supports listing and marking
+them read. Rescheduling, completing, or starting a round retires stale reminder
+records. Notification text is generic and does not expose round title, contact,
+notes, or resume details. Unread count is computed before the 50-item display
+limit. Reminder publication does not mutate application lifecycle status.
+
+Local evidence on Node 24.19.0: the focused interview API integration test
+passed; the full `npm run test:integration` passed 57/57 with zero skips against
+disposable PostgreSQL 17.6/Redis 7.4.5; `npm run gates:test` passed 84/84;
+`npm run test:domain` passed 835/835; `CAREERSCOPE_UI_BROWSER=all npm run
+test:ui` exited 0 on Chromium, Firefox and WebKit with axe, keyboard, eight
+widths, due-reminder rendering and mark-read assertions. `npm run build`,
+`npm run format:check`, `npm run lint`, `npm run typecheck`,
+`npm run privacy:check`, `npm run security:check`, Drizzle migration checking,
+and `git diff --check` passed. These are local results; hosted Actions, live
+email/push delivery, full v12 notification preferences/digest/localization,
+manual assistive-technology/design review and production acceptance remain
+unverified. Independent review found one P2: read notifications and retired
+idempotency tombstones have no bounded retention/purge. The approved retention
+schedule does not define a period for this data class, so none was invented; see
+`blocker.txt` for the owner action. No live message or production change
+occurred. GitHub Actions is disabled, so hosted CI is unavailable.

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Bell,
   Bookmark,
@@ -19,7 +20,121 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import BrandLogo from './brand-logo';
+import { api } from '@/lib/api';
 import styles from './dashboard-shell.module.css';
+
+type NotificationItem = {
+  id: string;
+  leadId: string;
+  createdAt: string;
+  readAt: string | null;
+};
+
+function NotificationCenter() {
+  const [items, setItems] = useState<NotificationItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const loadNotifications = useCallback(async (showLoading = false) => {
+    if (showLoading) setLoading(true);
+    try {
+      const result = await api<{ items: NotificationItem[]; unreadCount: number }>(
+        '/notifications',
+      );
+      setError(false);
+      setItems(result.items);
+      setUnreadCount(result.unreadCount);
+      setLoaded(true);
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const initialLoad = window.setTimeout(() => void loadNotifications(), 0);
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') void loadNotifications();
+    };
+    const refreshInterval = window.setInterval(refreshWhenVisible, 30_000);
+    window.addEventListener('focus', refreshWhenVisible);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => {
+      window.clearTimeout(initialLoad);
+      window.clearInterval(refreshInterval);
+      window.removeEventListener('focus', refreshWhenVisible);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
+  }, [loadNotifications]);
+
+  async function markRead(id: string) {
+    try {
+      await api(`/notifications/${id}/read`, { method: 'PUT' });
+      await loadNotifications();
+    } catch {
+      setError(true);
+    }
+  }
+
+  return (
+    <details
+      className={styles.notificationControl}
+      onToggle={(event) => {
+        if (event.currentTarget.open) void loadNotifications();
+      }}
+    >
+      <summary
+        className={styles.iconButton}
+        aria-label={unreadCount ? `Notifications, ${unreadCount} unread` : 'Notifications'}
+        title="Notifications"
+      >
+        <Bell size={17} aria-hidden="true" />
+        {unreadCount > 0 && <span className={styles.notificationCount}>{unreadCount}</span>}
+      </summary>
+      <section className={styles.notificationPanel} aria-label="Notifications">
+        <h2>Notifications</h2>
+        <p className={styles.notificationPrivacy}>
+          Interview reminders appear here. No interview details are included in the alert.
+        </p>
+        <div aria-live="polite" aria-busy={loading}>
+          {loading && <p role="status">Loading notifications…</p>}
+          {!loading && error && (
+            <div role="alert">
+              <p>Notifications could not be loaded.</p>
+              <button type="button" onClick={() => void loadNotifications(true)}>
+                Retry
+              </button>
+            </div>
+          )}
+          {!loading && !error && loaded && items.length === 0 && <p>No interview reminders yet.</p>}
+          {!loading && !error && items.length > 0 && (
+            <ul className={styles.notificationList}>
+              {items.map((item) => (
+                <li key={item.id} data-read={item.readAt !== null}>
+                  <span>You have an upcoming interview round.</span>
+                  <time dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleString()}</time>
+                  <div>
+                    <Link href={`/saved?lead=${encodeURIComponent(item.leadId)}`}>
+                      Open application
+                    </Link>
+                    {item.readAt === null && (
+                      <button type="button" onClick={() => void markRead(item.id)}>
+                        Mark as read
+                      </button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+    </details>
+  );
+}
 
 // Every entry here was seen consistently across the approved design handoff
 // under design/, in this order, plus "Preparation" (real existing
@@ -222,16 +337,7 @@ export function DashboardTopbar({
         >
           <LogOut size={17} />
         </button>
-        {/* No notification bell: CareerScope has no notifications backend
-            (CS-43 is still DISCOVERY). A bell with an invented count would
-            be exactly the fabricated alert the product rules forbid. */}
-        <span
-          className={styles.iconButton}
-          aria-hidden="true"
-          title="Notifications are not available yet"
-        >
-          <Bell size={17} style={{ opacity: 0.35 }} />
-        </span>
+        <NotificationCenter key={identity ?? 'signed-in'} />
         <InitialsAvatar identity={identity} />
       </div>
     </header>

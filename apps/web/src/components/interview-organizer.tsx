@@ -290,8 +290,8 @@ export default function InterviewOrganizer({ leadId, csrf }: { leadId: string; c
               {round.notes && <p className={styles.notes}>{round.notes}</p>}
               {round.reminderAt && (
                 <p className={styles.notice}>
-                  Reminder time saved for {displayDate(round.reminderAt, round.timeZone)}.
-                  Notification delivery is not available yet.
+                  Reminder time saved for {displayDate(round.reminderAt, round.timeZone)}. The
+                  in-app notification appears at that time; email and push are not sent.
                 </p>
               )}
               {round.resumeUploadIds.length > 0 && (
@@ -527,8 +527,8 @@ export default function InterviewOrganizer({ leadId, csrf }: { leadId: string; c
             />
           </label>
           <p className={styles.notice}>
-            Reminder times are saved with the interview. CareerScope does not currently send email
-            or push notifications.
+            Reminders appear in CareerScope notifications at the selected time. Email and push
+            notifications are not sent.
           </p>
           {parsedResumes.length > 0 && (
             <label>
