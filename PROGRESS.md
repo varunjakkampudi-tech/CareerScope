@@ -1443,3 +1443,30 @@ empty, so native form validation prevented the submit handler from running.
 The harness now fills those fields first; the complete three-engine rerun passed.
 No runtime deployment, provider call, live data change or production action was
 performed. Hosted GitHub Actions remains disabled, so no hosted result exists.
+
+### Stale search-read browser settlement regression (2026-10-21, Node 24.19.0)
+
+On `main`, the all-browser UI suite exposed an in-flight search-detail GET from
+an earlier SPA route that kept the request-settlement barrier open after the
+route changed. The existing stale-read exception was limited to saved-job GETs.
+Added a narrow route-epoch predicate for GET `/api/searches` and
+`/api/searches/:id` only; current-route reads, event streams, mutations and
+unrelated endpoints remain in the barrier. Added regression tests for both
+search GET shapes, current-route retention, writes, event streams and unrelated
+reads. This changes browser-test bookkeeping only; no product runtime code or
+database contract changed.
+
+On Node v24.19.0, the focused request-classification tests passed 2/2;
+`npm run gates:test` passed with 91/91 unit tests, strict typecheck, lint,
+privacy/source/deployment/EOL checks; `npm run test:domain` passed 839/839;
+`npm run test:ui` passed on Chromium, Firefox and WebKit with axe, keyboard and
+the required eight responsive widths; `npm run build` passed with all 12 CSP
+hashes verified; `npm run security:check` reported zero production dependency
+vulnerabilities; formatting and `git diff --check` passed. The local browser
+run used only synthetic accounts and disposable loopback PostgreSQL/Redis.
+The fix was committed and pushed directly to `main` as
+`444a832569ffae6da4e308b8e68bd574084f5180`; local main, `origin/main` and the
+remote `refs/heads/main` match, and the worktree is clean. No hosted Actions run
+is available for this SHA while Actions is disabled. No production deployment,
+live provider request or shared-data change occurred. The separate dirty
+email-OTP worktree remains preserved and was not modified.

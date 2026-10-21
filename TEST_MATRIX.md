@@ -415,3 +415,15 @@ the 12-hash CSP verification; `npm run format:check`, `npm run eol:check`,
 `git diff --check` passed. These are local synthetic checks, not legal approval,
 age/identity verification, hosted CI or production evidence. GitHub Actions is
 disabled; no hosted run exists for the candidate SHA.
+
+### Search-read settlement across SPA routes (2026-10-21, Node 24.19.0)
+
+`scripts/ui-requests.test.ts` passed 2/2. The added case confirms only GET
+`/api/searches` and `/api/searches/:id` reads started on an earlier route epoch
+are ignored by the browser settlement barrier; current-route reads, writes,
+search event streams and unrelated reads remain tracked. `scripts/check-ui.ts`
+passed on Chromium, Firefox and WebKit, including axe, keyboard and all eight
+required responsive widths. Exact pushed SHA: `444a832569ffae6da4e308b8e68bd574084f5180`.
+This is browser-test harness behavior, not a product-runtime relaxation. The
+run used synthetic users and disposable loopback PostgreSQL/Redis. Hosted CI is
+unavailable while GitHub Actions is disabled.

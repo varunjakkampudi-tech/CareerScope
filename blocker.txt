@@ -919,3 +919,13 @@ Tests to rerun: Re-review and rerun applicable validation if the reviewed export
 Affected tasks: Candidate-owned application export and the review/commit gate.
 Evidence references: `docs/governance/ENGINEERING-CONTRACT.md`,
   `apps/api/src/application-export.ts`, and `scripts/check-ui.ts`.
+
+Latest preserved-worktree check (21 October 2026): the canonical `main` test
+settlement fix is pushed as `444a832569ffae6da4e308b8e68bd574084f5180` and
+does not include or modify the separate email-OTP working tree. That checkout
+remains on `codex/task/email-otp-auth` at
+`f23d33fcd7b844fd1cff8f88ab28fcd54cbc5d56`. Full porcelain enumeration with
+`--untracked-files=all` reports 54 dirty paths; default porcelain reports 53
+entries because one untracked directory is collapsed. Its committed branch tip
+is already integrated in `main`; its current uncommitted contents remain
+unreviewed as an integration set and must not be overlaid or removed wholesale.
