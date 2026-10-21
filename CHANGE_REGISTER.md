@@ -206,3 +206,43 @@ remain incomplete.
 - Integrated directly on `main` as `3b9f23946a41bf3dbc504e58127d5080a2858591`;
   normal push succeeded and local `main` matched `origin/main`. No deployment
   occurred. The separate dirty OTP worktree was preserved unchanged.
+
+### 2026-10-21 — Candidate-owned CSV application export
+
+- Added `GET /api/applications/export`, backed by the existing owner-scoped
+  saved-lead repository. The route relies on server-session ownership, has an
+  owner-keyed request limit, sends `Cache-Control: private, no-store`, and
+  returns a fixed CSV filename. CSV formula values are escaped; raw descriptions
+  and internal record/owner identifiers are not exported.
+- Added unit and PostgreSQL integration coverage and an Applications-screen
+  browser assertion. A rendered 320px check found title/action-row overflow; the
+  shared row now wraps and the all-browser suite checks responsive widths. No
+  schema, provider, queue, or deployment changes.
+- Rollback: revert this isolated source/test/docs change; no persisted data or
+  external side effects need repair.
+- Local validation passed: gates 86/86, integration 58/58, production build/CSP,
+  Chromium/Firefox/WebKit UI, formatting, privacy, EOL and diff checks. A failed
+  initial integration attempt due to missing disposable services was not
+  counted; the subsequent run against fresh loopback services passed. Domain
+  tests passed 836/836 and the production dependency audit reported zero
+  vulnerabilities.
+- Not yet committed or pushed at this entry; exact main synchronization,
+  independent review, and hosted Actions remain pending. No production deploy.
+
+### Application export review closure (2026-10-21, Node 24.19.0)
+
+- Independent read-only review of the exact export diff from base
+  `4fe524ad911b03aa981dc3151804837a42abf95d` returned PASS. Review fingerprint:
+  `BB680AA000595C20B5370B3B9E060717277FBBF87D2509F1EDF9A15126015FA1`.
+- The reviewer found the CSV OpenAPI response media type was encoded as a schema
+  annotation. Corrected the operation to declare `text/csv` under OpenAPI response
+  `content` and extended the service-backed integration test to assert the exact
+  generated 200 response schema.
+- After the correction, Node 24.19.0 `npm run test:integration` passed 58/58
+  with zero skips; `npm run gates:test` passed 86/86; `npm run build` passed
+  with CSP verification; and `npm run security:check` found zero production
+  dependency vulnerabilities. Typecheck, lint, format, privacy, EOL and
+  `git diff --check` also passed.
+- GitHub Actions remains disabled, so no hosted CI evidence exists. No deployment
+  or production change occurred. The local commit and direct normal push are
+  pending; the separate dirty email-OTP worktree remains untouched.

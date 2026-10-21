@@ -888,6 +888,11 @@ export default function SavedLeads({
           <ArrowLeft size={18} />
         </button>
         <h1>{scope === 'applications' ? 'Applications' : 'Saved Leads'}</h1>
+        {scope === 'applications' && (
+          <a className={styles.btnSecondary} href="/api/applications/export">
+            Export applications CSV
+          </a>
+        )}
       </div>
       <div className={styles.tabsRow} role="group" aria-label="Lead status">
         {statuses.map((value) => (

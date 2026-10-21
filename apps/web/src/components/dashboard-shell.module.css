@@ -1010,6 +1010,7 @@
 
 .mobileNav {
   display: none;
+  min-width: 0;
   gap: 6px;
   padding: 10px 16px;
   overflow-x: auto;

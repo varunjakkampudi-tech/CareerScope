@@ -660,6 +660,11 @@ function contracts(options: {
       { failures: [400, 429] },
     ),
     'GET /api/leads/:id': operation('Read a saved lead', lead, { failures: [400, 404, 429] }),
+    'GET /api/applications/export': operation(
+      'Download the authenticated candidate’s application records as privacy-scoped CSV',
+      { content: { 'text/csv': { schema: text() } } },
+      { failures: [401, 403, 429] },
+    ),
     'PUT /api/leads/:id': operation(
       'Update candidate-owned notes, stage, and candidate-reported application evidence using optimistic concurrency',
       lead,

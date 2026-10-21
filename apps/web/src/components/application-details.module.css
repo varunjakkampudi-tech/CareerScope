@@ -494,6 +494,7 @@
  */
 .workspaceActions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--dash-space-3);
   margin-bottom: var(--dash-space-4);

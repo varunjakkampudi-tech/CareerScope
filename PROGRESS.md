@@ -1333,3 +1333,40 @@ was committed and pushed to `main` as `136c91666faa09b8b4cadefb15de151b26d40ecf`
 After fetch, local `main` and `origin/main` matched. The exact SHA has no hosted
 Actions run because repository Actions remains disabled. No deployment or
 production change occurred.
+
+### Candidate-owned application CSV export (2026-10-21, Node 24.19.0)
+
+Implemented the v12 section 4.9 CSV export without adding a service, queue,
+database migration, or new persistence model. The authenticated API derives the
+owner from the current server session, limits export requests, returns a
+`private, no-store` attachment, and serializes only tracked application
+statuses. Export columns are limited to job/application context, candidate-
+reported application evidence and candidate notes; raw job descriptions and
+internal IDs are excluded. CSV quoting and spreadsheet-formula neutralization
+are covered by unit tests. The Applications screen now exposes an accessible
+export link. Its 320px browser assertion exposed a non-wrapping title/action
+row; the shared Applications/Saved Leads header now wraps rather than widening
+the page, while the compact navigation remains an in-container scroller.
+
+Validation on the exact local source: `npm run gates:test` PASS (86/86 unit
+tests; lint, strict typecheck, privacy, deployment gate, source integrity and
+line endings included); `npm run test:integration` PASS (58/58, zero skips,
+disposable PostgreSQL 17.6 and Redis 7.4.5); `npm run build` PASS (both Next
+builds and CSP hash verification); UI run completed on Chromium, Firefox and
+WebKit, including axe, keyboard and responsive checks; `npm run format:check`,
+`npm run privacy:check`, `npm run eol:check` and `git diff --check` PASS.
+`npm run test:domain` passed 836/836, and `npm run security:check` reported zero
+production dependency vulnerabilities. The first integration attempt ran before the configured disposable loopback
+services were available and was not counted; a full successful run followed
+after isolated services were started. A fresh independent review of the exact
+export diff from base `4fe524ad911b03aa981dc3151804837a42abf95d` returned PASS
+(review fingerprint `BB680AA000595C20B5370B3B9E060717277FBBF87D2509F1EDF9A15126015FA1`).
+That review's P2 OpenAPI response mismatch was corrected; on Node 24.19.0,
+`npm run test:integration` passed 58/58 with zero skips, `npm run gates:test`
+passed 86/86 unit tests, `npm run build` passed with CSP verification,
+`npm run security:check` found zero production dependency vulnerabilities, and
+typecheck, lint, formatting, privacy, EOL and diff checks passed. Prior exact-tree
+evidence includes three-browser UI/axe/eight-width checks and domain tests
+(836/836). No live data, provider call, hosted CI, deployment or production
+change was involved. The local commit and normal push are pending; PDF export and
+the other v12 section 4.9 capabilities remain out of scope for this change.

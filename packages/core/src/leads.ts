@@ -46,6 +46,13 @@ const listSchema = z
     limit: z.coerce.number().int().min(1).max(50).default(25),
   })
   .strict();
+const applicationExportStatuses: readonly LeadRecord['status'][] = [
+  'applied',
+  'interviewing',
+  'offer',
+  'rejected',
+  'withdrawn',
+];
 const historySchema = z
   .object({
     before: z.coerce.number().int().min(1).max(2_147_483_647).optional(),
@@ -165,6 +172,16 @@ export class LeadRepository {
     );
     const items = result.rows.slice(0, limit).map(hydrate);
     return { items, nextCursor: result.rows.length > limit ? items.at(-1)!.id : null };
+  }
+
+  async listApplicationsForExport(ownerId: string): Promise<LeadRecord[]> {
+    const result = await this.database.pool.query<LeadRecord>(
+      `SELECT ${columns} FROM saved_leads
+       WHERE owner_id = $1 AND status = ANY($2::text[])
+       ORDER BY updated_at DESC, id DESC`,
+      [ownerId, applicationExportStatuses],
+    );
+    return result.rows.map(hydrate);
   }
 
   async history(ownerId: string, id: string, input: unknown) {

@@ -1289,6 +1289,63 @@ try {
         await page.goto(`${origin}${route}`);
         await page.waitForLoadState('networkidle');
         await accessible(page, engine, route.slice(1), routeHeading);
+        if (route === '/applications') {
+          const exportLink = page.getByRole('link', { name: 'Export applications CSV' });
+          await exportLink.waitFor({ state: 'visible' });
+          assert.equal(await exportLink.getAttribute('href'), '/api/applications/export');
+          for (const width of requiredResponsiveWidths) {
+            await page.setViewportSize({ width, height: 900 });
+            const layout = await page.evaluate(() => ({
+              viewportWidth: window.innerWidth,
+              documentWidth: document.documentElement.scrollWidth,
+              shell: (() => {
+                const element = document.querySelector('[data-theme]');
+                if (!element) return null;
+                const rect = element.getBoundingClientRect();
+                return { width: Math.round(rect.width), right: Math.round(rect.right) };
+              })(),
+              mobileNav: (() => {
+                const element = document.querySelector('nav[aria-label="CareerScope, compact"]');
+                if (!element) return null;
+                const rect = element.getBoundingClientRect();
+                const style = getComputedStyle(element);
+                return {
+                  width: Math.round(rect.width),
+                  right: Math.round(rect.right),
+                  clientWidth: element.clientWidth,
+                  scrollWidth: element.scrollWidth,
+                  minWidth: style.minWidth,
+                  overflowX: style.overflowX,
+                };
+              })(),
+              overflowingElements: Array.from(document.querySelectorAll('body *'))
+                .filter((element) => element.getBoundingClientRect().right > window.innerWidth + 1)
+                .slice(0, 5)
+                .map((element) => ({
+                  tag: element.tagName.toLowerCase(),
+                  className: typeof element.className === 'string' ? element.className : '',
+                  right: Math.round(element.getBoundingClientRect().right),
+                })),
+              nonNavigationOverflowingElements: Array.from(document.querySelectorAll('body *'))
+                .filter(
+                  (element) =>
+                    !element.closest('nav[aria-label="CareerScope, compact"]') &&
+                    element.getBoundingClientRect().right > window.innerWidth + 1,
+                )
+                .slice(0, 8)
+                .map((element) => ({
+                  tag: element.tagName.toLowerCase(),
+                  className: typeof element.className === 'string' ? element.className : '',
+                  right: Math.round(element.getBoundingClientRect().right),
+                })),
+            }));
+            assert.ok(
+              layout.documentWidth <= layout.viewportWidth,
+              `${engine} applications/export surface overflows at ${width}px: ${JSON.stringify(layout)}`,
+            );
+          }
+          await page.setViewportSize({ width: 1440, height: 900 });
+        }
       }
       await page.setViewportSize({ width: 1440, height: 900 });
       await settled('route /settings');

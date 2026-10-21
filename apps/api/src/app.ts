@@ -14,6 +14,7 @@ import {
   type SourceId,
 } from '@careerscope/shared';
 import { registerOpenApi } from './openapi.js';
+import { applicationsCsv } from './application-export.js';
 import {
   Auth,
   createEmailOtp,
@@ -1232,6 +1233,16 @@ export async function createApp(
     const lead = await leads.get(request.ownerId!, id);
     if (!lead) throw new HttpError(404, 'Lead not found');
     return lead;
+  });
+  app.get('/api/applications/export', async (request, reply) => {
+    if (!(await consumeRateLimit(request, `applications-export:${request.ownerId!}`, 5, 60)))
+      throw new HttpError(429, 'Too many exports');
+    const applications = await leads.listApplicationsForExport(request.ownerId!);
+    return reply
+      .header('Cache-Control', 'private, no-store')
+      .header('Content-Disposition', 'attachment; filename="careerscope-applications.csv"')
+      .type('text/csv; charset=utf-8')
+      .send(applicationsCsv(applications));
   });
   app.get('/api/leads/:id/history', async (request) => {
     await readBudget(request, 'leads-read', 240);

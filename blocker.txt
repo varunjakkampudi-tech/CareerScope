@@ -853,3 +853,49 @@ Affected tasks: v12 section 4.3, matching inputs, application/interview document
   references, migration and deletion semantics.
 Evidence references: `docs/requirements/CareerScope-v12.md`,
   `GAP_MATRIX.md`, `packages/core/src/database.test.ts`, and current schema/API/UI.
+
+BLOCKER ID: REVIEW-APPLICATION-EXPORT-01
+Title: Independent review is required before integrating candidate application export
+Priority: High
+Module: Candidate-owned application data export
+v12 requirement / checklist item: Section 4.9; personal-data export review gate
+Status: RESOLVED
+Resolution: A fresh independent read-only review of the exact application-export
+  diff from base `4fe524ad911b03aa981dc3151804837a42abf95d` returned PASS. The
+  reviewed composite diff fingerprint is
+  `BB680AA000595C20B5370B3B9E060717277FBBF87D2509F1EDF9A15126015FA1`.
+  The review identified one P2 OpenAPI mismatch; the response now declares
+  `content: { 'text/csv': { schema: { type: 'string' } } }`, and the PostgreSQL
+  integration test asserts that exact generated response contract.
+Current evidence: Node 24.19.0 `npm run gates:test` PASS (86/86 unit tests),
+  `npm run test:integration` PASS (58/58, zero skips), `npm run build` PASS
+  (production build/CSP), `npm run security:check` PASS (zero production
+  dependency vulnerabilities), and `npm run typecheck`, `npm run lint`,
+  `npm run format:check`, `npm run privacy:check`, `npm run eol:check`, and
+  `git diff --check` PASS. Prior current-tree evidence includes three-browser
+  UI/axe/eight-width checks and domain tests (836/836). Hosted CI remains
+  unavailable because GitHub Actions is disabled; no production deployment or
+  change has occurred. Commit/push verification is pending.
+Prior event retained for audit: the initial external review runner required
+  interactive login and could not issue a verdict. A separate independent
+  read-only reviewer subsequently completed the exact-diff review; no credentials
+  or tokens were requested or exposed.
+Impact: None remains for local integration of this export change. Hosted CI and
+  production acceptance are separate outstanding gates and are not implied here.
+What was done: Corrected the OpenAPI response media type, added an exact generated
+  contract assertion, reran local validation on Node 24.19.0, and obtained a fresh
+  independent PASS. The separate email-OTP worktree was not accessed or modified.
+Verification procedure: Compare the reviewer fingerprint and base to the reviewed
+  export diff; verify the recorded Node 24 test/build/security outputs. Any
+  material source change invalidates the review and requires another pass.
+Next action: Commit the validated export change to `main`, push normally, and
+  verify local and remote `main` agree. Do not deploy production.
+Required environment-variable names (no values): None
+External dependencies: None for the completed local review. Hosted CI remains
+  disabled under owner-controlled GitHub settings.
+Expected result: Independent PASS and exact-diff local validation; achieved.
+Tests to rerun: Re-review and rerun applicable validation if the reviewed export
+  source changes before commit.
+Affected tasks: Candidate-owned application export and the review/commit gate.
+Evidence references: `docs/governance/ENGINEERING-CONTRACT.md`,
+  `apps/api/src/application-export.ts`, and `scripts/check-ui.ts`.

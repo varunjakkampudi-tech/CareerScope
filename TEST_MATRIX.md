@@ -1,6 +1,6 @@
 # CareerScope v12 test evidence matrix
 
-Current integration checkpoint (21 October 2026): 84 root unit/gate, 56 real-service
+Previously pushed main checkpoint (21 October 2026): 84 root unit/gate, 56 real-service
 integration and 835 domain tests pass; all three browser engines and selector
 journeys pass with axe/keyboard and all eight required responsive widths. Queue
 restart/AOF, database restore, crash recovery, full-disk, build/CSP, formatting,
@@ -375,3 +375,19 @@ passed 84/84, `npm run test:domain` passed 836/836, and service-backed
 PostgreSQL 17.6/Redis 7.4.5. `npm run build` passed both production builds and
 CSP verification. No real job sources were contacted; hosted CI remains
 unavailable because Actions is disabled.
+
+### Application export evidence (2026-10-21, Node 24.19.0)
+
+| Check                                                                                             | Result                        | Scope                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `apps/api/src/application-export.test.ts` (registered in `npm run test:unit`)                     | PASS, 2/2                     | CSV quoting, formula neutralization, candidate-reported columns, exclusion of raw description/internal IDs, stable empty export                        |
+| `apps/api/src/applications-export.integration.test.ts` (registered in `npm run test:integration`) | PASS, 1/1                     | Isolated PostgreSQL; unauthenticated denial, session-derived owner isolation, application-only selection, cache/download headers, OpenAPI registration |
+| `npm run gates:test`                                                                              | PASS, 86/86 unit tests        | Node policy, source integrity, privacy, deployment-gate checks, EOL, lint, strict typecheck and unit suite                                             |
+| `npm run test:integration`                                                                        | PASS, 58/58; zero skips       | Disposable PostgreSQL 17.6, Redis 7.4.5 and AOF/noeviction queue Redis                                                                                 |
+| `npm run build`                                                                                   | PASS                          | Both production builds and verification of all generated CSP inline-script hashes                                                                      |
+| `CAREERSCOPE_UI_BROWSER=all npm run test:ui`                                                      | PASS, Chromium/Firefox/WebKit | Applications export link accessible and points at the API route; suite includes axe, keyboard and required responsive-width checks                     |
+| `npm run format:check`, `npm run privacy:check`, `npm run eol:check`, `git diff --check`          | PASS                          | Formatting, privacy scanner, line endings and patch whitespace                                                                                         |
+
+All fixtures were synthetic and services loopback-only. No Resend or other live
+provider call was made; these local checks do not imply hosted CI or production
+acceptance.
