@@ -458,18 +458,19 @@ Verified root cause: The original Node 24 image did not contain project
   `next/font/google` at build time, so the production build requires network access
   to that font source; the offline-only build failure was environmental, and the
   bounded network-enabled build passed.
-Current implementation: Node 24.19.0 is available and has been used for the
-  current task-branch validation. The current uncommitted task branch includes
-  PostgreSQL-backed OTP challenges, request/verification routes, a Resend
-  adapter behind an injected provider boundary, session issuance/rotation,
-  rate limiting, OTP UI, dual-address email change and related migrations/tests.
-  These are local implementation claims supported by current source and
-  recorded tests, not live provider, hosted or production acceptance.
+Current implementation: Node 24.19.0 is available and has been used for
+  validation on canonical main. Main contains the committed PostgreSQL-backed
+  OTP challenges, request/verification routes, Resend adapter, session
+  issuance/rotation, rate limiting, OTP UI, dual-address email change and
+  related migrations/tests. The separate dirty email-OTP worktree remains
+  preserved and was not changed or merged in this follow-up. These are local
+  implementation claims, not live provider, hosted or production acceptance.
 Impact: No longer blocks local Node 24 validation. The latest local unit,
   service-backed integration, typecheck, build, lint, formatting, EOL and privacy
-  checks are recorded in `PROGRESS.md` and `TEST_MATRIX.md`. The latest complete
-  cross-browser run remains failed/incomplete in Firefox at dashboard request
-  quiescence; hosted CI, live delivery and production validation remain absent.
+  checks are recorded in `PROGRESS.md` and `TEST_MATRIX.md`. A fresh complete
+  Chromium/Firefox/WebKit browser run now passes with axe, keyboard checks and
+  all eight required viewport widths. Hosted CI, live delivery and production
+  validation remain absent.
 What the agent already tried: Verified the current clean checkpoint and backup;
   inspected local Docker runtime/image metadata, Node 24 image availability,
   project dependency availability, and Windows sandbox command availability.
@@ -486,10 +487,19 @@ Work completed: On a clean scratch checkout, lockfile dependency installation
   reported only the pre-existing formatting issue in `design/DESIGN-INDEX.json`;
   that design artifact was not rewritten. Targeted formatting and privacy checks
   for the updated evidence documents passed.
-Remaining action: None for isolated Node 24 toolchain availability. Diagnose
-  the current Firefox dashboard-quiescence failure and obtain a fresh complete
-  Chromium/Firefox/WebKit browser pass. Hosted CI, provider and production
-  acceptance remain unverified.
+  On 21 October 2026, the current main source passed `npm run test:integration`
+  56/56 with zero skips, queue restart/AOF recovery, PostgreSQL restore (18
+  tables plus encrypted-object restore), all four crash boundaries, full-disk
+  behavior and the synthetic 30-second performance check. The exact responsive
+  browser matrix also passed Chromium/Firefox/WebKit at all eight required
+  widths. These current local results are recorded in `PROGRESS.md` and
+  `TEST_MATRIX.md`; they supersede the prior Firefox-browser failure for the
+  tested source. All disposable services were stopped.
+Remaining action: None for local Node 24 validation, service-backed integration,
+  automated browser acceptance, queue/database/crash recovery or full-disk
+  checks in this evidence context. Future source/test changes require relevant
+  regression reruns. Hosted CI, live provider, manual assistive-technology/design
+  review and production acceptance remain unverified.
 Required environment-variable names (no values): Only explicit synthetic test
   values required by the selected check; never inherit the host environment.
 External dependencies: None for the validated local test suites. Hosted CI,
@@ -501,10 +511,11 @@ Verification procedure: Validate the recorded runtime, lockfile install,
   isolation profile and exact test results in `PROGRESS.md` and `TEST_MATRIX.md`.
   The named synthetic service containers were removed; they used tmpfs and left
   no persistent data volumes.
-Tests to rerun: None for toolchain availability; rerun relevant gates after any
-  source/test changes. Browser and external acceptance remain separate.
-Affected tasks: Local unit/build/integration validation — verified; no claim for
-  unrun browser, hosted, provider or production evidence.
+Tests to rerun: Rerun relevant gates after source/test changes. Hosted browser,
+  external provider, human and production acceptance remain separate.
+Affected tasks: Local unit/build/integration/recovery/browser validation —
+  verified in the documented evidence context; hosted, provider or production
+  acceptance remains separate.
 Evidence references: `PROGRESS.md`, `TEST_MATRIX.md` AUTH-TEST-03, and the clean
   Node 24 validation scratch checkout.
 

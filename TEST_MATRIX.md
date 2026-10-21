@@ -1,8 +1,9 @@
 # CareerScope v12 test evidence matrix
 
-Current integration checkpoint (21 October 2026): 77 unit, 55 real-service
+Current integration checkpoint (21 October 2026): 84 root unit/gate, 56 real-service
 integration and 835 domain tests pass; all three browser engines and selector
-journeys pass with axe/keyboard/reflow. Recovery, full-disk, build/CSP, formatting,
+journeys pass with axe/keyboard and all eight required responsive widths. Queue
+restart/AOF, database restore, crash recovery, full-disk, build/CSP, formatting,
 lint/typecheck and privacy checks pass. Exact commands and evidence limits are
 in [the consolidation report](docs/MAIN-CONSOLIDATION-2026-10-21.md). Hosted CI,
 live provider, legal and production acceptance remain separate unverified gates.
@@ -283,6 +284,25 @@ local web process; the exact resources started for the run were stopped afterwar
 This is local automated evidence only: hosted browser CI, manual assistive-
 technology review, visual/design acceptance, live provider behavior and
 production acceptance remain unverified.
+
+### Current main service, recovery and performance rerun (2026-10-21)
+
+On canonical `main` source at `5ce8410eb371c6b94de785d89389760a85c1009e`,
+`npm run test:integration` passed 56/56 with zero skips using disposable,
+loopback-only PostgreSQL 17.6 and Redis 7.4.5 containers (separate rate-limit
+and queue instances; queue persistence AOF enabled, `noeviction`).
+`npm run test:queue-runtime` passed, including restart/AOF restore and process
+lifecycle; `npm run test:database-recovery` passed and compared 18 database
+tables plus encrypted resume-object recovery; `npm run test:crash-recovery`
+passed all four crash boundaries; `npm run test:full-disk` passed with zero
+stranded temporaries and all reservations released.
+
+`npm run test:performance` passed a 30-second synthetic run at concurrency 8:
+17,684 requests, zero failures, 589.5 requests/second, p50 12.86 ms, p95
+19.57 ms and p99 25.22 ms. This is local synthetic evidence, not a production
+SLO, load target or proof of capacity for the full v12 concurrency requirements.
+All disposable containers were stopped after execution. No shared database,
+production service, live provider, deployment or hosted CI was involved.
 
 ### Expired email-change request retention regression (2026-10-21)
 

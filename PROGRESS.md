@@ -1064,3 +1064,36 @@ and `npm run typecheck` also passed directly. The UI result is local and is not
 hosted CI evidence. The stale current-state UI failure in `TEST_MATRIX.md` was
 updated while retaining earlier dated failure history. Service-backed
 integration/recovery and production checks were not rerun in this follow-up.
+
+Subsequent service/recovery/performance refresh: The complete service-backed
+integration, queue restart/AOF, database restore, crash recovery, full-disk and
+synthetic performance checks were then run on the same main source SHA; exact
+results are recorded in the following entry.
+
+### Service, recovery and performance evidence refresh (2026-10-21)
+
+Using Node 24.19.0 and canonical `main` source at
+`5ce8410eb371c6b94de785d89389760a85c1009e`, the complete
+`npm run test:integration` passed 56/56 with zero skips against newly created
+loopback-only PostgreSQL 17.6 and Redis 7.4.5 containers. Two isolated Redis
+instances were used; the queue instance used AOF and `noeviction`. The suite
+included email OTP/session, database/ownership, queue, resume/storage, retention,
+scheduler and liveness integration tests. Provider configuration was synthetic;
+no live Resend request was made.
+
+`npm run test:queue-runtime` passed the Redis restart/AOF restore and real queue
+process lifecycle test (1/1). `npm run test:database-recovery` passed (1/1),
+comparing all 18 database tables and restoring an encrypted resume object.
+`npm run test:crash-recovery` passed all four publication/upload/lease crash
+boundaries. `npm run test:full-disk` passed: typed capacity failure, no stranded
+temporary objects, zero reserved bytes after failure, and successful retry after
+capacity release.
+
+`npm run test:performance` passed a 30-second synthetic run at concurrency 8:
+17,684 requests, zero failures, 589.5 requests/sec, p50 12.86 ms, p95 19.57 ms,
+p99 25.22 ms; baseline RSS 303,767,552 bytes and peak RSS 420,581,376 bytes.
+These measurements are local synthetic results, not production SLOs or proof of
+the full v12 concurrency target. All temporary test containers were stopped.
+No shared/production database, live provider or production infrastructure was
+accessed. GitHub Actions remains disabled; hosted CI and live/owner acceptance
+gates remain unresolved.
