@@ -1,5 +1,20 @@
 # CareerScope v12 engineering progress
 
+## Browser runtime-error gate follow-up (2026-10-21)
+
+On the local `main` working tree based on `aa67c199250ecd73145349a6c6954cafd47659a8`,
+`npm run test:ui` completed successfully in Chromium, Firefox and WebKit. The
+existing browser harness now verifies that its console-error listener is live,
+fails on unexpected console errors, uncaught page exceptions and page crashes in
+the OTP, authenticated candidate and test-account selector journeys, and emits
+only sanitized error categories/route paths. Deliberate negative API cases are
+permitted only by exact fixture route/status pairs. The full local `npm run
+gates:test` also passed (including 91 unit tests); typecheck, lint, format,
+EOL and privacy checks passed. These are local results, not hosted CI evidence.
+Warnings, unhandled rejections, critical network-error policy, broader leakage
+controls, manual assistive-technology review and hosted browser CI remain open;
+no production or provider configuration was changed.
+
 ## Owner-approved source revision follow-up (2026-10-21)
 
 The owner explicitly approved the supplied revised CareerScope v12, Engineering

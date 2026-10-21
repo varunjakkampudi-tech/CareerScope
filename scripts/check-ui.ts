@@ -36,6 +36,70 @@ const responsiveWidthsEndingAt = (lastWidth: (typeof requiredResponsiveWidths)[n
   ...requiredResponsiveWidths.filter((width) => width !== lastWidth),
   lastWidth,
 ];
+const browserConsoleErrorKind = (message: { text(): string; location(): { url: string } }) => {
+  const text = message.text();
+  if (text === 'careerscope-runtime-guard-sentinel') return 'synthetic console sentinel';
+  let path = 'unknown source';
+  try {
+    path = new URL(message.location().url).pathname.replace(
+      /\/[0-9a-f]{8}-[0-9a-f-]{27,}/gi,
+      '/:id',
+    );
+  } catch {
+    // Do not expose raw browser URLs in CI diagnostics.
+  }
+  const networkError = text.match(/net::(ERR_[A-Z_]+)/)?.[1];
+  if (networkError) return `network ${networkError}`;
+  const failedResourceStatus = text.match(/status of (\d{3})/i)?.[1];
+  if (/failed to load resource/i.test(text)) {
+    return failedResourceStatus
+      ? `resource HTTP ${failedResourceStatus} at ${path}`
+      : `failed resource at ${path}`;
+  }
+  if (/content security policy|contentsecuritypolicy/i.test(text)) return 'CSP violation';
+  if (/hydration/i.test(text)) return 'hydration error';
+  if (/TypeError|ReferenceError|SyntaxError/.test(text)) {
+    return text.match(/TypeError|ReferenceError|SyntaxError/)?.[0] ?? 'JavaScript error';
+  }
+  return 'unclassified console error';
+};
+const expectedOtpFixtureConsoleErrors = new Set([
+  'resource HTTP 401 at /api/otp/verify',
+  // This browser flow intentionally stubs only authentication and email-change
+  // contracts. Other authenticated-page reads use the fixture's explicit 404
+  // fallback; a new API path is not silently allowlisted.
+  'resource HTTP 404 at /api/profile',
+  'resource HTTP 404 at /api/resumes',
+  'resource HTTP 404 at /api/searches',
+  'resource HTTP 404 at /api/leads',
+  'resource HTTP 404 at /api/notifications',
+  'resource HTTP 404 at /api/account/sessions',
+  'resource HTTP 404 at /api/account/marketing-consent',
+]);
+const expectedAuthenticatedJourneyConsoleErrors = new Set([
+  // These are deliberate negative API cases asserted by this browser suite:
+  // outage, rate-limit, stale/deleted resource, validation, and conflict UX.
+  'resource HTTP 503 at /api/login',
+  'resource HTTP 507 at /api/resumes',
+  'resource HTTP 500 at /api/resumes',
+  'resource HTTP 503 at /api/preparation',
+  'resource HTTP 500 at /api/account/sessions/revoke-others',
+  'resource HTTP 429 at /api/account/sessions/revoke-others',
+  'resource HTTP 500 at /api/account/password',
+  'resource HTTP 401 at /api/login',
+  'resource HTTP 503 at /api/searches/:id/export',
+  'resource HTTP 401 at /api/searches/:id/export',
+  'resource HTTP 401 at /api/session/refresh',
+  'resource HTTP 503 at /api/searches/:id/cancel',
+  'resource HTTP 503 at /api/leads',
+  'resource HTTP 409 at /api/leads/:id',
+  'resource HTTP 409 at /api/profile',
+  'resource HTTP 400 at /api/searches/not-a-uuid',
+  'resource HTTP 404 at /api/searches/:id',
+  'resource HTTP 400 at /api/leads/not-a-uuid',
+  'resource HTTP 404 at /api/leads/:id',
+  'resource HTTP 500 at /api/searches',
+]);
 
 const configured = process.env.DATABASE_URL;
 assert.ok(configured);
@@ -401,6 +465,7 @@ try {
       let emailChangeRequestCount = 0;
       const emailChangeVerifications: string[] = [];
       const otpPageErrors: string[] = [];
+      const otpConsoleErrors: string[] = [];
       const otpInflight = new Set<import('playwright').Request>();
       otpPage.on('request', (request) => {
         if (request.resourceType() !== 'eventsource') otpInflight.add(request);
@@ -408,6 +473,19 @@ try {
       otpPage.on('requestfinished', (request) => otpInflight.delete(request));
       otpPage.on('requestfailed', (request) => otpInflight.delete(request));
       otpPage.on('pageerror', (error) => otpPageErrors.push(error.message));
+      otpPage.on('crash', () => otpPageErrors.push('page crashed'));
+      otpPage.on('console', (message) => {
+        if (message.type() === 'error') otpConsoleErrors.push(browserConsoleErrorKind(message));
+      });
+      const otpConsoleSentinel = otpPage.waitForEvent(
+        'console',
+        (message) =>
+          message.type() === 'error' && message.text() === 'careerscope-runtime-guard-sentinel',
+      );
+      await otpPage.evaluate(() => console.error('careerscope-runtime-guard-sentinel'));
+      await otpConsoleSentinel;
+      assert.deepEqual(otpConsoleErrors, ['synthetic console sentinel']);
+      otpConsoleErrors.length = 0;
       const settleOtpRequests = async (label: string) => {
         const deadline = Date.now() + 15000;
         let quietSince = Date.now();
@@ -589,6 +667,11 @@ try {
       await accessible(otpPage, engine, 'dual-address email-change workflow', 'Account security');
       await settleOtpRequests('email-change workflow');
       assert.deepEqual(otpPageErrors, [], `${engine} email OTP UI produced browser errors`);
+      assert.deepEqual(
+        otpConsoleErrors.filter((error) => !expectedOtpFixtureConsoleErrors.has(error)),
+        [],
+        `${engine} email OTP UI produced unexpected console errors`,
+      );
       await otpPage.close();
 
       const signupPage = await browser.newPage();
@@ -745,6 +828,9 @@ try {
         await page.getByRole('button').filter({ hasText: email }).click();
       };
       const errors: string[] = [];
+      page.on('console', (message) => {
+        if (message.type() === 'error') errors.push(browserConsoleErrorKind(message));
+      });
       page.on('pageerror', (error) => {
         // WebKit can report an in-flight same-host fetch cancelled by a
         // full-document navigation as an access-control page error. The OTP
@@ -757,6 +843,7 @@ try {
           error.message.includes('/localhost:5280/');
         if (!isWebKitNavigationArtifact) errors.push(error.message);
       });
+      page.on('crash', () => errors.push('page crashed'));
       // A full-document navigation (goto/reload) that lands while the current
       // client-side route is still issuing its data fetches strands those
       // fetches, and WebKit reports a fetch started against a document that is
@@ -3540,7 +3627,11 @@ try {
           }
         ).__CAREERSCOPE_TEST_OWNER_AGNOSTIC_KEYS__ = false;
       });
-      assert.deepEqual(errors, []);
+      assert.deepEqual(
+        errors.filter((error) => !expectedAuthenticatedJourneyConsoleErrors.has(error)),
+        [],
+        `${engine} authenticated UI journey produced unexpected browser runtime errors`,
+      );
       // Let in-flight network handlers settle before disposing the browser
       // context. Closing Chromium with a `route.fetch()` callback still active
       // can reject against Playwright's already-disposed request context.
@@ -3564,6 +3655,23 @@ try {
       const browser = await browserType.launch();
       try {
         const page = await browser.newPage();
+        const runtimeErrors: string[] = [];
+        page.on('console', (message) => {
+          if (message.type() === 'error') {
+            runtimeErrors.push(browserConsoleErrorKind(message));
+          }
+        });
+        page.on('pageerror', () => runtimeErrors.push('uncaught page exception'));
+        page.on('crash', () => runtimeErrors.push('page crashed'));
+        const consoleSentinel = page.waitForEvent(
+          'console',
+          (message) =>
+            message.type() === 'error' && message.text() === 'careerscope-runtime-guard-sentinel',
+        );
+        await page.evaluate(() => console.error('careerscope-runtime-guard-sentinel'));
+        await consoleSentinel;
+        assert.deepEqual(runtimeErrors, ['synthetic console sentinel']);
+        runtimeErrors.length = 0;
         await page.goto(origin);
         await page.getByRole('heading', { name: 'Select test account', exact: true }).waitFor();
         assert.equal(await page.locator('input[type="password"]').count(), 0);
@@ -3612,6 +3720,11 @@ try {
             false,
           );
         }
+        assert.deepEqual(
+          runtimeErrors,
+          [],
+          `${engine} test selector journey produced runtime errors`,
+        );
         process.stdout.write(
           `${engine}: real two-account selector, session switching, keyboard, eight-width reflow and axe passed\n`,
         );
