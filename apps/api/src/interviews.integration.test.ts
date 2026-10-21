@@ -96,6 +96,7 @@ test(
           },
           preferences: { titles: ['Synthetic Role'], techStack: ['TypeScript'] },
           application: { yearsOfExperience: 2 },
+          accessibility: { reducedMotion: true },
         },
       });
       const foreignProfile = await app.inject({
@@ -105,6 +106,20 @@ test(
       assert.equal(foreignProfile.statusCode, 200);
       assert.equal(foreignProfile.json().profile, null);
       assert.doesNotMatch(foreignProfile.body, /Synthetic Owner Profile|Synthetic Role/);
+      const ownedAccessibility = await app.inject({
+        url: '/api/profile/accessibility',
+        headers: { cookie },
+      });
+      assert.equal(ownedAccessibility.statusCode, 200);
+      assert.deepEqual(ownedAccessibility.json(), { reducedMotion: true });
+      const foreignAccessibility = await app.inject({
+        url: '/api/profile/accessibility',
+        headers: { cookie: otherCookie },
+      });
+      assert.equal(foreignAccessibility.statusCode, 200);
+      assert.deepEqual(foreignAccessibility.json(), { reducedMotion: false });
+      assert.doesNotMatch(foreignAccessibility.body, /Synthetic Owner Profile|Synthetic Role/);
+      assert.equal((await app.inject({ url: '/api/profile/accessibility' })).statusCode, 401);
 
       const foreignLeadRead = await app.inject({
         url: `/api/leads/${ownLeadId}`,
@@ -786,6 +801,7 @@ test(
        */
       const docs = await app.inject({ url: '/api/docs/json', headers: { cookie } });
       assert.equal(docs.statusCode, 200);
+      assert.ok(docs.json().paths['/api/profile/accessibility']?.get);
       assert.ok(docs.json().paths['/api/leads/{id}/interviews']?.get);
       assert.ok(docs.json().paths['/api/leads/{id}/interviews']?.post);
       assert.ok(docs.json().paths['/api/interviews/{id}']?.put);

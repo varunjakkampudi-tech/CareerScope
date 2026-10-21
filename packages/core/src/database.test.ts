@@ -2739,10 +2739,18 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
         url: '/api/profile',
         cookies,
         headers,
-        payload: { revision: 1, profile: { ...profile, application: { yearsOfExperience: 5 } } },
+        payload: {
+          revision: 1,
+          profile: {
+            ...profile,
+            application: { yearsOfExperience: 5 },
+            accessibility: { reducedMotion: true },
+          },
+        },
       });
       assert.equal(updatedProfile.statusCode, 200);
       assert.equal(updatedProfile.json().revision, 2);
+      assert.deepEqual(updatedProfile.json().profile.accessibility, { reducedMotion: true });
       assert.equal(
         (
           await app.inject({
@@ -2797,6 +2805,7 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
       );
       const persistedProfile = (await app.inject({ url: '/api/profile', cookies })).json();
       assert.equal(persistedProfile.profile.application.yearsOfExperience, 5);
+      assert.deepEqual(persistedProfile.profile.accessibility, { reducedMotion: true });
       assert.equal(persistedProfile.revision, 2);
       const preparation = await app.inject({ url: '/api/preparation', cookies });
       assert.equal(preparation.statusCode, 200);

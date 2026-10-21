@@ -2,9 +2,9 @@
 
 import { useEffect, type ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, SESSION_EXPIRED_EVENT } from '@/lib/api';
-import { useSession } from '@/lib/session';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ApiError, api, SESSION_EXPIRED_EVENT } from '@/lib/api';
+import { ownerKey, useOwner, useSession } from '@/lib/session';
 import { useTheme } from '@/lib/theme';
 import { hasUnsavedChanges } from '@/lib/unsaved-changes';
 import { clearAuthQueryCache } from '@/lib/query-cache';
@@ -27,8 +27,28 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
   const pathname = usePathname();
   const cache = useQueryClient();
   const session = useSession();
+  const owner = useOwner();
   const { theme, toggle } = useTheme();
   const authenticated = session.data?.authenticated === true;
+  const profile = useQuery({
+    queryKey: ownerKey(owner, 'profile-accessibility'),
+    enabled: authenticated && !!owner,
+    queryFn: ({ signal }) => api<{ reducedMotion: boolean }>('/profile/accessibility', { signal }),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    retry: (failureCount, error) =>
+      !(error instanceof ApiError && error.status === 401) && failureCount < 1,
+  });
+  const reduceMotion = profile.data?.reducedMotion === true;
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (authenticated && reduceMotion) root.dataset.reducedMotion = 'true';
+    else delete root.dataset.reducedMotion;
+    return () => {
+      delete root.dataset.reducedMotion;
+    };
+  }, [authenticated, reduceMotion]);
 
   useEffect(() => {
     // CS-36 (review P3, 2026-09-25): this is the THIRD teardown path, and it

@@ -1167,6 +1167,11 @@ export async function createApp(
       }
     );
   });
+  app.get('/api/profile/accessibility', async (request) => {
+    await readBudget(request, 'profile-accessibility-read', 120);
+    const saved = await profiles.get(request.ownerId!);
+    return { reducedMotion: saved?.profile.accessibility?.reducedMotion === true };
+  });
   app.get('/api/preparation', async (request) => {
     z.object({}).strict().parse(request.query);
     if (!(await consumeRateLimit(request, `preparation:${request.ownerId!}`, 30, 60)))

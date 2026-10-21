@@ -25,6 +25,7 @@ const fields = {
     .strict(),
   preferences: preferencesSchema.strict(),
   application: applicationSchema.strict(),
+  accessibility: z.object({ reducedMotion: z.boolean().default(false) }).strict(),
 };
 
 export const writableProfileSchema = z
@@ -32,13 +33,20 @@ export const writableProfileSchema = z
     candidate: z.unknown(),
     preferences: z.unknown(),
     application: z.unknown(),
+    accessibility: z.unknown().optional(),
   })
   .strict()
   .transform((input, context) => {
     const candidate = fields.candidate.safeParse(input.candidate);
     const preferences = fields.preferences.safeParse(input.preferences);
     const application = fields.application.safeParse(input.application);
-    if (!candidate.success || !preferences.success || !application.success) {
+    const accessibility = fields.accessibility.safeParse(input.accessibility ?? {});
+    if (
+      !candidate.success ||
+      !preferences.success ||
+      !application.success ||
+      !accessibility.success
+    ) {
       context.addIssue({ code: 'custom', message: 'Invalid candidate profile' });
       return z.NEVER;
     }
@@ -46,6 +54,7 @@ export const writableProfileSchema = z
       candidate: candidate.data,
       preferences: preferences.data,
       application: application.data,
+      accessibility: accessibility.data,
     };
   });
 

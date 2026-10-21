@@ -1,5 +1,31 @@
 # CareerScope v12 engineering progress
 
+## Reduced-motion accessibility preference (2026-10-22)
+
+Added a candidate-owned `reducedMotion` boolean to the existing profile JSON
+contract (default false for older records), editable in the current Profile
+surface. The authenticated shell reads the value through a minimal
+`GET /api/profile/accessibility` response rather than caching the entire
+candidate profile for this single preference. The owner-scoped query cache is
+updated on save. CSS suppresses non-essential animation/transition duration
+and delays; OS `prefers-reduced-motion` behavior remains supported. The setting
+is excluded from matching inputs, and no database migration was needed.
+
+Evidence on Node 24.19.0: the full unit suite passed 94/94, the domain suite
+passed 839/839, and PostgreSQL integration passed 59/59 with zero skips,
+including preference persistence, owner isolation and unauthenticated denial.
+`npm run gates:test`, `npm run typecheck`, `npm run lint`, `npm run
+security:check` (0 production dependency vulnerabilities), formatting, EOL and
+diff checks passed. The production build passed both Next.js builds and CSP
+verification (13 hashes). `npm run test:ui` passed with exit code 0 against the
+production build across Chromium, Firefox and WebKit, including axe, keyboard,
+two-account session switching, responsive reflow and save/reload of the
+preference. A read-only independent code review approved this diff after
+requiring and verifying the profile-data-minimizing endpoint. The full
+goal-wide requirement audit, manual screen-reader judgment, hosted CI and
+production acceptance remain open; this slice is not a goal-wide percentage.
+No production behavior or infrastructure was changed.
+
 ## In-app interview reminder preference (2026-10-22)
 
 Implemented a candidate-owned switch on the existing `/settings` screen for

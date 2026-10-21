@@ -85,6 +85,7 @@ const profile = object({
     },
     [],
   ),
+  accessibility: object({ reducedMotion: { ...bool, default: false } }, []),
 });
 const profileRecord = object({
   revision: integer({ minimum: 0 }),
@@ -529,6 +530,11 @@ function contracts(options: {
     'GET /api/profile': operation(
       'Read the saved profile (revision zero when absent)',
       profileRecord,
+      { failures: [429] },
+    ),
+    'GET /api/profile/accessibility': operation(
+      'Read only the authenticated candidate’s saved accessibility preference',
+      object({ reducedMotion: bool }),
       { failures: [429] },
     ),
     'PUT /api/profile': operation('Save the profile using optimistic concurrency', profileRecord, {

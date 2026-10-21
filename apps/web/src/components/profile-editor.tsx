@@ -164,6 +164,9 @@ function ProfileForm({
         yearsOfExperience: Number(text('yearsOfExperience')),
         willingToRelocate: data.has('willingToRelocate'),
       },
+      accessibility: {
+        reducedMotion: data.has('reducedMotion'),
+      },
     });
   }
   return (
@@ -426,6 +429,20 @@ function ProfileForm({
           </label>
         </div>
       </fieldset>
+      <fieldset disabled={save.isPending}>
+        <legend>Accessibility</legend>
+        <div className="check-row">
+          <label>
+            <input
+              name="reducedMotion"
+              type="checkbox"
+              defaultChecked={record.profile?.accessibility?.reducedMotion ?? false}
+            />
+            Reduce non-essential motion
+          </label>
+        </div>
+        <p>CareerScope will minimize animation and scrolling motion across your workspace.</p>
+      </fieldset>
       <div className="profile-actions">
         <button className="primary" disabled={save.isPending}>
           {save.isPending ? <LoaderCircle className="spin" size={18} /> : <Save size={18} />}Save
@@ -551,7 +568,10 @@ export default function ProfileEditor({
           onReload={reload}
           onSaved={(record) => {
             setProposal(undefined);
-            cache.setQueryData(['profile'], record);
+            cache.setQueryData(ownerKey(owner, 'profile'), record);
+            cache.setQueryData(ownerKey(owner, 'profile-accessibility'), {
+              reducedMotion: record.profile?.accessibility?.reducedMotion ?? false,
+            });
             setDirty(false);
             onDirty(false);
             setSaved(true);

@@ -68,7 +68,7 @@ const browserConsoleErrorKind = (message: { text(): string; location(): { url: s
   if (/TypeError|ReferenceError|SyntaxError/.test(text)) {
     return text.match(/TypeError|ReferenceError|SyntaxError/)?.[0] ?? 'JavaScript error';
   }
-  return 'unclassified console error';
+  return `unclassified console error at ${path}`;
 };
 const installUnhandledRejectionGuard = (page: import('playwright').Page) =>
   page.addInitScript(() => {
@@ -113,6 +113,11 @@ const expectedAuthenticatedJourneyConsoleErrors = new Set([
   // flight during that explicit session revocation can therefore receive 401
   // while the authenticated shell clears private state and redirects.
   'resource HTTP 401 at /api/leads',
+  // The reduced-motion preference is read by the authenticated shell; an
+  // already-in-flight read can receive 401 after the password-change journey
+  // revokes all sessions. The shell must route that through its shared expiry
+  // handler, and the query must not retry an authentication failure.
+  'resource HTTP 401 at /api/profile/accessibility',
   'resource HTTP 503 at /api/login',
   'resource HTTP 507 at /api/resumes',
   'resource HTTP 500 at /api/resumes',
@@ -557,6 +562,9 @@ try {
           contentType: 'application/json',
           body: '{"error":"Not found"}',
         }),
+      );
+      await otpPage.route('**/api/profile/accessibility', (route) =>
+        route.fulfill({ contentType: 'application/json', json: { reducedMotion: false } }),
       );
       await otpPage.route('**/api/session', (route) =>
         route.fulfill({
@@ -3035,6 +3043,7 @@ try {
       await page.getByLabel('Email', { exact: true }).fill('candidate@example.test');
       await page.getByLabel('Location', { exact: true }).fill('Hyderabad');
       await page.getByLabel('Graduation Year', { exact: true }).fill('2024');
+      await page.getByRole('checkbox', { name: 'Reduce non-essential motion' }).check();
       await page
         .getByRole('textbox', { name: 'Education', exact: true })
         .fill('B.Tech, Computer Science');
@@ -3104,9 +3113,15 @@ try {
       const savedProfile = await new ProfileRepository(database).get(ownerId);
       assert.deepEqual(savedProfile?.profile.candidate.education, ['B.Tech, Computer Science']);
       assert.equal(savedProfile?.profile.candidate.graduationYear, 2024);
+      assert.deepEqual(savedProfile?.profile.accessibility, { reducedMotion: true });
       assert.deepEqual(savedProfile?.profile.candidate.projects, [
         'Accessible job search prototype',
       ]);
+      await page.waitForFunction(
+        () => document.documentElement.dataset.reducedMotion === 'true',
+        undefined,
+        { timeout: 5000 },
+      );
       await database.pool.query(
         `UPDATE candidate_profiles
          SET data = data #- '{candidate,education}'
@@ -3117,6 +3132,11 @@ try {
       );
       await page.reload();
       await page.getByLabel('Full Name', { exact: true }).waitFor();
+      assert.equal(
+        await page.getByRole('checkbox', { name: 'Reduce non-essential motion' }).isChecked(),
+        true,
+      );
+      assert.equal(await page.locator('html').getAttribute('data-reduced-motion'), 'true');
       assert.equal(await page.getByLabel('Graduation Year', { exact: true }).inputValue(), '');
       assert.equal(await educationField.inputValue(), '');
       assert.equal(await projectsField.inputValue(), '');
@@ -3885,7 +3905,7 @@ try {
       assert.deepEqual(
         errors.filter((error) => !expectedAuthenticatedJourneyConsoleErrors.has(error)),
         [],
-        `${engine} authenticated UI journey produced unexpected browser runtime errors`,
+        `${engine} authenticated UI journey produced unexpected browser runtime errors\n${recentRequestEvents.slice(-20).join('\n')}`,
       );
       if (warningDiagnostics) {
         const correlation = observedWarnings.map((warning) => ({

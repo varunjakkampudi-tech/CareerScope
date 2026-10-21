@@ -932,6 +932,16 @@ h3 {
     animation: none;
   }
 }
+:root[data-reduced-motion='true'] *,
+:root[data-reduced-motion='true'] *::before,
+:root[data-reduced-motion='true'] *::after {
+  scroll-behavior: auto !important;
+  animation-delay: 0ms !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-delay: 0ms !important;
+  transition-duration: 0.01ms !important;
+}
 @media (max-width: 760px) {
   .topbar {
     padding: 0 16px;

@@ -84,6 +84,21 @@ files/names, fixture, role, locale/channel/environment, expected result, command
 run ID/SHA and actual result. Full source-item traceability remains incomplete
 until that happens; no unmapped item is silently waived.
 
+## Reduced-motion preference verification (2026-10-22)
+
+- Profile unit tests validate the default `false`, strict boolean input, and
+  exclusion from deterministic matching inputs.
+- PostgreSQL integration validates persisted preference behavior, the minimal
+  `/api/profile/accessibility` response, owner isolation, and unauthenticated
+  denial. The complete integration run passed 59/59 with zero skips on Node
+  24.19.0.
+- `npm run test:ui` passed with exit code 0 against the production build in
+  Chromium, Firefox, and WebKit. It saves the preference, verifies the
+  document-level reduced-motion state, reloads, and confirms persistence;
+  keyboard, axe, and responsive checks also pass in the suite.
+- This is local automated evidence only. Manual screen-reader/device review,
+  hosted CI, and product/design acceptance remain open.
+
 ## AUTH-TEST-03 — isolated email OTP primitive
 
 At the original primitive-only checkpoint, `packages/core/src/email-otp.test.mjs` contained nine synthetic Node tests and was

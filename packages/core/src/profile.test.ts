@@ -61,6 +61,39 @@ test('profile reuses domain defaults without inventing qualifications', () => {
   assert.deepEqual(parsed.candidate.education, []);
   assert.deepEqual(parsed.candidate.projects, []);
   assert.equal(parsed.candidate.graduationYear, undefined);
+  assert.deepEqual(parsed.accessibility, { reducedMotion: false });
+});
+
+test('saved accessibility preferences are owner profile data, validated and excluded from matching inputs', () => {
+  const parsed = writableProfileSchema.parse({
+    ...syntheticProfile,
+    accessibility: { reducedMotion: true },
+  });
+  assert.deepEqual(parsed.accessibility, { reducedMotion: true });
+  assert.deepEqual(matchingProfile(parsed), {
+    candidate: { location: 'Hyderabad' },
+    preferences: parsed.preferences,
+    application: {
+      expectedCtc: '',
+      yearsOfExperience: 4,
+      willingToRelocate: true,
+    },
+    derived: null,
+  });
+  assert.equal(
+    writableProfileSchema.safeParse({
+      ...syntheticProfile,
+      accessibility: { reducedMotion: 'true' },
+    }).success,
+    false,
+  );
+  assert.equal(
+    writableProfileSchema.safeParse({
+      ...syntheticProfile,
+      accessibility: { reducedMotion: true, ownerId: 'other' },
+    }).success,
+    false,
+  );
 });
 
 test('candidate segment is owner-declared, bounded to the approved options and never inferred', () => {
