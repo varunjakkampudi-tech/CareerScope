@@ -157,6 +157,11 @@ What the agent already tried: Read repository docs and current hosted rule metad
   after `ac38587` are documentation-only; the listed local test results apply
   to the unchanged implementation at `ac38587`, not a newly rerun full suite on
   `4f71d64`. Local `HEAD` and `origin/main` match `4f71d64`.
+  Rechecked exact `main` SHA `bbaeb666f44a6b74c3cafc455fbe36909fdc3b3f` after
+  the normal push on 21 October 2026: GitHub Actions permissions API returned
+  `enabled=false`, the exact-SHA workflow-run query returned `[]`, and commit
+  status contained zero checks (`pending`). Local `HEAD` and `origin/main`
+  matched that SHA. No setting was changed; the owner action below remains.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.

@@ -8,6 +8,17 @@ regression coverage. Full v12 scope, provider/fallback/legal/hosted acceptance a
 the full dependency audit remain open; baseline inventory states below are not
 silently promoted. See [current evidence](docs/MAIN-CONSOLIDATION-2026-10-21.md).
 
+Audit reconciliation (21 October 2026): the external review's provisional 5%
+estimate for interview management is not supported by the current checkout. The
+repository contains candidate-owned rounds, preparation checklists, contacts,
+notes, resume references, revision/ownership checks and in-app reminder
+materialization, covered by `apps/api/src/interviews.integration.test.ts` and
+the rendered browser journey. The current local integration suite passed 58/58
+and the cross-browser UI suite passed. Treat interview management as PARTIAL,
+not 5% or complete: bounded notification retention and the broader notification
+policy/channels are still absent. This is an evidence correction, not a claim
+that all v12 interview or notification requirements are satisfied.
+
 Baseline runtime: `45d6d35691bd5d41257da4f3988acd9a89c7d2ea`.
 Governance activation: `2a1eb65d67151c485cddd417b6c249146c017a35` on `codex/dev`.
 Evidence below is OBSERVED_CODE unless an executed check is explicitly named.

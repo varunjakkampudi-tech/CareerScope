@@ -226,6 +226,8 @@ test('the root CI service topology is disposable, loopback-only and recovery-com
   const redisImage = workflow.match(/redis:7\.4\.5-alpine@sha256:[a-f0-9]{64}/)?.[0];
 
   assert.match(workflow, /CAREERSCOPE_POSTGRES_CONTAINER:\s*careerscope-ci-postgres/);
+  assert.match(databaseRecoveryCheck, /\^careerscope\[-a-z0-9\]\*\$/);
+  assert.match(databaseRecoveryCheck, /\^cs-export-validation-\\d\{8\}-pg\$/);
   assert.equal(
     [
       ...workflow.matchAll(

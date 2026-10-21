@@ -15,6 +15,38 @@ Warnings, unhandled rejections, critical network-error policy, broader leakage
 controls, manual assistive-technology review and hosted browser CI remain open;
 no production or provider configuration was changed.
 
+## Local database-recovery harness correction (2026-10-21)
+
+On the same `main`-based working tree, the first database-restore attempt could
+not reach the randomly named synthetic database because the harness selected
+its default `careerscope-postgres-1` container while `.env` was connected to the
+separate dated export-validation service. Pointing at that actual service then
+exposed an overly narrow container-name guard. The harness now accepts only the
+existing `careerscope-*` names or the explicit
+`cs-export-validation-YYYYMMDD-pg` test-service pattern; the deployment-gate
+test asserts both patterns. With `CAREERSCOPE_POSTGRES_CONTAINER` set to the
+current synthetic service, `npm run test:database-recovery` passed: 21 table
+fingerprints matched and encrypted file/parsed-result recovery succeeded, using
+synthetic owner data. The initial default-container failure was a test setup
+mismatch, not evidence of data loss. No shared or production database was used.
+
+The post-correction broad `npm run gates:test` passed again (91/91 unit tests,
+with approved-source, privacy, deployment-policy, EOL, lint, typecheck and test
+typecheck gates). `npm run test:integration` passed 58/58 with zero skips,
+`npm run test:domain` passed 839/839, and `npm run deploy:gate:test` passed all
+10 policy tests and fail-closed result cases. Local `npm run test:performance`
+measured 18,095 successful requests and zero failures over 30 seconds at
+concurrency 8; throughput 603.2 requests/second, p50 12.62ms, p95 18.84ms,
+p99 23.79ms. This is a synthetic loopback regression measurement, not an SLO,
+production benchmark, or 1,000-user capacity claim.
+
+`npm run test:soak` then completed a bounded 124-second synthetic mixed-load run:
+2,655/2,655 operations completed, one queue restart occurred, failures were zero,
+and the final outbox/queue backlog, expired leases, orphaned executions and
+temporary-file inventory were all zero. It is shorter than the repository's
+30-minute default and is stability evidence only, not production DR or capacity
+acceptance.
+
 ## Owner-approved source revision follow-up (2026-10-21)
 
 The owner explicitly approved the supplied revised CareerScope v12, Engineering

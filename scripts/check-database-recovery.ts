@@ -52,7 +52,11 @@ test(
     const sourceUrl = new URL(configured);
     assert.ok(['localhost', '127.0.0.1'].includes(sourceUrl.hostname));
     const sourceContainer = process.env.CAREERSCOPE_POSTGRES_CONTAINER ?? 'careerscope-postgres-1';
-    assert.match(sourceContainer, /^careerscope[-a-z0-9]*$/);
+    assert.ok(
+      /^careerscope[-a-z0-9]*$/.test(sourceContainer) ||
+        /^cs-export-validation-\d{8}-pg$/.test(sourceContainer),
+      'Recovery source must be an explicitly named CareerScope or dated export-validation PostgreSQL container.',
+    );
     const sourceName = `test_recovery_${randomUUID().replaceAll('-', '')}`;
     const restoredContainer = `careerscope-recovery-${randomUUID()}`;
     const admin = new Database(configured);
