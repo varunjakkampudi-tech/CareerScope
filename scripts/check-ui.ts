@@ -397,6 +397,7 @@ try {
       let otpRequestCount = 0;
       let otpVerified = false;
       let otpCurrentEmail = otpEmail;
+      let otpEmailVerificationTimestamp: string | null = '2026-10-20T12:00:00.000Z';
       let emailChangeRequestCount = 0;
       const emailChangeVerifications: string[] = [];
       const otpPageErrors: string[] = [];
@@ -438,7 +439,7 @@ try {
                 authenticated: true,
                 csrf: 'synthetic-csrf-token',
                 email: otpCurrentEmail,
-                emailVerifiedAt: '2026-10-20T12:00:00.000Z',
+                emailVerifiedAt: otpEmailVerificationTimestamp,
                 owner: 'a'.repeat(64),
                 aiEnabled: false,
                 emailOtpEnabled: true,
@@ -549,6 +550,20 @@ try {
         .filter({ hasText: /^Email verified on / })
         .waitFor();
       await settleOtpRequests('account security route after sign-in');
+      otpEmailVerificationTimestamp = null;
+      await otpPage.reload();
+      await otpPage
+        .getByRole('status')
+        .filter({ hasText: /^Email verification is not recorded\.$/ })
+        .waitFor();
+      await settleOtpRequests('legacy account without recorded email verification');
+      otpEmailVerificationTimestamp = '2026-10-20T12:00:00.000Z';
+      await otpPage.reload();
+      await otpPage
+        .getByRole('status')
+        .filter({ hasText: /^Email verified on / })
+        .waitFor();
+      await settleOtpRequests('account security restored verification status');
       await otpPage.getByLabel('New email address').fill('updated@example.test');
       await otpPage.getByRole('button', { name: 'Send verification codes' }).click();
       await otpPage.getByLabel('Code sent to current email').waitFor();
