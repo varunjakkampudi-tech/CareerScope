@@ -1402,4 +1402,6 @@ could not connect because the harness requires a separately started web server;
 after starting the local web app, the full three-engine command passed. That
 server was stopped after the run. No live email, hosted CI, deployment, shared
 database or production change occurred. GitHub Actions remains disabled, so
-there is no hosted run for this change. Commit/push verification is pending.
+there is no hosted run for this change. The implementation was committed on
+`main` as `3a93fda` after confirming remote `main` matched its parent SHA;
+final push and synchronization verification are recorded by the Git result.
