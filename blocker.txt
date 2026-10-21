@@ -47,8 +47,13 @@ Why this remains open: The approved source revision has not yet been fully mappe
   have not all been enumerated or mapped, and pending amendment rows need to stay
   distinct from effective requirements. Do not simply replace the source hash or
   carry forward the old 319 count as though it described R1.
-Exact owner action required: None for source approval. Do not ask the owner to
-  re-approve documents covered by OA-2026-10-20-02.
+Exact owner action required: No further approval is required for the five
+  recorded source identities or revised v12 D1-D14. The approved v12 snapshot
+  references `Viswatra-Cleanup-Requirement-Matrix-v1.2.md` as delivered with its
+  document set, but that matrix is absent from the repository and supplied
+  attachment inventory. Provide the exact matrix or confirm that the reference
+  was not part of the approved CareerScope source set; do not infer its 156-item
+  census or implement its proposed additions without the source.
 Step-by-step resolution instructions:
   1. Add immutable hash-verified snapshots for the newly approved documents while
      retaining the historical snapshots.
@@ -59,10 +64,15 @@ Step-by-step resolution instructions:
      reconcile affected requirement/test matrices.
   3. Identify amendment clauses still marked proposed/pending and keep them
      distinct from approved base requirements unless specifically authorized.
-  4. Keep unimplemented requirements and external acceptance gates open.
-  5. Run requirements, privacy, formatting, EOL and affected contract checks.
+  4. Request/store the referenced matrix with its exact provenance only if the
+     owner confirms it is authoritative; otherwise record the reference as
+     unavailable and continue using the five approved source identities.
+  5. Keep unimplemented requirements and external acceptance gates open.
+  6. Run requirements, privacy, formatting, EOL and affected contract checks.
 Required environment-variable names (no values): None for source approval
-External dependencies: None for local source-to-requirement reconciliation
+External dependencies: The absent cleanup matrix is needed only if its 156-item
+  source-specific scope is intended to be active; approved base R1 work may
+  continue without it.
 Expected result: Active approved scope and engineering traceability agree while
   historical source identities remain auditable.
 Verification procedure: Verify approved hashes against immutable snapshots and
@@ -162,6 +172,11 @@ What the agent already tried: Read repository docs and current hosted rule metad
   `enabled=false`, the exact-SHA workflow-run query returned `[]`, and commit
   status contained zero checks (`pending`). Local `HEAD` and `origin/main`
   matched that SHA. No setting was changed; the owner action below remains.
+  After the recovery-harness checkpoint was pushed, exact `main` SHA
+  `4ea312a8a71fed3e931ed82a0e8329c7a799c762` was checked: Actions remains
+  `enabled=false`, `gh run list --commit` returned `[]`, and commit status has
+  zero checks (`pending`). Local `HEAD` and `origin/main` match. The hosted gate
+  remains an owner-controlled external blocker.
 Work completed: Preserved settings; added SHA-pinned, read-only CI definition for
   task/dev/main pushes, nightly regression and allowlisted ephemeral manual suites.
 Why autonomous resolution is unsafe or impossible: Repository settings/budget owner-only.
