@@ -1,5 +1,22 @@
 # CareerScope v12 test evidence matrix
 
+## Account Security settings localization (2026-10-22; local working tree)
+
+| Check                                                           | Result                                                | Scope / evidence limit                                                                                                                                                                                                                   |
+| --------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node --import tsx --test apps/web/src/lib/locale.test.ts`      | PASS; 5/5                                             | Covers approved locale validation, navigation/reminder translations, account-security strings/interpolation, and localized safe API-status fallback.                                                                                     |
+| `npm run gates:test`                                            | PASS; 101/101 unit tests and registered policy checks | Includes source integrity, privacy, deploy gate, EOL, lint and typecheck.                                                                                                                                                                |
+| `npm run test:ui`                                               | PASS; exit 0                                          | Chromium, Firefox and WebKit authenticated journeys and two-account session-switch journeys; axe, keyboard, and eight responsive widths passed. Firefox diagnostic still records the open Next chunk loading warning; see `blocker.txt`. |
+| Independent source review                                       | PASS                                                  | Read-only review of current account-security localization diff; no tests run by reviewer. Human Telugu/Hindi copy review remains outstanding.                                                                                            |
+| `npm run build`                                                 | PASS                                                  | Local production build completed; CSP verification covered all 13 generated inline-script hashes. No deployment.                                                                                                                         |
+| `npm run security:check`                                        | PASS                                                  | Privacy scan clean and `npm audit --omit=dev --audit-level=high` found zero production dependency advisories.                                                                                                                            |
+| `npm run format:check`, `npm run eol:check`, `git diff --check` | PASS                                                  | Prettier applied to the evidence table after its first format check identified a layout issue; final format check passed.                                                                                                                |
+
+This evidence is for the local working tree, not a commit or hosted Actions run.
+It verifies this surface only, not application-wide localization or native
+translation quality. No provider call, live acceptance, production action or
+human language review occurred.
+
 ## Existing reminder-preference locale and auth-boundary cache slice (2026-10-22)
 
 On Node 24.19.0, `npm run gates:test` passed with 99/99 unit tests and the

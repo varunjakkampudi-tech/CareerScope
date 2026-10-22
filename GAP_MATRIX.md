@@ -83,8 +83,19 @@ API response and a browser persistence check. This narrows, but does not close,
 the accessibility gap: language localization, full zoom/device coverage,
 manual screen-reader review, and remaining design/accessibility acceptance are
 still open. The table's original UNVERIFIED label is superseded for this
-specific slice only; overall 4.18 remains PARTIAL pending exact-tree UI and
-accessibility validation.
+specific slice only; exact-tree UI/automated accessibility checks have since
+passed for the exercised journeys, while overall 4.18 remains PARTIAL pending
+broader route coverage, zoom/device assessment and manual screen-reader review.
+
+4.18 update (2026-10-22): the existing Account Security section on `/settings`
+now has English, Telugu and Hindi static UI copy, locale-aware timestamps, and
+the section language is exposed to assistive technology. Local three-engine
+browser/axe/keyboard/eight-width checks passed for the tested settings flows.
+This is a partial surface-level localization result; other routes, their
+error-message localization, full-app locale coverage and native-speaker review
+remain unverified. Account Security API errors are rendered from localized
+status categories rather than raw server response text. No design or security
+policy is changed by the localization work.
 
 ## Ordered initial work
 

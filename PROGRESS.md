@@ -1,5 +1,32 @@
 # CareerScope v12 engineering progress
 
+## Account Security settings localization (2026-10-22)
+
+Localized the existing `/settings` Account Security surface in English,
+Telugu and Hindi, including password change, OTP-based sign-in-email change,
+active-session listing/revocation, marketing-consent controls, loading/error/
+confirmation states, and locale-aware timestamps. The section declares its
+language for assistive technology. Existing API contracts, authentication,
+session ownership, confirmation behavior and provider integrations were not
+changed. This does not establish full-application localization; API-provided
+errors and other routes may remain English, and native-language copy still
+requires human language review.
+
+Evidence on Node v24.19.0 for the current working tree: the focused locale test
+passed (5/5), `npm run gates:test` passed (101/101 unit tests plus
+source-integrity, privacy, deploy-policy, EOL, lint and typecheck gates), and a
+fresh independent read-only source review passed. `npm run test:ui` exited 0:
+Chromium, Firefox and WebKit authenticated journeys and two-account session
+switching passed, including axe, keyboard and eight responsive widths. The
+Firefox diagnostic continues to show the already-open Next chunk loading
+warning described in `blocker.txt`; its root cause is not established and it
+was not suppressed. `npm run build` passed with CSP verification over all 13
+generated inline-script hashes. `npm run security:check` passed with a clean
+privacy scan and zero production dependency advisories. `npm run format:check`,
+`npm run eol:check`, and `git diff --check` passed on the final documentation
+format. These are local checks only; hosted Actions, live provider acceptance,
+production evidence, and human language review were not performed.
+
 ## Existing interview-reminder preference localization and auth-boundary hardening (2026-10-22)
 
 The existing in-app interview-reminder preference now localizes its heading,

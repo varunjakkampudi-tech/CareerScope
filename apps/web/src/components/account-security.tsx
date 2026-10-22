@@ -3,8 +3,14 @@
 import { useState, type FormEvent } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, KeyRound, LoaderCircle, LogOut } from 'lucide-react';
-import { api } from '../lib/api';
+import { ApiError, api } from '../lib/api';
 import { NO_OWNER, useSession } from '../lib/session';
+import {
+  localizedApiErrorMessage,
+  localizedText,
+  localizedValue,
+  useInterfaceLocale,
+} from '../lib/locale';
 import { ErrorState } from './ui-states';
 
 type AccountSession = {
@@ -17,10 +23,13 @@ type AccountSession = {
 
 type MarketingConsent = { optedIn: boolean; version: string | null };
 
-function dateLabel(value: string | null): string {
-  if (!value) return 'Not available';
+function dateLabel(value: string | null, locale: 'en' | 'te' | 'hi'): string {
+  if (!value) return localizedText(locale, 'notAvailable');
   const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? 'Not available' : parsed.toLocaleString();
+  const languageTag = locale === 'en' ? 'en-IN' : locale === 'te' ? 'te-IN' : 'hi-IN';
+  return Number.isNaN(parsed.getTime())
+    ? localizedText(locale, 'notAvailable')
+    : parsed.toLocaleString(languageTag);
 }
 
 export default function AccountSecurity({
@@ -33,6 +42,9 @@ export default function AccountSecurity({
   onBack: () => void;
 }) {
   const session = useSession();
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1], value?: string | number) =>
+    value === undefined ? localizedText(locale, key) : localizedValue(locale, key, value);
   const queryClient = useQueryClient();
   const testMode = session.data?.testUser !== undefined;
   const sessionsQuery = useQuery({
@@ -93,12 +105,12 @@ export default function AccountSecurity({
       setNewEmailVerified(false);
       setCurrentEmailCode('');
       setNewEmailCode('');
-      setEmailChangeNotice('Codes were sent to your current and new email addresses.');
+      setEmailChangeNotice(t('emailChangeCodesSent'));
     } catch (failure) {
       setEmailChangeError(
-        failure instanceof Error
-          ? failure.message
-          : 'Please try again when your connection is available.',
+        failure instanceof ApiError
+          ? localizedApiErrorMessage(locale, failure.status)
+          : t('pleaseTryConnection'),
       );
     } finally {
       setEmailChangePending(false);
@@ -123,22 +135,20 @@ export default function AccountSecurity({
       if (result.emailChanged) {
         setEmailChangeRequested(false);
         setNewEmail('');
-        setEmailChangeNotice(
-          'Email address updated. The previous address received a verification notice.',
-        );
+        setEmailChangeNotice(t('emailAddressUpdated'));
         await queryClient.invalidateQueries({ queryKey: ['session'] });
       } else if (address === 'current') {
         setCurrentEmailVerified(true);
-        setEmailChangeNotice('Current address verified. Now verify the new address.');
+        setEmailChangeNotice(t('currentAddressVerified'));
       } else {
         setNewEmailVerified(true);
-        setEmailChangeNotice('New address verified. Now verify the current address.');
+        setEmailChangeNotice(t('newAddressVerified'));
       }
     } catch (failure) {
       setEmailChangeError(
-        failure instanceof Error
-          ? failure.message
-          : 'Please try again when your connection is available.',
+        failure instanceof ApiError
+          ? localizedApiErrorMessage(locale, failure.status)
+          : t('pleaseTryConnection'),
       );
     } finally {
       setEmailChangePending(false);
@@ -146,8 +156,7 @@ export default function AccountSecurity({
   }
 
   async function revokeOthers() {
-    if (busy || !window.confirm('Sign out all other sessions? This session will stay signed in.'))
-      return;
+    if (busy || !window.confirm(t('sessionSignOutAllConfirm'))) return;
     setSessionError('');
     setNotice('');
     setRevoking(true);
@@ -157,21 +166,21 @@ export default function AccountSecurity({
         headers: { 'x-csrf-token': csrf },
         body: JSON.stringify({}),
       });
-      setNotice('Other sessions signed out. This session remains signed in.');
+      setNotice(t('otherSessionsSignedOut'));
     } catch (failure) {
       // The fallback no longer repeats the operation name — `what` carries it.
-      setSessionError(failure instanceof Error ? failure.message : 'Please try again.');
+      setSessionError(
+        failure instanceof ApiError
+          ? localizedApiErrorMessage(locale, failure.status)
+          : t('pleaseTryAgain'),
+      );
     } finally {
       setRevoking(false);
     }
   }
 
   async function revokeSession(target: AccountSession) {
-    if (
-      busy ||
-      target.current ||
-      !window.confirm(`Sign out ${target.deviceLabel}? That device will need to sign in again.`)
-    )
+    if (busy || target.current || !window.confirm(t('signOutDeviceConfirm', target.deviceLabel)))
       return;
     setSessionError('');
     setNotice('');
@@ -179,9 +188,13 @@ export default function AccountSecurity({
     try {
       await api(`/account/sessions/${target.id}`, { method: 'DELETE' });
       await queryClient.invalidateQueries({ queryKey: ['accountSessions'] });
-      setNotice(`${target.deviceLabel} signed out.`);
+      setNotice(t('deviceSignedOut', target.deviceLabel));
     } catch (failure) {
-      setSessionError(failure instanceof Error ? failure.message : 'Please try again.');
+      setSessionError(
+        failure instanceof ApiError
+          ? localizedApiErrorMessage(locale, failure.status)
+          : t('pleaseTryAgain'),
+      );
     } finally {
       setRevokingSessionId(null);
     }
@@ -200,9 +213,9 @@ export default function AccountSecurity({
       await queryClient.invalidateQueries({ queryKey: ['marketingConsent'] });
     } catch (failure) {
       setMarketingError(
-        failure instanceof Error
-          ? failure.message
-          : 'Please try again when your connection is available.',
+        failure instanceof ApiError
+          ? localizedApiErrorMessage(locale, failure.status)
+          : t('pleaseTryConnection'),
       );
     } finally {
       setMarketingPending(false);
@@ -221,15 +234,15 @@ export default function AccountSecurity({
       // Client validation: deliberately left as a bare detail. It is a
       // field-level message, not a page-level error state, and it already
       // names its own problem.
-      setError({ detail: 'Passwords do not match.' });
+      setError({ detail: t('passwordsDoNotMatch') });
       form.querySelector<HTMLInputElement>('[name="confirmation"]')?.focus();
       return;
     }
     if (currentPassword === newPassword) {
-      setError({ detail: 'Choose a different password.' });
+      setError({ detail: t('chooseDifferentPassword') });
       return;
     }
-    if (!window.confirm('Change password and sign out all sessions?')) return;
+    if (!window.confirm(t('changePasswordSignOutConfirm'))) return;
     setPending(true);
     try {
       await api('/account/password', {
@@ -242,8 +255,11 @@ export default function AccountSecurity({
       // The API failure, unlike the validation branches above, is a real
       // operation failing and must name what failed.
       setError({
-        what: 'Could not change your password.',
-        detail: failure instanceof Error ? failure.message : 'Please try again.',
+        what: t('couldNotChangePassword'),
+        detail:
+          failure instanceof ApiError
+            ? localizedApiErrorMessage(locale, failure.status)
+            : t('pleaseTryAgain'),
       });
     } finally {
       form.reset();
@@ -252,27 +268,29 @@ export default function AccountSecurity({
   }
 
   return (
-    <section className="login" aria-labelledby="security-heading">
+    <section className="login" aria-labelledby="security-heading" lang={locale}>
       <button type="button" onClick={onBack} disabled={busy}>
         <ArrowLeft size={18} aria-hidden="true" />
-        Back to search
+        {t('backToSearch')}
       </button>
-      <h1 id="security-heading">Account security</h1>
+      <h1 id="security-heading">{t('accountSecurity')}</h1>
       {session.data?.authenticated && !testMode && (
         <p role="status">
           {session.data.emailVerifiedAt
-            ? `Email verified on ${dateLabel(session.data.emailVerifiedAt)}.`
-            : 'Email verification is not recorded.'}
+            ? t('emailVerifiedOn', dateLabel(session.data.emailVerifiedAt, locale))
+            : t('emailVerificationNotRecorded')}
         </p>
       )}
       {!testMode && session.data?.emailOtpEnabled && (
         <section aria-labelledby="email-change-heading">
-          <h2 id="email-change-heading">Change sign-in email</h2>
-          <p>Current email: {session.data.email ?? 'Not available'}</p>
+          <h2 id="email-change-heading">{t('changeSignInEmail')}</h2>
+          <p>
+            {t('currentEmail')}: {session.data.email ?? t('notAvailable')}
+          </p>
           {!emailChangeRequested ? (
             <form onSubmit={requestEmailChange} aria-busy={emailChangePending}>
               <label>
-                New email address
+                {t('newEmailAddress')}
                 <input
                   type="email"
                   autoComplete="email"
@@ -284,17 +302,14 @@ export default function AccountSecurity({
                 />
               </label>
               <button type="submit" disabled={emailChangePending}>
-                {emailChangePending ? 'Sending verification codes…' : 'Send verification codes'}
+                {emailChangePending ? t('sendingVerificationCodes') : t('sendVerificationCodes')}
               </button>
             </form>
           ) : (
             <div aria-busy={emailChangePending}>
-              <p>
-                Enter each six-digit code. Both addresses must be verified before the change takes
-                effect.
-              </p>
+              <p>{t('enterBothEmailCodes')}</p>
               <label>
-                Code sent to current email
+                {t('codeSentToCurrentEmail')}
                 <input
                   type="text"
                   inputMode="numeric"
@@ -316,10 +331,10 @@ export default function AccountSecurity({
                   emailChangePending || currentEmailVerified || currentEmailCode.length !== 6
                 }
               >
-                {currentEmailVerified ? 'Current email verified' : 'Verify current email'}
+                {currentEmailVerified ? t('currentEmailVerified') : t('verifyCurrentEmail')}
               </button>
               <label>
-                Code sent to new email
+                {t('codeSentToNewEmail')}
                 <input
                   type="text"
                   inputMode="numeric"
@@ -339,7 +354,7 @@ export default function AccountSecurity({
                 onClick={() => void verifyEmailChange('new')}
                 disabled={emailChangePending || newEmailVerified || newEmailCode.length !== 6}
               >
-                {newEmailVerified ? 'New email verified' : 'Verify new email'}
+                {newEmailVerified ? t('newEmailVerified') : t('verifyNewEmail')}
               </button>
             </div>
           )}
@@ -353,47 +368,51 @@ export default function AccountSecurity({
         ) : (
           <LogOut size={18} aria-hidden="true" />
         )}
-        {revoking ? 'Signing out other sessions' : 'Sign out other sessions'}
+        {revoking ? t('signOutOthersLoading') : t('signOutOthers')}
       </button>
       <section aria-labelledby="active-sessions-heading">
-        <h2 id="active-sessions-heading">Active sessions</h2>
+        <h2 id="active-sessions-heading">{t('activeSessions')}</h2>
         {sessionsQuery.isPending ? (
-          <p role="status">Loading active sessions…</p>
+          <p role="status">{t('activeSessionsLoading')}</p>
         ) : sessionsQuery.isError ? (
           <>
             <ErrorState
               variant="inline"
-              what="Could not load active sessions."
-              detail="Try again when your connection is available."
+              what={t('couldNotLoadSessions')}
+              detail={t('tryConnectionAgain')}
             />
             <button
               type="button"
               onClick={() => void sessionsQuery.refetch()}
               disabled={sessionsQuery.isFetching}
             >
-              {sessionsQuery.isFetching ? 'Retrying…' : 'Retry'}
+              {sessionsQuery.isFetching ? t('retrying') : t('retry')}
             </button>
           </>
         ) : sessionsQuery.data.sessions.length === 0 ? (
-          <p>No active sessions are available to show.</p>
+          <p>{t('noSessions')}</p>
         ) : (
-          <ul aria-label="Active devices and sessions">
+          <ul aria-label={t('activeDevicesLabel')}>
             {sessionsQuery.data.sessions.map((item) => (
               <li key={item.id}>
                 <p>
                   <strong>{item.deviceLabel}</strong>
-                  {item.current ? ' — This device' : ''}
+                  {item.current ? ` — ${t('thisDevice')}` : ''}
                 </p>
-                <p>Started: {dateLabel(item.createdAt)}</p>
-                <p>Last refreshed: {dateLabel(item.lastUsedAt)}</p>
+                <p>
+                  {t('started')}: {dateLabel(item.createdAt, locale)}
+                </p>
+                <p>
+                  {t('lastRefreshed')}: {dateLabel(item.lastUsedAt, locale)}
+                </p>
                 {!item.current && (
                   <button
                     type="button"
                     onClick={() => void revokeSession(item)}
                     disabled={busy || revokingSessionId !== null}
-                    aria-label={`Sign out ${item.deviceLabel}`}
+                    aria-label={t('signOutDeviceLabel', item.deviceLabel)}
                   >
-                    {revokingSessionId === item.id ? 'Signing out…' : 'Sign out this device'}
+                    {revokingSessionId === item.id ? t('signingOut') : t('signOutThisDevice')}
                   </button>
                 )}
               </li>
@@ -402,35 +421,40 @@ export default function AccountSecurity({
         )}
       </section>
       <section aria-labelledby="marketing-consent-heading">
-        <h2 id="marketing-consent-heading">Optional product updates</h2>
+        <h2 id="marketing-consent-heading">{t('optionalProductUpdates')}</h2>
         {marketingQuery.isPending ? (
-          <p role="status">Loading marketing preference…</p>
+          <p role="status">{t('loadingMarketingPreference')}</p>
         ) : marketingQuery.isError ? (
           <>
             <ErrorState
               variant="inline"
-              what="Could not load your marketing preference."
-              detail="Try again when your connection is available."
+              what={t('couldNotLoadMarketing')}
+              detail={t('tryConnectionAgain')}
             />
             <button
               type="button"
               onClick={() => void marketingQuery.refetch()}
               disabled={marketingQuery.isFetching}
             >
-              {marketingQuery.isFetching ? 'Retrying…' : 'Retry'}
+              {marketingQuery.isFetching ? t('retrying') : t('retry')}
             </button>
           </>
         ) : (
           <>
             <p>
               {marketingQuery.data.optedIn
-                ? `You opted in to optional product updates${marketingQuery.data.version ? ` under version ${marketingQuery.data.version}` : ''}.`
-                : 'You are not opted in to optional product updates.'}
+                ? t(
+                    'optedInProductUpdates',
+                    marketingQuery.data.version
+                      ? t('versionInParentheses', marketingQuery.data.version)
+                      : '',
+                  )
+                : t('notOptedInProductUpdates')}
             </p>
             {marketingError && (
               <ErrorState
                 variant="inline"
-                what="Could not update your marketing preference."
+                what={t('couldNotUpdateMarketing')}
                 detail={marketingError}
               />
             )}
@@ -440,31 +464,24 @@ export default function AccountSecurity({
               disabled={marketingPending}
             >
               {marketingPending
-                ? 'Saving preference…'
+                ? t('savingPreference')
                 : marketingQuery.data.optedIn
-                  ? 'Withdraw marketing consent'
-                  : 'Opt in to product updates'}
+                  ? t('withdrawMarketingConsent')
+                  : t('optInProductUpdates')}
             </button>
           </>
         )}
       </section>
       {sessionError && (
-        <ErrorState
-          variant="inline"
-          what="Could not sign out other sessions."
-          detail={sessionError}
-        />
+        <ErrorState variant="inline" what={t('couldNotSignOutSessions')} detail={sessionError} />
       )}
       {notice && <p role="status">{notice}</p>}
       {testMode ? (
-        <p>
-          Test accounts do not use application passwords. Hosted access is protected by the staging
-          proxy.
-        </p>
+        <p>{t('testAccountsNoPasswords')}</p>
       ) : (
         <form onSubmit={submit} aria-busy={pending}>
           <label>
-            Current password
+            {t('currentPassword')}
             <input
               name="currentPassword"
               aria-describedby={error ? 'security-error' : undefined}
@@ -477,7 +494,7 @@ export default function AccountSecurity({
             />
           </label>
           <label>
-            New password
+            {t('newPassword')}
             <input
               name="newPassword"
               aria-describedby={error ? 'security-error' : undefined}
@@ -490,7 +507,7 @@ export default function AccountSecurity({
             />
           </label>
           <label>
-            Confirm new password
+            {t('confirmNewPassword')}
             <input
               name="confirmation"
               aria-describedby={error ? 'security-error' : undefined}
@@ -521,7 +538,7 @@ export default function AccountSecurity({
             ) : (
               <KeyRound size={18} aria-hidden="true" />
             )}
-            {pending ? 'Changing password' : 'Change password'}
+            {pending ? t('changingPassword') : t('changePassword')}
           </button>
         </form>
       )}

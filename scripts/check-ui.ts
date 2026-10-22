@@ -122,6 +122,9 @@ const expectedAuthenticatedJourneyConsoleErrors = new Set([
   'resource HTTP 507 at /api/resumes',
   'resource HTTP 500 at /api/resumes',
   'resource HTTP 503 at /api/preparation',
+  // Telugu/Hindi settings journeys deliberately return a sanitized 503 and
+  // assert the localized status category without exposing response details.
+  'resource HTTP 503 at /api/account/sessions/revoke-others',
   'resource HTTP 500 at /api/account/sessions/revoke-others',
   'resource HTTP 429 at /api/account/sessions/revoke-others',
   'resource HTTP 500 at /api/account/password',
@@ -1724,6 +1727,34 @@ try {
           document.documentElement.lang === 'en',
       );
       await sidebarNav.getByRole('link', { name: 'ఉద్యోగాలు', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'ఖాతా భద్రత', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'క్రియాశీల సెషన్‌లు', exact: true }).waitFor();
+      assert.equal(
+        await page.locator('section[aria-labelledby="security-heading"]').getAttribute('lang'),
+        'te',
+      );
+      await page.route(
+        '**/api/account/sessions/revoke-others',
+        (route) =>
+          route.fulfill({
+            status: 503,
+            contentType: 'application/json',
+            body: JSON.stringify({ error: 'Synthetic private service detail' }),
+          }),
+        { times: 1 },
+      );
+      page.once('dialog', (dialog) => dialog.accept());
+      await page.getByRole('button', { name: 'ఇతర సెషన్‌ల నుంచి సైన్ అవుట్ చేయండి' }).click();
+      await page
+        .getByRole('alert')
+        .filter({
+          hasText: 'సేవ తాత్కాలికంగా అందుబాటులో లేదు. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.',
+        })
+        .waitFor();
+      assert.equal(
+        await page.getByText('Synthetic private service detail', { exact: true }).count(),
+        0,
+      );
       await page.getByRole('heading', { name: 'ఇంటర్‌ఫేస్ భాష', exact: true }).waitFor();
       await page.getByRole('heading', { name: 'నోటిఫికేషన్ ప్రాధాన్యతలు', exact: true }).waitFor();
       const teluguReminderPreference = page.getByRole('checkbox', {
@@ -1797,6 +1828,32 @@ try {
           document.documentElement.lang === 'en',
       );
       await sidebarNav.getByRole('link', { name: 'नौकरियाँ', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'खाता सुरक्षा', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'सक्रिय सत्र', exact: true }).waitFor();
+      assert.equal(
+        await page.locator('section[aria-labelledby="security-heading"]').getAttribute('lang'),
+        'hi',
+      );
+      await page.route(
+        '**/api/account/sessions/revoke-others',
+        (route) =>
+          route.fulfill({
+            status: 503,
+            contentType: 'application/json',
+            body: JSON.stringify({ error: 'Synthetic private service detail' }),
+          }),
+        { times: 1 },
+      );
+      page.once('dialog', (dialog) => dialog.accept());
+      await page.getByRole('button', { name: 'अन्य सत्रों से साइन आउट करें' }).click();
+      await page
+        .getByRole('alert')
+        .filter({ hasText: 'सेवा अस्थायी रूप से उपलब्ध नहीं है। थोड़ी देर बाद फिर कोशिश करें।' })
+        .waitFor();
+      assert.equal(
+        await page.getByText('Synthetic private service detail', { exact: true }).count(),
+        0,
+      );
       await page.getByRole('heading', { name: 'सूचना प्राथमिकताएँ', exact: true }).waitFor();
       const hindiReminderPreference = page.getByRole('checkbox', {
         name: 'CareerScope में आने वाले इंटरव्यू रिमाइंडर दिखाएँ',

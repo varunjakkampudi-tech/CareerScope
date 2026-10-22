@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { interfaceMessage, interfaceLocales, isInterfaceLocale, localizedText } from './locale.js';
+import {
+  interfaceMessage,
+  interfaceLocales,
+  isInterfaceLocale,
+  localizedApiErrorMessage,
+  localizedText,
+  localizedValue,
+} from './locale.js';
 
 test('interface locale validation accepts only the three approved languages', () => {
   assert.deepEqual(interfaceLocales, ['en', 'te', 'hi']);
@@ -46,4 +53,47 @@ test('interview notification preference labels and safety notes are localized fo
     );
     assert.equal(new Set(translated).size, interfaceLocales.length, key);
   }
+});
+
+test('account-security controls have distinct translations and preserve interpolation values', () => {
+  const keys = [
+    'accountSecurity',
+    'changeSignInEmail',
+    'activeSessions',
+    'optionalProductUpdates',
+    'currentPassword',
+    'changePassword',
+    'sessionSignOutAllConfirm',
+    'emailChangeCodesSent',
+    'couldNotChangePassword',
+  ] as const;
+  for (const key of keys) {
+    const values = interfaceLocales.map((locale) => localizedText(locale, key));
+    assert.ok(
+      values.every((value) => value.trim().length > 0),
+      key,
+    );
+    assert.equal(new Set(values).size, interfaceLocales.length, key);
+  }
+  assert.equal(
+    localizedValue('en', 'signOutDeviceConfirm', 'Laptop'),
+    'Sign out Laptop? That device will need to sign in again.',
+  );
+  assert.equal(localizedValue('en', 'signOutDeviceLabel', 'Test device'), 'Sign out Test device');
+  assert.equal(
+    localizedValue('te', 'signOutDeviceConfirm', 'ల్యాప్‌టాప్'),
+    'ల్యాప్‌టాప్ నుంచి సైన్ అవుట్ చేయాలా? ఆ పరికరం మళ్లీ సైన్ ఇన్ చేయాలి.',
+  );
+  assert.equal(localizedValue('hi', 'emailVerifiedOn', '22 Oct'), '22 Oct को ईमेल सत्यापित हुआ।');
+  assert.equal(localizedValue('te', 'versionInParentheses', 'test-1'), ' (వెర్షన్ test-1)');
+});
+
+test('account-security API error categories are localized with a generic unknown-status fallback', () => {
+  for (const locale of interfaceLocales) {
+    assert.ok(localizedApiErrorMessage(locale, 429).length > 0);
+    assert.ok(localizedApiErrorMessage(locale, 503).length > 0);
+    assert.ok(localizedApiErrorMessage(locale, 599).length > 0);
+  }
+  assert.notEqual(localizedApiErrorMessage('te', 503), localizedApiErrorMessage('hi', 503));
+  assert.equal(localizedApiErrorMessage('en', 599), localizedText('en', 'apiErrorDefault'));
 });
