@@ -102,8 +102,7 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
     onSuccess: async () => {
       clearAuthQueryCache(cache);
       // Logout changes the owner-discovery query just as login does. Refresh
-      // it explicitly so the CS-61 experiment can retain owner-private cache
-      // entries without retaining an authenticated session identity.
+      // it explicitly after clearing private cached state.
       await session.refetch();
       router.replace('/');
     },

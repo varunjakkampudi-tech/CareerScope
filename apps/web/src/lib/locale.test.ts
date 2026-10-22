@@ -21,3 +21,29 @@ test('shared navigation and reminder messages are present for each supported lan
   assert.notEqual(localizedText('en', 'jobs'), localizedText('te', 'jobs'));
   assert.notEqual(localizedText('en', 'jobs'), localizedText('hi', 'jobs'));
 });
+
+test('interview notification preference labels and safety notes are localized for each language', () => {
+  const keys = [
+    'notificationPreferencesHeading',
+    'notificationPreferencesDescription',
+    'notificationPreferencesLoading',
+    'notificationPreferencesLoadError',
+    'notificationPreferencesUnconfirmed',
+    'notificationPreferencesConnection',
+    'notificationReminderToggle',
+    'notificationReminderNote',
+    'notificationPreferenceSaving',
+    'notificationPreferenceSaved',
+    'notificationPreferenceReloaded',
+    'retry',
+  ] as const;
+
+  for (const key of keys) {
+    const translated = interfaceLocales.map((locale) => localizedText(locale, key));
+    assert.ok(
+      translated.every((message) => message.trim().length > 0),
+      key,
+    );
+    assert.equal(new Set(translated).size, interfaceLocales.length, key);
+  }
+});

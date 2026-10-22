@@ -363,6 +363,19 @@ try {
     email: 'foreign-owner@example.test',
     passwordHash: await passwordHash(password),
   });
+  await new ProfileRepository(database).save(foreignOwnerId, {
+    revision: 0,
+    profile: {
+      candidate: {
+        fullName: 'Foreign Owner Candidate',
+        email: 'foreign-owner@example.test',
+        location: 'Remote',
+      },
+      preferences: { titles: ['Product Designer'], techStack: ['Figma'] },
+      application: {},
+      accessibility: { reducedMotion: false },
+    },
+  });
   const foreignRun = await database.createSearch(foreignOwnerId, 'foreign-owner-fixture', {
     query: 'Foreign Owner Secret Query',
     sources: ['remoteok'],
@@ -736,7 +749,7 @@ try {
         })
         .waitFor();
       assert.equal(await otpReminderPreference.count(), 0);
-      await otpPage.getByRole('button', { name: 'Try again' }).click();
+      await otpPage.getByRole('button', { name: 'Retry' }).click();
       await otpPage
         .getByRole('checkbox', {
           name: 'Show upcoming interview reminders in CareerScope',
@@ -1712,6 +1725,24 @@ try {
       );
       await sidebarNav.getByRole('link', { name: 'ఉద్యోగాలు', exact: true }).waitFor();
       await page.getByRole('heading', { name: 'ఇంటర్‌ఫేస్ భాష', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'నోటిఫికేషన్ ప్రాధాన్యతలు', exact: true }).waitFor();
+      const teluguReminderPreference = page.getByRole('checkbox', {
+        name: 'CareerScope‌లో రాబోయే ఇంటర్వ్యూ రిమైండర్‌లను చూపించండి',
+      });
+      await teluguReminderPreference.waitFor();
+      assert.equal(await teluguReminderPreference.isChecked(), true);
+      assert.equal(
+        await page
+          .locator('section[aria-labelledby="notification-preferences-heading"]')
+          .getAttribute('lang'),
+        'te',
+      );
+      await page
+        .getByText(
+          'ఇది కొత్త రిమైండర్‌లకే వర్తిస్తుంది. ఇప్పటికే ఉన్న రిమైండర్‌లు మీ నోటిఫికేషన్‌ల జాబితాలో ఉంటాయి. ఇక్కడి సెట్టింగ్ ఇమెయిల్ లేదా పుష్ రిమైండర్‌లను నియంత్రించదు.',
+          { exact: true },
+        )
+        .waitFor();
       assert.equal(
         await page
           .locator('section[aria-labelledby="interface-language-heading"]')
@@ -1766,6 +1797,18 @@ try {
           document.documentElement.lang === 'en',
       );
       await sidebarNav.getByRole('link', { name: 'नौकरियाँ', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'सूचना प्राथमिकताएँ', exact: true }).waitFor();
+      const hindiReminderPreference = page.getByRole('checkbox', {
+        name: 'CareerScope में आने वाले इंटरव्यू रिमाइंडर दिखाएँ',
+      });
+      await hindiReminderPreference.waitFor();
+      assert.equal(await hindiReminderPreference.isChecked(), true);
+      assert.equal(
+        await page
+          .locator('section[aria-labelledby="notification-preferences-heading"]')
+          .getAttribute('lang'),
+        'hi',
+      );
       await page
         .getByText(
           'ब्राउज़र संग्रहण उपलब्ध नहीं है। यह प्राथमिकता इस पृष्ठ को रीफ़्रेश या बंद करने तक सक्रिय रहेगी।',
@@ -3933,33 +3976,38 @@ try {
       );
       await page.unroute(dashboardSavedRequest);
 
-      // The shared topbar's sign-out confirms first (authenticated-shell.tsx).
-      page.once('dialog', (dialog) => dialog.accept());
-      await page.getByRole('button', { name: 'Sign out', exact: true }).click();
-      await page.getByRole('heading', { name: 'Select test account', exact: true }).waitFor();
-
       // CS-36 AC2: "Define and test a shared reset policy ... so old requests
-      // or caches cannot restore prior-session data". The policy was defined
-      // and the implementation reviewed, but the TEST half did not exist —
-      // the Independent Reviewer's blocking finding. This is it.
-      //
-      // The reset is `cache.clear()` in authenticated-shell.tsx, on both
-      // logout (:71) and SESSION_EXPIRED_EVENT (:57). Asserting that the
-      // function is called would prove nothing about whether data actually
-      // becomes unreachable, so this signs in as a genuinely DIFFERENT owner
-      // and requires the first owner's data to be gone from every surface
-      // AC2 names. A surviving React Query cache would repopulate these
-      // screens instantly from memory, before any network response — which is
-      // exactly the failure the criterion describes.
+      // or caches cannot restore prior-session data". Verify the actual
+      // production logout reset with a second account that has distinct,
+      // seeded profile data. Drain the dashboard's exact search-detail read
+      // before navigating away, so the check observes it rather than having
+      // the general stale-route filter classify it as irrelevant.
       //
       // The foreign owner is a real account with its own run, job and lead,
       // created at the top of this file, so this also re-proves owner
       // isolation across a session boundary rather than only within one.
-      await page.evaluate(() => {
-        (
-          window as Window & { __CAREERSCOPE_DISABLE_CACHE_CLEAR__?: boolean }
-        ).__CAREERSCOPE_DISABLE_CACHE_CLEAR__ = true;
-      });
+      const searchDetailRequests = () =>
+        [...inflight.keys()].filter((request) => {
+          const url = new URL(request.url());
+          return request.method() === 'GET' && /^\/api\/searches\/[^/]+$/.test(url.pathname);
+        });
+      const searchRequestDeadline = Date.now() + 15000;
+      while (searchDetailRequests().length > 0 && Date.now() < searchRequestDeadline) {
+        await page.waitForTimeout(25);
+      }
+      assert.equal(
+        searchDetailRequests().length,
+        0,
+        `${engine}: owner-A search detail request remained in flight before account change: ${searchDetailRequests()
+          .map((request) => `${request.url()} (responseEnd=${request.timing().responseEnd})`)
+          .join(', ')}`,
+      );
+      await page.goto(`${origin}/settings`);
+      await page.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+      // The shared topbar's sign-out confirms first (authenticated-shell.tsx).
+      page.once('dialog', (dialog) => dialog.accept());
+      await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+      await page.getByRole('heading', { name: 'Select test account', exact: true }).waitFor();
       await selectFixtureAccount('foreign-owner@example.test', password);
       await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
 
@@ -3975,7 +4023,7 @@ try {
         ['/saved', 'Saved', 'Saved Leads', 'Foreign Owner Secret Role'],
         ['/applications', 'Applications', 'Applications', 'No leads with status'],
         ['/resume', 'Resume', 'Candidate Profile', 'No resumes uploaded.'],
-        ['/preparation', 'Preparation', 'Resume & Interview Prep', 'Save a profile to prepare'],
+        ['/preparation', 'Preparation', 'Resume & Interview Prep', 'Saved profile revision'],
       ] as const) {
         await page.getByRole('link', { name: navLabel, exact: true }).first().click();
         await page.waitForURL(`**${route}`);
@@ -4011,63 +4059,22 @@ try {
       //
       // The name asserted is the one the IMMEDIATELY PRECEDING session held
       // (:1843), not an older one from a session already cleared at :1265 —
-      // asserting a stale-by-two-boundaries value would be vacuous.
+      // asserting a stale-by-two-boundaries value would be vacuous. Wait for
+      // this owner's distinct positive value before checking owner A is absent.
       await page.getByRole('link', { name: 'Resume', exact: true }).first().click();
       await page.waitForURL('**/resume');
       await page.getByRole('heading', { name: 'Candidate Profile', exact: true }).waitFor();
+      await page.getByLabel('Full Name', { exact: true }).waitFor({ state: 'visible' });
       assert.notEqual(
         await page.getByLabel('Full Name', { exact: true }).inputValue(),
         'Updated In Another Session',
         `${engine} /resume restored the previous session's profile from cache`,
       );
-
-      page.once('dialog', (dialog) => dialog.accept());
-      await page.getByRole('button', { name: 'Sign out', exact: true }).click();
-      await page.getByRole('heading', { name: 'Select test account', exact: true }).waitFor();
-
-      // Paired positive control for CS-61 AC3. Deliberately restore the
-      // pre-fix owner-agnostic key shape while retaining cache-clear disabled.
-      // The staleTime-Infinity profile query must leak owner A's name to owner
-      // B; otherwise the control would be unable to distinguish a real proof
-      // from a vacuous pass.
-      await page.evaluate(() => {
-        (
-          window as Window & {
-            __CAREERSCOPE_TEST_OWNER_AGNOSTIC_KEYS__?: boolean;
-          }
-        ).__CAREERSCOPE_TEST_OWNER_AGNOSTIC_KEYS__ = true;
-      });
-      // The profile mutated above belongs to the seeded UI owner, not the
-      // per-engine signup account used by the password-change journey.
-      await selectFixtureAccount('ui@example.test', password);
-      await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
-      await page.getByRole('link', { name: 'Resume', exact: true }).first().click();
-      await page.waitForURL('**/resume');
-      await page.getByLabel('Full Name', { exact: true }).waitFor();
       assert.equal(
         await page.getByLabel('Full Name', { exact: true }).inputValue(),
-        'Updated In Another Session',
-        `${engine} positive control did not load owner A profile`,
+        'Foreign Owner Candidate',
+        `${engine} /resume did not load the foreign owner's distinct profile`,
       );
-      page.once('dialog', (dialog) => dialog.accept());
-      await page.getByRole('button', { name: 'Sign out', exact: true }).click();
-      await page.getByRole('heading', { name: 'Select test account', exact: true }).waitFor();
-      await selectFixtureAccount('foreign-owner@example.test', password);
-      await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
-      await page.getByRole('link', { name: 'Resume', exact: true }).first().click();
-      await page.waitForURL('**/resume');
-      assert.equal(
-        await page.getByLabel('Full Name', { exact: true }).inputValue(),
-        'Updated In Another Session',
-        `${engine} positive control did not reproduce owner-agnostic cache leakage`,
-      );
-      await page.evaluate(() => {
-        (
-          window as Window & {
-            __CAREERSCOPE_TEST_OWNER_AGNOSTIC_KEYS__?: boolean;
-          }
-        ).__CAREERSCOPE_TEST_OWNER_AGNOSTIC_KEYS__ = false;
-      });
       assert.deepEqual(
         errors.filter((error) => !expectedAuthenticatedJourneyConsoleErrors.has(error)),
         [],

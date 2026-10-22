@@ -64,7 +64,13 @@ type ErrorStateProps =
   // `onRetry` stays optional deliberately, and that is a decision rather than
   // an oversight — a terminal error legitimately has nothing to retry, and
   // forcing a no-op handler would be worse than omitting one.
-  | { variant?: 'block'; title: string; message: string; onRetry?: () => void }
+  | {
+      variant?: 'block';
+      title: string;
+      message: string;
+      onRetry?: () => void;
+      retryLabel?: string;
+    }
   // CS-13 F-2: the inline variant took a single unconstrained `message`, so
   // `<ErrorState variant="inline" message={err.message} />` — a bare transport
   // message with no indication of what failed, precisely what AC2 forbids —
@@ -110,7 +116,7 @@ export function ErrorState(props: ErrorStateProps) {
       </p>
     );
   }
-  const { title, message, onRetry } = props;
+  const { title, message, onRetry, retryLabel = 'Try again' } = props;
   return (
     <div className={styles.errorWrap} role="alert">
       <AlertTriangle size={22} className={styles.errorIcon} aria-hidden="true" />
@@ -119,7 +125,7 @@ export function ErrorState(props: ErrorStateProps) {
       {onRetry && (
         <div className={styles.actionRow}>
           <button type="button" className={styles.retryButton} onClick={onRetry}>
-            Try again
+            {retryLabel}
           </button>
         </div>
       )}

@@ -1,5 +1,43 @@
 # CareerScope v12 engineering progress
 
+## Existing interview-reminder preference localization and auth-boundary hardening (2026-10-22)
+
+The existing in-app interview-reminder preference now localizes its heading,
+description, current load/error/saving/saved states, retry action, checkbox and
+safety note in English, Telugu and Hindi. This is a narrow extension of the
+existing `/settings` control; it does not claim that the rest of CareerScope is
+localized or add email/push delivery. Native-language accuracy still needs
+human review.
+
+Review also removed two browser-global test switches that could disable
+authenticated query-cache clearing or owner scoping in a production browser.
+Owner query keys always include the session owner (or the unauthenticated
+sentinel), and auth-boundary cache clearing is unconditional. The browser
+regression seeds a distinct second-owner profile, performs the normal logout
+and sign-in flow, and checks the new owner's data. Unit coverage verifies
+owner-key separation and cache clearing. Before navigating away from the
+dashboard, the browser harness waits on the raw in-flight map for the exact GET
+search-detail endpoint, so stale-route filtering cannot hide a pending request.
+It does not weaken warning, ownership, keyboard, accessibility or responsive
+assertions. The browser path validates the normal reset (not an intentionally
+retained cache); owner-key separation is tested separately.
+
+Node 24.19.0 local evidence on this candidate: `npm run gates:test` passed
+(including 99/99 unit tests, lint, typecheck and registered policy checks);
+`npm run format:check` and `npm run build` (CSP verification included) passed.
+`npm run security:check` passed after the application-code changes with zero
+high-severity production dependency findings. A later exact-candidate rerun
+passed privacy scanning but npm's advisory bulk endpoint timed out; no
+dependency manifest or lockfile changed afterward.
+The final production-preview `npm run test:ui` exited 0 in Chromium, Firefox
+and WebKit with the suite's axe, keyboard and responsive checks. A previous
+all-engine attempt failed on an old-route in-flight search request; the final
+test drains that exact request before navigation and completed all three
+engines. These are local tests, not hosted CI, production acceptance or a
+deployment. `UI-CONSOLE-WARNINGS-01`, recovery-factor policy, and the other
+launch blockers remain open; the formal production go/no-go ledger remains
+0/25 verified. No overall product-completion percentage is claimed.
+
 ## Unknown experience and seniority evidence (2026-10-22)
 
 The profile and deterministic matcher now preserve an unknown experience value

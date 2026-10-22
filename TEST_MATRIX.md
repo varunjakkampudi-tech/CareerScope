@@ -1,5 +1,31 @@
 # CareerScope v12 test evidence matrix
 
+## Existing reminder-preference locale and auth-boundary cache slice (2026-10-22)
+
+On Node 24.19.0, `npm run gates:test` passed with 99/99 unit tests and the
+registered lint, typecheck, privacy/source-integrity, deployment-policy and EOL
+checks. `npm run format:check` and `npm run build` (CSP checks included)
+passed. `npm run security:check` passed after the application-code changes with
+zero high-severity production dependency findings; its later exact-candidate
+rerun passed privacy scanning but timed out at npm's advisory bulk endpoint.
+No dependency manifest or lockfile changed afterward. The final production-preview `npm run test:ui` exited 0 in Chromium,
+Firefox and WebKit, including the suite's axe, keyboard and responsive cases.
+The auth-boundary scenario exercises the ordinary logout/login path with a
+distinct seeded second-owner profile; isolated unit tests assert owner-key
+separation and unconditional query-cache clearing. Before navigating away from
+the dashboard, the test drains the raw in-flight map for the exact GET
+search-detail endpoint, so stale-route filtering cannot hide that request.
+
+The changed UI localizes only the existing interview-reminder preference
+control in English, Telugu and Hindi; native-language review is not complete,
+and this does not establish app-wide localization or email/push delivery. The
+first final-suite attempt failed on a stale old-route request and is not counted
+as a pass; the corrected full all-engine run passed without relaxing the
+console-warning, ownership, keyboard, axe or responsive checks. Hosted Actions,
+live provider, production acceptance and deployment are not evidenced here.
+`UI-CONSOLE-WARNINGS-01` and the authentication recovery-factor decision remain
+open; this slice does not close release gates.
+
 22 October, notification preference slice (Node v24.19.0): `npm run
 test:integration` passed 59/59 with zero skips against disposable local
 PostgreSQL/Redis, including the additive preference migration, owner/CSRF/input

@@ -42,10 +42,24 @@ const messages = {
     upcomingInterview: 'You have an upcoming interview round.',
     openApplication: 'Open application',
     markRead: 'Mark as read',
+    notificationPreferencesHeading: 'Notification preferences',
+    notificationPreferencesDescription:
+      'Choose whether upcoming interview reminders appear in your in-app notifications.',
+    notificationPreferencesLoading: 'Loading preferences…',
+    notificationPreferencesLoadError: 'Notification preferences could not be loaded',
+    notificationPreferencesUnconfirmed:
+      'The saved value is not confirmed. Reload it before making another change.',
+    notificationPreferencesConnection: 'Check your connection and try again.',
+    notificationReminderToggle: 'Show upcoming interview reminders in CareerScope',
+    notificationReminderNote:
+      'This affects new reminders only. Existing reminders remain in your notification list. Email and push reminders are not controlled here.',
+    notificationPreferenceSaving: 'Saving notification preference…',
+    notificationPreferenceSaved: 'Notification preference saved.',
+    notificationPreferenceReloaded: 'Current preference reloaded from the server.',
     languageHeading: 'Interface language',
     languageLabel: 'Choose interface language',
     languageHelp:
-      'This preference currently translates the workspace navigation and interview-reminder controls. Other screens remain in English.',
+      'This preference currently translates common workspace navigation and notification controls. Most other screens remain in English.',
     english: 'English',
     telugu: 'తెలుగు',
     hindi: 'हिन्दी',
@@ -92,10 +106,24 @@ const messages = {
     upcomingInterview: 'మీకు రాబోయే ఇంటర్వ్యూ రౌండ్ ఉంది.',
     openApplication: 'దరఖాస్తును తెరవండి',
     markRead: 'చదివినట్లు గుర్తించండి',
+    notificationPreferencesHeading: 'నోటిఫికేషన్ ప్రాధాన్యతలు',
+    notificationPreferencesDescription:
+      'రాబోయే ఇంటర్వ్యూ రిమైండర్‌లు మీ యాప్‌లోని నోటిఫికేషన్‌లలో కనిపించాలా ఎంచుకోండి.',
+    notificationPreferencesLoading: 'ప్రాధాన్యతలు లోడ్ అవుతున్నాయి…',
+    notificationPreferencesLoadError: 'నోటిఫికేషన్ ప్రాధాన్యతలను లోడ్ చేయలేకపోయాం',
+    notificationPreferencesUnconfirmed:
+      'సేవ్ చేసిన విలువను నిర్ధారించలేకపోయాం. మరో మార్పు చేసే ముందు దాన్ని మళ్లీ లోడ్ చేయండి.',
+    notificationPreferencesConnection: 'మీ కనెక్షన్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.',
+    notificationReminderToggle: 'CareerScope‌లో రాబోయే ఇంటర్వ్యూ రిమైండర్‌లను చూపించండి',
+    notificationReminderNote:
+      'ఇది కొత్త రిమైండర్‌లకే వర్తిస్తుంది. ఇప్పటికే ఉన్న రిమైండర్‌లు మీ నోటిఫికేషన్‌ల జాబితాలో ఉంటాయి. ఇక్కడి సెట్టింగ్ ఇమెయిల్ లేదా పుష్ రిమైండర్‌లను నియంత్రించదు.',
+    notificationPreferenceSaving: 'నోటిఫికేషన్ ప్రాధాన్యతను సేవ్ చేస్తోంది…',
+    notificationPreferenceSaved: 'నోటిఫికేషన్ ప్రాధాన్యత సేవ్ అయింది.',
+    notificationPreferenceReloaded: 'ప్రస్తుత ప్రాధాన్యత సర్వర్ నుంచి మళ్లీ లోడ్ చేయబడింది.',
     languageHeading: 'ఇంటర్‌ఫేస్ భాష',
     languageLabel: 'ఇంటర్‌ఫేస్ భాషను ఎంచుకోండి',
     languageHelp:
-      'ఈ ప్రాధాన్యత ప్రస్తుతం వర్క్‌స్పేస్ నావిగేషన్ మరియు ఇంటర్వ్యూ రిమైండర్ నియంత్రణలను మాత్రమే అనువదిస్తుంది. ఇతర స్క్రీన్‌లు ఇంకా ఆంగ్లంలో ఉంటాయి.',
+      'ఈ ప్రాధాన్యత ప్రస్తుతం సాధారణ వర్క్‌స్పేస్ నావిగేషన్ మరియు నోటిఫికేషన్ నియంత్రణలను మాత్రమే అనువదిస్తుంది. చాలా ఇతర స్క్రీన్‌లు ఇంకా ఆంగ్లంలో ఉంటాయి.',
     english: 'English',
     telugu: 'తెలుగు',
     hindi: 'हिन्दी',
@@ -143,10 +171,24 @@ const messages = {
     upcomingInterview: 'आपका एक इंटरव्यू राउंड आने वाला है।',
     openApplication: 'आवेदन खोलें',
     markRead: 'पढ़ा हुआ चिह्नित करें',
+    notificationPreferencesHeading: 'सूचना प्राथमिकताएँ',
+    notificationPreferencesDescription:
+      'चुनें कि आने वाले इंटरव्यू रिमाइंडर ऐप की सूचनाओं में दिखाई दें या नहीं।',
+    notificationPreferencesLoading: 'प्राथमिकताएँ लोड हो रही हैं…',
+    notificationPreferencesLoadError: 'सूचना प्राथमिकताएँ लोड नहीं हो सकीं',
+    notificationPreferencesUnconfirmed:
+      'सहेजे गए मान की पुष्टि नहीं हुई है। कोई और बदलाव करने से पहले इसे फिर से लोड करें।',
+    notificationPreferencesConnection: 'अपना कनेक्शन जाँचें और फिर कोशिश करें।',
+    notificationReminderToggle: 'CareerScope में आने वाले इंटरव्यू रिमाइंडर दिखाएँ',
+    notificationReminderNote:
+      'यह केवल नए रिमाइंडर पर लागू होता है। मौजूदा रिमाइंडर आपकी सूचना सूची में रहेंगे। यह सेटिंग ईमेल या पुश रिमाइंडर नियंत्रित नहीं करती।',
+    notificationPreferenceSaving: 'सूचना प्राथमिकता सहेजी जा रही है…',
+    notificationPreferenceSaved: 'सूचना प्राथमिकता सहेजी गई।',
+    notificationPreferenceReloaded: 'वर्तमान प्राथमिकता सर्वर से फिर लोड की गई।',
     languageHeading: 'इंटरफ़ेस भाषा',
     languageLabel: 'इंटरफ़ेस भाषा चुनें',
     languageHelp:
-      'यह प्राथमिकता अभी कार्यक्षेत्र नेविगेशन और इंटरव्यू रिमाइंडर नियंत्रणों का अनुवाद करती है। अन्य स्क्रीन अभी अंग्रेज़ी में हैं।',
+      'यह प्राथमिकता अभी सामान्य कार्यक्षेत्र नेविगेशन और सूचना नियंत्रणों का अनुवाद करती है। अधिकांश अन्य स्क्रीन अभी अंग्रेज़ी में हैं।',
     english: 'English',
     telugu: 'తెలుగు',
     hindi: 'हिन्दी',

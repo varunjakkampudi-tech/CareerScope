@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
+import { localizedText, useInterfaceLocale } from '@/lib/locale';
 import { NO_OWNER, useSession } from '@/lib/session';
 import { ErrorState, LoadingState } from './ui-states';
 import styles from './notification-preferences.module.css';
@@ -10,6 +11,8 @@ import styles from './notification-preferences.module.css';
 type NotificationPreferences = { interviewRemindersInAppEnabled: boolean };
 
 export default function NotificationPreferences() {
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1]) => localizedText(locale, key);
   const session = useSession();
   const queryClient = useQueryClient();
   const [saving, setSaving] = useState(false);
@@ -58,22 +61,33 @@ export default function NotificationPreferences() {
   }
 
   return (
-    <section className={styles.panel} aria-labelledby="notification-preferences-heading">
+    <section
+      className={styles.panel}
+      aria-labelledby="notification-preferences-heading"
+      lang={locale}
+    >
       <div className={styles.heading}>
-        <h2 id="notification-preferences-heading">Notification preferences</h2>
-        <p>Choose whether due interview reminders appear in your in-app notifications.</p>
+        <h2 id="notification-preferences-heading">{t('notificationPreferencesHeading')}</h2>
+        <p>{t('notificationPreferencesDescription')}</p>
       </div>
-      {preferences.isLoading && <LoadingState variant="inline" message="Loading preferences…" />}
+      {preferences.isLoading && (
+        <div lang={locale}>
+          <LoadingState variant="inline" message={t('notificationPreferencesLoading')} />
+        </div>
+      )}
       {(preferences.isError || preferenceUnconfirmed) && (
-        <ErrorState
-          title="Notification preferences could not be loaded"
-          message={
-            preferenceUnconfirmed
-              ? 'The saved value is not confirmed. Reload it before making another change.'
-              : 'Check your connection and try again.'
-          }
-          onRetry={() => void retryPreferenceRead()}
-        />
+        <div lang={locale}>
+          <ErrorState
+            title={t('notificationPreferencesLoadError')}
+            message={
+              preferenceUnconfirmed
+                ? t('notificationPreferencesUnconfirmed')
+                : t('notificationPreferencesConnection')
+            }
+            onRetry={() => void retryPreferenceRead()}
+            retryLabel={t('retry')}
+          />
+        </div>
       )}
       {preferences.data && !preferences.isError && !preferenceUnconfirmed && (
         <div className={styles.control}>
@@ -85,15 +99,14 @@ export default function NotificationPreferences() {
               aria-describedby="interview-reminder-preference-note"
               onChange={(event) => void changePreference(event.currentTarget.checked)}
             />
-            <span>Show upcoming interview reminders in CareerScope</span>
+            <span>{t('notificationReminderToggle')}</span>
           </label>
           <p className={styles.note} id="interview-reminder-preference-note">
-            This affects new reminders only. Existing reminders remain in your notification list.
-            Email and push reminders are not controlled here.
+            {t('notificationReminderNote')}
           </p>
-          {saving && <p role="status">Saving notification preference…</p>}
-          {saved && <p role="status">Notification preference saved.</p>}
-          {refreshedAfterSave && <p role="status">Current preference reloaded from the server.</p>}
+          {saving && <p role="status">{t('notificationPreferenceSaving')}</p>}
+          {saved && <p role="status">{t('notificationPreferenceSaved')}</p>}
+          {refreshedAfterSave && <p role="status">{t('notificationPreferenceReloaded')}</p>}
         </div>
       )}
     </section>
