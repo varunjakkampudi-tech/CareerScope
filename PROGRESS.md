@@ -1,5 +1,108 @@
 # CareerScope v12 engineering progress
 
+## Saved-job tag slice — post-review verification refresh (2026-10-22)
+
+The local saved-job tagging change was developed on `main` from base SHA
+`9ea612ec720e1c2c9b6a1d91b889f1589675bbd2` and remains unpublished. The
+latest review-driven hardening adds PostgreSQL constraints that match the API
+tag contract (bounded one-dimensional arrays, nonblank trimmed values, comma
+exclusion, case-insensitive uniqueness, and Unicode code-point length bounds).
+The editor's UTF-16 input limit and reload assertion now match that contract.
+No runtime behavior outside saved-job tag validation/persistence and its
+existing edit surfaces was intentionally changed.
+
+Fresh local evidence on Node 24.19.0: `npm run test:ui` exited 0 across
+Chromium, Firefox, and WebKit; `npm run gates:test` exited 0, including 96/96
+unit tests, source-integrity, privacy, deployment-policy, EOL, lint, and
+typecheck; formatting, security (`npm audit --omit=dev --audit-level=high`,
+zero findings), and `git diff --check` passed. The isolated service-backed
+PostgreSQL migration/ownership test and integration suite also passed in this
+local worktree. A read-only independent review identified and drove fixes for
+the UI/database contract mismatches; its remaining non-blocking note is that
+Unicode case-fold equivalence may vary by PostgreSQL collation. This is local
+verification only: hosted CI, production acceptance, commit, and push are not
+claimed.
+
+Progress accounting remains deliberately separate: the whole-product estimate
+is not reproducible from the current requirement inventory, and the formal
+release ledger remains 0/25 verified. This slice is concrete local progress,
+not evidence that the overall goal is 90% complete.
+
+## Saved-job tag organization slice (2026-10-22)
+
+Implemented the approved v12 §4.9 saved-job tags capability on local `main`
+(base commit `9ea612ec720e1c2c9b6a1d91b889f1589675bbd2`). Tags are candidate-owned
+data, bounded and normalized at the API/domain boundary, persisted with an
+additive PostgreSQL migration, included in optimistic revision/history records,
+and editable/displayed on the existing Saved Jobs surface. Existing notes,
+application status, and evidence semantics remain separate. The UI regression
+checks edit, save, history refresh, and reload persistence. Design placement
+uses the existing saved-jobs surface; no new screen or unsupported behavior was
+invented. Folders and the other §4.9 gaps remain open.
+
+Evidence on Node 24.19.0 for this local change: `npm run build` passed both
+Next.js production builds and CSP verification (13 script hashes); `npm run
+gates:test` passed, including 96/96 unit tests, source-integrity, privacy,
+deployment-policy, EOL, lint and typecheck (61 canonical test files);
+`npm run test:integration` passed 59/59 with zero skips; the production-mode
+`npm run test:ui` passed Chromium, Firefox and WebKit, including axe, keyboard
+and eight viewport widths; `npm run security:check` reported zero high-severity
+production dependency vulnerabilities; `npm run db:generate` reported no
+schema drift; formatting and type/lint checks passed. One initial browser
+attempt was not counted: it used system Node 22 and had no web server running;
+the successful run used Node 24 and the built app. This is local evidence only,
+not hosted CI, deployment or production acceptance. The code is still a local
+change at the base SHA above; no push or deployment occurred. The go/no-go
+ledger remains 0/25 verified, and no defensible whole-goal percentage can be
+derived from the source-block inventory. This slice must not be reported as a
+whole-product completion percentage.
+
+### Saved-job tag round-trip hardening (2026-10-22)
+
+Review found that the tag editor uses commas as separators while the API would
+accept a comma inside an individual tag. A subsequent edit could therefore
+split one server-accepted value into several values. The shared tag validator
+now rejects commas, and the OpenAPI schema describes that rule plus trimming,
+case-insensitive uniqueness and the 12-tag/32-character limits. A regression
+test covers the delimiter boundary. This is a local code change on `main`; it
+has not been independently reviewed, committed or pushed.
+
+Node 24.19.0 verification after the correction: `npm run test:unit` passed
+96/96; after formatting the OpenAPI source, the focused lead-tag tests passed
+2/2, typecheck passed (61 canonical test files), lint passed, and
+`npm run format:check` passed. `npm run test:integration` passed 59/59 with
+zero skips; `npm run build` passed both production web builds and CSP
+verification (13 hashes); `npm run db:generate` reported no schema drift; and
+`npm run gates:test` and `npm run security:check` passed; the latter found zero
+production dependency vulnerabilities. `git diff --check` passed.
+After the delimiter correction and the 406-character editor-limit regression
+assertion were both in place, `npm run test:ui` completed successfully in
+Chromium, Firefox and WebKit, including axe, keyboard interaction and eight
+responsive widths. This is local browser evidence only. Hosted CI and
+production acceptance remain unverified. The change remains uncommitted and
+has not received an independent review or been pushed.
+
+### Saved-job tag preservation on application-stage note edits (2026-10-22)
+
+Review found that the shared notes form sent the unchanged tag array even on
+the Applications surface, where tag editing is unavailable. Once a tagged
+lead had moved to `applied`, the API correctly rejected that payload because
+tags are mutable only in saved/archived stages. The form now omits `tags`
+unless the user actually changed them. A browser regression saves notes on the
+Applications surface, asserts the request contains no tag mutation, then
+reopens the record on Saved Jobs and verifies the tags persist.
+
+Node 24.19.0 evidence after this fix: `npm run build` passed with all 13 CSP
+hashes verified; `npm run test:ui` passed the full Chromium/Firefox/WebKit
+suite with axe, keyboard and eight responsive widths; `npm run gates:test`
+passed including 96/96 unit tests, lint and typecheck; `npm run
+test:integration` passed 59/59 with zero skips; `npm run security:check`
+reported zero high-severity production dependency findings; `npm run
+format:check`, `npm run eol:check`, `git diff --check`, and `npm run
+db:generate` passed with no schema drift. These are local checks only. Hosted
+CI remains unavailable, and the change is uncommitted and not independently
+reviewed.
+
 ## Main synchronization and exact-checkpoint validation (2026-10-22)
 
 Validated local `main` at `4dd977f71726a5fa24037e4930db7d8a00f3d200` and

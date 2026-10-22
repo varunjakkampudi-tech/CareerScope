@@ -352,6 +352,11 @@ export const leads = pgTable(
     fingerprint: text('fingerprint').notNull(),
     data: jsonb('data').$type<CollectedJob>().notNull(),
     notes: text('notes').notNull().default(''),
+    // Candidate-owned organization metadata, separate from the source posting.
+    tags: text('tags')
+      .array()
+      .notNull()
+      .default(sql`ARRAY[]::text[]`),
     // A job search is a pipeline, not a bookmark list. Widening this is additive:
     // every existing row is 'saved' or 'archived' and stays valid.
     status: text('status')
@@ -412,6 +417,7 @@ export const leads = pgTable(
       sql`${table.livenessStatus} IN ('unknown', 'live', 'stale')`,
     ),
     check('lead_notes_bounded', sql`length(${table.notes}) <= 10000`),
+    check('lead_tags_valid', sql`public.careerscope_valid_lead_tags(${table.tags})`),
   ],
 );
 
@@ -433,6 +439,11 @@ export const leadHistory = pgTable(
     >(),
     applicationEvidenceChanged: boolean('application_evidence_changed').notNull().default(false),
     applicationEvidence: jsonb('application_evidence').$type<ApplicationEvidence | null>(),
+    tagsChanged: boolean('tags_changed').notNull().default(false),
+    tags: text('tags')
+      .array()
+      .notNull()
+      .default(sql`ARRAY[]::text[]`),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
@@ -450,6 +461,7 @@ export const leadHistory = pgTable(
       sql`${table.previousStatus} IS NULL OR ${table.previousStatus} IN ('saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn', 'archived')`,
     ),
     check('lead_history_notes_changed_valid', sql`${table.notesChanged} IN (0, 1)`),
+    check('lead_history_tags_valid', sql`public.careerscope_valid_lead_tags(${table.tags})`),
     check(
       'lead_history_application_evidence_valid',
       sql`${table.applicationEvidence} IS NULL OR (

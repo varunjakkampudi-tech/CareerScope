@@ -30,6 +30,19 @@ const applicationEvidence = object({
   source: text({ maxLength: 160 }),
   confidence: text({ enum: ['unknown', 'low', 'medium', 'high'] }),
 });
+const leadTags = array(
+  text({
+    minLength: 1,
+    maxLength: 32,
+    description: 'Trimmed non-empty label without commas or control characters.',
+  }),
+  {
+    maxItems: 12,
+    uniqueItems: true,
+    description:
+      'Case-insensitively unique labels of at most 32 Unicode code points; the editor uses commas as separators.',
+  },
+);
 const sources = ['remoteok', 'himalayas', 'greenhouse', 'lever', 'ashby', 'workable'];
 const searchStatus = text({
   enum: ['queued', 'running', 'completed', 'partial', 'failed', 'cancelled'],
@@ -169,6 +182,7 @@ const lead = object({
   id: uuid,
   data: job,
   notes: text({ maxLength: 10000 }),
+  tags: leadTags,
   status,
   applicationEvidence: nullable(applicationEvidence),
   livenessStatus: text({ enum: ['unknown', 'live', 'stale'] }),
@@ -692,7 +706,7 @@ function contracts(options: {
       { failures: [401, 403, 429] },
     ),
     'PUT /api/leads/:id': operation(
-      'Update candidate-owned notes, stage, and candidate-reported application evidence using optimistic concurrency',
+      'Update candidate-owned notes, tags, stage, and candidate-reported application evidence using optimistic concurrency',
       lead,
       {
         body: object(
@@ -701,6 +715,7 @@ function contracts(options: {
             notes: text({ maxLength: 10000 }),
             status,
             applicationEvidence,
+            tags: leadTags,
           },
           ['revision', 'notes', 'status'],
         ),
@@ -718,6 +733,8 @@ function contracts(options: {
             notesChanged: bool,
             applicationEvidenceChanged: bool,
             applicationEvidence: nullable(applicationEvidence),
+            tagsChanged: bool,
+            tags: leadTags,
             createdAt: timestamp,
           }),
         ),

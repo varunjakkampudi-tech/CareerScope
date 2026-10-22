@@ -73,6 +73,13 @@ function absoluteDate(iso: string): string {
   });
 }
 
+function parseLeadTags(value: string): string[] {
+  return value
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+}
+
 // The two real screens this component now serves (CS-19's shortlist and
 // CS-50's honest Applications v1) each show a different, non-overlapping
 // subset of the same six real statuses - never all six in both places,
@@ -235,6 +242,7 @@ function LeadEditor({
   // CS-61: owner-scoped query keys. Present exactly when authenticated.
   const owner = useOwner();
   const [notes, setNotes] = useState(record.notes);
+  const [tagsText, setTagsText] = useState(record.tags.join(', '));
   const [applicationEvidenceOpen, setApplicationEvidenceOpen] = useState(false);
   const [applicationMethod, setApplicationMethod] = useState('Employer website');
   const [appliedAtLocal, setAppliedAtLocal] = useState(() => {
@@ -250,6 +258,7 @@ function LeadEditor({
     mutationFn: (input: {
       status: Lead['status'];
       applicationEvidence?: NonNullable<Lead['applicationEvidence']>;
+      tags?: string[];
     }) =>
       api<Lead>(`/leads/${record.id}`, {
         method: 'PUT',
@@ -270,6 +279,7 @@ function LeadEditor({
     onSuccess: (lead) => {
       onDirty(false);
       setNotes(lead.notes);
+      setTagsText(lead.tags.join(', '));
       save.reset();
       cache.setQueryData(ownerKey(owner, 'lead', record.id), lead);
     },
@@ -438,6 +448,7 @@ function LeadEditor({
                     {entry.applicationEvidenceChanged
                       ? ' — Candidate-reported application evidence updated'
                       : ''}
+                    {entry.tagsChanged ? ' — Saved-job tags updated' : ''}
                   </p>
                 </div>
               </li>
@@ -733,12 +744,63 @@ function LeadEditor({
           )}
         </section>
 
+        {allowedStatuses.includes('saved') && (
+          <section className={styles.card} aria-label="Saved-job tags" id="lead-tags">
+            <h2>Your tags</h2>
+            {record.tags.length > 0 && (
+              <ul className={styles.tagList} aria-label="Current saved-job tags">
+                {record.tags.map((tag) => (
+                  <li className={styles.tag} key={tag}>
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                save.mutate({ status: record.status, tags: parseLeadTags(tagsText) });
+              }}
+            >
+              <label className={styles.tagField}>
+                <span>Comma-separated tags</span>
+                <input
+                  name="lead-tags"
+                  // 12 tags of at most 32 Unicode code points (64 UTF-16 units)
+                  // plus 11 comma-space separators.
+                  maxLength={790}
+                  value={tagsText}
+                  disabled={pending}
+                  aria-describedby="lead-tags-help"
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    setTagsText(value);
+                    onDirty(notes !== record.notes || value !== record.tags.join(', '));
+                  }}
+                />
+              </label>
+              <p className={styles.tagHelp} id="lead-tags-help">
+                Up to 12 tags, 32 characters each. Separate tags with commas.
+              </p>
+              <button
+                type="submit"
+                className={styles.btnSecondary}
+                disabled={pending || tagsText === record.tags.join(', ')}
+              >
+                {pending ? 'Saving…' : 'Save Tags'}
+              </button>
+            </form>
+          </section>
+        )}
         <section className={styles.card} aria-label="Your notes" id="lead-notes">
           <h2>Your Notes</h2>
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              save.mutate({ status: record.status });
+              save.mutate({
+                status: record.status,
+                ...(tagsText === record.tags.join(', ') ? {} : { tags: parseLeadTags(tagsText) }),
+              });
             }}
           >
             <label className={styles.notesField}>
@@ -751,14 +813,16 @@ function LeadEditor({
                 placeholder="No notes added."
                 onChange={(event) => {
                   setNotes(event.target.value);
-                  onDirty(event.target.value !== record.notes);
+                  onDirty(
+                    event.target.value !== record.notes || tagsText !== record.tags.join(', '),
+                  );
                 }}
               />
             </label>
             <button
               type="submit"
               className={styles.btnPrimary}
-              disabled={pending || notes === record.notes}
+              disabled={pending || (notes === record.notes && tagsText === record.tags.join(', '))}
             >
               <Save size={16} aria-hidden="true" />
               Save Notes
@@ -820,7 +884,7 @@ export default function SavedLeads({
     onDirty(value);
   }
   function discard() {
-    if (dirty && !window.confirm('Discard unsaved notes?')) return false;
+    if (dirty && !window.confirm('Discard unsaved changes to this saved job?')) return false;
     markDirty(false);
     return true;
   }
@@ -966,6 +1030,15 @@ export default function SavedLeads({
                     <strong>{lead.data.title}</strong>
                     <span>{lead.data.company}</span>
                     {lead.data.location && <small>{lead.data.location}</small>}
+                    {scope === 'saved' && lead.tags.length > 0 && (
+                      <span className={styles.tagList} aria-label="Saved-job tags">
+                        {lead.tags.map((tag) => (
+                          <span className={styles.tag} key={tag}>
+                            {tag}
+                          </span>
+                        ))}
+                      </span>
+                    )}
                   </span>
                   <span className={styles.leadCardMeta}>
                     <span className={styles.statusBadge} data-status={lead.status}>

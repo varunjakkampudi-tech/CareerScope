@@ -2924,6 +2924,50 @@ try {
       // failing); the predicates above already require a 200.
       assert.equal((await refreshedLeads).status(), 200);
       assert.equal((await refreshedHistory).status(), 200);
+      const tags = page.getByRole('textbox', { name: 'Comma-separated tags', exact: true });
+      assert.equal(await tags.getAttribute('maxlength'), '790');
+      const maximumCodePointTag = '🙂'.repeat(32);
+      await tags.fill(`Target role, ${maximumCodePointTag}, Remote`);
+      const tagsSaved = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      const tagsHistory = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}/history`) && response.status() === 200,
+      );
+      await page.getByRole('button', { name: 'Save Tags', exact: true }).click();
+      assert.equal((await tagsSaved).status(), 200);
+      assert.equal((await tagsHistory).status(), 200);
+      // Exercise the shared editor on its applications surface, where tag
+      // editing is unavailable: saving notes must leave the existing tags
+      // untouched rather than sending them as an attempted tag mutation.
+      const taggedLead = await leadRepository.get(ownerId, leadId);
+      assert.ok(taggedLead?.applicationEvidence);
+      await leadRepository.update(ownerId, leadId, {
+        revision: taggedLead.revision,
+        notes: taggedLead.notes,
+        status: 'applied',
+      });
+      await page.goto(`${origin}/applications?lead=${leadId}`);
+      const applicationLead = page.getByRole('article', { name: 'Lead details' });
+      await applicationLead.waitFor();
+      await page
+        .getByRole('textbox', { name: 'Notes', exact: true })
+        .fill(`Private synthetic ${engine} notes updated after application`);
+      const appliedNoteSaved = page.waitForResponse(
+        (response) =>
+          response.url().endsWith(`/api/leads/${leadId}`) && response.request().method() === 'PUT',
+      );
+      await page.getByRole('button', { name: 'Save Notes', exact: true }).click();
+      const appliedNoteResponse = await appliedNoteSaved;
+      assert.equal(appliedNoteResponse.status(), 200, 'Application notes save without a tag edit');
+      assert.equal('tags' in appliedNoteResponse.request().postDataJSON(), false);
+      assert.deepEqual((await leadRepository.get(ownerId, leadId))?.tags, [
+        'Target role',
+        maximumCodePointTag,
+        'Remote',
+      ]);
       await page
         .getByRole('button', { name: 'Save Notes', exact: true })
         .and(page.locator(':disabled'))
@@ -2932,17 +2976,21 @@ try {
       // route can retain unrelated cached-query traffic in Firefox, so a
       // global network-idle condition is not a meaningful persistence gate;
       // the following full reload plus persisted-notes assertion is.
-      await page.reload();
-      // /saved is its own route now: a reload lands straight back on the
-      // saved-leads workspace, so the old "Saved Leads" view-switch button no
-      // longer exists (the label is this screen's <h1>). The lead itself is
-      // re-opened from the real list below.
-      await page
-        .getByRole('navigation', { name: 'Saved lead list' })
-        .getByRole('button', { name: /Senior React Engineer/ })
-        .click();
+      // Re-open the same owner-scoped record on the saved surface to verify
+      // that the application-surface note save preserved its non-editable tags.
+      await page.goto(`${origin}/saved?lead=${leadId}`);
+      await page.getByRole('heading', { name: 'Saved Leads', exact: true }).waitFor();
+      await page.getByRole('article', { name: 'Lead details' }).waitFor();
       await notes.waitFor();
-      assert.equal(await notes.inputValue(), `Private synthetic ${engine} notes`);
+      assert.equal(
+        await notes.inputValue(),
+        `Private synthetic ${engine} notes updated after application`,
+      );
+      await tags.waitFor();
+      assert.equal(await tags.inputValue(), `Target role, ${maximumCodePointTag}, Remote`);
+      // The applied record is deep-linked from /saved but no longer belongs
+      // to its saved-stage list; its tag is visible once in the details.
+      assert.equal(await page.getByText('Target role', { exact: true }).count(), 1);
       const currentLead = await leadRepository.get(ownerId, leadId);
       assert.ok(currentLead);
       await leadRepository.update(ownerId, leadId, {

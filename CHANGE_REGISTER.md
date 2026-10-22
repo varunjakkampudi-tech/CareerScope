@@ -248,3 +248,30 @@ remain incomplete.
   pushed directly to `main` as `bad50e78cf0d2f605912e778b7e167682e745882`; local,
   tracked remote, and GitHub-advertised `main` SHAs matched. The separate dirty
   email-OTP worktree remains untouched.
+
+### Saved-job tags and delimiter validation (2026-10-22)
+
+- On local `main` at base `9ea612ec720e1c2c9b6a1d91b889f1589675bbd2`, added
+  candidate-owned saved-job tags with PostgreSQL persistence, revision/history
+  tracking, bounded normalization/validation, OpenAPI contract and editor/list
+  UI. The tag editor uses commas as separators, so the shared validator now
+  rejects commas within a tag to prevent value splitting on edit/resave.
+- Migration `0034` only adds defaulted tag fields and bounded/non-empty checks;
+  rollback should leave the additive columns/data intact and roll back only
+  application code unless a separately reviewed data-preservation plan exists.
+- Validation on Node 24.19.0: unit suite 96/96; lead-tag tests 2/2 after the
+  final formatting correction; typecheck, lint, format, requirement, EOL and
+  privacy/deploy gates passed; PostgreSQL/Redis integration 59/59 with zero
+  skips; production build/CSP verification passed; `db:generate` reported no
+  schema drift; security audit found zero production dependency vulnerabilities;
+  after the comma-rule correction, 32-code-point Unicode editor-limit
+  regression, and application-stage note/tag preservation regression, Chromium/Firefox/WebKit
+  UI, axe, keyboard and responsive-width checks passed.
+- Independent read-only review rounds found and drove fixes for delimiter
+  round-trip handling, database/API constraint parity, Unicode length and
+  browser regression assertions. The final review confirmed the max-length and
+  reload assertions; it noted PostgreSQL-collation sensitivity in Unicode case
+  folding as a non-blocking, unverified edge. The change remains local and
+  unpublished, with no hosted CI or production acceptance. No push, merge or
+  deployment occurred. The separate dirty email-OTP and application-evidence
+  worktrees were not modified.

@@ -591,6 +591,56 @@
   color: var(--dash-status-offer-fg);
 }
 
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dash-space-2);
+  list-style: none;
+  margin: var(--dash-space-2) 0;
+  padding: 0;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  max-width: 100%;
+  padding: 3px 10px;
+  border: 1px solid var(--dash-border);
+  border-radius: 999px;
+  background: var(--dash-surface-subtle);
+  color: var(--dash-ink);
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.tagField {
+  display: grid;
+  gap: var(--dash-space-2);
+  margin-top: var(--dash-space-3);
+  color: var(--dash-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+.tagField input {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid var(--dash-control-border);
+  border-radius: 8px;
+  background: var(--dash-surface);
+  color: var(--dash-ink);
+  font: inherit;
+}
+.tagField input:focus-visible {
+  outline: 3px solid var(--dash-focus);
+  outline-offset: 2px;
+}
+.tagHelp {
+  color: var(--dash-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
 .statusSelect {
   display: grid;
   gap: 6px;

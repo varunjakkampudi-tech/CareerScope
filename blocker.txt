@@ -1200,3 +1200,35 @@ Verification procedure: Re-read the governing owner instruction and verify
   local/remote main refs before any authorized push.
 Affected tasks: Publishing validated CareerScope work to `main`; no product
   implementation or production deployment is blocked.
+
+BLOCKER ID: CURRENT-AGENTS-PUSH-CONFLICT-01
+Title: Session-supplied repository instructions prohibit agent push/merge
+Priority: High
+Module: Repository governance / main synchronization
+v12 requirement / checklist item: Active goal requests direct work on `main`
+  and push; the current session-supplied AGENTS instructions prohibit agent
+  push/merge.
+Status: READY_FOR_OWNER
+Problem: The current task context includes an explicit instruction that no
+  agent push/merge to `main` is authorized, while the on-disk `AGENTS.md`,
+  `docs/governance/ENGINEERING-CONTRACT.md`, and OA-2026-10-21-01 authorize
+  normal direct pushes of validated changes. The active goal requests pushing.
+Verified state: At the last ref comparison, local `main` and `origin/main` both
+  resolved to `9ea612ec720e1c2c9b6a1d91b889f1589675bbd2`. The saved-job tag
+  changes remain local and unpublished; they passed local validation, including
+  Chromium, Firefox and WebKit UI journeys and the 96-test gate. No push was
+  attempted.
+Impact: The validated local work can remain on `main`, but it cannot be
+  published while the current direct instruction and repository authorization
+  conflict. This does not block unrelated local engineering work.
+Owner action required: Confirm whether the current session-supplied no-push
+  instruction is intentionally superseded for this validated checkpoint, or
+  retain the no-push rule. Do not weaken repository protection or use force.
+Required environment-variable names (no values): None.
+External dependencies: None; this is an authorization conflict.
+Expected result: One unambiguous applicable push rule for this checkpoint.
+Verification procedure: After owner clarification, re-read the governing
+  instruction and check `git status`, `git rev-parse HEAD`, and
+  `git ls-remote origin refs/heads/main` before deciding whether to push.
+Affected tasks: Publishing the saved-job tag changes to `main`; no product
+  implementation or local validation is blocked.

@@ -31,12 +31,33 @@ export const applicationEvidenceSchema = z
   });
 export type ApplicationEvidence = z.infer<typeof applicationEvidenceSchema>;
 export const saveLeadSchema = z.object({ jobId: z.string().uuid() }).strict();
+export const leadTagsSchema = z
+  .array(
+    z
+      .string()
+      .trim()
+      .min(1)
+      .refine((tag) => Array.from(tag).length <= 32, 'Tags must contain at most 32 characters')
+      .refine((tag) => !tag.includes(','), 'Tags cannot contain commas')
+      .refine((tag) => !/\p{Cc}/u.test(tag), 'Tags cannot contain control characters'),
+  )
+  .max(12)
+  .superRefine((tags, context) => {
+    const seen = new Set<string>();
+    tags.forEach((tag, index) => {
+      const key = tag.toLowerCase();
+      if (seen.has(key))
+        context.addIssue({ code: 'custom', path: [index], message: 'Tags must be unique' });
+      seen.add(key);
+    });
+  });
 export const updateLeadSchema = z
   .object({
     revision: z.number().int().min(1).max(2_147_483_646),
     notes: z.string().max(10000),
     status: leadStatusSchema,
     applicationEvidence: applicationEvidenceSchema.nullable().optional(),
+    tags: leadTagsSchema.optional(),
   })
   .strict();
 const listSchema = z
@@ -67,6 +88,7 @@ export type LeadRecord = {
   notes: string;
   status: z.infer<typeof leadStatusSchema>;
   applicationEvidence: ApplicationEvidence | null;
+  tags: string[];
   // CS-27: a real, checked fact - distinct from status (the owner's own
   // pipeline stage) and from createdAt/updatedAt (age). 'unknown' until an
   // actual HTTP check has run; only ever 'live'/'stale' after a genuinely
@@ -84,6 +106,8 @@ export type LeadHistoryRecord = {
   notesChanged: boolean;
   applicationEvidenceChanged: boolean;
   applicationEvidence: LeadRecord['applicationEvidence'];
+  tagsChanged: boolean;
+  tags: string[];
   createdAt: Date;
 };
 export class LeadRevisionConflict extends Conflict {
@@ -92,10 +116,10 @@ export class LeadRevisionConflict extends Conflict {
   }
 }
 const columns =
-  'id, data, notes, status, application_evidence AS "applicationEvidence", revision, created_at AS "createdAt", updated_at AS "updatedAt",' +
+  'id, data, notes, tags, status, application_evidence AS "applicationEvidence", revision, created_at AS "createdAt", updated_at AS "updatedAt",' +
   ' liveness_status AS "livenessStatus", liveness_checked_at AS "livenessCheckedAt"';
 const qualifiedColumns = (alias: string) =>
-  `${alias}.id, ${alias}.data, ${alias}.notes, ${alias}.status, ${alias}.application_evidence AS "applicationEvidence", ${alias}.revision,` +
+  `${alias}.id, ${alias}.data, ${alias}.notes, ${alias}.tags, ${alias}.status, ${alias}.application_evidence AS "applicationEvidence", ${alias}.revision,` +
   ` ${alias}.created_at AS "createdAt", ${alias}.updated_at AS "updatedAt",` +
   ` ${alias}.liveness_status AS "livenessStatus", ${alias}.liveness_checked_at AS "livenessCheckedAt"`;
 
@@ -113,6 +137,7 @@ function hydrate(row: LeadRecord): LeadRecord {
   return {
     ...row,
     data: collectedJobSchema.strip().parse(row.data),
+    tags: leadTagsSchema.parse(row.tags),
     applicationEvidence:
       row.applicationEvidence === null
         ? null
@@ -190,13 +215,15 @@ export class LeadRepository {
     const result = await this.database.pool.query<LeadHistoryRecord>(
       `SELECT revision, previous_status AS "previousStatus", status,
        notes_changed = 1 AS "notesChanged", application_evidence_changed AS "applicationEvidenceChanged",
-       application_evidence AS "applicationEvidence", created_at AS "createdAt"
+       application_evidence AS "applicationEvidence", tags_changed AS "tagsChanged", tags,
+       created_at AS "createdAt"
        FROM lead_history WHERE owner_id = $1 AND lead_id = $2
        AND ($3::integer IS NULL OR revision < $3) ORDER BY revision DESC LIMIT 26`,
       [ownerId, id, before ?? null],
     );
     const items = result.rows.slice(0, 25).map((item) => ({
       ...item,
+      tags: leadTagsSchema.parse(item.tags),
       applicationEvidence:
         item.applicationEvidence === null
           ? null
@@ -229,8 +256,8 @@ export class LeadRepository {
       if (lead) {
         await client.query(
           `INSERT INTO lead_history (id, owner_id, lead_id, revision, status, notes_changed,
-           previous_status, application_evidence_changed, application_evidence)
-           VALUES ($1, $2, $3, 1, 'saved', 0, NULL, false, NULL)`,
+           previous_status, application_evidence_changed, application_evidence, tags_changed, tags)
+           VALUES ($1, $2, $3, 1, 'saved', 0, NULL, false, NULL, false, ARRAY[]::text[])`,
           [randomUUID(), ownerId, lead.id],
         );
       } else {
@@ -268,10 +295,24 @@ export class LeadRepository {
       }
       if (current.revision !== changes.revision)
         throw new LeadRevisionConflict('Lead revision changed');
+      if (
+        changes.tags !== undefined &&
+        (!['saved', 'archived'].includes(current.status) ||
+          !['saved', 'archived'].includes(changes.status))
+      ) {
+        throw new z.ZodError([
+          {
+            code: 'custom',
+            path: ['tags'],
+            message: 'Tags can only be edited while a lead is saved or archived',
+          },
+        ]);
+      }
       const applicationEvidence =
         changes.applicationEvidence === undefined
           ? current.applicationEvidence
           : changes.applicationEvidence;
+      const tags = changes.tags ?? current.tags;
       if (current.applicationEvidence && changes.applicationEvidence === null) {
         throw new z.ZodError([
           {
@@ -322,13 +363,15 @@ export class LeadRepository {
       if (
         current.notes === changes.notes &&
         current.status === changes.status &&
-        sameApplicationEvidence(current.applicationEvidence, applicationEvidence)
+        sameApplicationEvidence(current.applicationEvidence, applicationEvidence) &&
+        current.tags.length === tags.length &&
+        current.tags.every((tag, index) => tag === tags[index])
       ) {
         await client.query('COMMIT');
         return hydrate(current);
       }
       const updated = await client.query<LeadRecord>(
-        `UPDATE saved_leads SET notes = $3, status = $4, application_evidence = $5::jsonb,
+        `UPDATE saved_leads SET notes = $3, status = $4, application_evidence = $5::jsonb, tags = $6::text[],
          revision = revision + 1, updated_at = now(),
          -- Only moved when the stage actually changes, so editing a note does
          -- not make a cold application look freshly worked.
@@ -340,12 +383,13 @@ export class LeadRepository {
           changes.notes,
           changes.status,
           applicationEvidence === null ? null : JSON.stringify(applicationEvidence),
+          tags,
         ],
       );
       await client.query(
         `INSERT INTO lead_history (id, owner_id, lead_id, revision, status, notes_changed,
-         previous_status, application_evidence_changed, application_evidence)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb)`,
+         previous_status, application_evidence_changed, application_evidence, tags_changed, tags)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10, $11::text[])`,
         [
           randomUUID(),
           ownerId,
@@ -356,6 +400,11 @@ export class LeadRepository {
           current.status,
           Number(!sameApplicationEvidence(current.applicationEvidence, applicationEvidence)),
           applicationEvidence === null ? null : JSON.stringify(applicationEvidence),
+          Number(
+            current.tags.length !== tags.length ||
+              current.tags.some((tag, index) => tag !== tags[index]),
+          ),
+          tags,
         ],
       );
       await client.query('COMMIT');

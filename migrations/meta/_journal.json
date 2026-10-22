@@ -239,6 +239,13 @@
       "when": 1792608496042,
       "tag": "0033_acoustic_jocasta",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1792619868045,
+      "tag": "0034_harsh_galactus",
+      "breakpoints": true
     }
   ]
 }

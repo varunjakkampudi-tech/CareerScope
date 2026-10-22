@@ -3032,7 +3032,7 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
                 })
               ).json().csrf,
             },
-            payload: { revision: 1, notes: 'not mine', status: 'saved' },
+            payload: { revision: 1, notes: 'not mine', status: 'saved', tags: ['not mine'] },
           })
         ).statusCode,
         404,
@@ -3057,6 +3057,17 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
         { revision: 0, notes: '', status: 'saved' },
         { revision: 1, notes: 'x'.repeat(10001), status: 'saved' },
         { revision: 1, notes: '', status: 'saved', ownerId },
+        { revision: 1, notes: '', status: 'saved', tags: ['Frontend', ' frontend '] },
+        { revision: 1, notes: '', status: 'saved', tags: [''] },
+        { revision: 1, notes: '', status: 'saved', tags: ['Remote, hybrid'] },
+        { revision: 1, notes: '', status: 'saved', tags: ['x'.repeat(33)] },
+        {
+          revision: 1,
+          notes: '',
+          status: 'saved',
+          tags: Array.from({ length: 13 }, (_, i) => `tag-${i}`),
+        },
+        { revision: 1, notes: '', status: 'saved', tags: ['with\nnewline'] },
         {
           revision: 1,
           notes: '',
@@ -3121,23 +3132,70 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
         payload: { revision: 3, notes: revised.notes, status: 'saved' },
       });
       assert.equal(restored.json().revision, 4);
+      const tagged = await app.inject({
+        method: 'PUT',
+        url: leadUrl,
+        cookies,
+        headers,
+        payload: {
+          revision: 4,
+          notes: revised.notes,
+          status: 'saved',
+          tags: ['  Frontend ', 'Remote'],
+        },
+      });
+      assert.equal(tagged.statusCode, 200, tagged.body);
+      assert.equal(tagged.json().revision, 5);
+      assert.deepEqual(tagged.json().tags, ['Frontend', 'Remote']);
+      for (const invalidTags of [
+        [null],
+        ['   '],
+        ['Remote, hybrid'],
+        ['x'.repeat(33)],
+        [' Remote'],
+        ['with\nnewline'],
+        ['Frontend', 'frontend'],
+        Array.from({ length: 13 }, (_, index) => `tag-${index}`),
+      ]) {
+        await assert.rejects(
+          database.pool.query(
+            'UPDATE saved_leads SET tags = $1::text[] WHERE owner_id = $2 AND id = $3',
+            [invalidTags, ownerId, lead.id],
+          ),
+          (error: { code?: string }) => error.code === '23514',
+          `the database rejects invalid saved-job tags ${String(invalidTags)}`,
+        );
+        await assert.rejects(
+          database.pool.query(
+            'UPDATE lead_history SET tags = $1::text[] WHERE owner_id = $2 AND lead_id = $3 AND revision = 5',
+            [invalidTags, ownerId, lead.id],
+          ),
+          (error: { code?: string }) => error.code === '23514',
+          `the database rejects invalid saved-job tag history ${String(invalidTags)}`,
+        );
+      }
       const noop = await app.inject({
         method: 'PUT',
         url: leadUrl,
         cookies,
         headers,
-        payload: { revision: 4, notes: revised.notes, status: 'saved' },
+        payload: { revision: 5, notes: revised.notes, status: 'saved' },
       });
-      assert.equal(noop.json().revision, 4);
+      assert.equal(noop.json().revision, 5);
       const audit = await app.inject({ url: `${leadUrl}/history`, cookies });
       assert.deepEqual(
         audit.json().items.map((entry: { revision: number }) => entry.revision),
-        [4, 3, 2, 1],
+        [5, 4, 3, 2, 1],
       );
       assert.deepEqual(
         audit.json().items.map((entry: { notesChanged: boolean }) => entry.notesChanged),
-        [false, false, true, false],
+        [false, false, false, true, false],
       );
+      assert.deepEqual(
+        audit.json().items.map((entry: { tagsChanged: boolean }) => entry.tagsChanged),
+        [true, false, false, false, false],
+      );
+      assert.deepEqual(audit.json().items[0].tags, ['Frontend', 'Remote']);
       assert.doesNotMatch(audit.body, /Private note/);
       assert.equal(audit.headers['cache-control'], 'no-store');
       assert.equal((await app.inject({ url: '/api/leads?limit=51', cookies })).statusCode, 400);
@@ -3154,7 +3212,7 @@ test('PostgreSQL atomic outbox, owner isolation and stale-worker fencing', async
         (await app.inject({ url: `${leadUrl}/history?before=3`, cookies })).json().items.length,
         2,
       );
-      for (let revision = 4; revision < 30; revision += 1) {
+      for (let revision = 5; revision < 30; revision += 1) {
         await leadRepository.update(ownerId, lead.id, {
           revision,
           status: 'saved',

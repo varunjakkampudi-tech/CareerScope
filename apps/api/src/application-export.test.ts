@@ -29,6 +29,7 @@ test('application CSV exports candidate claims and escapes spreadsheet formulas'
     },
     livenessStatus: 'unknown',
     livenessCheckedAt: null,
+    tags: [],
     revision: 2,
     createdAt: new Date('2026-10-19T00:00:00.000Z'),
     updatedAt: new Date('2026-10-20T12:30:00.000Z'),
