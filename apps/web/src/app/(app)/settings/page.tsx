@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from '@/lib/session';
 import { LoadingState } from '@/components/ui-states';
+import InterfaceLanguagePreference from '@/components/interface-language-preference';
 import { clearAuthQueryCache } from '@/lib/query-cache';
 
 const AccountSecurity = lazy(() => import('@/components/account-security'));
@@ -16,6 +17,7 @@ export default function SettingsPage() {
   const session = useSession();
   return (
     <>
+      <InterfaceLanguagePreference />
       <Suspense fallback={<LoadingState message="Loading account security…" />}>
         <AccountSecurity
           csrf={session.data?.csrf ?? ''}

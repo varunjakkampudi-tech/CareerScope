@@ -1688,6 +1688,104 @@ try {
       }
       await page.setViewportSize({ width: 1440, height: 900 });
       await settled('route /settings');
+      await page.goto(`${origin}/settings`);
+      const languageSelect = page.locator('#interface-language');
+      // `page.goto` can finish before the authenticated client shell has
+      // resolved its session and mounted route content, especially in WebKit.
+      // Wait for the actual settings control rather than asserting against a
+      // transient loading frame; the exact-one assertion remains strict.
+      await languageSelect.waitFor({ state: 'visible', timeout: 10000 });
+      assert.equal(
+        await languageSelect.count(),
+        1,
+        `${engine} expected one interface-language control on /settings; observed ${new URL(page.url()).pathname}`,
+      );
+      assert.equal(
+        await page.locator('label[for="interface-language"]').textContent(),
+        'Choose interface language',
+      );
+      await languageSelect.selectOption('te');
+      await page.waitForFunction(
+        () =>
+          document.querySelector('a[href="/jobs"][lang="te"]') !== null &&
+          document.documentElement.lang === 'en',
+      );
+      await sidebarNav.getByRole('link', { name: 'ఉద్యోగాలు', exact: true }).waitFor();
+      await page.getByRole('heading', { name: 'ఇంటర్‌ఫేస్ భాష', exact: true }).waitFor();
+      assert.equal(
+        await page
+          .locator('section[aria-labelledby="interface-language-heading"]')
+          .getAttribute('lang'),
+        'te',
+      );
+      await page
+        .locator('details')
+        .filter({ has: page.locator('summary[title="నోటిఫికేషన్‌లు"]') })
+        .locator('summary')
+        .click();
+      assert.equal(
+        await page.locator('section[aria-label="నోటిఫికేషన్‌లు"]').getAttribute('lang'),
+        'te',
+      );
+      await page
+        .getByText('ఇంటర్వ్యూ రిమైండర్‌లు ఇక్కడ కనిపిస్తాయి. అలర్ట్‌లో ఇంటర్వ్యూ వివరాలు ఉండవు.', {
+          exact: true,
+        })
+        .waitFor();
+      await page.reload();
+      await page.waitForFunction(
+        () =>
+          document.querySelector('a[href="/jobs"][lang="te"]') !== null &&
+          document.documentElement.lang === 'en',
+      );
+      await sidebarNav.getByRole('link', { name: 'ఉద్యోగాలు', exact: true }).waitFor();
+      await page.setViewportSize({ width: 320, height: 900 });
+      assert.equal(
+        await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+        false,
+        `${engine} Telugu workspace shell causes horizontal page overflow at 320px`,
+      );
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.evaluate(() => {
+        const original = Storage.prototype.setItem;
+        Object.defineProperty(window, '__careerscopeOriginalStorageSetItem', {
+          value: original,
+          configurable: true,
+        });
+        Storage.prototype.setItem = function (key: string, value: string) {
+          if (key === 'careerscope:interface-language') {
+            throw new DOMException('Storage unavailable in test', 'QuotaExceededError');
+          }
+          return original.call(this, key, value);
+        };
+      });
+      await languageSelect.selectOption('hi');
+      await page.waitForFunction(
+        () =>
+          document.querySelector('a[href="/jobs"][lang="hi"]') !== null &&
+          document.documentElement.lang === 'en',
+      );
+      await sidebarNav.getByRole('link', { name: 'नौकरियाँ', exact: true }).waitFor();
+      await page
+        .getByText(
+          'ब्राउज़र संग्रहण उपलब्ध नहीं है। यह प्राथमिकता इस पृष्ठ को रीफ़्रेश या बंद करने तक सक्रिय रहेगी।',
+          { exact: true },
+        )
+        .waitFor();
+      await page.evaluate(() => {
+        const target = window as Window & {
+          __careerscopeOriginalStorageSetItem?: typeof Storage.prototype.setItem;
+        };
+        if (target.__careerscopeOriginalStorageSetItem) {
+          Storage.prototype.setItem = target.__careerscopeOriginalStorageSetItem;
+          delete target.__careerscopeOriginalStorageSetItem;
+        }
+      });
+      await languageSelect.selectOption('en');
+      await page.waitForFunction(
+        () => document.querySelector('a[href="/jobs"][lang="en"]') !== null,
+      );
+      await sidebarNav.getByRole('link', { name: 'Jobs', exact: true }).waitFor();
       await page.goto(`${origin}/dashboard`);
       await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
       // The CS-15 Tab check that used to sit here (it asserted the first six

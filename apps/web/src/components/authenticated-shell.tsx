@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError, api, SESSION_EXPIRED_EVENT } from '@/lib/api';
 import { ownerKey, useOwner, useSession } from '@/lib/session';
 import { useTheme } from '@/lib/theme';
+import { localizedText, useInterfaceLocale } from '@/lib/locale';
 import { hasUnsavedChanges } from '@/lib/unsaved-changes';
 import { clearAuthQueryCache } from '@/lib/query-cache';
 import {
@@ -29,6 +30,8 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
   const session = useSession();
   const owner = useOwner();
   const { theme, toggle } = useTheme();
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1]) => localizedText(locale, key);
   const authenticated = session.data?.authenticated === true;
   const profile = useQuery({
     queryKey: ownerKey(owner, 'profile-accessibility'),
@@ -82,17 +85,13 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
   // used for in-app navigation in saved-leads.tsx and profile-editor.tsx.
   useEffect(() => {
     const onExpired = () => {
-      if (
-        hasUnsavedChanges() &&
-        !window.confirm('Your session expired. Unsaved changes will be lost. Continue to sign in?')
-      )
-        return;
+      if (hasUnsavedChanges() && !window.confirm(localizedText(locale, 'sessionExpired'))) return;
       clearAuthQueryCache(cache);
       router.replace('/?expired=1');
     };
     window.addEventListener(SESSION_EXPIRED_EVENT, onExpired);
     return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired);
-  }, [cache, router]);
+  }, [cache, router, locale]);
 
   // The single sign-out action every authenticated route can reach through
   // the shared topbar, replacing the one copy that used to live in the old
@@ -111,15 +110,21 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
   });
 
   if (session.isPending) {
-    return <LoadingState message="Loading workspace…" />;
+    return (
+      <div lang={locale}>
+        <LoadingState message={t('loadingWorkspace')} />
+      </div>
+    );
   }
   if (session.isError) {
     return (
-      <ErrorState
-        title="Workspace unavailable"
-        message="Could not reach the local service."
-        onRetry={() => session.refetch()}
-      />
+      <div lang={locale}>
+        <ErrorState
+          title={t('workspaceUnavailable')}
+          message={t('localServiceError')}
+          onRetry={() => session.refetch()}
+        />
+      </div>
     );
   }
   if (!authenticated) return null;
@@ -127,8 +132,8 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
   const active = navKeyForPath(pathname);
   return (
     <div className={styles.shell} data-theme={theme}>
-      <a className={styles.skipLink} href="#main-content">
-        Skip to content
+      <a className={styles.skipLink} href="#main-content" lang={locale}>
+        {t('skipContent')}
       </a>
       <DashboardSidebar active={active} identity={session.data?.email} />
       <div className={styles.main}>
@@ -137,7 +142,7 @@ export default function AuthenticatedShell({ children }: { children: ReactNode }
           onToggleTheme={toggle}
           identity={session.data?.email}
           onSignOut={() => {
-            if (!logout.isPending && window.confirm('Sign out?')) logout.mutate();
+            if (!logout.isPending && window.confirm(t('confirmSignOut'))) logout.mutate();
           }}
           signOutPending={logout.isPending}
         />

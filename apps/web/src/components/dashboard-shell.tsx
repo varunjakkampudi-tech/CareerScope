@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import BrandLogo from './brand-logo';
 import { api } from '@/lib/api';
+import { localizedText, useInterfaceLocale } from '@/lib/locale';
 import styles from './dashboard-shell.module.css';
 
 type NotificationItem = {
@@ -31,6 +32,9 @@ type NotificationItem = {
 };
 
 function NotificationCenter() {
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1], count?: number) =>
+    localizedText(locale, key, count);
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -82,47 +86,48 @@ function NotificationCenter() {
   return (
     <details
       className={styles.notificationControl}
+      lang={locale}
       onToggle={(event) => {
         if (event.currentTarget.open) void loadNotifications();
       }}
     >
       <summary
         className={styles.iconButton}
-        aria-label={unreadCount ? `Notifications, ${unreadCount} unread` : 'Notifications'}
-        title="Notifications"
+        aria-label={unreadCount ? t('unreadNotifications', unreadCount) : t('notifications')}
+        title={t('notifications')}
       >
         <Bell size={17} aria-hidden="true" />
         {unreadCount > 0 && <span className={styles.notificationCount}>{unreadCount}</span>}
       </summary>
-      <section className={styles.notificationPanel} aria-label="Notifications">
-        <h2>Notifications</h2>
-        <p className={styles.notificationPrivacy}>
-          Interview reminders appear here. No interview details are included in the alert.
-        </p>
+      <section className={styles.notificationPanel} aria-label={t('notifications')} lang={locale}>
+        <h2>{t('notifications')}</h2>
+        <p className={styles.notificationPrivacy}>{t('reminderPrivacy')}</p>
         <div aria-live="polite" aria-busy={loading}>
-          {loading && <p role="status">Loading notifications…</p>}
+          {loading && <p role="status">{t('loadingNotifications')}</p>}
           {!loading && error && (
             <div role="alert">
-              <p>Notifications could not be loaded.</p>
+              <p>{t('notificationsError')}</p>
               <button type="button" onClick={() => void loadNotifications(true)}>
-                Retry
+                {t('retry')}
               </button>
             </div>
           )}
-          {!loading && !error && loaded && items.length === 0 && <p>No interview reminders yet.</p>}
+          {!loading && !error && loaded && items.length === 0 && <p>{t('noReminders')}</p>}
           {!loading && !error && items.length > 0 && (
             <ul className={styles.notificationList}>
               {items.map((item) => (
                 <li key={item.id} data-read={item.readAt !== null}>
-                  <span>You have an upcoming interview round.</span>
-                  <time dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleString()}</time>
+                  <span>{t('upcomingInterview')}</span>
+                  <time dateTime={item.createdAt}>
+                    {new Date(item.createdAt).toLocaleString(locale)}
+                  </time>
                   <div>
                     <Link href={`/saved?lead=${encodeURIComponent(item.leadId)}`}>
-                      Open application
+                      {t('openApplication')}
                     </Link>
                     {item.readAt === null && (
                       <button type="button" onClick={() => void markRead(item.id)}>
-                        Mark as read
+                        {t('markRead')}
                       </button>
                     )}
                   </div>
@@ -152,17 +157,17 @@ function NotificationCenter() {
 // every item below it down by one row and out of the position the design
 // puts it at, for a page the design never depicted in the first place.
 const navItems = [
-  { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-  { key: 'jobs', label: 'Jobs', icon: Search, href: '/jobs' },
-  { key: 'applications', label: 'Applications', icon: ClipboardList, href: '/applications' },
-  { key: 'saved', label: 'Saved', icon: Bookmark, href: '/saved' },
-  { key: 'resume', label: 'Resume', icon: FileText, href: '/resume' },
-  { key: 'skills', label: 'Skills', icon: TrendingUp, href: null },
-  { key: 'insights', label: 'Insights', icon: TrendingUp, href: null },
-  { key: 'ai-assistant', label: 'AI Assistant', icon: Sparkles, href: null },
-  { key: 'career-resources', label: 'Career Resources', icon: Library, href: '/career-resources' },
-  { key: 'settings', label: 'Settings', icon: Settings, href: '/settings' },
-  { key: 'preparation', label: 'Preparation', icon: ClipboardCheck, href: '/preparation' },
+  { key: 'dashboard', message: 'dashboard', icon: LayoutDashboard, href: '/dashboard' },
+  { key: 'jobs', message: 'jobs', icon: Search, href: '/jobs' },
+  { key: 'applications', message: 'applications', icon: ClipboardList, href: '/applications' },
+  { key: 'saved', message: 'saved', icon: Bookmark, href: '/saved' },
+  { key: 'resume', message: 'resume', icon: FileText, href: '/resume' },
+  { key: 'skills', message: 'skills', icon: TrendingUp, href: null },
+  { key: 'insights', message: 'insights', icon: TrendingUp, href: null },
+  { key: 'ai-assistant', message: 'aiAssistant', icon: Sparkles, href: null },
+  { key: 'career-resources', message: 'careerResources', icon: Library, href: '/career-resources' },
+  { key: 'settings', message: 'settings', icon: Settings, href: '/settings' },
+  { key: 'preparation', message: 'preparation', icon: ClipboardCheck, href: '/preparation' },
 ] as const;
 export type NavKey = (typeof navItems)[number]['key'];
 
@@ -202,16 +207,20 @@ export function DashboardSidebar({
   active: (typeof navItems)[number]['key'];
   identity?: string;
 }) {
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1]) => localizedText(locale, key);
   return (
-    <nav className={styles.sidebar} aria-label="CareerScope">
+    <nav className={styles.sidebar} aria-label="CareerScope" lang="en">
       <div className={styles.brandRow}>
         <BrandLogo compact />
         <div>
-          <div className={styles.brandTagline}>Discover · Prepare · Grow</div>
+          <div className={styles.brandTagline} lang={locale}>
+            {t('brandTagline')}
+          </div>
         </div>
       </div>
-      <div className={styles.nav}>
-        {navItems.map(({ key, label, icon: Icon, href }) =>
+      <div className={styles.nav} lang={locale}>
+        {navItems.map(({ key, message, icon: Icon, href }) =>
           href ? (
             <Link
               key={key}
@@ -221,18 +230,18 @@ export function DashboardSidebar({
               aria-current={key === active ? 'page' : undefined}
             >
               <Icon size={16} aria-hidden="true" />
-              {label}
+              {t(message)}
             </Link>
           ) : (
             <span
               key={key}
               className={styles.navItemDisabled}
               aria-disabled="true"
-              title="Not yet available in CareerScope"
+              title={t('unavailable')}
             >
               <Icon size={16} aria-hidden="true" />
-              {label}
-              <span className={styles.navSoon}>Soon</span>
+              {t(message)}
+              <span className={styles.navSoon}>{t('soon')}</span>
             </span>
           ),
         )}
@@ -241,16 +250,18 @@ export function DashboardSidebar({
           even though CareerScope has no billing/plan concept to attach it to
           (the design's "Upgrade Plan" button is deliberately not reproduced;
           single-owner apps have nothing to upgrade to). */}
-      <div className={styles.sidebarIllustration}>
+      <div className={styles.sidebarIllustration} lang={locale}>
         <Mountain size={28} aria-hidden="true" />
-        <strong>Small Steps, Big Opportunities</strong>
-        <p>Your next chapter is closer than you think.</p>
+        <strong>{t('motivationTitle')}</strong>
+        <p>{t('motivationBody')}</p>
       </div>
-      <div className={styles.sidebarAccount}>
+      <div className={styles.sidebarAccount} lang={locale}>
         <InitialsAvatar identity={identity} />
         <div>
-          <div className={styles.sidebarAccountEmail}>{identity ?? 'Signed in'}</div>
-          <div className={styles.sidebarFooter}>Private, single-owner workspace.</div>
+          <div className={styles.sidebarAccountEmail}>{identity ?? t('signedIn')}</div>
+          <div className={styles.sidebarFooter} lang={locale}>
+            {t('privateWorkspace')}
+          </div>
         </div>
       </div>
     </nav>
@@ -265,28 +276,32 @@ export function DashboardSidebar({
 // can reach, the mobile view can reach too — never fewer capabilities on
 // the narrower viewport.
 export function DashboardMobileNav({ active }: { active: (typeof navItems)[number]['key'] }) {
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1]) => localizedText(locale, key);
   return (
-    <nav className={styles.mobileNav} aria-label="CareerScope, compact">
-      {navItems.map(({ key, label, icon: Icon, href }) =>
+    <nav className={styles.mobileNav} aria-label="CareerScope, compact" lang="en">
+      {navItems.map(({ key, message, icon: Icon, href }) =>
         href ? (
           <Link
             key={key}
             href={href}
             className={styles.mobileNavItem}
+            lang={locale}
             aria-current={key === active ? 'page' : undefined}
           >
             <Icon size={14} aria-hidden="true" />
-            {label}
+            {t(message)}
           </Link>
         ) : (
           <span
             key={key}
             className={styles.mobileNavItemDisabled}
             aria-disabled="true"
-            title="Not yet available in CareerScope"
+            lang={locale}
+            title={t('unavailable')}
           >
             <Icon size={14} aria-hidden="true" />
-            {label}
+            {t(message)}
           </span>
         ),
       )}
@@ -307,33 +322,37 @@ export function DashboardTopbar({
   onSignOut: () => void;
   signOutPending: boolean;
 }) {
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1]) => localizedText(locale, key);
   return (
-    <header className={styles.topbar}>
+    <header className={styles.topbar} lang={locale}>
       {/* Links into the real, existing search workspace rather than an
           instant-search box with nothing behind it: CareerScope has no
           cross-entity search endpoint today, so a functional-looking
           search field here would be a UI element that does nothing. */}
-      <Link href="/jobs" className={styles.topbarSearch}>
+      <Link href="/jobs" className={styles.topbarSearch} lang={locale}>
         <Search size={15} aria-hidden="true" />
-        <span>Search jobs in your workspace</span>
+        <span>{t('searchJobs')}</span>
       </Link>
       <div className={styles.topbarActions}>
         <button
           type="button"
           className={styles.iconButton}
+          lang={locale}
           onClick={onToggleTheme}
-          aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-          title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          aria-label={theme === 'dark' ? t('switchLight') : t('switchDark')}
+          title={theme === 'dark' ? t('switchLight') : t('switchDark')}
         >
           {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
         </button>
         <button
           type="button"
           className={styles.iconButton}
+          lang={locale}
           onClick={onSignOut}
           disabled={signOutPending}
-          aria-label="Sign out"
-          title="Sign out"
+          aria-label={t('signOut')}
+          title={t('signOut')}
         >
           <LogOut size={17} />
         </button>
