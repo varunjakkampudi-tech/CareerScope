@@ -3,7 +3,9 @@
 ## Saved-job tag slice — post-review verification refresh (2026-10-22)
 
 The local saved-job tagging change was developed on `main` from base SHA
-`9ea612ec720e1c2c9b6a1d91b889f1589675bbd2` and remains unpublished. The
+`9ea612ec720e1c2c9b6a1d91b889f1589675bbd2` and checkpointed locally as
+`d758b11798323b912ceb73fd7d256ba556580b3b`; publication is pending the remote
+fast-forward verification described in the blocker register. The
 latest review-driven hardening adds PostgreSQL constraints that match the API
 tag contract (bounded one-dimensional arrays, nonblank trimmed values, comma
 exclusion, case-insensitive uniqueness, and Unicode code-point length bounds).

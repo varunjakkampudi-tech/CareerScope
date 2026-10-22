@@ -1208,27 +1208,29 @@ Module: Repository governance / main synchronization
 v12 requirement / checklist item: Active goal requests direct work on `main`
   and push; the current session-supplied AGENTS instructions prohibit agent
   push/merge.
-Status: READY_FOR_OWNER
-Problem: The current task context includes an explicit instruction that no
-  agent push/merge to `main` is authorized, while the on-disk `AGENTS.md`,
-  `docs/governance/ENGINEERING-CONTRACT.md`, and OA-2026-10-21-01 authorize
-  normal direct pushes of validated changes. The active goal requests pushing.
-Verified state: At the last ref comparison, local `main` and `origin/main` both
-  resolved to `9ea612ec720e1c2c9b6a1d91b889f1589675bbd2`. The saved-job tag
-  changes remain local and unpublished; they passed local validation, including
-  Chromium, Firefox and WebKit UI journeys and the 96-test gate. No push was
+Status: RESOLVED_FOR_THIS_CHECKPOINT
+Problem: An earlier session instruction conflicted with the on-disk `AGENTS.md`,
+  `docs/governance/ENGINEERING-CONTRACT.md`, OA-2026-10-21-01 and the active
+  owner's repeated instruction to push validated work directly to unprotected
+  `main`.
+Resolution: The active owner request explicitly authorizes a normal direct push
+  of this validated checkpoint. This resolves authorization for this checkpoint
+  only; it does not authorize production deployment, force-push, bypassing a new
+  branch rule, or future unrelated pushes.
+Verified state before fetch: Local `main` is at
+  `d758b11798323b912ceb73fd7d256ba556580b3b`, one commit ahead of
+  `origin/main` at `9ea612ec720e1c2c9b6a1d91b889f1589675bbd2`. The worktree is
+  clean; local gates and all three browser engines passed. A fetch and ancestry
+  check are required immediately before the normal push. No push has yet been
   attempted.
-Impact: The validated local work can remain on `main`, but it cannot be
-  published while the current direct instruction and repository authorization
-  conflict. This does not block unrelated local engineering work.
-Owner action required: Confirm whether the current session-supplied no-push
-  instruction is intentionally superseded for this validated checkpoint, or
-  retain the no-push rule. Do not weaken repository protection or use force.
+Impact: Only the validated saved-job tag checkpoint is eligible for this push.
+Owner action required: None for this checkpoint. Do not weaken repository
+  protection or use force.
 Required environment-variable names (no values): None.
-External dependencies: None; this is an authorization conflict.
-Expected result: One unambiguous applicable push rule for this checkpoint.
-Verification procedure: After owner clarification, re-read the governing
-  instruction and check `git status`, `git rev-parse HEAD`, and
-  `git ls-remote origin refs/heads/main` before deciding whether to push.
+External dependencies: None; authorization is resolved for this checkpoint.
+Expected result: Exact validated checkpoint is pushed only if the remote has
+  not advanced and a fast-forward update is possible.
+Verification procedure: Fetch origin, verify clean worktree and ancestry, push
+  normally, then compare local `main`, `origin/main` and GitHub's advertised SHA.
 Affected tasks: Publishing the saved-job tag changes to `main`; no product
   implementation or local validation is blocked.
