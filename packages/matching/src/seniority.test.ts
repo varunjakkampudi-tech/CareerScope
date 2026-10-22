@@ -66,6 +66,14 @@ describe('candidateSeniority', () => {
   it('handles an empty title list', () => {
     expect(candidateSeniority([], 4)).toBe('mid');
   });
+
+  it('returns unknown when neither title nor experience is known', () => {
+    expect(candidateSeniority([], null)).toBeNull();
+  });
+
+  it('uses an explicitly stated title when years are unknown', () => {
+    expect(candidateSeniority(['Senior Engineer'], null)).toBe('senior');
+  });
 });
 
 describe('levelToLabel / levelOf', () => {

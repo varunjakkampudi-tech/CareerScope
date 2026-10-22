@@ -1103,7 +1103,7 @@ try {
         }
         const pending = activeRequests().map(([request, epoch]) => {
           const url = new URL(request.url());
-          return `${request.method()} ${url.pathname} (route ${epoch}/${routeEpoch}, responseEnd ${request.timing().responseEnd}, failure ${request.failure()?.errorText ?? 'none'})`;
+          return `${request.method()} ${url.pathname} (${request.resourceType()}, navigation=${request.isNavigationRequest()}, route ${epoch}/${routeEpoch}, responseEnd ${request.timing().responseEnd}, failure ${request.failure()?.errorText ?? 'none'})`;
         });
         throw new Error(
           `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'}); ` +
@@ -3165,6 +3165,26 @@ try {
       assert.deepEqual(savedProfile?.profile.candidate.projects, [
         'Accessible job search prototype',
       ]);
+      const experienceField = page.getByLabel('Years of Experience', { exact: true });
+      await experienceField.fill('');
+      await page.getByRole('button', { name: 'Save Profile', exact: true }).click();
+      await page.getByText('Profile saved.', { exact: true }).waitFor();
+      assert.equal(
+        (await profiles.get(ownerId))?.profile.application.yearsOfExperience,
+        null,
+        `${engine}: blank experience must persist as unknown rather than zero`,
+      );
+      await experienceField.fill('0');
+      await page.getByRole('button', { name: 'Save Profile', exact: true }).click();
+      await page.getByText('Profile saved.', { exact: true }).waitFor();
+      assert.equal(
+        (await profiles.get(ownerId))?.profile.application.yearsOfExperience,
+        0,
+        `${engine}: explicitly entered zero must remain distinct from unknown`,
+      );
+      await experienceField.fill('4');
+      await page.getByRole('button', { name: 'Save Profile', exact: true }).click();
+      await page.getByText('Profile saved.', { exact: true }).waitFor();
       await page.waitForFunction(
         () => document.documentElement.dataset.reducedMotion === 'true',
         undefined,

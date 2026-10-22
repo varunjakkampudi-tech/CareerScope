@@ -64,6 +64,29 @@ test('profile reuses domain defaults without inventing qualifications', () => {
   assert.deepEqual(parsed.accessibility, { reducedMotion: false });
 });
 
+test('an omitted experience value remains unknown in saved profile contracts', () => {
+  const parsed = writableProfileSchema.parse({
+    ...syntheticProfile,
+    application: {},
+  });
+  assert.equal(parsed.application.yearsOfExperience, null);
+  assert.deepEqual(matchingProfile(parsed).application, {
+    expectedCtc: '',
+    yearsOfExperience: null,
+    willingToRelocate: true,
+  });
+  const report = prepareProfile({
+    revision: 1,
+    profile: parsed,
+    updatedAt: new Date(),
+    scheduledDiscoveryEnabled: false,
+  });
+  assert.equal(
+    report.checks.find((check) => check.id === 'experience')?.evidence[0]?.value,
+    'Not provided',
+  );
+});
+
 test('saved accessibility preferences are owner profile data, validated and excluded from matching inputs', () => {
   const parsed = writableProfileSchema.parse({
     ...syntheticProfile,

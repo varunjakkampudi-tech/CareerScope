@@ -148,6 +148,26 @@ describe('scoreSeniority', () => {
   it('stays generous when the posting states no level', () => {
     expect(scoreSeniority('Software Engineer', demands(), candidate()).score).toBe(0.7);
   });
+
+  it('does not infer intern seniority when both title and experience are unknown', () => {
+    const out = scoreSeniority(
+      'Senior Software Engineer',
+      demands(),
+      candidate({ titles: [], yearsOfExperience: null }),
+    );
+    expect(out.score).toBe(0.7);
+    expect(out.reason).toMatch(/evidence is unavailable; no mismatch/i);
+  });
+
+  it('still uses title evidence when years are unknown', () => {
+    expect(
+      scoreSeniority(
+        'Senior Software Engineer',
+        demands(),
+        candidate({ titles: ['Senior Engineer'], yearsOfExperience: null }),
+      ).score,
+    ).toBe(1);
+  });
 });
 
 describe('scoreExperience', () => {
@@ -175,6 +195,24 @@ describe('scoreExperience', () => {
 
   it('stays neutral when the posting is silent', () => {
     expect(scoreExperience(demands(), candidate()).score).toBe(0.7);
+  });
+
+  it('does not penalize unknown candidate experience against a stated range', () => {
+    const out = scoreExperience(
+      demands({ minYears: 5, maxYears: 8 }),
+      candidate({ yearsOfExperience: null }),
+    );
+    expect(out.score).toBe(0.7);
+    expect(out.reason).toMatch(/experience is unknown/i);
+  });
+
+  it('treats an explicit zero as known and applies the stated shortfall', () => {
+    const out = scoreExperience(
+      demands({ minYears: 5, maxYears: 8 }),
+      candidate({ yearsOfExperience: 0 }),
+    );
+    expect(out.score).toBeLessThan(0.7);
+    expect(out.reason).toMatch(/years short/i);
   });
 });
 

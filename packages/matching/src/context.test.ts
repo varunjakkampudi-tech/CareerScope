@@ -149,7 +149,7 @@ describe('buildCandidateContext — expected salary', () => {
 });
 
 describe('buildCandidateContext — years of experience', () => {
-  const years = (entered: number, fromResume: number | null) =>
+  const years = (entered: number | null, fromResume: number | null) =>
     buildCandidateContext(
       profile({
         application: { yearsOfExperience: entered },
@@ -162,12 +162,20 @@ describe('buildCandidateContext — years of experience', () => {
     expect(years(6, 4)).toBe(6);
   });
 
-  it('falls back to the resume when the field was left at zero', () => {
-    expect(years(0, 4)).toBe(4);
+  it('falls back to the resume when the field is unknown', () => {
+    expect(years(null, 4)).toBe(4);
   });
 
-  it('is zero when neither source knows', () => {
-    expect(years(0, null)).toBe(0);
+  it('preserves an explicit zero rather than replacing it with the resume estimate', () => {
+    expect(years(0, 4)).toBe(0);
+  });
+
+  it('remains unknown when neither source has evidence', () => {
+    expect(years(null, null)).toBeNull();
+  });
+
+  it('preserves a resume-derived zero as known evidence', () => {
+    expect(years(null, 0)).toBe(0);
   });
 });
 

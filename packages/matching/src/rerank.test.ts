@@ -76,6 +76,16 @@ function thinLead(id: string): RerankInput {
 /* -------------------------------------------------------------------------- */
 
 describe('rerankLeads', () => {
+  it('sends unknown experience as unknown rather than asserting zero years', async () => {
+    const { client, calls } = stub((params) => verdictFor(params, 0.8));
+    await rerankLeads([lead('unknown-experience')], candidate({ yearsOfExperience: null }), {
+      client,
+    });
+    const system = calls[0]?.system;
+    expect(JSON.stringify(system)).toMatch(/Years of experience: unknown/);
+    expect(JSON.stringify(system)).not.toContain('Years of experience: 0');
+  });
+
   it('validates and applies provider-neutral assessments with the same safeguards', async () => {
     const assess = vi.fn(async () => ({
       stop_reason: 'end_turn',

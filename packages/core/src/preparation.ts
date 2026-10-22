@@ -85,9 +85,14 @@ export function prepareProfile(record: ProfileRecord | null): PreparationReport 
       title: 'Experience and availability',
       state: 'review',
       detail:
-        'Confirm experience and notice period. Zero can be a valid answer or a saved default.',
+        'Confirm experience and notice period. Unknown experience is not treated as a mismatch.',
       evidence: [
-        evidence('application.yearsOfExperience', String(profile.application.yearsOfExperience)),
+        evidence(
+          'application.yearsOfExperience',
+          profile.application.yearsOfExperience === null
+            ? 'Not provided'
+            : String(profile.application.yearsOfExperience),
+        ),
         evidence('application.noticePeriodDays', String(profile.application.noticePeriodDays)),
       ],
     },

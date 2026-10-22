@@ -301,6 +301,11 @@ export function scoreSeniority(
   }
 
   const mine = candidateSeniority(candidate.titles, candidate.yearsOfExperience);
+  if (mine === null) {
+    // Match the engine's established neutral baseline for unavailable evidence;
+    // 0.5 is reserved for a real, observed seniority gap.
+    return dim('seniority', 0.7, 'Your seniority evidence is unavailable; no mismatch is applied');
+  }
   const gap = Math.abs(levelOf(jobLabel) - levelOf(mine));
   const raw = 1 - Math.min(1, gap / 3);
   const score = gap >= 2 ? Math.min(0.5, raw) : raw;
@@ -331,6 +336,9 @@ export function scoreExperience(
   }
 
   const years = candidate.yearsOfExperience;
+  if (years === null) {
+    return dim('experience', 0.7, 'Your experience is unknown; no mismatch is applied');
+  }
   const low = minYears ?? 0;
   const high = maxYears ?? Infinity;
 

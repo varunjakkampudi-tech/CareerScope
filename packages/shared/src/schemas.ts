@@ -73,7 +73,8 @@ export const applicationSchema = z.object({
   expectedCtc: z.string().trim().max(40).default(''),
   noticePeriodDays: z.number().int().min(0).max(365).default(0),
   willingToRelocate: z.boolean().default(true),
-  yearsOfExperience: z.number().min(0).max(60).default(0),
+  /** Null means unknown; an explicit zero remains a valid candidate statement. */
+  yearsOfExperience: z.number().min(0).max(60).nullable().default(null),
 });
 
 export const profileSchema = z.object({

@@ -1,5 +1,34 @@
 # CareerScope v12 engineering progress
 
+## Unknown experience and seniority evidence (2026-10-22)
+
+The profile and deterministic matcher now preserve an unknown experience value
+as `null` rather than coercing it to zero; an explicitly supplied zero remains
+known, and resume-derived experience is used only when the profile value is
+unknown. When neither target-title nor experience evidence identifies a
+candidate seniority level, the matcher now applies its existing neutral 0.7
+baseline instead of the 0.5 score used for an observed multi-rung mismatch.
+The matching breakdown gives the reason explicitly. Scoring semantics are
+versioned as `deterministic-v2`; earlier stored scores are not rewritten.
+
+Node 24.19.0 evidence on the current candidate: the focused matching tests
+passed 87/87; the domain suite passed 850/850 across 30 files;
+`npm run gates:test`, `npm run test:integration` (59/59, zero skipped), and the
+production build/CSP verification passed. The rebuilt production app passed
+`npm run test:ui` with exit code 0 in Chromium, Firefox and WebKit, including
+axe, keyboard interaction and required responsive widths. `npm run
+security:check` found zero high-severity production dependency vulnerabilities.
+The first cross-browser run had a Firefox route-fetch transport failure; the
+isolated Firefox run and a subsequent full Chromium/Firefox/WebKit run passed
+without relaxing pending-request, accessibility, or responsive checks. A fresh
+independent read-only review approved the diff and left only the historical-zero
+ambiguity noted below; the reviewer did not run tests. These are local checks,
+not hosted CI or production acceptance. Historical stored
+numeric zeroes remain ambiguous between an intentional explicit zero and an
+older default; no bulk data rewrite is safe without provenance. The whole-goal
+completion percentage remains undeterminable from the current inventory, and
+the formal go/no-go ledger is still 0/25 verified.
+
 ## Saved-job tag slice — post-review verification refresh (2026-10-22)
 
 The local saved-job tagging change was developed on `main` from base SHA

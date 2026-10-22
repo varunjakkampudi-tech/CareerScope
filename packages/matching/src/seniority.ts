@@ -32,17 +32,19 @@ export function seniorityOf(title: string): SeniorityLabel | null {
 /**
  * The candidate's level, inferred from their titles and then floored by years of
  * experience. Titles alone are unreliable — consultancies hand out "Associate"
- * to people with six years — so experience acts as a floor, never a ceiling.
+ * to people with six years — so known experience acts as a floor, never a
+ * ceiling. Missing experience does not imply an intern-level candidate.
  */
-export function candidateSeniority(titles: string[], years: number): SeniorityLabel {
+export function candidateSeniority(titles: string[], years: number | null): SeniorityLabel | null {
   let best = -1;
   for (const title of titles) {
     const label = seniorityOf(title);
     if (label && SENIORITY_LEVELS[label] > best) best = SENIORITY_LEVELS[label];
   }
 
-  const byYears = yearsToLevel(years);
-  const level = Math.max(best, SENIORITY_LEVELS[byYears]);
+  const byYears = years === null ? -1 : SENIORITY_LEVELS[yearsToLevel(years)];
+  const level = Math.max(best, byYears);
+  if (level < 0) return null;
   return levelToLabel(level);
 }
 

@@ -39,6 +39,22 @@ describe('candidate-declared profile fields', () => {
     expect(profileSchema.parse(profile).candidate.segment).toBeUndefined();
   });
 
+  it('preserves unknown experience distinctly from a candidate-stated zero', () => {
+    expect(profileSchema.parse(profile).application.yearsOfExperience).toBeNull();
+    expect(
+      profileSchema.parse({
+        ...profile,
+        application: { yearsOfExperience: 0 },
+      }).application.yearsOfExperience,
+    ).toBe(0);
+    expect(
+      profileSchema.safeParse({
+        ...profile,
+        application: { yearsOfExperience: 61 },
+      }).success,
+    ).toBe(false);
+  });
+
   it('accepts bounded education, graduation year, and project entries without changing legacy profiles', () => {
     const expanded = profileSchema.parse({
       ...profile,

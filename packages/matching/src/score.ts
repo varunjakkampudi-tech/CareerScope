@@ -22,7 +22,7 @@ import {
 } from './dimensions.js';
 
 /** Increment when the deterministic scoring rules or weights materially change. */
-export const MATCH_SCORING_VERSION = 'deterministic-v1';
+export const MATCH_SCORING_VERSION = 'deterministic-v2';
 
 /**
  * Turning seven dimension scores into one number, with the gates and clamps that

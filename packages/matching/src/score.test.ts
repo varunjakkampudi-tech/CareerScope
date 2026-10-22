@@ -6,12 +6,14 @@ import {
 } from '@careerscope/shared';
 import {
   applyRerank,
+  combine,
   hardGate,
   hasReadableDescription,
   isFlaggedCompany,
   MATCH_SCORING_VERSION,
   scoreJob,
 } from './score.js';
+import { extractDemands } from './demands.js';
 import {
   JAVA_HEAVY_JD,
   NEAR_EXACT_JD,
@@ -149,6 +151,24 @@ describe('scoreJob — breakdown', () => {
       0,
     );
     expect(breakdown.heuristicScore).toBeCloseTo(expected, 3);
+  });
+
+  it('uses the neutral seniority baseline when the candidate has no seniority evidence', () => {
+    const breakdown = scoreJob(
+      job({ title: 'Senior Software Engineer', descriptionText: NEAR_EXACT_JD }),
+      candidate({ titles: [], yearsOfExperience: null }),
+      { ...opts, demands: { ...extractDemands(job()), seniority: 'senior' } },
+    );
+
+    expect(breakdown.dimensions.seniority.score).toBe(0.7);
+    expect(breakdown.dimensions.seniority.reason).toMatch(/no mismatch is applied/i);
+
+    const misclassifiedAsMismatch = combine({
+      ...breakdown.dimensions,
+      seniority: { ...breakdown.dimensions.seniority, score: 0.5 },
+    });
+    expect(breakdown.heuristicScore).toBeGreaterThan(misclassifiedAsMismatch);
+    expect(breakdown.heuristicScore - misclassifiedAsMismatch).toBeCloseTo(0.024, 3);
   });
 
   it('is deterministic', () => {

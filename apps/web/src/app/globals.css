@@ -198,6 +198,16 @@
   gap: 8px;
   min-width: 0;
 }
+.field-with-hint {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  min-width: 0;
+}
+.field-with-hint small {
+  color: var(--muted);
+  font-size: 13px;
+}
 .profile-form textarea {
   font: inherit;
   color: var(--ink);

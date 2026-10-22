@@ -376,7 +376,9 @@ function renderCandidate(candidate: CandidateContext): string {
   if (candidate.titles.length > 0) {
     lines.push(`Target roles: ${candidate.titles.join(', ')}`);
   }
-  lines.push(`Years of experience: ${candidate.yearsOfExperience}`);
+  lines.push(
+    `Years of experience: ${candidate.yearsOfExperience === null ? 'unknown' : candidate.yearsOfExperience}`,
+  );
   if (candidate.skills.length > 0) {
     lines.push(`Stack: ${candidate.skills.join(', ')}`);
   }

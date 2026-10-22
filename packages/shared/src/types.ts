@@ -100,7 +100,8 @@ export interface CandidateContext {
   /** Skills from the most recent role; weighted above older ones. */
   recentSkills: string[];
   titles: string[];
-  yearsOfExperience: number;
+  /** Null means the candidate has not supplied usable experience evidence. */
+  yearsOfExperience: number | null;
   locations: string[];
   homeLocation: string;
   remoteOnly: boolean;

@@ -524,3 +524,28 @@ pending amendment, implementation evidence or external validation was fabricated
 This is regression coverage for existing code, not approval or verification of
 the pending A1.2/CR-07 LB8 contract, hosted Redis, production proxy trust, or
 production rate-limit behavior.
+
+### Unknown profile experience and seniority evidence (2026-10-22)
+
+The profile schema/API/OpenAPI/browser contract now preserves an absent or
+blank years-of-experience value as `null`, while explicit `0` stays known and
+resume-derived years are used only when the profile value is unknown. Seniority
+is not inferred as intern when both candidate title and experience evidence are
+missing; the scorer uses its existing 0.7 neutral baseline instead of treating
+absence as a 0.5 mismatch. These changes use scoring version
+`deterministic-v2`; prior stored score records are not rewritten.
+
+Node 24.19.0 local validation: focused matching tests 87/87; `npm run
+test:domain` 850/850 across 30 files; `npm run gates:test` passed (including
+unit, policy, privacy, EOL, lint and typecheck gates); `npm run test:integration`
+passed 59/59 with zero skips; `npm run build` passed both production builds and
+CSP verification of all 13 inline-script hashes; `npm run test:ui` exited 0 in
+Chromium, Firefox and WebKit with axe, keyboard and responsive checks;
+`npm run security:check`, `npm run format:check`, `npm run eol:check`, and
+`git diff --check` passed. Independent read-only review approved the correction
+and documented the still-ambiguous historical zero values as an open acceptance
+issue. The first full cross-browser attempt ended on a Firefox route-fetch
+transport error; isolated Firefox and the subsequent full Chromium/Firefox/
+WebKit run passed without changing or skipping assertions. This is local
+evidence only: hosted Actions and production acceptance remain unverified; no
+historic profiles were rewritten.

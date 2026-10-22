@@ -12,9 +12,9 @@ import {
  * the database mid-scoring. Two sources feed it — what the user typed and what
  * the resume said.
  *
- * They are not treated the same way. Years of experience is a real conflict -
- * a typed non-zero value always wins over the resume's guess (see
- * resolveYears), because the user edited the form after seeing the parse.
+ * They are not treated the same way. An explicitly typed experience value,
+ * including zero, wins over the resume's estimate. Only unknown experience may
+ * be filled from resume evidence (see resolveYears).
  * Skills and titles are not a conflict to resolve: the resume's contribution
  * is unioned into the typed list, additive and permanent for as long as the
  * resume is on file. There is no per-skill exclusion - the only way to remove
@@ -60,10 +60,10 @@ function annualFloor(ctc: string): number | null {
   return parsed.annualMin ?? parsed.annualMax;
 }
 
-/** The typed figure wins; the resume only fills a zero the user never touched. */
-function resolveYears(entered: number, derived: number | null | undefined): number {
-  if (entered > 0) return entered;
-  return derived != null && derived > 0 ? derived : 0;
+/** An explicit candidate value (including zero) wins; the resume fills unknowns. */
+function resolveYears(entered: number | null, derived: number | null | undefined): number | null {
+  if (entered !== null) return entered;
+  return derived ?? null;
 }
 
 function dedupe(values: string[]): string[] {

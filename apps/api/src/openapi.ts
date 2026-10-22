@@ -94,7 +94,7 @@ const profile = object({
       expectedCtc: text({ maxLength: 40, default: '' }),
       noticePeriodDays: integer({ minimum: 0, maximum: 365, default: 0 }),
       willingToRelocate: { ...bool, default: true },
-      yearsOfExperience: { type: 'number', minimum: 0, maximum: 60, default: 0 },
+      yearsOfExperience: { type: 'number', nullable: true, minimum: 0, maximum: 60, default: null },
     },
     [],
   ),

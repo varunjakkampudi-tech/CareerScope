@@ -161,7 +161,9 @@ function ProfileForm({
         currentCtc: text('currentCtc'),
         expectedCtc: text('expectedCtc'),
         noticePeriodDays: Number(text('noticePeriodDays')),
-        yearsOfExperience: Number(text('yearsOfExperience')),
+        yearsOfExperience: text('yearsOfExperience').trim()
+          ? Number(text('yearsOfExperience'))
+          : null,
         willingToRelocate: data.has('willingToRelocate'),
       },
       accessibility: {
@@ -405,18 +407,23 @@ function ProfileForm({
               defaultValue={application?.noticePeriodDays ?? 0}
             />
           </label>
-          <label>
-            Years of Experience
-            <input
-              name="yearsOfExperience"
-              type="number"
-              required
-              min={0}
-              max={60}
-              step={0.1}
-              defaultValue={application?.yearsOfExperience ?? 0}
-            />
-          </label>
+          <div className="field-with-hint">
+            <label>
+              Years of Experience
+              <input
+                name="yearsOfExperience"
+                type="number"
+                min={0}
+                max={60}
+                step={0.1}
+                defaultValue={application?.yearsOfExperience ?? ''}
+                aria-describedby="yearsOfExperience-help"
+              />
+            </label>
+            <small id="yearsOfExperience-help">
+              Leave blank if you do not know or prefer not to say.
+            </small>
+          </div>
         </div>
         <div className="check-row">
           <label>
