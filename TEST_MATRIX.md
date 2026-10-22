@@ -17,6 +17,26 @@ It verifies this surface only, not application-wide localization or native
 translation quality. No provider call, live acceptance, production action or
 human language review occurred.
 
+## Selected job-discovery controls localization (2026-10-22; local working tree)
+
+| Check                                                                                                         | Result                   | Scope / evidence limit                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node --import tsx --test apps/web/src/lib/locale.test.ts`                                                    | PASS; 6/6                | Locale validation and navigation, reminder, account-security and selected job-search message catalog coverage.                                                                                                                     |
+| `npm run gates:test`                                                                                          | PASS; 102/102 unit tests | Node 24.19.0; source integrity, privacy, deployment-policy, EOL, lint and typecheck gates passed.                                                                                                                                  |
+| `npm run build`                                                                                               | PASS                     | Production build completed; CSP verification covered all 13 generated inline-script hashes.                                                                                                                                        |
+| `npm run security:check`                                                                                      | PASS                     | Privacy check passed; `npm audit --omit=dev --audit-level=high` found zero production dependency advisories.                                                                                                                       |
+| `npm run test:ui` (all engines)                                                                               | FAIL in Chromium         | Timed out at `settled('dashboard')` after navigating back from profile; four fetch records had no response/failure event. The localized job-search assertions were reached earlier, but full Chromium UI acceptance is not a pass. |
+| `npm run test:ui` with `CAREERSCOPE_UI_BROWSER=firefox`                                                       | PASS; exit 0             | Full authenticated UI flow, two-account selector/session switching, axe, keyboard, eight responsive widths and new localized job-search assertions passed. Diagnostic still reports unclassified-root-cause Next chunk warnings.   |
+| `npm run test:ui` with `CAREERSCOPE_UI_BROWSER=webkit`                                                        | PASS; exit 0             | Full authenticated UI flow, axe, keyboard, eight responsive widths and new localized job-search assertions passed.                                                                                                                 |
+| Independent read-only review                                                                                  | PASS                     | Latest diff review passed; reviewer did not run tests. Native translation accuracy remains human-unverified.                                                                                                                       |
+| `npm run typecheck`, `npm run format:check`, `npm run eol:check`, `npm run privacy:check`, `git diff --check` | PASS                     | Exact final code state after the language metadata corrections.                                                                                                                                                                    |
+
+This is partial job-search localization, not app-wide localization. The
+Chromium timeout is retained as a failed check rather than retried away;
+Firefox and WebKit results are separate engine evidence. UI warning diagnosis
+remains open in `blocker.txt`. This evidence is local only and is not a hosted
+Actions, live-provider, production, or deployment result.
+
 ## Existing reminder-preference locale and auth-boundary cache slice (2026-10-22)
 
 On Node 24.19.0, `npm run gates:test` passed with 99/99 unit tests and the

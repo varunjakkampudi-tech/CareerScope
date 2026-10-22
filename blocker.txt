@@ -1136,6 +1136,17 @@ What was done: Reproduced the warning in focused Firefox runs and a full
   HTTP 200 with JavaScript content types; warning-to-request correlation still
   included aborts, missing request events, and one HTTP-200 candidate. This does
   not establish the browser warning's cause or justify suppressing it.
+  22 October 2026 follow-up on the job-search localization candidate (Node
+  v24.19.0): a full Firefox production-preview UI run exited 0 and again emitted
+  `unused-preload` and `loading-failed` categories for same-origin Next chunks.
+  Observed candidate records included an HTTP-200/finished script and an
+  aborted script; the warning output also included a CSS preload warning with
+  no matching candidate request. Firefox warning text and query data were not
+  retained. A separate WebKit full UI run passed. A separate all-engine run
+  failed in Chromium at the dashboard settlement barrier after profile
+  navigation; that failure is recorded in `TEST_MATRIX.md` and has not been
+  attributed to the warnings or suppressed. Root cause for the warning remains
+  unproven; blocker status stays OPEN.
 Why this remains open: Firefox warning messages must be classified to a safe,
   stable category and tied to a verified source/route before deciding whether to
   fix the cause or permit a narrowly justified expected fixture warning.

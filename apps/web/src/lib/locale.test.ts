@@ -97,3 +97,28 @@ test('account-security API error categories are localized with a generic unknown
   assert.notEqual(localizedApiErrorMessage('te', 503), localizedApiErrorMessage('hi', 503));
   assert.equal(localizedApiErrorMessage('en', 599), localizedText('en', 'apiErrorDefault'));
 });
+
+test('job-search controls, empty states, and feedback labels have locale-specific copy', () => {
+  const keys = [
+    'searchHistoryHeading',
+    'findYourNextRole',
+    'searchSourcesLegend',
+    'discoveryMode',
+    'roleOrTechnology',
+    'savedTargetRoles',
+    'noSearchSelected',
+    'searchReturnedNoResults',
+    'jobDescriptionUnavailable',
+    'reportPostingIssue',
+    'feedbackSuspicious',
+    'feedbackRecorded',
+  ] as const;
+  for (const key of keys) {
+    const values = interfaceLocales.map((locale) => localizedText(locale, key));
+    assert.ok(
+      values.every((value) => value.trim().length > 0),
+      key,
+    );
+    assert.equal(new Set(values).size, interfaceLocales.length, key);
+  }
+});

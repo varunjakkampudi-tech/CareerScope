@@ -27,6 +27,38 @@ privacy scan and zero production dependency advisories. `npm run format:check`,
 format. These are local checks only; hosted Actions, live provider acceptance,
 production evidence, and human language review were not performed.
 
+## Selected job-discovery controls localization (2026-10-22)
+
+Extended the existing `/jobs` surface with English, Telugu and Hindi copy for
+search history/workspace controls, source availability, discovery mode, search
+and history errors/empty states, job-search result empty states and posting
+feedback. Search queries and provider-authored listing text are marked as
+undetermined language; fixed English status/outcome labels retain English
+language metadata. Missing-description fallback text is localized. This is
+still a partial route localization: result labels, match evidence, saved-job
+controls and most other routes remain outside this change. No search, provider,
+authorization, data or application behavior changed.
+
+On Node v24.19.0, the locale unit suite passed 6/6 and `npm run gates:test`
+passed 102/102 unit tests plus source-integrity, privacy, deployment-policy,
+EOL, lint and typecheck gates. `npm run build` passed with CSP verification of
+all 13 inline-script hashes; `npm run security:check` found zero production
+dependency advisories; `npm run typecheck`, `npm run format:check`,
+`npm run eol:check`, `npm run privacy:check`, and `git diff --check` passed. A
+fresh independent read-only review passed after requiring both query strings
+to be marked `lang="und"`. Full UI evidence is mixed: Firefox-only and
+WebKit-only production-preview runs exited 0, including axe, keyboard, eight
+widths and the new locale assertions. The all-engine command failed during
+Chromium at the existing `settled('dashboard')` barrier after profile
+navigation, with four client-fetch records still open and no response/failure
+event; the recent recorded API/chunk requests had completed. The localized
+Chromium assertions had been reached earlier, but this does not count as a
+complete Chromium/UI-suite pass. No browser assertion was weakened. The
+Firefox diagnostic reproduced the open same-origin Next chunk warning; its
+cause is unproven and `UI-CONSOLE-WARNINGS-01` remains open. Native Telugu/Hindi
+wording still requires human language review. No hosted Actions, live provider,
+production, or deployment evidence is claimed.
+
 ## Existing interview-reminder preference localization and auth-boundary hardening (2026-10-22)
 
 The existing in-app interview-reminder preference now localizes its heading,

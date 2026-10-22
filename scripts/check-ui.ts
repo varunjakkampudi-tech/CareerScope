@@ -1794,6 +1794,17 @@ try {
           exact: true,
         })
         .waitFor();
+      await sidebarNav.getByRole('link', { name: 'ఉద్యోగాలు', exact: true }).click();
+      await page.waitForURL('**/jobs');
+      await page
+        .getByRole('heading', { name: 'మీ తదుపరి పాత్రను కనుగొనండి', exact: true })
+        .waitFor();
+      assert.equal(await page.locator('aside.history').getAttribute('lang'), 'te');
+      assert.equal(await page.locator('.source-options').getAttribute('lang'), 'te');
+      await page.getByPlaceholder('ఉద్యోగ పాత్ర లేదా సాంకేతికత').waitFor();
+      await accessible(page, engine, 'Telugu job-search controls', 'మీ తదుపరి పాత్రను కనుగొనండి');
+      await page.goto(`${origin}/settings`);
+      await languageSelect.waitFor({ state: 'visible' });
       await page.reload();
       await page.waitForFunction(
         () =>
@@ -1881,6 +1892,16 @@ try {
           delete target.__careerscopeOriginalStorageSetItem;
         }
       });
+      await sidebarNav.getByRole('link', { name: 'नौकरियाँ', exact: true }).click();
+      await page.waitForURL('**/jobs');
+      await page.getByRole('heading', { name: 'अपनी अगली भूमिका खोजें', exact: true }).waitFor();
+      assert.equal(await page.locator('aside.history').getAttribute('lang'), 'hi');
+      assert.equal(await page.locator('.source-options').getAttribute('lang'), 'hi');
+      await page.getByPlaceholder('भूमिका या तकनीक').waitFor();
+      await accessible(page, engine, 'Hindi job-search controls', 'अपनी अगली भूमिका खोजें');
+      await sidebarNav.getByRole('link', { name: 'सेटिंग्स', exact: true }).click();
+      await page.waitForURL('**/settings');
+      await languageSelect.waitFor({ state: 'visible' });
       await languageSelect.selectOption('en');
       await page.waitForFunction(
         () => document.querySelector('a[href="/jobs"][lang="en"]') !== null,

@@ -97,6 +97,15 @@ remain unverified. Account Security API errors are rendered from localized
 status categories rather than raw server response text. No design or security
 policy is changed by the localization work.
 
+4.18 update (2026-10-22): selected existing `/jobs` controls now have English,
+Telugu and Hindi labels, statuses, error/empty states and feedback copy, with
+language metadata for user-entered search queries and provider-authored job
+text. Firefox and WebKit production-preview acceptance runs passed for the
+exercised journeys; the full all-engine run did not complete because Chromium
+timed out at a later dashboard request-settlement barrier. This does not close
+full application localization, source-text localization, remaining result
+controls, human translation review, or browser-console warning requirements.
+
 ## Ordered initial work
 
 1. Governance transition (integrated); source/feature/test/quality inventories.

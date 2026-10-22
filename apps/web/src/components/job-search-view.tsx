@@ -21,7 +21,8 @@ import {
   jobFeedbackReasons,
   type JobFeedbackReason,
 } from '@careerscope/shared';
-import { api, SESSION_EXPIRED_EVENT } from '@/lib/api';
+import { ApiError, api, SESSION_EXPIRED_EVENT } from '@/lib/api';
+import { localizedText, useInterfaceLocale } from '@/lib/locale';
 import { ownerKey, useSession } from '@/lib/session';
 import { SaveJob } from '@/components/saved-leads';
 import MatchEvidence from '@/components/match-evidence';
@@ -46,13 +47,13 @@ type JobSourceCatalog = {
 };
 type Run = { id: string; status: string; createdAt: string; request: { query: string } };
 type Job = { id: string; data: CollectedJob; feedbackReason: JobFeedbackReason | null };
-const feedbackLabels: Record<JobFeedbackReason, string> = {
-  irrelevant: 'Not relevant to me',
-  duplicate: 'Duplicate posting',
-  incorrect: 'Posting details are incorrect',
-  unavailable: 'Posting is no longer available',
-  suspicious: 'Posting seems suspicious',
-};
+const feedbackLabelKeys = {
+  irrelevant: 'feedbackIrrelevant',
+  duplicate: 'feedbackDuplicate',
+  incorrect: 'feedbackIncorrect',
+  unavailable: 'feedbackUnavailable',
+  suspicious: 'feedbackSuspicious',
+} as const satisfies Record<JobFeedbackReason, Parameters<typeof localizedText>[1]>;
 type Detail = {
   runId: string;
   status: string;
@@ -62,14 +63,27 @@ type Detail = {
   events: { cursor: string; type: string; createdAt: string }[];
 };
 
-function relativeTime(iso: string | null): string | null {
+function relativeTime(iso: string | null, locale: 'en' | 'te' | 'hi'): string | null {
   if (!iso) return null;
-  const ms = Date.now() - new Date(iso).getTime();
+  const timestamp = new Date(iso).getTime();
+  if (!Number.isFinite(timestamp)) return null;
+  const ms = Date.now() - timestamp;
   const days = Math.floor(ms / 86_400_000);
-  if (days <= 0) return 'Today';
-  if (days === 1) return '1 day ago';
-  if (days < 30) return `${days} days ago`;
+  if (locale === 'en') {
+    if (days <= 0) return 'Today';
+    if (days === 1) return '1 day ago';
+    if (days < 30) return `${days} days ago`;
+  } else {
+    const languageTag = locale === 'te' ? 'te-IN' : 'hi-IN';
+    const formatter = new Intl.RelativeTimeFormat(languageTag, { numeric: 'auto' });
+    if (days <= 0) return formatter.format(0, 'day');
+    if (days < 30) return formatter.format(-days, 'day');
+  }
   const months = Math.floor(days / 30);
+  if (locale !== 'en') {
+    const languageTag = locale === 'te' ? 'te-IN' : 'hi-IN';
+    return new Intl.RelativeTimeFormat(languageTag, { numeric: 'auto' }).format(-months, 'month');
+  }
   return months === 1 ? '1 month ago' : `${months} months ago`;
 }
 
@@ -84,6 +98,8 @@ function JobFeedback({
   reason: JobFeedbackReason | null;
   onSaved: (reason: JobFeedbackReason) => void;
 }) {
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1]) => localizedText(locale, key);
   const [reason, setReason] = useState<JobFeedbackReason | ''>(initialReason ?? '');
   const feedback = useMutation({
     mutationFn: (nextReason: JobFeedbackReason) =>
@@ -103,31 +119,31 @@ function JobFeedback({
   }
 
   return (
-    <form className="job-feedback" onSubmit={submit}>
+    <form className="job-feedback" onSubmit={submit} lang={locale}>
       <label>
-        <span>Report a posting issue</span>
+        <span>{t('reportPostingIssue')}</span>
         <select
           value={reason}
           onChange={(event) => setReason(event.target.value as JobFeedbackReason | '')}
           disabled={feedback.isPending}
         >
-          <option value="">Choose a reason</option>
+          <option value="">{t('chooseFeedbackReason')}</option>
           {jobFeedbackReasons.map((value) => (
             <option key={value} value={value}>
-              {feedbackLabels[value]}
+              {t(feedbackLabelKeys[value])}
             </option>
           ))}
         </select>
       </label>
       <button type="submit" disabled={!reason || feedback.isPending || reason === initialReason}>
-        {feedback.isPending ? 'Saving…' : initialReason ? 'Update feedback' : 'Send feedback'}
+        {feedback.isPending
+          ? t('savingFeedback')
+          : initialReason
+            ? t('updateFeedback')
+            : t('sendFeedback')}
       </button>
-      {feedback.error && <p role="alert">Could not save feedback. Please try again.</p>}
-      {initialReason && !feedback.error && (
-        <p role="status">
-          Your feedback was recorded. It does not change the posting or application status.
-        </p>
-      )}
+      {feedback.error && <p role="alert">{t('feedbackSaveError')}</p>}
+      {initialReason && !feedback.error && <p role="status">{t('feedbackRecorded')}</p>}
     </form>
   );
 }
@@ -140,6 +156,8 @@ function JobFeedback({
 // each a real, independent route to be rewritten on, rather than bundling a
 // large visual change into the routing/auth-boundary change.
 function JobSearchWorkspace() {
+  const locale = useInterfaceLocale();
+  const t = (key: Parameters<typeof localizedText>[1]) => localizedText(locale, key);
   const cache = useQueryClient();
   const router = useRouter();
   const pathname = usePathname();
@@ -308,22 +326,27 @@ function JobSearchWorkspace() {
 
   return (
     <div className="workspace">
-      <aside className="history">
-        <h2>Search History</h2>
-        {runs.isPending && <LoadingState message="Loading searches…" />}
+      <aside className="history" lang={locale}>
+        <h2>{t('searchHistoryHeading')}</h2>
+        {runs.isPending && <LoadingState message={t('loadingSearchHistory')} />}
         {runs.error && (
           <ErrorState
-            title="Could not load your search history"
-            message={runs.error.message}
+            title={t('searchHistoryErrorTitle')}
+            message={
+              locale === 'en' && runs.error instanceof ApiError
+                ? runs.error.message
+                : t('searchHistoryErrorDetail')
+            }
             onRetry={() => runs.refetch()}
+            retryLabel={t('retry')}
           />
         )}
         {runs.data?.items.length === 0 && (
           // The history has no filter control, so this is always the
           // "nothing yet" case (AC3), unlike the results list further down.
-          <EmptyState variant="inline" reason="nothing-yet" message="No searches yet." />
+          <EmptyState variant="inline" reason="nothing-yet" message={t('noSearchHistory')} />
         )}
-        <nav aria-label="Search history">
+        <nav aria-label={t('searchHistoryLabel')}>
           {runs.data?.items.map((run) => (
             <button
               key={run.id}
@@ -335,27 +358,31 @@ function JobSearchWorkspace() {
                 exportSearch.reset();
               }}
             >
-              <strong>{run.request.query}</strong>
+              <strong lang="und">{run.request.query}</strong>
               <span>
-                {run.status} &middot; {new Date(run.createdAt).toLocaleDateString()}
+                <span lang="en">{run.status}</span> &middot;{' '}
+                {new Date(run.createdAt).toLocaleDateString(
+                  locale === 'en' ? 'en-IN' : locale === 'te' ? 'te-IN' : 'hi-IN',
+                )}
               </span>
             </button>
           ))}
         </nav>
       </aside>
       <section className="results">
-        <div className="section-heading">
+        <div className="section-heading" lang={locale}>
           <div>
-            <p className="eyebrow">Search Workspace</p>
-            <h1>Find Your Next Role</h1>
+            <p className="eyebrow">{t('searchWorkspaceEyebrow')}</p>
+            <h1>{t('findYourNextRole')}</h1>
           </div>
         </div>
         <fieldset
           className="source-options"
+          lang={locale}
           disabled={search.isPending || sourceCatalog.isPending || !!sourceCatalog.error}
           aria-describedby="source-availability"
         >
-          <legend>Sources</legend>
+          <legend>{t('searchSourcesLegend')}</legend>
           {LAUNCH_JOB_SOURCE_CANDIDATES.map((source) => {
             const entry = sourceCatalog.data?.items.find((item) => item.id === source);
             const reasonId = `job-source-${source}-reason`;
@@ -381,7 +408,9 @@ function JobSearchWorkspace() {
                   <span>{sourceNames[source] ?? SOURCE_LABELS[source]}</span>
                   {entry && !entry.available && (
                     <span id={reasonId} className="source-unavailable-reason">
-                      {entry.unavailableReason}
+                      {entry.unavailableReason === JOB_SOURCE_PERMISSION_PENDING_MESSAGE
+                        ? t('sourcePermissionPending')
+                        : t('sourceUnavailable')}
                     </span>
                   )}
                 </span>
@@ -389,46 +418,54 @@ function JobSearchWorkspace() {
             );
           })}
         </fieldset>
-        <p id="source-availability" role="status" aria-live="polite">
+        <p id="source-availability" role="status" aria-live="polite" lang={locale}>
           {sourceCatalog.isPending
-            ? 'Checking approved job sources…'
+            ? t('checkingApprovedSources')
             : sourceCatalog.error
-              ? 'Job-source availability could not be checked. Retry after the connection is restored.'
+              ? t('sourceAvailabilityError')
               : availableSources.size === 0
-                ? JOB_SOURCE_PERMISSION_PENDING_MESSAGE
+                ? sourceCatalog.data?.items.some((source) => !source.available)
+                  ? t('sourcePermissionPending')
+                  : t('noApprovedSources')
                 : undefined}
         </p>
         {sourceCatalog.error && (
-          <ErrorState
-            variant="inline"
-            what="Could not load job sources."
-            detail={sourceCatalog.error.message}
-            action={
-              <button type="button" onClick={() => void sourceCatalog.refetch()}>
-                Retry
-              </button>
-            }
-          />
+          <div lang={locale}>
+            <ErrorState
+              variant="inline"
+              what={t('jobSourcesErrorTitle')}
+              detail={
+                locale === 'en' && sourceCatalog.error instanceof ApiError
+                  ? sourceCatalog.error.message
+                  : t('searchConnectionError')
+              }
+              action={
+                <button type="button" onClick={() => void sourceCatalog.refetch()}>
+                  {t('retry')}
+                </button>
+              }
+            />
+          </div>
         )}
-        <form className="search-form" onSubmit={startSearch}>
+        <form className="search-form" onSubmit={startSearch} lang={locale}>
           <label className="discovery-mode">
-            <span className="sr-only">Discovery mode</span>
+            <span className="sr-only">{t('discoveryMode')}</span>
             <select
-              aria-label="Discovery mode"
+              aria-label={t('discoveryMode')}
               value={useProfileTitles ? 'profile' : 'query'}
               disabled={search.isPending}
               onChange={(event) => setUseProfileTitles(event.target.value === 'profile')}
             >
-              <option value="query">Role or technology</option>
-              <option value="profile">Saved target roles</option>
+              <option value="query">{t('roleOrTechnology')}</option>
+              <option value="profile">{t('savedTargetRoles')}</option>
             </select>
           </label>
           <label className="search-input">
             <Search size={19} aria-hidden="true" />
-            <span className="sr-only">Role or technology</span>
+            <span className="sr-only">{t('roleOrTechnology')}</span>
             <input
               name="query"
-              placeholder="Role or technology"
+              placeholder={t('roleOrTechnology')}
               minLength={2}
               maxLength={160}
               required={!useProfileTitles}
@@ -437,40 +474,58 @@ function JobSearchWorkspace() {
           </label>
           <button className="primary" disabled={search.isPending || !hasAvailableSelection}>
             {search.isPending ? <LoaderCircle className="spin" size={18} /> : <Search size={18} />}
-            Search
+            {search.isPending ? t('searchStarting') : t('searchButton')}
           </button>
         </form>
         {(search.error || cancel.error) && (
-          <ErrorState
-            title={search.error ? 'Could not start that search' : 'Could not cancel that search'}
-            message={search.error?.message ?? cancel.error?.message ?? ''}
-          />
+          <div lang={locale}>
+            <ErrorState
+              title={search.error ? t('searchStartError') : t('searchCancelError')}
+              message={
+                locale === 'en' && (search.error ?? cancel.error) instanceof ApiError
+                  ? (search.error ?? cancel.error)!.message
+                  : t('searchConnectionError')
+              }
+              retryLabel={t('retry')}
+            />
+          </div>
         )}
         {detail.error && (
-          <ErrorState
-            title="Could not load these results"
-            message={detail.error.message}
-            onRetry={() => detail.refetch()}
-          />
+          <div lang={locale}>
+            <ErrorState
+              title={t('searchResultsError')}
+              message={
+                locale === 'en' && detail.error instanceof ApiError
+                  ? detail.error.message
+                  : t('searchConnectionError')
+              }
+              onRetry={() => detail.refetch()}
+              retryLabel={t('retry')}
+            />
+          </div>
         )}
         {!selectedId ? (
-          <EmptyState
-            icon={Search}
-            reason="awaiting-input"
-            title="No search selected"
-            description="Start a search above, or pick a previous one from Search History."
-          />
+          <div lang={locale}>
+            <EmptyState
+              icon={Search}
+              reason="awaiting-input"
+              title={t('noSearchSelected')}
+              description={t('startOrChooseSearch')}
+            />
+          </div>
         ) : detail.isPending ? (
-          <LoadingState message="Loading results…" />
+          <div lang={locale}>
+            <LoadingState message={t('loadingSearchResults')} />
+          </div>
         ) : (
           detail.data && (
             <>
-              <p className="source-label" aria-label="Search sources">
+              <p className="source-label" aria-label="Search sources" lang="en">
                 {detail.data.request.sources.map((source) => sourceNames[source]).join(' + ')}
               </p>
-              <div className="result-toolbar">
+              <div className="result-toolbar" lang="en">
                 <h2>
-                  {detail.data.request.query}
+                  <span lang="und">{detail.data.request.query}</span>
                   <span className="count">{detail.data.jobs.length}</span>
                 </h2>
                 <span className={`status ${detail.data.status}`} role="status">
@@ -538,7 +593,7 @@ function JobSearchWorkspace() {
                 <p role="status">Partial results. Some sources did not finish.</p>
               )}
               {detail.data.sourceOutcomes && (
-                <ul className="source-outcomes" aria-label="Source outcomes">
+                <ul className="source-outcomes" aria-label="Source outcomes" lang="en">
                   {detail.data.sourceOutcomes.map((outcome) => (
                     <li key={outcome.source}>
                       <strong>{sourceNames[outcome.source]}</strong>: {outcome.accepted} accepted
@@ -597,51 +652,55 @@ function JobSearchWorkspace() {
                 </label>
               )}
               {jobs.length === 0 && ['completed', 'partial'].includes(detail.data.status) && (
-                <EmptyState
-                  icon={Search}
-                  // Derived from the SAME condition as the copy below, not
-                  // chosen independently: if the two ever disagreed, the
-                  // machine-readable reason would contradict the words.
-                  reason={detail.data.jobs.length === 0 ? 'nothing-yet' : 'filtered'}
-                  title={detail.data.jobs.length === 0 ? 'No jobs found' : 'No matching jobs'}
-                  description={
-                    detail.data.jobs.length === 0
-                      ? 'This search returned no results. Try different keywords or sources.'
-                      : 'Nothing in this search matches your filter. Try clearing it.'
-                  }
-                  action={
-                    detail.data.jobs.length > 0 && filter
-                      ? { label: 'Clear filter', onClick: () => setFilter('') }
-                      : undefined
-                  }
-                />
+                <div lang={locale}>
+                  <EmptyState
+                    icon={Search}
+                    // Derived from the SAME condition as the copy below, not
+                    // chosen independently: if the two ever disagreed, the
+                    // machine-readable reason would contradict the words.
+                    reason={detail.data.jobs.length === 0 ? 'nothing-yet' : 'filtered'}
+                    title={detail.data.jobs.length === 0 ? t('noJobsFound') : t('noMatchingJobs')}
+                    description={
+                      detail.data.jobs.length === 0
+                        ? t('searchReturnedNoResults')
+                        : t('noResultsMatchFilter')
+                    }
+                    action={
+                      detail.data.jobs.length > 0 && filter
+                        ? { label: t('clearSearchFilter'), onClick: () => setFilter('') }
+                        : undefined
+                    }
+                  />
+                </div>
               )}
               <div className="job-list">
                 {jobs.map(({ id, data, feedbackReason }) => (
                   <details className="job" key={id}>
                     <summary>
                       <div>
-                        <p className="company">{data.company}</p>
-                        <h3>{data.title}</h3>
-                        <p className="location">
+                        <p className="company" lang="und">
+                          {data.company}
+                        </p>
+                        <h3 lang="und">{data.title}</h3>
+                        <p className="location" lang="und">
                           <MapPin size={14} />
                           {data.location}
-                          {relativeTime(data.postedAt) && (
-                            <span className="job-posted">
+                          {relativeTime(data.postedAt, locale) && (
+                            <span className="job-posted" lang={locale}>
                               {' '}
-                              &middot; {relativeTime(data.postedAt)}
+                              &middot; {relativeTime(data.postedAt, locale)}
                             </span>
                           )}
                         </p>
                         {data.match && data.match.matchedSkills.length > 0 && (
-                          <div className="job-skill-chips">
+                          <div className="job-skill-chips" lang="und">
                             {data.match.matchedSkills.slice(0, 5).map((skill) => (
                               <span key={skill}>{skill}</span>
                             ))}
                           </div>
                         )}
                       </div>
-                      <div className="job-match">
+                      <div className="job-match" lang="en">
                         <span>
                           {data.match
                             ? `${Math.round(data.match.score * 100)}% match`
@@ -651,16 +710,18 @@ function JobSearchWorkspace() {
                       </div>
                     </summary>
                     <div className="job-body">
-                      <SaveJob
-                        jobId={id}
-                        csrf={session.data?.csrf ?? ''}
-                        // The lead id this control already knows must reach
-                        // /saved, or "Open Saved Lead" opens nothing (F-1a).
-                        onOpen={(leadId) =>
-                          router.push(`/saved?lead=${encodeURIComponent(leadId)}`)
-                        }
-                      />
-                      {data.match && <MatchEvidence match={data.match} />}
+                      <div lang="en">
+                        <SaveJob
+                          jobId={id}
+                          csrf={session.data?.csrf ?? ''}
+                          // The lead id this control already knows must reach
+                          // /saved, or "Open Saved Lead" opens nothing (F-1a).
+                          onOpen={(leadId) =>
+                            router.push(`/saved?lead=${encodeURIComponent(leadId)}`)
+                          }
+                        />
+                        {data.match && <MatchEvidence match={data.match} />}
+                      </div>
                       <div className="job-links">
                         {(data.sourceLinks?.length
                           ? data.sourceLinks
@@ -679,8 +740,8 @@ function JobSearchWorkspace() {
                           Open Posting <ExternalLink size={14} />
                         </a>
                       </div>
-                      <p className="description">
-                        {data.description || 'Description not available.'}
+                      <p className="description" lang={data.description ? 'und' : locale}>
+                        {data.description || t('jobDescriptionUnavailable')}
                       </p>
                       <JobFeedback
                         key={`${id}:${feedbackReason ?? 'none'}`}
