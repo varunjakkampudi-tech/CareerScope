@@ -4,9 +4,17 @@
 
 The project owner's written approval dated 20 October 2026 authorizes the five
 versions in SOURCE-REGISTER.md and autonomous development-branch integration.
-The approval record does not certify any implementation or launch readiness.
-Activation requires this governance transition committed, independently reviewed
-and verified on `codex/dev`. Until then, assessment and governance work only.
+That workflow restriction was superseded by OA-2026-10-21-01, which made `main`
+the permanent integration branch and authorized normal direct synchronization
+of independently reviewed, validated changes. The required governance transition
+was committed and verified on `codex/dev` before this superseding decision; it is
+historical activation evidence, not a continuing branch requirement. The project
+owner has reiterated the direct-main authorization for this goal. Neither
+authorization certifies implementation or launch readiness. Follow the current
+owner instruction, preserve worktrees, recheck remote `main`, and push only an
+exact, clean, independently reviewed and fully validated integration candidate.
+No force-push, mandatory-check bypass, settings change, or production deployment
+is authorized.
 
 Precedence: approved v12 D1–D14; other v12 product requirements; the approved
 CareerScope Goal's execution rules; product engineering standards; applicable
@@ -38,9 +46,13 @@ program does not expand product scope. Record material conflicts READY_FOR_OWNER
 ## Product invariants
 
 The full v12 launch core, not the older R1 scope, is the approved target.
-Email OTP requires primary/fallback provider contracts; test selection must fail
-closed in production. Existing mature architecture remains until concrete
-evidence justifies a change; proposed CSS/tools are not an automatic migration.
+Production sign-in OTP uses Resend only under OA-2026-10-22-01; no second
+provider is required for sign-in, and a Resend failure leaves sign-in
+unavailable without weakening authentication. This decision does not activate
+unapproved details of Amendment A1 or determine channels for other email
+workflows. Test selection must fail closed in production. Existing mature
+architecture remains until concrete evidence justifies a change; proposed
+CSS/tools are not an automatic migration.
 
 Candidate review and submission remain authoritative: opening an external URL
 does not mark Applied. No automated submission, employer credentials, LinkedIn

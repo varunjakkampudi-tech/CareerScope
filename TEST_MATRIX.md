@@ -549,3 +549,19 @@ transport error; isolated Firefox and the subsequent full Chromium/Firefox/
 WebKit run passed without changing or skipping assertions. This is local
 evidence only: hosted Actions and production acceptance remain unverified; no
 historic profiles were rewritten.
+
+### Exact-main validation refresh (2026-10-22, Node 24.19.0)
+
+At `b072e7b3d7ab8c399d3eed179ade08f0c552a20d`, local checks passed:
+`npm run gates:test` (94/94 unit tests and policy/source/privacy/deployment/EOL/
+lint/typecheck gates), `npm run test:integration` (59/59, zero skips, disposable
+loopback PostgreSQL/Redis), `npm run test:domain` (850/850),
+`npm audit --audit-level=high` (zero vulnerabilities), and `npm run build`
+(both Next.js builds and 13-hash CSP verification). The exact command
+`CAREERSCOPE_UI_WARNING_DIAGNOSTICS=1 npm run test:ui` exited 0 against the
+local production preview; Chromium, Firefox and WebKit passed their exercised
+journeys, axe, keyboard and required responsive-width checks. Firefox still
+reported the known Next chunk `loading-failed` diagnostic pattern; mixed
+aborted, unmatched and HTTP-200 candidate request records do not prove a root
+cause. No warning was suppressed or allowlisted. Hosted CI, production,
+provider, legal and manual assistive-technology evidence remain unverified.

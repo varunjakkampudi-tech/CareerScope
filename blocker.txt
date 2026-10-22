@@ -386,6 +386,30 @@ Why autonomous resolution is unsafe or impossible: Enabling a sender/domain and
   second signal; implementing recovery without an approved factor/procedure
   would weaken account takeover protections. Staff MFA needs a production staff
   identity/role boundary, which the current test-only admin identity is not.
+Proposed fail-closed recovery policy (not yet owner-approved): Permit automated
+  recovery only when the account already has a verified identity signal that is
+  independent of the inaccessible mailbox and whose ownership can be proven
+  without relying on user-entered profile data. Email access alone, a test-user
+  selector, resume/profile contents, public records, and unverified phone or
+  employer details are not recovery factors. If no approved independent factor
+  exists, deny automated recovery and preserve the account/session protections;
+  do not let support replace the factor or change the sign-in address using an
+  informal identity judgment. Any future assisted path must first define a
+  narrowly authorized operator role, evidence standard, dual-control threshold,
+  reason-coded immutable audit record, short-lived action, notification to the
+  prior verified address when deliverable, cooldown, and appeal/escalation path.
+Security risks: Weak evidence enables account takeover; unrestricted support
+  authority creates insider-abuse risk; notifying only the inaccessible mailbox
+  may fail to alert the owner; a strict deny-without-second-factor policy can
+  cause permanent account loss. These risks must be addressed explicitly rather
+  than weakened by an implementation shortcut.
+Exact owner decision required: Confirm or amend the proposed policy by choosing
+  (1) no recovery when no existing independent verified factor is available, or
+  (2) a specific mailbox-independent factor and, if assisted recovery is wanted,
+  its evidence standard, authorized operator, dual-control rule, audit fields,
+  notification/cooldown and appeal process. Email alone must not be selected as
+  proof. No recovery factor or assisted procedure is implemented pending this
+  decision.
 Exact owner action required: Obtain qualified counsel/owner approval for effective
   Terms, privacy notice, marketing language and retention/deletion policy before
   enabling registration; complete PROVIDER-01 actions; review remaining

@@ -2132,3 +2132,23 @@ PostgreSQL/Redis); `npm run build` PASS for both Next.js production builds and
 13 CSP hashes; `npm run security:check` PASS (privacy scan clean, 0 production
 dependency vulnerabilities); `npm run format:check` PASS; `git diff --check`
 PASS. Hosted GitHub Actions and live Resend/domain acceptance remain unverified.
+
+### Exact-main cross-browser validation refresh (2026-10-22, Node 24.19.0)
+
+On `main` at `b072e7b3d7ab8c399d3eed179ade08f0c552a20d`, `npm run gates:test`
+passed (94/94 unit tests plus source, privacy, deployment-policy, EOL, lint and
+strict typecheck gates); `npm run test:integration` passed 59/59 with zero
+skips against disposable loopback PostgreSQL/Redis; `npm run test:domain`
+passed 850/850; `npm audit --audit-level=high` found zero vulnerabilities;
+and `npm run build` passed both production builds and verification of all 13
+CSP inline-script hashes. `CAREERSCOPE_UI_WARNING_DIAGNOSTICS=1 npm run test:ui`
+exited 0 against the local production preview: Chromium, Firefox and WebKit
+journeys passed, including axe, keyboard and the required eight responsive
+widths. The Firefox run still emitted the previously observed Next chunk
+`loading-failed` diagnostic category. Some correlated script requests were
+aborted while others had no matching request or completed HTTP 200; this does
+not establish the warning's cause. No warning was suppressed or allowlisted,
+and `UI-CONSOLE-WARNINGS-01` remains open. All tests used local synthetic data;
+no hosted CI, live provider, production service, deployment or human legal/
+accessibility approval was exercised. No application source changed during
+this validation refresh.
