@@ -8,8 +8,8 @@ active-session listing/revocation, marketing-consent controls, loading/error/
 confirmation states, and locale-aware timestamps. The section declares its
 language for assistive technology. Existing API contracts, authentication,
 session ownership, confirmation behavior and provider integrations were not
-changed. This does not establish full-application localization; API-provided
-errors and other routes may remain English, and native-language copy still
+changed. This does not establish full-application localization; other routes
+and their error surfaces may remain English, and native-language copy still
 requires human language review.
 
 Evidence on Node v24.19.0 for the current working tree: the focused locale test
