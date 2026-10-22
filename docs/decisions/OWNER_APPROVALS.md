@@ -64,3 +64,21 @@ does not certify the approved launch scope or production readiness.
   `PENDING_OWNER_APPROVAL`. Such clauses retain their stated status unless the
   owner separately approved that specific amendment; this record does not infer
   approval of A1/A2/A3 or a release exception from the source-file approval alone.
+
+## OA-2026-10-22-01 — Resend-only production sign-in transport
+
+- Approver: CareerScope project owner, by the direct instruction in the
+  22 October 2026 repository-review request.
+- Decision: production sign-in OTP uses Resend only. Do not route sign-in OTP
+  through SMTP or a second email provider; Resend failure is an unavailable
+  sign-in path, while existing sessions remain independent of OTP delivery.
+- Scope: this activates only the D11-R transport choice and the corresponding
+  launch-gate wording. It does not activate every detail of Amendment A1, alter
+  other email workflows, establish provider/domain configuration, or constitute
+  live delivery, hosted CI, security, legal, or production evidence.
+- Source handling: the immutable approved source snapshot and its
+  `PENDING_OWNER_APPROVAL` annotation remain unchanged as historical source
+  bytes. This additive owner decision resolves the transport choice; any
+  unapproved A1 behavior remains pending and must not be inferred.
+- Restrictions: no provider account/configuration, DNS, secret, production
+  setting, or live email was changed or tested by recording this decision.

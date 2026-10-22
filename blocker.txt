@@ -18,8 +18,10 @@ Current implementation: The source decision is recorded additively in
   runtime behavior, identity data, or production configuration was overwritten.
 Impact: Approval of the source documents is resolved. Source-derived inventories,
   affected matrices and acceptance traceability still need engineering
-  reconciliation. Clauses explicitly marked proposed/pending retain that status;
-  do not treat approval of document identity as amendment approval.
+  reconciliation. OA-2026-10-22-01 separately resolves the D11-R sign-in
+  transport choice only; every other clause explicitly marked proposed/pending
+  retains that status. Do not treat approval of document identity as blanket
+  amendment approval.
 What the agent already tried: Recomputed supplied-file hashes and reconciled the
   approval with the historical source register and prior review.
   A read-only exact-text comparison of the 319 inventory entries against the
@@ -35,11 +37,11 @@ Work completed: No further owner approval is required for the source documents
   covered by OA-2026-10-20-02. Any amendment explicitly marked pending in those
   sources must be evaluated against the owner's specific approval language;
   separate provider, CI, hosting, legal, backup and production gates remain
-  independently tracked. The source reconciliation table was corrected to
-  distinguish approved base D1/D12 from pending D11-R and unverified recovery
-  operations. The individual mismatch review classified 5 approved-base
-  replacements, 2 D1 supersessions, 12 rows retained pending D11-R/A1, 1 open
-  owner decision, and 2 external evidence rows. The historical inventory was not
+  independently tracked. The original source reconciliation distinguished
+  approved base D1/D12 from then-pending D11-R and unverified recovery
+  operations. At that point, the individual mismatch review classified
+  5 approved-base replacements, 2 D1 supersessions, 12 rows retained pending
+  D11-R/A1, 1 open owner decision, and 2 external evidence rows. The historical inventory was not
   overwritten and no pending amendment was promoted. An additive deterministic
   R1 source-content inventory now records 518 blocks with exact source pointers,
   authority classifications, 297 exact legacy links, and all 22 reviewed
@@ -47,6 +49,9 @@ Work completed: No further owner approval is required for the source documents
   approved D1 and selected §4.1 auth clauses against code and registered tests
   (`docs/requirements/V12-R1-AUTH-TRACEABILITY.md`); non-implemented behavior,
   unregistered checks, source conflicts and external evidence remain explicit.
+  Addendum OA-2026-10-22-01 now resolves D11-R's Resend-only sign-in transport
+  choice; the previously listed 12 D11-R/A1 rows are historical dispositions,
+  not current fallback-provider blockers. Other A1 details remain pending.
   All generated inventory content remains NOT_ASSESSED/NOT_RUN.
 Why this remains open: The source-content inventory is not requirement-to-test
   traceability or implementation evidence. Its 47 CR-07 scope-reconciliation
@@ -330,7 +335,8 @@ Problem: Local OTP and session controls are implemented and covered by tests,
   but the full v12 authentication surface and production acceptance remain
   incomplete. The remaining local gaps are lost-mailbox recovery, new-device
   alerts, unusual-pattern step-up, and production
-  staff/admin MFA. A second delivery provider has not been selected. The
+  staff/admin MFA. The owner selected Resend-only sign-in transport in
+  OA-2026-10-22-01; no second delivery provider is required for sign-in. The
   password-test compatibility route is opt-in to isolated fixtures and disabled
   in OTP/runtime compositions.
 Verified root cause: Current API composition, auth/schema, runtime validation,
@@ -349,8 +355,9 @@ Current implementation: With `EMAIL_OTP_ENABLED=true`, Fastify uses the existing
   challenge consumption share one transaction. Six-digit codes expire in five
   minutes, are HMAC-verified and single-use, with Redis distributed limits.
 Impact: Existing-account OTP sign-in and session lifecycle controls have local
-  evidence, but fallback availability, recovery, risk-based authentication,
-  staff MFA, live delivery and hosted acceptance are not established.
+  evidence, but recovery, risk-based authentication, staff MFA, live delivery
+  and hosted acceptance are not established. The no-fallback transport policy
+  is an owner decision, not an unresolved provider-selection gap.
 What the agent already tried: Added routes, existing-session establishment,
   runtime fail-closed checks, user-facing OTP form and service-backed tests.
 Work completed: Canonical main includes the OTP routes/UI, PostgreSQL challenge
@@ -372,9 +379,9 @@ Work completed: Canonical main includes the OTP routes/UI, PostgreSQL challenge
   84/84, service-backed integration 57/57, domain suite 836/836, production
   build/CSP, lint, formatting, EOL and privacy checks. It does not resolve the
   remaining authentication/provider, legal, or production-acceptance gaps.
-Why autonomous resolution is unsafe or impossible: Selecting a fallback vendor,
-  enabling a sender/domain, and performing real-recipient delivery require owner
-  and provider evidence. The approved v12 text requires recovery through verified
+Why autonomous resolution is unsafe or impossible: Enabling a sender/domain and
+  performing real-recipient delivery require owner and provider evidence. The
+  approved v12 text requires recovery through verified
   identity signals beyond email, but the current identity model exposes no such
   second signal; implementing recovery without an approved factor/procedure
   would weaken account takeover protections. Staff MFA needs a production staff
@@ -403,7 +410,7 @@ External dependencies: PROVIDER-01 live sender and hosted acceptance; remaining
 Expected result: Existing users authenticate only after a real verified code and
   all v12 session/recovery requirements have independent release evidence.
 Verification procedure: Node 24 unit/integration/browser gates; hosted staging
-  delivery/fallback and migration acceptance; separate tests for approved
+  Resend delivery and migration acceptance; separate tests for approved
   recovery factors, new-device alert redaction, step-up policy, staff MFA,
   session rotation and owner isolation. Dual-address email change is implemented
   locally and covered by the isolated integration suite; independent review and
@@ -472,14 +479,14 @@ Affected tasks: Discovery activation/public pages; not deterministic fixture tes
 Evidence references: GAP_MATRIX.md 4.6/4.14; approved v12 D10/D13/D14
 
 BLOCKER ID: PROVIDER-01
-Title: Resend domain, live-delivery and fallback-provider acceptance
+Title: Resend domain and live-delivery acceptance
 Priority: Critical
 Module: Authentication/notifications
-v12 requirement / checklist item: D1/D9/D11; 4.1/4.15; checklist 1-3
+v12 requirement / checklist item: D1/D9/D11-R; 4.1/4.15; checklist 1-3
 Status: READY_FOR_OWNER
 Problem: Resend domain ownership/sender state, tracking configuration, live
-  delivery and inbox receipt have not been verified. No second email provider is
-  selected for the v12 fallback requirement. Mock tests cannot prove these facts.
+  delivery and inbox receipt have not been verified. Mock tests cannot prove
+  these facts.
 Verified root cause: Local source and tests show an integrated Resend API path;
   no external provider console or DNS change was performed in this task.
 Current implementation: The server sends via fixed HTTPS Resend API endpoint with
@@ -487,7 +494,7 @@ Current implementation: The server sends via fixed HTTPS Resend API endpoint wit
   Resend configuration; its values were not read or printed. No live call occurred.
   `EMAIL_OTP_HMAC_SECRET` is separate and not present in the current local `.env`.
 Impact: API acceptance and mocks do not prove sender authorization, inbox receipt,
-  domain-level tracking state or fallback recovery.
+  domain-level tracking state or live delivery.
 What the agent already tried: Validated required names and runtime guards without
   reading secret values; mocked provider success/failure/retry and sanitized errors.
 Work completed: 7 delivery-adapter tests are in the unit suite; integrated OTP
@@ -495,12 +502,13 @@ Work completed: 7 delivery-adapter tests are in the unit suite; integrated OTP
   recipient or communication was used.
 Why autonomous resolution is unsafe or impossible: Domain/DNS state, provider
   dashboard settings, secret provisioning and real recipient authorization are
-  external owner-controlled actions. The fallback provider is a product/provider
-  decision and cannot be invented from local code.
+  external owner-controlled actions. The owner approved Resend-only sign-in
+  transport in OA-2026-10-22-01; no fallback provider should be selected or
+  provisioned for sign-in.
 Exact owner action required: Verify the approved sending domain and sender in
   Resend, confirm open/click tracking is disabled for auth mail at the account or
-  domain setting, provision a separate staging HMAC secret, choose/provision the
-  required fallback provider, and authorize one staging recipient for a live test.
+  domain setting, provision a separate staging HMAC secret, and authorize one
+  staging recipient for a live test.
 Step-by-step resolution instructions:
   1. In Resend, confirm `careerscope.tech` is verified and the exact approved
      sender is enabled; follow only provider-issued DNS instructions.
@@ -510,16 +518,13 @@ Step-by-step resolution instructions:
   3. Add `EMAIL_OTP_HMAC_SECRET` (random, independent, >=32 bytes) and
      `EMAIL_OTP_ENABLED=true` to isolated staging secrets; never store values in
      Git, chat, logs or screenshots. Keep production disabled pending acceptance.
-  4. Select/provision the fallback provider required by v12 and supply its owner-
-     approved adapter/configuration decision; do not send or enable it beforehand.
-  5. Authorize a specific staging mailbox and spend cap, then test inbox receipt,
-     verification, session, expiry, retry and fallback; retain only sanitized IDs.
+  4. Authorize a specific staging mailbox and spend cap, then test inbox receipt,
+     verification, session, expiry, and bounded retry; retain only sanitized IDs.
 Required environment-variable names (no values): EMAIL_OTP_ENABLED,
-  EMAIL_OTP_HMAC_SECRET, RESEND_API_KEY, RESEND_FROM_EMAIL; fallback names only
-  after its provider and adapter contract are approved.
+  EMAIL_OTP_HMAC_SECRET, RESEND_API_KEY, RESEND_FROM_EMAIL.
 External dependencies: Resend account/domain/DNS; provider tracking setting;
-  staging secret channel; fallback-provider decision; authorized test mailbox.
-Expected result: Actual OTP/fallback acceptance with no production test shortcut.
+  staging secret channel; authorized test mailbox.
+Expected result: Actual Resend-only OTP acceptance with no production test shortcut.
 Verification procedure: Separate provider acceptance, recipient receipt and OTP
   session evidence from mock/local automated runs.
 Tests to rerun: OTP outage/abuse/delivery, staging browser acceptance and runtime guards.

@@ -186,3 +186,24 @@ changed by this disposition.
 Independent approved work need not wait for unrelated source/host/provider gates.
 No blanket approval, provider capability, legal conclusion, live test, deployment,
 main push, vulnerability waiver or production-readiness claim is made here.
+
+## Additive owner clarification — 22 October 2026
+
+OA-2026-10-22-01 records the owner's direct clarification that production
+sign-in OTP is Resend-only and must not route through SMTP or a second provider.
+This resolves the D11-R transport choice only. It supersedes the earlier
+`RETAIN_UNTIL_AMENDMENT_APPROVED` dispositions for the transport/failover portions
+of `V12-1-011`, `V12-2-001`, `V12-4.1-001`, `V12-4.1-009`, `V12-6-013`,
+`V12-6-014`, `V12-7-003`, `V12-12-003`, `V12-13-007`, `V12-15-003`, and
+`V12-15-004`. These source rows remain in the immutable historical inventory;
+the additive owner decision supplies the current authority link for transport.
+
+The active release contract is one Resend sign-in delivery path; a Resend
+failure makes new sign-in unavailable without invalidating existing sessions;
+there is no SMTP or secondary-provider route. Go/no-go items 2 and 3 remain
+`NOT_VERIFIED` until their evidence is actually recorded. This clarification
+does not activate other A1 details (including its retry, lockout/backoff, or
+other-email-workflow proposals), nor prove Resend domain ownership, live
+delivery, hosted CI, legal acceptance, or production readiness. The source
+snapshot remains immutable with its original pending label; OA-2026-10-22-01
+is the operative authority for this narrow transport choice.

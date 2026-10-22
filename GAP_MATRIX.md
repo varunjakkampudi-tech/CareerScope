@@ -157,3 +157,12 @@ new-device alerts, risk-based step-up and staff MFA remain unimplemented. The
 second provider is not selected; provider-neutral code does not constitute
 fallback availability. AUTH-01 remains open for these remaining requirements
 and release evidence.
+
+### Authentication transport clarification (2026-10-22)
+
+The owner subsequently approved the narrow D11-R transport choice in
+`docs/decisions/OWNER_APPROVALS.md` (OA-2026-10-22-01): production sign-in is
+Resend-only, with no second-provider route. This supersedes the preceding
+dated statement about provider selection. AUTH-01 remains open for recovery,
+device alerts, risk-based step-up, staff/admin MFA, and current hosted/live
+acceptance evidence.

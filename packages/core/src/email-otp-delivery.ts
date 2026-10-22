@@ -31,13 +31,6 @@ export class EmailOtpProviderError extends Error {
   }
 }
 
-export class EmailOtpDeliveryUnavailable extends Error {
-  constructor() {
-    super('Email OTP delivery is temporarily unavailable');
-    this.name = 'EmailOtpDeliveryUnavailable';
-  }
-}
-
 /** Resend adapter using the official HTTPS email-send endpoint. */
 export class ResendEmailOtpProvider implements EmailOtpProvider {
   constructor(
@@ -118,35 +111,6 @@ export class ResendEmailOtpProvider implements EmailOtpProvider {
         response.status >= 500;
       if (!retryable || attempt === 1) throw new EmailOtpProviderError(retryable);
       await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-  }
-}
-
-/**
- * Sends through one configured primary and then an injected fallback provider.
- * The fallback vendor remains a composition choice; this class does not assume
- * credentials or create an account for it.
- */
-export class FailoverEmailOtpDelivery {
-  constructor(
-    private readonly primary: EmailOtpProvider,
-    private readonly fallback: EmailOtpProvider,
-  ) {}
-
-  async send(message: EmailOtpDeliveryMessage): Promise<'primary' | 'fallback'> {
-    try {
-      await this.primary.send(message);
-      return 'primary';
-    } catch (error) {
-      if (!(error instanceof EmailOtpProviderError) || !error.retryable)
-        throw new EmailOtpDeliveryUnavailable();
-    }
-
-    try {
-      await this.fallback.send(message);
-      return 'fallback';
-    } catch {
-      throw new EmailOtpDeliveryUnavailable();
     }
   }
 }

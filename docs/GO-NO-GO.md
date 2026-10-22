@@ -7,20 +7,23 @@ No waiver is granted. Critical items cannot be waived by an agent; high items
 require the owner's explicit written disposition. Optional capabilities remain
 disabled pending an approved applicability decision, not an automatic pass.
 The owner-approved R1 source identity and D1-D14 base decisions do not approve
-every appended amendment: D11-R is explicitly `PENDING_OWNER_APPROVAL`. Gates 2
-and 3 therefore intentionally retain the current approved D11 second-provider
-fallback contract until D11-R is separately approved; the R1 source's
-Resend-only wording is not silently activated. Gate 9 follows revised D12: the
-one-hour off-host target is required unless a separate, explicit and disclosed
-24-hour exception is approved. The restore drill must also demonstrate the
-approved four-hour recovery-time objective. Neither local restore tests nor this
-ledger claim that either recovery objective is met.
+every appended amendment. The owner separately approved the D11-R transport
+choice in OA-2026-10-22-01: production sign-in OTP is Resend-only, with no SMTP
+or second-provider routing. The immutable source snapshot still contains its
+original pending-amendment label; this ledger follows the later, narrowly scoped
+owner decision. Remaining A1 details are not activated by that decision. Gates
+2 and 3 therefore require Resend-only failure/outage evidence, not a second
+provider. Gate 9 follows revised D12: the one-hour off-host target is required
+unless a separate, explicit and disclosed 24-hour exception is approved. The
+restore drill must also demonstrate the approved four-hour recovery-time
+objective. Neither local restore tests nor this ledger claim that either
+recovery objective is met.
 
 | ID  | Required gate                                                                                                 | Source         | Severity | Result       | Responsible role              |
 | --- | ------------------------------------------------------------------------------------------------------------- | -------------- | -------- | ------------ | ----------------------------- |
 | 1   | Email OTP sign-in works; test login blocked in production                                                     | D1, 4.1        | Critical | NOT_VERIFIED | Engineering; owner acceptance |
-| 2   | Second email provider failover tested                                                                         | D11            | Critical | NOT_VERIFIED | Engineering; owner acceptance |
-| 3   | Sign-in outage state tested with both providers down                                                          | 4.1, section 6 | Critical | NOT_VERIFIED | Engineering; owner acceptance |
+| 2   | Resend-only sign-in failure behavior tested; no SMTP or second-provider route                                 | D11-R, 4.1     | Critical | NOT_VERIFIED | Engineering; owner acceptance |
+| 3   | Resend outage preserves existing sessions and makes new sign-in unavailable with a request-correlated state   | 4.1, section 6 | Critical | NOT_VERIFIED | Engineering; owner acceptance |
 | 4   | Launch source set permission profiles recorded                                                                | D14, 4.6       | Critical | NOT_VERIFIED | Engineering; owner acceptance |
 | 5   | Listing coverage per target city and role family meets owner threshold                                        | D13            | Critical | NOT_VERIFIED | Engineering; owner acceptance |
 | 6   | Stale and duplicate rates measured on golden set                                                              | D13            | High     | NOT_VERIFIED | Engineering; owner acceptance |

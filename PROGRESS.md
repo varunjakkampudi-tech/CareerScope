@@ -2104,3 +2104,31 @@ points to the executed three-engine manual-application journey and is still
 PARTIAL; DATA-TEST-01 and INTERVIEW-TEST-01 now cite the current 59/59 local
 integration run rather than an earlier 58/58 result. The matrix explicitly
 keeps hosted, live-provider, human and production evidence outstanding.
+
+### D11-R transport reconciliation and fallback cleanup (2026-10-22)
+
+The owner clarified that production sign-in OTP is Resend-only and must not
+route through SMTP or a second provider. Recorded this limited decision as
+OA-2026-10-22-01; it activates only the transport choice, not the remaining
+pending A1 details. The immutable source snapshots and prior reconciliation
+history remain unchanged. Updated the active go/no-go ledger, source
+reconciliation, authentication crosswalk, blocker guidance, critical-path audit,
+GAP_MATRIX.md and TEST_MATRIX.md. Go/no-go items 2–3 remain NOT_VERIFIED pending
+actual requirement-specific evidence.
+
+The production API already composed OTP with `ResendEmailOtpProvider` only. A
+repository-wide reference check found `FailoverEmailOtpDelivery` only in its
+definition and unit tests, with no application/runtime consumer; removed that
+unused alternate-routing class, its unavailable wrapper error, and the three
+tests asserting fallback behavior. Resend bounded retry, sanitized provider
+errors, OTP challenge invalidation, and session continuity behavior were left
+unchanged. No live provider request, real email, secret read, DNS change,
+production configuration change, or deployment occurred.
+
+Validation on Node v24.19.0 for this working tree: `npm run gates:test` PASS
+(94/94 unit tests; policy/source/privacy/deploy/EOL/lint/typecheck subgates
+passed); `npm run test:integration` PASS (59/59, zero skipped, disposable local
+PostgreSQL/Redis); `npm run build` PASS for both Next.js production builds and
+13 CSP hashes; `npm run security:check` PASS (privacy scan clean, 0 production
+dependency vulnerabilities); `npm run format:check` PASS; `git diff --check`
+PASS. Hosted GitHub Actions and live Resend/domain acceptance remain unverified.
