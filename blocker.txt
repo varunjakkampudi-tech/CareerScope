@@ -1217,20 +1217,21 @@ Resolution: The active owner request explicitly authorizes a normal direct push
   of this validated checkpoint. This resolves authorization for this checkpoint
   only; it does not authorize production deployment, force-push, bypassing a new
   branch rule, or future unrelated pushes.
-Verified state before fetch: Local `main` is at
-  `d758b11798323b912ceb73fd7d256ba556580b3b`, one commit ahead of
-  `origin/main` at `9ea612ec720e1c2c9b6a1d91b889f1589675bbd2`. The worktree is
-  clean; local gates and all three browser engines passed. A fetch and ancestry
-  check are required immediately before the normal push. No push has yet been
-  attempted.
-Impact: Only the validated saved-job tag checkpoint is eligible for this push.
+Verified state after push: The saved-job feature commit
+  `d758b11798323b912ceb73fd7d256ba556580b3b` and follow-up documentation commit
+  `c2a2e8930abe093ca0c8205325f74b404f84d9ec` were pushed normally. Local `main`,
+  `origin/main`, and GitHub's advertised ref matched at `c2a2e8930abe093ca0c8205325f74b404f84d9ec`;
+  the worktree was clean. No deployment occurred.
+Impact: This checkpoint is published; hosted CI and production acceptance remain
+  separate and unverified.
 Owner action required: None for this checkpoint. Do not weaken repository
   protection or use force.
 Required environment-variable names (no values): None.
 External dependencies: None; authorization is resolved for this checkpoint.
-Expected result: Exact validated checkpoint is pushed only if the remote has
-  not advanced and a fast-forward update is possible.
-Verification procedure: Fetch origin, verify clean worktree and ancestry, push
-  normally, then compare local `main`, `origin/main` and GitHub's advertised SHA.
+Expected result: Current refs remain synchronized and the same authorization is
+  not inferred for a future unrelated operation.
+Verification procedure: For future authorized pushes, fetch origin, verify a
+  clean worktree and ancestry, push normally, then compare local `main`,
+  `origin/main` and GitHub's advertised SHA.
 Affected tasks: Publishing the saved-job tag changes to `main`; no product
   implementation or local validation is blocked.

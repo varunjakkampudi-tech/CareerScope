@@ -271,7 +271,9 @@ remain incomplete.
   round-trip handling, database/API constraint parity, Unicode length and
   browser regression assertions. The final review confirmed the max-length and
   reload assertions; it noted PostgreSQL-collation sensitivity in Unicode case
-  folding as a non-blocking, unverified edge. The change remains local and
-  unpublished, with no hosted CI or production acceptance. No push, merge or
-  deployment occurred. The separate dirty email-OTP and application-evidence
-  worktrees were not modified.
+  folding as a non-blocking, unverified edge. The feature commit
+  `d758b11798323b912ceb73fd7d256ba556580b3b` and follow-up record were normally
+  pushed; local and remote `main` match at `c2a2e8930abe093ca0c8205325f74b404f84d9ec`.
+  No hosted CI or production acceptance is claimed and no deployment occurred.
+  The separate dirty email-OTP and application-evidence worktrees were not
+  modified.
