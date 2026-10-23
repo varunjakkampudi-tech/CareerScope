@@ -1315,10 +1315,28 @@ try {
             ...value,
             server: requestLifecycleAudit.get(id) ?? null,
           }));
+        let proxyProbe: Record<string, string | number>;
+        try {
+          const response = await fetch(`${origin}/api/notifications`, {
+            cache: 'no-store',
+            signal: AbortSignal.timeout(3000),
+          });
+          proxyProbe = {
+            status: response.status,
+            contentType: response.headers.get('content-type') ?? 'none',
+            contentLength: response.headers.get('content-length') ?? 'none',
+          };
+          await response.body?.cancel();
+        } catch (error) {
+          proxyProbe = {
+            error: error instanceof Error ? error.name : 'unknown',
+          };
+        }
         throw new Error(
           `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'}); ` +
             `recent request events: ${recentRequestEvents.join(' | ') || 'none'}; ` +
-            `request lifecycle audit: ${JSON.stringify(unresolvedLifecycle)}`,
+            `request lifecycle audit: ${JSON.stringify(unresolvedLifecycle)}; ` +
+            `unauthenticated same-origin proxy probe: ${JSON.stringify(proxyProbe)}`,
         );
       };
       // Search selection keeps polling enabled. All finite requests must finish
