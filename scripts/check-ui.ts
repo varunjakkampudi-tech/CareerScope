@@ -4567,6 +4567,7 @@ try {
       // Its continuation must not start a notification GET for the departed
       // owner. Hold the successful PUT response across sign-out and count any
       // notification reads issued after the shell has disappeared.
+      await settled('notifications before read fixture reset');
       await database.pool.query(
         `UPDATE in_app_notifications
          SET read_at = NULL
@@ -4574,7 +4575,25 @@ try {
         [ownerId, createdRound.id],
       );
       const signoutNotificationToggle = page.locator('summary[aria-label^="Notifications"]');
+      const notificationPanelWasOpen = await signoutNotificationToggle.evaluate(
+        (summary) =>
+          summary.parentElement instanceof HTMLDetailsElement && summary.parentElement.open,
+      );
+      if (notificationPanelWasOpen) await signoutNotificationToggle.click();
+      assert.equal(
+        await signoutNotificationToggle.evaluate(
+          (summary) =>
+            summary.parentElement instanceof HTMLDetailsElement && summary.parentElement.open,
+        ),
+        false,
+        `${engine}: notification fixture must begin with the panel closed`,
+      );
+      const unreadNotificationsResponse = page.waitForResponse(
+        (response) =>
+          response.url().endsWith('/api/notifications') && response.request().method() === 'GET',
+      );
       await signoutNotificationToggle.click();
+      assert.equal((await unreadNotificationsResponse).status(), 200);
       await page
         .getByRole('region', { name: 'Notifications' })
         .getByRole('button', {
