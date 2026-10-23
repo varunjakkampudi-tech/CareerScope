@@ -1016,31 +1016,78 @@ try {
         string,
         { route: string; events: string[]; cdpEvents: string[] }
       >();
+      const browserLifecycleAuditByRequest = new WeakMap<import('playwright').Request, string>();
       const cdp = engine === 'chromium' ? await page.context().newCDPSession(page) : undefined;
       const cdpRequestIds = new Map<string, string>();
+      const cdpTargetRequests = new Set<string>();
+      const cdpEventsPendingCorrelation = new Map<string, string[]>();
+      const cdpExtraInfoPendingRequest = new Map<string, string>();
+      const correlationIdFromHeaders = (headers: Record<string, string>) =>
+        Object.entries(headers).find(
+          ([key]) => key.toLowerCase() === 'x-careerscope-ui-lifecycle-id',
+        )?.[1];
+      const flushCdpEvents = (requestId: string, auditId: string) => {
+        const pending = cdpEventsPendingCorrelation.get(requestId) ?? [];
+        browserLifecycleAudit.get(auditId)?.cdpEvents.push(...pending);
+        cdpEventsPendingCorrelation.delete(requestId);
+      };
+      const recordCdpEvent = (requestId: string, event: string) => {
+        const auditId = cdpRequestIds.get(requestId);
+        const audit = auditId ? browserLifecycleAudit.get(auditId) : undefined;
+        if (audit) audit.cdpEvents.push(event);
+        else if (cdpTargetRequests.has(requestId)) {
+          const pending = cdpEventsPendingCorrelation.get(requestId) ?? [];
+          pending.push(event);
+          cdpEventsPendingCorrelation.set(requestId, pending);
+        }
+      };
       if (cdp) {
         await cdp.send('Network.enable');
         cdp.on('Network.requestWillBeSent', (event) => {
-          const headers = event.request.headers as Record<string, string>;
-          const id = Object.entries(headers).find(
-            ([key]) => key.toLowerCase() === 'x-careerscope-ui-lifecycle-id',
-          )?.[1];
+          const path = new URL(event.request.url).pathname;
+          if (path === '/api/profile/accessibility' || path === '/api/notifications') {
+            cdpTargetRequests.add(event.requestId);
+            recordCdpEvent(event.requestId, 'request-started');
+            const auditId = cdpExtraInfoPendingRequest.get(event.requestId);
+            if (auditId) {
+              cdpRequestIds.set(event.requestId, auditId);
+              flushCdpEvents(event.requestId, auditId);
+              cdpExtraInfoPendingRequest.delete(event.requestId);
+            }
+          }
+        });
+        cdp.on('Network.requestWillBeSentExtraInfo', (event) => {
+          const headers = event.headers as Record<string, string>;
+          const id = correlationIdFromHeaders(headers);
           if (typeof id !== 'string') return;
+          if (!cdpTargetRequests.has(event.requestId)) {
+            cdpExtraInfoPendingRequest.set(event.requestId, id);
+            return;
+          }
           cdpRequestIds.set(event.requestId, id);
-          browserLifecycleAudit.get(id)?.cdpEvents.push('request-started');
+          flushCdpEvents(event.requestId, id);
         });
         cdp.on('Network.responseReceived', (event) => {
-          const id = cdpRequestIds.get(event.requestId);
-          if (id)
-            browserLifecycleAudit.get(id)?.cdpEvents.push(`response-${event.response.status}`);
+          if (cdpTargetRequests.has(event.requestId))
+            recordCdpEvent(event.requestId, `response-${event.response.status}`);
         });
         cdp.on('Network.loadingFinished', (event) => {
-          const id = cdpRequestIds.get(event.requestId);
-          if (id) browserLifecycleAudit.get(id)?.cdpEvents.push('loading-finished');
+          if (cdpTargetRequests.has(event.requestId)) {
+            recordCdpEvent(event.requestId, 'loading-finished');
+            cdpTargetRequests.delete(event.requestId);
+            cdpRequestIds.delete(event.requestId);
+            cdpEventsPendingCorrelation.delete(event.requestId);
+            cdpExtraInfoPendingRequest.delete(event.requestId);
+          }
         });
         cdp.on('Network.loadingFailed', (event) => {
-          const id = cdpRequestIds.get(event.requestId);
-          if (id) browserLifecycleAudit.get(id)?.cdpEvents.push('loading-failed');
+          if (cdpTargetRequests.has(event.requestId)) {
+            recordCdpEvent(event.requestId, `loading-failed-${event.errorText}`);
+            cdpTargetRequests.delete(event.requestId);
+            cdpRequestIds.delete(event.requestId);
+            cdpEventsPendingCorrelation.delete(event.requestId);
+            cdpExtraInfoPendingRequest.delete(event.requestId);
+          }
         });
       }
       for (const routePath of ['/api/profile/accessibility', '/api/notifications']) {
@@ -1048,6 +1095,7 @@ try {
           if (route.request().method() !== 'GET') return route.continue();
           const id = randomUUID();
           browserLifecycleAudit.set(id, { route: routePath, events: ['routed'], cdpEvents: [] });
+          browserLifecycleAuditByRequest.set(route.request(), id);
           const headers = {
             ...route.request().headers(),
             'x-careerscope-ui-lifecycle-id': id,
@@ -1056,20 +1104,29 @@ try {
         });
       }
       page.on('request', (request) => {
-        const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+        const id =
+          browserLifecycleAuditByRequest.get(request) ??
+          request.headers()['x-careerscope-ui-lifecycle-id'];
         if (id) browserLifecycleAudit.get(id)?.events.push('playwright-request');
       });
       page.on('response', (response) => {
-        const id = response.request().headers()['x-careerscope-ui-lifecycle-id'];
+        const request = response.request();
+        const id =
+          browserLifecycleAuditByRequest.get(request) ??
+          request.headers()['x-careerscope-ui-lifecycle-id'];
         if (id)
           browserLifecycleAudit.get(id)?.events.push(`playwright-response-${response.status()}`);
       });
       page.on('requestfinished', (request) => {
-        const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+        const id =
+          browserLifecycleAuditByRequest.get(request) ??
+          request.headers()['x-careerscope-ui-lifecycle-id'];
         if (id) browserLifecycleAudit.get(id)?.events.push('playwright-finished');
       });
       page.on('requestfailed', (request) => {
-        const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+        const id =
+          browserLifecycleAuditByRequest.get(request) ??
+          request.headers()['x-careerscope-ui-lifecycle-id'];
         if (id) browserLifecycleAudit.get(id)?.events.push('playwright-failed');
       });
       let fixtureCredential = password;
@@ -1233,17 +1290,35 @@ try {
           else if (Date.now() - quietSince >= 250) return;
           await page.waitForTimeout(25);
         }
-        const pending = activeRequests().map(([request, epoch]) => {
+        const active = activeRequests();
+        const pendingAuditIds = new Set<string>();
+        const pending = active.map(([request, epoch]) => {
           const url = new URL(request.url());
-          const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+          const id =
+            browserLifecycleAuditByRequest.get(request) ??
+            request.headers()['x-careerscope-ui-lifecycle-id'];
+          if (id) pendingAuditIds.add(id);
           const audit = id ? browserLifecycleAudit.get(id) : undefined;
           const server = id ? requestLifecycleAudit.get(id) : undefined;
-          return `${request.method()} ${url.pathname} (${request.resourceType()}, navigation=${request.isNavigationRequest()}, route ${epoch}/${routeEpoch}, responseEnd ${request.timing().responseEnd}, failure ${request.failure()?.errorText ?? 'none'}, id=${id?.slice(-6) ?? 'none'}, browser=${JSON.stringify(audit ?? null)}, server=${JSON.stringify(server ?? null)})`;
+          const headers = request.headers();
+          const routePrefetch = {
+            rsc: headers.rsc ?? 'none',
+            nextRouterPrefetch: headers['next-router-prefetch'] ?? 'none',
+            purpose: headers.purpose ?? headers['sec-purpose'] ?? 'none',
+          };
+          return `${request.method()} ${url.pathname} (${request.resourceType()}, navigation=${request.isNavigationRequest()}, route ${epoch}/${routeEpoch}, responseEnd ${request.timing().responseEnd}, failure ${request.failure()?.errorText ?? 'none'}, id=${id?.slice(-6) ?? 'none'}, routePrefetch=${JSON.stringify(routePrefetch)}, browser=${JSON.stringify(audit ?? null)}, server=${JSON.stringify(server ?? null)})`;
         });
+        const unresolvedLifecycle = [...browserLifecycleAudit]
+          .filter(([id]) => pendingAuditIds.has(id))
+          .map(([id, value]) => ({
+            id: id.slice(-6),
+            ...value,
+            server: requestLifecycleAudit.get(id) ?? null,
+          }));
         throw new Error(
           `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'}); ` +
             `recent request events: ${recentRequestEvents.join(' | ') || 'none'}; ` +
-            `request lifecycle audit: ${JSON.stringify([...browserLifecycleAudit].map(([id, value]) => ({ id: id.slice(-6), ...value, server: requestLifecycleAudit.get(id) ?? null })))}`,
+            `request lifecycle audit: ${JSON.stringify(unresolvedLifecycle)}`,
         );
       };
       // Search selection keeps polling enabled. All finite requests must finish
