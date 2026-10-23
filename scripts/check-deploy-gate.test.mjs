@@ -262,7 +262,38 @@ test('the root CI service topology is disposable, loopback-only and recovery-com
   );
   assert.ok(queueRuntimeCheck.includes(redisImage), 'queue runtime must use the CI Redis image');
   assert.match(workflow, /redis-server --appendonly yes --maxmemory-policy noeviction/);
-  assert.match(workflow, /redis-cli INFO persistence \| grep -qx 'aof_enabled:1'/);
+  assert.match(
+    workflow,
+    /redis-cli --raw CONFIG GET appendonly \| tr -d '\\r' \| tail -n 1/,
+    'Redis append-only mode must be normalized and compared exactly',
+  );
+  assert.match(
+    workflow,
+    /if \[ "\$appendonly" != yes \]; then[\s\S]*?Redis appendonly configuration failed/,
+  );
+  assert.match(
+    workflow,
+    /redis-cli --raw CONFIG GET maxmemory-policy \| tr -d '\\r' \| tail -n 1/,
+    'Redis eviction policy must be normalized and compared exactly',
+  );
+  assert.match(
+    workflow,
+    /if \[ "\$eviction_policy" != noeviction \]; then[\s\S]*?Redis maxmemory-policy verification failed/,
+  );
+  assert.match(
+    workflow,
+    /if \[ "\$postgres_ready" != true \]; then[\s\S]*?PostgreSQL readiness check failed/,
+  );
+  assert.match(
+    workflow,
+    /if \[ "\$ready" != true \]; then[\s\S]*?Redis readiness check failed: \$container/,
+  );
+  assert.match(
+    workflow,
+    /redis-cli --raw INFO persistence \| tr -d '\\r'/,
+    'Redis persistence verification must normalize redis-cli line endings before exact matching',
+  );
+  assert.match(workflow, /grep -qx 'aof_enabled:1'/);
   assert.match(workflow, /Remove ephemeral database and Redis containers\s+if: always\(\)/);
   assert.match(workflow, /Start production frontend for browser acceptance/);
   assert.match(workflow, /Stop production frontend test server\s+if: always\(\)/);

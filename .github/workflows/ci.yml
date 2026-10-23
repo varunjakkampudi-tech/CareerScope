@@ -184,7 +184,11 @@ jobs:
             fi
             sleep 1
           done
-          test "$postgres_ready" = true
+          if [ "$postgres_ready" != true ]; then
+            echo "PostgreSQL readiness check failed" >&2
+            exit 1
+          fi
+          echo "PostgreSQL readiness verified"
           for container in careerscope-ci-rate-limit careerscope-ci-queue; do
             ready=false
             for attempt in $(seq 1 30); do
@@ -194,10 +198,29 @@ jobs:
               fi
               sleep 1
             done
-            test "$ready" = true
-            test "$(docker exec "$container" redis-cli --raw CONFIG GET appendonly | tail -n 1)" = yes
-            test "$(docker exec "$container" redis-cli --raw CONFIG GET maxmemory-policy | tail -n 1)" = noeviction
-            docker exec "$container" redis-cli INFO persistence | grep -qx 'aof_enabled:1'
+            if [ "$ready" != true ]; then
+              echo "Redis readiness check failed: $container" >&2
+              exit 1
+            fi
+            echo "Redis readiness verified: $container"
+            appendonly="$(docker exec "$container" redis-cli --raw CONFIG GET appendonly | tr -d '\r' | tail -n 1)"
+            if [ "$appendonly" != yes ]; then
+              echo "Redis appendonly configuration failed: $container" >&2
+              exit 1
+            fi
+            echo "Redis appendonly configuration verified: $container"
+            eviction_policy="$(docker exec "$container" redis-cli --raw CONFIG GET maxmemory-policy | tr -d '\r' | tail -n 1)"
+            if [ "$eviction_policy" != noeviction ]; then
+              echo "Redis maxmemory-policy verification failed: $container" >&2
+              exit 1
+            fi
+            echo "Redis noeviction policy verified: $container"
+            persistence_info="$(docker exec "$container" redis-cli --raw INFO persistence | tr -d '\r')"
+            if ! printf '%s\n' "$persistence_info" | grep -qx 'aof_enabled:1'; then
+              echo "Redis AOF runtime persistence verification failed: $container" >&2
+              exit 1
+            fi
+            echo "Redis AOF runtime persistence verified: $container"
           done
 
       - name: Build application and worker packages
