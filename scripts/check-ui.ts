@@ -1300,6 +1300,17 @@ try {
             !staleSearchRead(request.method(), new URL(request.url()).pathname, epoch, routeEpoch),
         );
       const recentRequestEvents: string[] = [];
+      const sharedRoutePrefetches: string[] = [];
+      const sharedRoutePaths = new Set([
+        '/dashboard',
+        '/jobs',
+        '/applications',
+        '/saved',
+        '/resume',
+        '/settings',
+        '/career-resources',
+        '/preparation',
+      ]);
       const recordRequestEvent = (request: import('playwright').Request, event: string) => {
         const rawPath = new URL(request.url()).pathname;
         const path = rawPath
@@ -1312,6 +1323,9 @@ try {
       };
       page.on('request', (request) => {
         const pathname = new URL(request.url()).pathname;
+        if (sharedRoutePaths.has(pathname) && request.headers()['next-router-prefetch'] === '1') {
+          sharedRoutePrefetches.push(pathname);
+        }
         const isSearchEventStream = /^\/api\/searches\/[^/]+\/events$/.test(pathname);
         if (request.resourceType() !== 'eventsource' && !isSearchEventStream) {
           inflight.set(request, routeEpoch);
@@ -1537,8 +1551,74 @@ try {
         .getByRole('alert')
         .getByText('Service temporarily unavailable. Please try again shortly.', { exact: true })
         .waitFor();
+      const initialNotificationsLoaded = page.waitForResponse(
+        (response) =>
+          response.url().endsWith('/api/notifications') &&
+          response.request().method() === 'GET' &&
+          response.status() === 200,
+      );
       await selectFixtureAccount(accountEmail);
       await page.getByText('No searches yet.', { exact: true }).waitFor();
+      assert.equal((await initialNotificationsLoaded).status(), 200);
+      await settled('dashboard after login');
+      assert.deepEqual(
+        sharedRoutePrefetches,
+        [],
+        `${engine}: dashboard content and global navigation must not leave speculative RSC prefetches open`,
+      );
+
+      // The shared shell can receive refresh requests from focus, visibility,
+      // polling, and panel-open events. Hold one real same-origin response
+      // while delivering a burst of lifecycle events; only one API read may
+      // be outstanding for this shell instance.
+      let notificationRefreshRequests = 0;
+      let releaseNotificationRefresh!: () => void;
+      const notificationRefreshGate = new Promise<void>((resolve) => {
+        releaseNotificationRefresh = resolve;
+      });
+      const holdNotificationRefresh = async (route: import('playwright').Route) => {
+        notificationRefreshRequests += 1;
+        if (notificationRefreshRequests === 1) {
+          await notificationRefreshGate;
+        }
+        await route.fallback();
+      };
+      try {
+        await page.route('**/api/notifications', holdNotificationRefresh);
+        const notificationRefreshRequest = page.waitForRequest(
+          (request) => request.url().endsWith('/api/notifications') && request.method() === 'GET',
+        );
+        const notificationRefreshResponse = page.waitForResponse(
+          (response) =>
+            response.url().endsWith('/api/notifications') &&
+            response.request().method() === 'GET' &&
+            response.status() === 200,
+        );
+        await page.evaluate(() => {
+          for (let index = 0; index < 20; index += 1) {
+            window.dispatchEvent(new Event('focus'));
+            document.dispatchEvent(new Event('visibilitychange'));
+          }
+        });
+        await notificationRefreshRequest;
+        await page.evaluate(() => {
+          for (let index = 0; index < 20; index += 1) {
+            window.dispatchEvent(new Event('focus'));
+            document.dispatchEvent(new Event('visibilitychange'));
+          }
+        });
+        releaseNotificationRefresh();
+        assert.equal((await notificationRefreshResponse).status(), 200);
+        await settled('notification refresh coalescing');
+      } finally {
+        releaseNotificationRefresh();
+        await page.unroute('**/api/notifications', holdNotificationRefresh);
+      }
+      assert.equal(
+        notificationRefreshRequests,
+        1,
+        `${engine}: concurrent shell lifecycle signals issued duplicate notification reads`,
+      );
       await page.goto(`${origin}/matching`);
       await page.getByRole('heading', { name: 'How job matching works', exact: true }).waitFor();
       const matchingDimensions = page.getByTestId('matching-dimension');
@@ -3359,12 +3439,89 @@ try {
       const notificationText = (await notificationPanel.textContent()) ?? '';
       assert.equal(notificationText.includes('Synthetic interviewer'), false);
       assert.equal(notificationText.includes('Prepare examples.'), false);
-      await notificationPanel.getByRole('button', { name: 'Mark as read' }).click();
-      await page.waitForFunction(
-        () =>
-          document
-            .querySelector('summary[aria-label^="Notifications"]')
-            ?.getAttribute('aria-label') === 'Notifications',
+
+      // Reproduce the mutation/read race: capture an unread snapshot before
+      // the PUT, delay delivering that response to the browser, then require
+      // the post-mutation refresh to replace it with the current read state.
+      await notificationToggle.click();
+      await settled('notification panel close before mutation race');
+      let heldNotificationReads = 0;
+      let releaseStaleNotificationRead!: () => void;
+      let resolveStaleNotificationReadFetched!: () => void;
+      const staleNotificationReadGate = new Promise<void>((resolve) => {
+        releaseStaleNotificationRead = resolve;
+      });
+      let rejectStaleNotificationReadFetched!: (error: Error) => void;
+      const staleNotificationReadFetched = new Promise<void>((resolve, reject) => {
+        resolveStaleNotificationReadFetched = resolve;
+        rejectStaleNotificationReadFetched = reject;
+      });
+      const holdStaleNotificationRead = async (route: import('playwright').Route) => {
+        if (route.request().method() !== 'GET') return route.fallback();
+        heldNotificationReads += 1;
+        if (heldNotificationReads === 1) {
+          try {
+            const staleResponse = await route.fetch({ timeout: 15000 });
+            const staleBody = (await staleResponse.json()) as {
+              items: unknown[];
+              unreadCount: number;
+            };
+            assert.ok(
+              Array.isArray(staleBody.items),
+              'the stale response must retain the notification items',
+            );
+            assert.equal(
+              staleBody.unreadCount,
+              1,
+              'the held response must predate the read mutation',
+            );
+            resolveStaleNotificationReadFetched();
+            await staleNotificationReadGate;
+            await route.fulfill({
+              status: staleResponse.status(),
+              contentType: 'application/json',
+              body: JSON.stringify(staleBody),
+            });
+          } catch (error) {
+            rejectStaleNotificationReadFetched(
+              error instanceof Error
+                ? error
+                : new Error('Could not capture the stale notification response'),
+            );
+            throw error;
+          }
+          return;
+        }
+        await route.fallback();
+      };
+      try {
+        await page.route('**/api/notifications', holdStaleNotificationRead);
+        await notificationToggle.click();
+        await staleNotificationReadFetched;
+        const markReadResponse = page.waitForResponse(
+          (response) =>
+            response.url().includes('/api/notifications/') &&
+            response.url().endsWith('/read') &&
+            response.request().method() === 'PUT',
+        );
+        await notificationPanel.getByRole('button', { name: 'Mark as read' }).click();
+        assert.equal((await markReadResponse).status(), 204);
+        releaseStaleNotificationRead();
+        await page.waitForFunction(
+          () =>
+            document
+              .querySelector('summary[aria-label^="Notifications"]')
+              ?.getAttribute('aria-label') === 'Notifications',
+        );
+        await settled('notification post-mutation refresh');
+      } finally {
+        releaseStaleNotificationRead();
+        await page.unroute('**/api/notifications', holdStaleNotificationRead);
+      }
+      assert.equal(
+        heldNotificationReads,
+        2,
+        `${engine}: successful mark-read must issue one refresh after the older read settles`,
       );
       await notificationToggle.click();
       await interviewOrganizer.getByText('Technical interview', { exact: true }).waitFor();
@@ -3774,11 +3931,17 @@ try {
           await dialog.dismiss();
         };
         page.on('dialog', onDialog);
+        sharedRoutePrefetches.length = 0;
         await page.getByRole('button', { name: 'Back to Search', exact: true }).click();
         await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
         await settled('dashboard');
         page.off('dialog', onDialog);
         assert.equal(prompted, false, `${engine}: a saved profile must not warn on navigation`);
+        assert.deepEqual(
+          sharedRoutePrefetches,
+          [],
+          `${engine}: returning to the dashboard must not leave speculative route prefetches open`,
+        );
       }
       // The dashboard's finite route fetches were observed to finish before
       // this navigation, so a response below belongs to the Resume route
@@ -4370,6 +4533,91 @@ try {
       );
       await page.unroute(dashboardSavedRequest);
 
+      // A read mutation can finish after the authenticated shell unmounts.
+      // Its continuation must not start a notification GET for the departed
+      // owner. Hold the successful PUT response across sign-out and count any
+      // notification reads issued after the shell has disappeared.
+      await database.pool.query(
+        `UPDATE in_app_notifications
+         SET read_at = NULL
+         WHERE owner_id = $1 AND round_id = $2`,
+        [ownerId, createdRound.id],
+      );
+      const signoutNotificationToggle = page.locator('summary[aria-label^="Notifications"]');
+      await signoutNotificationToggle.click();
+      await page
+        .getByRole('region', { name: 'Notifications' })
+        .getByRole('button', {
+          name: 'Mark as read',
+        })
+        .waitFor();
+      await settled('notification visible before unmount regression');
+      let notificationGetsDuringUnmountRegression = 0;
+      const countNotificationReads = (request: import('playwright').Request) => {
+        if (
+          request.method() === 'GET' &&
+          new URL(request.url()).pathname === '/api/notifications'
+        ) {
+          notificationGetsDuringUnmountRegression += 1;
+        }
+      };
+      page.on('request', countNotificationReads);
+      let releaseNotificationMutation!: () => void;
+      let resolveNotificationMutationFetched!: () => void;
+      let rejectNotificationMutationFetched!: (error: Error) => void;
+      const notificationMutationGate = new Promise<void>((resolve) => {
+        releaseNotificationMutation = resolve;
+      });
+      const notificationMutationFetched = new Promise<void>((resolve, reject) => {
+        resolveNotificationMutationFetched = resolve;
+        rejectNotificationMutationFetched = reject;
+      });
+      const holdNotificationMutation = async (route: import('playwright').Route) => {
+        if (route.request().method() !== 'PUT') return route.fallback();
+        try {
+          await route.fetch({ timeout: 15000 }).then((response) => {
+            assert.equal(response.status(), 204);
+          });
+          resolveNotificationMutationFetched();
+          await notificationMutationGate;
+          await route.fulfill({ status: 204, body: '' });
+        } catch (error) {
+          rejectNotificationMutationFetched(
+            error instanceof Error ? error : new Error('Could not complete the held read mutation'),
+          );
+          throw error;
+        }
+      };
+      try {
+        await page.route('**/api/notifications/*/read', holdNotificationMutation);
+        const markReadResponse = page.waitForResponse(
+          (response) => response.url().endsWith('/read') && response.request().method() === 'PUT',
+        );
+        await page
+          .getByRole('region', { name: 'Notifications' })
+          .getByRole('button', {
+            name: 'Mark as read',
+          })
+          .click();
+        await notificationMutationFetched;
+        page.once('dialog', (dialog) => dialog.accept());
+        await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+        await page.getByRole('heading', { name: 'Select test account', exact: true }).waitFor();
+        const readsAtUnmount = notificationGetsDuringUnmountRegression;
+        releaseNotificationMutation();
+        assert.equal((await markReadResponse).status(), 204);
+        await settled('post-unmount notification mutation continuation');
+        assert.equal(
+          notificationGetsDuringUnmountRegression,
+          readsAtUnmount,
+          `${engine}: a completed read mutation started a notification GET after shell unmount`,
+        );
+      } finally {
+        releaseNotificationMutation();
+        page.off('request', countNotificationReads);
+        await page.unroute('**/api/notifications/*/read', holdNotificationMutation);
+      }
+
       // CS-36 AC2: "Define and test a shared reset policy ... so old requests
       // or caches cannot restore prior-session data". Verify the actual
       // production logout reset with a second account that has distinct,
@@ -4399,9 +4647,6 @@ try {
       await page.goto(`${origin}/settings`);
       await page.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
       // The shared topbar's sign-out confirms first (authenticated-shell.tsx).
-      page.once('dialog', (dialog) => dialog.accept());
-      await page.getByRole('button', { name: 'Sign out', exact: true }).click();
-      await page.getByRole('heading', { name: 'Select test account', exact: true }).waitFor();
       await selectFixtureAccount('foreign-owner@example.test', password);
       await page.getByRole('heading', { name: /^Good (morning|afternoon|evening)!$/ }).waitFor();
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Bell,
   Bookmark,
@@ -40,25 +40,58 @@ function NotificationCenter() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const mounted = useRef(false);
+  const activeLoad = useRef<{
+    controller: AbortController;
+    promise: Promise<void>;
+  } | null>(null);
 
-  const loadNotifications = useCallback(async (showLoading = false) => {
-    if (showLoading) setLoading(true);
-    try {
-      const result = await api<{ items: NotificationItem[]; unreadCount: number }>(
-        '/notifications',
-      );
-      setError(false);
-      setItems(result.items);
-      setUnreadCount(result.unreadCount);
-      setLoaded(true);
-    } catch {
-      setError(true);
-    } finally {
-      setLoading(false);
+  const loadNotifications = useCallback(async (showLoading = false, refreshAfterActive = false) => {
+    if (!mounted.current) return;
+    // Focus, visibility, the polling timer, and opening the panel may all ask
+    // for the same read at once. Keep one request for this mounted shell so
+    // an older navigation's background request cannot accumulate beside a
+    // newer refresh.
+    const current = activeLoad.current;
+    if (current) {
+      if (!refreshAfterActive) return current.promise;
+      await current.promise;
+      if (!mounted.current) return;
+
+      // A lifecycle signal may have started a newer request while the caller
+      // waited. That request began after the mutation and is therefore the
+      // refresh this caller needs; share it instead of issuing a duplicate.
+      const newer = activeLoad.current;
+      if (newer) return newer.promise;
     }
+
+    const controller = new AbortController();
+    if (showLoading) setLoading(true);
+    const active = { controller, promise: Promise.resolve() };
+    const promise = Promise.resolve().then(async () => {
+      try {
+        const result = await api<{ items: NotificationItem[]; unreadCount: number }>(
+          '/notifications',
+          { signal: controller.signal },
+        );
+        setError(false);
+        setItems(result.items);
+        setUnreadCount(result.unreadCount);
+        setLoaded(true);
+      } catch {
+        if (!controller.signal.aborted) setError(true);
+      } finally {
+        if (activeLoad.current === active) activeLoad.current = null;
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    });
+    active.promise = promise;
+    activeLoad.current = active;
+    return promise;
   }, []);
 
   useEffect(() => {
+    mounted.current = true;
     const initialLoad = window.setTimeout(() => void loadNotifications(), 0);
     const refreshWhenVisible = () => {
       if (document.visibilityState === 'visible') void loadNotifications();
@@ -67,19 +100,22 @@ function NotificationCenter() {
     window.addEventListener('focus', refreshWhenVisible);
     document.addEventListener('visibilitychange', refreshWhenVisible);
     return () => {
+      mounted.current = false;
       window.clearTimeout(initialLoad);
       window.clearInterval(refreshInterval);
       window.removeEventListener('focus', refreshWhenVisible);
       document.removeEventListener('visibilitychange', refreshWhenVisible);
+      activeLoad.current?.controller.abort();
+      activeLoad.current = null;
     };
   }, [loadNotifications]);
 
   async function markRead(id: string) {
     try {
       await api(`/notifications/${id}/read`, { method: 'PUT' });
-      await loadNotifications();
+      if (mounted.current) await loadNotifications(false, true);
     } catch {
-      setError(true);
+      if (mounted.current) setError(true);
     }
   }
 
@@ -122,7 +158,7 @@ function NotificationCenter() {
                     {new Date(item.createdAt).toLocaleString(locale)}
                   </time>
                   <div>
-                    <Link href={`/saved?lead=${encodeURIComponent(item.leadId)}`}>
+                    <Link href={`/saved?lead=${encodeURIComponent(item.leadId)}`} prefetch={false}>
                       {t('openApplication')}
                     </Link>
                     {item.readAt === null && (
@@ -225,6 +261,7 @@ export function DashboardSidebar({
             <Link
               key={key}
               href={href}
+              prefetch={false}
               tabIndex={0}
               className={styles.navItem}
               aria-current={key === active ? 'page' : undefined}
@@ -285,6 +322,7 @@ export function DashboardMobileNav({ active }: { active: (typeof navItems)[numbe
           <Link
             key={key}
             href={href}
+            prefetch={false}
             className={styles.mobileNavItem}
             lang={locale}
             aria-current={key === active ? 'page' : undefined}
@@ -330,7 +368,7 @@ export function DashboardTopbar({
           instant-search box with nothing behind it: CareerScope has no
           cross-entity search endpoint today, so a functional-looking
           search field here would be a UI element that does nothing. */}
-      <Link href="/jobs" className={styles.topbarSearch} lang={locale}>
+      <Link href="/jobs" prefetch={false} className={styles.topbarSearch} lang={locale}>
         <Search size={15} aria-hidden="true" />
         <span>{t('searchJobs')}</span>
       </Link>

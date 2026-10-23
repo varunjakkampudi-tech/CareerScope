@@ -268,10 +268,10 @@ function DashboardContent() {
               Search smarter. Apply faster. Build the career you deserve.
             </p>
             <div className={styles.heroActions}>
-              <Link href="/jobs" data-primary="">
+              <Link href="/jobs" prefetch={false} data-primary="">
                 <Search size={15} aria-hidden="true" /> Find Jobs
               </Link>
-              <Link href="/resume" data-secondary="">
+              <Link href="/resume" prefetch={false} data-secondary="">
                 <UserRound size={15} aria-hidden="true" /> Upload / Update Resume
               </Link>
             </div>
@@ -331,7 +331,7 @@ function DashboardContent() {
           <section className={styles.panel}>
             <div className={styles.panelHeaderRow}>
               <h2>Recommended Jobs for You</h2>
-              <Link href="/jobs" className={styles.viewAllLink}>
+              <Link href="/jobs" prefetch={false} className={styles.viewAllLink}>
                 View all jobs
                 <ChevronRight size={14} aria-hidden="true" />
               </Link>
@@ -507,7 +507,7 @@ function DashboardContent() {
                   <li key={run.id}>
                     {/* Names the run it is rendering (F-3): without `?run=`
                         every entry opened whichever run was most recent. */}
-                    <Link href={`/jobs?run=${encodeURIComponent(run.id)}`}>
+                    <Link href={`/jobs?run=${encodeURIComponent(run.id)}`} prefetch={false}>
                       <span>
                         <strong>{run.request.query}</strong>
                         <small>{new Date(run.createdAt).toLocaleDateString()}</small>
@@ -548,7 +548,7 @@ function DashboardContent() {
                 </ul>
               </>
             )}
-            <Link href="/resume" className={styles.ctaLink}>
+            <Link href="/resume" prefetch={false} className={styles.ctaLink}>
               Improve My Profile
               <ChevronRight size={14} aria-hidden="true" />
             </Link>
@@ -579,35 +579,35 @@ function DashboardContent() {
           <section className={styles.panel} aria-label="Quick actions">
             <h2>Quick Actions</h2>
             <div className={styles.quickActions}>
-              <Link href="/jobs">
+              <Link href="/jobs" prefetch={false}>
                 <span className={styles.statIcon} data-tone="blue">
                   <Search size={15} aria-hidden="true" />
                 </span>
                 Search Jobs
                 <ChevronRight size={14} aria-hidden="true" className={styles.quickActionChevron} />
               </Link>
-              <Link href="/resume">
+              <Link href="/resume" prefetch={false}>
                 <span className={styles.statIcon} data-tone="purple">
                   <UserRound size={15} aria-hidden="true" />
                 </span>
                 Upload / Update Resume
                 <ChevronRight size={14} aria-hidden="true" className={styles.quickActionChevron} />
               </Link>
-              <Link href="/saved">
+              <Link href="/saved" prefetch={false}>
                 <span className={styles.statIcon} data-tone="green">
                   <Bookmark size={15} aria-hidden="true" />
                 </span>
                 View Saved Jobs
                 <ChevronRight size={14} aria-hidden="true" className={styles.quickActionChevron} />
               </Link>
-              <Link href="/applications">
+              <Link href="/applications" prefetch={false}>
                 <span className={styles.statIcon} data-tone="purple">
                   <ClipboardCheck size={15} aria-hidden="true" />
                 </span>
                 Track Applications
                 <ChevronRight size={14} aria-hidden="true" className={styles.quickActionChevron} />
               </Link>
-              <Link href="/career-resources">
+              <Link href="/career-resources" prefetch={false}>
                 <span className={styles.statIcon} data-tone="orange">
                   <TrendingUp size={15} aria-hidden="true" />
                 </span>
@@ -624,7 +624,7 @@ function DashboardContent() {
           <strong>Pro Tip:</strong> Complete your profile and add skills to improve your job
           matches.
         </span>
-        <Link href="/resume" className={styles.ctaLink}>
+        <Link href="/resume" prefetch={false} className={styles.ctaLink}>
           Complete Profile
           <ChevronRight size={14} aria-hidden="true" />
         </Link>
