@@ -43,6 +43,14 @@ on:
           - firefox
           - webkit
           - all
+      scenario:
+        description: Optional focused diagnostic; full remains the acceptance default
+        type: choice
+        required: true
+        default: full
+        options:
+          - full
+          - notification-panel-close-before-mutation
 
 permissions:
   contents: read
@@ -141,6 +149,7 @@ jobs:
       CAREERSCOPE_POSTGRES_CONTAINER: careerscope-ci-postgres
       CAREERSCOPE_UI_BROWSER: >-
         ${{ (github.event_name == 'schedule' || github.event_name == 'pull_request') && 'all' || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["all","cross-browser"]'), inputs.suite) && 'all') || (github.event_name == 'workflow_dispatch' && inputs.browser || 'chromium') }}
+      CAREERSCOPE_UI_SCENARIO: ${{ github.event_name == 'workflow_dispatch' && inputs.scenario != 'full' && inputs.scenario || '' }}
     steps:
       - name: Check out the triggering revision
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
@@ -155,6 +164,19 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
+
+      - name: Validate focused diagnostic selection
+        if: env.CAREERSCOPE_UI_SCENARIO != ''
+        env:
+          SELECTED_SUITE: ${{ inputs.suite }}
+        run: |
+          test "$SELECTED_SUITE" = browser
+          test "$CAREERSCOPE_UI_BROWSER" = chromium
+          test "$CAREERSCOPE_UI_SCENARIO" = notification-panel-close-before-mutation
+
+      - name: Validate passive lifecycle instrumentation
+        if: env.CAREERSCOPE_UI_SCENARIO != ''
+        run: node --import tsx --test scripts/notification-lifecycle.test.mjs
 
       - name: Create synthetic ephemeral test configuration
         run: |
@@ -236,7 +258,11 @@ jobs:
           contains(fromJSON('["all","browser","cross-browser"]'), inputs.suite))
         run: |
           cd apps/web
-          node ../../node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 5280 > "$RUNNER_TEMP/careerscope-web.log" 2>&1 &
+          if [ "$CAREERSCOPE_UI_SCENARIO" = notification-panel-close-before-mutation ]; then
+            CAREERSCOPE_NOTIFICATION_PROXY_DIAGNOSTICS=1 node --import "$GITHUB_WORKSPACE/scripts/notification-lifecycle.mjs" ../../node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 5280 > "$RUNNER_TEMP/careerscope-web.log" 2>&1 &
+          else
+            node ../../node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 5280 > "$RUNNER_TEMP/careerscope-web.log" 2>&1 &
+          fi
           echo $! > "$RUNNER_TEMP/careerscope-web.pid"
           for attempt in $(seq 1 60); do
             if curl --fail --silent http://127.0.0.1:5280/ > /dev/null; then
@@ -273,6 +299,10 @@ jobs:
           (github.event_name == 'workflow_dispatch' &&
           contains(fromJSON('["all","browser","cross-browser"]'), inputs.suite))
         run: npm run test:ui
+
+      - name: Report passive Next.js notification lifecycle observations
+        if: always() && env.CAREERSCOPE_UI_SCENARIO == 'notification-panel-close-before-mutation'
+        run: node scripts/notification-lifecycle.mjs --read-log "$RUNNER_TEMP/careerscope-web.log"
 
       - name: Run isolated performance regression test
         if: github.event_name == 'workflow_dispatch' && contains(fromJSON('["all","performance"]'), inputs.suite)
@@ -315,6 +345,7 @@ jobs:
         env:
           SUITE: ${{ github.event_name == 'workflow_dispatch' && inputs.suite || 'scheduled-push-or-pull-request' }}
           UI_BROWSER: ${{ env.CAREERSCOPE_UI_BROWSER }}
+          UI_SCENARIO: ${{ env.CAREERSCOPE_UI_SCENARIO }}
           RESULT: ${{ job.status }}
         run: |
           {
@@ -324,6 +355,7 @@ jobs:
             echo "- Commit: \`${GITHUB_SHA}\`"
             echo "- Suite selection: \`${SUITE}\`"
             echo "- Browser selection: \`${UI_BROWSER}\`"
+            echo "- Focused scenario (empty means full): \`${UI_SCENARIO}\`"
             echo "- Job result: \`${RESULT}\`"
             echo "- Environment: loopback-only disposable PostgreSQL/Redis containers on the ephemeral runner; no staging or production access"
             echo "- Result details: see individual job steps; skipped suites are not represented as passing"

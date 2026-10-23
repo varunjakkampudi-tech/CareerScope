@@ -37,6 +37,17 @@ import {
   staleSearchRead,
 } from './ui-requests.js';
 import { JOB_SOURCE_PERMISSION_PENDING_MESSAGE } from '@careerscope/shared';
+import { observeNotificationPage, observeNotificationServer } from './notification-lifecycle.js';
+
+const notificationLifecycleOnly =
+  process.env.CAREERSCOPE_UI_SCENARIO === 'notification-panel-close-before-mutation';
+if (process.env.CAREERSCOPE_UI_SCENARIO && !notificationLifecycleOnly)
+  throw new Error('Unknown focused browser scenario');
+if (notificationLifecycleOnly) {
+  assert.equal(process.env.CAREERSCOPE_UI_BROWSER, 'chromium');
+  assert.equal(process.env.NODE_ENV, 'test');
+  assert.equal(process.env.DEPLOYMENT_ENVIRONMENT, 'development');
+}
 
 const requiredResponsiveWidths = [320, 360, 390, 768, 1024, 1280, 1440, 1920] as const;
 const responsiveWidthsEndingAt = (lastWidth: (typeof requiredResponsiveWidths)[number]) => [
@@ -176,7 +187,6 @@ const requestLifecycleAudit = new Map<
     requestAt: number;
     responseAt: number | null;
     status: number | null;
-    payloadBytes: number | null;
     writableFinished: boolean | null;
   }
 >();
@@ -196,6 +206,11 @@ const app = await createApp(database, origin, async () => true, {
   sourcePermitted: (source) => syntheticPermittedSources.has(source),
   resumeStorage,
 });
+if (notificationLifecycleOnly) {
+  app.server.prependListener('request', (request, response) =>
+    observeNotificationServer(request, response, 'fastify'),
+  );
+}
 // Ephemeral test-only request correlation for the Chromium settlement failure.
 // Never log request bodies, cookies, or application data.
 app.addHook('onRequest', (request, _reply, done) => {
@@ -212,24 +227,10 @@ app.addHook('onRequest', (request, _reply, done) => {
       requestAt: performance.now(),
       responseAt: null,
       status: null,
-      payloadBytes: null,
       writableFinished: null,
     });
   }
   done();
-});
-app.addHook('onSend', (request, _reply, payload, done) => {
-  const id = request.headers['x-careerscope-ui-lifecycle-id'];
-  const record = typeof id === 'string' ? requestLifecycleAudit.get(id) : undefined;
-  if (record) {
-    record.payloadBytes =
-      typeof payload === 'string'
-        ? Buffer.byteLength(payload)
-        : Buffer.isBuffer(payload)
-          ? payload.byteLength
-          : null;
-  }
-  done(null, payload);
 });
 app.addHook('onResponse', (request, reply, done) => {
   const id = request.headers['x-careerscope-ui-lifecycle-id'];
@@ -1011,6 +1012,7 @@ try {
       await signupPage.close();
 
       const page = await browser.newPage();
+      if (notificationLifecycleOnly) await observeNotificationPage(page, origin);
       await installUnhandledRejectionGuard(page);
       const browserLifecycleAudit = new Map<
         string,
@@ -1179,6 +1181,15 @@ try {
         const id =
           browserLifecycleAuditByRequest.get(request) ??
           request.headers()['x-careerscope-ui-lifecycle-id'];
+        if (notificationLifecycleOnly && id && !browserLifecycleAudit.has(id)) {
+          browserLifecycleAudit.set(id, {
+            route: '/api/notifications',
+            events: [],
+            cdpEvents: [],
+            cdpRequestIds: [],
+          });
+          browserLifecycleAuditByRequest.set(request, id);
+        }
         if (id) browserLifecycleAudit.get(id)?.events.push('playwright-request');
       });
       page.on('response', (response) => {
@@ -3463,6 +3474,19 @@ try {
       // the post-mutation refresh to replace it with the current read state.
       await notificationToggle.click();
       await settled('notification panel close before mutation race');
+      if (notificationLifecycleOnly) {
+        assert.deepEqual(
+          errors.filter((error) => !expectedAuthenticatedJourneyConsoleErrors.has(error)),
+          [],
+          'focused Chromium journey produced an unexpected runtime error',
+        );
+        assert.deepEqual(await unhandledRejections(page), []);
+        await page.unrouteAll({ behavior: 'wait' });
+        process.stdout.write(
+          'Chromium focused notification panel close before mutation race: PASS; later browser scenarios were not run\n',
+        );
+        break;
+      }
       let heldNotificationReads = 0;
       let releaseStaleNotificationRead!: () => void;
       let resolveStaleNotificationReadFetched!: () => void;
@@ -4810,7 +4834,7 @@ try {
   });
   try {
     await testApp.listen({ host: '127.0.0.1', port: 5390 });
-    for (const [engine, browserType] of uiBrowsers) {
+    for (const [engine, browserType] of notificationLifecycleOnly ? [] : uiBrowsers) {
       const browser = await browserType.launch();
       try {
         const page = await browser.newPage();
