@@ -1169,24 +1169,12 @@ try {
           }
         });
       }
-      for (const routePath of ['/api/profile/accessibility', '/api/notifications']) {
-        await page.route(`**${routePath}`, async (route) => {
-          if (route.request().method() !== 'GET') return route.continue();
-          const id = randomUUID();
-          browserLifecycleAudit.set(id, {
-            route: routePath,
-            events: ['routed'],
-            cdpEvents: [],
-            cdpRequestIds: [],
-          });
-          browserLifecycleAuditByRequest.set(route.request(), id);
-          const headers = {
-            ...route.request().headers(),
-            'x-careerscope-ui-lifecycle-id': id,
-          };
-          await route.continue({ headers });
-        });
-      }
+      // Keep request settlement observational: routing every GET through
+      // Playwright and adding a diagnostic header changes the network path
+      // under test. Chromium previously showed a request that Fastify had
+      // completed but that neither Playwright nor CDP saw finish. Leave the
+      // request untouched here; Playwright and CDP below still fail strictly
+      // on any request that remains active at the settlement deadline.
       page.on('request', (request) => {
         const id =
           browserLifecycleAuditByRequest.get(request) ??
