@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { createHmac, randomBytes, randomUUID } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdir, mkdtemp, readFile, rm, utimes, writeFile } from 'node:fs/promises';
@@ -1020,12 +1020,30 @@ try {
       const cdp = engine === 'chromium' ? await page.context().newCDPSession(page) : undefined;
       const cdpRequestIds = new Map<string, string>();
       const cdpTargetRequests = new Set<string>();
+      const maxCdpLifecycleRecords = 128;
+      let cdpLifecycleOverflow = 0;
+      const cdpFingerprintKey = randomBytes(32);
+      const cdpRequestDetails = new Map<
+        string,
+        {
+          method: string;
+          path: string;
+          fingerprint: string;
+          events: string[];
+          active: boolean;
+        }
+      >();
       const cdpEventsPendingCorrelation = new Map<string, string[]>();
       const cdpExtraInfoPendingRequest = new Map<string, string>();
       const correlationIdFromHeaders = (headers: Record<string, string>) =>
         Object.entries(headers).find(
           ([key]) => key.toLowerCase() === 'x-careerscope-ui-lifecycle-id',
         )?.[1];
+      const safeRequestFingerprint = (method: string, url: string) =>
+        createHmac('sha256', cdpFingerprintKey)
+          .update(`${method}\n${url}`)
+          .digest('hex')
+          .slice(0, 16);
       const flushCdpEvents = (requestId: string, auditId: string) => {
         const pending = cdpEventsPendingCorrelation.get(requestId) ?? [];
         browserLifecycleAudit.get(auditId)?.cdpEvents.push(...pending);
@@ -1045,8 +1063,43 @@ try {
         await cdp.send('Network.enable');
         cdp.on('Network.requestWillBeSent', (event) => {
           const path = new URL(event.request.url).pathname;
-          if (path === '/api/profile/accessibility' || path === '/api/notifications') {
+          if (
+            path === '/api/profile/accessibility' ||
+            path === '/api/notifications' ||
+            ['/dashboard', '/jobs', '/applications', '/saved'].includes(path)
+          ) {
+            if (
+              !cdpRequestDetails.has(event.requestId) &&
+              cdpRequestDetails.size >= maxCdpLifecycleRecords
+            ) {
+              const terminalId = [...cdpRequestDetails].find(([, value]) => !value.active)?.[0];
+              if (terminalId) {
+                cdpRequestDetails.delete(terminalId);
+                cdpRequestIds.delete(terminalId);
+              } else {
+                cdpLifecycleOverflow += 1;
+                cdpExtraInfoPendingRequest.delete(event.requestId);
+                cdpRequestIds.delete(event.requestId);
+                return;
+              }
+            }
             cdpTargetRequests.add(event.requestId);
+            const existing = cdpRequestDetails.get(event.requestId);
+            const details = existing ?? {
+              method: event.request.method,
+              path,
+              fingerprint: safeRequestFingerprint(event.request.method, event.request.url),
+              events: [],
+              active: true,
+            };
+            if (event.redirectResponse)
+              details.events.push(`redirect-${event.redirectResponse.status}-to-${path}`);
+            details.method = event.request.method;
+            details.path = path;
+            details.fingerprint = safeRequestFingerprint(event.request.method, event.request.url);
+            details.active = true;
+            details.events.push('request-started');
+            cdpRequestDetails.set(event.requestId, details);
             recordCdpEvent(event.requestId, 'request-started');
             const auditId = cdpExtraInfoPendingRequest.get(event.requestId);
             if (auditId) {
@@ -1068,23 +1121,34 @@ try {
           flushCdpEvents(event.requestId, id);
         });
         cdp.on('Network.responseReceived', (event) => {
-          if (cdpTargetRequests.has(event.requestId))
+          if (cdpTargetRequests.has(event.requestId)) {
+            const details = cdpRequestDetails.get(event.requestId);
+            if (details) details.events.push(`response-${event.response.status}`);
             recordCdpEvent(event.requestId, `response-${event.response.status}`);
+          }
         });
         cdp.on('Network.loadingFinished', (event) => {
           if (cdpTargetRequests.has(event.requestId)) {
+            const details = cdpRequestDetails.get(event.requestId);
+            if (details) {
+              details.active = false;
+              details.events.push('loading-finished');
+            }
             recordCdpEvent(event.requestId, 'loading-finished');
             cdpTargetRequests.delete(event.requestId);
-            cdpRequestIds.delete(event.requestId);
             cdpEventsPendingCorrelation.delete(event.requestId);
             cdpExtraInfoPendingRequest.delete(event.requestId);
           }
         });
         cdp.on('Network.loadingFailed', (event) => {
           if (cdpTargetRequests.has(event.requestId)) {
+            const details = cdpRequestDetails.get(event.requestId);
+            if (details) {
+              details.active = false;
+              details.events.push(`loading-failed-${event.errorText}`);
+            }
             recordCdpEvent(event.requestId, `loading-failed-${event.errorText}`);
             cdpTargetRequests.delete(event.requestId);
-            cdpRequestIds.delete(event.requestId);
             cdpEventsPendingCorrelation.delete(event.requestId);
             cdpExtraInfoPendingRequest.delete(event.requestId);
           }
@@ -1315,6 +1379,43 @@ try {
             ...value,
             server: requestLifecycleAudit.get(id) ?? null,
           }));
+        const chromiumMatchingLifecycle: Array<{
+          method: string;
+          path: string;
+          fingerprint: string;
+          playwrightActiveCount: number;
+          cdpMatches: { active: boolean; events: string[] }[];
+        }> = [];
+        if (engine === 'chromium') {
+          const activeGroups = new Map<string, (typeof chromiumMatchingLifecycle)[number]>();
+          for (const [request] of active) {
+            const path = new URL(request.url()).pathname;
+            const fingerprint = safeRequestFingerprint(request.method(), request.url());
+            let group = activeGroups.get(fingerprint);
+            if (!group) {
+              group = {
+                method: request.method(),
+                path,
+                fingerprint,
+                playwrightActiveCount: 0,
+                cdpMatches: [...cdpRequestDetails.values()]
+                  .filter(
+                    (details) =>
+                      details.method === request.method() &&
+                      details.path === path &&
+                      details.fingerprint === fingerprint,
+                  )
+                  .map(({ active: cdpActive, events }) => ({
+                    active: cdpActive,
+                    events: [...events],
+                  })),
+              };
+              activeGroups.set(fingerprint, group);
+            }
+            group.playwrightActiveCount += 1;
+          }
+          chromiumMatchingLifecycle.push(...activeGroups.values());
+        }
         let proxyProbe: Record<string, string | number>;
         try {
           const response = await fetch(`${origin}/api/notifications`, {
@@ -1336,6 +1437,8 @@ try {
           `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'}); ` +
             `recent request events: ${recentRequestEvents.join(' | ') || 'none'}; ` +
             `request lifecycle audit: ${JSON.stringify(unresolvedLifecycle)}; ` +
+            `Chromium matching network lifecycle: ${JSON.stringify(chromiumMatchingLifecycle)}; ` +
+            `Chromium lifecycle records omitted at cap: ${cdpLifecycleOverflow}; ` +
             `unauthenticated same-origin proxy probe: ${JSON.stringify(proxyProbe)}`,
         );
       };
