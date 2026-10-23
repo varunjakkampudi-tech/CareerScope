@@ -1014,7 +1014,7 @@ try {
       await installUnhandledRejectionGuard(page);
       const browserLifecycleAudit = new Map<
         string,
-        { route: string; events: string[]; cdpEvents: string[] }
+        { route: string; events: string[]; cdpEvents: string[]; cdpRequestIds: string[] }
       >();
       const browserLifecycleAuditByRequest = new WeakMap<import('playwright').Request, string>();
       const cdp = engine === 'chromium' ? await page.context().newCDPSession(page) : undefined;
@@ -1029,6 +1029,7 @@ try {
           method: string;
           path: string;
           fingerprint: string;
+          initiatorType: string;
           events: string[];
           active: boolean;
         }
@@ -1059,9 +1060,21 @@ try {
           cdpEventsPendingCorrelation.set(requestId, pending);
         }
       };
+      const recordCdpCorrelation = (requestId: string, headers: Record<string, unknown>) => {
+        const id = Object.entries(headers).find(
+          ([key, value]) =>
+            key.toLowerCase() === 'x-careerscope-ui-lifecycle-id' && typeof value === 'string',
+        )?.[1];
+        if (typeof id !== 'string' || !browserLifecycleAudit.has(id)) return;
+        cdpRequestIds.set(requestId, id);
+        const audit = browserLifecycleAudit.get(id);
+        if (audit && !audit.cdpRequestIds.includes(requestId)) audit.cdpRequestIds.push(requestId);
+        flushCdpEvents(requestId, id);
+      };
       if (cdp) {
         await cdp.send('Network.enable');
         cdp.on('Network.requestWillBeSent', (event) => {
+          recordCdpCorrelation(event.requestId, event.request.headers);
           const path = new URL(event.request.url).pathname;
           if (
             path === '/api/profile/accessibility' ||
@@ -1089,6 +1102,7 @@ try {
               method: event.request.method,
               path,
               fingerprint: safeRequestFingerprint(event.request.method, event.request.url),
+              initiatorType: event.initiator.type,
               events: [],
               active: true,
             };
@@ -1096,6 +1110,7 @@ try {
               details.events.push(`redirect-${event.redirectResponse.status}-to-${path}`);
             details.method = event.request.method;
             details.path = path;
+            details.initiatorType = event.initiator.type;
             details.fingerprint = safeRequestFingerprint(event.request.method, event.request.url);
             details.active = true;
             details.events.push('request-started');
@@ -1158,7 +1173,12 @@ try {
         await page.route(`**${routePath}`, async (route) => {
           if (route.request().method() !== 'GET') return route.continue();
           const id = randomUUID();
-          browserLifecycleAudit.set(id, { route: routePath, events: ['routed'], cdpEvents: [] });
+          browserLifecycleAudit.set(id, {
+            route: routePath,
+            events: ['routed'],
+            cdpEvents: [],
+            cdpRequestIds: [],
+          });
           browserLifecycleAuditByRequest.set(route.request(), id);
           const headers = {
             ...route.request().headers(),
@@ -1391,6 +1411,7 @@ try {
           .map(([id, value]) => ({
             id: id.slice(-6),
             ...value,
+            cdpRequestIds: value.cdpRequestIds.map((requestId) => requestId.slice(-8)),
             server: requestLifecycleAudit.get(id) ?? null,
           }));
         const chromiumMatchingLifecycle: Array<{
@@ -1398,7 +1419,13 @@ try {
           path: string;
           fingerprint: string;
           playwrightActiveCount: number;
-          cdpMatches: { active: boolean; events: string[] }[];
+          cdpMatches: {
+            requestId: string;
+            lifecycleId: string | null;
+            active: boolean;
+            initiatorType: string;
+            events: string[];
+          }[];
         }> = [];
         if (engine === 'chromium') {
           const activeGroups = new Map<string, (typeof chromiumMatchingLifecycle)[number]>();
@@ -1412,15 +1439,18 @@ try {
                 path,
                 fingerprint,
                 playwrightActiveCount: 0,
-                cdpMatches: [...cdpRequestDetails.values()]
+                cdpMatches: [...cdpRequestDetails.entries()]
                   .filter(
-                    (details) =>
+                    ([, details]) =>
                       details.method === request.method() &&
                       details.path === path &&
                       details.fingerprint === fingerprint,
                   )
-                  .map(({ active: cdpActive, events }) => ({
+                  .map(([requestId, { active: cdpActive, initiatorType, events }]) => ({
+                    requestId: requestId.slice(-8),
+                    lifecycleId: cdpRequestIds.get(requestId)?.slice(-6) ?? null,
                     active: cdpActive,
+                    initiatorType,
                     events: [...events],
                   })),
               };
