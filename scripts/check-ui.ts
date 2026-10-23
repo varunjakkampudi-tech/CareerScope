@@ -169,6 +169,17 @@ await resumeStorage.initialize();
 const filesQueue = new LocalQueue(process.env.QUEUE_REDIS_URL!);
 const filesQueueName = `test-files-${randomUUID()}`;
 const syntheticPermittedSources = new Set(['greenhouse', 'lever', 'ashby', 'workable']);
+const requestLifecycleAudit = new Map<
+  string,
+  {
+    route: string;
+    requestAt: number;
+    responseAt: number | null;
+    status: number | null;
+    payloadBytes: number | null;
+    writableFinished: boolean | null;
+  }
+>();
 let filesWorker: ReturnType<typeof spawn> | undefined;
 const app = await createApp(database, origin, async () => true, {
   testHarnessPasswordLogin: true,
@@ -184,6 +195,51 @@ const app = await createApp(database, origin, async () => true, {
   // inject this approval bypass and remains bound to recorded profiles.
   sourcePermitted: (source) => syntheticPermittedSources.has(source),
   resumeStorage,
+});
+// Ephemeral test-only request correlation for the Chromium settlement failure.
+// Never log request bodies, cookies, or application data.
+app.addHook('onRequest', (request, _reply, done) => {
+  const id = request.headers['x-careerscope-ui-lifecycle-id'];
+  const path = new URL(request.url, origin).pathname;
+  if (
+    typeof id === 'string' &&
+    /^[0-9a-f-]{36}$/i.test(id) &&
+    request.method === 'GET' &&
+    (path === '/api/profile/accessibility' || path === '/api/notifications')
+  ) {
+    requestLifecycleAudit.set(id, {
+      route: path,
+      requestAt: performance.now(),
+      responseAt: null,
+      status: null,
+      payloadBytes: null,
+      writableFinished: null,
+    });
+  }
+  done();
+});
+app.addHook('onSend', (request, _reply, payload, done) => {
+  const id = request.headers['x-careerscope-ui-lifecycle-id'];
+  const record = typeof id === 'string' ? requestLifecycleAudit.get(id) : undefined;
+  if (record) {
+    record.payloadBytes =
+      typeof payload === 'string'
+        ? Buffer.byteLength(payload)
+        : Buffer.isBuffer(payload)
+          ? payload.byteLength
+          : null;
+  }
+  done(null, payload);
+});
+app.addHook('onResponse', (request, reply, done) => {
+  const id = request.headers['x-careerscope-ui-lifecycle-id'];
+  const record = typeof id === 'string' ? requestLifecycleAudit.get(id) : undefined;
+  if (record) {
+    record.responseAt = performance.now();
+    record.status = reply.statusCode;
+    record.writableFinished = reply.raw.writableFinished;
+  }
+  done();
 });
 try {
   await migrate(database.db, {
@@ -956,6 +1012,66 @@ try {
 
       const page = await browser.newPage();
       await installUnhandledRejectionGuard(page);
+      const browserLifecycleAudit = new Map<
+        string,
+        { route: string; events: string[]; cdpEvents: string[] }
+      >();
+      const cdp = engine === 'chromium' ? await page.context().newCDPSession(page) : undefined;
+      const cdpRequestIds = new Map<string, string>();
+      if (cdp) {
+        await cdp.send('Network.enable');
+        cdp.on('Network.requestWillBeSent', (event) => {
+          const headers = event.request.headers as Record<string, string>;
+          const id = Object.entries(headers).find(
+            ([key]) => key.toLowerCase() === 'x-careerscope-ui-lifecycle-id',
+          )?.[1];
+          if (typeof id !== 'string') return;
+          cdpRequestIds.set(event.requestId, id);
+          browserLifecycleAudit.get(id)?.cdpEvents.push('request-started');
+        });
+        cdp.on('Network.responseReceived', (event) => {
+          const id = cdpRequestIds.get(event.requestId);
+          if (id)
+            browserLifecycleAudit.get(id)?.cdpEvents.push(`response-${event.response.status}`);
+        });
+        cdp.on('Network.loadingFinished', (event) => {
+          const id = cdpRequestIds.get(event.requestId);
+          if (id) browserLifecycleAudit.get(id)?.cdpEvents.push('loading-finished');
+        });
+        cdp.on('Network.loadingFailed', (event) => {
+          const id = cdpRequestIds.get(event.requestId);
+          if (id) browserLifecycleAudit.get(id)?.cdpEvents.push('loading-failed');
+        });
+      }
+      for (const routePath of ['/api/profile/accessibility', '/api/notifications']) {
+        await page.route(`**${routePath}`, async (route) => {
+          if (route.request().method() !== 'GET') return route.continue();
+          const id = randomUUID();
+          browserLifecycleAudit.set(id, { route: routePath, events: ['routed'], cdpEvents: [] });
+          const headers = {
+            ...route.request().headers(),
+            'x-careerscope-ui-lifecycle-id': id,
+          };
+          await route.continue({ headers });
+        });
+      }
+      page.on('request', (request) => {
+        const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+        if (id) browserLifecycleAudit.get(id)?.events.push('playwright-request');
+      });
+      page.on('response', (response) => {
+        const id = response.request().headers()['x-careerscope-ui-lifecycle-id'];
+        if (id)
+          browserLifecycleAudit.get(id)?.events.push(`playwright-response-${response.status()}`);
+      });
+      page.on('requestfinished', (request) => {
+        const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+        if (id) browserLifecycleAudit.get(id)?.events.push('playwright-finished');
+      });
+      page.on('requestfailed', (request) => {
+        const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+        if (id) browserLifecycleAudit.get(id)?.events.push('playwright-failed');
+      });
       let fixtureCredential = password;
       await page.route('**/api/session', async (route) => {
         const response = await route.fetch();
@@ -1119,11 +1235,15 @@ try {
         }
         const pending = activeRequests().map(([request, epoch]) => {
           const url = new URL(request.url());
-          return `${request.method()} ${url.pathname} (${request.resourceType()}, navigation=${request.isNavigationRequest()}, route ${epoch}/${routeEpoch}, responseEnd ${request.timing().responseEnd}, failure ${request.failure()?.errorText ?? 'none'})`;
+          const id = request.headers()['x-careerscope-ui-lifecycle-id'];
+          const audit = id ? browserLifecycleAudit.get(id) : undefined;
+          const server = id ? requestLifecycleAudit.get(id) : undefined;
+          return `${request.method()} ${url.pathname} (${request.resourceType()}, navigation=${request.isNavigationRequest()}, route ${epoch}/${routeEpoch}, responseEnd ${request.timing().responseEnd}, failure ${request.failure()?.errorText ?? 'none'}, id=${id?.slice(-6) ?? 'none'}, browser=${JSON.stringify(audit ?? null)}, server=${JSON.stringify(server ?? null)})`;
         });
         throw new Error(
           `${engine}: ${label} never stopped issuing requests (${pending.join(', ') || 'none'}); ` +
-            `recent request events: ${recentRequestEvents.join(' | ') || 'none'}`,
+            `recent request events: ${recentRequestEvents.join(' | ') || 'none'}; ` +
+            `request lifecycle audit: ${JSON.stringify([...browserLifecycleAudit].map(([id, value]) => ({ id: id.slice(-6), ...value, server: requestLifecycleAudit.get(id) ?? null })))}`,
         );
       };
       // Search selection keeps polling enabled. All finite requests must finish
