@@ -17,7 +17,7 @@
     "pino": "^10.3.1",
     "redis": "^6.2.1",
     "yauzl": "^3.4.0",
-    "zod": "^3.23.8"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@careerscope/matching": "file:../matching",

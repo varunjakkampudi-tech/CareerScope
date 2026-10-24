@@ -7,7 +7,8 @@ type LifecycleEvent = {
   method: 'GET';
   path: '/api/notifications';
   layer: 'playwright' | 'cdp';
-  stage: 'request' | 'response-headers' | 'response' | 'finish' | 'abort' | 'error';
+  stage:
+    'request' | 'response-headers' | 'response' | 'data-received' | 'finish' | 'abort' | 'error';
   at: number;
   status?: number;
   complete?: boolean;
@@ -135,6 +136,10 @@ export async function observeNotificationPage(page: Page, origin: string) {
   cdp.on('Network.responseReceivedExtraInfo', (value) => {
     if (ids.has(value.requestId) || pending.has(value.requestId))
       record(value.requestId, 'response-headers', { status: value.statusCode });
+  });
+  cdp.on('Network.dataReceived', (value) => {
+    if (ids.has(value.requestId) || pending.has(value.requestId))
+      record(value.requestId, 'data-received');
   });
   cdp.on('Network.loadingFinished', (value) => {
     if (ids.has(value.requestId) || pending.has(value.requestId))

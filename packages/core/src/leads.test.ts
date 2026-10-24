@@ -1,6 +1,23 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { leadTagsSchema, updateLeadSchema } from './leads.js';
+import { collectedJobSchema } from './jobs.js';
+
+test('collected job schema keeps legacy missing match values normalized to null', () => {
+  const job = collectedJobSchema.parse({
+    fingerprint: 'synthetic-job',
+    title: 'Synthetic engineer',
+    company: 'Synthetic company',
+    location: 'Remote',
+    description: 'Synthetic description',
+    source: 'remoteok',
+    sourceUrl: 'https://jobs.example.test/source',
+    applyUrl: 'https://jobs.example.test/apply',
+    postedAt: null,
+  });
+
+  assert.equal(job.match, null);
+});
 
 test('lead tags are trimmed, bounded and case-insensitively unique', () => {
   assert.deepEqual(leadTagsSchema.parse(['  Frontend  ', 'Remote']), ['Frontend', 'Remote']);

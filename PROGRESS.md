@@ -2249,3 +2249,52 @@ and `UI-CONSOLE-WARNINGS-01` remains open. All tests used local synthetic data;
 no hosted CI, live provider, production service, deployment or human legal/
 accessibility approval was exercised. No application source changed during
 this validation refresh.
+
+### Zod security remediation and Chromium lifecycle diagnostics (2026-10-24)
+
+Base revision: `22742c8092f8d6363bc21a5c4d69c01694a7957e` on
+`codex/task/notification-lifecycle-diagnostics-20261024`. The working candidate
+is isolated on that branch; it has not been integrated to `main`.
+
+Security: hosted run 40049073515 failed the audit because the resolved Zod
+3.25.76 is in GHSA-mrhx-c7xc-m3w5's `<4.6.6` vulnerable range. npm reports
+the compatible remediation as a Zod 4 major upgrade, so `core`, `shared`, and
+`matching` now declare `^4.6.7`, resolving to one Zod 4.6.7 lock entry. The
+collected-job schema now explicitly marks its unknown match input optional
+before the existing transform; this preserves accepted legacy inputs and
+normalizes a missing value to `null`. A focused regression verifies that
+behavior. No migrations were edited or removed.
+
+Executed locally with Node v24.22.1: clean `npm ci` PASS; `npm audit
+--audit-level=high` PASS (zero findings); `npm audit --omit=dev
+--audit-level=high` PASS (zero findings); repository typecheck PASS, including
+61 canonical test files; unit suite PASS (109/109); domain suite PASS (850/850
+across 30 files); lint PASS; full Prettier check PASS; production Next build
+and CSP verification PASS (14 inline-script hashes covered). Focused schema and
+lifecycle tests PASS (9/9); `git diff --check` PASS. These local results are
+not hosted exact-SHA evidence.
+
+Browser: previous hosted run 40049084571 still does not prove the failure
+mechanism. Its exact request reached Next/Fastify response-end/finish with
+status 200, while the browser logs had response headers and no terminal event.
+The passive diagnostics now record exact-request CDP `Network.dataReceived`
+events with timestamps before/after header correlation, alongside existing
+response and terminal events. They do not record payloads, headers, byte counts,
+personal data or secrets. A focused self-test verifies exact CDP request-ID
+correlation rather than URL matching; strict browser settlement checks are
+unchanged. The instrumented focused Chromium scenario has not yet run, so the
+root cause remains unestablished and `UI-NOTIFICATIONS-LIFECYCLE-01` remains
+open. The separate Firefox warning `UI-CONSOLE-WARNINGS-01` is not addressed.
+
+Cleanup: no broad cleanup was performed. The four earlier database/runtime
+cleanup edits remain isolated and untouched pending independent review and
+Redis-backed validation. All historical SQL migrations and upgrade paths are
+preserved. That validation was not satisfied by tests in this candidate.
+
+Next validation sequence: run the focused hosted Chromium scenario on the
+instrumented candidate; inspect exact lifecycle output; if it identifies a
+root cause, implement only the supported fix and a pre-fix-failing regression.
+Then run the full required hosted suite against one final candidate SHA.
+Security remains blocked on exact-SHA hosted CI; browser cause remains open;
+cleanup remains separately isolated. No merge, `main` push or deployment is
+authorized or performed for this checkpoint.

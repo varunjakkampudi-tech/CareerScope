@@ -12,6 +12,7 @@ const stages = new Set([
   'request',
   'response-headers',
   'response',
+  'data-received',
   'end',
   'finish',
   'close',

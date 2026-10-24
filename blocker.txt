@@ -1275,3 +1275,69 @@ Verification procedure: For future authorized pushes, fetch origin, verify a
   `origin/main` and GitHub's advertised SHA.
 Affected tasks: Publishing the saved-job tag changes to `main`; no product
   implementation or local validation is blocked.
+
+BLOCKER ID: SECURITY-ZOD-01
+Title: Hosted exact-SHA verification pending for the Zod security fix
+Priority: High
+Module: Dependency security
+Status: OPEN
+Verified issue: GitHub Actions run 40049073515 on
+  `22742c8092f8d6363bc21a5c4d69c01694a7957e` rejected Zod 3.25.76 under
+  GHSA-mrhx-c7xc-m3w5 (`zod <4.6.6`). npm's available patched fix is Zod 4,
+  which is a major version change; no force audit fix was used.
+Candidate remediation: the three direct CareerScope workspace declarations
+  now require `zod ^4.6.7`; package-lock resolves one deduplicated Zod 4.6.7.
+  Explicit optional input handling in the collected-job schema preserves the
+  existing legacy behavior where omitted match data parses as null.
+Local evidence (Node 24.22.1): clean `npm ci` PASS; full and production-only
+  `npm audit --audit-level=high` PASS, zero vulnerabilities; strict typecheck
+  PASS; unit tests PASS (109/109); domain tests PASS (850/850); lint and full
+  formatting checks PASS; production CSP build PASS (14/14 inline-script hashes).
+  The focused schema regression also passes.
+Remaining gate: an exact candidate-SHA hosted dependency audit and required
+  CI checks have not run. The candidate is not integrated to `main`.
+Next action: publish the reviewed candidate only to the existing diagnostics
+  branch, run focused Chromium first, then run the required full CI suite on
+  the final candidate SHA. Keep this blocker open until exact-SHA hosted checks
+  pass. No audit finding was suppressed.
+Historical migration files: preserved; no migration file was changed.
+
+BLOCKER ID: UI-NOTIFICATIONS-LIFECYCLE-01
+Title: Chromium notification response-body completion is not yet explained
+Priority: High
+Module: Browser acceptance / request lifecycle
+Status: OPEN
+Last hosted evidence: run 40049084571, SHA
+  `22742c8092f8d6363bc21a5c4d69c01694a7957e`, focused Chromium scenario
+  `notification-panel-close-before-mutation`. For the exact correlated GET,
+  Fastify and Next ingress/upstream/downstream observed status 200 and complete
+  response end/finish; Chromium observed response headers but no Playwright
+  response/finish/failure and no CDP response/loading-finished/loading-failed.
+  This narrows the gap to the browser-side response/body lifecycle but does not
+  identify whether bytes arrived, the fetch was cancelled, or the browser
+  transport failed.
+Current diagnostic: test-only CDP `Network.dataReceived` records are now
+  correlated by the existing exact CDP request ID and synthetic request ID,
+  timestamped, and omit data lengths, headers and bodies. A regression test
+  proves pre-correlation events remain request-ID-scoped when same-URL requests
+  exist. Existing request-settlement assertions are unchanged.
+Required next evidence: execute the exact focused Chromium race on this
+  instrumented candidate and inspect its `data-received`, `responseReceived`,
+  `loadingFinished` or `loadingFailed` events alongside Next/Fastify lifecycle
+  records. Only then choose a root-cause fix. No application behavior was
+  changed and no browser warning was suppressed.
+
+BLOCKER ID: REPO-CLEANUP-01
+Title: Four prior cleanup edits remain isolated pending review and Redis test
+Priority: Medium
+Module: Repository cleanup / validation
+Status: ISOLATED_NOT_VALIDATED
+Scope: the prior changes to core database/runtime source and tests remain in
+  their separate local main-consolidation worktree. They are not part of this
+  dependency/browser candidate and have not been modified here.
+Missing evidence: the prior cleanup review recorded Redis-backed validation
+  as outstanding. The unit test that verifies Drizzle migration bytes on this
+  candidate is not a substitute for validating those four cleanup edits.
+Policy: preserve those changes and all 35 SQL migrations/history; do not delete
+  migration files based on discontinued-auth naming. Resume their independent
+  diff review and Redis-backed test only in their owning worktree.

@@ -2,15 +2,18 @@ import { z } from 'zod';
 import { searchSourceSchema } from './commands.js';
 import { matchBreakdownSchema } from '@careerscope/shared';
 
-const match = z.unknown().transform((value, context) => {
-  if (value == null) return null;
-  const parsed = matchBreakdownSchema.strict().safeParse(value);
-  if (!parsed.success) {
-    context.addIssue({ code: 'custom', message: 'Invalid match breakdown' });
-    return z.NEVER;
-  }
-  return parsed.data;
-});
+const match = z
+  .unknown()
+  .optional()
+  .transform((value, context) => {
+    if (value == null) return null;
+    const parsed = matchBreakdownSchema.strict().safeParse(value);
+    if (!parsed.success) {
+      context.addIssue({ code: 'custom', message: 'Invalid match breakdown' });
+      return z.NEVER;
+    }
+    return parsed.data;
+  });
 
 const publicLink = z
   .string()

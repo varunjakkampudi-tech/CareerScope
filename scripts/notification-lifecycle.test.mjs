@@ -191,6 +191,12 @@ test('CDP keeps exact-request events before header correlation and never joins b
       });
       handlers.get('Network.responseReceived')({ requestId, response: { status: 200 } });
       handlers.get('Network.responseReceivedExtraInfo')({ requestId, statusCode: 200 });
+      handlers.get('Network.dataReceived')({
+        requestId,
+        timestamp: 123.456,
+        dataLength: 4096,
+        encodedDataLength: 2048,
+      });
       handlers.get('Network.loadingFinished')({ requestId });
     }
     assert.equal(records.length, 0);
@@ -200,10 +206,14 @@ test('CDP keeps exact-request events before header correlation and never joins b
     });
     assert.deepEqual(
       records.map((record) => record.stage),
-      ['request', 'response', 'response-headers', 'finish'],
+      ['request', 'response', 'response-headers', 'data-received', 'finish'],
     );
     assert.equal(records.find((record) => record.stage === 'response-headers')?.status, 200);
     assert.ok(records.every((record) => record.id === id && validRecord(record)));
+    assert.equal(records.find((record) => record.stage === 'data-received')?.at > 0, true);
+    assert.ok(
+      records.every((record) => !('dataLength' in record) && !('encodedDataLength' in record)),
+    );
   } finally {
     process.stdout.write = originalWrite;
   }
