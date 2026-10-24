@@ -10,6 +10,7 @@ const validId = (id) => typeof id === 'string' && /^[0-9a-f-]{36}$/i.test(id);
 const stages = new Set([
   'ingress',
   'request',
+  'response-headers',
   'response',
   'end',
   'finish',
