@@ -1277,10 +1277,10 @@ Affected tasks: Publishing the saved-job tag changes to `main`; no product
   implementation or local validation is blocked.
 
 BLOCKER ID: SECURITY-ZOD-01
-Title: Hosted exact-SHA verification pending for the Zod security fix
+Title: Zod security advisory remediation verified on isolated candidate branch
 Priority: High
 Module: Dependency security
-Status: OPEN
+Status: VERIFIED_ON_CANDIDATE_NOT_INTEGRATED
 Verified issue: GitHub Actions run 40049073515 on
   `22742c8092f8d6363bc21a5c4d69c01694a7957e` rejected Zod 3.25.76 under
   GHSA-mrhx-c7xc-m3w5 (`zod <4.6.6`). npm's available patched fix is Zod 4,
@@ -1294,12 +1294,15 @@ Local evidence (Node 24.22.1): clean `npm ci` PASS; full and production-only
   PASS; unit tests PASS (109/109); domain tests PASS (850/850); lint and full
   formatting checks PASS; production CSP build PASS (14/14 inline-script hashes).
   The focused schema regression also passes.
-Remaining gate: an exact candidate-SHA hosted dependency audit and required
-  CI checks have not run. The candidate is not integrated to `main`.
-Next action: publish the reviewed candidate only to the existing diagnostics
-  branch, run focused Chromium first, then run the required full CI suite on
-  the final candidate SHA. Keep this blocker open until exact-SHA hosted checks
-  pass. No audit finding was suppressed.
+Hosted evidence: run 40059698355 on exact candidate SHA
+  `28d943996430af7016970921ae10cd1000e98127` passed clean install, format,
+  policy/lint/type/privacy/unit gates, domain tests, production build, and
+  `npm audit --audit-level=high` (`found 0 vulnerabilities`). The overall run
+  failed only in the browser job described under
+  `UI-NOTIFICATIONS-LIFECYCLE-01`; the candidate remains isolated and is not
+  integrated to `main`. No audit finding was suppressed.
+Next action: keep the Zod change on this isolated candidate until the browser
+  acceptance failure is understood and the complete exact-SHA gate can pass.
 Historical migration files: preserved; no migration file was changed.
 
 BLOCKER ID: UI-NOTIFICATIONS-LIFECYCLE-01
@@ -1307,25 +1310,40 @@ Title: Chromium notification response-body completion is not yet explained
 Priority: High
 Module: Browser acceptance / request lifecycle
 Status: OPEN
-Last hosted evidence: run 40049084571, SHA
-  `22742c8092f8d6363bc21a5c4d69c01694a7957e`, focused Chromium scenario
-  `notification-panel-close-before-mutation`. For the exact correlated GET,
-  Fastify and Next ingress/upstream/downstream observed status 200 and complete
-  response end/finish; Chromium observed response headers but no Playwright
-  response/finish/failure and no CDP response/loading-finished/loading-failed.
-  This narrows the gap to the browser-side response/body lifecycle but does not
-  identify whether bytes arrived, the fetch was cancelled, or the browser
-  transport failed.
+Latest focused evidence: run 40059163610 on candidate SHA
+  `28d943996430af7016970921ae10cd1000e98127`, scenario
+  `notification-panel-close-before-mutation`. Exact synthetic request ID
+  `d0144ca1-92b0-4f39-9b4c-2473ff999f17`: Fastify ingress/finish/close were
+  status 200, complete, and not aborted. Next upstream observed request,
+  response 200, end complete, and close complete; Next ingress finished and
+  closed status 200 with `writableFinished` true and no abort. Chromium CDP
+  recorded request start and response-extra-info status 200 only; it recorded
+  no `responseReceived`, `dataReceived`, `loadingFinished`, or `loadingFailed`.
+  Playwright recorded request start only, with no response, finish, or failure.
+  The focused browser job failed the strict settled-request assertion. This
+  localizes the unexplained gap after Next's completed response and before
+  Chromium's normal response/body/terminal events, but does not prove whether
+  this is transport delivery, HTTP framing, or Chromium event/network behavior.
+Full-run evidence: run 40059698355 on the same SHA passed isolated
+  PostgreSQL/Redis integration and static/security checks but failed the full
+  Chromium browser job at the same strict request-settlement assertion. That
+  run did not select focused correlation diagnostics; its pending request had
+  no correlation ID, so it is not treated as exact-request evidence.
 Current diagnostic: test-only CDP `Network.dataReceived` records are now
   correlated by the existing exact CDP request ID and synthetic request ID,
   timestamped, and omit data lengths, headers and bodies. A regression test
   proves pre-correlation events remain request-ID-scoped when same-URL requests
   exist. Existing request-settlement assertions are unchanged.
-Required next evidence: execute the exact focused Chromium race on this
-  instrumented candidate and inspect its `data-received`, `responseReceived`,
-  `loadingFinished` or `loadingFailed` events alongside Next/Fastify lifecycle
-  records. Only then choose a root-cause fix. No application behavior was
-  changed and no browser warning was suppressed.
+Required next evidence: use one isolated discriminating Chromium run to
+  compare a component-triggered notification refresh with an explicit
+  synthetic same-origin GET whose response body is consumed, using the same
+  CDP lifecycle observer and Next rewrite. Record only synthetic IDs and
+  approved lifecycle fields. If the control request completes while the
+  component request does not, investigate fetch/controller ownership and panel
+  lifecycle; if both stop after headers, investigate the Next-to-browser
+  response transport/framing. Do not change production behavior until that
+  test distinguishes the cause. No application behavior was changed and no
+  browser warning was suppressed.
 
 BLOCKER ID: REPO-CLEANUP-01
 Title: Four prior cleanup edits remain isolated pending review and Redis test
@@ -1341,3 +1359,8 @@ Missing evidence: the prior cleanup review recorded Redis-backed validation
 Policy: preserve those changes and all 35 SQL migrations/history; do not delete
   migration files based on discontinued-auth naming. Resume their independent
   diff review and Redis-backed test only in their owning worktree.
+Diff review this checkpoint: the four isolated file diffs were inspected
+  read-only. They change integration-test error text/comments and the runtime
+  endpoint validation error string/assertion; none changes a SQL migration.
+  They remain uncommitted and were not altered or merged. Independent review and
+  Redis-backed validation in their owning worktree remain outstanding.

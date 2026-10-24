@@ -2298,3 +2298,45 @@ Then run the full required hosted suite against one final candidate SHA.
 Security remains blocked on exact-SHA hosted CI; browser cause remains open;
 cleanup remains separately isolated. No merge, `main` push or deployment is
 authorized or performed for this checkpoint.
+
+### Hosted evidence update (2026-10-24, exact candidate SHA)
+
+The diagnostic candidate was committed and pushed only to
+`codex/task/notification-lifecycle-diagnostics-20261024` as
+`28d943996430af7016970921ae10cd1000e98127` (parent
+`22742c8092f8d6363bc21a5c4d69c01694a7957e`); the worktree was clean after the
+push. Focused hosted Chromium run 40059163610 failed the strict notification
+settlement assertion. For correlated ID
+`d0144ca1-92b0-4f39-9b4c-2473ff999f17`, Fastify returned/closed 200 complete,
+Next upstream response ended complete and its downstream response finished and
+closed 200 complete, while CDP stopped after response-extra-info 200 and
+Playwright stopped after request. Neither layer reported body data, ordinary
+response, terminal completion or failure. The exact missing evidence is
+browser/network-level explanation for why Chromium did not emit its normal
+response/body/terminal events after Next completed the response; no root cause
+or corrective application change is claimed.
+
+Full hosted run 40059698355 on the same exact SHA passed clean install,
+formatting, policy/lint/type/privacy/unit gates, domain tests, production build,
+isolated PostgreSQL/Redis integration, and `npm audit --audit-level=high`
+(`found 0 vulnerabilities`). Its full Chromium browser job failed the same
+settlement assertion without focused correlation enabled. The overall workflow
+therefore failed; later performance, soak and recovery steps were skipped. No
+Firefox/WebKit pass is claimed from these runs. This closes the GHSA Zod audit
+failure for this isolated candidate only; it is not in `main`.
+
+The separate four-file cleanup diff was inspected read-only in its owner
+worktree. It changes database integration-test text/comments and runtime
+endpoint error text/assertion only; it remains uncommitted and isolated pending
+independent review and Redis-backed validation. All 35 historical SQL
+migrations remain tracked and unchanged. No other worktree, ignored
+environment/screenshot evidence, or localization work was modified.
+
+Current dispositions: Zod advisory remediation is hosted-audit-verified on the
+isolated candidate; Chromium notification lifecycle remains unresolved; cleanup
+remains isolated and not validation-complete. The next discriminating test is
+an explicit synthetic same-origin GET that consumes its response body through
+the same Next rewrite and CDP observer, compared with the component-triggered
+refresh. Do not change application behavior until that comparison distinguishes
+the request source from downstream transport/framing. No `main` merge, force
+push, or production deployment occurred.
